@@ -5,7 +5,7 @@ This is my 2nd edition of my training pace calculator
 
 ## 1st Edition
 - https://github.com/aleexwong/marathon-training
-- Project 1 is hosted herehttps://marathontraining.netlify.app/
+- Project 1 is hosted here https://marathontraining.netlify.app/
 
 but this time it is built with TypeScript and the Shadcn ui framework
 - https://ui.shadcn.com/
