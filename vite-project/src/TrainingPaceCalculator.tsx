@@ -1,19 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
-// import { toast } from "@/components/ui/toast";
-import { useToast } from "@/components/ui/toast";
-import { Toaster } from "@/components/ui/toaster";
-
 import { Clock, RotateCcw, Calculator } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+
 import {
   Tooltip,
   TooltipContent,
@@ -21,6 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast } from "./hooks/use-toast";
+import RunningTips from "./RunningTips";
 
 const PRESET_DISTANCES = [
   { name: "Half Marathon", distance: 13.1 },
@@ -194,6 +185,7 @@ const TrainingPaceCalculator = () => {
     toast({
       title: "Calculator Reset",
       description: "All values have been cleared.",
+      duration: 3000,
     });
   };
 
@@ -227,6 +219,7 @@ const TrainingPaceCalculator = () => {
       toast({
         title: "Calculation Complete",
         description: "Your training paces have been calculated.",
+        duration: 3000,
       });
     } catch (error) {
       toast({
@@ -399,7 +392,7 @@ const TrainingPaceCalculator = () => {
                     key={key}
                     className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 p-2 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
-                    <label className="font-medium capitalize">
+                    <label className="font-medium capitalize text-right flex items-center justify-end">
                       {key === "xlong" ? "Long Run" : key} Pace:
                     </label>
                     <Input
@@ -413,43 +406,7 @@ const TrainingPaceCalculator = () => {
               </div>
             )}
           </div>
-
-          {/* Tips Accordion */}
-          <Accordion type="single" collapsible className="mt-6">
-            <AccordionItem value="tips">
-              <AccordionTrigger className="text-blue-600">
-                Running Tips
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="font-bold">What is my training pace?</h3>
-                    <p>
-                      Your training pace is the speed at which you run during
-                      training sessions. Different types of runs target
-                      different aspects of fitness.
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="font-bold">What are Yasso 800s?</h3>
-                    <p>
-                      Yasso 800s are specialized interval training runs used to
-                      predict marathon times. They involve running 800-meter
-                      intervals at a specific pace.
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="font-bold">What is a long run?</h3>
-                    <p>
-                      A long run is a sustained effort longer than your typical
-                      daily runs, designed to build endurance. The distance
-                      varies based on your experience and goals.
-                    </p>
-                  </div>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <RunningTips />
         </CardContent>
       </Card>
     </div>
