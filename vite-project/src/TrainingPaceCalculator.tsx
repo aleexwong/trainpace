@@ -357,7 +357,7 @@ const TrainingPaceCalculator = () => {
                 <div className="flex items-center gap-2">
                   <div className="relative flex-1">
                     <Input
-                      type="text"
+                      type="number"
                       placeholder="HH"
                       name="hours"
                       value={formData.hours}
@@ -368,7 +368,7 @@ const TrainingPaceCalculator = () => {
                   </div>
                   <span>:</span>
                   <Input
-                    type="text"
+                    type="number"
                     placeholder="MM"
                     name="minutes"
                     value={formData.minutes}
@@ -377,7 +377,7 @@ const TrainingPaceCalculator = () => {
                   />
                   <span>:</span>
                   <Input
-                    type="text"
+                    type="number"
                     placeholder="SS"
                     name="seconds"
                     value={formData.seconds}
