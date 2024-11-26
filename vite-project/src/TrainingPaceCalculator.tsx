@@ -13,14 +13,14 @@ import {
 } from "@/components/ui/tooltip";
 import RunningTips from "./RunningTips";
 
-const PRESET_DISTANCES = [
-  { name: "Half Marathon", distance: 13.1 },
-  { name: "Marathon", distance: 26.2 },
-  { name: "10K", distance: 6.2 },
-  { name: "5K", distance: 3.1 },
-  { name: "1 Mile", distance: 1 },
-  { name: "800m", distance: 0.5 },
-];
+// const PRESET_DISTANCES = [
+//   { name: "Half Marathon", distance: 13.1 },
+//   { name: "Marathon", distance: 26.2 },
+//   { name: "10K", distance: 6.2 },
+//   { name: "5K", distance: 3.1 },
+//   { name: "1 Mile", distance: 1 },
+//   { name: "800m", distance: 0.5 },
+// ];
 
 const PRESET_DISTANCES_IN_KM = [
   { name: "Half Marathon", distance: 21.1 },
