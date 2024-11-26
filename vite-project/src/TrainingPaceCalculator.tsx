@@ -300,7 +300,7 @@ const TrainingPaceCalculator = () => {
                 <label className="text-sm font-medium">Race Distance</label>
                 <div className="flex items-center gap-2">
                   <Input
-                    type="text"
+                    type="number"
                     placeholder="Enter distance"
                     name="distance"
                     value={formData.distance}
