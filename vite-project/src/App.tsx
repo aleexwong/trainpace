@@ -1,4 +1,5 @@
 import "./App.css";
+import Footer from "./Footer";
 import TrainingPaceCalculator from "./TrainingPaceCalculator";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -9,6 +10,7 @@ function App() {
     <>
       <TrainingPaceCalculator />
       <Toaster />
+      <Footer />
     </>
   );
 }

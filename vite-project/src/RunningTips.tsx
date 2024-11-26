@@ -11,11 +11,16 @@ const RunningTips = () => {
       {/* Tips Accordion */}
       <Accordion type="single" collapsible className="mt-6">
         <AccordionItem value="tips">
-          <AccordionTrigger className="text-blue-600">
+          <AccordionTrigger
+            className="bg-white hover:bg-white hover:no-underline 
+            focus:outline-none focus:ring-0 focus:border-none
+            border-none border-transparent
+            data-[state=open]:border-none data-[state=open]:border-transparent"
+          >
             Running Tips
           </AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-4">
+            <div className="space-y-4 text-left">
               <div>
                 <h3 className="font-bold">What is my training pace?</h3>
                 <p>

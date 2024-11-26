@@ -3,6 +3,7 @@ import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Clock, RotateCcw, Calculator } from "lucide-react";
+import { toast } from "./hooks/use-toast";
 
 import {
   Tooltip,
@@ -10,7 +11,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { toast } from "./hooks/use-toast";
 import RunningTips from "./RunningTips";
 
 const PRESET_DISTANCES = [
@@ -22,13 +22,22 @@ const PRESET_DISTANCES = [
   { name: "800m", distance: 0.5 },
 ];
 
+const PRESET_DISTANCES_IN_KM = [
+  { name: "Half Marathon", distance: 21.1 },
+  { name: "Marathon", distance: 42.2 },
+  { name: "10K", distance: 10 },
+  { name: "5K", distance: 5 },
+  { name: "1 KM", distance: 1 },
+  { name: "800m", distance: 0.8 },
+];
+
 const initialFormState = {
   distance: "",
-  units: "miles",
+  units: "km",
   hours: "",
   minutes: "",
   seconds: "",
-  paceType: "Miles",
+  paceType: "Km",
 };
 
 const TrainingPaceCalculator = () => {
@@ -154,7 +163,12 @@ const TrainingPaceCalculator = () => {
 
   const handleInputChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
+    // Log the entire event object
+    console.log("Full event:", e);
 
+    // Log the name and value specifically
+    console.log("Input name:", e.target.name);
+    console.log("Input value:", e.target.value);
     // Time input validation
     if (["hours", "minutes", "seconds"].includes(name)) {
       const numValue = value.replace(/\D/g, "");
@@ -241,6 +255,8 @@ const TrainingPaceCalculator = () => {
     );
   };
 
+  const isKm = formData.units === "km";
+
   return (
     <div className="max-w-4xl mx-auto px-0 sm:px-4">
       <Card className="shadow-lg w-full">
@@ -252,7 +268,7 @@ const TrainingPaceCalculator = () => {
         <CardContent>
           {/* Preset Buttons */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-6">
-            {PRESET_DISTANCES.map((preset) => (
+            {PRESET_DISTANCES_IN_KM.map((preset) => (
               <TooltipProvider key={preset.name}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -269,7 +285,7 @@ const TrainingPaceCalculator = () => {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>{preset.distance} miles</p>
+                    <p>{preset.distance} km</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -293,15 +309,42 @@ const TrainingPaceCalculator = () => {
                       errors.distance ? "border-red-500" : ""
                     }`}
                   />
-                  <select
-                    value={formData.units}
-                    onChange={handleInputChange}
-                    name="units"
-                    className="w-1/3 border rounded-md p-2 bg-white"
+                  <div
+                    className="relative w-40 h-10 bg-blue-100 rounded-full cursor-pointer overflow-hidden"
+                    onClick={() =>
+                      handleInputChange({
+                        target: {
+                          name: "units",
+                          value: isKm ? "miles" : "km",
+                        },
+                      })
+                    }
                   >
-                    <option value="miles">miles</option>
-                    <option value="km">kilometres</option>
-                  </select>
+                    {/* Sliding Indicator */}
+                    <div
+                      className={`absolute top-1 left-1 w-[calc(50%-0.25rem)] h-8 bg-blue-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
+                        !isKm ? "translate-x-full" : "translate-x-0"
+                      }`}
+                    />
+
+                    {/* Labels */}
+                    <div className="absolute inset-0 flex items-center">
+                      <div
+                        className={`w-1/2 text-center font-medium transition-colors ${
+                          isKm ? "text-white" : "text-blue-700"
+                        }`}
+                      >
+                        KM
+                      </div>
+                      <div
+                        className={`w-1/2 text-center font-medium transition-colors ${
+                          !isKm ? "text-white" : "text-blue-700"
+                        }`}
+                      >
+                        Miles
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 {errors.distance && (
                   <p className="text-red-500 text-sm">{errors.distance}</p>
@@ -359,8 +402,8 @@ const TrainingPaceCalculator = () => {
                 name="paceType"
                 className="w-1/2 border rounded-md p-2 bg-white"
               >
-                <option value="Miles">min/mile</option>
                 <option value="km">min/km</option>
+                <option value="Miles">min/mile</option>
               </select>
             </div>
 
@@ -392,7 +435,7 @@ const TrainingPaceCalculator = () => {
                     key={key}
                     className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 p-2 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
-                    <label className="font-medium capitalize text-right flex items-center justify-end">
+                    <label className="font-medium capitalize text-center sm:text-right flex items-center sm:justify-end justify-center">
                       {key === "xlong" ? "Long Run" : key} Pace:
                     </label>
                     <Input
