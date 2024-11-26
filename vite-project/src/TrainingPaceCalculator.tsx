@@ -341,7 +341,7 @@ const TrainingPaceCalculator = () => {
                           !isKm ? "text-white" : "text-blue-700"
                         }`}
                       >
-                        Miles
+                        MI
                       </div>
                     </div>
                   </div>
