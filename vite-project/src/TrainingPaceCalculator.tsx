@@ -301,7 +301,7 @@ const TrainingPaceCalculator = () => {
                 <div className="flex items-center gap-2">
                   <Input
                     type="number"
-                    inputMode="numeric"
+                    inputMode="tel"
                     placeholder="Enter distance"
                     name="distance"
                     min="0"
@@ -361,7 +361,7 @@ const TrainingPaceCalculator = () => {
                   <div className="relative flex-1">
                     <Input
                       type="number"
-                      inputMode="numeric"
+                      inputMode="tel"
                       placeholder="HH"
                       name="hours"
                       min="0"
@@ -375,7 +375,7 @@ const TrainingPaceCalculator = () => {
                   <span>:</span>
                   <Input
                     type="number"
-                    inputMode="numeric"
+                    inputMode="tel"
                     placeholder="MM"
                     name="minutes"
                     min="0"
@@ -387,7 +387,7 @@ const TrainingPaceCalculator = () => {
                   <span>:</span>
                   <Input
                     type="number"
-                    inputMode="numeric"
+                    inputMode="tel"
                     placeholder="SS"
                     name="seconds"
                     min="0"
