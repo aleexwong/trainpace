@@ -303,6 +303,8 @@ const TrainingPaceCalculator = () => {
                     type="number"
                     placeholder="Enter distance"
                     name="distance"
+                    min="0"
+                    max="250"
                     value={formData.distance}
                     onChange={handleInputChange}
                     className={`w-2/3 ${
@@ -360,6 +362,8 @@ const TrainingPaceCalculator = () => {
                       type="number"
                       placeholder="HH"
                       name="hours"
+                      min="0"
+                      max="250"
                       value={formData.hours}
                       onChange={handleInputChange}
                       className={`${errors.time ? "border-red-500" : ""}`}
@@ -371,6 +375,8 @@ const TrainingPaceCalculator = () => {
                     type="number"
                     placeholder="MM"
                     name="minutes"
+                    min="0"
+                    max="250"
                     value={formData.minutes}
                     onChange={handleInputChange}
                     className={`flex-1 ${errors.time ? "border-red-500" : ""}`}
@@ -380,6 +386,8 @@ const TrainingPaceCalculator = () => {
                     type="number"
                     placeholder="SS"
                     name="seconds"
+                    min="0"
+                    max="59"
                     value={formData.seconds}
                     onChange={handleInputChange}
                     className={`flex-1 ${errors.time ? "border-red-500" : ""}`}
