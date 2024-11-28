@@ -258,16 +258,16 @@ const TrainingPaceCalculator = () => {
   const isKm = formData.units === "km";
 
   return (
-    <div className="max-w-4xl mx-auto px-0 sm:px-4">
-      <Card className="shadow-lg w-full">
+    <div className="max-w-6xl sm:max-w-lg mx-auto">
+      <Card className="shadow-lg w-full mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">
             Training Pace Calculator
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="relative">
           {/* Preset Buttons */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-6 w-full">
             {PRESET_DISTANCES_IN_KM.map((preset) => (
               <TooltipProvider key={preset.name}>
                 <Tooltip>
@@ -293,8 +293,8 @@ const TrainingPaceCalculator = () => {
           </div>
 
           {/* Input Form */}
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Distance Input */}
               <div className="space-y-2">
                 <label className="text-sm font-medium">Race Distance</label>
@@ -308,7 +308,7 @@ const TrainingPaceCalculator = () => {
                     max="250"
                     value={formData.distance}
                     onChange={handleInputChange}
-                    className={`w-2/3 ${
+                    className={`w-4/5 ${
                       errors.distance ? "border-red-500" : ""
                     }`}
                   />
@@ -323,13 +323,12 @@ const TrainingPaceCalculator = () => {
                       })
                     }
                   >
-                    {/* Sliding Indicator */}
+                    {/* Sliding Indicator */}{" "}
                     <div
                       className={`absolute top-1 left-1 w-[calc(50%-0.25rem)] h-8 bg-blue-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
                         !isKm ? "translate-x-full" : "translate-x-0"
                       }`}
                     />
-
                     {/* Labels */}
                     <div className="absolute inset-0 flex items-center">
                       <div
@@ -358,17 +357,19 @@ const TrainingPaceCalculator = () => {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Race Time</label>
                 <div className="flex items-center gap-2">
-                  <div className="relative flex-1">
+                  <div className="relative flex-2">
                     <Input
                       type="number"
                       inputMode="tel"
                       placeholder="HH"
                       name="hours"
                       min="0"
-                      max="250"
+                      max="99"
                       value={formData.hours}
                       onChange={handleInputChange}
-                      className={`${errors.time ? "border-red-500" : ""}`}
+                      className={`pr-8 flex-1 ${
+                        errors.time ? "border-red-500" : ""
+                      }`}
                     />
                     <Clock className="absolute right-2 top-2.5 h-4 w-4 text-gray-400" />
                   </div>
@@ -461,7 +462,6 @@ const TrainingPaceCalculator = () => {
               </div>
             )}
           </div>
-          <RunningTips />
         </CardContent>
       </Card>
     </div>
