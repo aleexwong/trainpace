@@ -11,7 +11,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import RunningTips from "./RunningTips";
 
 // const PRESET_DISTANCES = [
 //   { name: "Half Marathon", distance: 13.1 },
@@ -27,7 +26,7 @@ const PRESET_DISTANCES_IN_KM = [
   { name: "Marathon", distance: 42.2 },
   { name: "10K", distance: 10 },
   { name: "5K", distance: 5 },
-  { name: "1 KM", distance: 1 },
+  { name: "1K", distance: 1 },
   { name: "800m", distance: 0.8 },
 ];
 
