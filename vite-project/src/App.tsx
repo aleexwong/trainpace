@@ -3,7 +3,6 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import Footer from "./Footer";
 import TrainingPaceCalculator from "./TrainingPaceCalculator";
 import { Toaster } from "@/components/ui/toaster";
-import RunningTips from "./RunningTips";
 
 function App() {
   return (
