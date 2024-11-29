@@ -11,6 +11,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import RunningTips from "./RunningTips";
+import { CalculatorModal } from "./CalculatorModal";
 
 // const PRESET_DISTANCES = [
 //   { name: "Half Marathon", distance: 13.1 },
@@ -257,11 +259,20 @@ const TrainingPaceCalculator = () => {
   const isKm = formData.units === "km";
 
   return (
-    <div className="max-w-6xl sm:max-w-lg mx-auto">
+    <div className="max-w-6xl sm:max-w-xl mx-auto">
       <Card className="shadow-lg w-full mx-auto">
+        <div className="bg-gradient-to-r from-blue-300 to-blue-800 p-4">
+          <h2 className="text-3xl font-extrabold text-white text-center flex items-center justify-center">
+            <span className="text-4xl mr-2">⏱️</span>
+            Train Pace
+          </h2>
+        </div>
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
-            Training Pace Calculator
+          <CardTitle className="text-2xl font-bold text-center flex items-center justify-center relative">
+            Pace Calculator
+            <div className="absolute right-2 ml-4">
+              <CalculatorModal />
+            </div>
           </CardTitle>
         </CardHeader>
         <CardContent className="relative">
@@ -301,7 +312,7 @@ const TrainingPaceCalculator = () => {
                   <Input
                     type="number"
                     inputMode="tel"
-                    placeholder="Enter distance"
+                    placeholder="Distance"
                     name="distance"
                     min="0"
                     max="250"
@@ -366,11 +377,11 @@ const TrainingPaceCalculator = () => {
                       max="99"
                       value={formData.hours}
                       onChange={handleInputChange}
-                      className={`pr-8 flex-1 ${
+                      className={`pr-12 flex-1 ${
                         errors.time ? "border-red-500" : ""
                       }`}
                     />
-                    <Clock className="absolute right-2 top-2.5 h-4 w-4 text-gray-400" />
+                    <Clock className="absolute right-3 top-2.5 h-4 w-4 text-gray-400" />
                   </div>
                   <span>:</span>
                   <Input
@@ -461,6 +472,7 @@ const TrainingPaceCalculator = () => {
               </div>
             )}
           </div>
+          <RunningTips />
         </CardContent>
       </Card>
     </div>

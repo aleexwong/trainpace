@@ -26,7 +26,6 @@ function App() {
       </HelmetProvider>
       <TrainingPaceCalculator />
       <Toaster />
-      <RunningTips />
       <Footer />
     </>
   );
