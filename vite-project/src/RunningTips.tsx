@@ -25,29 +25,31 @@ const RunningTips = () => {
           </AccordionTrigger>
           <AccordionContent className="w-full max-w-full mx-auto">
             <div className="bg-blue-50">
-              <div className="space-y-2 text-left px-4">
+              <div className="space-y-2 text-left pt-1 px-4">
                 <div>
                   <h3 className="font-bold mt-4">What is my training pace?</h3>
                   <p>
                     Your training pace is the speed at which you run during
-                    training sessions. Different types of runs target different
-                    aspects of fitness.
+                    training sessions. It's typically your easy pace, which is a
+                    comfortable, conversational pace.
                   </p>
                 </div>
                 <div>
                   <h3 className="font-bold">What are Yasso 800s?</h3>
                   <p>
-                    Yasso 800s are specialized interval training runs used to
-                    predict marathon times. They involve running 800-meter
-                    intervals at a specific pace.
+                    Yasso 800s are interval runs used to predict marathon times.
+                    You run 800-meter intervals at a pace matching your target
+                    marathon time, with 6-10 repetitions and recovery in
+                    between. The intervals help estimate your marathon
+                    performance.
                   </p>
                 </div>
                 <div>
                   <h3 className="font-bold">What is a long run?</h3>
                   <p>
-                    A long run is a sustained effort longer than your typical
-                    daily runs, designed to build endurance. The distance varies
-                    based on your experience and goals.
+                    A long run builds endurance, typically ranging from 16-28 km
+                    for marathon training and half that for half marathon
+                    training, depending on your experience and goals.
                   </p>
                 </div>
               </div>

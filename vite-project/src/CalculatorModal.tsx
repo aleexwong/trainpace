@@ -26,8 +26,10 @@ export const CalculatorModal = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-md bg-blue-50">
         <DialogHeader>
-          <DialogTitle>How does the Pace Calculator Works 🏃</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-left">
+            How does the Calculator Work? 🏃
+          </DialogTitle>
+          <DialogDescription className="text-left">
             A simple and intuitive way to calculate pace and speed based on your
             input
           </DialogDescription>

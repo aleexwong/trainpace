@@ -261,7 +261,7 @@ const TrainingPaceCalculator = () => {
 
   return (
     <div className="max-w-8xl sm:max-w-xl mx-auto lg:max-w-2xl">
-      <Card className="shadow-lg w-full mx-auto">
+      <Card className="shadow-lg w-full mx-auto pb-12">
         <div className="bg-gradient-to-r from-blue-300 to-blue-800 p-4">
           <h2 className="text-3xl font-extrabold text-white text-center flex items-center justify-center">
             <span className="text-4xl mr-2">⏱️</span>
