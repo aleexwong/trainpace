@@ -12,7 +12,7 @@ const RunningTips = () => {
       <Accordion
         type="single"
         collapsible
-        className="mt-6 w-full mx-auto sm:max-w-xs md:max-w-lg lg:max-w-lg"
+        className="mt-6 w-full mx-auto sm:max-w-xs md:max-w-lg lg:max-w-full"
       >
         <AccordionItem value="tips">
           <AccordionTrigger
@@ -23,7 +23,7 @@ const RunningTips = () => {
           >
             Running Tips
           </AccordionTrigger>
-          <AccordionContent className="w-full sm:max-w-lg mx-auto">
+          <AccordionContent className="w-full max-w-full mx-auto">
             <div className="bg-blue-50">
               <div className="space-y-2 text-left px-4">
                 <div>

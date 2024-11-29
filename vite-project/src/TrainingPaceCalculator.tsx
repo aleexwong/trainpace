@@ -260,7 +260,7 @@ const TrainingPaceCalculator = () => {
   const isKm = formData.units === "km";
 
   return (
-    <div className="max-w-6xl sm:max-w-xl mx-auto">
+    <div className="max-w-8xl sm:max-w-xl mx-auto lg:max-w-2xl">
       <Card className="shadow-lg w-full mx-auto">
         <div className="bg-gradient-to-r from-blue-300 to-blue-800 p-4">
           <h2 className="text-3xl font-extrabold text-white text-center flex items-center justify-center">
@@ -378,7 +378,7 @@ const TrainingPaceCalculator = () => {
                       max="99"
                       value={formData.hours}
                       onChange={handleInputChange}
-                      className={`pr-12 flex-1 ${
+                      className={`pr-10 flex-1 ${
                         errors.time ? "border-red-500" : ""
                       }`}
                     />
