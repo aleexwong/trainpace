@@ -23,7 +23,7 @@ const RunningTips = () => {
           >
             Running Tips
           </AccordionTrigger>
-          <AccordionContent className="w-full md:max-w-md sm:max-w-md lg:max-w-lg mx-auto">
+          <AccordionContent className="w-full max-w-xs sm:max-w-md md:max-w-md lg:max-w-lg mx-auto">
             <div className="bg-blue-50">
               <div className="space-y-2 text-left px-4">
                 <div>
