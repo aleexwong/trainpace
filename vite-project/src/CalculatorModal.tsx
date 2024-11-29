@@ -26,7 +26,7 @@ export const CalculatorModal = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-md bg-blue-50">
         <DialogHeader>
-          <DialogTitle>How does the Pace Calculator Works</DialogTitle>
+          <DialogTitle>How does the Pace Calculator Works 🏃</DialogTitle>
           <DialogDescription>
             A simple and intuitive way to calculate pace and speed based on your
             input
@@ -35,25 +35,25 @@ export const CalculatorModal = () => {
 
         <div className="space-y-4">
           <section>
-            <h3 className="font-semibold mb-2">Enter Your Race Info</h3>
+            <h3 className="font-semibold mb-2">Enter Your Race Info 🥇</h3>
             <p className="text-sm text-gray-600">
               Input your recent race time (e.g., 25 minutes for a 5K) and the
               race distance in miles or kilometers. Select whether to calculate
-              pace in minutes per mile or per kilometer.
+              pace in minutes per kilometer or per mile.
             </p>
           </section>
 
           <section>
-            <h3 className="font-semibold mb-2">Calculate Your Base Pace</h3>
+            <h3 className="font-semibold mb-2">Calculate Your Base Pace 🏎️</h3>
             <p className="text-sm text-gray-600">
-              The calculator determines your "base pace," which is your average
+              The calculator determines your "base" pace, which is your average
               speed during the race. For example, if you ran a 10K in 50
               minutes, your base pace would be 5 minutes per kilometer.
             </p>
           </section>
 
           <section>
-            <h3 className="font-semibold mb-2">Adjust for Training Types</h3>
+            <h3 className="font-semibold mb-2">Adjust for Training Types 🏋️</h3>
             <p className="text-sm text-gray-600">
               Training runs vary based on their purpose. The calculator adjusts
               your base pace for these common training types:
