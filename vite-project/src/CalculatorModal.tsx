@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
 
-export const CalculatorModal = () => {
+const CalculatorModal = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -88,3 +88,5 @@ export const CalculatorModal = () => {
     </Dialog>
   );
 };
+
+export default CalculatorModal;

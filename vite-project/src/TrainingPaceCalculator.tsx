@@ -12,7 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import RunningTips from "./RunningTips";
-import { CalculatorModal } from "./CalculatorModal";
+import CalculatorModal from "./CalculatorModal";
 
 // const PRESET_DISTANCES = [
 //   { name: "Half Marathon", distance: 13.1 },
@@ -105,11 +105,42 @@ const TrainingPaceCalculator = () => {
       speed: [convertedBasePace * 0.8, convertedBasePace * 0.9],
       xlong: [convertedBasePace * 1.3, convertedBasePace * 1.4],
     };
+    // Calculate Yasso 800s
+    const raceTimeMinutes = raceTimeSeconds / 60;
+    const raceDistanceKm = raceDistance;
 
-    // Calculate Yasso 800s (special case)
-    const marathonTimeHours = raceTimeSeconds / 3600;
-    const yassoSeconds = marathonTimeHours * 60;
-    paces.yasso = [yassoSeconds - 30, yassoSeconds + 30];
+    // Calculate pace per kilometer
+    const pacePerKm = raceTimeMinutes / raceDistanceKm;
+
+    // Calculate full marathon time projection
+    const marathonDistance = 42.195; // Standard marathon distance
+    const projectedMarathonTime = pacePerKm * marathonDistance;
+
+    // Yasso 800 pace calculation
+    const yassoBaseMinutes = Math.floor(projectedMarathonTime);
+    const yassoBaseSeconds = Math.round((projectedMarathonTime % 1) * 60);
+
+    // Calculate 800m pace with ±30 seconds range
+    const yassoLowerBound = projectedMarathonTime;
+    const yassoUpperBound = projectedMarathonTime + 30;
+
+    // Logging for debugging
+    console.log("Race Time (minutes):", raceTimeMinutes);
+    console.log("Race Distance (km):", raceDistanceKm);
+    console.log("Pace per km:", pacePerKm.toFixed(2), "min/km");
+    console.log(
+      "Projected Marathon Time (minutes):",
+      projectedMarathonTime.toFixed(2)
+    );
+    console.log(
+      "Yasso Base Time:",
+      `${yassoBaseMinutes}:${yassoBaseSeconds.toString().padStart(2, "0")}`
+    );
+    console.log("Yasso Lower Bound:", yassoLowerBound.toFixed(2));
+    console.log("Yasso Upper Bound:", yassoUpperBound.toFixed(2));
+
+    // Set Yasso pace in the paces object
+    paces.yasso = [yassoLowerBound, yassoUpperBound];
 
     // Convert all paces to time strings
     return Object.entries(paces).reduce(
