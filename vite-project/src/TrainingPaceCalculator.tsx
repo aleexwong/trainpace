@@ -103,7 +103,7 @@ const TrainingPaceCalculator = () => {
       tempo: [convertedBasePace * 0.95, convertedBasePace * 1.05],
       maximum: [convertedBasePace * 0.85, convertedBasePace * 0.95],
       speed: [convertedBasePace * 0.8, convertedBasePace * 0.9],
-      xlong: [convertedBasePace * 1.3, convertedBasePace * 1.4],
+      xlong: [convertedBasePace * 1.2, convertedBasePace * 1.4],
     };
     // Calculate Yasso 800s
     const raceTimeMinutes = raceTimeSeconds / 60;
