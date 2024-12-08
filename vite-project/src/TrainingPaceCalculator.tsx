@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/tooltip";
 import RunningTips from "./RunningTips";
 import CalculatorModal from "./CalculatorModal";
+import ResultsWithTooltips from "./ResultsWithToolTips";
 
 // const PRESET_DISTANCES = [
 //   { name: "Half Marathon", distance: 13.1 },
@@ -289,7 +290,6 @@ const TrainingPaceCalculator = () => {
   };
 
   const isKm = formData.units === "km";
-
   return (
     <div className="max-w-8xl sm:max-w-xl mx-auto lg:max-w-2xl">
       <Card className="shadow-lg w-full mx-auto pb-12">
@@ -483,7 +483,7 @@ const TrainingPaceCalculator = () => {
             </div>
 
             {/* Results */}
-            {results && (
+            {/* {results && (
               <div className="space-y-2 animate-fadeIn">
                 {Object.entries(results).map(([key, value]) => (
                   <div
@@ -501,9 +501,12 @@ const TrainingPaceCalculator = () => {
                     />
                   </div>
                 ))}
-              </div>
+              </div>                          
             )}
+          </div> */}
+            {results && <ResultsWithTooltips results={results} />}
           </div>
+
           <RunningTips />
         </CardContent>
       </Card>
