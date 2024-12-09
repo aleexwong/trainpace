@@ -1,4 +1,4 @@
-# Training Pace Calclator 2 [![Netlify Status](https://api.netlify.com/api/v1/badges/2b8c6c05-12b2-423a-a2c2-af4e93e8f160/deploy-status)](https://app.netlify.com/sites/trainpace/deploys)
+# Training Pace Calculator 2 [![Netlify Status](https://api.netlify.com/api/v1/badges/2b8c6c05-12b2-423a-a2c2-af4e93e8f160/deploy-status)](https://app.netlify.com/sites/trainpace/deploys)
 
 This is my 2nd edition of my training pace calculator
 
