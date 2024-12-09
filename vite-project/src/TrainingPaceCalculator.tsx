@@ -98,7 +98,7 @@ const TrainingPaceCalculator = () => {
     );
 
     // Calculate different training paces (multipliers based on common training principles)
-    const paces: Record<string, [number, number]> = {
+    const paces: Record<string, [number] | [number, number]> = {
       race: [convertedBasePace, convertedBasePace],
       easy: [convertedBasePace * 1.2, convertedBasePace * 1.3],
       tempo: [convertedBasePace * 0.95, convertedBasePace * 1.05],
@@ -149,7 +149,7 @@ const TrainingPaceCalculator = () => {
         const unit =
           key === "yasso" ? "/800m" : `/${formData.paceType.toLowerCase()}`;
         acc[key] = `${secondsToTimeString(min)}-${secondsToTimeString(
-          max
+          max ?? min
         )} min${unit}`;
         return acc;
       },
