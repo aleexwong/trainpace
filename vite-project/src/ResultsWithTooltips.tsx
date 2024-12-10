@@ -58,9 +58,11 @@ const ResultsWithTooltips: React.FC<ResultsProps> = ({ results }) => {
   };
 
   return (
-    <TooltipProvider delayDuration={100}>
+    <TooltipProvider delayDuration={300}>
       <div className="space-y-2 animate-fadeIn">
         {Object.entries(results).map(([key, value]) => {
+          const firstValue = value[0]; // Always exists
+          const secondValue = value.length > 1 ? value[1] : undefined; // Conditionally access second value
           // Determine display name and ensure lowercase key for tooltip lookup
           const displayName = key === "xlong" ? "Long Run" : key;
           const tooltipKey = key.toLowerCase();
@@ -105,11 +107,7 @@ const ResultsWithTooltips: React.FC<ResultsProps> = ({ results }) => {
                     >
                       <DialogContent>
                         <DialogHeader>
-                          <DialogTitle>
-                            {displayName.charAt(0).toUpperCase() +
-                              displayName.slice(1)}{" "}
-                            Pace
-                          </DialogTitle>
+                          <DialogTitle>{displayName} Pace</DialogTitle>
                         </DialogHeader>
                         <DialogDescription>
                           {paceTooltips[tooltipKey as PaceType]}
