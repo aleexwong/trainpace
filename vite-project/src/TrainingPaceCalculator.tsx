@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/tooltip";
 import RunningTips from "./RunningTips";
 import CalculatorModal from "./CalculatorModal";
-import ResultsWithTooltips from "./ResultsWithToolTips";
+import ResultsWithToolTips from "./ResultsWithToolTips";
 
 // const PRESET_DISTANCES = [
 //   { name: "Half Marathon", distance: 13.1 },
@@ -481,7 +481,7 @@ const TrainingPaceCalculator = () => {
                 <RotateCcw className="w-4 h-4" />
               </Button>
             </div>
-            {results && <ResultsWithTooltips results={results} />}
+            {results && <ResultsWithToolTips results={results} />}
           </div>
 
           <RunningTips />

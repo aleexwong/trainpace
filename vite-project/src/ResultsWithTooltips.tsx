@@ -46,7 +46,7 @@ interface ResultsProps {
   results: Record<PaceType, string>;
 }
 
-const ResultsWithTooltips: React.FC<ResultsProps> = ({ results }) => {
+const ResultsWithToolTips: React.FC<ResultsProps> = ({ results }) => {
   const [openDialogKey, setOpenDialogKey] = useState<PaceType | null>(null);
 
   const handleOpenDialog = (key: PaceType) => {
@@ -132,4 +132,4 @@ const ResultsWithTooltips: React.FC<ResultsProps> = ({ results }) => {
   );
 };
 
-export default ResultsWithTooltips;
+export default ResultsWithToolTips;
