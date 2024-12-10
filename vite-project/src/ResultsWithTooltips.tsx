@@ -58,7 +58,7 @@ const ResultsWithTooltips: React.FC<ResultsProps> = ({ results }) => {
   };
 
   return (
-    <TooltipProvider delayDuration={300}>
+    <TooltipProvider delayDuration={100}>
       <div className="space-y-2 animate-fadeIn">
         {Object.entries(results).map(([key, value]) => {
           const displayName = key === "xlong" ? "Long Run" : key;
