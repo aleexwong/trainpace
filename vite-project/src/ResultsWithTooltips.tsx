@@ -105,7 +105,11 @@ const ResultsWithTooltips: React.FC<ResultsProps> = ({ results }) => {
                     >
                       <DialogContent>
                         <DialogHeader>
-                          <DialogTitle>{displayName} Pace</DialogTitle>
+                          <DialogTitle>
+                            {displayName.charAt(0).toUpperCase() +
+                              displayName.slice(1)}{" "}
+                            Pace
+                          </DialogTitle>
                         </DialogHeader>
                         <DialogDescription>
                           {paceTooltips[tooltipKey as PaceType]}
