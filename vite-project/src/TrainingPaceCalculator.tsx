@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/tooltip";
 import RunningTips from "./RunningTips";
 import CalculatorModal from "./CalculatorModal";
-import ResultsWithTooltips from "./ResultsWithToolTips";
+import ResultsWithTooltips from "./ResultsWithTooltips";
 
 // const PRESET_DISTANCES = [
 //   { name: "Half Marathon", distance: 13.1 },
