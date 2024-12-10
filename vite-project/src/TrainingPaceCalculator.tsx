@@ -481,29 +481,6 @@ const TrainingPaceCalculator = () => {
                 <RotateCcw className="w-4 h-4" />
               </Button>
             </div>
-
-            {/* Results */}
-            {/* {results && (
-              <div className="space-y-2 animate-fadeIn">
-                {Object.entries(results).map(([key, value]) => (
-                  <div
-                    key={key}
-                    className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 p-2 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                  >
-                    <label className="font-medium capitalize text-center sm:text-right flex items-center sm:justify-end justify-center">
-                      {key === "xlong" ? "Long Run" : key} Pace:
-                    </label>
-                    <Input
-                      type="text"
-                      value={value}
-                      readOnly
-                      className="bg-white w-full"
-                    />
-                  </div>
-                ))}
-              </div>                          
-            )}
-          </div> */}
             {results && <ResultsWithTooltips results={results} />}
           </div>
 
