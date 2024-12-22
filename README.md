@@ -2,7 +2,7 @@
 
 This is my 2nd edition of my training pace calculator
 
-- Google Analytics
+- Google Analytics Metrics after 30 Days :)
 <img width="637" alt="trainPaceStats" src="https://github.com/user-attachments/assets/6f881b3f-b53e-4128-8b6b-baa93a466add" />
 
 
