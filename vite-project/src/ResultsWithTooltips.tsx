@@ -46,7 +46,7 @@ interface ResultsProps {
   results: Record<PaceType, string>;
 }
 
-const ResultsWithTooltips: React.FC<ResultsProps> = ({ results }) => {
+const ResultsWithToolTips: React.FC<ResultsProps> = ({ results }) => {
   const [openDialogKey, setOpenDialogKey] = useState<PaceType | null>(null);
 
   const handleOpenDialog = (key: PaceType) => {
@@ -61,7 +61,10 @@ const ResultsWithTooltips: React.FC<ResultsProps> = ({ results }) => {
     <TooltipProvider delayDuration={100}>
       <div className="space-y-2 animate-fadeIn">
         {Object.entries(results).map(([key, value]) => {
+<<<<<<< HEAD
           // Determine display name and ensure lowercase key for tooltip lookup
+=======
+>>>>>>> main
           const displayName = key === "xlong" ? "Long Run" : key;
           const tooltipKey = key.toLowerCase();
 
@@ -133,4 +136,4 @@ const ResultsWithTooltips: React.FC<ResultsProps> = ({ results }) => {
   );
 };
 
-export default ResultsWithTooltips;
+export default ResultsWithToolTips;
