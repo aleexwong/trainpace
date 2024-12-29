@@ -19,12 +19,12 @@ export default defineConfig({
         theme_color: '#000000',
         icons: [
           {
-            src: '/icons/icon-192x192.png', // Ensure these paths exist in your public folder
+            src: '/icons/trainPaceIcon.png', // Ensure these paths exist in your public folder
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: '/icons/icon-512x512.png',
+            src: '/icons/trainPaceIcon.png',
             sizes: '512x512',
             type: 'image/png',
           },
