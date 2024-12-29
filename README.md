@@ -3,8 +3,7 @@
 This is my 2nd edition of my training pace calculator
 
 - Google Analytics Metrics after 30 Days :)
-<img width="637" alt="trainPaceStats" src="https://github.com/user-attachments/assets/6f881b3f-b53e-4128-8b6b-baa93a466add" />
-
+  <img width="637" alt="trainPaceStats" src="https://github.com/user-attachments/assets/6f881b3f-b53e-4128-8b6b-baa93a466add" />
 
 - URL hosted here: https://trainpace.netlify.app/
 
@@ -20,6 +19,8 @@ but this time it is built with TypeScript and the Shadcn ui framework
 Todo list:
 
 - Host on Netlify - Done! 11/25/2024
+- Icon for PWA and main site, Done! - 12/29/2024 report here:
+  - https://realfavicongenerator.net/favicon-checker/reports/fd896a38-a6de-4ca6-b05c-fd99a10da526
 - Testing with PlayWright
 - Any new running tips I learn on the way
 - Linking to any guides I find useful
