@@ -1,5 +1,7 @@
 # Training Pace Calculator 2 [![Netlify Status](https://api.netlify.com/api/v1/badges/2b8c6c05-12b2-423a-a2c2-af4e93e8f160/deploy-status)](https://app.netlify.com/sites/trainpace/deploys)
 
+---
+
 This is my 2nd edition of my training pace calculator
 
 - Google Analytics Metrics after 30 Days :)
@@ -7,7 +9,9 @@ This is my 2nd edition of my training pace calculator
 
 - URL hosted here: https://trainpace.netlify.app/
 
-Directory structure:
+# Directory structure:
+
+```plaintext
 └── aleexwong-trainingpacecalculator2/
 ├── README.md
 └── vite-project/
@@ -55,6 +59,9 @@ Directory structure:
 └── lib/
 ├── GoogleAnalytics.tsx
 └── utils.ts
+```
+
+---
 
 ## 1st Edition
 
@@ -64,6 +71,8 @@ Directory structure:
 but this time it is built with TypeScript and the Shadcn ui framework
 
 - https://ui.shadcn.com/
+
+---
 
 Todo list:
 
