@@ -343,7 +343,8 @@ const TrainingPaceCalculator = () => {
                 <div className="flex items-center gap-2">
                   <Input
                     type="number"
-                    inputMode="tel"
+                    inputMode="decimal"
+                    pattern="[0-9]*[.,]?[0-9]+" // Allow decimal numbers
                     placeholder="Distance"
                     name="distance"
                     min="0"
