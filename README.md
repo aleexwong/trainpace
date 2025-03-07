@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4c19ca82926146a19125b6d4e0d82e9d)](https://app.codacy.com/gh/aleexwong/trainingpacecalculator2?utm_source=github.com&utm_medium=referral&utm_content=aleexwong/trainingpacecalculator2&utm_campaign=Badge_Grade)
 # Training Pace Calculator 2 [![Netlify Status](https://api.netlify.com/api/v1/badges/2b8c6c05-12b2-423a-a2c2-af4e93e8f160/deploy-status)](https://app.netlify.com/sites/trainpace/deploys)
 
 ---
