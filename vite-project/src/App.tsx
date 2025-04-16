@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import { HelmetProvider } from "react-helmet-async";
 import Footer from "./Footer";
