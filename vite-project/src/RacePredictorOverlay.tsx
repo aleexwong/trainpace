@@ -172,7 +172,7 @@ const RacePredictorOverlay: React.FC<RacePredictorOverlayProps> = ({
               <Button variant="outline" onClick={prevStep}>
                 Back
               </Button>
-              <Button variant="ghost" onClick={resetForm}>
+              <Button variant="outline" onClick={resetForm}>
                 Close
               </Button>
             </div>
