@@ -10,6 +10,7 @@ import RacePredictorOverlay from "./RacePredictorOverlay";
 import { AuthProvider } from "./features/auth/AuthContext";
 import { LoginButton } from "./features/auth/LoginButton";
 import { LogoutButton } from "./features/auth/LogoutButton";
+import Landing from "./Landing";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -17,11 +18,10 @@ function App() {
   return (
     <>
       <AuthProvider>
-        <LoginButton />
-        <LogoutButton />
         <HelmetProvider>
           <GoogleAnalytics />
         </HelmetProvider>
+        <Landing />
         <TrainingPaceCalculator />
         <Button
           onClick={() => setShowPredictor(true)}
@@ -34,7 +34,6 @@ function App() {
           onClose={() => setShowPredictor(false)}
         />
         <Toaster />
-        <Footer />
       </AuthProvider>
     </>
   );

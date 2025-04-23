@@ -25,16 +25,18 @@ export default function Landing() {
   return (
     <div className="bg-white text-gray-900 min-h-screen relative">
       {/* Navbar */}
-      <header className="flex justify-between items-center px-6 py-4 border-b border-gray-200 relative z-30">
+      <header className="flex justify-between items-center px-4 py-4 border-b border-gray-200 relative z-30">
         <h1 className="text-xl font-bold z-30">TrainPace</h1>
         <div className="md:hidden z-30">
-          <button onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
+          {!menuOpen && (
+            <button
+              onClick={() => setMenuOpen(true)}
+              aria-label="Toggle menu"
+              className="bg-transparent p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              <Menu className="w-6 h-6 stroke-gray-700" />
+            </button>
+          )}
         </div>
         <nav className="hidden md:flex space-x-4">
           <a href="#features" className="text-gray-700 hover:text-blue-600">
@@ -125,13 +127,22 @@ export default function Landing() {
 
       {/* Hero */}
       <section className="px-0 pt-0 pb-24 text-center">
+        {/* Mobile image */}
         <img
-          src="https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=1600&q=80"
-          alt="Runner"
-          className="w-full h-[400px] md:h-[500px] object-cover mb-12"
+          src="src/assets/trainPaceHeroMobile.png"
+          alt="TrainPace Mobile Hero"
+          className="w-full h-[500px] object-cover object-top md:hidden"
         />
+
+        {/* Desktop image */}
+        <img
+          src="src/assets/trainPaceHeroImage.png"
+          alt="TrainPace Desktop Hero"
+          className="hidden md:block w-full h-[600px] object-cover object-left-top"
+        />
+
         <div className="px-6 max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 p-4">
             Smarter Fueling & Pacing for Runners
           </h1>
           <p className="text-lg text-gray-600 mb-8">
