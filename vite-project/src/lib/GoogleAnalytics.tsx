@@ -14,7 +14,7 @@ const GoogleAnalytics = () => (
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-VCYJ0P12DG');
+        gtag('config', 'G-VT160XERPB');
       `}
     </script>
   </Helmet>
