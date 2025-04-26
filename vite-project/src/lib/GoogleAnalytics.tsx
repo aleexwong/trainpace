@@ -1,13 +1,13 @@
 // GoogleAnalytics.js
 import ReactGA from "react-ga4";
 import { Helmet } from "react-helmet-async";
-ReactGA.initialize("G-VCYJ0P12DG");
+ReactGA.initialize("G-VT160XERPB");
 
 const GoogleAnalytics = () => (
   <Helmet>
     <script
       async
-      src="https://www.googletagmanager.com/gtag/js?id=G-VCYJ0P12DG"
+      src="https://www.googletagmanager.com/gtag/js?id=G-VT160XERPB"
     ></script>
     <script>
       {`
