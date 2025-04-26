@@ -172,8 +172,9 @@ const FuelPlanner = () => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
+                          variant="outline"
                           size="icon"
-                          variant="ghost"
+                          className="ml-2 text-blue-600 hover:bg-blue-50"
                           onClick={handleCopy}
                         >
                           <Copy className="h-4 w-4" />
@@ -185,8 +186,9 @@ const FuelPlanner = () => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
+                          variant="outline"
                           size="icon"
-                          variant="ghost"
+                          className="ml-2 text-blue-600 hover:bg-blue-50"
                           onClick={handleDownload}
                         >
                           <Download className="h-4 w-4" />
