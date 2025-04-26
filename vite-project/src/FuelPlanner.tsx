@@ -26,12 +26,18 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Info, Download, Copy } from "lucide-react";
-import { toast } from "./hooks/use-toast";
+import { toast } from "@/hooks/use-toast"; // make sure this is correct
+
+const raceSettings = {
+  "10K": 30,
+  Half: 45,
+  Full: 75,
+};
 
 const FuelPlanner = () => {
-  const [raceType, setRaceType] = useState("10K");
-  const [weight, setWeight] = useState("68");
-  const [time, setTime] = useState("50");
+  const [raceType, setRaceType] = useState<keyof typeof raceSettings>("10K");
+  const [weight, setWeight] = useState("");
+  const [time, setTime] = useState("");
   const [result, setResult] = useState<null | {
     carbsPerHour: number;
     totalCarbs: number;
@@ -42,11 +48,22 @@ const FuelPlanner = () => {
   const handleCalculate = () => {
     const weightKg = parseFloat(weight);
     const finishTimeMin = parseFloat(time);
-    if (isNaN(weightKg) || isNaN(finishTimeMin)) return;
 
-    let carbsPerHour = 30;
-    if (raceType === "Half") carbsPerHour = 45;
-    if (raceType === "Full") carbsPerHour = 75;
+    if (isNaN(finishTimeMin) || finishTimeMin <= 0) {
+      toast({ title: "Please enter valid numbers." });
+      return;
+    }
+
+    if (!isNaN(weightKg) && (weightKg < 10 || weightKg > 1000)) {
+      toast({ title: "Weight must be between 10kg and 1000kg." });
+      return;
+    }
+
+    let carbsPerHour = raceSettings[raceType];
+
+    if (!isNaN(weightKg) && weightKg > 0) {
+      carbsPerHour = Math.round(weightKg * 0.7);
+    }
 
     const durationHours = finishTimeMin / 60;
     const totalCarbs = Math.round(durationHours * carbsPerHour);
@@ -56,47 +73,61 @@ const FuelPlanner = () => {
     setResult({ carbsPerHour, totalCarbs, totalCalories, gelsNeeded });
   };
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
     if (!result) return;
-    const text = `Fuel Plan for ${raceType}\n\nCarbs/hr: ${result.carbsPerHour}g\nTotal Carbs: ${result.totalCarbs}g\nCalories: ${result.totalCalories} kcal\nGels: ${result.gelsNeeded}`;
-    navigator.clipboard.writeText(text).then(() => {
+    const text = buildResultText(raceType, result);
+    try {
+      await navigator.clipboard.writeText(text);
       toast({ title: "Copied to clipboard!" });
-    });
+    } catch {
+      toast({ title: "Failed to copy.", variant: "destructive" });
+    }
   };
 
   const handleDownload = () => {
     if (!result) return;
-    const blob = new Blob([
-      `Fuel Plan for ${raceType}\n\nCarbs/hr: ${result.carbsPerHour}g\nTotal Carbs: ${result.totalCarbs}g\nCalories: ${result.totalCalories} kcal\nGels: ${result.gelsNeeded}`,
-    ]);
+    const blob = new Blob([buildResultText(raceType, result)], {
+      type: "text/plain",
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
     a.download = `fuel-plan-${raceType.toLowerCase()}.txt`;
     a.click();
     URL.revokeObjectURL(url);
-
     toast({ title: "Download started!" });
+  };
+
+  const buildResultText = (
+    raceType: string,
+    result: {
+      carbsPerHour: number;
+      totalCarbs: number;
+      totalCalories: number;
+      gelsNeeded: number;
+    }
+  ) => {
+    return `Fuel Plan for ${raceType}\n\nCarbs/hr: ${result.carbsPerHour}g\nTotal Carbs: ${result.totalCarbs}g\nCalories: ${result.totalCalories} kcal\nGels: ${result.gelsNeeded}`;
   };
 
   return (
     <>
       <Helmet>
-        <title>Fuel Planner By TrainPace - Optimize Your Run</title>
-        <meta name="description" content="Calculate your fueling needs"></meta>
+        <title>Fuel Planner by TrainPace</title>
+        <meta
+          name="description"
+          content="Optimize your running fuel strategy."
+        />
       </Helmet>
+
       <TooltipProvider>
         <div className="max-w-xl mx-auto p-6 space-y-6">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-center">🏃 Fuel Planner</h1>
             <Dialog>
               <DialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="ml-2 text-blue-600 hover:bg-blue-50"
-                >
-                  <Info className="h-5 w-5" />
+                <Button variant="outline" size="icon">
+                  <Info className="h-5 w-5 text-blue-600" />
                 </Button>
               </DialogTrigger>
               <DialogContent>
@@ -104,13 +135,13 @@ const FuelPlanner = () => {
                   <DialogTitle>Why Fueling Matters ⚡</DialogTitle>
                   <DialogDescription>
                     Your body needs carbs to perform. This tool estimates how
-                    many carbs and gels you’ll need based on your finish time.
+                    many carbs and gels you'll need.
                   </DialogDescription>
                 </DialogHeader>
-                <ul className="list-disc list-inside text-sm text-gray-700">
+                <ul className="list-disc list-inside text-sm text-gray-700 mt-2">
                   <li>30–60g carbs/hr for efforts over 1 hour</li>
                   <li>Gels usually contain ~25g carbs each</li>
-                  <li>Match fueling to avoid energy crashes</li>
+                  <li>Proper fueling avoids energy crashes</li>
                 </ul>
               </DialogContent>
             </Dialog>
@@ -119,8 +150,15 @@ const FuelPlanner = () => {
           <Card className="bg-blue-50">
             <CardContent className="p-6 space-y-4">
               <div>
-                <Label>Race Type</Label>
-                <Select onValueChange={setRaceType} value={raceType}>
+                <Label>
+                  Race Type<span className="text-red-500">*</span>
+                </Label>{" "}
+                <Select
+                  value={raceType}
+                  onValueChange={(val) =>
+                    setRaceType(val as keyof typeof raceSettings)
+                  }
+                >
                   <SelectTrigger className="mt-1">
                     <SelectValue placeholder="Select race type" />
                   </SelectTrigger>
@@ -137,14 +175,22 @@ const FuelPlanner = () => {
                 <Input
                   type="number"
                   placeholder="e.g. 68"
+                  min={10}
+                  max={1000}
                   value={weight}
                   onChange={(e) => setWeight(e.target.value)}
                   className="mt-1"
                 />
+                <p className="text-xs text-gray-600 mt-1">
+                  Optional: Filling your weight personalizes your fueling plan.
+                </p>
               </div>
 
               <div>
-                <Label>Estimated Finish Time (min)</Label>
+                <Label>
+                  Estimated Finish Time (min)
+                  <span className="text-red-500">*</span>
+                </Label>{" "}
                 <Input
                   type="number"
                   placeholder="e.g. 50"
@@ -156,7 +202,7 @@ const FuelPlanner = () => {
 
               <Button
                 onClick={handleCalculate}
-                className="w-full mt-2 bg-blue-600 text-white"
+                className="w-full mt-4 bg-blue-600 text-white"
               >
                 Calculate Fuel Plan
               </Button>
@@ -174,10 +220,9 @@ const FuelPlanner = () => {
                         <Button
                           variant="outline"
                           size="icon"
-                          className="ml-2 text-blue-600 hover:bg-blue-50"
                           onClick={handleCopy}
                         >
-                          <Copy className="h-4 w-4" />
+                          <Copy className="h-4 w-4 text-blue-600" />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>Copy Plan</TooltipContent>
@@ -188,16 +233,16 @@ const FuelPlanner = () => {
                         <Button
                           variant="outline"
                           size="icon"
-                          className="ml-2 text-blue-600 hover:bg-blue-50"
                           onClick={handleDownload}
                         >
-                          <Download className="h-4 w-4" />
+                          <Download className="h-4 w-4 text-blue-600" />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>Download Plan</TooltipContent>
                     </Tooltip>
                   </div>
                 </div>
+
                 <p>
                   <strong>Carbs/hr:</strong> {result.carbsPerHour}g
                 </p>
@@ -220,6 +265,3 @@ const FuelPlanner = () => {
 };
 
 export default FuelPlanner;
-// function useToast(): { toast: any } {
-//   throw new Error("Function not implemented.");
-// }
