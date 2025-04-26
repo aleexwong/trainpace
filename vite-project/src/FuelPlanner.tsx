@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -79,126 +80,140 @@ const FuelPlanner = () => {
   };
 
   return (
-    <TooltipProvider>
-      <div className="max-w-xl mx-auto p-6 space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-center">🏃 Fuel Planner</h1>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Info className="h-5 w-5" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Why Fueling Matters ⚡</DialogTitle>
-                <DialogDescription>
-                  Your body needs carbs to perform. This tool estimates how many
-                  carbs and gels you’ll need based on your finish time.
-                </DialogDescription>
-              </DialogHeader>
-              <ul className="list-disc list-inside text-sm text-gray-700">
-                <li>30–60g carbs/hr for efforts over 1 hour</li>
-                <li>Gels usually contain ~25g carbs each</li>
-                <li>Match fueling to avoid energy crashes</li>
-              </ul>
-            </DialogContent>
-          </Dialog>
-        </div>
+    <>
+      <Helmet>
+        <title>Fuel Planner By TrainPace - Optimize Your Run</title>
+        <meta name="description" content="Calculate your fueling needs"></meta>
+      </Helmet>
+      <TooltipProvider>
+        <div className="max-w-xl mx-auto p-6 space-y-6">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-bold text-center">🏃 Fuel Planner</h1>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="ml-2 text-blue-600 hover:bg-blue-50"
+                >
+                  <Info className="h-5 w-5" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Why Fueling Matters ⚡</DialogTitle>
+                  <DialogDescription>
+                    Your body needs carbs to perform. This tool estimates how
+                    many carbs and gels you’ll need based on your finish time.
+                  </DialogDescription>
+                </DialogHeader>
+                <ul className="list-disc list-inside text-sm text-gray-700">
+                  <li>30–60g carbs/hr for efforts over 1 hour</li>
+                  <li>Gels usually contain ~25g carbs each</li>
+                  <li>Match fueling to avoid energy crashes</li>
+                </ul>
+              </DialogContent>
+            </Dialog>
+          </div>
 
-        <Card className="bg-blue-50">
-          <CardContent className="p-6 space-y-4">
-            <div>
-              <Label>Race Type</Label>
-              <Select onValueChange={setRaceType} value={raceType}>
-                <SelectTrigger className="mt-1">
-                  <SelectValue placeholder="Select race type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="10K">10K</SelectItem>
-                  <SelectItem value="Half">Half Marathon (21.1K)</SelectItem>
-                  <SelectItem value="Full">Full Marathon (42.2K)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label>Weight (kg)</Label>
-              <Input
-                type="number"
-                placeholder="e.g. 68"
-                value={weight}
-                onChange={(e) => setWeight(e.target.value)}
-                className="mt-1"
-              />
-            </div>
-
-            <div>
-              <Label>Estimated Finish Time (min)</Label>
-              <Input
-                type="number"
-                placeholder="e.g. 50"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className="mt-1"
-              />
-            </div>
-
-            <Button
-              onClick={handleCalculate}
-              className="w-full mt-2 bg-blue-600 text-white"
-            >
-              Calculate Fuel Plan
-            </Button>
-          </CardContent>
-        </Card>
-
-        {result && (
-          <Card className="bg-white shadow-sm border">
-            <CardContent className="p-6 space-y-2">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold">Your Plan 🔋</h2>
-                <div className="flex gap-2">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button size="icon" variant="ghost" onClick={handleCopy}>
-                        <Copy className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>Copy Plan</TooltipContent>
-                  </Tooltip>
-
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        size="icon"
-                        variant="ghost"
-                        onClick={handleDownload}
-                      >
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>Download Plan</TooltipContent>
-                  </Tooltip>
-                </div>
+          <Card className="bg-blue-50">
+            <CardContent className="p-6 space-y-4">
+              <div>
+                <Label>Race Type</Label>
+                <Select onValueChange={setRaceType} value={raceType}>
+                  <SelectTrigger className="mt-1">
+                    <SelectValue placeholder="Select race type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10K">10K</SelectItem>
+                    <SelectItem value="Half">Half Marathon (21.1K)</SelectItem>
+                    <SelectItem value="Full">Full Marathon (42.2K)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-              <p>
-                <strong>Carbs/hr:</strong> {result.carbsPerHour}g
-              </p>
-              <p>
-                <strong>Total carbs needed:</strong> {result.totalCarbs}g
-              </p>
-              <p>
-                <strong>Total calories:</strong> {result.totalCalories} kcal
-              </p>
-              <p>
-                <strong>Recommended gels:</strong> {result.gelsNeeded}
-              </p>
+
+              <div>
+                <Label>Weight (kg)</Label>
+                <Input
+                  type="number"
+                  placeholder="e.g. 68"
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label>Estimated Finish Time (min)</Label>
+                <Input
+                  type="number"
+                  placeholder="e.g. 50"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  className="mt-1"
+                />
+              </div>
+
+              <Button
+                onClick={handleCalculate}
+                className="w-full mt-2 bg-blue-600 text-white"
+              >
+                Calculate Fuel Plan
+              </Button>
             </CardContent>
           </Card>
-        )}
-      </div>
-    </TooltipProvider>
+
+          {result && (
+            <Card className="bg-white shadow-sm border">
+              <CardContent className="p-6 space-y-2">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold">Your Plan 🔋</h2>
+                  <div className="flex gap-2">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={handleCopy}
+                        >
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Copy Plan</TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={handleDownload}
+                        >
+                          <Download className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>Download Plan</TooltipContent>
+                    </Tooltip>
+                  </div>
+                </div>
+                <p>
+                  <strong>Carbs/hr:</strong> {result.carbsPerHour}g
+                </p>
+                <p>
+                  <strong>Total carbs needed:</strong> {result.totalCarbs}g
+                </p>
+                <p>
+                  <strong>Total calories:</strong> {result.totalCalories} kcal
+                </p>
+                <p>
+                  <strong>Recommended gels:</strong> {result.gelsNeeded}
+                </p>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </TooltipProvider>
+    </>
   );
 };
 
