@@ -25,8 +25,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Info, Download, Copy } from "lucide-react";
-import { toast } from "@/hooks/use-toast"; // make sure this is correct
+import { Info, Download, Copy, ChevronDown, ChevronUp } from "lucide-react";
+import { toast } from "@/hooks/use-toast"; // make sure this path is correct
 
 const raceSettings = {
   "10K": 30,
@@ -44,6 +44,7 @@ const FuelPlanner = () => {
     totalCalories: number;
     gelsNeeded: number;
   }>(null);
+  const [showInfo, setShowInfo] = useState(false);
 
   const handleCalculate = () => {
     const weightKg = parseFloat(weight);
@@ -54,8 +55,8 @@ const FuelPlanner = () => {
       return;
     }
 
-    if (!isNaN(weightKg) && (weightKg < 10 || weightKg > 1000)) {
-      toast({ title: "Weight must be between 10kg and 1000kg." });
+    if (!isNaN(weightKg) && (weightKg < 1 || weightKg > 1000)) {
+      toast({ title: "Weight must be between 1kg and 1000kg." });
       return;
     }
 
@@ -68,7 +69,16 @@ const FuelPlanner = () => {
     const durationHours = finishTimeMin / 60;
     const totalCarbs = Math.round(durationHours * carbsPerHour);
     const totalCalories = totalCarbs * 4;
-    const gelsNeeded = Math.ceil(totalCarbs / 25);
+
+    let gelsNeeded = 0;
+
+    if (raceType === "10K") {
+      gelsNeeded = durationHours >= 0.75 ? 1 : 0; // 1 gel only if >45min 10K
+    } else {
+      const gelsPerHour = 1.5;
+      gelsNeeded = Math.ceil(durationHours * gelsPerHour);
+      gelsNeeded = Math.min(gelsNeeded, 7); // cap at 7
+    }
 
     setResult({ carbsPerHour, totalCarbs, totalCalories, gelsNeeded });
   };
@@ -152,7 +162,7 @@ const FuelPlanner = () => {
               <div>
                 <Label>
                   Race Type<span className="text-red-500">*</span>
-                </Label>{" "}
+                </Label>
                 <Select
                   value={raceType}
                   onValueChange={(val) =>
@@ -171,18 +181,21 @@ const FuelPlanner = () => {
               </div>
 
               <div>
-                <Label>Weight (kg)</Label>
+                <Label>
+                  Weight (kg)
+                  <span className="text-gray-500 text-xs ml-1">(Optional)</span>
+                </Label>
                 <Input
                   type="number"
                   placeholder="e.g. 68"
-                  min={10}
-                  max={1000}
                   value={weight}
                   onChange={(e) => setWeight(e.target.value)}
+                  min={1}
+                  max={1000}
                   className="mt-1"
                 />
                 <p className="text-xs text-gray-600 mt-1">
-                  Optional: Filling your weight personalizes your fueling plan.
+                  Filling your weight personalizes your fueling plan.
                 </p>
               </div>
 
@@ -190,12 +203,13 @@ const FuelPlanner = () => {
                 <Label>
                   Estimated Finish Time (min)
                   <span className="text-red-500">*</span>
-                </Label>{" "}
+                </Label>
                 <Input
                   type="number"
                   placeholder="e.g. 50"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
+                  min={1}
                   className="mt-1"
                 />
               </div>
@@ -253,11 +267,57 @@ const FuelPlanner = () => {
                   <strong>Total calories:</strong> {result.totalCalories} kcal
                 </p>
                 <p>
-                  <strong>Recommended gels:</strong> {result.gelsNeeded}
+                  <strong>Recommended gels:</strong>{" "}
+                  {raceType === "10K" && result.gelsNeeded === 0
+                    ? "Optional: No gels needed for short races."
+                    : `${result.gelsNeeded} gel${
+                        result.gelsNeeded > 1 ? "s" : ""
+                      }`}
                 </p>
               </CardContent>
             </Card>
           )}
+
+          {/* Expandable Fueling Philosophy Section */}
+          <div className="mt-6">
+            <Button
+              variant="outline"
+              className="w-full flex items-center justify-between"
+              onClick={() => setShowInfo((prev) => !prev)}
+            >
+              <span>Fueling Philosophy</span>
+              {showInfo ? (
+                <ChevronUp className="h-5 w-5" />
+              ) : (
+                <ChevronDown className="h-5 w-5" />
+              )}
+            </Button>
+            {showInfo && (
+              <Card className="mt-2 bg-gray-50">
+                <CardContent className="p-4 text-sm text-gray-700 space-y-2">
+                  <p>
+                    Fuel needs depend on race distance, duration, and personal
+                    tolerance.
+                  </p>
+                  <ul className="list-disc list-inside ml-2">
+                    <li>
+                      <strong>10K races:</strong> Most runners can complete
+                      without fueling. For races over ~45 min, 1 gel may help,
+                      but fueling is optional.
+                    </li>
+                    <li>
+                      <strong>Half & Full Marathons:</strong> We suggest up to
+                      1.5 gels per hour, with a maximum of 7 gels total.
+                    </li>
+                  </ul>
+                  <p>
+                    This approach balances energy needs without overloading
+                    digestion — based on real-world marathon fueling strategies.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </div>
       </TooltipProvider>
     </>
