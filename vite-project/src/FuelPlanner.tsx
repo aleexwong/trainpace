@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import ReactGA from "react-ga4";
 import {
   Select,
   SelectContent,
@@ -27,6 +28,7 @@ import {
 } from "@/components/ui/dialog";
 import { Info, Download, Copy, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast"; // make sure this path is correct
+// import { useEffect as reactUseEffect } from "react";
 
 const raceSettings = {
   "10K": 30,
@@ -35,6 +37,12 @@ const raceSettings = {
 };
 
 const FuelPlanner = () => {
+  ReactGA.event({
+    category: "Fuel Planner",
+    action: "Calculated Fuel Plan",
+    label: "User opened the Fuel Planner",
+  });
+
   const [raceType, setRaceType] = useState<keyof typeof raceSettings>("10K");
   const [weight, setWeight] = useState("");
   const [time, setTime] = useState("");
@@ -325,3 +333,6 @@ const FuelPlanner = () => {
 };
 
 export default FuelPlanner;
+// function useEffect(callback: () => void, dependencies: any[]) {
+//   reactUseEffect(callback, dependencies);
+// }
