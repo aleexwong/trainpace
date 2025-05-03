@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Flame, Timer, Menu, X } from "lucide-react";
+import { CheckCircle, Flame, Timer, Menu } from "lucide-react";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import type { User } from "firebase/auth";
 

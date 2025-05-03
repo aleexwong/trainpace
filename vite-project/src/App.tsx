@@ -1,15 +1,15 @@
 import { useState } from "react";
 import "./App.css";
 import { HelmetProvider } from "react-helmet-async";
-import Footer from "./Footer";
+// import Footer from "./Footer";
 import TrainingPaceCalculator from "./TrainingPaceCalculator";
 import { Toaster } from "@/components/ui/toaster";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
 import { Button } from "./components/ui/button";
 import RacePredictorOverlay from "./RacePredictorOverlay";
 import { AuthProvider } from "./features/auth/AuthContext";
-import { LoginButton } from "./features/auth/LoginButton";
-import { LogoutButton } from "./features/auth/LogoutButton";
+// import { LoginButton } from "./features/auth/LoginButton";
+// import { LogoutButton } from "./features/auth/LogoutButton";
 import Landing from "./Landing";
 
 function App() {
