@@ -101,6 +101,8 @@ const RacePredictorOverlay: React.FC<RacePredictorOverlayProps> = ({
               </label>
               <Input
                 type="number"
+                inputMode="decimal"
+                pattern="[0-9]*[.,]?[0-9]+" // Allow decimal numbers
                 placeholder="Distance in km"
                 value={knownDistance}
                 onChange={(e) => setKnownDistance(e.target.value)}
@@ -113,6 +115,8 @@ const RacePredictorOverlay: React.FC<RacePredictorOverlayProps> = ({
               </label>
               <Input
                 type="number"
+                inputMode="decimal"
+                pattern="[0-9]*[.,]?[0-9]+" // Allow decimal numbers
                 placeholder="Time in minutes"
                 value={knownTime}
                 onChange={(e) => setKnownTime(e.target.value)}
