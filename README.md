@@ -1,4 +1,4 @@
-# Training Pace Calculator 2
+# TrainPace - Optimize Your Run
 
 Hosted here: https://www.trainpace.com
 
