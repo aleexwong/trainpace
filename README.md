@@ -1,8 +1,8 @@
 # TrainPace - Optimize Your Run
 
 Hosted here: https://www.trainpace.com
-
-[![Netlify Status](https://api.netlify.com/api/v1/badges/2b8c6c05-12b2-423a-a2c2-af4e93e8f160/deploy-status)](https://app.netlify.com/sites/trainpace/deploys)[![Codacy Badge](https://app.codacy.com/project/badge/Grade/171bbd8a94744254a9db632e2650b6e4)](https://app.codacy.com/gh/aleexwong/trainingpacecalculator2/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Deployed on Vercel](https://img.shields.io/badge/deployed%20on-Vercel-black?logo=vercel)](https://vercel.com/aleexwongs-projects/trainpace)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/171bbd8a94744254a9db632e2650b6e4)](https://app.codacy.com/gh/aleexwong/trainingpacecalculator2/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 ---
 
@@ -16,6 +16,7 @@ Hosted here: https://www.trainpace.com
 
 - Rehost on Vercel for backend functionality support - Done April 2025
 - Host on Netlify - Done! 11/25/2024
+  [![Netlify Status](https://api.netlify.com/api/v1/badges/2b8c6c05-12b2-423a-a2c2-af4e93e8f160/deploy-status)](https://app.netlify.com/sites/trainpace/deploys)
 - Icon for PWA and main site, Done! - 12/29/2024 report here:
   - https://realfavicongenerator.net/favicon-checker/reports/fd896a38-a6de-4ca6-b05c-fd99a10da526
 - Testing with PlayWright
