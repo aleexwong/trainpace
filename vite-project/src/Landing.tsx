@@ -5,8 +5,9 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 // import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { Link } from "react-router-dom";
-
 import type { User } from "firebase/auth";
+import trainPaceHeroImage from "@/assets/trainPaceHeroImage.png";
+import trainPaceHeroMobile from "@/assets/trainPaceHeroMobile.png";
 
 export default function Landing() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -146,14 +147,14 @@ export default function Landing() {
       <section className="px-0 pt-0 pb-24 text-center">
         {/* Mobile image */}
         <img
-          src="src/assets/trainPaceHeroMobile.png"
+          src={trainPaceHeroMobile}
           alt="TrainPace Mobile Hero"
           className="w-full h-[500px] object-cover object-top md:hidden"
         />
 
         {/* Desktop image */}
         <img
-          src="src/assets/trainPaceHeroImage.png"
+          src={trainPaceHeroImage}
           alt="TrainPace Desktop Hero"
           className="hidden md:block w-full h-[600px] object-cover object-left-top"
         />
