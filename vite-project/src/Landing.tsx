@@ -87,15 +87,15 @@ export default function Landing() {
       </header>
 
       {/* Mobile Menu Backdrop */}
-      {menuOpen && (
+      {/* {menuOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-30 z-10 md:hidden"
           onClick={() => setMenuOpen(false)}
         />
-      )}
+      )} */}
 
       {/* Mobile Slide Menu */}
-      <div
+      {/* <div
         className={`fixed top-4 right-4 w-fit max-w-xs bg-white border border-gray-200 shadow-xl rounded-xl transform transition-transform duration-300 ease-in-out z-20 md:hidden ${
           menuOpen ? "translate-x-0" : "translate-x-full"
         }`}
@@ -141,7 +141,7 @@ export default function Landing() {
             </a>
           )}
         </div>
-      </div>
+      </div> */}
 
       {/* Hero */}
       <section className="px-0 pt-0 pb-24 text-center">

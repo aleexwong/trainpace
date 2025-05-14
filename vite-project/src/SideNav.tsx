@@ -9,7 +9,7 @@ export default function SideNav() {
 
   const links = [
     { href: "/", label: "Calculator" },
-    { href: "/fuel", label: "Fuel" },
+    { href: "/fuel", label: "Fuel Planner" },
   ];
 
   useEffect(() => {
@@ -113,7 +113,7 @@ export default function SideNav() {
       </div>
 
       {/* Nav Bar - Desktop Only */}
-      <nav className="hidden md:flex fixed top-4 right-4 z-50 space-x-6 bg-background p-4 rounded shadow">
+      {/* <nav className="hidden md:flex fixed top-4 right-4 z-50 space-x-6 bg-background p-4 rounded shadow">
         {links.map((link) => (
           <Link
             key={link.href}
@@ -123,7 +123,7 @@ export default function SideNav() {
             {link.label}
           </Link>
         ))}
-      </nav>
+      </nav> */}
     </div>
   );
 }

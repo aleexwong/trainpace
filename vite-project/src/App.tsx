@@ -8,7 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
 import { Button } from "./components/ui/button";
 import RacePredictorOverlay from "./RacePredictorOverlay";
-// import SideNav from "./SideNav";
+import SideNav from "./SideNav";
 import Landing from "./Landing";
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
     <>
       <HelmetProvider>
         {/* Side Navigation */}
-        {/* <SideNav /> */}
+        <SideNav />
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/calculator" element={<TrainingPaceCalculator />} />
