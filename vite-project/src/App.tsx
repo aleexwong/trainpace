@@ -27,7 +27,6 @@ function App() {
         </Routes>
         <GoogleAnalytics />
       </HelmetProvider>
-      {/* <TrainingPaceCalculator /> */}
       <Button
         onClick={() => setShowPredictor(true)}
         className="fixed bottom-4 right-4 rounded-full p-3 bg-blue-600 text-white shadow-md z-50"
