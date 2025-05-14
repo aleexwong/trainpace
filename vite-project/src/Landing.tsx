@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Flame, Timer, Menu } from "lucide-react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 // import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { Link } from "react-router-dom";
@@ -33,10 +33,10 @@ export default function Landing() {
     return () => unsubscribe();
   }, []);
 
-  const handleSignOut = () => {
-    signOut(auth);
-    setMenuOpen(false);
-  };
+  // const handleSignOut = () => {
+  //   signOut(auth);
+  //   setMenuOpen(false);
+  // };
   return (
     <div className="bg-white text-gray-900 min-h-screen relative">
       {/* Navbar */}
