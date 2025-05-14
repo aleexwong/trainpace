@@ -49,7 +49,7 @@ export default function Landing() {
               aria-label="Toggle menu"
               className="bg-transparent p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-              <Menu className="w-6 h-6 stroke-gray-700" />
+              {/* <Menu className="w-6 h-6 stroke-gray-700" /> */}
             </button>
           )}
         </div>

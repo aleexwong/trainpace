@@ -8,7 +8,8 @@ export default function SideNav() {
   let touchStartX = 0;
 
   const links = [
-    { href: "/", label: "Calculator" },
+    { href: "/", label: "Home" },
+    { href: "/calculator", label: "Calculator" },
     { href: "/fuel", label: "Fuel Planner" },
   ];
 
