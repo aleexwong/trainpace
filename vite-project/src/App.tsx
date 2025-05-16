@@ -10,6 +10,7 @@ import { Button } from "./components/ui/button";
 import RacePredictorOverlay from "./RacePredictorOverlay";
 import SideNav from "./SideNav";
 import Landing from "./Landing";
+import MainLayout from "./MainLayout";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -20,10 +21,12 @@ function App() {
         {/* Side Navigation */}
         <SideNav />
         <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/calculator" element={<TrainingPaceCalculator />} />
-          <Route path="/fuel" element={<FuelPlanner />} />
-          <Route path="*" element={<Landing />} />
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Landing />} />
+            <Route path="calculator" element={<TrainingPaceCalculator />} />
+            <Route path="fuel" element={<FuelPlanner />} />
+            {/* <Route path="dashboard" element={<Dashboard />} /> */}
+          </Route>
         </Routes>
         <GoogleAnalytics />
       </HelmetProvider>
