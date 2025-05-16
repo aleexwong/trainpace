@@ -1,11 +1,11 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import type { User } from "firebase/auth";
 
 export default function MainLayout() {
+  const location = useLocation();
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -26,9 +26,11 @@ export default function MainLayout() {
           TrainPace
         </Link>{" "}
         <nav className="hidden md:flex space-x-4">
-          <a href="#features" className="text-gray-700 hover:text-blue-600">
-            Features
-          </a>
+          {location.pathname === "/" && (
+            <a href="#features" className="text-gray-700 hover:text-blue-600">
+              Features
+            </a>
+          )}
           <Link to="/calculator" className="text-gray-700 hover:text-blue-600">
             Calculator
           </Link>
