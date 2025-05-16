@@ -10,7 +10,7 @@ import trainPaceHeroImage from "@/assets/trainPaceHeroImage.png";
 import trainPaceHeroMobile from "@/assets/trainPaceHeroMobile.png";
 
 export default function Landing() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  // const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
   // useEffect(() => {

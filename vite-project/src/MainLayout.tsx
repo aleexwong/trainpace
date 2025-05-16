@@ -6,7 +6,6 @@ import { auth } from "@/lib/firebase";
 import type { User } from "firebase/auth";
 
 export default function MainLayout() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -36,7 +35,7 @@ export default function MainLayout() {
           <Link to="/fuel" className="text-gray-700 hover:text-blue-600">
             Fuel Planner
           </Link>
-          {/* {user ? (
+          {user ? (
             <Link to="/dashboard" className="text-gray-700 hover:text-blue-600">
               Dashboard
             </Link>
@@ -44,7 +43,7 @@ export default function MainLayout() {
             <Link to="/login" className="text-gray-700 hover:text-blue-600">
               Login
             </Link>
-          )} */}
+          )}
         </nav>
       </header>
       <Outlet />
