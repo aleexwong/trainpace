@@ -27,6 +27,7 @@ function App() {
             <Route path="calculator" element={<TrainingPaceCalculator />} />
             <Route path="fuel" element={<FuelPlanner />} />
             <Route path="login" element={<Login />} />
+            <Route path="*" element={<Landing />} />
             {/* <Route path="dashboard" element={<Dashboard />} /> */}
           </Route>
         </Routes>
