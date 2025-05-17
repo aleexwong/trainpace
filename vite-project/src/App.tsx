@@ -11,6 +11,7 @@ import RacePredictorOverlay from "./RacePredictorOverlay";
 import SideNav from "./SideNav";
 import Landing from "./Landing";
 import MainLayout from "./MainLayout";
+import Login from "./Login";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -25,6 +26,7 @@ function App() {
             <Route index element={<Landing />} />
             <Route path="calculator" element={<TrainingPaceCalculator />} />
             <Route path="fuel" element={<FuelPlanner />} />
+            <Route path="login" element={<Login />} />
             {/* <Route path="dashboard" element={<Dashboard />} /> */}
           </Route>
         </Routes>
