@@ -12,6 +12,7 @@ import SideNav from "./SideNav";
 import Landing from "./Landing";
 import MainLayout from "./MainLayout";
 import Login from "./Login";
+import Footer from "./Footer";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -43,6 +44,7 @@ function App() {
         isOpen={showPredictor}
         onClose={() => setShowPredictor(false)}
       />
+      <Footer />
       <Toaster />
     </>
   );

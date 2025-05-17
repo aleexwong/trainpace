@@ -105,11 +105,6 @@ export default function Landing() {
           </Button>
         </Link>
       </section>
-
-      {/* Footer */}
-      <footer className="py-10 text-center text-sm text-gray-500">
-        Built by a runner, for runners. © {new Date().getFullYear()} TrainPace
-      </footer>
     </div>
   );
 }
