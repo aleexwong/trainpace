@@ -1,6 +1,13 @@
 import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
+import { track } from "@amplitude/analytics-browser";
 
 export default function Ethos() {
+  useEffect(() => {
+    track("Ethics Page Viewed", {
+      page: "Ethics",
+    });
+  }, []);
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <Helmet>

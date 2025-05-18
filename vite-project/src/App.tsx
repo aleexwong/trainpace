@@ -4,9 +4,11 @@ import { HelmetProvider } from "react-helmet-async";
 import { Routes, Route } from "react-router-dom";
 import { Button } from "./components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
+import { initAmplitude } from "@/lib/amplitude";
+import GoogleAnalytics from "./lib/GoogleAnalytics";
+
 import TrainingPaceCalculator from "./TrainingPaceCalculator";
 import FuelPlanner from "./FuelPlanner";
-import GoogleAnalytics from "./lib/GoogleAnalytics";
 import RacePredictorOverlay from "./RacePredictorOverlay";
 import SideNav from "./SideNav";
 import Landing from "./Landing";
@@ -16,7 +18,8 @@ import Footer from "./Footer";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
-
+  initAmplitude();
+  // Initialize Amplitude Analytics
   return (
     <>
       <HelmetProvider>
