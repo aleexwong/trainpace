@@ -19,7 +19,7 @@ export default function Ethos() {
       </Helmet>
 
       <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-foreground">
-        TrainPace Ethos
+        Ethos
       </h1>
 
       <div className="space-y-6 text-base sm:text-lg leading-relaxed text-foreground">

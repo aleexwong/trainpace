@@ -15,6 +15,7 @@ import Landing from "./Landing";
 import MainLayout from "./MainLayout";
 import Login from "./Login";
 import Footer from "./Footer";
+import Ethos from "./Ethos";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -32,6 +33,7 @@ function App() {
             <Route path="fuel" element={<FuelPlanner />} />
             <Route path="login" element={<Login />} />
             <Route path="*" element={<Landing />} />
+            <Route path="ethos" element={<Ethos />} />
             {/* <Route path="dashboard" element={<Dashboard />} /> */}
           </Route>
         </Routes>
