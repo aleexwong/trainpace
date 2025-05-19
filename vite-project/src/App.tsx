@@ -5,8 +5,8 @@ import { Routes, Route } from "react-router-dom";
 import { Button } from "./components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import { initAmplitude } from "@/lib/amplitude";
+import ScrollToTop from "./components/utils/ScrollToTop";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
-
 import TrainingPaceCalculator from "./TrainingPaceCalculator";
 import FuelPlanner from "./FuelPlanner";
 import RacePredictorOverlay from "./RacePredictorOverlay";
@@ -23,6 +23,7 @@ function App() {
   // Initialize Amplitude Analytics
   return (
     <>
+      <ScrollToTop />
       <HelmetProvider>
         {/* Side Navigation */}
         <SideNav />
