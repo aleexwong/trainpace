@@ -1,53 +1,45 @@
 import { useState } from "react";
 import { useAuth } from "./features/auth/AuthContext";
 import { LoginButton } from "./features/auth/LoginButton";
-import { LogoutButton } from "./features/auth/LogoutButton";
-import {
-  signInWithEmailAndPassword,
-  sendEmailVerification,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Login() {
   const { user } = useAuth();
   const { toast } = useToast();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [unverified, setUnverified] = useState(false);
+  const navigate = useNavigate();
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       setError("");
-
-      if (!result.user.emailVerified) {
-        setUnverified(true);
-        toast({
-          title: "Email not verified",
-          description: "Check your inbox or resend the verification email.",
-          variant: "destructive",
-        });
-      } else {
-        setUnverified(false);
-      }
-    } catch (err: any) {
-      setError("Invalid email or password.");
-      console.error(err);
-    }
-  };
-
-  const handleResendVerification = async () => {
-    if (auth.currentUser && !auth.currentUser.emailVerified) {
-      await sendEmailVerification(auth.currentUser);
+      console.log("User signed in:", result.user);
       toast({
-        title: "Verification email sent",
-        description: "Check your inbox for the confirmation link.",
+        title: "Signed in",
+        description: `Welcome back, ${
+          result.user.displayName || result.user.email || "runner"
+        }!`,
       });
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+    } catch (err: any) {
+      const code = err.code;
+      if (code === "auth/user-not-found") {
+        setError("No account found with that email.");
+      } else if (code === "auth/wrong-password") {
+        setError("Incorrect password.");
+      } else {
+        setError("Something went wrong.");
+      }
+      console.error(err);
     }
   };
 
