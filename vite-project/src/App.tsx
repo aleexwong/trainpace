@@ -16,6 +16,10 @@ import MainLayout from "./MainLayout";
 import Login from "./Login";
 import Footer from "./Footer";
 import Ethos from "./Ethos";
+import Logout from "./Logout";
+import Register from "./Register";
+import ResetPassword from "./ResetPassword";
+import ResetConfirmed from "./ResetConfirmed";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -32,10 +36,14 @@ function App() {
             <Route index element={<Landing />} />
             <Route path="calculator" element={<TrainingPaceCalculator />} />
             <Route path="fuel" element={<FuelPlanner />} />
-            <Route path="login" element={<Login />} />
             <Route path="*" element={<Landing />} />
             <Route path="ethos" element={<Ethos />} />
             {/* <Route path="dashboard" element={<Dashboard />} /> */}
+            <Route path="login" element={<Login />} />
+            <Route path="logout" element={<Logout />} />
+            <Route path="register" element={<Register />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/reset-confirmed" element={<ResetConfirmed />} />
           </Route>
         </Routes>
         <GoogleAnalytics />

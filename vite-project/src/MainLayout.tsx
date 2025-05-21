@@ -37,9 +37,18 @@ export default function MainLayout() {
           <Link to="/fuel" className="text-gray-700 hover:text-blue-600">
             Fuel Planner
           </Link>
-          {user ? (
+          {/* {user ? (
             <Link to="/dashboard" className="text-gray-700 hover:text-blue-600">
               Dashboard
+            </Link>
+          ) : (
+            <Link to="/login" className="text-gray-700 hover:text-blue-600">
+              Login
+            </Link>
+          )} */}
+          {user ? (
+            <Link to="/logout" className="text-gray-700 hover:text-blue-600">
+              Logout
             </Link>
           ) : (
             <Link to="/login" className="text-gray-700 hover:text-blue-600">
