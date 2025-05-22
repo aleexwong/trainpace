@@ -297,7 +297,7 @@ const TrainingPaceCalculator = () => {
         <title>Pace Calculator By TrainPace</title>
         <meta
           name="description"
-          content="Optimize your running fuel strategy."
+          content="Optimize your running performance with our pace calculator. Get personalized training paces based on your race time and distance."
         />
       </Helmet>
       <div className="max-w-8xl sm:max-w-xl mx-auto lg:max-w-2xl">
