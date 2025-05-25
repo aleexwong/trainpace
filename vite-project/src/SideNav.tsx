@@ -44,7 +44,7 @@ export default function SideNav() {
       {/* Toggle Button - Mobile Only */}
       <Button
         onClick={() => setOpen(true)}
-        className="fixed top-4 right-4 z-50 p-2 bg-primary text-white rounded md:hidden"
+        className="fixed top-10 right-8 z-50 p-2 bg-primary text-white rounded md:hidden"
       >
         {/* Hamburger Icon */}
         <svg
@@ -74,8 +74,8 @@ export default function SideNav() {
       {/* Side Drawer - Mobile Only */}
       <div
         ref={drawerRef}
-        className={`fixed top-0 right-0 h-full bg-background shadow-lg z-50 transition-transform duration-300 ease-in-out w-3/4 max-w-md p-8 flex flex-col space-y-6 md:hidden ${
-          open ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0 left-0 h-full bg-background shadow-lg z-50 transition-transform duration-300 ease-in-out w-full max-w-md p-8 flex flex-col space-y-6 md:hidden ${
+          open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <Button

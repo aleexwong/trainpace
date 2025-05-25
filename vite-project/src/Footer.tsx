@@ -14,6 +14,10 @@ const Footer = () => {
         </Link>{" "}
         for runners. © {new Date().getFullYear()} TrainPace.
       </p>
+      <p className="text-sm">
+        Questions? Feedback?{" "}
+        <a href="mailto:alex@trainpace.com">Send a Message!</a>
+      </p>
     </footer>
   );
 };
