@@ -10,12 +10,13 @@ import GoogleAnalytics from "./lib/GoogleAnalytics";
 import TrainingPaceCalculator from "./TrainingPaceCalculator";
 import FuelPlanner from "./FuelPlanner";
 import RacePredictorOverlay from "./RacePredictorOverlay";
-import SideNav from "./SideNav";
+// import SideNav from "./SideNav";
 import Landing from "./Landing";
 import MainLayout from "./MainLayout";
 import Login from "./Login";
 import Footer from "./Footer";
 import Ethos from "./Ethos";
+import SideNavPortal from "./components/layout/SideNavPortal";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -23,18 +24,18 @@ function App() {
   // Initialize Amplitude Analytics
   return (
     <>
+      <SideNavPortal />
       <ScrollToTop />
       <HelmetProvider>
         {/* Side Navigation */}
-        <SideNav />
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Landing />} />
-            <Route path="calculator" element={<TrainingPaceCalculator />} />
-            <Route path="fuel" element={<FuelPlanner />} />
-            <Route path="login" element={<Login />} />
+            <Route path="/calculator" element={<TrainingPaceCalculator />} />
+            <Route path="/fuel" element={<FuelPlanner />} />
+            <Route path="/login" element={<Login />} />
             <Route path="*" element={<Landing />} />
-            <Route path="ethos" element={<Ethos />} />
+            <Route path="/ethos" element={<Ethos />} />
             {/* <Route path="dashboard" element={<Dashboard />} /> */}
           </Route>
         </Routes>

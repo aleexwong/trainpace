@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import type { User } from "firebase/auth";
+import SideNav from "./SideNav";
 
 export default function MainLayout() {
   const location = useLocation();
@@ -49,6 +50,7 @@ export default function MainLayout() {
         </nav>
       </header>
       <Outlet />
+      <SideNav />
     </div>
   );
 }
