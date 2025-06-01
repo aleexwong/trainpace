@@ -3,7 +3,7 @@ import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Clock, RotateCcw, Calculator } from "lucide-react";
-import { toast } from "./hooks/use-toast";
+import { toast } from "../hooks/use-toast";
 
 import {
   Tooltip,
@@ -11,9 +11,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import RunningTips from "./RunningTips";
-import CalculatorModal from "./CalculatorModal";
-import ResultsWithTooltips from "./ResultsWithTooltips";
+import RunningTips from "../RunningTips";
+import CalculatorModal from "../CalculatorModal";
+import ResultsWithTooltips from "../ResultsWithTooltips";
 import { Helmet } from "react-helmet-async";
 
 // const PRESET_DISTANCES = [

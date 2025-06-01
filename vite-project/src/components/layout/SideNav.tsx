@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "./components/ui/button";
+import { Button } from "../ui/button";
 
 export default function SideNav() {
   const [open, setOpen] = useState(false);
@@ -112,19 +112,6 @@ export default function SideNav() {
           ))}
         </nav>
       </div>
-
-      {/* Nav Bar - Desktop Only */}
-      {/* <nav className="hidden md:flex fixed top-4 right-4 z-50 space-x-6 bg-background p-4 rounded shadow">
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            to={link.href}
-            className="text-foreground hover:text-primary text-lg"
-          >
-            {link.label}
-          </Link>
-        ))}
-      </nav> */}
     </div>
   );
 }
