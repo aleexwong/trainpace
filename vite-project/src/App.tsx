@@ -8,18 +8,17 @@ import { initAmplitude } from "@/lib/amplitude";
 import ScrollToTop from "./lib/ScrollToTop";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
 import TrainingPaceCalculator from "./TrainingPaceCalculator";
-import FuelPlanner from "./FuelPlanner";
+import FuelPlanner from "./pages/FuelPlanner";
 import RacePredictorOverlay from "./RacePredictorOverlay";
-// import SideNav from "./SideNav";
 import Landing from "./Landing";
-import MainLayout from "./MainLayout";
-import Login from "./Login";
+import MainLayout from "./components/layout/MainLayout";
+import Login from "./pages/login/Login";
 import Footer from "./Footer";
 import Ethos from "./Ethos";
-import Logout from "./Logout";
-import Register from "./Register";
-import ResetPassword from "./ResetPassword";
-import ResetConfirmed from "./ResetConfirmed";
+import Logout from "./pages/login/Logout";
+import Register from "./pages/login/Register";
+import ResetPassword from "./pages/login/ResetPassword";
+import ResetConfirmed from "./pages/login/ResetConfirmed";
 import SideNavPortal from "./components/layout/SideNavPortal";
 
 function App() {
