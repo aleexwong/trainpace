@@ -20,9 +20,15 @@ import Register from "./pages/login/Register";
 import ResetPassword from "./pages/login/ResetPassword";
 import ResetConfirmed from "./pages/login/ResetConfirmed";
 import SideNavPortal from "./components/layout/SideNavPortal";
-
+import { ElevationChart } from "./pages/elevation-finder/ElevationChart";
+import ElevationPage from "./pages/elevation-finder/ElevationPage";
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
+  const dummyPoints = [
+    { distanceKm: 0, elevation: 10 },
+    { distanceKm: 1, elevation: 15 },
+    { distanceKm: 2, elevation: 12 },
+  ];
   initAmplitude();
   // Initialize Amplitude Analytics
   return (
@@ -45,7 +51,12 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/reset-confirmed" element={<ResetConfirmed />} />
+            <Route
+              path="/elevation"
+              element={<ElevationChart points={dummyPoints} />}
+            />
           </Route>
+          <Route path="/elevation-finder" element={<ElevationPage />} />
         </Routes>
         <GoogleAnalytics />
       </HelmetProvider>
