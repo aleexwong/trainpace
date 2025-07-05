@@ -145,9 +145,7 @@ export default function ElevationPage() {
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
-      <h1 className="text-3xl font-bold text-gray-800">
-        Elevation Finder By TrainPace
-      </h1>
+      <h1 className="text-5xl font-bold text-blue-700">ElevationFinder</h1>
 
       <GpxUploader onFileParsed={handleFileParsed} />
 
