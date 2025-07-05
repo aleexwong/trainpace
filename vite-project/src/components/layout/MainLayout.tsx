@@ -43,10 +43,10 @@ export default function MainLayout() {
             </Link>
             {user ? (
               <Link
-                to="/dashboard"
+                to="/elevation-finder"
                 className="text-gray-700 hover:text-blue-600"
               >
-                Dashboard
+                ElevationFinder
               </Link>
             ) : (
               <Link to="/login" className="text-gray-700 hover:text-blue-600">

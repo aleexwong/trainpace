@@ -111,15 +111,31 @@ const getEnergyIcon = (rating: EnergyRating) => {
 };
 
 const formatTime = (minutes: number) => {
-  const hours = Math.floor(minutes / 60);
-  const mins = Math.round(minutes % 60);
-  return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+  const totalMinutes = Math.round(minutes); // round first!
+  const hours = Math.floor(totalMinutes / 60);
+  const mins = totalMinutes % 60;
+  if (hours > 0 && mins > 0) return `${hours}h ${mins}m`;
+  if (hours > 0) return `${hours}h`;
+  return `${mins}m`;
 };
+
+// const formatPace = (multiplier: number, basePace: number) => {
+//   const adjustedPace = basePace * multiplier;
+//   const minutes = Math.floor(adjustedPace);
+//   const seconds = Math.round((adjustedPace - minutes) * 60);
+//   return `${minutes}:${seconds.toString().padStart(2, "0")}/km`;
+// };
 
 const formatPace = (multiplier: number, basePace: number) => {
   const adjustedPace = basePace * multiplier;
-  const minutes = Math.floor(adjustedPace);
-  const seconds = Math.round((adjustedPace - minutes) * 60);
+  let minutes = Math.floor(adjustedPace);
+  let seconds = Math.round((adjustedPace - minutes) * 60);
+
+  if (seconds === 60) {
+    minutes += 1;
+    seconds = 0;
+  }
+
   return `${minutes}:${seconds.toString().padStart(2, "0")}/km`;
 };
 
@@ -204,7 +220,7 @@ export function ElevationInsights({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Base Pace: {localBasePace} min/km
+                Base Pace: {formatPace(1, localBasePace)}
               </label>
               <input
                 type="range"

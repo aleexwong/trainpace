@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/dialog";
 import { Info, Download, Copy, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast"; // make sure this path is correct
-// import { useEffect as reactUseEffect } from "react";
 
 const raceSettings = {
   "10K": 30,

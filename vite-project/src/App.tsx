@@ -44,8 +44,8 @@ function App() {
             <Route path="/fuel" element={<FuelPlanner />} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<Landing />} />
+            <Route path="/elevation-finder" element={<ElevationPage />} />
             <Route path="/ethos" element={<Ethos />} />
-            {/* <Route path="dashboard" element={<Dashboard />} /> */}
             <Route path="login" element={<Login />} />
             <Route path="logout" element={<Logout />} />
             <Route path="register" element={<Register />} />
@@ -56,7 +56,6 @@ function App() {
               element={<ElevationChart points={dummyPoints} />}
             />
           </Route>
-          <Route path="/elevation-finder" element={<ElevationPage />} />
         </Routes>
         <GoogleAnalytics />
       </HelmetProvider>
