@@ -156,21 +156,17 @@ export default function ElevationPage() {
       </Helmet>
       <div className="max-w-6xl mx-auto p-6 space-y-6">
         <h1 className="text-5xl font-bold text-blue-700">ElevationFinder</h1>
-
         <GpxUploader onFileParsed={handleFileParsed} />
-
         {loading && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
             <p className="text-blue-700">Analyzing GPX file...</p>
           </div>
         )}
-
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
             <p className="text-red-700 font-medium">Error: {error}</p>
           </div>
         )}
-
         {/* Show basic route info */}
         {analysisData && (
           <div className="bg-white rounded-lg shadow-sm border p-4">
@@ -203,12 +199,10 @@ export default function ElevationPage() {
             </div>
           </div>
         )}
-
         {/* Elevation Chart */}
         {points.length > 0 && (
           <ElevationChart points={points} filename={filename ?? undefined} />
         )}
-
         {/* FIXED: Use the pace that backend actually used */}
         <ElevationInsights
           elevationInsights={analysisData?.elevationInsights || null}
@@ -220,7 +214,6 @@ export default function ElevationPage() {
           }
           onSettingsChange={handleSettingsChange}
         />
-
         {/* Debug info (remove in production) */}
         {process.env.NODE_ENV === "development" && analysisData && (
           <details className="bg-gray-50 border rounded p-4">

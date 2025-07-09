@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   TrendingUp,
   TrendingDown,
@@ -119,13 +119,6 @@ const formatTime = (minutes: number) => {
   return `${mins}m`;
 };
 
-// const formatPace = (multiplier: number, basePace: number) => {
-//   const adjustedPace = basePace * multiplier;
-//   const minutes = Math.floor(adjustedPace);
-//   const seconds = Math.round((adjustedPace - minutes) * 60);
-//   return `${minutes}:${seconds.toString().padStart(2, "0")}/km`;
-// };
-
 const formatPace = (multiplier: number, basePace: number) => {
   const adjustedPace = basePace * multiplier;
   let minutes = Math.floor(adjustedPace);
@@ -149,6 +142,56 @@ export function ElevationInsights({
   const [selectedSegment, setSelectedSegment] = useState<Segment | null>(null);
   const [localBasePace, setLocalBasePace] = useState(basePaceMinPerKm);
   const [localGradeThreshold, setLocalGradeThreshold] = useState(2);
+
+  // Debounce timer
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+
+  // Debounced settings change
+  const debouncedSettingsChange = () => {
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    debounceTimer.current = setTimeout(() => {
+      if (onSettingsChange) {
+        console.log("🔄 Calling onSettingsChange with:", {
+          basePaceMinPerKm: localBasePace,
+          gradeThreshold: localGradeThreshold,
+        });
+        onSettingsChange({
+          basePaceMinPerKm: localBasePace,
+          gradeThreshold: localGradeThreshold,
+        });
+      }
+    }, 500); // Wait 500ms after user stops moving slider
+  };
+
+  // Clean up timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
+    };
+  }, []);
+
+  // Handle immediate settings change (for onMouseUp/onTouchEnd)
+  const handleImmediateSettingsChange = () => {
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+
+    if (onSettingsChange) {
+      console.log("⚡ Immediate settings change:", {
+        basePaceMinPerKm: localBasePace,
+        gradeThreshold: localGradeThreshold,
+      });
+      onSettingsChange({
+        basePaceMinPerKm: localBasePace,
+        gradeThreshold: localGradeThreshold,
+      });
+    }
+  };
 
   const handleSettingsChange = () => {
     if (onSettingsChange) {
@@ -198,7 +241,7 @@ export function ElevationInsights({
 
   return (
     <div className="w-full space-y-6">
-      {/* Controls - Only show if onSettingsChange is provided */}
+      {/* Controls - Fixed slider events */}
       {onSettingsChange && (
         <div className="bg-white rounded-lg shadow-sm border p-4">
           <h3 className="font-semibold text-gray-800 mb-3">Settings</h3>
@@ -213,8 +256,12 @@ export function ElevationInsights({
                 max="5"
                 step="0.5"
                 value={localGradeThreshold}
-                onChange={(e) => setLocalGradeThreshold(Number(e.target.value))}
-                onMouseUp={handleSettingsChange}
+                onChange={(e) => {
+                  setLocalGradeThreshold(Number(e.target.value));
+                  debouncedSettingsChange(); // Debounced call on every change
+                }}
+                onMouseUp={handleImmediateSettingsChange} // Immediate call when released
+                onTouchEnd={handleImmediateSettingsChange} // For mobile
                 className="w-full"
               />
             </div>
@@ -228,8 +275,12 @@ export function ElevationInsights({
                 max="8"
                 step="0.1"
                 value={localBasePace}
-                onChange={(e) => setLocalBasePace(Number(e.target.value))}
-                onMouseUp={handleSettingsChange}
+                onChange={(e) => {
+                  setLocalBasePace(Number(e.target.value));
+                  debouncedSettingsChange(); // Debounced call on every change
+                }}
+                onMouseUp={handleImmediateSettingsChange} // Immediate call when released
+                onTouchEnd={handleImmediateSettingsChange} // For mobile
                 className="w-full"
               />
             </div>
