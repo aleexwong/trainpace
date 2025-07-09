@@ -37,7 +37,7 @@ export function ElevationChart({ points, filename }: ElevationChartProps) {
         borderColor: "rgba(59, 130, 246, 1)", // Blue-500
         backgroundColor: "rgba(59, 130, 246, 0.1)", // Blue-500 with transparency
         fill: true,
-        tension: 0.3,
+        tension: 0.4,
         pointRadius: 0,
         pointHoverRadius: 6,
         pointHoverBackgroundColor: "rgba(59, 130, 246, 1)",
@@ -97,7 +97,7 @@ export function ElevationChart({ points, filename }: ElevationChartProps) {
           text: "Distance (km)",
           color: "rgba(75, 85, 99, 1)", // Gray-600
           font: {
-            size: 12,
+            size: 14,
             weight: "bold",
           },
         },
@@ -122,7 +122,7 @@ export function ElevationChart({ points, filename }: ElevationChartProps) {
           text: "Elevation (m)",
           color: "rgba(75, 85, 99, 1)", // Gray-600
           font: {
-            size: 12,
+            size: 14,
             weight: "bold",
           },
         },

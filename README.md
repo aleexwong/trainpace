@@ -23,3 +23,9 @@ Hosted here: https://www.trainpace.com
 - Any new running tips I learn on the way
 - Linking to any guides I find useful
 - Blog
+
+## fetching data from the backend?
+
+- Gcloud sdk needed for local development
+- brew install google-cloud-sdk
+- gcloud init
