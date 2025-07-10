@@ -193,14 +193,14 @@ export function ElevationInsights({
     }
   };
 
-  const handleSettingsChange = () => {
-    if (onSettingsChange) {
-      onSettingsChange({
-        basePaceMinPerKm: localBasePace,
-        gradeThreshold: localGradeThreshold,
-      });
-    }
-  };
+  // const handleSettingsChange = () => {
+  //   if (onSettingsChange) {
+  //     onSettingsChange({
+  //       basePaceMinPerKm: localBasePace,
+  //       gradeThreshold: localGradeThreshold,
+  //     });
+  //   }
+  // };
 
   if (loading) {
     return (

@@ -42,12 +42,20 @@ export default function MainLayout() {
               Fuel Planner
             </Link>
             {user ? (
-              <Link
-                to="/elevation-finder"
-                className="text-gray-700 hover:text-blue-600"
-              >
-                ElevationFinder
-              </Link>
+              <>
+                <Link
+                  to="/elevation-finder"
+                  className="text-gray-700 hover:text-blue-600"
+                >
+                  ElevationFinder
+                </Link>
+                <Link
+                  to="/dashboard"
+                  className="text-gray-700 hover:text-blue-600"
+                >
+                  Dashboard
+                </Link>
+              </>
             ) : (
               <Link to="/login" className="text-gray-700 hover:text-blue-600">
                 Login

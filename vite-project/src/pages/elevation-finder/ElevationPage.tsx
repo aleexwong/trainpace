@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ElevationChart from "./ElevationChart";
 import GpxUploader from "./GpxUploader";
 import ElevationInsights from "./ElevationInsights";
 import { Helmet } from "react-helmet";
+import { useParams } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 type ProfilePoint = { distanceKm: number; elevation: number };
 
@@ -33,6 +36,7 @@ export default function ElevationPage() {
   const [filename, setFilename] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { docId } = useParams();
 
   // NEW: Store the full API response including elevation insights
   const [analysisData, setAnalysisData] = useState<GPXAnalysisResponse | null>(
@@ -47,6 +51,37 @@ export default function ElevationPage() {
     basePaceMinPerKm: 5,
     gradeThreshold: 2,
   });
+
+  useEffect(() => {
+    const loadSharedRoute = async () => {
+      if (!docId) return;
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const docRef = doc(db, "gpx_uploads", docId);
+        const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists()) {
+          throw new Error("Shared route not found");
+        }
+
+        const sharedData = docSnap.data();
+
+        setFilename(sharedData.filename);
+        setOriginalGpxText(sharedData.originalGpxText);
+        setAnalysisData(sharedData.analysisData);
+        setPoints(sharedData.analysisData.profile || []);
+      } catch (err: any) {
+        setError(err.message || "Failed to load shared route");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSharedRoute();
+  }, [docId]);
 
   const handleFileParsed = async (gpxText: string, filename: string) => {
     setLoading(true);
@@ -156,7 +191,7 @@ export default function ElevationPage() {
       </Helmet>
       <div className="max-w-6xl mx-auto p-6 space-y-6">
         <h1 className="text-5xl font-bold text-blue-700">ElevationFinder</h1>
-        <GpxUploader onFileParsed={handleFileParsed} />
+        {!docId && <GpxUploader onFileParsed={handleFileParsed} />}
         {loading && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
             <p className="text-blue-700">Analyzing GPX file...</p>

@@ -5,34 +5,32 @@ import {
   MapPin,
   AlertCircle,
   CheckCircle,
-  X,
   FileX,
 } from "lucide-react";
 import { toast } from "../../hooks/use-toast";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  deleteObject,
-  getStorage,
-} from "firebase/storage";
-import {
-  doc,
   setDoc,
-  getDoc,
-  updateDoc,
   query,
   where,
   collection,
   getDocs,
   serverTimestamp,
+  addDoc,
+  doc,
 } from "firebase/firestore";
-import { storage, db } from "../../lib/firebase"; // Your Firebase config
-
-import { useAuth } from "../../features/auth/AuthContext"; // Your auth context
+import { storage, db } from "../../lib/firebase";
+import { useAuth } from "../../features/auth/AuthContext";
+import { processGPXUpload } from "../../lib/gpxMetaData";
 
 interface GpxUploaderProps {
-  onFileParsed: (gpxText: string, filename: string, fileUrl: string) => void;
+  onFileParsed: (
+    gpxText: string,
+    filename: string,
+    fileUrl: string,
+    docId: string | null,
+    displayUrl?: string // Optional: URL for displaying the GPX file
+  ) => void;
   maxFileSize?: number; // in MB
   maxUploadsPerDay?: number;
   maxUploadsPerHour?: number;
@@ -249,6 +247,8 @@ export default function GpxUploader({
       // This makes duplicate file loading much faster and more reliable
       const shouldStoreContent = file.size < 1024 * 1024; // Store content for files < 1MB
 
+      const processed = processGPXUpload(content);
+
       const docData: any = {
         userId: user?.uid,
         filename: file.name,
@@ -259,6 +259,11 @@ export default function GpxUploader({
         fileHash, // Store hash for duplicate detection
         uploadedAt: serverTimestamp(),
         contentValidated: true,
+        // Store all processed data from processGPXUpload
+
+        metadata: processed.metadata,
+        displayPoints: processed.displayPoints,
+        thumbnailPoints: processed.thumbnailPoints,
       };
 
       // Store content in Firestore for smaller files (faster duplicate loading)
@@ -266,7 +271,12 @@ export default function GpxUploader({
         docData.content = content;
       }
 
-      await setDoc(doc(db, "gpx_uploads", safeFilename), docData);
+      // await setDoc(doc(db, "gpx_uploads", safeFilename), docData);
+      const docRef = doc(collection(db, "gpx_uploads")); // creates a doc ref with random ID
+      const docId = docRef.id;
+      const displayUrl = `/elevation-finder/${docId}`;
+
+      await setDoc(docRef, { ...docData, docId, displayUrl });
 
       return downloadURL;
     } catch (error) {
@@ -302,7 +312,12 @@ export default function GpxUploader({
       // Method 1: Use content stored in Firestore (fastest)
       if (duplicateFound?.content) {
         console.log("Loading content from Firestore cache");
-        onFileParsed(duplicateFound.content, filename, fileUrl);
+        onFileParsed(
+          duplicateFound.content,
+          filename,
+          fileUrl,
+          duplicateFound.docId || null
+        );
         return;
       }
 
@@ -318,7 +333,7 @@ export default function GpxUploader({
         }
 
         const content = await response.text();
-        onFileParsed(content, filename, freshUrl);
+        onFileParsed(content, filename, freshUrl, duplicateFound.docId || null);
         return;
       }
 
@@ -328,9 +343,12 @@ export default function GpxUploader({
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
+      const docRef = await addDoc(collection(db, "gpx_uploads"), {});
+      const docId = docRef.id;
+      const displayUrl = `/elevation-finder/${docId}`;
 
       const content = await response.text();
-      onFileParsed(content, filename, fileUrl);
+      onFileParsed(content, filename, fileUrl, docId || null, displayUrl);
     } catch (error) {
       console.error("All fetch methods failed:", error);
       toast({
@@ -374,7 +392,12 @@ export default function GpxUploader({
 
           const content = await response.text();
           const filename = duplicateFound?.filename || "existing_file.gpx";
-          onFileParsed(content, filename, freshUrl);
+          onFileParsed(
+            content,
+            filename,
+            freshUrl,
+            duplicateFound.docId || null
+          );
         } else {
           throw new Error("Storage reference not found");
         }
@@ -463,7 +486,7 @@ export default function GpxUploader({
       setUploadProgress(100);
 
       // Success callback
-      onFileParsed(content, file.name, fileUrl);
+      onFileParsed(content, file.name, fileUrl, null);
 
       toast({
         title: "Upload Successful",

@@ -22,6 +22,7 @@ import ResetConfirmed from "./pages/login/ResetConfirmed";
 import SideNavPortal from "./components/layout/SideNavPortal";
 import { ElevationChart } from "./pages/elevation-finder/ElevationChart";
 import ElevationPage from "./pages/elevation-finder/ElevationPage";
+import Dashboard from "./pages/elevation-finder/Dashboard";
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
   const dummyPoints = [
@@ -45,6 +46,11 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<Landing />} />
             <Route path="/elevation-finder" element={<ElevationPage />} />
+            <Route
+              path="/elevation-finder/:docId"
+              element={<ElevationPage />}
+            />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/ethos" element={<Ethos />} />
             <Route path="login" element={<Login />} />
             <Route path="logout" element={<Logout />} />
