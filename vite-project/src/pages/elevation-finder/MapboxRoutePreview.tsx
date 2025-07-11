@@ -1,4 +1,3 @@
-import { env } from "process";
 import React, { useEffect, useRef } from "react";
 
 interface RoutePoint {
@@ -20,7 +19,6 @@ const MAPBOX_TOKEN =
 
 const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
   thumbnailPoints,
-  routeName = "Route",
   height = "250px",
   width = "100%",
   showStartEnd = true,
