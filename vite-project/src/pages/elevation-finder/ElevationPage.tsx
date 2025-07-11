@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ElevationChart from "./ElevationChart";
 import GpxUploader from "./GpxUploader";
 import ElevationInsights from "./ElevationInsights";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db, storage } from "@/lib/firebase";
