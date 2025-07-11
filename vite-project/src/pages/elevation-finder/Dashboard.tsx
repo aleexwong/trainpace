@@ -187,15 +187,15 @@ export default function Dashboard() {
         {/* Action Buttons */}
         <div className="px-4 pb-4">
           <div className="flex space-x-2">
-            <button
-              className="flex-1 bg-blue-500 text-white text-sm py-2 px-3 rounded-md hover:bg-blue-600 transition-colors flex items-center justify-center space-x-1"
-              onClick={() => {
-                console.log("View route:", route.id, "Display URL:", route.id);
-              }}
-            >
-              <Eye className="w-4 h-4" />
-              <Link to={`/elevation-finder/${route.id}`}>View</Link>
-            </button>
+            <div className="flex space-x-2">
+              <Link
+                to={`/elevation-finder/${route.id}`}
+                className="flex-1 bg-blue-500 text-white text-sm py-2 px-3 rounded-md hover:bg-blue-600 transition-colors flex items-center justify-center space-x-1"
+              >
+                <Eye className="w-4 h-4" />
+                <span>View</span>
+              </Link>
+            </div>
             {/* <button
               className="flex-1 bg-gray-100 text-gray-700 text-sm py-2 px-3 rounded-md hover:bg-gray-200 transition-colors flex items-center justify-center space-x-1"
               onClick={() => {

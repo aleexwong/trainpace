@@ -15,7 +15,8 @@ interface InteractiveMapboxPreviewProps {
   className?: string;
 }
 
-const MAPBOX_TOKEN = env.VITE_MAPBOX_TOKEN || "YOUR_MAPBOX_ACCESS_TOKEN";
+const MAPBOX_TOKEN =
+  import.meta.env.VITE_MAPBOX_TOKEN || "YOUR_MAPBOX_ACCESS_TOKEN";
 
 const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
   thumbnailPoints,
