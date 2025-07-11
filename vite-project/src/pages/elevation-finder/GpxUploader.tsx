@@ -37,16 +37,16 @@ interface GpxUploaderProps {
   allowedFileTypes?: string[];
 }
 
-interface UploadMetadata {
-  userId: string;
-  filename: string;
-  fileSize: number;
-  uploadedAt: any;
-  fileUrl: string;
-  storageRef: string;
-  fileHash: string; // Add hash for duplicate detection
-  ipAddress?: string;
-}
+// interface UploadMetadata {
+//   userId: string;
+//   filename: string;
+//   fileSize: number;
+//   uploadedAt: any;
+//   fileUrl: string;
+//   storageRef: string;
+//   fileHash: string; // Add hash for duplicate detection
+//   ipAddress?: string;
+// }
 
 interface DuplicateFile {
   filename: string;
@@ -67,7 +67,7 @@ export default function GpxUploader({
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [recentUploads, setRecentUploads] = useState<UploadMetadata[]>([]);
+  // const [recentUploads, setRecentUploads] = useState<UploadMetadata[]>([]);
   const [duplicateFound, setDuplicateFound] = useState<DuplicateFile | null>(
     null
   );
@@ -361,54 +361,54 @@ export default function GpxUploader({
   };
 
   // Fallback method: Fetch using storage reference
-  const fetchFromStorageReference = async () => {
-    if (!duplicateFound) return;
+  // const fetchFromStorageReference = async () => {
+  //   if (!duplicateFound) return;
 
-    try {
-      // We need to get the storage reference from our Firestore document
-      // First, find the document with this file
-      const duplicateQuery = query(
-        collection(db, "gpx_uploads"),
-        where("userId", "==", user?.uid),
-        where("fileUrl", "==", duplicateFound.fileUrl)
-      );
+  //   try {
+  //     // We need to get the storage reference from our Firestore document
+  //     // First, find the document with this file
+  //     const duplicateQuery = query(
+  //       collection(db, "gpx_uploads"),
+  //       where("userId", "==", user?.uid),
+  //       where("fileUrl", "==", duplicateFound.fileUrl)
+  //     );
 
-      const duplicateSnapshot = await getDocs(duplicateQuery);
+  //     const duplicateSnapshot = await getDocs(duplicateQuery);
 
-      if (!duplicateSnapshot.empty) {
-        const docData = duplicateSnapshot.docs[0].data();
-        const storageRefPath = docData.storageRef;
+  //     if (!duplicateSnapshot.empty) {
+  //       const docData = duplicateSnapshot.docs[0].data();
+  //       const storageRefPath = docData.storageRef;
 
-        if (storageRefPath) {
-          // Create storage reference and get download URL
-          const fileRef = ref(storage, storageRefPath);
-          const freshUrl = await getDownloadURL(fileRef);
+  //       if (storageRefPath) {
+  //         // Create storage reference and get download URL
+  //         const fileRef = ref(storage, storageRefPath);
+  //         const freshUrl = await getDownloadURL(fileRef);
 
-          // Try fetching with the fresh URL
-          const response = await fetch(freshUrl);
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-          }
+  //         // Try fetching with the fresh URL
+  //         const response = await fetch(freshUrl);
+  //         if (!response.ok) {
+  //           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  //         }
 
-          const content = await response.text();
-          const filename = duplicateFound?.filename || "existing_file.gpx";
-          onFileParsed(
-            content,
-            filename,
-            freshUrl,
-            duplicateFound.docId || null
-          );
-        } else {
-          throw new Error("Storage reference not found");
-        }
-      } else {
-        throw new Error("File document not found");
-      }
-    } catch (error) {
-      console.error("Storage reference fetch failed:", error);
-      throw error;
-    }
-  };
+  //         const content = await response.text();
+  //         const filename = duplicateFound?.filename || "existing_file.gpx";
+  //         onFileParsed(
+  //           content,
+  //           filename,
+  //           freshUrl,
+  //           duplicateFound.docId || null
+  //         );
+  //       } else {
+  //         throw new Error("Storage reference not found");
+  //       }
+  //     } else {
+  //       throw new Error("File document not found");
+  //     }
+  //   } catch (error) {
+  //     console.error("Storage reference fetch failed:", error);
+  //     throw error;
+  //   }
+  // };
 
   // Main file handler
   const handleFile = async (file: File) => {

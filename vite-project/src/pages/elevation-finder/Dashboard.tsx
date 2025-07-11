@@ -2,14 +2,7 @@ import { useState, useEffect } from "react";
 import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { useAuth } from "../../features/auth/AuthContext";
-import {
-  MapPin,
-  Activity,
-  Calendar,
-  Trash2,
-  Eye,
-  BarChart3,
-} from "lucide-react";
+import { MapPin, Activity, Calendar, Trash2, Eye } from "lucide-react";
 import MapboxRoutePreview from "./MapboxRoutePreview";
 import { Link } from "react-router-dom";
 
