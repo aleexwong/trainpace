@@ -156,15 +156,18 @@ export default function ElevationPage() {
         }
 
         console.log("🚀 Sending GPX to backend, length:", gpxText.length);
-        const apiRes = await fetch("http://localhost:3000/api/analyze-gpx", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            gpx: gpxText,
-            goalPace: 5, // default base pace, or pull from settings
-            raceName: sharedData.filename || "Shared Upload",
-          }),
-        });
+        const apiRes = await fetch(
+          "https://gpx-insight-api.vercel.app/api/analyze-gpx",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              gpx: gpxText,
+              goalPace: 5, // default base pace, or pull from settings
+              raceName: sharedData.filename || "Shared Upload",
+            }),
+          }
+        );
 
         console.log("⏳ Backend response status:", apiRes.status);
         const backendText = await apiRes.text();
@@ -201,18 +204,21 @@ export default function ElevationPage() {
 
     try {
       // FIXED: Use the correct endpoint and include elevation insights parameters
-      const response = await fetch("http://localhost:3000/api/analyze-gpx", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          gpx: gpxText,
-          goalPace: analysisSettings.basePaceMinPerKm,
-          raceName: "User Upload",
-          basePaceMinPerKm: analysisSettings.basePaceMinPerKm,
-          gradeThreshold: analysisSettings.gradeThreshold,
-          includeElevationInsights: true,
-        }),
-      });
+      const response = await fetch(
+        "https://gpx-insight-api.vercel.app/api/analyze-gpx",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            gpx: gpxText,
+            goalPace: analysisSettings.basePaceMinPerKm,
+            raceName: "User Upload",
+            basePaceMinPerKm: analysisSettings.basePaceMinPerKm,
+            gradeThreshold: analysisSettings.gradeThreshold,
+            includeElevationInsights: true,
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -251,18 +257,21 @@ export default function ElevationPage() {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:3000/api/analyze-gpx", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          gpx: originalGpxText,
-          goalPace: newSettings.basePaceMinPerKm,
-          raceName: analysisData.raceName,
-          basePaceMinPerKm: newSettings.basePaceMinPerKm,
-          gradeThreshold: newSettings.gradeThreshold,
-          includeElevationInsights: true,
-        }),
-      });
+      const response = await fetch(
+        "https://gpx-insight-api.vercel.app/api/analyze-gpx",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            gpx: originalGpxText,
+            goalPace: newSettings.basePaceMinPerKm,
+            raceName: analysisData.raceName,
+            basePaceMinPerKm: newSettings.basePaceMinPerKm,
+            gradeThreshold: newSettings.gradeThreshold,
+            includeElevationInsights: true,
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
