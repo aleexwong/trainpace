@@ -4,7 +4,7 @@ import GpxUploader from "./GpxUploader";
 import ElevationInsights from "./ElevationInsights";
 import MapboxRoutePreview from "./MapboxRoutePreview";
 import { Helmet } from "react-helmet-async";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db, storage } from "@/lib/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
@@ -283,7 +283,14 @@ export default function ElevationPage() {
       </Helmet>
       <div className="max-w-6xlmx-auto p-6 space-y-6">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-700 text-center">
-          ElevationFinder
+          <a
+            href="/elevationfinder"
+            aria-label="ElevationFinder - Analyze Your GPX Files"
+            title="ElevationFinder - Analyze Your GPX Files"
+            className="no-underline text-blue-700 font-bold hover:text-blue-800 transition-colors"
+          >
+            ElevationFinder
+          </a>
         </h1>{" "}
         {!docId && <GpxUploader onFileParsed={handleFileParsed} />}
         {/* Only show map when we have route data */}
