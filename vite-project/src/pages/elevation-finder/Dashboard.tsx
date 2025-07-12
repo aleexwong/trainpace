@@ -324,16 +324,6 @@ export default function Dashboard() {
                   <span>View</span>
                 </Link>
               </div>
-              {/* <button
-              className="flex-1 bg-gray-100 text-gray-700 text-sm py-2 px-3 rounded-md hover:bg-gray-200 transition-colors flex items-center justify-center space-x-1"
-              onClick={() => {
-                // TODO: Navigate to analysis
-                console.log("Analyze route:", route.id);
-              }}
-            >
-              <BarChart3 className="w-4 h-4" />
-              <span>Analyze</span>
-            </button> */}
             </div>
           </div>
 

@@ -93,62 +93,6 @@ export default function ElevationPage() {
     gradeThreshold: 2,
   });
 
-  // useEffect(() => {
-  //   const loadSharedRoute = async () => {
-  //     if (!docId) return;
-
-  //     setLoading(true);
-  //     setError(null);
-
-  //     try {
-  //       const docRef = doc(db, "gpx_uploads", docId);
-  //       const docSnap = await getDoc(docRef);
-
-  //       if (!docSnap.exists()) {
-  //         throw new Error("Shared route not found");
-  //       }
-
-  //       const sharedData = docSnap.data();
-
-  //       let gpxText = sharedData.content;
-  //       if (!gpxText && sharedData.storageRef) {
-  //         const url = await getDownloadURL(ref(storage, sharedData.storageRef));
-  //         const res = await fetch(url);
-  //         if (!res.ok)
-  //           throw new Error(`Failed to fetch GPX from storage: ${res.status}`);
-  //         gpxText = await res.text();
-  //       }
-  //       console.log("gpxText length:", gpxText?.length);
-  //       if (!gpxText || gpxText.length < 10) {
-  //         throw new Error("GPX file content is missing or too short.");
-  //       }
-
-  //       const apiRes = await fetch("http://localhost:3000/api/analyze-gpx", {
-  //         method: "POST",
-  //         headers: { "Content-Type": "application/json" },
-  //         body: JSON.stringify({ gpx: gpxText }),
-  //       });
-
-  //       if (!apiRes.ok) throw new Error("Backend analysis failed");
-
-  //       const analysis = await apiRes.json();
-
-  //       setAnalysisData(analysis); // ✅ local state
-  //       // updateElevationContext({ analysisData: analysis }); // ✅ context
-
-  //       setFilename(sharedData.filename);
-  //       setOriginalGpxText(gpxText); // the loaded GPX text (not old Firestore copy)
-  //       setAnalysisData(analysis); // the fresh backend analysis
-  //       setPoints(analysis.profile || []);
-  //     } catch (err: any) {
-  //       setError(err.message || "Failed to load shared route");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   loadSharedRoute();
-  // }, [docId]);
   useEffect(() => {
     const loadSharedRoute = async () => {
       if (!docId) return;
@@ -157,7 +101,6 @@ export default function ElevationPage() {
       setError(null);
 
       try {
-        console.log("🔍 Loading Firestore doc:", docId);
         const docRef = doc(db, "gpx_uploads", docId);
         const docSnap = await getDoc(docRef);
 
@@ -168,40 +111,24 @@ export default function ElevationPage() {
         const sharedData = docSnap.data();
         setRouteMetadata(sharedData as RouteMetadata);
 
-        console.log("✅ Firestore data loaded:", sharedData);
-        console.log(
-          "✅ DisplayPoints count:",
-          sharedData.displayPoints?.length
-        );
-
         let gpxText = sharedData.content;
 
         if (!gpxText && sharedData.storageRef) {
-          console.log(
-            "🌐 Fetching GPX from Firebase Storage:",
-            sharedData.storageRef
-          );
           const storageUrl = await getDownloadURL(
             ref(storage, sharedData.storageRef)
           );
-          console.log("✅ Got storage download URL:", storageUrl);
           const res = await fetch(storageUrl);
           if (!res.ok)
             throw new Error(
               `Failed to fetch GPX from storage (HTTP ${res.status})`
             );
           gpxText = await res.text();
-          console.log(
-            "✅ Fetched GPX text from storage, length:",
-            gpxText.length
-          );
         }
 
         if (!gpxText || gpxText.length < 10) {
           throw new Error("GPX file content is missing or too short.");
         }
 
-        console.log("🚀 Sending GPX to backend, length:", gpxText.length);
         const apiRes = await fetch(
           "https://gpx-insight-api.vercel.app/api/analyze-gpx",
           {
@@ -215,22 +142,18 @@ export default function ElevationPage() {
           }
         );
 
-        console.log("⏳ Backend response status:", apiRes.status);
         const backendText = await apiRes.text();
-        console.log("⏳ Backend raw response text:", backendText);
 
         if (!apiRes.ok)
           throw new Error(`Backend analysis failed (HTTP ${apiRes.status})`);
 
         const analysis = JSON.parse(backendText);
-        console.log("✅ Parsed backend analysis:", analysis);
 
         setFilename(sharedData.filename);
         setOriginalGpxText(gpxText);
         setAnalysisData(analysis);
         setPoints(analysis.profile || []);
       } catch (err: any) {
-        console.error("❌ loadSharedRoute error:", err);
         setError(err.message || "Failed to load shared route");
       } finally {
         setLoading(false);
@@ -256,9 +179,6 @@ export default function ElevationPage() {
     // ✅ STORE UPLOADED ROUTE POINTS IMMEDIATELY
     if (displayPoints && displayPoints.length > 0) {
       setUploadedRoutePoints(displayPoints);
-      console.log(
-        `✅ Received ${displayPoints.length} display points from uploader`
-      );
     }
 
     // Store the original GPX text
@@ -291,11 +211,6 @@ export default function ElevationPage() {
       // Store both the points and the full analysis
       setPoints(data.profile || []);
       setAnalysisData(data);
-
-      // Log the additional parameters for debugging
-      console.log("File URL:", fileUrl);
-      console.log("Doc ID:", docId);
-      console.log("Display URL:", displayUrl);
     } catch (err: any) {
       setError(err.message);
       console.error("GPX Analysis Error:", err);
@@ -347,13 +262,6 @@ export default function ElevationPage() {
       const data: GPXAnalysisResponse = await response.json();
       setAnalysisData(data);
       setPoints(data.profile || []);
-
-      // DEBUGGING: Log to see what's happening
-      console.log("New settings:", newSettings);
-      console.log(
-        "Backend response basePace:",
-        data.metadata?.analysisParameters?.basePaceMinPerKm
-      );
     } catch (err: any) {
       setError(err.message);
       console.error("Re-analysis Error:", err);
