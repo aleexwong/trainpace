@@ -260,9 +260,11 @@ export default function Dashboard() {
               <MapboxRoutePreview
                 routePoints={route.thumbnailPoints}
                 routeName={route.metadata?.routeName}
+                lineColor="#3b82f6"
                 height="225px"
                 showStartEnd={true}
                 className="border border-gray-200"
+                mapStyle="mapbox://styles/mapbox/outdoors-v11"
               />
             ) : (
               <div className="h-32 bg-gray-100 rounded-md border border-gray-200 flex items-center justify-center">
