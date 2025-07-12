@@ -4,7 +4,7 @@ import GpxUploader from "./GpxUploader";
 import ElevationInsights from "./ElevationInsights";
 import MapboxRoutePreview from "./MapboxRoutePreview";
 import { Helmet } from "react-helmet-async";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db, storage } from "@/lib/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
