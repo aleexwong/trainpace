@@ -22,6 +22,8 @@ import ResetConfirmed from "./pages/login/ResetConfirmed";
 import { ElevationChart } from "./pages/elevation-finder/ElevationChart";
 import ElevationPage from "./pages/elevation-finder/ElevationPage";
 import Dashboard from "./pages/elevation-finder/Dashboard";
+import FAQ from "./components/FAQ";
+
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
   const dummyPoints = [
@@ -60,6 +62,7 @@ function App() {
               path="/elevation"
               element={<ElevationChart points={dummyPoints} />}
             />
+            <Route path="/faq" element={<FAQ />} />
           </Route>
         </Routes>
         <GoogleAnalytics />

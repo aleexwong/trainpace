@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import type { User } from "firebase/auth";
 import trainPaceHeroImage from "@/assets/trainPaceHeroImage.png";
 import trainPaceHeroMobile from "@/assets/trainPaceHeroMobile.png";
+import FAQ from "../FAQ";
 
 export default function Landing() {
   // const [menuOpen, setMenuOpen] = useState(false);
@@ -104,6 +105,10 @@ export default function Landing() {
             {user ? "View Dashboard" : "Get Started Free"}
           </Button>
         </Link>
+      </section>
+      {/* FAQ Section */}
+      <section>
+        <FAQ />
       </section>
     </div>
   );

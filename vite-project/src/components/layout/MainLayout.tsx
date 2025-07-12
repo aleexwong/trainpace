@@ -62,6 +62,7 @@ export default function MainLayout() {
 
   const getNavigationLinks = () => {
     const publicLinks = [
+      { href: "/", label: "Home" }, // Always include Home link
       { href: "/calculator", label: "Calculator" },
       { href: "/fuel", label: "Fuel Planner" },
     ];

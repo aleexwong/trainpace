@@ -1,0 +1,118 @@
+{
+  "sections": [
+    {
+      "title": "🚀 Getting Started",
+      "description": "New to TrainPace? Start here!",
+      "questions": [
+        {
+          "id": "what-is-trainpace",
+          "question": "What is TrainPace?",
+          "answer": "TrainPace is a free web tool built for self-coached runners to calculate pace, predict race times, plan fueling, and analyze elevation profiles for better training and racing decisions.",
+          "emoji": "🏃‍♂️"
+        },
+        {
+          "id": "need-account",
+          "question": "Do I need to create an account?",
+          "answer": "For basic features, no account is needed. If you want to save uploads, track past routes, or access future premium tools, you'll need to sign in using Firebase Auth (Google or email login).",
+          "emoji": "🔐"
+        },
+        {
+          "id": "data-privacy",
+          "question": "Do you store or share my data?",
+          "answer": "No personal data is shared. Uploaded files are only stored if you're logged in, and they are linked securely to your account. We don't sell or share user data.",
+          "emoji": "🔒"
+        },
+        {
+          "id": "who-built-trainpace",
+          "question": "Who built TrainPace?",
+          "answer": "TrainPace was built by a solo developer and runner passionate about making performance tools accessible to self-coached athletes — no paywalls, no fluff.",
+          "emoji": "👨‍💻"
+        }
+      ]
+    },
+    {
+      "title": "📈 ElevationFinder",
+      "description": "Upload GPX files and analyze your routes",
+      "questions": [
+        {
+          "id": "what-is-elevationfinder",
+          "question": "What does ElevationFinder do?",
+          "answer": "ElevationFinder lets you upload GPX files from your watch or running app to analyze the elevation profile of your route or race. It highlights total gain, steep sections, and helps you plan pacing or fueling strategies.",
+          "emoji": "⛰️"
+        },
+        {
+          "id": "upload-gpx",
+          "question": "How do I upload a GPX file?",
+          "answer": "Just drag and drop your GPX file into the uploader on the ElevationFinder page, or click the upload button to select it from your device. We'll parse it instantly — no account required.",
+          "emoji": "📁"
+        },
+        {
+          "id": "file-types",
+          "question": "What file types does ElevationFinder support?",
+          "answer": "Currently, only `.gpx` files are supported. These are standard files exported from most GPS watches or apps like Strava, Garmin Connect, or Suunto.",
+          "emoji": "⌚"
+        },
+        {
+          "id": "elevation-calculation",
+          "question": "How is the elevation gain calculated?",
+          "answer": "We sum the positive differences between elevation points — only counting uphill sections. Small noise or GPS spikes are filtered out to avoid inflating your stats.",
+          "emoji": "🧮"
+        },
+        {
+          "id": "elevation-differences",
+          "question": "Why does my total elevation sometimes look lower or higher than Strava or Garmin?",
+          "answer": "Different tools apply different smoothing or correction methods. ElevationFinder uses a lightweight approach focused on clarity and speed — designed to give you a clean, reproducible summary.",
+          "emoji": "🤔"
+        },
+        {
+          "id": "duplicate-uploads",
+          "question": "How do you handle duplicate uploads?",
+          "answer": "We check for duplicate GPX files using file hashes. If you upload the same file twice, you'll get a warning, and it won't be counted twice in your saved files.",
+          "emoji": "🔄"
+        },
+        {
+          "id": "delete-files",
+          "question": "Can I delete or recover uploaded files?",
+          "answer": "Yes — you can soft-delete files, meaning they'll go to a 'trash' state you can restore from. Permanent deletion will be available soon as a backend cleanup feature.",
+          "emoji": "🗑️"
+        }
+      ]
+    },
+    {
+      "title": "🏁 Race Tools",
+      "description": "Predict times, plan fueling, and race smarter",
+      "questions": [
+        {
+          "id": "race-predictor",
+          "question": "How does TrainPace's race predictor work?",
+          "answer": "You enter a recent race result, and we apply the Riegel formula to estimate equivalent finish times for other distances — helping you set realistic goals.",
+          "emoji": "🎯"
+        },
+        {
+          "id": "predictor-accuracy",
+          "question": "Is TrainPace accurate for all runners?",
+          "answer": "Predictors and calculators are only as good as your input. Elite or highly specialized runners may need more advanced modeling, but for most recreational runners, TrainPace gives strong ballpark estimates.",
+          "emoji": "📊"
+        },
+        {
+          "id": "fuel-planner",
+          "question": "How does the fuel planner work?",
+          "answer": "Based on your race distance, estimated time, and intensity, it suggests carb intake (g/hour) and hydration needs, helping you avoid bonking or underfueling.",
+          "emoji": "🥤"
+        }
+      ]
+    },
+    {
+      "title": "💬 Support",
+      "description": "Get help and stay connected",
+      "questions": [
+        {
+          "id": "feedback",
+          "question": "How can I support or give feedback?",
+          "answer": "Use the feedback link on the site or DM us on Instagram (@trainpace) — we love hearing from users and are always open to improving.",
+          "emoji": "💌"
+        }
+      ]
+    }
+  ]
+}
