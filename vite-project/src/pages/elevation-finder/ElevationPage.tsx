@@ -362,7 +362,7 @@ export default function ElevationPage() {
           }
           onSettingsChange={handleSettingsChange}
         />
-        {/* Debug info (remove in production) */}
+        {/* Debug info (remove in production)
         {process.env.NODE_ENV === "development" && analysisData && (
           <details className="bg-gray-50 border rounded p-4">
             <summary className="cursor-pointer font-medium">
@@ -372,7 +372,7 @@ export default function ElevationPage() {
               {JSON.stringify(analysisData, null, 2)}
             </pre>
           </details>
-        )}
+        )} */}
       </div>
     </>
   );

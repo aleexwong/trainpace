@@ -328,7 +328,7 @@ export default function Dashboard() {
           </div>
 
           {/* Debug Info (development only) */}
-          {process.env.NODE_ENV === "development" && (
+          {/* {process.env.NODE_ENV === "development" && (
             <details className="px-4 pb-4">
               <summary className="cursor-pointer text-xs text-gray-400">
                 Debug Info
@@ -351,7 +351,7 @@ export default function Dashboard() {
                 )}
               </pre>
             </details>
-          )}
+          )} */}
         </div>
       </>
     );
