@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   TrendingUp,
   TrendingDown,
@@ -143,28 +143,45 @@ export function ElevationInsights({
   const [localBasePace, setLocalBasePace] = useState(basePaceMinPerKm);
   const [localGradeThreshold, setLocalGradeThreshold] = useState(2);
 
+  // Rate limiting - prevent spam
+  const lastApiCall = useRef<number>(0);
+  const MIN_API_INTERVAL = 2000; // 1 second minimum between calls
+
   // Debounce timer
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
-  // Debounced settings change
-  const debouncedSettingsChange = () => {
-    if (debounceTimer.current) {
-      clearTimeout(debounceTimer.current);
+  // Simple API call with rate limiting
+  const handleSliderRelease = useCallback(() => {
+    const now = Date.now();
+
+    // Rate limiting - prevent spam
+    if (now - lastApiCall.current < MIN_API_INTERVAL) {
+      console.log("🚫 Rate limited - too soon since last call");
+      return;
     }
 
-    debounceTimer.current = setTimeout(() => {
-      if (onSettingsChange) {
-        console.log("🔄 Calling onSettingsChange with:", {
-          basePaceMinPerKm: localBasePace,
-          gradeThreshold: localGradeThreshold,
-        });
-        onSettingsChange({
-          basePaceMinPerKm: localBasePace,
-          gradeThreshold: localGradeThreshold,
-        });
+    if (onSettingsChange) {
+      console.log("📡 API call on release:", {
+        basePaceMinPerKm: localBasePace,
+        gradeThreshold: localGradeThreshold,
+      });
+
+      lastApiCall.current = now;
+      onSettingsChange({
+        basePaceMinPerKm: localBasePace,
+        gradeThreshold: localGradeThreshold,
+      });
+    }
+  }, [localBasePace, localGradeThreshold, onSettingsChange]);
+
+  // Clean up any timers on unmount (not needed anymore, but good practice)
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
       }
-    }, 500); // Wait 500ms after user stops moving slider
-  };
+    };
+  }, []);
 
   // Clean up timer on unmount
   useEffect(() => {
@@ -174,33 +191,6 @@ export function ElevationInsights({
       }
     };
   }, []);
-
-  // Handle immediate settings change (for onMouseUp/onTouchEnd)
-  const handleImmediateSettingsChange = () => {
-    if (debounceTimer.current) {
-      clearTimeout(debounceTimer.current);
-    }
-
-    if (onSettingsChange) {
-      console.log("⚡ Immediate settings change:", {
-        basePaceMinPerKm: localBasePace,
-        gradeThreshold: localGradeThreshold,
-      });
-      onSettingsChange({
-        basePaceMinPerKm: localBasePace,
-        gradeThreshold: localGradeThreshold,
-      });
-    }
-  };
-
-  // const handleSettingsChange = () => {
-  //   if (onSettingsChange) {
-  //     onSettingsChange({
-  //       basePaceMinPerKm: localBasePace,
-  //       gradeThreshold: localGradeThreshold,
-  //     });
-  //   }
-  // };
 
   if (loading) {
     return (
@@ -258,10 +248,12 @@ export function ElevationInsights({
                 value={localGradeThreshold}
                 onChange={(e) => {
                   setLocalGradeThreshold(Number(e.target.value));
-                  debouncedSettingsChange(); // Debounced call on every change
+                  // Only update UI - no API call
                 }}
-                onMouseUp={handleImmediateSettingsChange} // Immediate call when released
-                onTouchEnd={handleImmediateSettingsChange} // For mobile
+                onMouseDown={() => {}} // Not needed anymore
+                onMouseUp={handleSliderRelease}
+                onTouchStart={() => {}} // Not needed anymore
+                onTouchEnd={handleSliderRelease}
                 className="w-full"
               />
             </div>
@@ -277,10 +269,12 @@ export function ElevationInsights({
                 value={localBasePace}
                 onChange={(e) => {
                   setLocalBasePace(Number(e.target.value));
-                  debouncedSettingsChange(); // Debounced call on every change
+                  // Only update UI - no API call
                 }}
-                onMouseUp={handleImmediateSettingsChange} // Immediate call when released
-                onTouchEnd={handleImmediateSettingsChange} // For mobile
+                onMouseDown={() => {}} // Not needed anymore
+                onMouseUp={handleSliderRelease}
+                onTouchStart={() => {}} // Not needed anymore
+                onTouchEnd={handleSliderRelease}
                 className="w-full"
               />
             </div>
