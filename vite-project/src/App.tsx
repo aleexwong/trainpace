@@ -19,18 +19,12 @@ import Logout from "./pages/login/Logout";
 import Register from "./pages/login/Register";
 import ResetPassword from "./pages/login/ResetPassword";
 import ResetConfirmed from "./pages/login/ResetConfirmed";
-import { ElevationChart } from "./pages/elevation-finder/ElevationChart";
 import ElevationPage from "./pages/elevation-finder/ElevationPage";
 import Dashboard from "./pages/elevation-finder/Dashboard";
 import FAQ from "./components/FAQ";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
-  const dummyPoints = [
-    { distanceKm: 0, elevation: 10 },
-    { distanceKm: 1, elevation: 15 },
-    { distanceKm: 2, elevation: 12 },
-  ];
   initAmplitude();
   // Initialize Amplitude Analytics
   return (
@@ -51,6 +45,8 @@ function App() {
               path="/elevation-finder/:docId"
               element={<ElevationPage />}
             />
+            <Route path="/elevationfinder/:docId" element={<ElevationPage />} />
+            <Route path="/elevationfinder" element={<ElevationPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/ethos" element={<Ethos />} />
             <Route path="login" element={<Login />} />
@@ -58,10 +54,6 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/reset-confirmed" element={<ResetConfirmed />} />
-            <Route
-              path="/elevation"
-              element={<ElevationChart points={dummyPoints} />}
-            />
             <Route path="/faq" element={<FAQ />} />
           </Route>
         </Routes>

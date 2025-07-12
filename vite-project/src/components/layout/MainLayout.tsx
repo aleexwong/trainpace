@@ -69,7 +69,7 @@ export default function MainLayout() {
 
     const authLinks = user
       ? [
-          { href: "/elevation-finder", label: "ElevationFinder" },
+          { href: "/elevationfinder", label: "ElevationFinder" },
           { href: "/dashboard", label: "Dashboard" },
         ]
       : [{ href: "/login", label: "Login" }];
