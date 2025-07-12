@@ -29,6 +29,7 @@ interface GpxUploaderProps {
     filename: string,
     fileUrl: string,
     docId: string | null,
+    displayPoints?: Array<{ lat: number; lng: number; ele?: number }>,
     displayUrl?: string // Optional: URL for displaying the GPX file
   ) => void;
   maxFileSize?: number; // in MB
@@ -60,7 +61,7 @@ interface DuplicateFile {
 export default function GpxUploader({
   onFileParsed,
   maxFileSize = 10, // 10MB default
-  maxUploadsPerDay = 20,
+  maxUploadsPerDay = 15,
   maxUploadsPerHour = 5,
   allowedFileTypes = [".gpx"],
 }: GpxUploaderProps) {
@@ -103,7 +104,8 @@ export default function GpxUploader({
       const duplicateQuery = query(
         collection(db, "gpx_uploads"),
         where("userId", "==", user.uid),
-        where("fileHash", "==", fileHash)
+        where("fileHash", "==", fileHash),
+        where("deleted", "==", false) // Exclude deleted files
       );
 
       const duplicateSnapshot = await getDocs(duplicateQuery);
@@ -223,7 +225,10 @@ export default function GpxUploader({
     file: File,
     content: string,
     fileHash: string
-  ): Promise<string> => {
+  ): Promise<{
+    fileUrl: string;
+    displayPoints: Array<{ lat: number; lng: number; ele?: number }>;
+  }> => {
     const safeFilename = generateSafeFilename(file.name);
     const storageRef = ref(storage, `gpx_files/${safeFilename}`);
 
@@ -259,8 +264,7 @@ export default function GpxUploader({
         fileHash, // Store hash for duplicate detection
         uploadedAt: serverTimestamp(),
         contentValidated: true,
-        // Store all processed data from processGPXUpload
-
+        deleted: false,
         metadata: processed.metadata,
         displayPoints: processed.displayPoints,
         thumbnailPoints: processed.thumbnailPoints,
@@ -278,7 +282,10 @@ export default function GpxUploader({
 
       await setDoc(docRef, { ...docData, docId, displayUrl });
 
-      return downloadURL;
+      return {
+        fileUrl: downloadURL,
+        displayPoints: processed.displayPoints,
+      };
     } catch (error) {
       console.error("Upload failed:", error);
       throw new Error("Upload failed. Please try again.");
@@ -343,12 +350,20 @@ export default function GpxUploader({
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
+      const content = await response.text();
+      const processed = processGPXUpload(content);
       const docRef = await addDoc(collection(db, "gpx_uploads"), {});
       const docId = docRef.id;
       const displayUrl = `/elevation-finder/${docId}`;
 
-      const content = await response.text();
-      onFileParsed(content, filename, fileUrl, docId || null, displayUrl);
+      onFileParsed(
+        content,
+        filename,
+        fileUrl,
+        docId || null,
+        processed.displayPoints,
+        displayUrl
+      );
     } catch (error) {
       console.error("All fetch methods failed:", error);
       toast({
@@ -359,56 +374,6 @@ export default function GpxUploader({
       });
     }
   };
-
-  // Fallback method: Fetch using storage reference
-  // const fetchFromStorageReference = async () => {
-  //   if (!duplicateFound) return;
-
-  //   try {
-  //     // We need to get the storage reference from our Firestore document
-  //     // First, find the document with this file
-  //     const duplicateQuery = query(
-  //       collection(db, "gpx_uploads"),
-  //       where("userId", "==", user?.uid),
-  //       where("fileUrl", "==", duplicateFound.fileUrl)
-  //     );
-
-  //     const duplicateSnapshot = await getDocs(duplicateQuery);
-
-  //     if (!duplicateSnapshot.empty) {
-  //       const docData = duplicateSnapshot.docs[0].data();
-  //       const storageRefPath = docData.storageRef;
-
-  //       if (storageRefPath) {
-  //         // Create storage reference and get download URL
-  //         const fileRef = ref(storage, storageRefPath);
-  //         const freshUrl = await getDownloadURL(fileRef);
-
-  //         // Try fetching with the fresh URL
-  //         const response = await fetch(freshUrl);
-  //         if (!response.ok) {
-  //           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-  //         }
-
-  //         const content = await response.text();
-  //         const filename = duplicateFound?.filename || "existing_file.gpx";
-  //         onFileParsed(
-  //           content,
-  //           filename,
-  //           freshUrl,
-  //           duplicateFound.docId || null
-  //         );
-  //       } else {
-  //         throw new Error("Storage reference not found");
-  //       }
-  //     } else {
-  //       throw new Error("File document not found");
-  //     }
-  //   } catch (error) {
-  //     console.error("Storage reference fetch failed:", error);
-  //     throw error;
-  //   }
-  // };
 
   // Main file handler
   const handleFile = async (file: File) => {
@@ -478,7 +443,11 @@ export default function GpxUploader({
       setUploadProgress(60);
 
       // Upload to Firebase
-      const fileUrl = await uploadToFirebase(file, content, fileHash);
+      const { fileUrl, displayPoints } = await uploadToFirebase(
+        file,
+        content,
+        fileHash
+      );
       setUploadProgress(85);
 
       // Update rate limit counters
@@ -486,7 +455,7 @@ export default function GpxUploader({
       setUploadProgress(100);
 
       // Success callback
-      onFileParsed(content, file.name, fileUrl, null);
+      onFileParsed(content, file.name, fileUrl, null, displayPoints);
 
       toast({
         title: "Upload Successful",

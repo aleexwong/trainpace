@@ -11,6 +11,8 @@ export default function SideNav() {
     { href: "/", label: "Home" },
     { href: "/calculator", label: "Calculator" },
     { href: "/fuel", label: "Fuel Planner" },
+    { href: "/elevation-finder", label: "Elevation Finder" },
+    { href: "/login", label: "Login" },
   ];
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ElevationChart from "./ElevationChart";
 import GpxUploader from "./GpxUploader";
 import ElevationInsights from "./ElevationInsights";
+import MapboxRoutePreview from "./MapboxRoutePreview";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
@@ -32,6 +33,33 @@ interface GPXAnalysisResponse {
   };
 }
 
+interface RouteMetadata {
+  id: string;
+  filename: string;
+  safeFilename: string;
+  uploadedAt: any;
+  metadata: {
+    routeName: string;
+    totalDistance: number;
+    elevationGain: number;
+    pointCount: number;
+    bounds: {
+      minLat: number;
+      maxLat: number;
+      minLng: number;
+      maxLng: number;
+    };
+  };
+  displayPoints: Array<{
+    lat: number;
+    lng: number;
+    ele: number;
+    dist?: number;
+  }>;
+  displayUrl: string;
+  fileUrl: string;
+}
+
 export default function ElevationPage() {
   const [points, setPoints] = useState<ProfilePoint[]>([]);
   const [filename, setFilename] = useState<string | null>(null);
@@ -43,6 +71,18 @@ export default function ElevationPage() {
   const [analysisData, setAnalysisData] = useState<GPXAnalysisResponse | null>(
     null
   );
+  // NEW: Store the route metadata for display
+  const [routeMetadata, setRouteMetadata] = useState<RouteMetadata | null>(
+    null
+  );
+
+  const [uploadedRoutePoints, setUploadedRoutePoints] = useState<
+    Array<{
+      lat: number;
+      lng: number;
+      ele?: number;
+    }>
+  >([]);
 
   // IMPORTANT: Store the original GPX text for re-analysis
   const [originalGpxText, setOriginalGpxText] = useState<string | null>(null);
@@ -126,7 +166,13 @@ export default function ElevationPage() {
         }
 
         const sharedData = docSnap.data();
+        setRouteMetadata(sharedData as RouteMetadata);
+
         console.log("✅ Firestore data loaded:", sharedData);
+        console.log(
+          "✅ DisplayPoints count:",
+          sharedData.displayPoints?.length
+        );
 
         let gpxText = sharedData.content;
 
@@ -194,16 +240,31 @@ export default function ElevationPage() {
     loadSharedRoute();
   }, [docId]);
 
-  const handleFileParsed = async (gpxText: string, filename: string) => {
+  // ✅ UPDATE: Fix the function signature to match GpxUploader
+  const handleFileParsed = async (
+    gpxText: string,
+    filename: string,
+    fileUrl: string, // ✅ ADD: Missing parameter
+    docId: string | null, // ✅ ADD: Missing parameter
+    displayPoints?: Array<{ lat: number; lng: number; ele?: number }>,
+    displayUrl?: string // ✅ ADD: Missing parameter
+  ) => {
     setLoading(true);
     setError(null);
     setFilename(filename);
 
-    // IMPORTANT: Store the original GPX text
+    // ✅ STORE UPLOADED ROUTE POINTS IMMEDIATELY
+    if (displayPoints && displayPoints.length > 0) {
+      setUploadedRoutePoints(displayPoints);
+      console.log(
+        `✅ Received ${displayPoints.length} display points from uploader`
+      );
+    }
+
+    // Store the original GPX text
     setOriginalGpxText(gpxText);
 
     try {
-      // FIXED: Use the correct endpoint and include elevation insights parameters
       const response = await fetch(
         "https://gpx-insight-api.vercel.app/api/analyze-gpx",
         {
@@ -230,6 +291,11 @@ export default function ElevationPage() {
       // Store both the points and the full analysis
       setPoints(data.profile || []);
       setAnalysisData(data);
+
+      // Log the additional parameters for debugging
+      console.log("File URL:", fileUrl);
+      console.log("Doc ID:", docId);
+      console.log("Display URL:", displayUrl);
     } catch (err: any) {
       setError(err.message);
       console.error("GPX Analysis Error:", err);
@@ -299,16 +365,37 @@ export default function ElevationPage() {
   return (
     <>
       <Helmet>
-        <title>ElevationFinder - Analyze Your Next Race</title>
+        <title>ElevationFinder | TrainPace - Smarter Race Insights</title>
         <meta
           name="description"
           content="Upload your GPX files to analyze elevation profiles, gain insights, and optimize your training."
         />
         <link rel="canonical" href="/elevation-finder" />
       </Helmet>
-      <div className="max-w-6xl mx-auto p-6 space-y-6">
-        <h1 className="text-5xl font-bold text-blue-700">ElevationFinder</h1>
+      <div className="max-w-6xlmx-auto p-6 space-y-6">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-700 text-center">
+          ElevationFinder
+        </h1>{" "}
         {!docId && <GpxUploader onFileParsed={handleFileParsed} />}
+        {/* Only show map when we have route data */}
+        {(routeMetadata?.displayPoints || uploadedRoutePoints.length > 0) && (
+          <MapboxRoutePreview
+            routePoints={routeMetadata?.displayPoints || uploadedRoutePoints}
+            routeName={
+              routeMetadata?.metadata?.routeName ||
+              analysisData?.raceName ||
+              filename ||
+              "Your Route"
+            }
+            height="400px"
+            width="100%"
+            showStartEnd={true}
+            className="border border-gray-200"
+            lineColor="#3b82f6"
+            lineWidth={3}
+            mapStyle="mapbox://styles/mapbox/outdoors-v11"
+          />
+        )}
         {loading && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
             <p className="text-blue-700">Analyzing GPX file...</p>

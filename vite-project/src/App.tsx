@@ -7,19 +7,18 @@ import { Toaster } from "@/components/ui/toaster";
 import { initAmplitude } from "@/lib/amplitude";
 import ScrollToTop from "./lib/ScrollToTop";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
-import TrainingPaceCalculator from "./TrainingPaceCalculator";
+import TrainingPaceCalculator from "./pages/calculator/TrainingPaceCalculator";
 import FuelPlanner from "./pages/FuelPlanner";
 import RacePredictorOverlay from "./RacePredictorOverlay";
-import Landing from "./Landing";
+import Landing from "./components/layout/Landing";
 import MainLayout from "./components/layout/MainLayout";
 import Login from "./pages/login/Login";
-import Footer from "./Footer";
-import Ethos from "./Ethos";
+import Footer from "./pages/Footer";
+import Ethos from "./pages/Ethos";
 import Logout from "./pages/login/Logout";
 import Register from "./pages/login/Register";
 import ResetPassword from "./pages/login/ResetPassword";
 import ResetConfirmed from "./pages/login/ResetConfirmed";
-import SideNavPortal from "./components/layout/SideNavPortal";
 import { ElevationChart } from "./pages/elevation-finder/ElevationChart";
 import ElevationPage from "./pages/elevation-finder/ElevationPage";
 import Dashboard from "./pages/elevation-finder/Dashboard";
@@ -34,7 +33,6 @@ function App() {
   // Initialize Amplitude Analytics
   return (
     <>
-      <SideNavPortal />
       <ScrollToTop />
       <HelmetProvider>
         {/* Side Navigation */}
@@ -44,6 +42,7 @@ function App() {
             <Route path="/calculator" element={<TrainingPaceCalculator />} />
             <Route path="/fuel" element={<FuelPlanner />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
             <Route path="*" element={<Landing />} />
             <Route path="/elevation-finder" element={<ElevationPage />} />
             <Route

@@ -1,9 +1,19 @@
 import { useState, useEffect } from "react";
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  orderBy,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { useAuth } from "../../features/auth/AuthContext";
 import { MapPin, Activity, Calendar, Trash2, Eye } from "lucide-react";
 import MapboxRoutePreview from "./MapboxRoutePreview";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
 interface RouteMetadata {
@@ -37,7 +47,7 @@ export default function Dashboard() {
   const [routes, setRoutes] = useState<RouteMetadata[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { user } = useAuth();
+  const { user } = useAuth(); // Assuming useAuth provides the current user context
 
   useEffect(() => {
     if (user) {
@@ -53,6 +63,7 @@ export default function Dashboard() {
       const routesQuery = query(
         collection(db, "gpx_uploads"),
         where("userId", "==", user.uid),
+        where("deleted", "==", false),
         orderBy("uploadedAt", "desc")
       );
 
@@ -91,105 +102,227 @@ export default function Dashboard() {
     }
   };
 
-  const handleDeleteRoute = async (routeId: string) => {
-    // TODO: Implement delete functionality
-    console.log("Delete route:", routeId);
-  };
+  // const handleDeleteDoc = async (routeId: string) => {
+  //   // Implement delete functionality
+  //   if (!user) return;
+
+  //   await deleteDoc(doc(db, "gpx_uploads", routeId))
+  //     .then(() => {
+  //       setRoutes((prevRoutes) => prevRoutes.filter((r) => r.id !== routeId));
+  //       console.log("Route deleted successfully");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error deleting route:", error);
+  //       setError("Failed to delete route");
+  //     });
+
+  //   console.log("Delete route:", routeId);
+  // };
+
+  // async function handleDeleteFile = async (safeFilename: string) => {
+  //   if (!safeFilename) return;
+
+  //   const fileRef = ref(storage, "gpx_files/" + safeFilename);
+  //   await deleteObject(fileRef)
+  //     .then(() => {
+  //       console.log("File deleted successfully from storage");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error deleting file from storage:", error);
+  //     });
+  // };
+
+  // async function deleteRouteDoc(routeId: string) {
+  //   const docRef = doc(db, "gpx_uploads", routeId);
+  //   await deleteDoc(docRef);
+  // }
+
+  // async function deleteRouteFile(safeFilename: string) {
+  //   const filePath = `gpx_files/${safeFilename}`;
+  //   const fileRef = ref(storage, filePath);
+  //   await deleteObject(fileRef);
+  // }
+
+  async function softDeleteRouteDoc(routeId: string) {
+    const docRef = doc(db, "gpx_uploads", routeId);
+    await updateDoc(docRef, { deleted: true, deletedAt: Date.now() });
+  }
+
+  async function handleDeleteRoute(routeId: string) {
+    try {
+      if (!user) {
+        throw new Error("Not authenticated");
+      }
+
+      const docRef = doc(db, "gpx_uploads", routeId);
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        throw new Error("Route does not exist");
+      }
+
+      const data = docSnap.data();
+      if (!data.userId || data.userId !== user.uid) {
+        throw new Error("You are not authorized to delete this route");
+      }
+
+      // ✅ Soft delete in Firestore
+      await softDeleteRouteDoc(routeId);
+      console.log(`Soft deleted route ${routeId}`);
+      setRoutes((prevRoutes) =>
+        prevRoutes.filter((route) => route.id !== routeId)
+      );
+
+      // ❗ Optional: you can also log or archive the file in Storage later
+      // For now, we leave the file in place to preserve quota tracking
+    } catch (err) {
+      console.error("Delete failed:", err);
+    }
+  }
+
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    id: string;
+    filename: string;
+    name: string;
+  } | null>(null);
 
   const RouteCard = ({ route }: { route: RouteMetadata }) => {
     const [showPreview, setShowPreview] = useState(true);
 
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-        {/* Route Header */}
-        <div className="p-4 pb-0">
-          <div className="flex justify-between items-start mb-3">
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-gray-800 truncate">
-                {route.metadata?.routeName || route.filename}
-              </h3>
-              <p className="text-sm text-gray-500">
-                {formatDate(route.uploadedAt)}
-              </p>
-            </div>
-            <button
-              onClick={() => handleDeleteRoute(route.id)}
-              className="text-gray-400 hover:text-red-500 transition-colors ml-2"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
+      <>
+        <Helmet>
+          <title>Dashboard | TrainPace - Smarter Race Insights</title>
+          <meta
+            name="description"
+            content="Dashboard to view and manage your uploaded GPX routes. Analyze elevation profiles, distances, and more."
+          />
+          <link rel="canonical" href="/dashboard" />
+        </Helmet>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+          {/* Route Header */}
+          <div className="p-4 pb-0">
+            <div className="flex justify-between items-start mb-3">
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-gray-800 truncate">
+                  {route.metadata?.routeName || route.filename}
+                </h3>
+                <p className="text-sm text-gray-500">
+                  {formatDate(route.uploadedAt)}
+                </p>
+              </div>
+              <button
+                onClick={() =>
+                  setDeleteConfirm({
+                    id: route.id,
+                    filename: route.safeFilename,
+                    name: route.metadata?.routeName || route.filename,
+                  })
+                }
+                className="text-gray-400 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
 
-        {/* Route Preview Map */}
-        <div className="px-4 pb-3">
-          {showPreview && route.thumbnailPoints?.length > 0 ? (
-            <MapboxRoutePreview
-              thumbnailPoints={route.thumbnailPoints}
-              routeName={route.metadata?.routeName}
-              height="250px"
-              showStartEnd={true}
-              className="border border-gray-200"
-            />
-          ) : (
-            <div className="h-32 bg-gray-100 rounded-md border border-gray-200 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="w-6 h-6 text-gray-400 mx-auto mb-1" />
-                <div className="text-xs text-gray-500">
-                  {route.thumbnailPoints?.length > 0
-                    ? "Preview unavailable"
-                    : "No route data"}
+              {deleteConfirm && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                  <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+                    <h3 className="text-lg font-semibold mb-2">Delete Route</h3>
+                    <p className="text-gray-600 mb-4">
+                      Are you sure you want to delete "
+                      {deleteConfirm.name || "Unknown Route"}" cannot be undone.
+                    </p>
+                    <div className="flex gap-3 justify-end">
+                      <button
+                        onClick={() => {
+                          handleDeleteRoute(deleteConfirm.id);
+                          setDeleteConfirm(null);
+                        }}
+                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={() => setDeleteConfirm(null)}
+                        className="px-4 py-2 bg-white text-black rounded hover:text-gray-800 outline-none border border-gray-300 hover:bg-gray-100"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                {route.thumbnailPoints?.length > 0 && (
-                  <button
-                    onClick={() => setShowPreview(true)}
-                    className="text-blue-500 text-xs mt-1 hover:underline"
-                  >
-                    Try loading preview
-                  </button>
-                )}
+              )}
+            </div>
+          </div>
+
+          {/* Route Preview Map */}
+          <div className="px-4 pb-3">
+            {showPreview && route.thumbnailPoints?.length > 0 ? (
+              <MapboxRoutePreview
+                routePoints={route.thumbnailPoints}
+                routeName={route.metadata?.routeName}
+                height="225px"
+                showStartEnd={true}
+                className="border border-gray-200"
+              />
+            ) : (
+              <div className="h-32 bg-gray-100 rounded-md border border-gray-200 flex items-center justify-center">
+                <div className="text-center">
+                  <MapPin className="w-6 h-6 text-gray-400 mx-auto mb-1" />
+                  <div className="text-xs text-gray-500">
+                    {route.thumbnailPoints?.length > 0
+                      ? "Preview unavailable"
+                      : "No route data"}
+                  </div>
+                  {route.thumbnailPoints?.length > 0 && (
+                    <button
+                      onClick={() => setShowPreview(true)}
+                      className="text-blue-500 text-xs mt-1 hover:underline"
+                    >
+                      Try loading preview
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Route Stats */}
+          <div className="px-4 pb-3">
+            <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="flex items-center space-x-2">
+                <MapPin className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                <span className="text-gray-600 truncate">
+                  {route.metadata?.totalDistance?.toFixed(1) || "0"} km
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Activity className="w-4 h-4 text-green-500 flex-shrink-0" />
+                <span className="text-gray-600 truncate">
+                  {route.metadata?.elevationGain?.toFixed(0) || "0"} m
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 col-span-2">
+                <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                <span className="text-gray-500 text-xs truncate">
+                  {route.metadata?.pointCount || 0} data points
+                </span>
               </div>
             </div>
-          )}
-        </div>
-
-        {/* Route Stats */}
-        <div className="px-4 pb-3">
-          <div className="grid grid-cols-2 gap-3 text-sm">
-            <div className="flex items-center space-x-2">
-              <MapPin className="w-4 h-4 text-blue-500 flex-shrink-0" />
-              <span className="text-gray-600 truncate">
-                {route.metadata?.totalDistance?.toFixed(1) || "0"} km
-              </span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Activity className="w-4 h-4 text-green-500 flex-shrink-0" />
-              <span className="text-gray-600 truncate">
-                {route.metadata?.elevationGain?.toFixed(0) || "0"} m
-              </span>
-            </div>
-            <div className="flex items-center space-x-2 col-span-2">
-              <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
-              <span className="text-gray-500 text-xs truncate">
-                {route.metadata?.pointCount || 0} data points
-              </span>
-            </div>
           </div>
-        </div>
 
-        {/* Action Buttons */}
-        <div className="px-4 pb-4">
-          <div className="flex space-x-2">
+          {/* Action Buttons */}
+          <div className="px-4 pb-4">
             <div className="flex space-x-2">
-              <Link
-                to={`/elevation-finder/${route.id}`}
-                className="flex-1 bg-blue-500 text-white text-sm py-2 px-3 rounded-md hover:bg-blue-600 transition-colors flex items-center justify-center space-x-1"
-              >
-                <Eye className="w-4 h-4" />
-                <span>View</span>
-              </Link>
-            </div>
-            {/* <button
+              <div className="flex space-x-2">
+                <Link
+                  to={`/elevation-finder/${route.id}`}
+                  className="flex-1 bg-blue-500 text-white text-sm py-2 px-3 rounded-md hover:bg-blue-600 transition-colors flex items-center justify-center space-x-1"
+                >
+                  <Eye className="w-4 h-4" />
+                  <span>View</span>
+                </Link>
+              </div>
+              {/* <button
               className="flex-1 bg-gray-100 text-gray-700 text-sm py-2 px-3 rounded-md hover:bg-gray-200 transition-colors flex items-center justify-center space-x-1"
               onClick={() => {
                 // TODO: Navigate to analysis
@@ -199,33 +332,36 @@ export default function Dashboard() {
               <BarChart3 className="w-4 h-4" />
               <span>Analyze</span>
             </button> */}
+            </div>
           </div>
-        </div>
 
-        {/* Debug Info (development only) */}
-        {process.env.NODE_ENV === "development" && (
-          <details className="px-4 pb-4">
-            <summary className="cursor-pointer text-xs text-gray-400">
-              Debug Info
-            </summary>
-            <pre className="mt-1 text-xs text-gray-500 bg-gray-50 p-2 rounded overflow-auto max-h-32">
-              {JSON.stringify(
-                {
-                  id: route.id,
-                  displayUrl: route.displayUrl,
-                  thumbnailPoints: route.thumbnailPoints?.length,
-                  bounds: route.metadata?.bounds,
-                  firstPoint: route.thumbnailPoints?.[0],
-                  lastPoint:
-                    route.thumbnailPoints?.[route.thumbnailPoints?.length - 1],
-                },
-                null,
-                2
-              )}
-            </pre>
-          </details>
-        )}
-      </div>
+          {/* Debug Info (development only) */}
+          {process.env.NODE_ENV === "development" && (
+            <details className="px-4 pb-4">
+              <summary className="cursor-pointer text-xs text-gray-400">
+                Debug Info
+              </summary>
+              <pre className="mt-1 text-xs text-gray-500 bg-gray-50 p-2 rounded overflow-auto max-h-32">
+                {JSON.stringify(
+                  {
+                    id: route.id,
+                    displayUrl: route.displayUrl,
+                    thumbnailPoints: route.thumbnailPoints?.length,
+                    bounds: route.metadata?.bounds,
+                    firstPoint: route.thumbnailPoints?.[0],
+                    lastPoint:
+                      route.thumbnailPoints?.[
+                        route.thumbnailPoints?.length - 1
+                      ],
+                  },
+                  null,
+                  2
+                )}
+              </pre>
+            </details>
+          )}
+        </div>
+      </>
     );
   };
 
