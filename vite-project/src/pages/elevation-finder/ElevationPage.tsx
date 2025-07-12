@@ -167,10 +167,10 @@ export default function ElevationPage() {
   const handleFileParsed = async (
     gpxText: string,
     filename: string,
-    fileUrl: string, // ✅ ADD: Missing parameter
-    docId: string | null, // ✅ ADD: Missing parameter
+    fileUrl: string | null,
+    docId: string | null,
     displayPoints?: Array<{ lat: number; lng: number; ele?: number }>,
-    displayUrl?: string // ✅ ADD: Missing parameter
+    displayUrl?: string | null
   ) => {
     setLoading(true);
     setError(null);
@@ -214,6 +214,7 @@ export default function ElevationPage() {
     } catch (err: any) {
       setError(err.message);
       console.error("GPX Analysis Error:", err);
+      console.log(fileUrl, docId, displayUrl, displayPoints);
     } finally {
       setLoading(false);
     }
