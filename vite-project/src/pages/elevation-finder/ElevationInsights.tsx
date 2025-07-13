@@ -9,6 +9,7 @@ import {
   Clock,
   Activity,
 } from "lucide-react";
+import AuthGuard from "../../features/auth/AuthGuard";
 
 // Types matching your backend response
 type SegmentType = "uphill" | "downhill" | "flat";
@@ -232,7 +233,53 @@ export function ElevationInsights({
   return (
     <div className="w-full space-y-6">
       {/* Controls - Fixed slider events */}
-      {onSettingsChange && (
+      <AuthGuard
+        fallback={
+          <div className="bg-white rounded-lg shadow-sm border p-4 text-center text-sm text-gray-500">
+            Log in to customize pace and grade settings.
+          </div>
+        }
+      >
+        <div className="bg-white rounded-lg shadow-sm border p-4">
+          <h3 className="font-semibold text-gray-800 mb-3">Settings</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Grade Threshold: {localGradeThreshold}%
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                step="0.5"
+                value={localGradeThreshold}
+                onChange={(e) => setLocalGradeThreshold(Number(e.target.value))}
+                onMouseUp={handleSliderRelease}
+                onTouchEnd={handleSliderRelease}
+                className="w-full"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Base Pace: {formatPace(1, localBasePace)}
+              </label>
+              <input
+                type="range"
+                min="3"
+                max="8"
+                step="0.1"
+                value={localBasePace}
+                onChange={(e) => setLocalBasePace(Number(e.target.value))}
+                onMouseUp={handleSliderRelease}
+                onTouchEnd={handleSliderRelease}
+                className="w-full"
+              />
+            </div>
+          </div>
+        </div>
+      </AuthGuard>
+
+      {/* {onSettingsChange && (
         <div className="bg-white rounded-lg shadow-sm border p-4">
           <h3 className="font-semibold text-gray-800 mb-3">Settings</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -280,7 +327,7 @@ export function ElevationInsights({
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Overall Insights */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
