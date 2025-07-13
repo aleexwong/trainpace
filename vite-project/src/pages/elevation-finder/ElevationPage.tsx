@@ -345,21 +345,24 @@ export default function ElevationPage() {
       });
     }
     const idToken = auth.user ? await auth.user.getIdToken() : null;
-    const response = await fetch("http://localhost:3000/api/analyze-gpx", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${idToken}`,
-      },
-      body: JSON.stringify({
-        gpx: gpxText,
-        goalPace: settings.basePaceMinPerKm,
-        raceName: filename,
-        basePaceMinPerKm: settings.basePaceMinPerKm,
-        gradeThreshold: settings.gradeThreshold,
-        includeElevationInsights: true,
-      }),
-    });
+    const response = await fetch(
+      "https://gpx-insight-api.vercel.app/api/analyze-gpx",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`,
+        },
+        body: JSON.stringify({
+          gpx: gpxText,
+          goalPace: settings.basePaceMinPerKm,
+          raceName: filename,
+          basePaceMinPerKm: settings.basePaceMinPerKm,
+          gradeThreshold: settings.gradeThreshold,
+          includeElevationInsights: true,
+        }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`API error: ${response.status}`);
