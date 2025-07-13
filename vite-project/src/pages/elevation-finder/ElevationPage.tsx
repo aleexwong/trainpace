@@ -317,7 +317,7 @@ export default function ElevationPage() {
     console.log(`   📊 GPX Size: ${gpxSizeMB.toFixed(2)}MB`);
 
     let requestBody;
-    if (gpxSizeMB > 1) {
+    if (gpxSizeMB > MAX_SIZE_MB && displayPoints && displayPoints.length > 0) {
       console.log(
         "⚡ Big file detected: sending displayPoints instead of raw GPX"
       );
