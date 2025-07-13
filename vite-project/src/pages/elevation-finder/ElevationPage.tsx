@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { db, storage } from "@/lib/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
+import { useAuth } from "@/features/auth/AuthContext";
 
 type ProfilePoint = { distanceKm: number; elevation: number };
 
@@ -107,6 +108,7 @@ export default function ElevationPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { docId } = useParams();
+  const auth = useAuth();
 
   const [analysisData, setAnalysisData] = useState<GPXAnalysisResponse | null>(
     null
@@ -342,10 +344,13 @@ export default function ElevationPage() {
         includeElevationInsights: true,
       });
     }
-
+    const idToken = auth.user ? await auth.user.getIdToken() : null;
     const response = await fetch("http://localhost:3000/api/analyze-gpx", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+      },
       body: JSON.stringify({
         gpx: gpxText,
         goalPace: settings.basePaceMinPerKm,
@@ -779,13 +784,13 @@ export default function ElevationPage() {
               <div>
                 <span className="text-gray-600">Distance:</span>
                 <span className="font-medium ml-2">
-                  {analysisData.totalDistanceKm} km
+                  {analysisData.totalDistanceKm} km*
                 </span>
               </div>
               <div>
                 <span className="text-gray-600">Elevation Gain:</span>
                 <span className="font-medium ml-2">
-                  {analysisData.elevationGain} m
+                  {analysisData.elevationGain} m*
                 </span>
               </div>
               <div>
@@ -802,27 +807,11 @@ export default function ElevationPage() {
               </div>
             </div>
 
-            {/* 🚀 NEW: Cache performance indicator */}
-            {docId && (
-              <div className="mt-3 pt-3 border-t border-gray-200">
-                <div className="flex items-center justify-between text-xs text-gray-500">
-                  <div className="flex items-center">
-                    <span className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                    Smart caching enabled
-                  </div>
-                  {analysisData.cacheOptimization && (
-                    <div>
-                      Cache efficiency:{" "}
-                      {(
-                        analysisData.cacheOptimization.cacheStats
-                          .compressionRatio * 100
-                      ).toFixed(1)}
-                      %
-                    </div>
-                  )}
-                </div>
+            <div className="mt-3 pt-3 border-t border-gray-200">
+              <div className="flex justify-end items-center text-xs text-gray-500">
+                * all values are approximates
               </div>
-            )}
+            </div>
           </div>
         )}
 
