@@ -71,6 +71,7 @@ export default function MainLayout() {
       ? [
           { href: "/elevationfinder", label: "ElevationFinder" },
           { href: "/dashboard", label: "Dashboard" },
+          { href: "/settings", label: "Settings" },
         ]
       : [{ href: "/login", label: "Login" }];
 

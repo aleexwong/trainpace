@@ -32,7 +32,6 @@ interface GPXAnalysisResponse {
       gradeThreshold: number;
     };
   };
-  // 🚀 NEW: Your API now returns this
   cacheOptimization?: {
     staticRouteData: {
       elevationProfile: ProfilePoint[];
@@ -96,7 +95,7 @@ interface OptimizedRouteMetadata {
   displayUrl: string;
   fileUrl: string;
   fileSize: number;
-  // 🚀 NEW: Static route data cached from API
+  // Static route data cached from API
   staticRouteData?: any;
   content?: string;
   storageRef?: string;
@@ -234,21 +233,44 @@ export default function ElevationPage() {
         apiResponse.cacheOptimization;
       const cacheKey = getCacheKey(settings);
 
-      await setDoc(
-        doc(db, "elevation_analysis_cache", `${routeId}_${cacheKey}`),
-        {
-          routeId,
-          cacheKey,
-          analysisResults,
-          settings,
-          createdAt: new Date().toISOString(),
-          expiresAt: new Date(
-            Date.now() + 30 * 24 * 60 * 60 * 1000
-          ).toISOString(),
-          staticDataSize: cacheStats.staticDataSize,
-          analysisDataSize: cacheStats.analysisDataSize,
-        }
-      );
+      try {
+        await setDoc(
+          doc(db, "elevation_analysis_cache", `${routeId}_${cacheKey}`),
+          {
+            routeId,
+            cacheKey,
+            analysisResults,
+            settings,
+            createdAt: new Date().toISOString(),
+            expiresAt: new Date(
+              Date.now() + 10 * 365 * 24 * 60 * 60 * 1000
+            ).toISOString(),
+            // NOTE: This is basically "never expire" — we'll bump version keys (v2, v3) if logic changes.
+            // Cleanup? Future me can worry about it... or not.
+            staticDataSize: cacheStats.staticDataSize,
+            analysisDataSize: cacheStats.analysisDataSize,
+          }
+        );
+        console.log("✅ Firestore write success");
+      } catch (err) {
+        console.error("❌ Firestore write failed", err);
+      }
+
+      // await setDoc(
+      //   doc(db, "elevation_analysis_cache", `${routeId}_${cacheKey}`),
+      //   {
+      //     routeId,
+      //     cacheKey,
+      //     analysisResults,
+      //     settings,
+      //     createdAt: new Date().toISOString(),
+      //     expiresAt: new Date(
+      //       Date.now() + 30 * 24 * 60 * 60 * 1000
+      //     ).toISOString(),
+      //     staticDataSize: cacheStats.staticDataSize,
+      //     analysisDataSize: cacheStats.analysisDataSize,
+      //   }
+      // );
 
       console.log(
         `💾 Cached analysis: ${(cacheStats.analysisDataSize / 1024).toFixed(
@@ -323,6 +345,7 @@ export default function ElevationPage() {
       console.log(
         "⚡ Big file detected: sending displayPoints instead of raw GPX"
       );
+      console.log(requestBody);
       requestBody = JSON.stringify({
         points: displayPoints
           ? displayPoints.map((pt) => ({
@@ -346,7 +369,7 @@ export default function ElevationPage() {
     }
     const idToken = auth.user ? await auth.user.getIdToken() : null;
     const response = await fetch(
-      "https://gpx-insight-api.vercel.app/api/analyze-gpx",
+      "https://gpx-insight-api.vercel.app/api/analyze-gpx-cache",
       {
         method: "POST",
         headers: {
@@ -787,13 +810,22 @@ export default function ElevationPage() {
               <div>
                 <span className="text-gray-600">Distance:</span>
                 <span className="font-medium ml-2">
-                  {analysisData.totalDistanceKm} km*
+                  {/* {analysisData.totalDistanceKm} km* */}
+                  {Number.isFinite(analysisData.totalDistanceKm) &&
+                  analysisData.totalDistanceKm >= 0
+                    ? analysisData.totalDistanceKm.toFixed(2)
+                    : "0"}{" "}
+                  km*
                 </span>
               </div>
               <div>
                 <span className="text-gray-600">Elevation Gain:</span>
                 <span className="font-medium ml-2">
-                  {analysisData.elevationGain} m*
+                  {Number.isFinite(analysisData.elevationGain) &&
+                  analysisData.elevationGain >= 0
+                    ? analysisData.elevationGain.toFixed(0)
+                    : "0"}{" "}
+                  m*{" "}
                 </span>
               </div>
               <div>
