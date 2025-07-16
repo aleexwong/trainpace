@@ -304,8 +304,7 @@ export default function ElevationPage() {
   ): Promise<GPXAnalysisResponse> => {
     const idToken = auth.user ? await auth.user.getIdToken() : null;
     const response = await fetch(
-      // "https://api.trainpace.com/api/analyze-gpx-cache",
-      "http://localhost:3000/api/analyze-gpx-cache",
+      "https://api.trainpace.com/api/analyze-gpx-cache",
       {
         method: "POST",
         headers: {
@@ -320,7 +319,6 @@ export default function ElevationPage() {
           gradeThreshold: settings.gradeThreshold,
           includeElevationInsights: true,
         }),
-        // body: requestBody,
       }
     );
 
