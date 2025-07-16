@@ -233,45 +233,23 @@ export default function ElevationPage() {
         apiResponse.cacheOptimization;
       const cacheKey = getCacheKey(settings);
 
-      try {
-        await setDoc(
-          doc(db, "elevation_analysis_cache", `${routeId}_${cacheKey}`),
-          {
-            routeId,
-            cacheKey,
-            analysisResults,
-            settings,
-            createdAt: new Date().toISOString(),
-            expiresAt: new Date(
-              Date.now() + 10 * 365 * 24 * 60 * 60 * 1000
-            ).toISOString(),
-            // NOTE: This is basically "never expire" — we'll bump version keys (v2, v3) if logic changes.
-            // Cleanup? Future me can worry about it... or not.
-            staticDataSize: cacheStats.staticDataSize,
-            analysisDataSize: cacheStats.analysisDataSize,
-          }
-        );
-        console.log("✅ Firestore write success");
-      } catch (err) {
-        console.error("❌ Firestore write failed", err);
-      }
-
-      // await setDoc(
-      //   doc(db, "elevation_analysis_cache", `${routeId}_${cacheKey}`),
-      //   {
-      //     routeId,
-      //     cacheKey,
-      //     analysisResults,
-      //     settings,
-      //     createdAt: new Date().toISOString(),
-      //     expiresAt: new Date(
-      //       Date.now() + 30 * 24 * 60 * 60 * 1000
-      //     ).toISOString(),
-      //     staticDataSize: cacheStats.staticDataSize,
-      //     analysisDataSize: cacheStats.analysisDataSize,
-      //   }
-      // );
-
+      await setDoc(
+        doc(db, "elevation_analysis_cache", `${routeId}_${cacheKey}`),
+        {
+          routeId,
+          cacheKey,
+          analysisResults,
+          settings,
+          createdAt: new Date().toISOString(),
+          expiresAt: new Date(
+            Date.now() + 10 * 365 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+          // NOTE: This is basically "never expire" — we'll bump version keys (v2, v3) if logic changes.
+          // Cleanup? Future me can worry about it... or not.
+          staticDataSize: cacheStats.staticDataSize,
+          analysisDataSize: cacheStats.analysisDataSize,
+        }
+      );
       console.log(
         `💾 Cached analysis: ${(cacheStats.analysisDataSize / 1024).toFixed(
           1
@@ -322,7 +300,7 @@ export default function ElevationPage() {
     settings: { basePaceMinPerKm: number; gradeThreshold: number },
     filename: string,
     routeId?: string,
-    displayPoints?: Array<{ lat: number; lng: number; ele?: number }> // <-- Add this argument
+    displayPoints?: Array<{ lat: number; lng: number; ele?: number }>
   ): Promise<GPXAnalysisResponse> => {
     const startTime = Date.now();
     const gpxSize = new Blob([gpxText]).size;
@@ -331,11 +309,11 @@ export default function ElevationPage() {
     console.log(`   📁 File: ${filename}`);
     console.log(`   📏 Size: ${(gpxSize / 1024).toFixed(1)}KB`);
     console.log(
-      `   💰 Estimated Cost: $${((gpxSize / 1024 / 1024) * 0.001).toFixed(4)}`
+      `💰 Estimated Cost: $${((gpxSize / 1024 / 1024) * 0.001).toFixed(4)}`
     );
     console.log(`   ⚙️  Settings: ${getCacheKey(settings)}`);
 
-    const MAX_SIZE_MB = 1;
+    const MAX_SIZE_MB = 0;
     const gpxSizeMB = gpxText.length / (1024 * 1024);
     console.log(`   📏 GPX TextSize: ${gpxText.length.toFixed(2)}`);
     console.log(`   📊 GPX Size: ${gpxSizeMB.toFixed(2)}MB`);
@@ -366,29 +344,43 @@ export default function ElevationPage() {
         gradeThreshold: settings.gradeThreshold,
         includeElevationInsights: true,
       });
+      requestBody = JSON.stringify({
+        gpx: gpxText,
+        basePaceMinPerKm: settings.basePaceMinPerKm,
+        raceName: filename,
+        gradeThreshold: settings.gradeThreshold,
+        includeElevationInsights: true,
+      });
     }
+
     const idToken = auth.user ? await auth.user.getIdToken() : null;
     const response = await fetch(
       "https://gpx-insight-api.vercel.app/api/analyze-gpx-cache",
+      // "http://localhost:3000/api/analyze-gpx-cache",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${idToken}`,
         },
-        body: JSON.stringify({
-          gpx: gpxText,
-          goalPace: settings.basePaceMinPerKm,
-          raceName: filename,
-          basePaceMinPerKm: settings.basePaceMinPerKm,
-          gradeThreshold: settings.gradeThreshold,
-          includeElevationInsights: true,
-        }),
+        // body: JSON.stringify({
+        //   gpx: gpxText,
+        //   goalPace: settings.basePaceMinPerKm,
+        //   raceName: filename,
+        //   basePaceMinPerKm: settings.basePaceMinPerKm,
+        //   gradeThreshold: settings.gradeThreshold,
+        //   includeElevationInsights: true,
+        // }),
+        body: requestBody,
       }
     );
 
     if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
+      const errorData = await response.json(); // 👈 parse the JSON body
+
+      throw new Error(
+        `API error: ${response.statusText} try again in ${errorData.retryAfter} in seconds`
+      );
     }
 
     const analysis: GPXAnalysisResponse = await response.json();
@@ -867,7 +859,7 @@ export default function ElevationPage() {
         />
 
         {/* 🚀 NEW: Development cache debug info */}
-        {process.env.NODE_ENV === "development" &&
+        {import.meta.env.MODE === "development" &&
           docId &&
           analysisData?.cacheOptimization && (
             <details className="bg-gray-50 border rounded p-4">
