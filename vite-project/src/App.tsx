@@ -22,6 +22,7 @@ import ResetConfirmed from "./pages/login/ResetConfirmed";
 import ElevationPage from "./pages/elevation-finder/ElevationPage";
 import Dashboard from "./pages/elevation-finder/Dashboard";
 import FAQ from "./components/FAQ";
+import Settings from "./pages/login/Settings";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -37,8 +38,7 @@ function App() {
             <Route index element={<Landing />} />
             <Route path="/calculator" element={<TrainingPaceCalculator />} />
             <Route path="/fuel" element={<FuelPlanner />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/logout" element={<Logout />} />
+
             <Route path="*" element={<Landing />} />
             <Route path="/elevation-finder" element={<ElevationPage />} />
             <Route
@@ -54,6 +54,7 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/reset-confirmed" element={<ResetConfirmed />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/faq" element={<FAQ />} />
           </Route>
         </Routes>

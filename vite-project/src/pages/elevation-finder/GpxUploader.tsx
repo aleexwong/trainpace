@@ -38,17 +38,6 @@ interface GpxUploaderProps {
   allowedFileTypes?: string[];
 }
 
-// interface UploadMetadata {
-//   userId: string;
-//   filename: string;
-//   fileSize: number;
-//   uploadedAt: any;
-//   fileUrl: string;
-//   storageRef: string;
-//   fileHash: string; // Add hash for duplicate detection
-//   ipAddress?: string;
-// }
-
 interface DuplicateFile {
   filename: string;
   uploadedAt: any;
@@ -62,13 +51,12 @@ export default function GpxUploader({
   onFileParsed,
   maxFileSize = 10, // 10MB default
   maxUploadsPerDay = 15,
-  maxUploadsPerHour = 5,
+  maxUploadsPerHour = 10,
   allowedFileTypes = [".gpx"],
 }: GpxUploaderProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  // const [recentUploads, setRecentUploads] = useState<UploadMetadata[]>([]);
   const [duplicateFound, setDuplicateFound] = useState<DuplicateFile | null>(
     null
   );
@@ -220,7 +208,7 @@ export default function GpxUploader({
     return `${user?.uid}_${timestamp}_${randomString}_${sanitized}`;
   };
 
-  // Upload file to Firebase Storage
+  // 🚀 UPDATED: Upload file to Firebase Storage with optimized caching setup
   const uploadToFirebase = async (
     file: File,
     content: string,
@@ -228,6 +216,7 @@ export default function GpxUploader({
   ): Promise<{
     fileUrl: string;
     displayPoints: Array<{ lat: number; lng: number; ele?: number }>;
+    docId: string; // Return docId for immediate caching
   }> => {
     const safeFilename = generateSafeFilename(file.name);
     const storageRef = ref(storage, `gpx_files/${safeFilename}`);
@@ -240,19 +229,18 @@ export default function GpxUploader({
           originalName: file.name,
           uploadedBy: user?.uid || "anonymous",
           uploadedAt: new Date().toISOString(),
-          fileHash, // Store hash in metadata
+          fileHash,
         },
       });
 
-      // Get download URL
       const downloadURL = await getDownloadURL(snapshot.ref);
-
-      // Save metadata to Firestore
-      // Note: For small GPX files, you might want to store content in Firestore too
-      // This makes duplicate file loading much faster and more reliable
       const shouldStoreContent = file.size < 1024 * 1024; // Store content for files < 1MB
-
       const processed = processGPXUpload(content);
+
+      // Create document with random ID
+      const docRef = doc(collection(db, "gpx_uploads"));
+      const docId = docRef.id;
+      const displayUrl = `/elevation-finder/${docId}`;
 
       const docData: any = {
         userId: user?.uid,
@@ -261,30 +249,45 @@ export default function GpxUploader({
         fileSize: file.size,
         fileUrl: downloadURL,
         storageRef: snapshot.ref.fullPath,
-        fileHash, // Store hash for duplicate detection
+        fileHash,
         uploadedAt: serverTimestamp(),
         contentValidated: true,
         deleted: false,
         metadata: processed.metadata,
         displayPoints: processed.displayPoints,
         thumbnailPoints: processed.thumbnailPoints,
+        docId,
+        displayUrl,
+
+        // 🚀 NEW: Prepare for optimized caching (will be populated by API)
+        staticRouteData: null, // Will be filled by first API call
+        staticDataCached: null,
+        staticDataSize: 0,
+
+        // Cache performance tracking
+        cacheInfo: {
+          totalCacheEntries: 0,
+          lastCached: null,
+          totalCacheSize: 0,
+          apiCallsSaved: 0,
+          costSavings: 0,
+        },
       };
 
-      // Store content in Firestore for smaller files (faster duplicate loading)
       if (shouldStoreContent) {
         docData.content = content;
       }
 
-      // await setDoc(doc(db, "gpx_uploads", safeFilename), docData);
-      const docRef = doc(collection(db, "gpx_uploads")); // creates a doc ref with random ID
-      const docId = docRef.id;
-      const displayUrl = `/elevation-finder/${docId}`;
+      await setDoc(docRef, docData);
 
-      await setDoc(docRef, { ...docData, docId, displayUrl });
+      console.log(`📁 Route document created: ${docId}`);
+      console.log(`📏 File size: ${(file.size / 1024).toFixed(1)}KB`);
+      console.log(`🔄 Ready for smart caching on first analysis`);
 
       return {
         fileUrl: downloadURL,
         displayPoints: processed.displayPoints,
+        docId, // Return docId so ElevationPage can cache analysis immediately
       };
     } catch (error) {
       console.error("Upload failed:", error);
@@ -302,9 +305,7 @@ export default function GpxUploader({
         variant: "default",
       });
 
-      // You'll need to fetch the content from the existing file
-      // This is a simplified example - you might want to store content in Firestore
-      // or fetch it from the storage URL
+      // Fetch the content from the existing file
       fetchExistingFileContent(duplicateFound.fileUrl);
     }
 
@@ -318,7 +319,7 @@ export default function GpxUploader({
 
       // Method 1: Use content stored in Firestore (fastest)
       if (duplicateFound?.content) {
-        console.log("Loading content from Firestore cache");
+        console.log("✅ Loading content from Firestore cache");
         onFileParsed(
           duplicateFound.content,
           filename,
@@ -330,7 +331,7 @@ export default function GpxUploader({
 
       // Method 2: Get fresh download URL from storage reference
       if (duplicateFound?.storageRef) {
-        console.log("Loading content from Firebase Storage");
+        console.log("🔄 Loading content from Firebase Storage");
         const fileRef = ref(storage, duplicateFound.storageRef);
         const freshUrl = await getDownloadURL(fileRef);
 
@@ -345,14 +346,33 @@ export default function GpxUploader({
       }
 
       // Method 3: Direct fetch with original URL (fallback)
-      console.log("Trying direct fetch with original URL");
+      console.log("⚠️ Trying direct fetch with original URL");
       const response = await fetch(fileUrl);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       const content = await response.text();
       const processed = processGPXUpload(content);
-      const docRef = await addDoc(collection(db, "gpx_uploads"), {});
+
+      // Create new document for fallback case
+      const docRef = await addDoc(collection(db, "gpx_uploads"), {
+        filename,
+        content,
+        uploadedAt: serverTimestamp(),
+        userId: user?.uid,
+        fileUrl,
+        displayPoints: processed.displayPoints,
+        metadata: processed.metadata,
+        staticRouteData: null,
+        cacheInfo: {
+          totalCacheEntries: 0,
+          lastCached: null,
+          totalCacheSize: 0,
+          apiCallsSaved: 0,
+          costSavings: 0,
+        },
+      });
+
       const docId = docRef.id;
       const displayUrl = `/elevation-finder/${docId}`;
 
@@ -360,7 +380,7 @@ export default function GpxUploader({
         content,
         filename,
         fileUrl,
-        docId || null,
+        docId,
         processed.displayPoints,
         displayUrl
       );
@@ -443,7 +463,7 @@ export default function GpxUploader({
       setUploadProgress(60);
 
       // Upload to Firebase
-      const { fileUrl, displayPoints } = await uploadToFirebase(
+      const { fileUrl, displayPoints, docId } = await uploadToFirebase(
         file,
         content,
         fileHash
@@ -454,8 +474,8 @@ export default function GpxUploader({
       await checkRateLimits();
       setUploadProgress(100);
 
-      // Success callback
-      onFileParsed(content, file.name, fileUrl, null, displayPoints);
+      // 🚀 NEW: Pass docId to enable immediate caching
+      onFileParsed(content, file.name, fileUrl, docId, displayPoints);
 
       toast({
         title: "Upload Successful",
@@ -643,7 +663,7 @@ export default function GpxUploader({
             </div>
             <div className="flex items-center space-x-1">
               <Activity className="w-4 h-4 text-blue-500" />
-              <span>Fitness Metrics</span>
+              <span>Smart Caching</span>
             </div>
             <div className="flex items-center space-x-1">
               <CheckCircle className="w-4 h-4 text-green-500" />

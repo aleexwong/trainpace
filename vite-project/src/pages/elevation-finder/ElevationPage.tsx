@@ -5,13 +5,14 @@ import ElevationInsights from "./ElevationInsights";
 import MapboxRoutePreview from "./MapboxRoutePreview";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { db, storage } from "@/lib/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
+import { useAuth } from "@/features/auth/AuthContext";
 
 type ProfilePoint = { distanceKm: number; elevation: number };
 
-// Type for the full API response
+// Updated types to match your API response
 interface GPXAnalysisResponse {
   message: string;
   raceName: string;
@@ -31,9 +32,44 @@ interface GPXAnalysisResponse {
       gradeThreshold: number;
     };
   };
+  cacheOptimization?: {
+    staticRouteData: {
+      elevationProfile: ProfilePoint[];
+      totalDistance: number;
+      totalElevationGain: number;
+      totalElevationLoss: number;
+      difficultyRating: string;
+      rawSegments: Array<any>;
+    };
+    analysisResults: {
+      segmentClassifications: Array<any>;
+      distanceBreakdown: {
+        uphillDistance: number;
+        downhillDistance: number;
+        flatDistance: number;
+      };
+      timeEstimate: {
+        estimatedTotalTime: number;
+      };
+      keySegments: {
+        steepestUphill: any;
+        steepestDownhill: any;
+      };
+    };
+    settings: {
+      basePaceMinPerKm: number;
+      gradeThreshold: number;
+    };
+    cacheStats: {
+      fullResponseSize: number;
+      staticDataSize: number;
+      analysisDataSize: number;
+      compressionRatio: number;
+    };
+  };
 }
 
-interface RouteMetadata {
+interface OptimizedRouteMetadata {
   id: string;
   filename: string;
   safeFilename: string;
@@ -58,6 +94,11 @@ interface RouteMetadata {
   }>;
   displayUrl: string;
   fileUrl: string;
+  fileSize: number;
+  // Static route data cached from API
+  staticRouteData?: any;
+  content?: string;
+  storageRef?: string;
 }
 
 export default function ElevationPage() {
@@ -66,33 +107,299 @@ export default function ElevationPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { docId } = useParams();
+  const auth = useAuth();
 
-  // NEW: Store the full API response including elevation insights
   const [analysisData, setAnalysisData] = useState<GPXAnalysisResponse | null>(
     null
   );
-  // NEW: Store the route metadata for display
-  const [routeMetadata, setRouteMetadata] = useState<RouteMetadata | null>(
-    null
-  );
+  const [routeMetadata, setRouteMetadata] =
+    useState<OptimizedRouteMetadata | null>(null);
 
   const [uploadedRoutePoints, setUploadedRoutePoints] = useState<
-    Array<{
-      lat: number;
-      lng: number;
-      ele?: number;
-    }>
+    Array<{ lat: number; lng: number; ele?: number }>
   >([]);
 
-  // IMPORTANT: Store the original GPX text for re-analysis
   const [originalGpxText, setOriginalGpxText] = useState<string | null>(null);
 
-  // NEW: Settings for elevation analysis
   const [analysisSettings, setAnalysisSettings] = useState({
     basePaceMinPerKm: 5,
     gradeThreshold: 2,
   });
 
+  // 🚀 Cache key generation
+  const getCacheKey = (settings: {
+    basePaceMinPerKm: number;
+    gradeThreshold: number;
+  }) => {
+    return `v1_pace_${settings.basePaceMinPerKm}_grade_${settings.gradeThreshold}`;
+  };
+
+  // 🚀 Check for cached analysis results
+  const getCachedAnalysis = async (
+    routeId: string,
+    settings: { basePaceMinPerKm: number; gradeThreshold: number },
+    staticData: any
+  ): Promise<GPXAnalysisResponse | null> => {
+    try {
+      const cacheKey = getCacheKey(settings);
+      const cacheRef = doc(
+        db,
+        "elevation_analysis_cache",
+        `${routeId}_${cacheKey}`
+      );
+      const cacheSnap = await getDoc(cacheRef);
+
+      if (!cacheSnap.exists()) {
+        console.log(`❌ Cache miss for ${cacheKey}`);
+        return null;
+      }
+
+      const cached = cacheSnap.data();
+
+      // Check expiration
+      if (new Date(cached.expiresAt) < new Date()) {
+        console.log(`⏰ Cache expired for ${cacheKey}, cleaning up...`);
+        await deleteDoc(cacheRef);
+        return null;
+      }
+
+      console.log(`✅ Cache hit for ${cacheKey} - saved API call!`);
+
+      // Reconstruct full API response from cache + static data
+      const reconstructed: GPXAnalysisResponse = {
+        message: "Loaded from optimized cache",
+        raceName: routeMetadata?.filename || "Cached Route",
+        goalPace: settings.basePaceMinPerKm,
+        totalDistanceKm: staticData.totalDistance,
+        elevationGain: staticData.totalElevationGain,
+        profile: staticData.elevationProfile,
+        elevationInsights: {
+          segments: cached.analysisResults.segmentClassifications.map(
+            (seg: any, index: number) => ({
+              // Combine cached analysis with static segment data
+              ...staticData.rawSegments[index],
+              ...seg,
+              startDistance: seg.startKm,
+              endDistance: seg.endKm,
+            })
+          ),
+          insights: {
+            totalDistance: staticData.totalDistance,
+            totalElevationGain: staticData.totalElevationGain,
+            totalElevationLoss: staticData.totalElevationLoss,
+            difficultyRating: staticData.difficultyRating,
+            ...cached.analysisResults.distanceBreakdown,
+            ...cached.analysisResults.timeEstimate,
+            ...cached.analysisResults.keySegments,
+          },
+        },
+        metadata: {
+          pointCount: staticData.elevationProfile.length,
+          hasElevationData: true,
+          analysisParameters: settings,
+        },
+        cacheOptimization: {
+          staticRouteData: staticData,
+          analysisResults: cached.analysisResults,
+          settings,
+          cacheStats: {
+            fullResponseSize: 0,
+            staticDataSize: cached.staticDataSize || 0,
+            analysisDataSize: cached.analysisDataSize || 0,
+            compressionRatio: 0,
+          },
+        },
+      };
+
+      return reconstructed;
+    } catch (error) {
+      console.error("Cache lookup failed:", error);
+      return null;
+    }
+  };
+
+  // 🚀 Cache analysis results from API response
+  const cacheAnalysisResults = async (
+    routeId: string,
+    apiResponse: GPXAnalysisResponse
+  ) => {
+    try {
+      if (!apiResponse.cacheOptimization) {
+        console.warn("API response missing cache optimization data");
+        return;
+      }
+
+      const { analysisResults, settings, cacheStats } =
+        apiResponse.cacheOptimization;
+      const cacheKey = getCacheKey(settings);
+
+      await setDoc(
+        doc(db, "elevation_analysis_cache", `${routeId}_${cacheKey}`),
+        {
+          routeId,
+          cacheKey,
+          analysisResults,
+          settings,
+          createdAt: new Date().toISOString(),
+          expiresAt: new Date(
+            Date.now() + 10 * 365 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+          // NOTE: This is basically "never expire" — we'll bump version keys (v2, v3) if logic changes.
+          // Cleanup? Future me can worry about it... or not.
+          staticDataSize: cacheStats.staticDataSize,
+          analysisDataSize: cacheStats.analysisDataSize,
+        }
+      );
+      console.log(
+        `💾 Cached analysis: ${(cacheStats.analysisDataSize / 1024).toFixed(
+          1
+        )}KB for ${cacheKey}`
+      );
+      console.log(
+        `📊 Cache efficiency: ${(cacheStats.compressionRatio * 100).toFixed(
+          1
+        )}% potential savings`
+      );
+    } catch (error) {
+      console.error("Failed to cache analysis:", error);
+    }
+  };
+
+  // 🚀 Store static route data from API response
+  const cacheStaticData = async (
+    routeId: string,
+    apiResponse: GPXAnalysisResponse
+  ) => {
+    try {
+      if (!apiResponse.cacheOptimization) {
+        console.warn("API response missing cache optimization data");
+        return;
+      }
+
+      const { staticRouteData, cacheStats } = apiResponse.cacheOptimization;
+
+      await updateDoc(doc(db, "gpx_uploads", routeId), {
+        staticRouteData,
+        staticDataCached: new Date().toISOString(),
+        staticDataSize: cacheStats.staticDataSize,
+      });
+
+      console.log(
+        `💾 Cached static data: ${(cacheStats.staticDataSize / 1024).toFixed(
+          1
+        )}KB`
+      );
+    } catch (error) {
+      console.error("Failed to cache static data:", error);
+    }
+  };
+
+  // 🚀 Call API with cost tracking
+  const performAnalysisWithCaching = async (
+    gpxText: string,
+    settings: { basePaceMinPerKm: number; gradeThreshold: number },
+    filename: string,
+    routeId?: string,
+    displayPoints?: Array<{ lat: number; lng: number; ele?: number }>
+  ): Promise<GPXAnalysisResponse> => {
+    const startTime = Date.now();
+    const gpxSize = new Blob([gpxText]).size;
+
+    console.log(`💸 API CALL - Cost Analysis:`);
+    console.log(`   📁 File: ${filename}`);
+    console.log(`   📏 Size: ${(gpxSize / 1024).toFixed(1)}KB`);
+    console.log(
+      `💰 Estimated Cost: $${((gpxSize / 1024 / 1024) * 0.001).toFixed(4)}`
+    );
+    console.log(`   ⚙️  Settings: ${getCacheKey(settings)}`);
+
+    const MAX_SIZE_MB = 0;
+    const gpxSizeMB = gpxText.length / (1024 * 1024);
+    console.log(`   📏 GPX TextSize: ${gpxText.length.toFixed(2)}`);
+    console.log(`   📊 GPX Size: ${gpxSizeMB.toFixed(2)}MB`);
+
+    let requestBody;
+    if (gpxSizeMB > MAX_SIZE_MB && displayPoints && displayPoints.length > 0) {
+      console.log(
+        "⚡ Big file detected: sending displayPoints instead of raw GPX"
+      );
+      console.log(requestBody);
+      requestBody = JSON.stringify({
+        points: displayPoints
+          ? displayPoints.map((pt) => ({
+              lat: pt.lat,
+              lon: pt.lng, // ⚠️ NOTE: convert to backend-expected key
+              ele: pt.ele,
+            }))
+          : [],
+        basePaceMinPerKm: settings.basePaceMinPerKm,
+        gradeThreshold: settings.gradeThreshold,
+        includeElevationInsights: true,
+      });
+    } else {
+      console.log("📦 Sending full GPX to backend");
+      requestBody = JSON.stringify({
+        gpx: gpxText,
+        basePaceMinPerKm: settings.basePaceMinPerKm,
+        gradeThreshold: settings.gradeThreshold,
+        includeElevationInsights: true,
+      });
+      requestBody = JSON.stringify({
+        gpx: gpxText,
+        basePaceMinPerKm: settings.basePaceMinPerKm,
+        raceName: filename,
+        gradeThreshold: settings.gradeThreshold,
+        includeElevationInsights: true,
+      });
+    }
+
+    const idToken = auth.user ? await auth.user.getIdToken() : null;
+    const response = await fetch(
+      "https://gpx-insight-api.vercel.app/api/analyze-gpx-cache",
+      // "http://localhost:3000/api/analyze-gpx-cache",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`,
+        },
+        // body: JSON.stringify({
+        //   gpx: gpxText,
+        //   goalPace: settings.basePaceMinPerKm,
+        //   raceName: filename,
+        //   basePaceMinPerKm: settings.basePaceMinPerKm,
+        //   gradeThreshold: settings.gradeThreshold,
+        //   includeElevationInsights: true,
+        // }),
+        body: requestBody,
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json(); // 👈 parse the JSON body
+
+      throw new Error(
+        `API error: ${response.statusText} try again in ${errorData.retryAfter} in seconds`
+      );
+    }
+
+    const analysis: GPXAnalysisResponse = await response.json();
+    const endTime = Date.now();
+
+    console.log(`✅ API call completed in ${endTime - startTime}ms`);
+
+    // Cache both static data and analysis results
+    if (routeId && analysis.cacheOptimization) {
+      await Promise.all([
+        cacheStaticData(routeId, analysis),
+        cacheAnalysisResults(routeId, analysis),
+      ]);
+    }
+
+    return analysis;
+  };
+
+  // 🚀 Load shared route with smart caching
   useEffect(() => {
     const loadSharedRoute = async () => {
       if (!docId) return;
@@ -101,59 +408,71 @@ export default function ElevationPage() {
       setError(null);
 
       try {
+        // 1. Load route metadata
         const docRef = doc(db, "gpx_uploads", docId);
         const docSnap = await getDoc(docRef);
 
         if (!docSnap.exists()) {
-          throw new Error("Shared route not found in Firestore");
+          throw new Error("Shared route not found");
         }
 
-        const sharedData = docSnap.data();
-        setRouteMetadata(sharedData as RouteMetadata);
+        const sharedData = docSnap.data() as OptimizedRouteMetadata;
+        setRouteMetadata(sharedData);
+        setFilename(sharedData.filename);
 
+        // 2. Check if we have static data cached
+        if (sharedData.staticRouteData) {
+          console.log(`📊 Static route data found in cache`);
+
+          // Check for cached analysis with current settings
+          const cachedAnalysis = await getCachedAnalysis(
+            docId,
+            analysisSettings,
+            sharedData.staticRouteData
+          );
+
+          if (cachedAnalysis) {
+            console.log(`⚡ Instant load from cache!`);
+            setAnalysisData(cachedAnalysis);
+            setPoints(cachedAnalysis.profile || []);
+            setLoading(false);
+            return;
+          }
+        }
+
+        // 3. Cache miss or no static data - call API
+        console.log(`💸 Cache miss - calling API...`);
+
+        // Get GPX content
         let gpxText = sharedData.content;
-
         if (!gpxText && sharedData.storageRef) {
           const storageUrl = await getDownloadURL(
             ref(storage, sharedData.storageRef)
           );
           const res = await fetch(storageUrl);
           if (!res.ok)
-            throw new Error(
-              `Failed to fetch GPX from storage (HTTP ${res.status})`
-            );
+            throw new Error(`Failed to fetch GPX: HTTP ${res.status}`);
           gpxText = await res.text();
         }
 
         if (!gpxText || gpxText.length < 10) {
-          throw new Error("GPX file content is missing or too short.");
+          throw new Error("GPX content is missing or corrupted");
         }
 
-        const apiRes = await fetch(
-          "https://gpx-insight-api.vercel.app/api/analyze-gpx",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              gpx: gpxText,
-              goalPace: 5, // default base pace, or pull from settings
-              raceName: sharedData.filename || "Shared Upload",
-            }),
-          }
+        setOriginalGpxText(gpxText);
+
+        // Call API with caching
+        const analysis = await performAnalysisWithCaching(
+          gpxText,
+          analysisSettings,
+          sharedData.filename,
+          docId ?? undefined
         );
 
-        const backendText = await apiRes.text();
-
-        if (!apiRes.ok)
-          throw new Error(`Backend analysis failed (HTTP ${apiRes.status})`);
-
-        const analysis = JSON.parse(backendText);
-
-        setFilename(sharedData.filename);
-        setOriginalGpxText(gpxText);
         setAnalysisData(analysis);
         setPoints(analysis.profile || []);
       } catch (err: any) {
+        console.error("Load shared route error:", err);
         setError(err.message || "Failed to load shared route");
       } finally {
         setLoading(false);
@@ -161,9 +480,223 @@ export default function ElevationPage() {
     };
 
     loadSharedRoute();
-  }, [docId]);
+  }, [docId]); // Don't include analysisSettings here - handle separately
 
-  // ✅ UPDATE: Fix the function signature to match GpxUploader
+  // 🚀 Handle settings changes with smart caching
+  // const handleSettingsChange = async (newSettings: {
+  //   basePaceMinPerKm: number;
+  //   gradeThreshold: number;
+  // }) => {
+  //   setAnalysisSettings(newSettings);
+
+  //   // For shared routes, check cache with new settings
+  //   if (docId && routeMetadata?.staticRouteData) {
+  //     setLoading(true);
+  //     setError(null);
+
+  // try {
+  //   // Check cache for new settings
+  //   const cachedForNewSettings = await getCachedAnalysis(
+  //     docId,
+  //     newSettings,
+  //     routeMetadata.staticRouteData
+  //   );
+
+  //   if (cachedForNewSettings) {
+  //     console.log(`✅ Using cached analysis for new settings`);
+  //     setAnalysisData(cachedForNewSettings);
+  //     setPoints(cachedForNewSettings.profile || []);
+  //     setLoading(false);
+  //     return;
+  //   }
+
+  //   // Cache miss - need fresh analysis
+  //   if (!originalGpxText) {
+  //     throw new Error("Cannot re-analyze: GPX data not available");
+  //   }
+
+  //   console.log(`🔄 Cache miss for new settings, calling API...`);
+  //   const analysis = await performAnalysisWithCaching(
+  //     originalGpxText,
+  //     newSettings,
+  //     filename || "Route",
+  //         docId ?? undefined
+  //       );
+
+  //       setAnalysisData(analysis);
+  //       setPoints(analysis.profile || []);
+  //     } catch (err: any) {
+  //       setError(err.message);
+  //       console.error("Re-analysis Error:", err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   } else if (originalGpxText) {
+  //     // For non-shared routes, just re-analyze
+  //     setLoading(true);
+  //     try {
+  //       const analysis = await performAnalysisWithCaching(
+  //         originalGpxText,
+  //         newSettings,
+  //         filename || "Route"
+  //       );
+  //       setAnalysisData(analysis);
+  //       setPoints(analysis.profile || []);
+  //     } catch (err: any) {
+  //       setError(err.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  // };
+
+  const handleSettingsChange = async (newSettings: {
+    basePaceMinPerKm: number;
+    gradeThreshold: number;
+  }) => {
+    console.log(`🔄 Settings change requested:`);
+    console.log(
+      `   From: pace=${analysisSettings.basePaceMinPerKm}, grade=${analysisSettings.gradeThreshold}`
+    );
+    console.log(
+      `   To: pace=${newSettings.basePaceMinPerKm}, grade=${newSettings.gradeThreshold}`
+    );
+
+    const oldCacheKey = getCacheKey(analysisSettings);
+    const newCacheKey = getCacheKey(newSettings);
+    console.log(`   Cache keys: ${oldCacheKey} → ${newCacheKey}`);
+    console.log(`   Same key: ${oldCacheKey === newCacheKey}`);
+
+    setAnalysisSettings(newSettings);
+
+    // For shared routes, check cache with new settings
+    if (docId && routeMetadata) {
+      setLoading(true);
+      setError(null);
+
+      try {
+        // 1. Check cache for new settings first
+        if (routeMetadata.staticRouteData) {
+          console.log(`🔍 Checking cache for new settings...`);
+          console.log(`   Route ID: ${docId}`);
+          console.log(
+            `   Static data available: ${!!routeMetadata.staticRouteData}`
+          );
+
+          const cachedForNewSettings = await getCachedAnalysis(
+            docId,
+            newSettings,
+            routeMetadata.staticRouteData
+          );
+
+          if (cachedForNewSettings) {
+            console.log(`✅ Using cached analysis for new settings`);
+            setAnalysisData(cachedForNewSettings);
+            setPoints(cachedForNewSettings.profile || []);
+            setLoading(false);
+            return;
+          } else {
+            console.log(`❌ No cache found for new settings, will call API`);
+          }
+        } else {
+          console.log(`⚠️ No static route data available for cache lookup`);
+        }
+
+        // 2. Cache miss - need fresh analysis, get GPX content
+        let gpxText = originalGpxText;
+
+        // 🚀 FIX: Multiple fallback methods to get GPX content
+        if (!gpxText) {
+          console.log(
+            "🔄 originalGpxText not available, trying fallback methods..."
+          );
+
+          // Method 1: Try route metadata content (stored for small files)
+          if (routeMetadata.content) {
+            console.log("✅ Using GPX content from route metadata");
+            gpxText = routeMetadata.content;
+          }
+          // Method 2: Fetch from Firebase Storage
+          else if (routeMetadata.storageRef) {
+            console.log("🔄 Fetching GPX content from Firebase Storage...");
+            const storageUrl = await getDownloadURL(
+              ref(storage, routeMetadata.storageRef)
+            );
+            const response = await fetch(storageUrl);
+            if (!response.ok) {
+              throw new Error(
+                `Failed to fetch GPX from storage: HTTP ${response.status}`
+              );
+            }
+            gpxText = await response.text();
+
+            // 🚀 IMPORTANT: Store it for next time
+            setOriginalGpxText(gpxText);
+          }
+          // Method 3: Try direct file URL (last resort)
+          else if (routeMetadata.fileUrl) {
+            console.log("🔄 Trying direct fetch from file URL...");
+            const response = await fetch(routeMetadata.fileUrl);
+            if (!response.ok) {
+              throw new Error(
+                `Failed to fetch GPX from file URL: HTTP ${response.status}`
+              );
+            }
+            gpxText = await response.text();
+
+            // 🚀 IMPORTANT: Store it for next time
+            setOriginalGpxText(gpxText);
+          }
+        }
+
+        // 3. Final check - do we have GPX content?
+        if (!gpxText || gpxText.length < 10) {
+          throw new Error("Could not retrieve GPX content for re-analysis");
+        }
+
+        console.log(`🔄 Cache miss for new settings, calling API...`);
+        const analysis = await performAnalysisWithCaching(
+          gpxText,
+          newSettings,
+          filename || "Route",
+          docId
+        );
+
+        setAnalysisData(analysis);
+        setPoints(analysis.profile || []);
+      } catch (err: any) {
+        setError(err.message);
+        console.error("Re-analysis Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    } else if (originalGpxText) {
+      // For non-shared routes, just re-analyze
+      setLoading(true);
+      try {
+        const analysis = await performAnalysisWithCaching(
+          originalGpxText,
+          newSettings,
+          filename || "Route"
+        );
+        setAnalysisData(analysis);
+        setPoints(analysis.profile || []);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // 🚀 Handle case where no GPX data is available at all
+      console.warn(
+        "⚠️ No GPX data available for re-analysis - this shouldn't happen"
+      );
+      setError(
+        "Cannot change settings: route data not available. Please refresh the page."
+      );
+    }
+  };
+  // 🚀 Handle fresh file uploads
   const handleFileParsed = async (
     gpxText: string,
     filename: string,
@@ -175,97 +708,29 @@ export default function ElevationPage() {
     setLoading(true);
     setError(null);
     setFilename(filename);
+    console.log(`📂 File parsed: ${fileUrl}`);
+    console.log(`📄 GPX Text Length: ${displayUrl} characters`);
 
-    // ✅ STORE UPLOADED ROUTE POINTS IMMEDIATELY
     if (displayPoints && displayPoints.length > 0) {
       setUploadedRoutePoints(displayPoints);
     }
 
-    // Store the original GPX text
     setOriginalGpxText(gpxText);
 
     try {
-      const response = await fetch(
-        "https://gpx-insight-api.vercel.app/api/analyze-gpx",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            gpx: gpxText,
-            goalPace: analysisSettings.basePaceMinPerKm,
-            raceName: "User Upload",
-            basePaceMinPerKm: analysisSettings.basePaceMinPerKm,
-            gradeThreshold: analysisSettings.gradeThreshold,
-            includeElevationInsights: true,
-          }),
-        }
+      // For fresh uploads, always analyze
+      const analysis = await performAnalysisWithCaching(
+        gpxText,
+        analysisSettings,
+        filename,
+        docId ?? undefined
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "API error");
-      }
-
-      const data: GPXAnalysisResponse = await response.json();
-
-      // Store both the points and the full analysis
-      setPoints(data.profile || []);
-      setAnalysisData(data);
+      setPoints(analysis.profile || []);
+      setAnalysisData(analysis);
     } catch (err: any) {
       setError(err.message);
       console.error("GPX Analysis Error:", err);
-      console.log(fileUrl, docId, displayUrl, displayPoints);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // NEW: Handle settings changes and re-analyze
-  const handleSettingsChange = async (newSettings: {
-    basePaceMinPerKm: number;
-    gradeThreshold: number;
-  }) => {
-    // GUARD: Make sure we have the original GPX text
-    if (!originalGpxText || !analysisData) {
-      setError("Cannot re-analyze: original GPX data not available");
-      return;
-    }
-
-    // IMPORTANT: Update settings FIRST, then re-analyze
-    setAnalysisSettings(newSettings);
-
-    // Re-analyze with new settings using ORIGINAL GPX text
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch(
-        "https://gpx-insight-api.vercel.app/api/analyze-gpx",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            gpx: originalGpxText,
-            goalPace: newSettings.basePaceMinPerKm,
-            raceName: analysisData.raceName,
-            basePaceMinPerKm: newSettings.basePaceMinPerKm,
-            gradeThreshold: newSettings.gradeThreshold,
-            includeElevationInsights: true,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to re-analyze");
-      }
-
-      const data: GPXAnalysisResponse = await response.json();
-      setAnalysisData(data);
-      setPoints(data.profile || []);
-    } catch (err: any) {
-      setError(err.message);
-      console.error("Re-analysis Error:", err);
     } finally {
       setLoading(false);
     }
@@ -281,7 +746,7 @@ export default function ElevationPage() {
         />
         <link rel="canonical" href="/elevation-finder" />
       </Helmet>
-      <div className="max-w-6xlmx-auto p-6 space-y-6">
+      <div className="max-w-6xl mx-auto p-6 space-y-6">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-700 text-center">
           <a
             href="/elevationfinder"
@@ -291,9 +756,11 @@ export default function ElevationPage() {
           >
             ElevationFinder
           </a>
-        </h1>{" "}
+        </h1>
+
         {!docId && <GpxUploader onFileParsed={handleFileParsed} />}
-        {/* Only show map when we have route data */}
+
+        {/* Show map when we have route data */}
         {(routeMetadata?.displayPoints || uploadedRoutePoints.length > 0) && (
           <MapboxRoutePreview
             routePoints={routeMetadata?.displayPoints || uploadedRoutePoints}
@@ -312,17 +779,22 @@ export default function ElevationPage() {
             mapStyle="mapbox://styles/mapbox/outdoors-v11"
           />
         )}
+
         {loading && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-            <p className="text-blue-700">Analyzing GPX file...</p>
+            <p className="text-blue-700">
+              {docId ? "Loading analysis..." : "Analyzing GPX file..."}
+            </p>
           </div>
         )}
+
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
             <p className="text-red-700 font-medium">Error: {error}</p>
           </div>
         )}
-        {/* Show basic route info */}
+
+        {/* Route Summary with Cache Performance */}
         {analysisData && (
           <div className="bg-white rounded-lg shadow-sm border p-4">
             <h3 className="font-semibold text-gray-800 mb-2">Route Summary</h3>
@@ -330,13 +802,22 @@ export default function ElevationPage() {
               <div>
                 <span className="text-gray-600">Distance:</span>
                 <span className="font-medium ml-2">
-                  {analysisData.totalDistanceKm} km
+                  {/* {analysisData.totalDistanceKm} km* */}
+                  {Number.isFinite(analysisData.totalDistanceKm) &&
+                  analysisData.totalDistanceKm >= 0
+                    ? analysisData.totalDistanceKm.toFixed(2)
+                    : "0"}{" "}
+                  km*
                 </span>
               </div>
               <div>
                 <span className="text-gray-600">Elevation Gain:</span>
                 <span className="font-medium ml-2">
-                  {analysisData.elevationGain} m
+                  {Number.isFinite(analysisData.elevationGain) &&
+                  analysisData.elevationGain >= 0
+                    ? analysisData.elevationGain.toFixed(0)
+                    : "0"}{" "}
+                  m*{" "}
                 </span>
               </div>
               <div>
@@ -352,13 +833,20 @@ export default function ElevationPage() {
                 </span>
               </div>
             </div>
+
+            <div className="mt-3 pt-3 border-t border-gray-200">
+              <div className="flex justify-end items-center text-xs text-gray-500">
+                * all values are approximates
+              </div>
+            </div>
           </div>
         )}
+
         {/* Elevation Chart */}
         {points.length > 0 && (
           <ElevationChart points={points} filename={filename ?? undefined} />
         )}
-        {/* FIXED: Use the pace that backend actually used */}
+
         <ElevationInsights
           elevationInsights={analysisData?.elevationInsights || null}
           loading={loading}
@@ -369,17 +857,49 @@ export default function ElevationPage() {
           }
           onSettingsChange={handleSettingsChange}
         />
-        {/* Debug info (remove in production)
-        {process.env.NODE_ENV === "development" && analysisData && (
-          <details className="bg-gray-50 border rounded p-4">
-            <summary className="cursor-pointer font-medium">
-              Debug: API Response
-            </summary>
-            <pre className="text-xs mt-2 overflow-auto">
-              {JSON.stringify(analysisData, null, 2)}
-            </pre>
-          </details>
-        )} */}
+
+        {/* 🚀 NEW: Development cache debug info */}
+        {import.meta.env.MODE === "development" &&
+          docId &&
+          analysisData?.cacheOptimization && (
+            <details className="bg-gray-50 border rounded p-4">
+              <summary className="cursor-pointer font-medium text-sm">
+                🔧 Cache Debug Info
+              </summary>
+              <div className="text-xs mt-2 space-y-1">
+                <div>Route ID: {docId}</div>
+                <div>Cache Key: {getCacheKey(analysisSettings)}</div>
+                <div>
+                  Static Data:{" "}
+                  {routeMetadata?.staticRouteData ? "✅ Cached" : "❌ Missing"}
+                </div>
+                <div>
+                  Response Size:{" "}
+                  {(
+                    analysisData.cacheOptimization.cacheStats.fullResponseSize /
+                    1024
+                  ).toFixed(1)}
+                  KB
+                </div>
+                <div>
+                  Static Size:{" "}
+                  {(
+                    analysisData.cacheOptimization.cacheStats.staticDataSize /
+                    1024
+                  ).toFixed(1)}
+                  KB
+                </div>
+                <div>
+                  Analysis Size:{" "}
+                  {(
+                    analysisData.cacheOptimization.cacheStats.analysisDataSize /
+                    1024
+                  ).toFixed(1)}
+                  KB
+                </div>
+              </div>
+            </details>
+          )}
       </div>
     </>
   );
