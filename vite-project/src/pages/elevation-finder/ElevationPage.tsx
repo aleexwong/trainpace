@@ -299,79 +299,28 @@ export default function ElevationPage() {
     gpxText: string,
     settings: { basePaceMinPerKm: number; gradeThreshold: number },
     filename: string,
-    routeId?: string,
-    displayPoints?: Array<{ lat: number; lng: number; ele?: number }>
+    routeId?: string
+    // displayPoints?: Array<{ lat: number; lng: number; ele?: number }>
   ): Promise<GPXAnalysisResponse> => {
-    const startTime = Date.now();
-    const gpxSize = new Blob([gpxText]).size;
-
-    console.log(`💸 API CALL - Cost Analysis:`);
-    console.log(`   📁 File: ${filename}`);
-    console.log(`   📏 Size: ${(gpxSize / 1024).toFixed(1)}KB`);
-    console.log(
-      `💰 Estimated Cost: $${((gpxSize / 1024 / 1024) * 0.001).toFixed(4)}`
-    );
-    console.log(`   ⚙️  Settings: ${getCacheKey(settings)}`);
-
-    const MAX_SIZE_MB = 0;
-    const gpxSizeMB = gpxText.length / (1024 * 1024);
-    console.log(`   📏 GPX TextSize: ${gpxText.length.toFixed(2)}`);
-    console.log(`   📊 GPX Size: ${gpxSizeMB.toFixed(2)}MB`);
-
-    let requestBody;
-    if (gpxSizeMB > MAX_SIZE_MB && displayPoints && displayPoints.length > 0) {
-      console.log(
-        "⚡ Big file detected: sending displayPoints instead of raw GPX"
-      );
-      console.log(requestBody);
-      requestBody = JSON.stringify({
-        points: displayPoints
-          ? displayPoints.map((pt) => ({
-              lat: pt.lat,
-              lon: pt.lng, // ⚠️ NOTE: convert to backend-expected key
-              ele: pt.ele,
-            }))
-          : [],
-        basePaceMinPerKm: settings.basePaceMinPerKm,
-        gradeThreshold: settings.gradeThreshold,
-        includeElevationInsights: true,
-      });
-    } else {
-      console.log("📦 Sending full GPX to backend");
-      requestBody = JSON.stringify({
-        gpx: gpxText,
-        basePaceMinPerKm: settings.basePaceMinPerKm,
-        gradeThreshold: settings.gradeThreshold,
-        includeElevationInsights: true,
-      });
-      requestBody = JSON.stringify({
-        gpx: gpxText,
-        basePaceMinPerKm: settings.basePaceMinPerKm,
-        raceName: filename,
-        gradeThreshold: settings.gradeThreshold,
-        includeElevationInsights: true,
-      });
-    }
-
     const idToken = auth.user ? await auth.user.getIdToken() : null;
     const response = await fetch(
-      "https://api.trainpace.com/api/analyze-gpx-cache",
-      // "http://localhost:3000/api/analyze-gpx-cache",
+      // "https://api.trainpace.com/api/analyze-gpx-cache",
+      "http://localhost:3000/api/analyze-gpx-cache",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${idToken}`,
         },
-        // body: JSON.stringify({
-        //   gpx: gpxText,
-        //   goalPace: settings.basePaceMinPerKm,
-        //   raceName: filename,
-        //   basePaceMinPerKm: settings.basePaceMinPerKm,
-        //   gradeThreshold: settings.gradeThreshold,
-        //   includeElevationInsights: true,
-        // }),
-        body: requestBody,
+        body: JSON.stringify({
+          gpx: gpxText,
+          goalPace: settings.basePaceMinPerKm,
+          raceName: filename,
+          basePaceMinPerKm: settings.basePaceMinPerKm,
+          gradeThreshold: settings.gradeThreshold,
+          includeElevationInsights: true,
+        }),
+        // body: requestBody,
       }
     );
 
@@ -384,10 +333,6 @@ export default function ElevationPage() {
     }
 
     const analysis: GPXAnalysisResponse = await response.json();
-    const endTime = Date.now();
-
-    console.log(`✅ API call completed in ${endTime - startTime}ms`);
-
     // Cache both static data and analysis results
     if (routeId && analysis.cacheOptimization) {
       await Promise.all([
@@ -481,74 +426,6 @@ export default function ElevationPage() {
 
     loadSharedRoute();
   }, [docId]); // Don't include analysisSettings here - handle separately
-
-  // 🚀 Handle settings changes with smart caching
-  // const handleSettingsChange = async (newSettings: {
-  //   basePaceMinPerKm: number;
-  //   gradeThreshold: number;
-  // }) => {
-  //   setAnalysisSettings(newSettings);
-
-  //   // For shared routes, check cache with new settings
-  //   if (docId && routeMetadata?.staticRouteData) {
-  //     setLoading(true);
-  //     setError(null);
-
-  // try {
-  //   // Check cache for new settings
-  //   const cachedForNewSettings = await getCachedAnalysis(
-  //     docId,
-  //     newSettings,
-  //     routeMetadata.staticRouteData
-  //   );
-
-  //   if (cachedForNewSettings) {
-  //     console.log(`✅ Using cached analysis for new settings`);
-  //     setAnalysisData(cachedForNewSettings);
-  //     setPoints(cachedForNewSettings.profile || []);
-  //     setLoading(false);
-  //     return;
-  //   }
-
-  //   // Cache miss - need fresh analysis
-  //   if (!originalGpxText) {
-  //     throw new Error("Cannot re-analyze: GPX data not available");
-  //   }
-
-  //   console.log(`🔄 Cache miss for new settings, calling API...`);
-  //   const analysis = await performAnalysisWithCaching(
-  //     originalGpxText,
-  //     newSettings,
-  //     filename || "Route",
-  //         docId ?? undefined
-  //       );
-
-  //       setAnalysisData(analysis);
-  //       setPoints(analysis.profile || []);
-  //     } catch (err: any) {
-  //       setError(err.message);
-  //       console.error("Re-analysis Error:", err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   } else if (originalGpxText) {
-  //     // For non-shared routes, just re-analyze
-  //     setLoading(true);
-  //     try {
-  //       const analysis = await performAnalysisWithCaching(
-  //         originalGpxText,
-  //         newSettings,
-  //         filename || "Route"
-  //       );
-  //       setAnalysisData(analysis);
-  //       setPoints(analysis.profile || []);
-  //     } catch (err: any) {
-  //       setError(err.message);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  // };
 
   const handleSettingsChange = async (newSettings: {
     basePaceMinPerKm: number;
