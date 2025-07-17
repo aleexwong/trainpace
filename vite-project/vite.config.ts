@@ -1,22 +1,24 @@
-import { defineConfig } from 'vite'
-import path from "path"
-import react from '@vitejs/plugin-react'
-import { VitePWA } from 'vite-plugin-pwa'
+import { defineConfig } from "vite";
+import path from "path";
+import react from "@vitejs/plugin-react";
+import svgr from "vite-plugin-svgr";
+import { VitePWA } from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    react(),  
+    react(),
+    svgr(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: "autoUpdate",
       manifest: {
-        name: 'Train Pace', // Change this to your desired app name
-        short_name: 'Train Pace', // Shorter name for display purposes
-        description: 'A simple tool to calculate your running pace',
-        start_url: '/',
-        display: 'standalone',
-        background_color: '#ffffff',
-        theme_color: '#000000',
+        name: "Train Pace", // Change this to your desired app name
+        short_name: "Train Pace", // Shorter name for display purposes
+        description: "A simple tool to calculate your running pace",
+        start_url: "/",
+        display: "standalone",
+        background_color: "#ffffff",
+        theme_color: "#000000",
         // icons: [
         //   {
         //     src: '/icons/trainPaceIcon.png', // Ensure these paths exist in your public folder
@@ -41,5 +43,4 @@ export default defineConfig({
     host: true,
     port: 5173,
   },
-})
-
+});

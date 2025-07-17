@@ -265,6 +265,7 @@ export default function Dashboard() {
                 showStartEnd={true}
                 className="border border-gray-200"
                 mapStyle="mapbox://styles/mapbox/outdoors-v11"
+                interactive={false}
               />
             ) : (
               <div className="h-32 bg-gray-100 rounded-md border border-gray-200 flex items-center justify-center">

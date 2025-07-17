@@ -3,6 +3,7 @@ import ElevationChart from "./ElevationChart";
 import GpxUploader from "./GpxUploader";
 import ElevationInsights from "./ElevationInsights";
 import MapboxRoutePreview from "./MapboxRoutePreview";
+import { ShareLinkBox } from "@/components/ui/ShareLinkBox";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import { doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
@@ -304,7 +305,8 @@ export default function ElevationPage() {
   ): Promise<GPXAnalysisResponse> => {
     const idToken = auth.user ? await auth.user.getIdToken() : null;
     const response = await fetch(
-      "https://api.trainpace.com/api/analyze-gpx-cache",
+      // "https://api.trainpace.com/api/analyze-gpx-cache",
+      "http://localhost:3000/api/analyze-gpx-cache",
       {
         method: "POST",
         headers: {
@@ -318,6 +320,7 @@ export default function ElevationPage() {
           basePaceMinPerKm: settings.basePaceMinPerKm,
           gradeThreshold: settings.gradeThreshold,
           includeElevationInsights: true,
+          routeId: routeId, // Add routeId to API call
         }),
       }
     );
@@ -338,6 +341,9 @@ export default function ElevationPage() {
         cacheAnalysisResults(routeId, analysis),
       ]);
     }
+    console.log(
+      `🔥 API response received, elevation: ${analysis.elevationGain}`
+    );
 
     return analysis;
   };
@@ -598,7 +604,7 @@ export default function ElevationPage() {
         gpxText,
         analysisSettings,
         filename,
-        docId ?? undefined
+        docId || undefined // Ensure we pass the docId when available
       );
 
       setPoints(analysis.profile || []);
@@ -652,9 +658,18 @@ export default function ElevationPage() {
             lineColor="#3b82f6"
             lineWidth={3}
             mapStyle="mapbox://styles/mapbox/outdoors-v11"
+            maxZoom={16}
           />
         )}
-
+        {/* Show share link box if we have a docId */}
+        {docId && (
+          <div className="bg-white rounded-lg shadow-sm border p-4">
+            <h2 className="font-semibold text-gray-800 mb-2">
+              Share Your Route
+            </h2>
+            <ShareLinkBox docId={docId} />
+          </div>
+        )}
         {loading && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
             <p className="text-blue-700">
