@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../features/auth/AuthContext";
-import { LoginButton } from "../../features/auth/LoginButton";
+import { useAuth } from "../features/auth/AuthContext";
+import { LoginButton } from "../features/auth/LoginButton";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { Link, useNavigate } from "react-router-dom";

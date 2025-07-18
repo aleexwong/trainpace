@@ -9,10 +9,10 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
-import { db } from "../../lib/firebase";
-import { useAuth } from "../../features/auth/AuthContext";
+import { db } from "../lib/firebase";
+import { useAuth } from "../features/auth/AuthContext";
 import { MapPin, Activity, Calendar, Trash2, Eye } from "lucide-react";
-import MapboxRoutePreview from "./MapboxRoutePreview";
+import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 

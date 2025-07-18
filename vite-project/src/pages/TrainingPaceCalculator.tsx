@@ -3,7 +3,7 @@ import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Clock, RotateCcw, Calculator } from "lucide-react";
-import { toast } from "../../hooks/use-toast";
+import { toast } from "../hooks/use-toast";
 
 import {
   Tooltip,
@@ -11,23 +11,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import RunningTips from "./RunningTips";
-import CalculatorModal from "./CalculatorModal";
-import ResultsWithTooltips from "./ResultsWithTooltips";
+import RunningTips from "../components/calculator/RunningTips";
+import CalculatorModal from "../components/calculator/CalculatorModal";
+import ResultsWithTooltips from "../components/calculator/ResultsWithTooltips";
 import { Helmet } from "react-helmet-async";
 
-// const PRESET_DISTANCES = [
-//   { name: "Half Marathon", distance: 13.1 },
-//   { name: "Marathon", distance: 26.2 },
-//   { name: "10K", distance: 6.2 },
-//   { name: "5K", distance: 3.1 },
-//   { name: "1 Mile", distance: 1 },
-//   { name: "800m", distance: 0.5 },
-// ];
-
 const PRESET_DISTANCES_IN_KM = [
-  { name: "Half Marathon", distance: 21.1 },
   { name: "Marathon", distance: 42.2 },
+  { name: "Half Marathon", distance: 21.1 },
   { name: "10K", distance: 10 },
   { name: "5K", distance: 5 },
   { name: "1K", distance: 1 },

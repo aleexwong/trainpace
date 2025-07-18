@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import ElevationChart from "./ElevationChart";
-import GpxUploader from "./GpxUploader";
-import ElevationInsights from "./ElevationInsights";
-import MapboxRoutePreview from "./MapboxRoutePreview";
+import ElevationChart from "../components/elevationfinder/ElevationChart";
+import GpxUploader from "../components/elevationfinder/GpxUploader";
+import ElevationInsights from "../components/elevationfinder/ElevationInsights";
+import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
 import { ShareLinkBox } from "@/components/ui/ShareLinkBox";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
@@ -625,6 +625,10 @@ export default function ElevationPage() {
           name="description"
           content="Upload your GPX files to analyze elevation profiles, gain insights, and optimize your training."
         />
+        <title>ElevationFinder | TrainPace - Smarter Race Insights</title>
+        <meta property="og:title" content="hihi" />
+        <meta property="og:description" content="testing elevationfinder" />
+        {/* Add other OG tags as needed, e.g., og:type */}
         <link rel="canonical" href="/elevation-finder" />
       </Helmet>
       <div className="max-w-6xl mx-auto p-6 space-y-6">

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import type { User } from "firebase/auth";
 import trainPaceHeroImage from "@/assets/trainPaceHeroImage.png";
 import trainPaceHeroMobile from "@/assets/trainPaceHeroMobile.png";
-import FAQ from "../FAQ";
+import FAQ from "../../pages/FAQ";
 
 export default function Landing() {
   // const [menuOpen, setMenuOpen] = useState(false);
