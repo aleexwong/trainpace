@@ -5,10 +5,10 @@ import {
   OptimizedRouteMetadata,
 } from "@/types/elevation";
 
-import ElevationChart from "../components/elevationfinder/ElevationChart";
-import GpxUploader from "../components/elevationfinder/GpxUploader";
-import ElevationInsights from "../components/elevationfinder/ElevationInsights";
-import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
+import ElevationChart from "@/components/elevationfinder/ElevationChart";
+import GpxUploader from "@/components/elevationfinder/GpxUploader";
+import ElevationInsights from "@/components/elevationfinder/ElevationInsights";
+import MapboxRoutePreview from "@/components/utils/MapboxRoutePreview";
 import { ShareLinkBox } from "@/components/ui/ShareLinkBox";
 import { Button } from "@/components/ui/button";
 import { Helmet } from "react-helmet-async";
@@ -26,7 +26,6 @@ export default function ElevationPage() {
   const { docId: urlDocId } = useParams();
   const auth = useAuth();
 
-  // 🚀 NEW: Track the current docId (from URL or from fresh upload)
   const [currentDocId, setCurrentDocId] = useState<string | null>(
     urlDocId || null
   );
@@ -567,7 +566,7 @@ export default function ElevationPage() {
         <meta property="og:title" content="hihi" />
         <meta property="og:description" content="testing elevationfinder" />
         {/* Add other OG tags as needed, e.g., og:type */}
-        <link rel="canonical" href="/elevation-finder" />
+        <link rel="canonical" href="/elevationfinder" />
       </Helmet>
       <div className="max-w-6xl mx-auto p-6 space-y-6">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-700 text-center">
@@ -599,7 +598,7 @@ export default function ElevationPage() {
                 setFilename(null);
                 setError(null);
                 // Update URL to remove docId
-                window.history.replaceState(null, "", "/elevation-finder");
+                window.history.replaceState(null, "", "/elevationfinder");
               }}
               className="mb-4"
             >
