@@ -13,6 +13,9 @@ export function ShareLinkBox({ docId, className }: ShareLinkBoxProps) {
   const { toast } = useToast();
   const shareUrl = `https://www.trainpace.com/elevationfinder/${docId}`;
 
+  // Debug log
+  console.log('ShareLinkBox received docId:', docId);
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);

@@ -1,3 +1,4 @@
+import { ProfilePoint } from "@/types/elevation";
 import { Line } from "react-chartjs-2";
 import {
   Chart,
@@ -21,7 +22,7 @@ Chart.register(
   Filler
 );
 
-type ProfilePoint = { distanceKm: number; elevation: number };
+// type ProfilePoint = { distanceKm: number; elevation: number };
 
 interface ElevationChartProps {
   points: ProfilePoint[];

@@ -1,5 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
+  SegmentType,
+  ChallengeRating,
+  RacePosition,
+  EnergyRating,
+  Segment,
+  ElevationAnalysis,
+} from "@/types/elevation";
+import {
   TrendingUp,
   TrendingDown,
   Minus,
@@ -9,48 +17,9 @@ import {
   Clock,
   Activity,
 } from "lucide-react";
-import AuthGuard from "../../features/auth/AuthGuard";
+import AuthGuard from "@/features/auth/AuthGuard";
 
-// Types matching your backend response
-type SegmentType = "uphill" | "downhill" | "flat";
-type ChallengeRating = "easy" | "moderate" | "hard" | "brutal";
-type RacePosition = "early" | "mid" | "late";
-type EnergyRating = "low" | "medium" | "high";
-
-interface Segment {
-  type: SegmentType;
-  startDistance: number;
-  endDistance: number;
-  startElevation: number;
-  endElevation: number;
-  grade: number;
-  length: number;
-  energyRating: EnergyRating;
-  pacingAdvice: string;
-  estimatedTimeMultiplier: number;
-  challengeRating: ChallengeRating;
-  racePosition: RacePosition;
-}
-
-interface RouteInsights {
-  totalDistance: number;
-  uphillDistance: number;
-  downhillDistance: number;
-  flatDistance: number;
-  totalElevationGain: number;
-  totalElevationLoss: number;
-  steepestUphill: Partial<Segment>;
-  steepestDownhill: Partial<Segment>;
-  estimatedTotalTime: number;
-  difficultyRating: "Easy" | "Medium" | "Hard";
-}
-
-interface ElevationAnalysis {
-  segments: Segment[];
-  insights: RouteInsights;
-}
-
-interface ElevationInsightsProps {
+export interface ElevationInsightsProps {
   elevationInsights: ElevationAnalysis | null;
   loading?: boolean;
   error?: string;
@@ -278,56 +247,6 @@ export function ElevationInsights({
           </div>
         </div>
       </AuthGuard>
-
-      {/* {onSettingsChange && (
-        <div className="bg-white rounded-lg shadow-sm border p-4">
-          <h3 className="font-semibold text-gray-800 mb-3">Settings</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Grade Threshold: {localGradeThreshold}%
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="5"
-                step="0.5"
-                value={localGradeThreshold}
-                onChange={(e) => {
-                  setLocalGradeThreshold(Number(e.target.value));
-                  // Only update UI - no API call
-                }}
-                onMouseDown={() => {}} // Not needed anymore
-                onMouseUp={handleSliderRelease}
-                onTouchStart={() => {}} // Not needed anymore
-                onTouchEnd={handleSliderRelease}
-                className="w-full"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Base Pace: {formatPace(1, localBasePace)}
-              </label>
-              <input
-                type="range"
-                min="3"
-                max="8"
-                step="0.1"
-                value={localBasePace}
-                onChange={(e) => {
-                  setLocalBasePace(Number(e.target.value));
-                  // Only update UI - no API call
-                }}
-                onMouseDown={() => {}} // Not needed anymore
-                onMouseUp={handleSliderRelease}
-                onTouchStart={() => {}} // Not needed anymore
-                onTouchEnd={handleSliderRelease}
-                className="w-full"
-              />
-            </div>
-          </div>
-        </div>
-      )} */}
 
       {/* Overall Insights */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

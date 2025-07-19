@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
+import {
+  ProfilePoint,
+  GPXAnalysisResponse,
+  OptimizedRouteMetadata,
+} from "@/types/elevation";
+
 import ElevationChart from "../components/elevationfinder/ElevationChart";
 import GpxUploader from "../components/elevationfinder/GpxUploader";
 import ElevationInsights from "../components/elevationfinder/ElevationInsights";
 import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
 import { ShareLinkBox } from "@/components/ui/ShareLinkBox";
+import { Button } from "@/components/ui/button";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router-dom";
 import { doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
@@ -11,104 +18,18 @@ import { db, storage } from "@/lib/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { useAuth } from "@/features/auth/AuthContext";
 
-type ProfilePoint = { distanceKm: number; elevation: number };
-
-// Updated types to match your API response
-interface GPXAnalysisResponse {
-  message: string;
-  raceName: string;
-  goalPace: number;
-  totalDistanceKm: number;
-  elevationGain: number;
-  profile: ProfilePoint[];
-  elevationInsights: {
-    segments: Array<any>;
-    insights: any;
-  } | null;
-  metadata: {
-    pointCount: number;
-    hasElevationData: boolean;
-    analysisParameters: {
-      basePaceMinPerKm: number;
-      gradeThreshold: number;
-    };
-  };
-  cacheOptimization?: {
-    staticRouteData: {
-      elevationProfile: ProfilePoint[];
-      totalDistance: number;
-      totalElevationGain: number;
-      totalElevationLoss: number;
-      difficultyRating: string;
-      rawSegments: Array<any>;
-    };
-    analysisResults: {
-      segmentClassifications: Array<any>;
-      distanceBreakdown: {
-        uphillDistance: number;
-        downhillDistance: number;
-        flatDistance: number;
-      };
-      timeEstimate: {
-        estimatedTotalTime: number;
-      };
-      keySegments: {
-        steepestUphill: any;
-        steepestDownhill: any;
-      };
-    };
-    settings: {
-      basePaceMinPerKm: number;
-      gradeThreshold: number;
-    };
-    cacheStats: {
-      fullResponseSize: number;
-      staticDataSize: number;
-      analysisDataSize: number;
-      compressionRatio: number;
-    };
-  };
-}
-
-interface OptimizedRouteMetadata {
-  id: string;
-  filename: string;
-  safeFilename: string;
-  uploadedAt: any;
-  metadata: {
-    routeName: string;
-    totalDistance: number;
-    elevationGain: number;
-    pointCount: number;
-    bounds: {
-      minLat: number;
-      maxLat: number;
-      minLng: number;
-      maxLng: number;
-    };
-  };
-  displayPoints: Array<{
-    lat: number;
-    lng: number;
-    ele: number;
-    dist?: number;
-  }>;
-  displayUrl: string;
-  fileUrl: string;
-  fileSize: number;
-  // Static route data cached from API
-  staticRouteData?: any;
-  content?: string;
-  storageRef?: string;
-}
-
 export default function ElevationPage() {
   const [points, setPoints] = useState<ProfilePoint[]>([]);
   const [filename, setFilename] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { docId } = useParams();
+  const { docId: urlDocId } = useParams();
   const auth = useAuth();
+
+  // 🚀 NEW: Track the current docId (from URL or from fresh upload)
+  const [currentDocId, setCurrentDocId] = useState<string | null>(
+    urlDocId || null
+  );
 
   const [analysisData, setAnalysisData] = useState<GPXAnalysisResponse | null>(
     null
@@ -126,6 +47,11 @@ export default function ElevationPage() {
     basePaceMinPerKm: 5,
     gradeThreshold: 2,
   });
+
+  // 🚀 Sync currentDocId with URL changes
+  useEffect(() => {
+    setCurrentDocId(urlDocId || null);
+  }, [urlDocId]);
 
   // 🚀 Cache key generation
   const getCacheKey = (settings: {
@@ -351,14 +277,14 @@ export default function ElevationPage() {
   // 🚀 Load shared route with smart caching
   useEffect(() => {
     const loadSharedRoute = async () => {
-      if (!docId) return;
+      if (!urlDocId) return;
 
       setLoading(true);
       setError(null);
 
       try {
         // 1. Load route metadata
-        const docRef = doc(db, "gpx_uploads", docId);
+        const docRef = doc(db, "gpx_uploads", urlDocId);
         const docSnap = await getDoc(docRef);
 
         if (!docSnap.exists()) {
@@ -375,7 +301,7 @@ export default function ElevationPage() {
 
           // Check for cached analysis with current settings
           const cachedAnalysis = await getCachedAnalysis(
-            docId,
+            urlDocId,
             analysisSettings,
             sharedData.staticRouteData
           );
@@ -415,7 +341,7 @@ export default function ElevationPage() {
           gpxText,
           analysisSettings,
           sharedData.filename,
-          docId ?? undefined
+          urlDocId ?? undefined
         );
 
         setAnalysisData(analysis);
@@ -429,7 +355,7 @@ export default function ElevationPage() {
     };
 
     loadSharedRoute();
-  }, [docId]); // Don't include analysisSettings here - handle separately
+  }, [urlDocId]); // Don't include analysisSettings here - handle separately
 
   const handleSettingsChange = async (newSettings: {
     basePaceMinPerKm: number;
@@ -451,7 +377,7 @@ export default function ElevationPage() {
     setAnalysisSettings(newSettings);
 
     // For shared routes, check cache with new settings
-    if (docId && routeMetadata) {
+    if (urlDocId && routeMetadata) {
       setLoading(true);
       setError(null);
 
@@ -459,13 +385,13 @@ export default function ElevationPage() {
         // 1. Check cache for new settings first
         if (routeMetadata.staticRouteData) {
           console.log(`🔍 Checking cache for new settings...`);
-          console.log(`   Route ID: ${docId}`);
+          console.log(`   Route ID: ${urlDocId}`);
           console.log(
             `   Static data available: ${!!routeMetadata.staticRouteData}`
           );
 
           const cachedForNewSettings = await getCachedAnalysis(
-            docId,
+            urlDocId,
             newSettings,
             routeMetadata.staticRouteData
           );
@@ -540,7 +466,7 @@ export default function ElevationPage() {
           gpxText,
           newSettings,
           filename || "Route",
-          docId
+          urlDocId
         );
 
         setAnalysisData(analysis);
@@ -591,12 +517,24 @@ export default function ElevationPage() {
     setFilename(filename);
     console.log(`📂 File parsed: ${fileUrl}`);
     console.log(`📄 GPX Text Length: ${displayUrl} characters`);
+    console.log(`🆔 New docId from upload: ${docId}`);
+    console.log(`🔗 Current URL docId: ${urlDocId}`);
 
     if (displayPoints && displayPoints.length > 0) {
       setUploadedRoutePoints(displayPoints);
     }
 
     setOriginalGpxText(gpxText);
+
+    // 🚀 NEW: Update URL immediately after upload to enable sharing
+    if (docId && !urlDocId) {
+      console.log(
+        `🔗 Updating URL to show shareable link: /elevation-finder/${docId}`
+      );
+      window.history.replaceState(null, "", `/elevation-finder/${docId}`);
+      // Update our state to reflect the new docId
+      setCurrentDocId(docId);
+    }
 
     try {
       // For fresh uploads, always analyze
@@ -643,7 +581,32 @@ export default function ElevationPage() {
           </a>
         </h1>
 
-        {!docId && <GpxUploader onFileParsed={handleFileParsed} />}
+        {!currentDocId && <GpxUploader onFileParsed={handleFileParsed} />}
+
+        {/* Show "Upload New Route" button when we have a current route */}
+        {currentDocId && (
+          <div className="text-center">
+            <Button
+              variant="outline"
+              onClick={() => {
+                // Reset everything and go back to upload state
+                setCurrentDocId(null);
+                setPoints([]);
+                setAnalysisData(null);
+                setRouteMetadata(null);
+                setUploadedRoutePoints([]);
+                setOriginalGpxText(null);
+                setFilename(null);
+                setError(null);
+                // Update URL to remove docId
+                window.history.replaceState(null, "", "/elevation-finder");
+              }}
+              className="mb-4"
+            >
+              📁 Upload New Route
+            </Button>
+          </div>
+        )}
 
         {/* Show map when we have route data */}
         {(routeMetadata?.displayPoints || uploadedRoutePoints.length > 0) && (
@@ -666,18 +629,23 @@ export default function ElevationPage() {
           />
         )}
         {/* Show share link box if we have a docId */}
-        {docId && (
+        {currentDocId && (
           <div className="bg-white rounded-lg shadow-sm border p-4">
             <h2 className="font-semibold text-gray-800 mb-2">
               Share Your Route
             </h2>
-            <ShareLinkBox docId={docId} />
+            {import.meta.env.MODE === "development" && (
+              <div className="text-xs text-gray-500 mb-2">
+                Debug: currentDocId = {currentDocId}, urlDocId = {urlDocId}
+              </div>
+            )}
+            <ShareLinkBox docId={currentDocId} />
           </div>
         )}
         {loading && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
             <p className="text-blue-700">
-              {docId ? "Loading analysis..." : "Analyzing GPX file..."}
+              {urlDocId ? "Loading analysis..." : "Analyzing GPX file..."}
             </p>
           </div>
         )}
@@ -754,14 +722,14 @@ export default function ElevationPage() {
 
         {/* 🚀 NEW: Development cache debug info */}
         {import.meta.env.MODE === "development" &&
-          docId &&
+          urlDocId &&
           analysisData?.cacheOptimization && (
             <details className="bg-gray-50 border rounded p-4">
               <summary className="cursor-pointer font-medium text-sm">
                 🔧 Cache Debug Info
               </summary>
               <div className="text-xs mt-2 space-y-1">
-                <div>Route ID: {docId}</div>
+                <div>Route ID: {urlDocId}</div>
                 <div>Cache Key: {getCacheKey(analysisSettings)}</div>
                 <div>
                   Static Data:{" "}
