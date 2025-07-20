@@ -128,12 +128,6 @@ export default function ElevationPage() {
           staticRouteData: staticData,
           analysisResults: cached.analysisResults,
           settings,
-          cacheStats: {
-            fullResponseSize: 0,
-            staticDataSize: cached.staticDataSize || 0,
-            analysisDataSize: cached.analysisDataSize || 0,
-            compressionRatio: 0,
-          },
         },
       };
 
@@ -155,8 +149,7 @@ export default function ElevationPage() {
         return;
       }
 
-      const { analysisResults, settings, cacheStats } =
-        apiResponse.cacheOptimization;
+      const { analysisResults, settings } = apiResponse.cacheOptimization;
       const cacheKey = getCacheKey(settings);
 
       await setDoc(
@@ -171,20 +164,20 @@ export default function ElevationPage() {
             Date.now() + 10 * 365 * 24 * 60 * 60 * 1000
           ).toISOString(),
           // NOTE: This is basically "never expire", bump version keys (v2, v3) if logic changes. 10 years
-          staticDataSize: cacheStats.staticDataSize,
-          analysisDataSize: cacheStats.analysisDataSize,
+          // staticDataSize: cacheStats.staticDataSize,
+          // analysisDataSize: cacheStats.analysisDataSize,
         }
       );
-      console.log(
-        `💾 Cached analysis: ${(cacheStats.analysisDataSize / 1024).toFixed(
-          1
-        )}KB for ${cacheKey}`
-      );
-      console.log(
-        `📊 Cache efficiency: ${(cacheStats.compressionRatio * 100).toFixed(
-          1
-        )}% potential savings`
-      );
+      // console.log(
+      //   `💾 Cached analysis: ${(cacheStats.analysisDataSize / 1024).toFixed(
+      //     1
+      //   )}KB for ${cacheKey}`
+      // );
+      // console.log(
+      //   `📊 Cache efficiency: ${(cacheStats.compressionRatio * 100).toFixed(
+      //     1
+      //   )}% potential savings`
+      // );
     } catch (error) {
       console.error("Failed to cache analysis:", error);
     }
@@ -201,25 +194,18 @@ export default function ElevationPage() {
         return;
       }
 
-      const { staticRouteData, cacheStats } = apiResponse.cacheOptimization;
+      const { staticRouteData } = apiResponse.cacheOptimization;
 
       await updateDoc(doc(db, "gpx_uploads", routeId), {
         staticRouteData,
         staticDataCached: new Date().toISOString(),
-        staticDataSize: cacheStats.staticDataSize,
+        // staticDataSize: cacheStats.staticDataSize,
       });
-
-      console.log(
-        `💾 Cached static data: ${(cacheStats.staticDataSize / 1024).toFixed(
-          1
-        )}KB`
-      );
     } catch (error) {
       console.error("Failed to cache static data:", error);
     }
   };
 
-  // 🚀 Call API with cost tracking
   const performAnalysisWithCaching = async (
     gpxText: string,
     settings: { basePaceMinPerKm: number; gradeThreshold: number },
@@ -229,6 +215,7 @@ export default function ElevationPage() {
     const idToken = auth.user ? await auth.user.getIdToken() : null;
     const response = await fetch(
       "https://api.trainpace.com/api/analyze-gpx-cache",
+      // "http://localhost:3000/api/analyze-gpx-cache",
       {
         method: "POST",
         headers: {
@@ -726,30 +713,6 @@ export default function ElevationPage() {
                 <div>
                   Static Data:{" "}
                   {routeMetadata?.staticRouteData ? "✅ Cached" : "❌ Missing"}
-                </div>
-                <div>
-                  Response Size:{" "}
-                  {(
-                    analysisData.cacheOptimization.cacheStats.fullResponseSize /
-                    1024
-                  ).toFixed(1)}
-                  KB
-                </div>
-                <div>
-                  Static Size:{" "}
-                  {(
-                    analysisData.cacheOptimization.cacheStats.staticDataSize /
-                    1024
-                  ).toFixed(1)}
-                  KB
-                </div>
-                <div>
-                  Analysis Size:{" "}
-                  {(
-                    analysisData.cacheOptimization.cacheStats.analysisDataSize /
-                    1024
-                  ).toFixed(1)}
-                  KB
                 </div>
               </div>
             </details>

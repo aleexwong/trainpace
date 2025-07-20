@@ -48,12 +48,12 @@ export interface GPXAnalysisResponse {
       basePaceMinPerKm: number;
       gradeThreshold: number;
     };
-    cacheStats: {
-      fullResponseSize: number;
-      staticDataSize: number;
-      analysisDataSize: number;
-      compressionRatio: number;
-    };
+    // cacheStats: {
+    //   fullResponseSize: number;
+    //   staticDataSize: number;
+    //   analysisDataSize: number;
+    //   compressionRatio: number;
+    // };
   };
 }
 

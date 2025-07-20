@@ -263,15 +263,6 @@ export default function GpxUploader({
         staticRouteData: null, // Will be filled by first API call
         staticDataCached: null,
         staticDataSize: 0,
-
-        // Cache performance tracking
-        cacheInfo: {
-          totalCacheEntries: 0,
-          lastCached: null,
-          totalCacheSize: 0,
-          apiCallsSaved: 0,
-          costSavings: 0,
-        },
       };
 
       if (shouldStoreContent) {
@@ -364,13 +355,6 @@ export default function GpxUploader({
         displayPoints: processed.displayPoints,
         metadata: processed.metadata,
         staticRouteData: null,
-        cacheInfo: {
-          totalCacheEntries: 0,
-          lastCached: null,
-          totalCacheSize: 0,
-          apiCallsSaved: 0,
-          costSavings: 0,
-        },
       });
 
       const docId = docRef.id;
