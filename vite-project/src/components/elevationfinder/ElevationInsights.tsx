@@ -126,12 +126,12 @@ export function ElevationInsights({
 
     // Rate limiting - prevent spam
     if (now - lastApiCall.current < MIN_API_INTERVAL) {
-      console.log("🚫 Rate limited - too soon since last call");
+      console.log("Rate limited - too soon since last call");
       return;
     }
 
     if (onSettingsChange) {
-      console.log("📡 API call on release:", {
+      console.log("API call on release:", {
         basePaceMinPerKm: localBasePace,
         gradeThreshold: localGradeThreshold,
       });

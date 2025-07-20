@@ -280,9 +280,9 @@ export default function GpxUploader({
 
       await setDoc(docRef, docData);
 
-      console.log(`📁 Route document created: ${docId}`);
-      console.log(`📏 File size: ${(file.size / 1024).toFixed(1)}KB`);
-      console.log(`🔄 Ready for smart caching on first analysis`);
+      console.log(`Route document created: ${docId}`);
+      console.log(`File size: ${(file.size / 1024).toFixed(1)}KB`);
+      console.log(`Ready for smart caching on first analysis`);
 
       return {
         fileUrl: downloadURL,
@@ -319,7 +319,7 @@ export default function GpxUploader({
 
       // Method 1: Use content stored in Firestore (fastest)
       if (duplicateFound?.content) {
-        console.log("✅ Loading content from Firestore cache");
+        console.log("Loading content from Firestore cache");
         onFileParsed(
           duplicateFound.content,
           filename,
@@ -331,7 +331,7 @@ export default function GpxUploader({
 
       // Method 2: Get fresh download URL from storage reference
       if (duplicateFound?.storageRef) {
-        console.log("🔄 Loading content from Firebase Storage");
+        console.log("Loading content from Firebase Storage");
         const fileRef = ref(storage, duplicateFound.storageRef);
         const freshUrl = await getDownloadURL(fileRef);
 
@@ -346,7 +346,7 @@ export default function GpxUploader({
       }
 
       // Method 3: Direct fetch with original URL (fallback)
-      console.log("⚠️ Trying direct fetch with original URL");
+      console.log("Trying direct fetch with original URL");
       const response = await fetch(fileUrl);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);

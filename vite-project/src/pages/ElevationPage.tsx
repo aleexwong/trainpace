@@ -76,7 +76,7 @@ export default function ElevationPage() {
       const cacheSnap = await getDoc(cacheRef);
 
       if (!cacheSnap.exists()) {
-        console.log(`❌ Cache miss for ${cacheKey}`);
+        console.log(`Cache miss for ${cacheKey}`);
         return null;
       }
 
@@ -84,12 +84,12 @@ export default function ElevationPage() {
 
       // Check expiration
       if (new Date(cached.expiresAt) < new Date()) {
-        console.log(`⏰ Cache expired for ${cacheKey}, cleaning up...`);
+        console.log(`Cache expired for ${cacheKey}, cleaning up...`);
         await deleteDoc(cacheRef);
         return null;
       }
 
-      console.log(`✅ Cache hit for ${cacheKey} - saved API call!`);
+      console.log(`Cache hit for ${cacheKey} - saved API call!`);
 
       // Reconstruct full API response from cache + static data
       const reconstructed: GPXAnalysisResponse = {
@@ -170,8 +170,7 @@ export default function ElevationPage() {
           expiresAt: new Date(
             Date.now() + 10 * 365 * 24 * 60 * 60 * 1000
           ).toISOString(),
-          // NOTE: This is basically "never expire" — we'll bump version keys (v2, v3) if logic changes.
-          // Cleanup? Future me can worry about it... or not.
+          // NOTE: This is basically "never expire", bump version keys (v2, v3) if logic changes. 10 years
           staticDataSize: cacheStats.staticDataSize,
           analysisDataSize: cacheStats.analysisDataSize,
         }
@@ -226,12 +225,10 @@ export default function ElevationPage() {
     settings: { basePaceMinPerKm: number; gradeThreshold: number },
     filename: string,
     routeId?: string
-    // displayPoints?: Array<{ lat: number; lng: number; ele?: number }>
   ): Promise<GPXAnalysisResponse> => {
     const idToken = auth.user ? await auth.user.getIdToken() : null;
     const response = await fetch(
-      // "https://api.trainpace.com/api/analyze-gpx-cache",
-      "http://localhost:3000/api/analyze-gpx-cache",
+      "https://api.trainpace.com/api/analyze-gpx-cache",
       {
         method: "POST",
         headers: {
@@ -296,7 +293,7 @@ export default function ElevationPage() {
 
         // 2. Check if we have static data cached
         if (sharedData.staticRouteData) {
-          console.log(`📊 Static route data found in cache`);
+          console.log(`Static route data found in cache`);
 
           // Check for cached analysis with current settings
           const cachedAnalysis = await getCachedAnalysis(
@@ -306,7 +303,7 @@ export default function ElevationPage() {
           );
 
           if (cachedAnalysis) {
-            console.log(`⚡ Instant load from cache!`);
+            console.log(`Instant load from cache!`);
             setAnalysisData(cachedAnalysis);
             setPoints(cachedAnalysis.profile || []);
             setLoading(false);
@@ -315,7 +312,7 @@ export default function ElevationPage() {
         }
 
         // 3. Cache miss or no static data - call API
-        console.log(`💸 Cache miss - calling API...`);
+        console.log(`Cache miss - calling API...`);
 
         // Get GPX content
         let gpxText = sharedData.content;
@@ -360,7 +357,7 @@ export default function ElevationPage() {
     basePaceMinPerKm: number;
     gradeThreshold: number;
   }) => {
-    console.log(`🔄 Settings change requested:`);
+    console.log(`Settings change requested:`);
     console.log(
       `   From: pace=${analysisSettings.basePaceMinPerKm}, grade=${analysisSettings.gradeThreshold}`
     );
@@ -370,8 +367,8 @@ export default function ElevationPage() {
 
     const oldCacheKey = getCacheKey(analysisSettings);
     const newCacheKey = getCacheKey(newSettings);
-    console.log(`   Cache keys: ${oldCacheKey} → ${newCacheKey}`);
-    console.log(`   Same key: ${oldCacheKey === newCacheKey}`);
+    console.log(`Cache keys: ${oldCacheKey} → ${newCacheKey}`);
+    console.log(`Same key: ${oldCacheKey === newCacheKey}`);
 
     setAnalysisSettings(newSettings);
 
@@ -383,10 +380,10 @@ export default function ElevationPage() {
       try {
         // 1. Check cache for new settings first
         if (routeMetadata.staticRouteData) {
-          console.log(`🔍 Checking cache for new settings...`);
-          console.log(`   Route ID: ${urlDocId}`);
+          console.log(`Checking cache for new settings...`);
+          console.log(`Route ID: ${urlDocId}`);
           console.log(
-            `   Static data available: ${!!routeMetadata.staticRouteData}`
+            `Static data available: ${!!routeMetadata.staticRouteData}`
           );
 
           const cachedForNewSettings = await getCachedAnalysis(
@@ -396,35 +393,34 @@ export default function ElevationPage() {
           );
 
           if (cachedForNewSettings) {
-            console.log(`✅ Using cached analysis for new settings`);
+            console.log(`Using cached analysis for new settings`);
             setAnalysisData(cachedForNewSettings);
             setPoints(cachedForNewSettings.profile || []);
             setLoading(false);
             return;
           } else {
-            console.log(`❌ No cache found for new settings, will call API`);
+            console.log(`No cache found for new settings, will call API`);
           }
         } else {
-          console.log(`⚠️ No static route data available for cache lookup`);
+          console.log(`No static route data available for cache lookup`);
         }
 
         // 2. Cache miss - need fresh analysis, get GPX content
         let gpxText = originalGpxText;
 
-        // 🚀 FIX: Multiple fallback methods to get GPX content
+        // Multiple fallback methods to get GPX content
         if (!gpxText) {
           console.log(
             "🔄 originalGpxText not available, trying fallback methods..."
           );
 
           // Method 1: Try route metadata content (stored for small files)
+          // does not work if the route was uploaded with a file larger than 1MB
           if (routeMetadata.content) {
-            console.log("✅ Using GPX content from route metadata");
             gpxText = routeMetadata.content;
           }
           // Method 2: Fetch from Firebase Storage
           else if (routeMetadata.storageRef) {
-            console.log("🔄 Fetching GPX content from Firebase Storage...");
             const storageUrl = await getDownloadURL(
               ref(storage, routeMetadata.storageRef)
             );
@@ -436,12 +432,12 @@ export default function ElevationPage() {
             }
             gpxText = await response.text();
 
-            // 🚀 IMPORTANT: Store it for next time
+            // IMPORTANT: Store it for next time
             setOriginalGpxText(gpxText);
           }
           // Method 3: Try direct file URL (last resort)
           else if (routeMetadata.fileUrl) {
-            console.log("🔄 Trying direct fetch from file URL...");
+            console.log("Trying direct fetch from file URL...");
             const response = await fetch(routeMetadata.fileUrl);
             if (!response.ok) {
               throw new Error(
@@ -460,7 +456,7 @@ export default function ElevationPage() {
           throw new Error("Could not retrieve GPX content for re-analysis");
         }
 
-        console.log(`🔄 Cache miss for new settings, calling API...`);
+        console.log(`Cache miss for new settings, calling API...`);
         const analysis = await performAnalysisWithCaching(
           gpxText,
           newSettings,
@@ -495,7 +491,7 @@ export default function ElevationPage() {
     } else {
       // 🚀 Handle case where no GPX data is available at all
       console.warn(
-        "⚠️ No GPX data available for re-analysis - this shouldn't happen"
+        "No GPX data available for re-analysis - this shouldn't happen"
       );
       setError(
         "Cannot change settings: route data not available. Please refresh the page."
@@ -514,10 +510,10 @@ export default function ElevationPage() {
     setLoading(true);
     setError(null);
     setFilename(filename);
-    console.log(`📂 File parsed: ${fileUrl}`);
-    console.log(`📄 GPX Text Length: ${displayUrl} characters`);
-    console.log(`🆔 New docId from upload: ${docId}`);
-    console.log(`🔗 Current URL docId: ${urlDocId}`);
+    console.log(`File parsed: ${fileUrl}`);
+    console.log(`PX Text Length: ${displayUrl} characters`);
+    console.log(`New docId from upload: ${docId}`);
+    console.log(`Current URL docId: ${urlDocId}`);
 
     if (displayPoints && displayPoints.length > 0) {
       setUploadedRoutePoints(displayPoints);
@@ -525,10 +521,10 @@ export default function ElevationPage() {
 
     setOriginalGpxText(gpxText);
 
-    // 🚀 NEW: Update URL immediately after upload to enable sharing
+    // Update URL immediately after upload to enable sharing
     if (docId && !urlDocId) {
       console.log(
-        `🔗 Updating URL to show shareable link: /elevation-finder/${docId}`
+        `Updating URL to show shareable link: /elevation-finder/${docId}`
       );
       window.history.replaceState(null, "", `/elevation-finder/${docId}`);
       // Update our state to reflect the new docId
