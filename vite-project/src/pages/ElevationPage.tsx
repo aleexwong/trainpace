@@ -523,9 +523,6 @@ export default function ElevationPage() {
 
     // Update URL immediately after upload to enable sharing
     if (docId && !urlDocId) {
-      console.log(
-        `Updating URL to show shareable link: /elevation-finder/${docId}`
-      );
       window.history.replaceState(null, "", `/elevation-finder/${docId}`);
       // Update our state to reflect the new docId
       setCurrentDocId(docId);
