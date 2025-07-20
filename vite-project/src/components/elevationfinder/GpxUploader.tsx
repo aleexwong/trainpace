@@ -240,7 +240,7 @@ export default function GpxUploader({
       // Create document with random ID
       const docRef = doc(collection(db, "gpx_uploads"));
       const docId = docRef.id;
-      const displayUrl = `/elevation-finder/${docId}`;
+      const displayUrl = `/elevationfinder/${docId}`;
 
       const docData: any = {
         userId: user?.uid,
@@ -358,7 +358,7 @@ export default function GpxUploader({
       });
 
       const docId = docRef.id;
-      const displayUrl = `/elevation-finder/${docId}`;
+      const displayUrl = `/elevationfinder/${docId}`;
 
       onFileParsed(
         content,

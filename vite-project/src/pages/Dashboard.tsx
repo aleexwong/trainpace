@@ -318,7 +318,7 @@ export default function Dashboard() {
             <div className="flex space-x-2">
               <div className="flex space-x-2">
                 <Link
-                  to={`/elevation-finder/${route.id}`}
+                  to={`/elevationfinder/${route.id}`}
                   className="flex-1 bg-blue-500 text-white text-sm py-2 px-3 rounded-md hover:bg-blue-600 transition-colors flex items-center justify-center space-x-1"
                 >
                   <Eye className="w-4 h-4" />
@@ -402,7 +402,7 @@ export default function Dashboard() {
             Upload your first GPX file to get started with route analysis.
           </p>
           <a
-            href="/elevation-finder"
+            href="/elevationfinder"
             className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
           >
             Upload GPX File
@@ -417,7 +417,7 @@ export default function Dashboard() {
               {routes.length} route{routes.length !== 1 ? "s" : ""} found
             </div>
             <a
-              href="/elevation-finder"
+              href="/elevationfinder"
               className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors text-sm"
             >
               Upload New Route
