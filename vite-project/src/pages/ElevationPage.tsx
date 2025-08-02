@@ -621,13 +621,6 @@ export default function ElevationPage() {
             <ShareLinkBox docId={currentDocId} />
           </div>
         )}
-        {loading && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-            <p className="text-blue-700">
-              {urlDocId ? "Loading analysis..." : "Analyzing GPX file..."}
-            </p>
-          </div>
-        )}
 
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
