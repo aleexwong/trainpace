@@ -4,8 +4,15 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import type { User } from "firebase/auth";
 import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
+import PreviewRoutesDropdown from "./PreviewRoutesDropdown";
 
 type NavBehavior = "static" | "sticky" | "fixed" | "auto-hide";
+interface NavLink {
+  href: string;
+  label: string;
+  isDropdown?: boolean; // Add this optional property
+}
 
 export default function MainLayout() {
   const location = useLocation();
@@ -17,6 +24,7 @@ export default function MainLayout() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [navVisible, setNavVisible] = useState(true);
   const [navBehavior] = useState<NavBehavior>("fixed");
+  const [mobilePreviewOpen, setMobilePreviewOpen] = useState(false);
   // Choose your navigation behavior here
   // const NAV_BEHAVIOR: NavBehavior = "fixed"; // Change this to test different behaviors
 
@@ -60,14 +68,21 @@ export default function MainLayout() {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
-  const getNavigationLinks = () => {
-    const publicLinks = [
-      // { href: "/", label: "Home" }, // Always include Home link
+  // Reset mobile preview state when menu closes
+  useEffect(() => {
+    if (!mobileMenuOpen) {
+      setMobilePreviewOpen(false);
+    }
+  }, [mobileMenuOpen]);
+
+  const getNavigationLinks = (): NavLink[] => {
+    const publicLinks: NavLink[] = [
       { href: "/calculator", label: "Calculator" },
       { href: "/fuel", label: "Fuel Planner" },
+      { href: "#", label: "Preview Routes", isDropdown: true }, // Now TypeScript is happy
     ];
 
-    const authLinks = user
+    const authLinks: NavLink[] = user
       ? [
           { href: "/elevationfinder", label: "ElevationFinder" },
           { href: "/dashboard", label: "Dashboard" },
@@ -151,19 +166,27 @@ export default function MainLayout() {
             </a>
           )}
 
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              to={link.href}
-              className={`text-gray-700 hover:text-blue-600 transition-colors ${
-                location.pathname === link.href
-                  ? "text-blue-600 font-medium"
-                  : ""
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) => {
+            // Handle dropdown case
+            if (link.isDropdown && link.label === "Preview Routes") {
+              return <PreviewRoutesDropdown key={link.label} />;
+            }
+
+            // Handle regular links
+            return (
+              <Link
+                key={link.href}
+                to={link.href}
+                className={`text-gray-700 hover:text-blue-600 transition-colors ${
+                  location.pathname === link.href
+                    ? "text-blue-600 font-medium"
+                    : ""
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
 
           {user && (
             <Button
@@ -263,20 +286,70 @@ export default function MainLayout() {
               </a>
             )}
 
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={`block py-3 px-4 text-lg font-medium rounded-lg transition-colors ${
-                  location.pathname === link.href
-                    ? "bg-blue-50 text-blue-600"
-                    : "text-gray-900 hover:bg-gray-100 hover:text-blue-600"
-                }`}
-                onClick={() => setMobileMenuOpen(false)}
+            {/* Regular navigation links */}
+            {links.map((link) => {
+              // Skip the dropdown item in mobile - we'll handle it separately
+              if (link.isDropdown) return null;
+              
+              return (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className={`block py-3 px-4 text-lg font-medium rounded-lg transition-colors ${
+                    location.pathname === link.href
+                      ? "bg-blue-50 text-blue-600"
+                      : "text-gray-900 hover:bg-gray-100 hover:text-blue-600"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+
+            {/* Collapsible Preview Routes Section for Mobile */}
+            <div className="border-t border-gray-200 pt-4 mt-4">
+              <button
+                onClick={() => setMobilePreviewOpen(!mobilePreviewOpen)}
+                className="flex items-center justify-between w-full px-4 py-3 text-lg font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors"
               >
-                {link.label}
-              </Link>
-            ))}
+                <span>Preview Routes</span>
+                <ChevronDown 
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    mobilePreviewOpen ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+              
+              {mobilePreviewOpen && (
+                <div className="mt-2 space-y-1">
+                  {[
+                    { name: 'Boston Marathon', slug: 'boston' },
+                    { name: 'NYC Marathon', slug: 'nyc' },
+                    { name: 'Chicago Marathon', slug: 'chicago' },
+                    { name: 'Berlin Marathon', slug: 'berlin' },
+                    { name: 'London Marathon', slug: 'london' },
+                    { name: 'Tokyo Marathon', slug: 'tokyo' }
+                  ].map((route) => (
+                    <Link
+                      key={route.slug}
+                      to={`/preview-route/${route.slug}`}
+                      className={`block py-2 px-6 text-base text-gray-700 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors ${
+                        location.pathname === `/preview-route/${route.slug}` 
+                          ? "bg-blue-50 text-blue-600 font-medium" 
+                          : ""
+                      }`}
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        setMobilePreviewOpen(false);
+                      }}
+                    >
+                      {route.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
 
             {user && (
               <Button

@@ -23,6 +23,7 @@ import ElevationPage from "./pages/ElevationPage";
 import Dashboard from "./pages/Dashboard";
 import FAQ from "./pages/FAQ";
 import Settings from "./pages/Settings";
+import PreviewRoute from "./pages/PreviewRoute";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -56,6 +57,7 @@ function App() {
             <Route path="/reset-confirmed" element={<ResetConfirmed />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/preview-route/:slug" element={<PreviewRoute />} />
           </Route>
         </Routes>
         <GoogleAnalytics />
