@@ -77,9 +77,9 @@ export default function MainLayout() {
 
   const getNavigationLinks = (): NavLink[] => {
     const publicLinks: NavLink[] = [
+      { href: "#", label: "Preview Routes", isDropdown: true },
       { href: "/calculator", label: "Calculator" },
       { href: "/fuel", label: "Fuel Planner" },
-      { href: "#", label: "Preview Routes", isDropdown: true }, // Now TypeScript is happy
     ];
 
     const authLinks: NavLink[] = user
@@ -290,7 +290,7 @@ export default function MainLayout() {
             {links.map((link) => {
               // Skip the dropdown item in mobile - we'll handle it separately
               if (link.isDropdown) return null;
-              
+
               return (
                 <Link
                   key={link.href}
@@ -314,29 +314,29 @@ export default function MainLayout() {
                 className="flex items-center justify-between w-full px-4 py-3 text-lg font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors"
               >
                 <span>Preview Routes</span>
-                <ChevronDown 
+                <ChevronDown
                   className={`w-4 h-4 transition-transform duration-200 ${
-                    mobilePreviewOpen ? 'rotate-180' : ''
+                    mobilePreviewOpen ? "rotate-180" : ""
                   }`}
                 />
               </button>
-              
+
               {mobilePreviewOpen && (
                 <div className="mt-2 space-y-1">
                   {[
-                    { name: 'Boston Marathon', slug: 'boston' },
-                    { name: 'NYC Marathon', slug: 'nyc' },
-                    { name: 'Chicago Marathon', slug: 'chicago' },
-                    { name: 'Berlin Marathon', slug: 'berlin' },
-                    { name: 'London Marathon', slug: 'london' },
-                    { name: 'Tokyo Marathon', slug: 'tokyo' }
+                    { name: "Boston Marathon", slug: "boston" },
+                    { name: "NYC Marathon", slug: "nyc" },
+                    { name: "Chicago Marathon", slug: "chicago" },
+                    { name: "Berlin Marathon", slug: "berlin" },
+                    { name: "London Marathon", slug: "london" },
+                    { name: "Tokyo Marathon", slug: "tokyo" },
                   ].map((route) => (
                     <Link
                       key={route.slug}
                       to={`/preview-route/${route.slug}`}
                       className={`block py-2 px-6 text-base text-gray-700 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors ${
-                        location.pathname === `/preview-route/${route.slug}` 
-                          ? "bg-blue-50 text-blue-600 font-medium" 
+                        location.pathname === `/preview-route/${route.slug}`
+                          ? "bg-blue-50 text-blue-600 font-medium"
                           : ""
                       }`}
                       onClick={() => {
