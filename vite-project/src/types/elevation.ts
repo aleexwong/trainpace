@@ -62,6 +62,7 @@ export interface OptimizedRouteMetadata {
   filename: string;
   safeFilename: string;
   uploadedAt: any;
+  userId?: string; // Owner of the route
   metadata: {
     routeName: string;
     totalDistance: number;

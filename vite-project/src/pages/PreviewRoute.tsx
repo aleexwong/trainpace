@@ -1,9 +1,22 @@
 // src/pages/PreviewRoute.tsx
 import { useParams, Navigate } from "react-router-dom";
-import { MapPin, Activity, Calendar, ArrowLeft } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  MapPin,
+  Activity,
+  Calendar,
+  ArrowLeft,
+  AlertCircle,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
+import LeafletRoutePreview from "../components/utils/LeafletRoutePreview";
 import { Helmet } from "react-helmet-async";
+import { SavePreviewRouteButton } from "../components/SavePreviewRouteButton";
+import { db } from "../lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { getCurrentDocumentId } from "../config/routes";
+import marathonData from "@/data/marathon-data.json";
 
 interface MarathonRoute {
   id: string;
@@ -28,222 +41,98 @@ interface MarathonRoute {
   tips: string[];
 }
 
-// Detailed route data
-const marathonRoutesData: Record<string, MarathonRoute> = {
-  boston: {
-    id: "1",
-    name: "Boston Marathon",
-    city: "Boston",
-    country: "Massachusetts, USA",
-    distance: 42.2,
-    elevationGain: 156,
-    elevationLoss: 245,
-    startElevation: 150,
-    endElevation: 10,
-    slug: "boston",
-    raceDate: "April 21, 2025",
-    website: "https://www.baa.org/",
-    description:
-      "The Boston Marathon is one of the World Marathon Majors and features a challenging point-to-point course from Hopkinton to Boston. Known for its qualifying standards and historic significance, the course includes the famous Heartbreak Hill between miles 20-21.",
-    tips: [
-      "Train on hills - Heartbreak Hill comes at mile 20",
-      "Negative split strategy recommended due to net downhill",
-      "Weather can be unpredictable in April",
-      "Qualifying time required for entry",
-    ],
-    thumbnailPoints: [
-      { lat: 42.2287, lng: -71.5226, ele: 150, dist: 0 },
-      { lat: 42.2334, lng: -71.4956, ele: 140, dist: 2.1 },
-      { lat: 42.2401, lng: -71.4234, ele: 125, dist: 6.4 },
-      { lat: 42.2567, lng: -71.3578, ele: 110, dist: 11.2 },
-      { lat: 42.2789, lng: -71.2945, ele: 95, dist: 16.8 },
-      { lat: 42.3012, lng: -71.2234, ele: 120, dist: 21.1 }, // Heartbreak Hill
-      { lat: 42.3234, lng: -71.1567, ele: 85, dist: 26.2 },
-      { lat: 42.3445, lng: -71.0845, ele: 45, dist: 32.5 },
-      { lat: 42.3556, lng: -71.0634, ele: 25, dist: 37.8 },
-      { lat: 42.3501, lng: -71.0603, ele: 10, dist: 42.2 },
-    ],
-  },
-  nyc: {
-    id: "2",
-    name: "New York City Marathon",
-    city: "New York",
-    country: "New York, USA",
-    distance: 42.2,
-    elevationGain: 234,
-    elevationLoss: 198,
-    startElevation: 45,
-    endElevation: 35,
-    slug: "nyc",
-    raceDate: "November 2, 2025",
-    website: "https://www.tcsnycmarathon.org/",
-    description:
-      "The NYC Marathon takes runners through all five boroughs of New York City. Starting on Staten Island and finishing in Central Park, this course offers incredible crowd support and iconic city views throughout the 26.2-mile journey.",
-    tips: [
-      "Prepare for bridges - Verrazzano, Queensboro, Willis Ave, and Madison Ave",
-      "Crowd energy is amazing but can lead to going out too fast",
-      "Weather in November can vary greatly",
-      "Lottery system for entry - very competitive",
-    ],
-    thumbnailPoints: [
-      { lat: 40.6062, lng: -74.0641, ele: 45, dist: 0 }, // Staten Island start
-      { lat: 40.6089, lng: -74.0234, ele: 78, dist: 3.2 }, // Verrazzano Bridge
-      { lat: 40.6456, lng: -74.0123, ele: 25, dist: 8.1 }, // Brooklyn
-      { lat: 40.6789, lng: -73.9567, ele: 35, dist: 13.5 },
-      { lat: 40.7234, lng: -73.9012, ele: 42, dist: 18.7 }, // Queensboro Bridge
-      { lat: 40.7567, lng: -73.8345, ele: 28, dist: 22.3 }, // Queens
-      { lat: 40.7789, lng: -73.9234, ele: 45, dist: 26.8 }, // Bronx
-      { lat: 40.7812, lng: -73.9567, ele: 65, dist: 30.1 }, // Madison Ave Bridge
-      { lat: 40.7723, lng: -73.9789, ele: 55, dist: 35.7 }, // Manhattan
-      { lat: 40.7829, lng: -73.9654, ele: 35, dist: 42.2 }, // Central Park finish
-    ],
-  },
-  chicago: {
-    id: "3",
-    name: "Chicago Marathon",
-    city: "Chicago",
-    country: "Illinois, USA",
-    distance: 42.2,
-    elevationGain: 89,
-    elevationLoss: 76,
-    startElevation: 180,
-    endElevation: 176,
-    slug: "chicago",
-    raceDate: "October 12, 2025",
-    website: "https://www.chicagomarathon.com/",
-    description:
-      "Known as one of the flattest and fastest World Marathon Major courses, the Chicago Marathon takes runners through diverse neighborhoods of the Windy City. The loop course offers excellent crowd support and spectacular city skyline views.",
-    tips: [
-      "Fast and flat course - great for PR attempts",
-      "October weather can be ideal but watch for wind",
-      "Loop course means you see other runners throughout",
-      "Excellent crowd support in every neighborhood",
-    ],
-    thumbnailPoints: [
-      { lat: 41.8781, lng: -87.6298, ele: 180, dist: 0 }, // Grant Park start
-      { lat: 41.8845, lng: -87.6234, ele: 178, dist: 2.1 },
-      { lat: 41.8923, lng: -87.6089, ele: 175, dist: 5.3 },
-      { lat: 41.9034, lng: -87.6456, ele: 182, dist: 8.7 },
-      { lat: 41.9156, lng: -87.6712, ele: 185, dist: 12.4 },
-      { lat: 41.8967, lng: -87.7234, ele: 188, dist: 16.8 },
-      { lat: 41.8712, lng: -87.7456, ele: 184, dist: 21.1 },
-      { lat: 41.8534, lng: -87.6789, ele: 179, dist: 26.2 },
-      { lat: 41.8623, lng: -87.6456, ele: 177, dist: 31.5 },
-      { lat: 41.8756, lng: -87.6298, ele: 176, dist: 42.2 }, // Grant Park finish
-    ],
-  },
-  berlin: {
-    id: "4",
-    name: "Berlin Marathon",
-    city: "Berlin",
-    country: "Germany",
-    distance: 42.2,
-    elevationGain: 45,
-    elevationLoss: 52,
-    startElevation: 42,
-    endElevation: 36,
-    slug: "berlin",
-    raceDate: "September 28, 2025",
-    website: "https://www.bmw-berlin-marathon.com/",
-    description:
-      "The Berlin Marathon is renowned as the fastest marathon course in the world, passing by many of Berlin's historic landmarks including the Brandenburg Gate. The flat, fast course has seen numerous world records broken.",
-    tips: [
-      "Extremely flat and fast - world record course",
-      "September weather is usually ideal for running",
-      "Finish through the Brandenburg Gate is iconic",
-      "Lottery entry system with high demand",
-    ],
-    thumbnailPoints: [
-      { lat: 52.5145, lng: 13.3501, ele: 42, dist: 0 }, // Start near Tiergarten
-      { lat: 52.5089, lng: 13.3789, ele: 40, dist: 3.2 },
-      { lat: 52.4967, lng: 13.4123, ele: 38, dist: 7.8 },
-      { lat: 52.4823, lng: 13.4456, ele: 35, dist: 12.5 },
-      { lat: 52.4712, lng: 13.4789, ele: 33, dist: 17.1 },
-      { lat: 52.4634, lng: 13.5012, ele: 31, dist: 21.1 },
-      { lat: 52.4756, lng: 13.4234, ele: 34, dist: 26.2 },
-      { lat: 52.4923, lng: 13.3789, ele: 37, dist: 31.8 },
-      { lat: 52.5089, lng: 13.3567, ele: 39, dist: 37.5 },
-      { lat: 52.5164, lng: 13.3777, ele: 36, dist: 42.2 }, // Brandenburg Gate finish
-    ],
-  },
-  london: {
-    id: "5",
-    name: "London Marathon",
-    city: "London",
-    country: "United Kingdom",
-    distance: 42.2,
-    elevationGain: 67,
-    elevationLoss: 89,
-    startElevation: 12,
-    endElevation: 18,
-    slug: "london",
-    raceDate: "April 26, 2025",
-    website: "https://www.virginmoneylondonmarathon.com/",
-    description:
-      "The London Marathon takes runners past many of the city's most famous landmarks, including Tower Bridge, Big Ben, and Buckingham Palace. Known for its incredible atmosphere and charity fundraising, it's one of the most popular marathons worldwide.",
-    tips: [
-      "Relatively flat with some gentle rolling hills",
-      "April weather can be unpredictable - train in all conditions",
-      "Tower Bridge halfway point creates amazing atmosphere",
-      "Ballot entry system - very competitive to get in",
-    ],
-    thumbnailPoints: [
-      { lat: 51.4669, lng: 0.0005, ele: 12, dist: 0 }, // Greenwich start
-      { lat: 51.4756, lng: -0.0234, ele: 15, dist: 3.2 },
-      { lat: 51.4834, lng: -0.0567, ele: 18, dist: 7.1 },
-      { lat: 51.4912, lng: -0.0789, ele: 22, dist: 10.8 },
-      { lat: 51.5023, lng: -0.0845, ele: 25, dist: 14.2 }, // Tower Bridge area
-      { lat: 51.5089, lng: -0.0923, ele: 28, dist: 18.7 },
-      { lat: 51.5134, lng: -0.1023, ele: 24, dist: 21.1 }, // Halfway point
-      { lat: 51.5067, lng: -0.1234, ele: 20, dist: 26.2 },
-      { lat: 51.4998, lng: -0.1367, ele: 22, dist: 31.5 },
-      { lat: 51.5014, lng: -0.1419, ele: 18, dist: 42.2 }, // The Mall finish
-    ],
-  },
-  tokyo: {
-    id: "6",
-    name: "Tokyo Marathon",
-    city: "Tokyo",
-    country: "Japan",
-    distance: 42.2,
-    elevationGain: 123,
-    elevationLoss: 134,
-    startElevation: 15,
-    endElevation: 8,
-    slug: "tokyo",
-    raceDate: "March 2, 2025",
-    website: "https://www.marathon.tokyo/en/",
-    description:
-      "The Tokyo Marathon showcases Japan's capital city, taking runners through diverse districts from the metropolitan government building to the Imperial Palace. Known for incredible organization, enthusiastic crowds, and unique aid station offerings.",
-    tips: [
-      "March weather is generally mild and good for running",
-      "Incredible aid stations with unique Japanese offerings",
-      "Very organized with precise timing and logistics",
-      "Lottery system with extremely high demand",
-    ],
-    thumbnailPoints: [
-      { lat: 35.6762, lng: 139.6503, ele: 15, dist: 0 }, // Shinjuku start
-      { lat: 35.6823, lng: 139.6634, ele: 18, dist: 2.8 },
-      { lat: 35.6889, lng: 139.6789, ele: 22, dist: 6.2 },
-      { lat: 35.6945, lng: 139.6923, ele: 25, dist: 9.7 },
-      { lat: 35.6712, lng: 139.7234, ele: 28, dist: 13.5 },
-      { lat: 35.6634, lng: 139.7456, ele: 24, dist: 18.1 },
-      { lat: 35.6567, lng: 139.7678, ele: 20, dist: 21.1 }, // Halfway
-      { lat: 35.6723, lng: 139.7234, ele: 16, dist: 26.8 },
-      { lat: 35.6834, lng: 139.6989, ele: 12, dist: 32.3 },
-      { lat: 35.6887, lng: 139.6922, ele: 8, dist: 42.2 }, // Imperial Palace area finish
-    ],
-  },
-};
+const marathonRoutesData: Record<string, MarathonRoute> = marathonData;
 
 export default function PreviewRoute() {
   const { slug } = useParams<{ slug: string }>();
+  const [firebaseThumbPoints, setFirebaseThumbPoints] = useState<
+    Array<{ lat: number; lng: number; ele?: number }>
+  >([]);
+  const [loadingPoints, setLoadingPoints] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [routeStats, setRouteStats] = useState<{
+    distanceKm?: number;
+    elevationGain?: number;
+    elevationLoss?: number;
+    startElevation?: number;
+    endElevation?: number;
+  }>({});
 
-  if (!slug || !marathonRoutesData[slug]) {
+  if (!slug) {
     return <Navigate to="/" replace />;
   }
 
+  // Get the preview data
   const route = marathonRoutesData[slug];
+
+  if (!route) {
+    return <Navigate to="/" replace />;
+  }
+
+  // Load display/thumbnail points and dynamic stats from ElevationFinder doc
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        setLoadingPoints(true);
+        setLoadError(null);
+        const resolvedId = getCurrentDocumentId(route.slug);
+        const ref = doc(db, "gpx_uploads", resolvedId);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) return;
+        const data: any = snap.data();
+        const pts: Array<{ lat: number; lng: number; ele?: number }> =
+          data?.thumbnailPoints || data?.displayPoints || [];
+        if (!cancelled && pts?.length) setFirebaseThumbPoints(pts);
+
+        const nextStats: typeof routeStats = {};
+        const staticData = data?.staticRouteData;
+        const meta = data?.metadata;
+        if (staticData) {
+          if (typeof staticData.totalDistance === "number")
+            nextStats.distanceKm = staticData.totalDistance;
+          if (typeof staticData.totalElevationGain === "number")
+            nextStats.elevationGain = staticData.totalElevationGain;
+          if (typeof staticData.totalElevationLoss === "number")
+            nextStats.elevationLoss = staticData.totalElevationLoss;
+          const profile: Array<{ distanceKm: number; elevation: number }> =
+            staticData.elevationProfile || [];
+          if (profile.length > 0) {
+            nextStats.startElevation = Math.round(profile[0].elevation);
+            nextStats.endElevation = Math.round(
+              profile[profile.length - 1].elevation
+            );
+          }
+        } else if (meta) {
+          if (typeof meta.totalDistance === "number")
+            nextStats.distanceKm = meta.totalDistance;
+          if (typeof meta.elevationGain === "number")
+            nextStats.elevationGain = meta.elevationGain;
+          const elevateFrom = (
+            pts?.length ? pts : route.thumbnailPoints
+          ) as Array<{ lat: number; lng: number; ele?: number }>;
+          if (elevateFrom.length) {
+            const firstEle = elevateFrom[0]?.ele;
+            const lastEle = elevateFrom[elevateFrom.length - 1]?.ele;
+            if (typeof firstEle === "number")
+              nextStats.startElevation = Math.round(firstEle);
+            if (typeof lastEle === "number")
+              nextStats.endElevation = Math.round(lastEle);
+          }
+        }
+        if (!cancelled) setRouteStats(nextStats);
+      } catch (e: any) {
+        if (!cancelled)
+          setLoadError(e?.message ?? "Failed to load route points");
+      } finally {
+        if (!cancelled) setLoadingPoints(false);
+      }
+    };
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [route.slug]);
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -253,7 +142,13 @@ export default function PreviewRoute() {
         </title>
         <meta
           name="description"
-          content={`Explore the ${route.name} course profile, elevation changes, and race insights. Distance: ${route.distance}km, Elevation gain: ${route.elevationGain}m.`}
+          content={`Explore the ${
+            route.name
+          } course profile, elevation changes, and race insights. Distance: ${(
+            routeStats.distanceKm ?? route.distance
+          ).toFixed(1)}km, Elevation gain: ${Math.round(
+            routeStats.elevationGain ?? route.elevationGain
+          )}m.`}
         />
       </Helmet>
 
@@ -283,7 +178,7 @@ export default function PreviewRoute() {
               <span className="text-sm text-gray-500">Distance</span>
             </div>
             <p className="text-2xl font-bold text-gray-900">
-              {route.distance}km
+              {(routeStats.distanceKm ?? route.distance).toFixed(1)}km
             </p>
           </div>
 
@@ -293,7 +188,7 @@ export default function PreviewRoute() {
               <span className="text-sm text-gray-500">Elevation Gain</span>
             </div>
             <p className="text-2xl font-bold text-gray-900">
-              {route.elevationGain}m
+              {Math.round(routeStats.elevationGain ?? route.elevationGain)}m
             </p>
           </div>
 
@@ -303,7 +198,7 @@ export default function PreviewRoute() {
               <span className="text-sm text-gray-500">Elevation Loss</span>
             </div>
             <p className="text-2xl font-bold text-gray-900">
-              {route.elevationLoss}m
+              {Math.round(routeStats.elevationLoss ?? route.elevationLoss)}m
             </p>
           </div>
 
@@ -323,16 +218,28 @@ export default function PreviewRoute() {
           Course Profile
         </h2>
         <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-          <MapboxRoutePreview
-            routePoints={route.thumbnailPoints}
+          {/* Use Leaflet for public preview to avoid requiring a Mapbox token */}
+          <LeafletRoutePreview
+            routePoints={
+              firebaseThumbPoints.length
+                ? firebaseThumbPoints
+                : route.thumbnailPoints
+            }
             routeName={route.name}
             lineColor="#3b82f6"
             height="400px"
             showStartEnd={true}
             className=""
-            mapStyle="mapbox://styles/mapbox/outdoors-v11"
             interactive={true}
           />
+          {loadingPoints && (
+            <div className="p-3 text-sm text-gray-500">
+              Loading latest route preview…
+            </div>
+          )}
+          {loadError && (
+            <div className="p-3 text-sm text-red-600">{loadError}</div>
+          )}
         </div>
       </div>
 
@@ -392,20 +299,27 @@ export default function PreviewRoute() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
             <p className="text-3xl font-bold text-green-600">
-              {route.startElevation}m
+              {Math.round(routeStats.startElevation ?? route.startElevation)}m
             </p>
             <p className="text-sm text-gray-500 mt-1">Start Elevation</p>
           </div>
           <div className="text-center">
             <p className="text-3xl font-bold text-blue-600">
-              {route.endElevation}m
+              {Math.round(routeStats.endElevation ?? route.endElevation)}m
             </p>
             <p className="text-sm text-gray-500 mt-1">Finish Elevation</p>
           </div>
           <div className="text-center">
             <p className="text-3xl font-bold text-purple-600">
-              {route.startElevation > route.endElevation ? "-" : "+"}
-              {Math.abs(route.endElevation - route.startElevation)}m
+              {(routeStats.startElevation ?? route.startElevation) >
+              (routeStats.endElevation ?? route.endElevation)
+                ? "-"
+                : "+"}
+              {Math.abs(
+                (routeStats.endElevation ?? route.endElevation) -
+                  (routeStats.startElevation ?? route.startElevation)
+              )}
+              m
             </p>
             <p className="text-sm text-gray-500 mt-1">Net Elevation Change</p>
           </div>
@@ -421,6 +335,31 @@ export default function PreviewRoute() {
           Use our training tools to prepare for this incredible marathon course.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <SavePreviewRouteButton
+            routeKey={route.slug} // Use the Firebase document ID from route.slug
+            routeSlug={route.slug} // Also pass as routeSlug for backwards compatibility
+            routeName={route.name}
+            size="lg"
+            routeData={{
+              city: route.city,
+              country: route.country,
+              distance: routeStats.distanceKm ?? route.distance,
+              elevationGain: routeStats.elevationGain ?? route.elevationGain,
+              elevationLoss: routeStats.elevationLoss ?? route.elevationLoss,
+              raceDate: route.raceDate,
+              website: route.website,
+              thumbnailPoints: firebaseThumbPoints.length
+                ? (firebaseThumbPoints as Array<{
+                    lat: number;
+                    lng: number;
+                    ele: number;
+                    dist?: number;
+                  }>)
+                : route.thumbnailPoints,
+              description: route.description,
+              tips: route.tips,
+            }}
+          />
           <Link
             to="/calculator"
             className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"

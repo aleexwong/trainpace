@@ -39,8 +39,6 @@ function App() {
             <Route index element={<Landing />} />
             <Route path="/calculator" element={<TrainingPaceCalculator />} />
             <Route path="/fuel" element={<FuelPlanner />} />
-
-            <Route path="*" element={<Landing />} />
             <Route path="/elevation-finder" element={<ElevationPage />} />
             <Route
               path="/elevation-finder/:docId"
@@ -58,6 +56,8 @@ function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/preview-route/:slug" element={<PreviewRoute />} />
+            {/* Wildcard route should be last */}
+            <Route path="*" element={<Landing />} />
           </Route>
         </Routes>
         <GoogleAnalytics />

@@ -11,6 +11,9 @@ import {
   ChartOptions,
   Filler,
 } from "chart.js";
+import { useState, useRef } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
 
 Chart.register(
   CategoryScale,
@@ -22,14 +25,68 @@ Chart.register(
   Filler
 );
 
-// type ProfilePoint = { distanceKm: number; elevation: number };
-
 interface ElevationChartProps {
   points: ProfilePoint[];
   filename?: string;
+  // New props for editing functionality
+  docId?: string;
+  isOwner?: boolean;
+  onFilenameUpdate?: (newFilename: string) => void;
 }
 
-export function ElevationChart({ points, filename }: ElevationChartProps) {
+export function ElevationChart({ points, filename, docId, isOwner, onFilenameUpdate }: ElevationChartProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editFilename, setEditFilename] = useState(filename || '');
+  const [isUpdating, setIsUpdating] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleEdit = () => {
+    setIsEditing(true);
+    setEditFilename(filename || '');
+    // Focus input after state update
+    setTimeout(() => inputRef.current?.focus(), 0);
+  };
+
+  const handleSave = async () => {
+    const trimmedFilename = editFilename.trim();
+    
+    if (!trimmedFilename || trimmedFilename === filename || !docId) {
+      setIsEditing(false);
+      setEditFilename(filename || '');
+      return;
+    }
+
+    setIsUpdating(true);
+    try {
+      // Update Firebase document
+      const docRef = doc(db, 'gpx_uploads', docId);
+      await updateDoc(docRef, { 
+        filename: trimmedFilename,
+        updatedAt: new Date().toISOString()
+      });
+      
+      // Notify parent component
+      onFilenameUpdate?.(trimmedFilename);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Failed to update filename:', error);
+      // Reset on error
+      setEditFilename(filename || '');
+      setIsEditing(false);
+      // You could add a toast notification here
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSave();
+    } else if (e.key === 'Escape') {
+      setEditFilename(filename || '');
+      setIsEditing(false);
+    }
+  };
   const data = {
     datasets: [
       {
@@ -145,9 +202,60 @@ export function ElevationChart({ points, filename }: ElevationChartProps) {
   };
 
   return (
-    <div className="w-full h-80 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-      <Line data={data} options={options} />
+    <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200">
+      {/* Editable filename header */}
+      <div className="px-4 py-3 border-b border-gray-200">
+        {isEditing ? (
+          <div className="flex items-center gap-2">
+            <input
+              ref={inputRef}
+              type="text"
+              value={editFilename}
+              onChange={(e) => setEditFilename(e.target.value)}
+              onBlur={handleSave}
+              onKeyDown={handleKeyPress}
+              disabled={isUpdating}
+              className="flex-1 px-2 py-1 text-lg font-semibold border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              maxLength={100}
+              placeholder="Enter filename..."
+            />
+            {isUpdating && (
+              <div className="w-4 h-4 animate-spin border-2 border-blue-500 border-t-transparent rounded-full" />
+            )}
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-gray-800">
+              {filename ? filename.replace('.gpx', '') : 'Elevation Profile'}
+            </h3>
+            {isOwner && docId && (
+              <button
+                onClick={handleEdit}
+                className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                title="Edit filename"
+              >
+                <PencilIcon className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+      
+      {/* Chart container */}
+      <div className="w-full h-80 p-4">
+        <Line data={data} options={options} />
+      </div>
     </div>
+  );
+}
+
+// Simple pencil icon component
+function PencilIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+    </svg>
   );
 }
 

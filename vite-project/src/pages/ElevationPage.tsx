@@ -12,11 +12,12 @@ import MapboxRoutePreview from "@/components/utils/MapboxRoutePreview";
 import { ShareLinkBox } from "@/components/ui/ShareLinkBox";
 import { Button } from "@/components/ui/button";
 import { Helmet } from "react-helmet-async";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { db, storage } from "@/lib/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { useAuth } from "@/features/auth/AuthContext";
+import { getCurrentDocumentId, needsMigration } from "../config/routes";
 
 export default function ElevationPage() {
   const [points, setPoints] = useState<ProfilePoint[]>([]);
@@ -24,7 +25,31 @@ export default function ElevationPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { docId: urlDocId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const auth = useAuth();
+
+  // 🚀 Firebase document ID migration redirect logic
+  useEffect(() => {
+    if (!urlDocId) return;
+
+    // Check if this document ID has been migrated to a newer version
+    const currentDocId = getCurrentDocumentId(urlDocId);
+    
+    if (currentDocId !== urlDocId) {
+      // This document ID has been migrated, redirect to the new one
+      console.log(`🔄 Redirecting outdated document ID: ${urlDocId} → ${currentDocId}`);
+      
+      // Preserve any query parameters
+      const newPath = `/elevationfinder/${currentDocId}${location.search}`;
+      navigate(newPath, { replace: true });
+      
+      // IMPORTANT: Don't continue with component setup until redirect completes
+      return;
+    }
+    
+    // Document ID is current, no redirect needed
+  }, [urlDocId, navigate, location.search]);
 
   const [currentDocId, setCurrentDocId] = useState<string | null>(
     urlDocId || null
@@ -49,6 +74,7 @@ export default function ElevationPage() {
 
   // 🚀 Sync currentDocId with URL changes
   useEffect(() => {
+    console.log(`🔄 URL changed: urlDocId="${urlDocId}", updating currentDocId`);
     setCurrentDocId(urlDocId || null);
   }, [urlDocId]);
 
@@ -344,13 +370,16 @@ export default function ElevationPage() {
     basePaceMinPerKm: number;
     gradeThreshold: number;
   }) => {
-    console.log(`Settings change requested:`);
+    console.log(`🔧 Settings change requested:`);
     console.log(
       `   From: pace=${analysisSettings.basePaceMinPerKm}, grade=${analysisSettings.gradeThreshold}`
     );
     console.log(
       `   To: pace=${newSettings.basePaceMinPerKm}, grade=${newSettings.gradeThreshold}`
     );
+    console.log(`   Current urlDocId: ${urlDocId}`);
+    console.log(`   Has routeMetadata: ${!!routeMetadata}`);
+    console.log(`   Has originalGpxText: ${!!originalGpxText}`);
 
     const oldCacheKey = getCacheKey(analysisSettings);
     const newCacheKey = getCacheKey(newSettings);
@@ -548,7 +577,17 @@ export default function ElevationPage() {
         {/* Add other OG tags as needed, e.g., og:type */}
         <link rel="canonical" href="/elevationfinder" />
       </Helmet>
-      <div className="max-w-6xl mx-auto p-6 space-y-6">
+      
+      {/* 🚀 Check if we're in the middle of a document ID migration - show loading if so */}
+      {urlDocId && needsMigration(urlDocId) ? (
+        <div className="max-w-6xl mx-auto p-6 space-y-6">
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+            <p className="text-gray-600 mt-4">Redirecting...</p>
+          </div>
+        </div>
+      ) : (
+        <div className="max-w-6xl mx-auto p-6 space-y-6">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-700 text-center">
           <a
             href="/elevationfinder"
@@ -678,7 +717,22 @@ export default function ElevationPage() {
 
         {/* Elevation Chart */}
         {points.length > 0 && (
-          <ElevationChart points={points} filename={filename ?? undefined} />
+          <ElevationChart 
+            points={points} 
+            filename={filename ?? undefined}
+            docId={currentDocId ?? undefined}
+            isOwner={auth.user && routeMetadata ? routeMetadata.userId === auth.user.uid : false}
+            onFilenameUpdate={(newFilename) => {
+              setFilename(newFilename);
+              // Update route metadata if available
+              if (routeMetadata) {
+                setRouteMetadata({
+                  ...routeMetadata,
+                  filename: newFilename
+                });
+              }
+            }}
+          />
         )}
 
         <ElevationInsights
@@ -710,7 +764,8 @@ export default function ElevationPage() {
               </div>
             </details>
           )}
-      </div>
+        </div>
+      )}
     </>
   );
 }
