@@ -40,7 +40,6 @@ interface SavePreviewRouteButtonProps {
 }
 
 export function SavePreviewRouteButton({
-  routeKey,
   routeName,
   className = "",
   size = "md",

@@ -120,7 +120,7 @@ export default function Dashboard() {
       // Process bookmarked routes
       bookmarksSnapshot.forEach((doc) => {
         const data = doc.data();
-        
+
         routeData.push({
           id: doc.id,
           type: "bookmarked",
@@ -166,10 +166,10 @@ export default function Dashboard() {
     }
   };
 
-  async function softDeleteRouteDoc(routeId: string) {
-    const docRef = doc(db, "gpx_uploads", routeId);
-    await updateDoc(docRef, { deleted: true, deletedAt: Date.now() });
-  }
+  // async function softDeleteRouteDoc(routeId: string) {
+  //   const docRef = doc(db, "gpx_uploads", routeId);
+  //   await updateDoc(docRef, { deleted: true, deletedAt: Date.now() });
+  // }
 
   async function handleDeleteRoute(
     routeId: string,

@@ -1,15 +1,9 @@
 // src/pages/PreviewRoute.tsx
 import { useParams, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {
-  MapPin,
-  Activity,
-  Calendar,
-  ArrowLeft,
-  AlertCircle,
-} from "lucide-react";
+import { MapPin, Activity, Calendar, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
+// import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
 import LeafletRoutePreview from "../components/utils/LeafletRoutePreview";
 import { Helmet } from "react-helmet-async";
 import { SavePreviewRouteButton } from "../components/SavePreviewRouteButton";
