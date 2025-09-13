@@ -1,6 +1,5 @@
-import React from "react";
 import { Button } from "../ui/button";
-import { Image, Trophy } from "lucide-react";
+import { Image } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { PosterGenerator } from "./index";
 import type { GPXMetadata } from "../../lib/gpxMetaData";

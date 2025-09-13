@@ -1,13 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import {
-  Download,
-  Palette,
-  Type,
-  MapPin,
-  Clock,
-  Calendar,
-  Trophy,
-} from "lucide-react";
+import { Download, MapPin, Clock, Calendar, Trophy } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
@@ -126,7 +118,6 @@ export default function PosterGenerator({
   const [isGenerating, setIsGenerating] = useState(false);
   const [mapTilesLoaded, setMapTilesLoaded] = useState(false);
   const [debugInfo, setDebugInfo] = useState<string[]>([]);
-  const [apiCallCount, setApiCallCount] = useState(0);
 
   // Debug logging function
   const addDebugInfo = (info: string) => {
