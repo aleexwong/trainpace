@@ -1,6 +1,17 @@
 type GpxPoint = { lat: number; lng: number; ele?: number };
 
-function extractGPXMetadata(gpxContent: string, filename?: string) {
+export type GPXMetadata = {
+  routeName: string;
+  totalDistance: number;
+  elevationGain: number;
+  maxElevation: number | null;
+  minElevation: number | null;
+  pointCount: number;
+  bounds: { minLat: number; maxLat: number; minLng: number; maxLng: number };
+  hasElevationData: boolean;
+};
+
+function extractGPXMetadata(gpxContent: string, filename?: string): GPXMetadata {
   const parser = new DOMParser();
   const doc = parser.parseFromString(gpxContent, "text/xml");
 
@@ -194,7 +205,7 @@ export function processGPXUpload(
   original: string;
   displayPoints: GpxPoint[];
   thumbnailPoints: GpxPoint[];
-  metadata: ReturnType<typeof extractGPXMetadata>;
+  metadata: GPXMetadata;
 } {
   const allPoints = parseGPXToPoints(gpxContent);
   const metadata = extractGPXMetadata(gpxContent, filename);

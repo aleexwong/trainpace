@@ -64,6 +64,15 @@ export default function Login() {
       </p>
 
       <div className="w-full max-w-xs flex flex-col items-center gap-4">
+        {/* Google Login - moved to top */}
+        <LoginButton />
+
+        <div className="flex items-center w-full my-2">
+          <div className="flex-1 border-t border-gray-300"></div>
+          <span className="px-4 text-sm text-gray-500">or</span>
+          <div className="flex-1 border-t border-gray-300"></div>
+        </div>
+
         <form onSubmit={handleEmailLogin} className="w-full space-y-3">
           <input
             type="email"
@@ -100,13 +109,9 @@ export default function Login() {
           Forgot password?
         </Link>
 
-        <div className="text-sm text-gray-500">or</div>
-
         <Link to="/register" className="text-blue-500 hover:underline">
           Register here
         </Link>
-
-        <LoginButton />
       </div>
     </div>
   );

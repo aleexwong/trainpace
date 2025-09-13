@@ -18,6 +18,7 @@ import { db, storage } from "@/lib/firebase";
 import { getDownloadURL, ref } from "firebase/storage";
 import { useAuth } from "@/features/auth/AuthContext";
 import { getCurrentDocumentId, needsMigration } from "../config/routes";
+import PosterButton from "@/components/poster/PosterButton";
 
 export default function ElevationPage() {
   const [points, setPoints] = useState<ProfilePoint[]>([]);
@@ -35,19 +36,21 @@ export default function ElevationPage() {
 
     // Check if this document ID has been migrated to a newer version
     const currentDocId = getCurrentDocumentId(urlDocId);
-    
+
     if (currentDocId !== urlDocId) {
       // This document ID has been migrated, redirect to the new one
-      console.log(`🔄 Redirecting outdated document ID: ${urlDocId} → ${currentDocId}`);
-      
+      console.log(
+        `🔄 Redirecting outdated document ID: ${urlDocId} → ${currentDocId}`
+      );
+
       // Preserve any query parameters
       const newPath = `/elevationfinder/${currentDocId}${location.search}`;
       navigate(newPath, { replace: true });
-      
+
       // IMPORTANT: Don't continue with component setup until redirect completes
       return;
     }
-    
+
     // Document ID is current, no redirect needed
   }, [urlDocId, navigate, location.search]);
 
@@ -74,7 +77,9 @@ export default function ElevationPage() {
 
   // 🚀 Sync currentDocId with URL changes
   useEffect(() => {
-    console.log(`🔄 URL changed: urlDocId="${urlDocId}", updating currentDocId`);
+    console.log(
+      `🔄 URL changed: urlDocId="${urlDocId}", updating currentDocId`
+    );
     setCurrentDocId(urlDocId || null);
   }, [urlDocId]);
 
@@ -577,7 +582,7 @@ export default function ElevationPage() {
         {/* Add other OG tags as needed, e.g., og:type */}
         <link rel="canonical" href="/elevationfinder" />
       </Helmet>
-      
+
       {/* 🚀 Check if we're in the middle of a document ID migration - show loading if so */}
       {urlDocId && needsMigration(urlDocId) ? (
         <div className="max-w-6xl mx-auto p-6 space-y-6">
@@ -588,182 +593,258 @@ export default function ElevationPage() {
         </div>
       ) : (
         <div className="max-w-6xl mx-auto p-6 space-y-6">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-700 text-center">
-          <a
-            href="/elevationfinder"
-            aria-label="ElevationFinder - Analyze Your GPX Files"
-            title="ElevationFinder - Analyze Your GPX Files"
-            className="no-underline text-blue-700 font-bold hover:text-blue-800 transition-colors"
-          >
-            ElevationFinder
-          </a>
-        </h1>
-
-        {!currentDocId && <GpxUploader onFileParsed={handleFileParsed} />}
-
-        {/* Show "Upload New Route" button when we have a current route */}
-        {currentDocId && (
-          <div className="text-center">
-            <Button
-              variant="outline"
-              onClick={() => {
-                // Reset everything and go back to upload state
-                setCurrentDocId(null);
-                setPoints([]);
-                setAnalysisData(null);
-                setRouteMetadata(null);
-                setUploadedRoutePoints([]);
-                setOriginalGpxText(null);
-                setFilename(null);
-                setError(null);
-                // Update URL to remove docId
-                window.history.replaceState(null, "", "/elevationfinder");
-              }}
-              className="mb-4"
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-700 text-center">
+            <a
+              href="/elevationfinder"
+              aria-label="ElevationFinder - Analyze Your GPX Files"
+              title="ElevationFinder - Analyze Your GPX Files"
+              className="no-underline text-blue-700 font-bold hover:text-blue-800 transition-colors"
             >
-              📁 Upload New Route
-            </Button>
-          </div>
-        )}
+              ElevationFinder
+            </a>
+          </h1>
 
-        {/* Show map when we have route data */}
-        {(routeMetadata?.displayPoints || uploadedRoutePoints.length > 0) && (
-          <MapboxRoutePreview
-            routePoints={routeMetadata?.displayPoints || uploadedRoutePoints}
-            routeName={
-              routeMetadata?.metadata?.routeName ||
-              analysisData?.raceName ||
-              filename ||
-              "Your Route"
-            }
-            height="400px"
-            width="100%"
-            showStartEnd={true}
-            className="border border-gray-200"
-            lineColor="#3b82f6"
-            lineWidth={3}
-            mapStyle="mapbox://styles/mapbox/outdoors-v11"
-            maxZoom={16}
-          />
-        )}
-        {/* Show share link box if we have a docId */}
-        {currentDocId && (
-          <div className="bg-white rounded-lg shadow-sm border p-4">
-            <h2 className="font-semibold text-gray-800 mb-2">
-              Share Your Route
-            </h2>
-            {import.meta.env.MODE === "development" && (
-              <div className="text-xs text-gray-500 mb-2">
-                Debug: currentDocId = {currentDocId}, urlDocId = {urlDocId}
-              </div>
-            )}
-            <ShareLinkBox docId={currentDocId} />
-          </div>
-        )}
+          {!currentDocId && <GpxUploader onFileParsed={handleFileParsed} />}
 
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-red-700 font-medium">Error: {error}</p>
-          </div>
-        )}
+          {/* Show "Upload New Route" button when we have a current route */}
+          {/* {currentDocId && (
+            <div className="text-center">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  // Reset everything and go back to upload state
+                  setCurrentDocId(null);
+                  setPoints([]);
+                  setAnalysisData(null);
+                  setRouteMetadata(null);
+                  setUploadedRoutePoints([]);
+                  setOriginalGpxText(null);
+                  setFilename(null);
+                  setError(null);
+                  // Update URL to remove docId
+                  window.history.replaceState(null, "", "/elevationfinder");
+                }}
+                className="mb-4"
+              >
+                📁 Upload New Route
+              </Button>
+            </div>
+          )} */}
+          {currentDocId && (
+            <div className="text-center space-y-3">
+              <div className="flex justify-center gap-3 flex-wrap">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    // Reset everything and go back to upload state
+                    setCurrentDocId(null);
+                    setPoints([]);
+                    setAnalysisData(null);
+                    setRouteMetadata(null);
+                    setUploadedRoutePoints([]);
+                    setOriginalGpxText(null);
+                    setFilename(null);
+                    setError(null);
+                    // Update URL to remove docId
+                    window.history.replaceState(null, "", "/elevationfinder");
+                  }}
+                >
+                  📁 Upload New Route
+                </Button>
 
-        {/* Route Summary with Cache Performance */}
-        {analysisData && (
-          <div className="bg-white rounded-lg shadow-sm border p-4">
-            <h3 className="font-semibold text-gray-800 mb-2">Route Summary</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-              <div>
-                <span className="text-gray-600">Distance:</span>
-                <span className="font-medium ml-2">
-                  {/* {analysisData.totalDistanceKm} km* */}
-                  {Number.isFinite(analysisData.totalDistanceKm) &&
-                  analysisData.totalDistanceKm >= 0
-                    ? analysisData.totalDistanceKm.toFixed(2)
-                    : "0"}{" "}
-                  km*
-                </span>
-              </div>
-              <div>
-                <span className="text-gray-600">Elevation Gain:</span>
-                <span className="font-medium ml-2">
-                  {Number.isFinite(analysisData.elevationGain) &&
-                  analysisData.elevationGain >= 0
-                    ? analysisData.elevationGain.toFixed(0)
-                    : "0"}{" "}
-                  m*{" "}
-                </span>
-              </div>
-              <div>
-                <span className="text-gray-600">Data Points:</span>
-                <span className="font-medium ml-2">
-                  {analysisData.metadata.pointCount}
-                </span>
-              </div>
-              <div>
-                <span className="text-gray-600">Elevation Data:</span>
-                <span className="font-medium ml-2">
-                  {analysisData.metadata.hasElevationData ? "Yes" : "No"}
-                </span>
+                <PosterButton
+                  displayPoints={
+                    routeMetadata?.displayPoints || uploadedRoutePoints
+                  }
+                  metadata={
+                    routeMetadata?.metadata || {
+                      routeName: filename || "My Route",
+                      totalDistance: analysisData?.totalDistanceKm || 0,
+                      elevationGain: analysisData?.elevationGain || 0,
+                      maxElevation: null,
+                      minElevation: null,
+                      pointCount: (
+                        routeMetadata?.displayPoints || uploadedRoutePoints
+                      ).length,
+                      bounds: {
+                        minLat: Math.min(
+                          ...(
+                            routeMetadata?.displayPoints || uploadedRoutePoints
+                          ).map((p) => p.lat)
+                        ),
+                        maxLat: Math.max(
+                          ...(
+                            routeMetadata?.displayPoints || uploadedRoutePoints
+                          ).map((p) => p.lat)
+                        ),
+                        minLng: Math.min(
+                          ...(
+                            routeMetadata?.displayPoints || uploadedRoutePoints
+                          ).map((p) => p.lng)
+                        ),
+                        maxLng: Math.max(
+                          ...(
+                            routeMetadata?.displayPoints || uploadedRoutePoints
+                          ).map((p) => p.lng)
+                        ),
+                      },
+                      hasElevationData:
+                        analysisData?.metadata?.hasElevationData ?? true,
+                    }
+                  }
+                  filename={filename || undefined}
+                  disabled={loading}
+                />
               </div>
             </div>
+          )}
 
-            <div className="mt-3 pt-3 border-t border-gray-200">
-              <div className="flex justify-end items-center text-xs text-gray-500">
-                * all values are approximates
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Elevation Chart */}
-        {points.length > 0 && (
-          <ElevationChart 
-            points={points} 
-            filename={filename ?? undefined}
-            docId={currentDocId ?? undefined}
-            isOwner={auth.user && routeMetadata ? routeMetadata.userId === auth.user.uid : false}
-            onFilenameUpdate={(newFilename) => {
-              setFilename(newFilename);
-              // Update route metadata if available
-              if (routeMetadata) {
-                setRouteMetadata({
-                  ...routeMetadata,
-                  filename: newFilename
-                });
+          {/* Show map when we have route data */}
+          {(routeMetadata?.displayPoints || uploadedRoutePoints.length > 0) && (
+            <MapboxRoutePreview
+              routePoints={routeMetadata?.displayPoints || uploadedRoutePoints}
+              routeName={
+                routeMetadata?.metadata?.routeName ||
+                analysisData?.raceName ||
+                filename ||
+                "Your Route"
               }
-            }}
-          />
-        )}
+              height="400px"
+              width="100%"
+              showStartEnd={true}
+              className="border border-gray-200"
+              lineColor="#3b82f6"
+              lineWidth={3}
+              mapStyle="mapbox://styles/mapbox/outdoors-v11"
+              maxZoom={16}
+            />
+          )}
+          {/* Show share link box if we have a docId */}
+          {currentDocId && (
+            <div className="bg-white rounded-lg shadow-sm border p-4">
+              <h2 className="font-semibold text-gray-800 mb-2">
+                Share Your Route
+              </h2>
+              {import.meta.env.MODE === "development" && (
+                <div className="text-xs text-gray-500 mb-2">
+                  Debug: currentDocId = {currentDocId}, urlDocId = {urlDocId}
+                </div>
+              )}
+              <ShareLinkBox docId={currentDocId} />
+            </div>
+          )}
 
-        <ElevationInsights
-          elevationInsights={analysisData?.elevationInsights || null}
-          loading={loading}
-          error={error ? error : undefined}
-          basePaceMinPerKm={
-            analysisData?.metadata?.analysisParameters?.basePaceMinPerKm ||
-            analysisSettings.basePaceMinPerKm
-          }
-          onSettingsChange={handleSettingsChange}
-        />
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <p className="text-red-700 font-medium">Error: {error}</p>
+            </div>
+          )}
 
-        {/* 🚀 NEW: Development cache debug info */}
-        {import.meta.env.MODE === "development" &&
-          urlDocId &&
-          analysisData?.cacheOptimization && (
-            <details className="bg-gray-50 border rounded p-4">
-              <summary className="cursor-pointer font-medium text-sm">
-                🔧 Cache Debug Info
-              </summary>
-              <div className="text-xs mt-2 space-y-1">
-                <div>Route ID: {urlDocId}</div>
-                <div>Cache Key: {getCacheKey(analysisSettings)}</div>
+          {/* Route Summary with Cache Performance */}
+          {analysisData && (
+            <div className="bg-white rounded-lg shadow-sm border p-4">
+              <h3 className="font-semibold text-gray-800 mb-2">
+                Route Summary
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 <div>
-                  Static Data:{" "}
-                  {routeMetadata?.staticRouteData ? "✅ Cached" : "❌ Missing"}
+                  <span className="text-gray-600">Distance:</span>
+                  <span className="font-medium ml-2">
+                    {/* {analysisData.totalDistanceKm} km* */}
+                    {Number.isFinite(analysisData.totalDistanceKm) &&
+                    analysisData.totalDistanceKm >= 0
+                      ? analysisData.totalDistanceKm.toFixed(2)
+                      : "0"}{" "}
+                    km*
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">Elevation Gain:</span>
+                  <span className="font-medium ml-2">
+                    {Number.isFinite(analysisData.elevationGain) &&
+                    analysisData.elevationGain >= 0
+                      ? analysisData.elevationGain.toFixed(0)
+                      : "0"}{" "}
+                    m*{" "}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">Data Points:</span>
+                  <span className="font-medium ml-2">
+                    {analysisData.metadata.pointCount}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-600">Elevation Data:</span>
+                  <span className="font-medium ml-2">
+                    {analysisData.metadata.hasElevationData ? "Yes" : "No"}
+                  </span>
                 </div>
               </div>
-            </details>
+
+              <div className="mt-3 pt-3 border-t border-gray-200">
+                <div className="flex justify-end items-center text-xs text-gray-500">
+                  * all values are approximates
+                </div>
+              </div>
+            </div>
           )}
+
+          {/* Elevation Chart */}
+          {points.length > 0 && (
+            <ElevationChart
+              points={points}
+              filename={filename ?? undefined}
+              docId={currentDocId ?? undefined}
+              isOwner={
+                auth.user && routeMetadata
+                  ? routeMetadata.userId === auth.user.uid
+                  : false
+              }
+              onFilenameUpdate={(newFilename) => {
+                setFilename(newFilename);
+                // Update route metadata if available
+                if (routeMetadata) {
+                  setRouteMetadata({
+                    ...routeMetadata,
+                    filename: newFilename,
+                  });
+                }
+              }}
+            />
+          )}
+
+          <ElevationInsights
+            elevationInsights={analysisData?.elevationInsights || null}
+            loading={loading}
+            error={error ? error : undefined}
+            basePaceMinPerKm={
+              analysisData?.metadata?.analysisParameters?.basePaceMinPerKm ||
+              analysisSettings.basePaceMinPerKm
+            }
+            onSettingsChange={handleSettingsChange}
+          />
+
+          {/* 🚀 NEW: Development cache debug info */}
+          {import.meta.env.MODE === "development" &&
+            urlDocId &&
+            analysisData?.cacheOptimization && (
+              <details className="bg-gray-50 border rounded p-4">
+                <summary className="cursor-pointer font-medium text-sm">
+                  🔧 Cache Debug Info
+                </summary>
+                <div className="text-xs mt-2 space-y-1">
+                  <div>Route ID: {urlDocId}</div>
+                  <div>Cache Key: {getCacheKey(analysisSettings)}</div>
+                  <div>
+                    Static Data:{" "}
+                    {routeMetadata?.staticRouteData
+                      ? "✅ Cached"
+                      : "❌ Missing"}
+                  </div>
+                </div>
+              </details>
+            )}
         </div>
       )}
     </>

@@ -1,3 +1,5 @@
+import { GPXMetadata } from '../lib/gpxMetaData';
+
 export type ProfilePoint = { distanceKm: number; elevation: number };
 
 // Updated types to match the API response
@@ -63,18 +65,7 @@ export interface OptimizedRouteMetadata {
   safeFilename: string;
   uploadedAt: any;
   userId?: string; // Owner of the route
-  metadata: {
-    routeName: string;
-    totalDistance: number;
-    elevationGain: number;
-    pointCount: number;
-    bounds: {
-      minLat: number;
-      maxLat: number;
-      minLng: number;
-      maxLng: number;
-    };
-  };
+  metadata: GPXMetadata;
   displayPoints: Array<{
     lat: number;
     lng: number;

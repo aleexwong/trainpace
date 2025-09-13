@@ -112,25 +112,25 @@ export default function MainLayout() {
 
     switch (navBehavior) {
       case "static":
-        return `${baseClasses} bg-white relative z-30`;
+        return `${baseClasses} bg-white relative z-[1000]`;
 
       case "sticky":
-        return `${baseClasses} sticky top-0 z-30 ${
+        return `${baseClasses} sticky top-0 z-[1000] ${
           scrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-white"
         }`;
 
       case "fixed":
-        return `${baseClasses} fixed top-0 left-0 right-0 z-30 ${
+        return `${baseClasses} fixed top-0 left-0 right-0 z-[1000] ${
           scrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-white"
         }`;
 
       case "auto-hide":
-        return `${baseClasses} fixed top-0 left-0 right-0 z-30 transform transition-transform duration-300 ${
+        return `${baseClasses} fixed top-0 left-0 right-0 z-[1000] transform transition-transform duration-300 ${
           navVisible ? "translate-y-0" : "-translate-y-full"
         } ${scrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-white"}`;
 
       default:
-        return `${baseClasses} bg-white relative z-30`;
+        return `${baseClasses} bg-white relative z-[1000]`;
     }
   };
 
@@ -228,14 +228,14 @@ export default function MainLayout() {
       {/* Mobile Navigation Overlay */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[999] md:hidden"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
       {/* Mobile Navigation Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full bg-white shadow-xl z-50 transition-transform duration-300 ease-in-out w-80 md:hidden ${
+        className={`fixed top-0 right-0 h-full bg-white shadow-xl z-[1001] transition-transform duration-300 ease-in-out w-80 md:hidden ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
