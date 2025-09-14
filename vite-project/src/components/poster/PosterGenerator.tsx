@@ -165,7 +165,7 @@ export default function PosterGenerator({
       try {
         // Use bbox instead of center/zoom for exact bounds matching
         // Format: [minLng, minLat, maxLng, maxLat]
-        const bbox = `${bounds.minLng},${bounds.minLat},${bounds.maxLng},${bounds.maxLat}`;
+        // const bbox = `${bounds.minLng},${bounds.minLat},${bounds.maxLng},${bounds.maxLat}`;
 
         // Add padding to the bbox to ensure route isn't at the very edge
         const latPadding = (bounds.maxLat - bounds.minLat) * 0.15; // 15% padding
@@ -299,7 +299,7 @@ export default function PosterGenerator({
     height: number,
     isPreview: boolean = false
   ) => {
-    const scale = isPreview ? 1 : 6;
+    // const scale = isPreview ? 1 : 6; // Unused for now
 
     // Clear canvas
     ctx.fillStyle = posterData.backgroundColor;
@@ -314,10 +314,10 @@ export default function PosterGenerator({
     const statsTop = headerHeight + mapHeight;
 
     // Render header
-    renderHeader(ctx, width, headerHeight, scale);
+    renderHeader(ctx, width, headerHeight, isPreview ? 1 : 6);
 
     // Load and render map with tiles
-    const margin = 40 * scale;
+    const margin = 40 * (isPreview ? 1 : 6);
     const mapWidth = width - margin * 2;
     const mapCanvasHeight = mapHeight - margin * 2;
 
@@ -375,10 +375,10 @@ export default function PosterGenerator({
     }
 
     // Draw route overlay (this will always work)
-    renderRouteOverlay(ctx, width, mapHeight, mapTop, scale);
+    renderRouteOverlay(ctx, width, mapHeight, mapTop, isPreview ? 1 : 6);
 
     // Render stats
-    renderStats(ctx, width, statsHeight, statsTop, scale);
+    renderStats(ctx, width, statsHeight, statsTop, isPreview ? 1 : 6);
   };
 
   // Generate full quality poster with map tiles
@@ -458,33 +458,6 @@ export default function PosterGenerator({
     // This maintains the layout proportions but keeps it clean
 
     addDebugInfo(`Header: maintaining layout spacing only`);
-  };
-
-  const renderSimpleMap = (
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-    top: number,
-    scale: number
-  ) => {
-    const margin = 40 * scale;
-    const mapWidth = width - margin * 2;
-    const mapHeight = height - margin * 2;
-
-    // Simple background for preview
-    const bgColor =
-      posterData.backgroundColor === "#1a1a1a" ? "#2a2a2a" : "#f8f9fa";
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(margin, top + margin, mapWidth, mapHeight);
-
-    // Border
-    ctx.strokeStyle =
-      posterData.backgroundColor === "#1a1a1a" ? "#404040" : "#e5e7eb";
-    ctx.lineWidth = 2;
-    ctx.strokeRect(margin, top + margin, mapWidth, mapHeight);
-
-    // Draw route
-    renderRouteOverlay(ctx, width, height, top, scale);
   };
 
   const renderRouteOverlay = (
