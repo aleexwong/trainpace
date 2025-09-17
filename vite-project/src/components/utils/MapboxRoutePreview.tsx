@@ -162,6 +162,7 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
               .addTo(map.current);
           }
         });
+        
       } catch (error) {
         console.error("Failed to load Mapbox:", error);
       }

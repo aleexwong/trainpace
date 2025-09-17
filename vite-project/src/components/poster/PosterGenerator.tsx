@@ -98,11 +98,11 @@ export default function PosterGenerator({
   const { toast } = useToast();
 
   const [posterData, setPosterData] = useState<PosterData>({
-    city: "San Francisco",
+    city: "Vancouver",
     raceName:
       metadata.routeName || filename?.replace(/\.[^/.]+$/, "") || "My Race",
-    time: "3:45:22",
-    distance: `${metadata.totalDistance.toFixed(1)} mi`,
+    time: "",
+    distance: `${metadata.totalDistance.toFixed(1)} km`,
     date: new Date().toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -314,7 +314,7 @@ export default function PosterGenerator({
     const statsTop = headerHeight + mapHeight;
 
     // Render header
-    renderHeader(ctx, width, headerHeight, isPreview ? 1 : 6);
+    // renderHeader(ctx, width, headerHeight, isPreview ? 1 : 6);
 
     // Load and render map with tiles
     const margin = 40 * (isPreview ? 1 : 6);
@@ -448,17 +448,17 @@ export default function PosterGenerator({
     }
   };
 
-  const renderHeader = (
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-    scale: number
-  ) => {
-    // Header is now just for spacing - no text since course info moved to stats
-    // This maintains the layout proportions but keeps it clean
+  // const renderHeader = (
+  //   ctx: CanvasRenderingContext2D,
+  //   width: number,
+  //   height: number,
+  //   scale: number
+  // ) => {
+  //   // Header is now just for spacing - no text since course info moved to stats
+  //   // This maintains the layout proportions but keeps it clean
 
-    addDebugInfo(`Header: maintaining layout spacing only`);
-  };
+  //   addDebugInfo(`Header: maintaining layout spacing only`);
+  // };
 
   const renderRouteOverlay = (
     ctx: CanvasRenderingContext2D,
@@ -884,7 +884,7 @@ export default function PosterGenerator({
                 style={{ aspectRatio: "4/5" }}
               />
               <p className="text-xs text-gray-500 text-center mt-2">
-                Preview (no map tiles - final version will have Mapbox imagery)
+                Preview
                 {mapTilesLoaded && MAPBOX_TOKEN && (
                   <span className="text-green-600"> • Map ready ✓</span>
                 )}
@@ -894,7 +894,7 @@ export default function PosterGenerator({
         </div>
 
         {/* Test Map Preview - for debugging */}
-        {MAPBOX_TOKEN && (
+        {/* {MAPBOX_TOKEN && (
           <div className="mt-4">
             <Label className="text-base font-medium">Map Preview (Debug)</Label>
             <div
@@ -908,7 +908,7 @@ export default function PosterGenerator({
               }}
             />
           </div>
-        )}
+        )} */}
 
         {/* Hidden full-size canvas */}
         <canvas ref={canvasRef} style={{ display: "none" }} />
