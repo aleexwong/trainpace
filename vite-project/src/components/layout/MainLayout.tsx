@@ -309,9 +309,10 @@ export default function MainLayout() {
 
             {/* Collapsible Preview Routes Section for Mobile */}
             <div className="border-t border-gray-200 pt-4 mt-4">
-              <button
+              <Button
+                variant="outline"
                 onClick={() => setMobilePreviewOpen(!mobilePreviewOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 text-lg font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors"
+                className="flex items-center justify-between w-full px-4 py-3 text-lg font-medium bg-white text-gray-900 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors"
               >
                 <span>Preview Routes</span>
                 <ChevronDown
@@ -319,10 +320,10 @@ export default function MainLayout() {
                     mobilePreviewOpen ? "rotate-180" : ""
                   }`}
                 />
-              </button>
+              </Button>
 
               {mobilePreviewOpen && (
-                <div className="mt-2 space-y-1">
+                <div className="mt-2 space-y-1 bg-white p-2 rounded-lg">
                   {[
                     { name: "Boston Marathon", slug: "boston" },
                     { name: "NYC Marathon", slug: "nyc" },
@@ -337,7 +338,7 @@ export default function MainLayout() {
                       className={`block py-2 px-6 text-base text-gray-700 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors ${
                         location.pathname === `/preview-route/${route.slug}`
                           ? "bg-blue-50 text-blue-600 font-medium"
-                          : ""
+                          : "bg-white"
                       }`}
                       onClick={() => {
                         setMobileMenuOpen(false);
