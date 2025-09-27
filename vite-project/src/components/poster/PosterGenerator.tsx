@@ -60,6 +60,12 @@ const TEMPLATE_COLORS = [
     mapStyle: "outdoors-v12",
   },
   {
+    name: "Custom", // ← Replace this preset
+    route: "#be872b", // Choose your preferred route color
+    bg: "#ffffff", // Choose your preferred background
+    mapStyle: "wongalex97/cmfrw0hcc00e401sjchoqg2rp", // ← Your custom style
+  },
+  {
     name: "Ocean",
     route: "#3498db",
     bg: "#ecf8ff",
@@ -74,7 +80,7 @@ const TEMPLATE_COLORS = [
     bg: "#1a1a1a",
     mapStyle: "navigation-night-v1",
   },
-  { name: "Minimal", route: "#374151", bg: "#f9fafb", mapStyle: "light-v11" },
+  { name: "Minimal", route: "#f39c12", bg: "#f9fafb", mapStyle: "light-v11" },
   {
     name: "Satellite",
     route: "#ef4444",
@@ -118,6 +124,8 @@ export default function PosterGenerator({
   const [isGenerating, setIsGenerating] = useState(false);
   const [mapTilesLoaded, setMapTilesLoaded] = useState(false);
   const [debugInfo, setDebugInfo] = useState<string[]>([]);
+  const [showDetailedView, setShowDetailedView] = useState(false); // New: map detail toggle
+  const [showStartEndMarkers, setShowStartEndMarkers] = useState(true); // New: start/end markers toggle
 
   // Debug logging function
   const addDebugInfo = (info: string) => {
@@ -176,8 +184,12 @@ export default function PosterGenerator({
         },${bounds.maxLng + lngPadding},${bounds.maxLat + latPadding}`;
 
         // Use Mapbox Static Images API with bbox and current style
-        const staticUrl = `https://api.mapbox.com/styles/v1/mapbox/${currentMapStyle}/static/[${paddedBbox}]/${width}x${height}@2x?access_token=${MAPBOX_TOKEN}`;
+        // const staticUrl = `https://api.mapbox.com/styles/v1/mapbox/${currentMapStyle}/static/[${paddedBbox}]/${width}x${height}@2x?access_token=${MAPBOX_TOKEN}&logo=false&attribution=false`;
+        const baseUrl = currentMapStyle.includes("/")
+          ? `https://api.mapbox.com/styles/v1/${currentMapStyle}`
+          : `https://api.mapbox.com/styles/v1/mapbox/${currentMapStyle}`;
 
+        const staticUrl = `${baseUrl}/static/[${paddedBbox}]/${width}x${height}@2x?access_token=${MAPBOX_TOKEN}&logo=false&attribution=false`;
         // Log API call for monitoring
         console.log("🚨 MAPBOX API CALL:", {
           timestamp: new Date().toISOString(),
@@ -203,8 +215,13 @@ export default function PosterGenerator({
         };
 
         img.onerror = (error) => {
+          console.error("DETAILED ERROR:", error);
+          console.error(
+            "FAILED URL:",
+            staticUrl.replace(MAPBOX_TOKEN, "TOKEN_HIDDEN")
+          );
+          console.error("FULL URL FOR TESTING:", staticUrl);
           addDebugInfo("❌ Static map with bbox failed");
-          console.error("Static image load error:", error);
           reject(new Error("Failed to load static map"));
         };
 
@@ -327,13 +344,10 @@ export default function PosterGenerator({
           `📡 Fetching ${isPreview ? "preview" : "full"} map tiles...`
         );
 
-        // Scale tile resolution properly based on canvas size
-        const tileWidth = isPreview
-          ? Math.floor(mapWidth / 2) // Preview: smaller tiles for speed
-          : Math.floor(mapWidth / 1.5); // Full: higher resolution tiles
-        const tileHeight = isPreview
-          ? Math.floor(mapCanvasHeight / 2)
-          : Math.floor(mapCanvasHeight / 1.5);
+        // Use detail level toggle to control zoom
+        const detailDivisor = showDetailedView ? 1.5 : 2; // 1.5 = detailed, 2 = clean
+        const tileWidth = Math.floor(mapWidth / detailDivisor);
+        const tileHeight = Math.floor(mapCanvasHeight / detailDivisor);
 
         addDebugInfo(
           `📐 Tile size: ${tileWidth}x${tileHeight} (canvas: ${mapWidth}x${mapCanvasHeight})`
@@ -532,36 +546,39 @@ export default function PosterGenerator({
     ctx.shadowColor = "transparent";
     ctx.shadowBlur = 0;
 
-    // Smaller, more elegant start marker (green circle)
-    const startPoint = displayPoints[0];
-    const startX = centerX + (startPoint.lng - centerLon) * mapScale;
-    const startY = centerY - (startPoint.lat - centerLat) * mapScale;
+    // Only render start/end markers if toggle is enabled
+    if (showStartEndMarkers) {
+      // Smaller, more elegant start marker (green circle)
+      const startPoint = displayPoints[0];
+      const startX = centerX + (startPoint.lng - centerLon) * mapScale;
+      const startY = centerY - (startPoint.lat - centerLat) * mapScale;
 
-    ctx.fillStyle = "#22c55e";
-    ctx.beginPath();
-    ctx.arc(startX, startY, Math.max(4, 8 * scale), 0, Math.PI * 2); // Smaller: 8px preview, 48px full
-    ctx.fill();
-
-    // Thinner white border on start marker
-    ctx.strokeStyle = "#ffffff";
-    ctx.lineWidth = Math.max(1, 2 * scale); // Thinner border
-    ctx.stroke();
-
-    // Finish marker if different from start
-    const endPoint = displayPoints[displayPoints.length - 1];
-    const endX = centerX + (endPoint.lng - centerLon) * mapScale;
-    const endY = centerY - (endPoint.lat - centerLat) * mapScale;
-
-    const distance = Math.sqrt((endX - startX) ** 2 + (endY - startY) ** 2);
-    if (distance > 20) {
-      ctx.fillStyle = posterData.routeColor;
+      ctx.fillStyle = "#22c55e";
       ctx.beginPath();
-      ctx.arc(endX, endY, Math.max(4, 8 * scale), 0, Math.PI * 2); // Smaller end marker too
+      ctx.arc(startX, startY, Math.max(4, 8 * scale), 0, Math.PI * 2); // Smaller: 8px preview, 48px full
       ctx.fill();
 
+      // Thinner white border on start marker
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = Math.max(1, 2 * scale); // Thinner border
       ctx.stroke();
+
+      // Finish marker if different from start
+      const endPoint = displayPoints[displayPoints.length - 1];
+      const endX = centerX + (endPoint.lng - centerLon) * mapScale;
+      const endY = centerY - (endPoint.lat - centerLat) * mapScale;
+
+      const distance = Math.sqrt((endX - startX) ** 2 + (endY - startY) ** 2);
+      if (distance > 20) {
+        ctx.fillStyle = posterData.routeColor;
+        ctx.beginPath();
+        ctx.arc(endX, endY, Math.max(4, 8 * scale), 0, Math.PI * 2); // Smaller end marker too
+        ctx.fill();
+
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = Math.max(1, 2 * scale); // Thinner border
+        ctx.stroke();
+      }
     }
   };
 
@@ -634,7 +651,13 @@ export default function PosterGenerator({
       console.error("Preview generation failed:", error);
       addDebugInfo("❌ Preview generation failed, using fallback");
     });
-  }, [posterData, displayPoints, metadata]);
+  }, [
+    posterData,
+    displayPoints,
+    metadata,
+    showDetailedView,
+    showStartEndMarkers,
+  ]); // Add both toggles
 
   // Create preview map when component mounts
   useEffect(() => {
@@ -697,6 +720,61 @@ export default function PosterGenerator({
           </div>
         </div>
 
+        {/* Map Detail Level Toggle */}
+        <div>
+          <Label className="text-base font-medium">Map Detail Level</Label>
+          <div className="flex items-center space-x-3 mt-2">
+            <button
+              onClick={() => setShowDetailedView(false)}
+              className={`
+                px-4 py-2 rounded-lg border-2 transition-all text-sm font-medium
+                ${
+                  !showDetailedView
+                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                    : "border-gray-200 hover:border-gray-300 text-gray-700"
+                }
+              `}
+            >
+              Clean View
+            </button>
+            <button
+              onClick={() => setShowDetailedView(true)}
+              className={`
+                px-4 py-2 rounded-lg border-2 transition-all text-sm font-medium
+                ${
+                  showDetailedView
+                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                    : "border-gray-200 hover:border-gray-300 text-gray-700"
+                }
+              `}
+            >
+              Detailed View
+            </button>
+          </div>
+          <p className="text-xs text-gray-500 mt-1">
+            {showDetailedView
+              ? "Shows street names and local details"
+              : "Cleaner view without minor street labels"}
+          </p>
+        </div>
+
+        {/* Start/End Markers Toggle */}
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="showMarkers"
+            checked={showStartEndMarkers}
+            onChange={(e) => setShowStartEndMarkers(e.target.checked)}
+            className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+          />
+          <Label
+            htmlFor="showMarkers"
+            className="text-sm font-medium cursor-pointer"
+          >
+            Show start/end markers
+          </Label>
+        </div>
+
         <div className="grid md:grid-cols-2 gap-6">
           {/* Controls */}
           <div className="space-y-4">
@@ -713,21 +791,6 @@ export default function PosterGenerator({
                     setPosterData({ ...posterData, city: e.target.value })
                   }
                   placeholder="Vancouver"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="raceName" className="flex items-center gap-1">
-                  <Trophy className="w-4 h-4" />
-                  Race Name
-                </Label>
-                <Input
-                  id="raceName"
-                  value={posterData.raceName}
-                  onChange={(e) =>
-                    setPosterData({ ...posterData, raceName: e.target.value })
-                  }
-                  placeholder="Marathon"
                 />
               </div>
 

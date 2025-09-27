@@ -23,6 +23,11 @@ let leafletLoaded = false;
 let leafletLoadPromise: Promise<void> | null = null;
 
 const loadLeaflet = (): Promise<void> => {
+  // Don't load Leaflet during SSR
+  if (typeof window === 'undefined') {
+    return Promise.resolve();
+  }
+  
   if (leafletLoaded) return Promise.resolve();
   if (leafletLoadPromise) return leafletLoadPromise;
 
@@ -70,13 +75,14 @@ const LeafletRoutePreview: React.FC<LeafletPreviewProps> = ({
   const layerRef = useRef<any>(null);
 
   useEffect(() => {
-    if (!mapContainer.current || !routePoints?.length) return;
+    // Don't run during SSR
+    if (typeof window === 'undefined' || !mapContainer.current || !routePoints?.length) return;
 
     let destroyed = false;
 
     const init = async () => {
       await loadLeaflet();
-      if (destroyed) return;
+      if (destroyed || typeof window === 'undefined') return;
       const L = (window as any).L;
 
       if (!mapRef.current) {

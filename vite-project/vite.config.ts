@@ -3,6 +3,21 @@ import path from "path";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import { VitePWA } from "vite-plugin-pwa";
+import { vitePrerenderPlugin } from "vite-prerender-plugin";
+
+// Prerendered routes for SEO
+const prerenderedRoutes = [
+  "/",
+  "/calculator",
+  "/fuel",
+  "/elevationfinder",
+  "/preview-route/boston",
+  "/preview-route/nyc",
+  "/preview-route/chicago",
+  "/preview-route/berlin",
+  "/preview-route/london",
+  "/preview-route/tokyo",
+];
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -12,26 +27,19 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       manifest: {
-        name: "Train Pace", // Change this to your desired app name
-        short_name: "Train Pace", // Shorter name for display purposes
+        name: "TrainPace",
+        short_name: "TrainPace",
         description: "A simple tool to calculate your running pace",
         start_url: "/",
         display: "standalone",
         background_color: "#ffffff",
         theme_color: "#000000",
-        // icons: [
-        //   {
-        //     src: '/icons/trainPaceIcon.png', // Ensure these paths exist in your public folder
-        //     sizes: '192x192',
-        //     type: 'image/png',
-        //   },
-        //   {
-        //     src: '/icons/trainPaceIcon.png',
-        //     sizes: '512x512',
-        //     type: 'image/png',
-        //   },
-        // ],
       },
+    }),
+    vitePrerenderPlugin({
+      renderTarget: "#root",
+      prerenderScript: path.resolve(__dirname, 'prerender.jsx'),
+      additionalPrerenderRoutes: prerenderedRoutes,
     }),
   ],
   resolve: {
@@ -43,4 +51,10 @@ export default defineConfig({
     host: true,
     port: 5173,
   },
+  ssr: {
+    noExternal: ['leaflet']
+  },
+  define: {
+    global: 'globalThis',
+  }
 });

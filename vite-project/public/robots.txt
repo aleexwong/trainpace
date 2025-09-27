@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Allow specific important pages
+Allow: /calculator
+Allow: /fuel
+Allow: /preview-route/*
+Allow: /elevationfinder
+
+# Block unnecessary pages
+Disallow: /login
+Disallow: /register
+Disallow: /dashboard
+Disallow: /settings
+Disallow: /reset-password
+
+Sitemap: https://www.trainpace.com/sitemap.xml
