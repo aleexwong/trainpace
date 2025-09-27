@@ -38,7 +38,8 @@ export default defineConfig({
     }),
     vitePrerenderPlugin({
       renderTarget: "#root",
-      additionalPrerenderRoutes: prerenderedRoutes, // Use the array variable
+      prerenderScript: path.resolve(__dirname, 'prerender.jsx'),
+      additionalPrerenderRoutes: prerenderedRoutes,
     }),
   ],
   resolve: {
@@ -50,4 +51,10 @@ export default defineConfig({
     host: true,
     port: 5173,
   },
+  ssr: {
+    noExternal: ['leaflet']
+  },
+  define: {
+    global: 'globalThis',
+  }
 });
