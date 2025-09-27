@@ -4,6 +4,20 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import { VitePWA } from "vite-plugin-pwa";
 
+// Prerendered routes for SEO
+const prerenderedRoutes = [
+  '/',
+  '/calculator',
+  '/fuel',
+  '/elevationfinder',
+  '/preview-route/boston',
+  '/preview-route/nyc',
+  '/preview-route/chicago',
+  '/preview-route/berlin',
+  '/preview-route/london',
+  '/preview-route/tokyo'
+];
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -12,8 +26,8 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       manifest: {
-        name: "Train Pace", // Change this to your desired app name
-        short_name: "Train Pace", // Shorter name for display purposes
+        name: "TrainPace", // Change this to your desired app name
+        short_name: "TrainPace", // Shorter name for display purposes
         description: "A simple tool to calculate your running pace",
         start_url: "/",
         display: "standalone",
