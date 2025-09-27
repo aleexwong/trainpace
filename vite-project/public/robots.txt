@@ -7,6 +7,11 @@ Allow: /fuel
 Allow: /preview-route/*
 Allow: /elevationfinder
 
+# Allow PWA files
+Allow: /registerSW.js
+Allow: /manifest.webmanifest
+Allow: /assets/*
+
 # Block unnecessary pages
 Disallow: /login
 Disallow: /register
