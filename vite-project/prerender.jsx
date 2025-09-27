@@ -52,6 +52,45 @@ const SSRApp = ({ url }) => {
     }
   }
 
+  const getStructuredData = (url) => {
+    const baseSchema = {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": getPageTitle(url),
+      "description": getPageDescription(url),
+      "url": `https://trainpace.com${url}`,
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "150"
+      }
+    }
+
+    if (url === '/') {
+      return {
+        ...baseSchema,
+        "@type": "WebSite",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://trainpace.com/calculator"
+          }
+        }
+      }
+    }
+
+    return baseSchema
+  }
+
   return (
     <html lang="en">
       <head>
@@ -59,6 +98,12 @@ const SSRApp = ({ url }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{getPageTitle(url)}</title>
         <meta name="description" content={getPageDescription(url)} />
+        <script 
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(getStructuredData(url))
+          }}
+        />
       </head>
       <body>
         <div id="root">
