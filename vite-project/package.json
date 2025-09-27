@@ -38,6 +38,7 @@
     "react-router-dom": "^7.5.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
+    "vite-prerender-plugin": "^0.5.12",
     "zod": "^3.25.13"
   },
   "devDependencies": {
