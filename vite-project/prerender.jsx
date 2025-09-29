@@ -62,6 +62,79 @@ export async function prerender(data) {
               content: "width=device-width, initial-scale=1",
             },
           },
+          // Open Graph tags
+          {
+            type: "meta",
+            props: {
+              property: "og:title",
+              content: getPageTitle(data.url),
+            },
+          },
+          {
+            type: "meta",
+            props: {
+              property: "og:description",
+              content: getPageDescription(data.url),
+            },
+          },
+          {
+            type: "meta",
+            props: {
+              property: "og:image",
+              content: "https://trainpace.com/twitter-cover.png",
+            },
+          },
+          {
+            type: "meta",
+            props: {
+              property: "og:url",
+              content: `https://trainpace.com${data.url}`,
+            },
+          },
+          {
+            type: "meta",
+            props: {
+              property: "og:type",
+              content: "website",
+            },
+          },
+          // Twitter Card tags
+          {
+            type: "meta",
+            props: {
+              name: "twitter:card",
+              content: "summary_large_image",
+            },
+          },
+          {
+            type: "meta",
+            props: {
+              name: "twitter:title",
+              content: getPageTitle(data.url),
+            },
+          },
+          {
+            type: "meta",
+            props: {
+              name: "twitter:description",
+              content: getPageDescription(data.url),
+            },
+          },
+          {
+            type: "meta",
+            props: {
+              name: "twitter:image",
+              content: "https://trainpace.com/twitter-cover.png",
+            },
+          },
+          // Canonical URL
+          {
+            type: "link",
+            props: {
+              rel: "canonical",
+              href: `https://trainpace.com${data.url}`,
+            },
+          },
           {
             type: "script",
             props: {
