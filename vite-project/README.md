@@ -12,7 +12,9 @@ TrainPace is a modern web application designed to help runners optimize their tr
 ## 🏃 Core Features
 
 ### 📊 Training Pace Calculator
+
 Calculate science-backed training paces from any race result:
+
 - **Instant Pace Zones**: Get Easy, Tempo, Maximum, Speed, and Extra Long run paces
 - **Flexible Units**: Switch between kilometers and miles seamlessly
 - **Yasso 800s**: Automatically calculate interval training paces
@@ -20,7 +22,9 @@ Calculate science-backed training paces from any race result:
 - **One-Click Presets**: Quick access to common race distances (5K, 10K, Half, Marathon)
 
 ### 🗺️ Course Elevation Analysis
+
 Upload and analyze any GPX route file:
+
 - **Interactive Elevation Profiles**: Visualize climbs, descents, and grade percentages
 - **Mapbox Integration**: See your route on beautiful, interactive maps
 - **Detailed Metrics**: Total distance, elevation gain, grade analysis
@@ -28,14 +32,18 @@ Upload and analyze any GPX route file:
 - **Bookmark & Save**: Store favorite routes for future reference
 
 ### 🥤 Race Fuel Planner
+
 Science-based nutrition calculator for race day:
+
 - **Personalized Recommendations**: Carb and calorie targets based on your pace and weight
 - **Hourly Breakdown**: Know exactly when to fuel during your race
 - **Multiple Fuel Sources**: Track gels, chews, drinks, and solid foods
 - **Export Support**: Take your nutrition plan anywhere
 
 ### 📈 Personal Dashboard
+
 Track and manage your training data:
+
 - **Route Library**: All your uploaded GPX files in one place
 - **Bookmarked Courses**: Quick access to saved marathon routes
 - **Interactive Previews**: Thumbnail maps and stats for each route
@@ -46,6 +54,7 @@ Track and manage your training data:
 ## 🚀 Technology Stack
 
 ### Frontend
+
 - **React 18** + **TypeScript** - Type-safe component development
 - **Vite** - Lightning-fast dev server and optimized builds
 - **React Router 7** - Client-side routing with nested layouts
@@ -53,16 +62,19 @@ Track and manage your training data:
 - **Tailwind CSS** - Utility-first styling with custom design system
 
 ### Data & Mapping
+
 - **Chart.js** - Elevation profile visualizations
 - **Leaflet + Mapbox GL** - Interactive map rendering
-- **GPX Parsing** - Client-side route file processing
+- **GPX Parsing** - Server-side route file processing, returning elevation data + training insights
 
 ### Backend & Auth
+
 - **Firebase Auth** - Secure Google OAuth authentication
 - **Firestore** - Real-time database for user data and routes
 - **Vercel Hosting** - Global CDN with automatic deployments
 
 ### Progressive Web App
+
 - **Vite PWA Plugin** - Installable app with offline support
 - **Service Worker** - Background sync and caching strategies
 - **Web Manifest** - Native app-like experience on mobile
@@ -72,37 +84,42 @@ Track and manage your training data:
 ## 🎯 Key Benefits
 
 ### For Training
+
 - **No More Guesswork**: Science-backed pace zones eliminate training confusion
 - **Avoid Overtraining**: Easy pace guidelines prevent injury from running too hard
 - **Structured Workouts**: Clear tempo and interval targets for quality sessions
 
 ### For Race Prep
+
 - **Course Knowledge**: Understand every hill before you race
 - **Strategic Pacing**: Plan race splits based on actual elevation profile
 - **Nutrition Confidence**: Never bonk again with personalized fuel planning
 
 ### For Data Nerds
+
 - **Your Data, Your Control**: All routes stored securely in your Firebase account
 - **Detailed Analytics**: Grade percentages, cumulative elevation, distance splits
-- **GPX Export Ready**: Work with any GPS watch or training platform
 
 ---
 
 ## 💡 Use Cases
 
 ### Pre-Race Reconnaissance
+
 1. Upload the official race GPX from the organizer's website
 2. Study the elevation profile and identify key climbs
 3. Plan pacing strategy and fuel timing based on terrain
 4. Bookmark the route for race-week review
 
 ### Training Plan Design
+
 1. Input your recent race time (any distance)
 2. Get instant pace targets for the week's workouts
 3. Follow Easy pace for recovery runs
 4. Hit Tempo/Maximum paces for quality sessions
 
 ### Nutrition Optimization
+
 1. Enter your goal race time and body weight
 2. Calculate total carb needs for the distance
 3. Map out when to consume each gel/chew
@@ -138,11 +155,13 @@ vite-project/
 ## 🛠️ Development
 
 ### Prerequisites
+
 - Node.js 18+ and npm
 - Firebase project with Firestore and Auth enabled
 - Mapbox API token (for elevation page maps)
 
 ### Local Setup
+
 ```bash
 # Install dependencies
 npm install
@@ -159,6 +178,7 @@ npm run dev
 ```
 
 ### Available Scripts
+
 ```bash
 npm run dev          # Start Vite dev server
 npm run build        # Production build with TypeScript check
@@ -174,9 +194,11 @@ npm run host         # Expose dev server on local network
 TrainPace is deployed on Vercel with automatic deployments on every push to main.
 
 ### Deploy Your Own
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/aleexwong/trainingpacecalculator2)
 
 Environment variables required:
+
 - `VITE_FIREBASE_API_KEY`
 - `VITE_FIREBASE_AUTH_DOMAIN`
 - `VITE_FIREBASE_PROJECT_ID`
@@ -206,6 +228,7 @@ Environment variables required:
 ## 🤝 Contributing
 
 This is a personal project, but feedback and suggestions are welcome! Feel free to:
+
 - Open an issue for bugs or feature requests
 - Share your race success stories using TrainPace
 - Suggest improvements to pace calculations or UI/UX
@@ -221,6 +244,7 @@ This project is open source for educational purposes. Feel free to learn from th
 ## 🙏 Acknowledgments
 
 Built with:
+
 - [shadcn/ui](https://ui.shadcn.com/) - Beautiful component library
 - [Mapbox](https://www.mapbox.com/) - Interactive mapping platform
 - [Firebase](https://firebase.google.com/) - Backend infrastructure
