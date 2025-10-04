@@ -7,110 +7,236 @@
         {
           "id": "what-is-trainpace",
           "question": "What is TrainPace?",
-          "answer": "TrainPace is a free web tool built for self-coached runners to calculate pace, predict race times, plan fueling, and analyze elevation profiles for better training and racing decisions.",
+          "answer": "TrainPace is a free, modern web application for self-coached runners. Calculate science-backed training paces, analyze GPX route elevation profiles with interactive maps, predict race times across distances, and plan race-day fueling strategies — all in one place with no paywalls.",
           "emoji": "🏃‍♂️"
         },
         {
           "id": "need-account",
           "question": "Do I need to create an account?",
-          "answer": "For basic features, no account is needed. If you want to save uploads, track past routes, or access future premium tools, you'll need to sign in using Firebase Auth (Google or email login).",
+          "answer": "No account required for basic features like pace calculation and GPX analysis. Sign in with Google or email (via Firebase Auth) to save your uploaded routes, bookmark marathon courses, and access your personal dashboard with all your data synced across devices.",
           "emoji": "🔐"
         },
         {
           "id": "data-privacy",
-          "question": "Do you store or share my data?",
-          "answer": "No personal data is shared. Uploaded files are only stored if you're logged in, and they are linked securely to your account. We don't sell or share user data.",
+          "question": "How is my data handled?",
+          "answer": "Your privacy matters. GPX files are only stored in Firebase if you're logged in and are linked securely to your account. We don't sell, share, or analyze your personal data. Anonymous routes can be shared via secure links without exposing your identity.",
           "emoji": "🔒"
         },
         {
           "id": "who-built-trainpace",
           "question": "Who built TrainPace?",
-          "answer": "TrainPace was built by a solo developer and runner passionate about making performance tools accessible to self-coached athletes — no paywalls, no fluff.",
+          "answer": "TrainPace was built by a solo developer and passionate runner dedicated to making powerful training tools accessible to all self-coached athletes — completely free, with no ads or premium tiers. Built with React, TypeScript, Firebase, and deployed on Vercel.",
           "emoji": "👨‍💻"
         }
       ]
     },
     {
+      "title": "⏱️ Pace Calculator",
+      "description": "Science-backed training pace calculations",
+      "questions": [
+        {
+          "id": "how-pace-calculator-works",
+          "question": "How does the Pace Calculator work?",
+          "answer": "Enter any recent race result (distance and finish time), and TrainPace instantly calculates your personalized training zones: Easy, Tempo, Maximum, Speed, Extra Long, and Yasso 800s. Switch between kilometers and miles, use preset race distances (5K, 10K, Half, Marathon), and get paces that match your current fitness level.",
+          "emoji": "🎯"
+        },
+        {
+          "id": "training-pace-zones",
+          "question": "What are the different training pace zones?",
+          "answer": "TrainPace calculates six key zones: Easy (recovery runs, 20-30% slower than race pace), Tempo (comfortably hard, ~95-105% of race pace), Maximum (threshold training, ~85-95%), Speed (intervals, ~80-90%), Extra Long (endurance building, ~20-40% slower), and Yasso 800s (marathon-specific intervals). Each zone has a specific training purpose based on exercise science.",
+          "emoji": "📊"
+        },
+        {
+          "id": "pace-accuracy",
+          "question": "How accurate are the pace predictions?",
+          "answer": "Pace calculations are based on proven training formulas used by coaches worldwide. Accuracy depends on the quality of your input — use a recent race result from similar terrain and conditions. For most recreational runners, TrainPace provides reliable training guidance. Elite athletes or those with specialized needs may require more individualized coaching.",
+          "emoji": "✅"
+        },
+        {
+          "id": "units-switching",
+          "question": "Can I switch between kilometers and miles?",
+          "answer": "Absolutely! TrainPace supports both metric and imperial units. Enter your race distance in kilometers or miles, and choose whether to display training paces as min/km or min/mile. The calculator handles all conversions automatically with precision.",
+          "emoji": "🔄"
+        }
+      ]
+    },
+    {
       "title": "📈 ElevationFinder",
-      "description": "Upload GPX files and analyze your routes",
+      "description": "Upload GPX files and analyze routes with precision",
       "questions": [
         {
           "id": "what-is-elevationfinder",
           "question": "What does ElevationFinder do?",
-          "answer": "ElevationFinder lets you upload GPX files from your watch or running app to analyze the elevation profile of your route or race. It highlights total gain, steep sections, and helps you plan pacing or fueling strategies.",
+          "answer": "ElevationFinder analyzes GPX files from your GPS watch or running app to visualize elevation profiles with interactive Mapbox maps. See total elevation gain/loss, grade percentages, steep sections, and get AI-powered insights about terrain difficulty. Perfect for race reconnaissance or analyzing training routes.",
           "emoji": "⛰️"
         },
         {
           "id": "upload-gpx",
-          "question": "How do I upload a GPX file?",
-          "answer": "Just drag and drop your GPX file into the uploader on the ElevationFinder page, or click the upload button to select it from your device. We'll parse it instantly — no account required.",
+          "question": "How do I upload and analyze a GPX file?",
+          "answer": "Drag and drop your GPX file directly onto the ElevationFinder page, or click to browse from your device. TrainPace parses it instantly in your browser — no server uploads needed for basic analysis. Logged-in users can save routes to their dashboard and generate shareable links with permanent cloud storage.",
           "emoji": "📁"
         },
         {
-          "id": "file-types",
-          "question": "What file types does ElevationFinder support?",
-          "answer": "Currently, only `.gpx` files are supported. These are standard files exported from most GPS watches or apps like Strava, Garmin Connect, or Suunto.",
+          "id": "supported-file-types",
+          "question": "What file formats are supported?",
+          "answer": "Currently only GPX (.gpx) files are supported — the standard format exported by GPS devices and apps like Strava, Garmin Connect, COROS, Suunto, Wahoo, and most running platforms. TCX and FIT file support may be added in the future based on user demand.",
           "emoji": "⌚"
         },
         {
           "id": "elevation-calculation",
-          "question": "How is the elevation gain calculated?",
-          "answer": "We sum the positive differences between elevation points — only counting uphill sections. Small noise or GPS spikes are filtered out to avoid inflating your stats.",
+          "question": "How is elevation gain calculated?",
+          "answer": "TrainPace uses a cumulative positive gain method — summing only uphill sections while filtering out GPS noise and small fluctuations. This provides clean, accurate elevation statistics. The API applies intelligent smoothing to handle barometric vs. GPS elevation data variations.",
           "emoji": "🧮"
         },
         {
           "id": "elevation-differences",
-          "question": "Why does my total elevation sometimes look lower or higher than Strava or Garmin?",
-          "answer": "Different tools apply different smoothing or correction methods. ElevationFinder uses a lightweight approach focused on clarity and speed — designed to give you a clean, reproducible summary.",
+          "question": "Why might elevation differ from Strava or Garmin?",
+          "answer": "Different platforms use different smoothing algorithms, data sources (GPS vs. barometric altimeter), and correction methods. TrainPace prioritizes clarity and reproducibility with a transparent calculation approach. Small differences (5-10%) are normal and don't impact training insights significantly.",
           "emoji": "🤔"
         },
         {
+          "id": "route-sharing",
+          "question": "Can I share my analyzed routes with others?",
+          "answer": "Yes! After uploading and analyzing a GPX file while logged in, you'll get a permanent shareable link (e.g., trainpace.com/elevationfinder/abc123). Anyone with the link can view the elevation profile, map, and insights — perfect for sharing race courses or training routes with your running crew.",
+          "emoji": "🔗"
+        },
+        {
+          "id": "mapbox-features",
+          "question": "What map features are available?",
+          "answer": "ElevationFinder uses Mapbox for high-quality, interactive maps with outdoor terrain styling. See your route plotted with start/end markers, zoom and pan to explore details, and view the route overlay on real-world topography. The map automatically fits bounds to show your entire route at the optimal zoom level.",
+          "emoji": "🗺️"
+        },
+        {
+          "id": "elevation-insights",
+          "question": "What insights can I get from elevation analysis?",
+          "answer": "TrainPace provides segment-by-segment breakdowns classifying terrain as flat, rolling, hilly, or steep based on grade thresholds. Get difficulty ratings, identify challenging sections for pacing strategy, and see estimated time adjustments based on elevation. Customize analysis parameters (base pace, grade thresholds) for personalized insights.",
+          "emoji": "🔍"
+        },
+        {
           "id": "duplicate-uploads",
-          "question": "How do you handle duplicate uploads?",
-          "answer": "We check for duplicate GPX files using file hashes. If you upload the same file twice, you'll get a warning, and it won't be counted twice in your saved files.",
+          "question": "How are duplicate uploads handled?",
+          "answer": "TrainPace uses file hashing to detect duplicate GPX uploads. If you upload the same file twice, you'll receive a warning and the system won't create duplicate entries in your dashboard. This keeps your saved routes organized and prevents accidental duplicates.",
           "emoji": "🔄"
         },
         {
-          "id": "delete-files",
-          "question": "Can I delete or recover uploaded files?",
-          "answer": "Yes — you can soft-delete files, meaning they'll go to a 'trash' state you can restore from. Permanent deletion will be available soon as a backend cleanup feature.",
+          "id": "delete-restore-files",
+          "question": "Can I delete or restore uploaded routes?",
+          "answer": "Yes! From your Dashboard, you can soft-delete uploaded GPX files, which moves them to a recoverable state. Deleted routes can be restored if needed. Permanent deletion (hard delete) may be added as a backend cleanup feature in future updates to free up storage space.",
           "emoji": "🗑️"
         }
       ]
     },
     {
-      "title": "🏁 Race Tools",
-      "description": "Predict times, plan fueling, and race smarter",
+      "title": "📊 Dashboard",
+      "description": "Manage your routes and bookmarks",
       "questions": [
         {
-          "id": "race-predictor",
-          "question": "How does TrainPace's race predictor work?",
-          "answer": "You enter a recent race result, and we apply the Riegel formula to estimate equivalent finish times for other distances — helping you set realistic goals.",
-          "emoji": "🎯"
+          "id": "dashboard-features",
+          "question": "What can I do in my Dashboard?",
+          "answer": "Your personal Dashboard shows all uploaded GPX files and bookmarked marathon routes in one place. See preview maps, key stats (distance, elevation gain), and manage files with sort/filter options. View detailed route information, access shareable links, and quickly navigate to any saved route for deeper analysis.",
+          "emoji": "🎛️"
         },
         {
-          "id": "predictor-accuracy",
-          "question": "Is TrainPace accurate for all runners?",
-          "answer": "Predictors and calculators are only as good as your input. Elite or highly specialized runners may need more advanced modeling, but for most recreational runners, TrainPace gives strong ballpark estimates.",
-          "emoji": "📊"
+          "id": "bookmark-routes",
+          "question": "How do bookmarks work?",
+          "answer": "When viewing preview marathon courses on TrainPace, you can bookmark them for quick access later. Bookmarked routes appear in your Dashboard with a purple marker, separate from your uploaded GPX files. Great for comparing different race options or tracking courses you're considering for future events.",
+          "emoji": "🔖"
         },
         {
-          "id": "fuel-planner",
-          "question": "How does the fuel planner work?",
-          "answer": "Based on your race distance, estimated time, and intensity, it suggests carb intake (g/hour) and hydration needs, helping you avoid bonking or underfueling.",
-          "emoji": "🥤"
+          "id": "route-preview-maps",
+          "question": "What do the preview maps show in the Dashboard?",
+          "answer": "Dashboard cards display thumbnail maps with your route trace, start/end points, and key statistics (distance, elevation gain, data point count). Maps use Mapbox outdoor styling for clear terrain visibility. Click any route to see the full analysis with interactive charts and detailed insights.",
+          "emoji": "🗺️"
         }
       ]
     },
     {
-      "title": "💬 Support",
+      "title": "🥤 Fuel Planner",
+      "description": "Optimize race-day nutrition strategy",
+      "questions": [
+        {
+          "id": "fuel-planner-overview",
+          "question": "How does the Fuel Planner work?",
+          "answer": "Select your race type (10K, Half Marathon, or Full Marathon), enter your estimated finish time, and optionally add your weight for personalized recommendations. TrainPace calculates carbs per hour, total carbs needed, total calories, and recommended gel count based on proven sports nutrition science and real-world marathon fueling strategies.",
+          "emoji": "🍫"
+        },
+        {
+          "id": "fueling-for-10k",
+          "question": "Do I need to fuel for a 10K race?",
+          "answer": "For most 10K races, fueling is optional. If your finish time is under 45 minutes, your glycogen stores are typically sufficient. For slower 10K runners (over ~50 minutes), one gel may help maintain energy, but it's not required. TrainPace reflects this by recommending either 0 or 1 gel depending on your estimated time.",
+          "emoji": "🏃"
+        },
+        {
+          "id": "marathon-fueling-strategy",
+          "question": "How much should I fuel for a marathon?",
+          "answer": "TrainPace recommends up to 1.5 gels per hour for half and full marathons, with a maximum of 7 gels total for full marathons. This aligns with ~30-60g of carbs per hour, preventing both under-fueling (bonking) and over-fueling (GI distress). The calculator balances energy needs with digestive tolerance based on race duration.",
+          "emoji": "🏁"
+        },
+        {
+          "id": "personalized-fueling",
+          "question": "Why does weight matter for fueling?",
+          "answer": "Entering your body weight allows TrainPace to calculate more personalized carbohydrate recommendations (approximately 0.7g per kg per hour). Heavier runners may need slightly more fuel, while lighter runners may need less. Weight input is optional — the calculator provides solid defaults if you skip it.",
+          "emoji": "⚖️"
+        },
+        {
+          "id": "export-fuel-plan",
+          "question": "Can I save or share my fuel plan?",
+          "answer": "Yes! Use the copy button to copy your fuel plan to clipboard for pasting into notes or messages. Or download it as a text file to keep in your phone for race day reference. Both options preserve your complete nutrition strategy including carbs/hour, total needs, and gel recommendations.",
+          "emoji": "💾"
+        }
+      ]
+    },
+    {
+      "title": "🔧 Technical Details",
+      "description": "How TrainPace works under the hood",
+      "questions": [
+        {
+          "id": "offline-support",
+          "question": "Does TrainPace work offline?",
+          "answer": "TrainPace is built as a Progressive Web App (PWA) with service worker caching for core functionality. Once you've visited the site, the Pace Calculator works offline. However, features requiring backend services (GPX upload with cloud storage, route sharing, Dashboard sync) require an internet connection.",
+          "emoji": "📱"
+        },
+        {
+          "id": "performance-caching",
+          "question": "How does route analysis caching improve performance?",
+          "answer": "TrainPace implements intelligent caching for elevation analysis. Static route data (elevation profile, distances) is stored once. When you adjust analysis parameters (base pace, grade thresholds), only lightweight calculations are re-run using cached data — no need to reprocess the entire GPX file. This makes parameter changes near-instant and saves API costs.",
+          "emoji": "⚡"
+        },
+        {
+          "id": "firebase-storage",
+          "question": "Where are my GPX files stored?",
+          "answer": "Uploaded GPX files are stored in Firebase Cloud Storage with secure access controls. Small files (under 1MB) also cache content directly in Firestore for faster loading. All data is linked to your Firebase Auth user ID, ensuring only you can access, modify, or delete your uploaded routes.",
+          "emoji": "☁️"
+        },
+        {
+          "id": "tech-stack",
+          "question": "What technologies power TrainPace?",
+          "answer": "TrainPace is built with React 18 and TypeScript for type-safe development, Vite for lightning-fast builds, React Router 7 for navigation, Tailwind CSS + shadcn/ui for styling, Chart.js for elevation visualizations, Mapbox and Leaflet for interactive maps, Firebase for auth and storage, and Vercel for global CDN hosting.",
+          "emoji": "🛠️"
+        }
+      ]
+    },
+    {
+      "title": "💬 Support & Feedback",
       "description": "Get help and stay connected",
       "questions": [
         {
-          "id": "feedback",
-          "question": "How can I support or give feedback?",
-          "answer": "Use the feedback link on the site or DM us on Instagram (@trainpace) — we love hearing from users and are always open to improving.",
+          "id": "report-bugs",
+          "question": "How do I report bugs or request features?",
+          "answer": "Use the feedback form on the site or reach out via Instagram (@trainpace). Bug reports are prioritized for quick fixes. Feature requests are carefully considered — especially if they help make training easier for self-coached runners. The developer actively maintains TrainPace and ships updates regularly.",
+          "emoji": "🐛"
+        },
+        {
+          "id": "support-project",
+          "question": "How can I support TrainPace?",
+          "answer": "TrainPace is free and will always be free. The best way to support it is to share it with your running community, provide feedback, report bugs, and spread the word on social media. If you find it valuable for your training, let other runners know! Follow @trainpace on Instagram for updates and running tips.",
           "emoji": "💌"
+        },
+        {
+          "id": "future-features",
+          "question": "What features are coming next?",
+          "answer": "Planned improvements include permanent deletion of routes, TCX/FIT file support, enhanced Dashboard filtering and search, more detailed elevation insights with grade-adjusted pace recommendations, training plan templates, and deeper integration between tools (e.g., auto-calculate paces from uploaded race GPX). Follow development progress on GitHub or Instagram for updates.",
+          "emoji": "🚀"
         }
       ]
     }
