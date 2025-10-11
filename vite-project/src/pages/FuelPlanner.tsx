@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import ReactGA from "react-ga4";
 import {
   Select,
@@ -26,8 +27,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Info, Download, Copy, ChevronDown, ChevronUp } from "lucide-react";
-import { toast } from "@/hooks/use-toast"; // make sure this path is correct
+import { Info, Download, Copy, ChevronDown, ChevronUp, Sparkles, Loader2 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import { refineFuelPlan, type FuelPlanContext } from "@/services/gemini";
 
 const raceSettings = {
   "10K": 30,
@@ -52,6 +54,12 @@ const FuelPlanner = () => {
     gelsNeeded: number;
   }>(null);
   const [showInfo, setShowInfo] = useState(false);
+
+  // AI Enhancement State
+  const [aiDialogOpen, setAiDialogOpen] = useState(false);
+  const [userContext, setUserContext] = useState("");
+  const [aiAdvice, setAiAdvice] = useState("");
+  const [isRefining, setIsRefining] = useState(false);
 
   const handleCalculate = () => {
     const weightKg = parseFloat(weight);
@@ -80,19 +88,73 @@ const FuelPlanner = () => {
     let gelsNeeded = 0;
 
     if (raceType === "10K") {
-      gelsNeeded = durationHours >= 0.75 ? 1 : 0; // 1 gel only if >45min 10K
+      gelsNeeded = durationHours >= 0.75 ? 1 : 0;
     } else {
       const gelsPerHour = 1.5;
       gelsNeeded = Math.ceil(durationHours * gelsPerHour);
-      gelsNeeded = Math.min(gelsNeeded, 7); // cap at 7
+      gelsNeeded = Math.min(gelsNeeded, 7);
     }
 
     setResult({ carbsPerHour, totalCarbs, totalCalories, gelsNeeded });
+    // Reset AI advice when recalculating
+    setAiAdvice("");
+    setUserContext("");
+  };
+
+  const handleRefineWithAI = async () => {
+    if (!result) return;
+
+    setIsRefining(true);
+
+    const planContext: FuelPlanContext = {
+      raceType,
+      weight: weight ? parseFloat(weight) : undefined,
+      time: parseFloat(time),
+      carbsPerHour: result.carbsPerHour,
+      totalCarbs: result.totalCarbs,
+      totalCalories: result.totalCalories,
+      gelsNeeded: result.gelsNeeded,
+    };
+
+    try {
+      const response = await refineFuelPlan(planContext, userContext);
+
+      if (response.success) {
+        setAiAdvice(response.refinedAdvice);
+        toast({ title: "✨ AI recommendations generated!" });
+        
+        ReactGA.event({
+          category: "Fuel Planner",
+          action: "AI Refinement Success",
+          label: raceType,
+        });
+      } else {
+        toast({
+          title: "Unable to generate recommendations",
+          description: response.error,
+          variant: "destructive",
+        });
+        
+        ReactGA.event({
+          category: "Fuel Planner",
+          action: "AI Refinement Failed",
+          label: response.error,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsRefining(false);
+    }
   };
 
   const handleCopy = async () => {
     if (!result) return;
-    const text = buildResultText(raceType, result);
+    const text = buildResultText(raceType, result, aiAdvice);
     try {
       await navigator.clipboard.writeText(text);
       toast({ title: "Copied to clipboard!" });
@@ -103,7 +165,7 @@ const FuelPlanner = () => {
 
   const handleDownload = () => {
     if (!result) return;
-    const blob = new Blob([buildResultText(raceType, result)], {
+    const blob = new Blob([buildResultText(raceType, result, aiAdvice)], {
       type: "text/plain",
     });
     const url = URL.createObjectURL(blob);
@@ -122,9 +184,16 @@ const FuelPlanner = () => {
       totalCarbs: number;
       totalCalories: number;
       gelsNeeded: number;
-    }
+    },
+    aiAdvice?: string
   ) => {
-    return `Fuel Plan for ${raceType}\n\nCarbs/hr: ${result.carbsPerHour}g\nTotal Carbs: ${result.totalCarbs}g\nCalories: ${result.totalCalories} kcal\nGels: ${result.gelsNeeded}`;
+    let text = `Fuel Plan for ${raceType}\n\nCarbs/hr: ${result.carbsPerHour}g\nTotal Carbs: ${result.totalCarbs}g\nCalories: ${result.totalCalories} kcal\nGels: ${result.gelsNeeded}`;
+    
+    if (aiAdvice) {
+      text += `\n\n--- AI-Personalized Recommendations ---\n${aiAdvice}`;
+    }
+    
+    return text;
   };
 
   return (
@@ -133,7 +202,7 @@ const FuelPlanner = () => {
         <title>Fuel Planner by TrainPace</title>
         <meta
           name="description"
-          content="Optimize your running fuel strategy."
+          content="Optimize your running fuel strategy with AI-powered personalized recommendations."
         />
       </Helmet>
 
@@ -231,58 +300,147 @@ const FuelPlanner = () => {
           </Card>
 
           {result && (
-            <Card className="bg-white shadow-sm border">
-              <CardContent className="p-6 space-y-2">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold">Your Plan 🔋</h2>
-                  <div className="flex gap-2">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={handleCopy}
-                        >
-                          <Copy className="h-4 w-4 text-blue-600" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>Copy Plan</TooltipContent>
-                    </Tooltip>
+            <>
+              <Card className="bg-white shadow-sm border">
+                <CardContent className="p-6 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold">Your Plan 🔋</h2>
+                    <div className="flex gap-2">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={handleCopy}
+                          >
+                            <Copy className="h-4 w-4 text-blue-600" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Copy Plan</TooltipContent>
+                      </Tooltip>
 
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={handleDownload}
-                        >
-                          <Download className="h-4 w-4 text-blue-600" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>Download Plan</TooltipContent>
-                    </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={handleDownload}
+                          >
+                            <Download className="h-4 w-4 text-blue-600" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Download Plan</TooltipContent>
+                      </Tooltip>
+                    </div>
                   </div>
-                </div>
 
-                <p>
-                  <strong>Carbs/hr:</strong> {result.carbsPerHour}g
-                </p>
-                <p>
-                  <strong>Total carbs needed:</strong> {result.totalCarbs}g
-                </p>
-                <p>
-                  <strong>Total calories:</strong> {result.totalCalories} kcal
-                </p>
-                <p>
-                  <strong>Recommended gels:</strong>{" "}
-                  {raceType === "10K" && result.gelsNeeded === 0
-                    ? "Optional: No gels needed for short races."
-                    : `${result.gelsNeeded} gel${
-                        result.gelsNeeded > 1 ? "s" : ""
-                      }`}
-                </p>
-              </CardContent>
-            </Card>
+                  <p>
+                    <strong>Carbs/hr:</strong> {result.carbsPerHour}g
+                  </p>
+                  <p>
+                    <strong>Total carbs needed:</strong> {result.totalCarbs}g
+                  </p>
+                  <p>
+                    <strong>Total calories:</strong> {result.totalCalories} kcal
+                  </p>
+                  <p>
+                    <strong>Recommended gels:</strong>{" "}
+                    {raceType === "10K" && result.gelsNeeded === 0
+                      ? "Optional: No gels needed for short races."
+                      : `${result.gelsNeeded} gel${
+                          result.gelsNeeded > 1 ? "s" : ""
+                        }`}
+                  </p>
+                </CardContent>
+              </Card>
+
+              {/* AI Refinement Section */}
+              <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Sparkles className="h-5 w-5 text-purple-600" />
+                    <h3 className="text-lg font-semibold">Get AI-Powered Advice</h3>
+                  </div>
+                  
+                  {!aiAdvice ? (
+                    <Dialog open={aiDialogOpen} onOpenChange={setAiDialogOpen}>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" className="w-full">
+                          <Sparkles className="h-4 w-4 mr-2" />
+                          Personalize My Plan
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-2xl">
+                        <DialogHeader>
+                          <DialogTitle>Personalize Your Fueling Strategy</DialogTitle>
+                          <DialogDescription>
+                            Share your specific situation, and AI will refine your plan based on
+                            gut tolerance, past experiences, preferences, and more.
+                          </DialogDescription>
+                        </DialogHeader>
+                        
+                        <div className="space-y-4 mt-4">
+                          <div>
+                            <Label htmlFor="context">Tell us about your situation</Label>
+                            <Textarea
+                              id="context"
+                              placeholder="Example: I tend to get nauseous after taking gels around mile 10. I prefer natural foods and have had success with bananas in training. Also, I'm running in hot weather..."
+                              value={userContext}
+                              onChange={(e) => setUserContext(e.target.value)}
+                              className="mt-2 min-h-[150px]"
+                            />
+                            <p className="text-xs text-gray-500 mt-2">
+                              Mention: gut tolerance, past race experiences, dietary restrictions,
+                              weather conditions, preferences for gels vs. real food, etc.
+                            </p>
+                          </div>
+
+                          <Button
+                            onClick={handleRefineWithAI}
+                            disabled={isRefining || !userContext.trim()}
+                            className="w-full bg-purple-600 hover:bg-purple-700"
+                          >
+                            {isRefining ? (
+                              <>
+                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                Generating Recommendations...
+                              </>
+                            ) : (
+                              <>
+                                <Sparkles className="h-4 w-4 mr-2" />
+                                Get Personalized Advice
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="prose prose-sm max-w-none">
+                        <div className="bg-white p-4 rounded-lg border border-purple-200">
+                          <pre className="whitespace-pre-wrap font-sans text-sm text-gray-700">
+                            {aiAdvice}
+                          </pre>
+                        </div>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setAiAdvice("");
+                          setUserContext("");
+                          setAiDialogOpen(true);
+                        }}
+                        className="w-full"
+                      >
+                        Refine Again
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </>
           )}
 
           {/* Expandable Fueling Philosophy Section */}
@@ -332,6 +490,3 @@ const FuelPlanner = () => {
 };
 
 export default FuelPlanner;
-// function useEffect(callback: () => void, dependencies: any[]) {
-//   reactUseEffect(callback, dependencies);
-// }

@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "generate-pwa-assets": "pwa-assets-generator",
     "host": "vite --host",
-    "seed-boston": "vite-node scripts/seedBostonMarathon.ts"
+    "seed-boston": "vite-node scripts/seedBostonMarathon.ts",
+    "test-gemini": "vite-node scripts/testGemini.ts"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.17.6",
