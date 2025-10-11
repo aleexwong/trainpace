@@ -35,37 +35,40 @@ const FUEL_CONTEXT_PRESETS = [
     id: "bonking-late",
     icon: "😰",
     label: "Bonking late",
-    value: "I bonk around 30-32 km. Energy crashes hard.",
+    value:
+      "I typically bonk around the 30-32km mark with sudden energy crashes.",
   },
   {
     id: "gi-issues",
     icon: "🤢",
     label: "GI issues",
-    value: "Gels cause nausea and stomach cramps.",
+    value: "I experience nausea and stomach cramps when I take gels.",
   },
   {
     id: "hot-weather",
     icon: "🌡️",
     label: "Hot weather",
-    value: "Racing in 26°C (80°F+) heat. Sweat heavily.",
+    value:
+      "I'm racing in hot conditions (26°C/80°F+) and tend to sweat heavily.",
   },
   {
     id: "first-timer",
     icon: "🎯",
     label: "First timer",
-    value: "First time at this distance. Need beginner approach.",
+    value:
+      "This is my first time racing this distance and I need a beginner-friendly fueling approach.",
   },
   {
     id: "real-food",
     icon: "🍌",
     label: "Prefer real food",
-    value: "Don't like gels. Prefer bananas or bars.",
+    value: "I prefer real food like bananas or energy bars instead of gels.",
   },
   {
     id: "no-appetite",
     icon: "😐",
     label: "No appetite",
-    value: "Lose appetite during runs. Can't force food down.",
+    value: "I lose my appetite during runs and struggle to force food down.",
   },
   {
     id: "caffeine",
@@ -77,7 +80,8 @@ const FUEL_CONTEXT_PRESETS = [
     id: "fasted",
     icon: "⏰",
     label: "Train fasted",
-    value: "Usually train fasted. Need fueling transition help.",
+    value:
+      "I usually train fasted and need help transitioning to race-day fueling.",
   },
 ];
 
@@ -689,9 +693,10 @@ const FuelPlannerV2 = () => {
                   <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                     <p className="text-xs text-yellow-800">
                       <strong>Beta Notice:</strong> This feature uses Google
-                      Gemini's beta API. Data you input may be used for Google's
-                      model training. Don't share sensitive personal
-                      information.
+                      Gemini's free API with rate limits. If it stops working,
+                      please wait a few minutes and try again. Data you input
+                      may be used for Google's model training don't share
+                      sensitive personal information.
                     </p>
                   </div>
 
@@ -715,7 +720,7 @@ const FuelPlannerV2 = () => {
                                 }
                                 setSelectedPresets(newSet);
 
-                                // Combine all selected preset values
+                                // Combine all selected preset values into natural sentences
                                 const combined = Array.from(newSet)
                                   .map(
                                     (id) =>
@@ -724,7 +729,7 @@ const FuelPlannerV2 = () => {
                                       )?.value
                                   )
                                   .filter(Boolean)
-                                  .join(" Also, ");
+                                  .join(" ");
                                 setUserContext(combined);
                               }}
                               className={`relative p-3 text-left border-2 rounded-lg transition-all ${

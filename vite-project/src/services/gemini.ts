@@ -8,7 +8,7 @@ import { auth } from "@/lib/firebase";
 // Use environment variable for backend URL with fallback
 const API_BASE_URL =
   import.meta.env.VITE_GPX_API_URL ||
-  "https://api.trainpace.com/api" ||
+  // "https://api.trainpace.com" ||
   "http://localhost:3000";
 
 export interface FuelPlanContext {
@@ -36,30 +36,42 @@ export function getFuelPlanPrompt(
 ): string {
   return `You are an expert sports nutritionist specializing in endurance running.
 
-**Base Fuel Plan:**
+**Base Fuel Plan (STARTING POINT):**
 - Race: ${basePlan.raceType}
 - Time: ${basePlan.time} min
 ${basePlan.weight ? `- Weight: ${basePlan.weight}kg` : ""}
-- Carbs/hour: ${basePlan.carbsPerHour}g
-- Gels: ${basePlan.gelsNeeded}
+- Target carbs/hour: ${basePlan.carbsPerHour}g
+- Standard approach: ${basePlan.gelsNeeded} gels
 
-**Runner's Situation:**
+**CRITICAL: Runner's Constraints (THESE OVERRIDE THE BASE PLAN):**
 ${userContext}
 
-Provide 3-5 recommendations in this EXACT format:
+**IMPORTANT DEFINITIONS:**
+- "Gels" includes: energy gels, gel packets, energy chews, gummies, and any packaged sports nutrition products
+- "Real food" means: bananas, dates, bread, bars made with whole ingredients, honey, maple syrup, sports drinks
+- If the runner says they prefer "real food" or "don't like gels", DO NOT recommend any packaged sports products including chews or gummies
 
-HEADLINE: [Short 8-10 word actionable recommendation]
-DETAIL: [2-3 sentences explaining why this matters and how to implement]
+Your task: Provide 3-5 recommendations that:
+1. **Completely respect the runner's constraints** - if they can't do gels/chews, ONLY suggest real food alternatives
+2. **Hit the carb target using their preferred foods** - be specific about portions/timing
+3. **Address their specific challenges** - appetite loss, fasted training, etc.
 
-HEADLINE: [Next recommendation]
-DETAIL: [Explanation]
+Use this format (show portion sizes, timing, and reasoning):
 
-**Rules:**
-- Be direct: "Take gel at 30min" not "You might consider taking..."
-- Focus on race-day execution only
-- Each HEADLINE must be under 10 words
-- Each DETAIL must be 2-3 sentences max
-- No introductions, conclusions, or disclaimers`;
+HEADLINE: Pack 2 bananas + 2 Kind bars in race vest
+DETAIL: 1 banana = 27g carbs, 1 bar = 20g. Eat ¼ banana every 15min starting at 30min mark. Alternate with bar chunks at 45min intervals. Hits 65g/hour without forcing gels.
+
+HEADLINE: Carry honey packets for quick energy boosts
+DETAIL: Single-serve honey packets (15g each) provide fast carbs without GI issues. Take one at 20min and another at 40min. Natural, easy to digest, and doesn't require chewing when appetite is low.
+
+Now provide YOUR recommendations:
+
+**Output Requirements:**
+- Use directive language: "Take gel at 30min" not "Consider taking a gel"
+- Focus on race-day execution: specific foods, portions, and timing
+- Each HEADLINE should be a clear, actionable instruction
+- Each DETAIL should explain why + how to implement (be specific with numbers)
+- Jump straight to recommendations - no introductions or disclaimers`;
 }
 
 /**
