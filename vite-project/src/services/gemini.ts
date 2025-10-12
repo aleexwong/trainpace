@@ -7,9 +7,7 @@ import { auth } from "@/lib/firebase";
 
 // Use environment variable for backend URL with fallback
 const API_BASE_URL =
-  import.meta.env.VITE_GPX_API_URL ||
-  // "https://api.trainpace.com" ||
-  "http://localhost:3000";
+  import.meta.env.VITE_GPX_API_URL || "https://api.trainpace.com";
 
 export interface FuelPlanContext {
   raceType: string;
