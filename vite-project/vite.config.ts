@@ -24,21 +24,9 @@ export default defineConfig({
   plugins: [
     react(),
     svgr(),
-    VitePWA({
-      registerType: "autoUpdate",
-      manifest: {
-        name: "TrainPace",
-        short_name: "TrainPace",
-        description: "A simple tool to calculate your running pace",
-        start_url: "/",
-        display: "standalone",
-        background_color: "#ffffff",
-        theme_color: "#000000",
-      },
-    }),
     vitePrerenderPlugin({
       renderTarget: "#root",
-      prerenderScript: path.resolve(__dirname, 'prerender.jsx'),
+      prerenderScript: path.resolve(__dirname, "prerender.jsx"),
       additionalPrerenderRoutes: prerenderedRoutes,
     }),
   ],
@@ -52,9 +40,9 @@ export default defineConfig({
     port: 5173,
   },
   ssr: {
-    noExternal: ['leaflet']
+    noExternal: ["leaflet"],
   },
   define: {
-    global: 'globalThis',
-  }
+    global: "globalThis",
+  },
 });
