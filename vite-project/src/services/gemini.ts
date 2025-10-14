@@ -22,6 +22,7 @@ export interface FuelPlanContext {
 export interface GeminiResponse {
   refinedAdvice: string;
   success: boolean;
+  responseId?: string; // NEW: Track the response ID
   error?: string;
 }
 
@@ -151,6 +152,7 @@ export async function refineFuelPlan(
     return {
       success: data.success,
       refinedAdvice: data.refinedAdvice || "",
+      responseId: data.responseId, // NEW: Capture response ID
       error: data.error,
     };
   } catch (error) {
