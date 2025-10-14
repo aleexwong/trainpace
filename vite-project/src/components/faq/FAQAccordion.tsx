@@ -13,9 +13,12 @@ interface FAQAccordionProps {
   defaultOpen?: boolean;
 }
 
-export default function FAQAccordion({ items, defaultOpen = false }: FAQAccordionProps) {
+export default function FAQAccordion({
+  items,
+  defaultOpen = false,
+}: FAQAccordionProps) {
   const [openItems, setOpenItems] = useState<Set<string>>(
-    defaultOpen ? new Set(items.map(item => item.id)) : new Set()
+    defaultOpen ? new Set(items.map((item) => item.id)) : new Set()
   );
 
   const toggleItem = (id: string) => {
@@ -35,7 +38,7 @@ export default function FAQAccordion({ items, defaultOpen = false }: FAQAccordio
       {items.map((item) => {
         const isOpen = openItems.has(item.id);
         const answerId = `faq-answer-${item.id}`;
-        
+
         return (
           <div
             key={item.id}
@@ -65,14 +68,16 @@ export default function FAQAccordion({ items, defaultOpen = false }: FAQAccordio
             </button>
 
             {isOpen && (
-              <div 
+              <div
                 id={answerId}
                 role="region"
                 aria-labelledby={`faq-question-${item.id}`}
                 className="px-6 pb-5 bg-gradient-to-r from-blue-50 to-white"
               >
                 <div className="pl-11">
-                  <p className="text-gray-700 leading-relaxed">{item.answer}</p>
+                  <p className="text-left text-gray-700 leading-relaxed">
+                    {item.answer}
+                  </p>
                 </div>
               </div>
             )}
