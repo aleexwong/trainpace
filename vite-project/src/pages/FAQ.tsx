@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Hash } from "lucide-react";
+import FAQAccordion from "@/components/faq/FAQAccordion";
 import faqData from "@/data/faq-data.json";
 
 interface FAQItem {
@@ -16,19 +17,48 @@ interface FAQSection {
 }
 
 export default function FAQ() {
-  const [openItems, setOpenItems] = useState<Set<string>>(new Set());
+  const [activeSection, setActiveSection] = useState<string>("");
 
-  const toggleItem = (id: string) => {
-    setOpenItems((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) {
-        newSet.delete(id);
-      } else {
-        newSet.add(id);
-      }
-      return newSet;
-    });
+  // Generate anchor-friendly IDs from section titles
+  const getSectionId = (title: string) => {
+    return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   };
+
+  // Handle smooth scrolling to sections
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 100; // Account for sticky header if you have one
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  // Track active section on scroll (optional - for visual feedback)
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-20% 0px -70% 0px" }
+    );
+
+    faqData.sections.forEach((section) => {
+      const element = document.getElementById(getSectionId(section.title));
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="bg-white text-gray-900 min-h-screen">
@@ -44,59 +74,61 @@ export default function FAQ() {
         </div>
       </section>
 
+      {/* Quick Jump Navigation */}
+      <section className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex items-center gap-2 mb-3">
+            <Hash className="w-5 h-5 text-blue-600" />
+            <span className="text-sm font-semibold text-gray-700">Jump to:</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {faqData.sections.map((section, index) => {
+              const sectionId = getSectionId(section.title);
+              const isActive = activeSection === sectionId;
+              
+              return (
+                <button
+                  key={index}
+                  onClick={() => scrollToSection(sectionId)}
+                  className={`
+                    px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+                    ${isActive 
+                      ? 'bg-blue-600 text-white shadow-md' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow'
+                    }
+                  `}
+                >
+                  {section.title}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Content */}
       <section className="py-20 px-6 max-w-4xl mx-auto">
-        {faqData.sections.map((section: FAQSection, sectionIndex: number) => (
-          <div key={sectionIndex} className="mb-16">
-            {/* Section Header */}
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-2 text-gray-900">
-                {section.title}
-              </h2>
-              <p className="text-gray-600 text-lg">{section.description}</p>
-            </div>
+        {faqData.sections.map((section: FAQSection, sectionIndex: number) => {
+          const sectionId = getSectionId(section.title);
+          
+          return (
+            <div 
+              key={sectionIndex} 
+              id={sectionId}
+              className="mb-16 scroll-mt-32"
+            >
+              {/* Section Header */}
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold mb-2 text-gray-900">
+                  {section.title}
+                </h2>
+                <p className="text-gray-600 text-lg">{section.description}</p>
+              </div>
 
-            <div className="space-y-3 text-left">
-              {section.questions.map((item: FAQItem) => (
-                <div
-                  key={item.id}
-                  className="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
-                >
-                  <button
-                    onClick={() => toggleItem(item.id)}
-                    className="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between group"
-                  >
-                    <div className="flex items-center space-x-3">
-                      <span className="text-2xl" role="img" aria-label="emoji">
-                        {item.emoji}
-                      </span>
-                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
-                        {item.question}
-                      </h3>
-                    </div>
-                    <div className="flex-shrink-0 ml-4">
-                      {openItems.has(item.id) ? (
-                        <ChevronUp className="w-5 h-5 text-blue-600" />
-                      ) : (
-                        <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors duration-200" />
-                      )}
-                    </div>
-                  </button>
-
-                  {openItems.has(item.id) && (
-                    <div className="px-6 pb-5 bg-gradient-to-r from-blue-50 to-white">
-                      <div className="pl-11">
-                        <p className="text-gray-700 leading-relaxed">
-                          {item.answer}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+              <FAQAccordion items={section.questions} />
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
 
       {/* CTA Section */}

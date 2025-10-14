@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import type { User } from "firebase/auth";
 import trainPaceHeroImage from "@/assets/trainPaceHeroImage.png";
 import trainPaceHeroMobile from "@/assets/trainPaceHeroMobile.png";
-import FAQ from "../../pages/FAQ";
+import MiniFAQ from "@/components/faq/MiniFAQ";
 import StructuredData from "@/components/seo/StructuredData";
 
 export default function Landing() {
@@ -324,10 +324,8 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section>
-        <FAQ />
-      </section>
+      {/* Mini FAQ Section */}
+      <MiniFAQ />
     </div>
   );
 }
