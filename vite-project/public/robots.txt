@@ -6,17 +6,23 @@ Allow: /calculator
 Allow: /fuel
 Allow: /preview-route/*
 Allow: /elevationfinder
+Allow: /faq
+Allow: /ethos
+Allow: /privacy
+Allow: /terms
 
 # Allow PWA files
 Allow: /registerSW.js
 Allow: /manifest.webmanifest
 Allow: /assets/*
 
-# Block unnecessary pages
+# Block unnecessary pages (auth, user-specific)
 Disallow: /login
 Disallow: /register
 Disallow: /dashboard
 Disallow: /settings
 Disallow: /reset-password
+Disallow: /reset-confirmed
+Disallow: /logout
 
 Sitemap: https://www.trainpace.com/sitemap.xml

@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Flame, Timer, MapPin, TrendingUp, Zap } from "lucide-react";
+import {
+  CheckCircle,
+  Flame,
+  Timer,
+  MapPin,
+  TrendingUp,
+  Zap,
+} from "lucide-react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { Link } from "react-router-dom";
@@ -8,6 +15,7 @@ import type { User } from "firebase/auth";
 import trainPaceHeroImage from "@/assets/trainPaceHeroImage.png";
 import trainPaceHeroMobile from "@/assets/trainPaceHeroMobile.png";
 import FAQ from "../../pages/FAQ";
+import StructuredData from "@/components/seo/StructuredData";
 
 export default function Landing() {
   const [user, setUser] = useState<User | null>(null);
@@ -21,6 +29,16 @@ export default function Landing() {
 
   return (
     <div className="bg-white text-gray-900 min-h-screen relative">
+      {/* SEO: Structured Data */}
+      <StructuredData type="Organization" />
+      <StructuredData type="WebSite" />
+      <StructuredData
+        type="SoftwareApplication"
+        name="TrainPace - Running Training Calculator"
+        description="Free running training tools with science-backed pace zones, GPX elevation analysis, and race fuel planning. Perfect for self-coached runners."
+        applicationCategory="HealthApplication"
+        offers={{ price: "0", priceCurrency: "USD" }}
+      />
       {/* Hero Section - Upgraded */}
       <section className="relative px-0 pt-0 pb-24 text-center">
         {/* Mobile image */}
@@ -95,17 +113,13 @@ export default function Landing() {
               <div className="text-3xl md:text-4xl font-bold text-blue-600">
                 100% Free
               </div>
-              <div className="text-sm text-gray-600 mt-1">
-                No Premium Tiers
-              </div>
+              <div className="text-sm text-gray-600 mt-1">No Premium Tiers</div>
             </div>
             <div>
               <div className="text-3xl md:text-4xl font-bold text-blue-600">
                 No Ads
               </div>
-              <div className="text-sm text-gray-600 mt-1">
-                Clean Experience
-              </div>
+              <div className="text-sm text-gray-600 mt-1">Clean Experience</div>
             </div>
             <div>
               <div className="text-3xl md:text-4xl font-bold text-blue-600">
@@ -297,7 +311,7 @@ export default function Landing() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-lg px-8 py-4 border-white text-white hover:bg-white/10"
+                className="text-lg px-8 py-4 border-white text-black hover:bg-white hover:text-blue-600"
               >
                 Learn More
               </Button>
@@ -349,7 +363,10 @@ function FeatureCard({
       </h3>
       <p className="text-gray-600 text-sm leading-relaxed mb-4">{desc}</p>
       <div className="text-blue-600 text-sm font-medium flex items-center">
-        Try it now <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
+        Try it now{" "}
+        <span className="ml-1 group-hover:translate-x-1 transition-transform">
+          →
+        </span>
       </div>
     </Link>
   );

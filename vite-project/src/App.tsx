@@ -12,7 +12,6 @@ import RacePredictorOverlay from "./RacePredictorOverlay";
 import Landing from "./components/layout/Landing";
 import MainLayout from "./components/layout/MainLayout";
 import Login from "./pages/Login";
-import Footer from "./pages/Footer";
 import Ethos from "./pages/Ethos";
 import Logout from "./components/login/Logout";
 import Register from "./components/login/Register";
@@ -24,6 +23,8 @@ import FAQ from "./pages/FAQ";
 import Settings from "./pages/Settings";
 import PreviewRoute from "./pages/PreviewRoute";
 import FuelPlannerV2 from "./pages/FuelPlannerV2";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -55,6 +56,8 @@ function App() {
             <Route path="/reset-confirmed" element={<ResetConfirmed />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
             <Route path="/preview-route/:slug" element={<PreviewRoute />} />
             {/* Wildcard route should be last */}
             <Route path="*" element={<Landing />} />
@@ -72,7 +75,6 @@ function App() {
         isOpen={showPredictor}
         onClose={() => setShowPredictor(false)}
       />
-      <Footer />
       <Toaster />
     </>
   );

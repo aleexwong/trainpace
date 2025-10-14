@@ -6,6 +6,7 @@ import type { User } from "firebase/auth";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import PreviewRoutesDropdown from "./PreviewRoutesDropdown";
+import Footer from "./Footer";
 
 type NavBehavior = "static" | "sticky" | "fixed" | "auto-hide";
 interface NavLink {
@@ -143,7 +144,7 @@ export default function MainLayout() {
   };
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen relative">
+    <div className="bg-white text-gray-900 min-h-screen flex flex-col">
       {/* Navigation Behavior Indicator (remove in production)
       <div className="fixed top-20 right-4 z-50 bg-blue-600 text-white px-2 py-1 rounded text-xs">
         Nav: {navBehavior}
@@ -366,9 +367,10 @@ export default function MainLayout() {
         </div>
       </div>
 
-      <main className={getMainClasses()}>
+      <main className={`${getMainClasses()} flex-grow`}>
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }
