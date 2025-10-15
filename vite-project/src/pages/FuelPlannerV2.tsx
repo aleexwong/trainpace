@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent } from "@/components/ui/card";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useAuth } from "@/features/auth/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { usePendingFuelPlan } from "@/hooks/usePendingFuelPlan";
 import {
   ChevronLeft,
   ChevronRight,
@@ -86,6 +91,12 @@ const FUEL_CONTEXT_PRESETS = [
 ];
 
 const FuelPlannerV2 = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  
+  // Handle auto-save of pending plan after signup
+  usePendingFuelPlan();
+
   ReactGA.event({
     category: "Fuel Planner",
     action: "Page View",
@@ -116,6 +127,9 @@ const FuelPlannerV2 = () => {
   const [cooldownSeconds, setCooldownSeconds] = useState(0);
   const [showPromptModal, setShowPromptModal] = useState(false);
   const [showAsList, setShowAsList] = useState(false);
+  const [feedbackGiven, setFeedbackGiven] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   // Cooldown timer effect
   useEffect(() => {
@@ -268,6 +282,8 @@ const FuelPlannerV2 = () => {
           setAiAdvice(recommendations);
           setCurrentSlide(0);
           setCooldownSeconds(30); // Start 30 second cooldown
+          setIsSaved(false); // Reset saved state for new recommendations
+
           toast({ title: "✨ AI recommendations generated!" });
 
           ReactGA.event({
@@ -279,6 +295,8 @@ const FuelPlannerV2 = () => {
           setAiAdvice([{ headline: response.refinedAdvice, detail: "" }]);
           setCurrentSlide(0);
           setCooldownSeconds(30); // Start 30 second cooldown
+          setIsSaved(false); // Reset saved state for new recommendations
+
           toast({ title: "✨ AI recommendations generated!" });
         }
       } else {
@@ -439,6 +457,109 @@ const FuelPlannerV2 = () => {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + aiAdvice.length) % aiAdvice.length);
+  };
+
+  const handleFeedback = (helpful: boolean) => {
+    setFeedbackGiven(true);
+
+    ReactGA.event({
+      category: "Fuel Planner",
+      action: helpful ? "AI Feedback - Helpful" : "AI Feedback - Not Helpful",
+      label: raceType,
+      value: aiAdvice.length, // Track how many recommendations were shown
+    });
+
+    toast({
+      title: helpful
+        ? "Thanks for the feedback! 🙌"
+        : "Thanks! We'll work on improving.",
+      description: helpful
+        ? "Glad the AI recommendations helped!"
+        : "Your feedback helps us make better recommendations.",
+    });
+  };
+
+  const handleGuestSaveRedirect = () => {
+    if (!result) return;
+
+    // Store plan in session storage
+    const planData = {
+      raceType,
+      weight,
+      timeHours,
+      timeMinutes,
+      result,
+      aiAdvice,
+      userContext,
+      selectedPresets: Array.from(selectedPresets),
+    };
+
+    sessionStorage.setItem('pending_fuel_plan', JSON.stringify(planData));
+
+    ReactGA.event({
+      category: "Fuel Planner",
+      action: "Guest Save Redirect",
+      label: raceType,
+    });
+
+    // Redirect to signup with return params
+    navigate('/register?returnTo=/fuel&savePlan=true');
+  };
+
+  const handleSaveToDashboard = async () => {
+    if (!user) {
+      handleGuestSaveRedirect();
+      return;
+    }
+
+    if (!result) return;
+
+    setIsSaving(true);
+
+    try {
+      const finishTimeMin =
+        raceType === "10K"
+          ? parseFloat(timeMinutes)
+          : (parseFloat(timeHours) || 0) * 60 + (parseFloat(timeMinutes) || 0);
+
+      await addDoc(collection(db, "user_fuel_plans"), {
+        userId: user.uid,
+        raceType,
+        weight: weight ? parseFloat(weight) : null,
+        finishTime: finishTimeMin,
+        carbsPerHour: result.carbsPerHour,
+        totalCarbs: result.totalCarbs,
+        totalCalories: result.totalCalories,
+        gelsNeeded: result.gelsNeeded,
+        userContext: userContext || null,
+        selectedPresets: Array.from(selectedPresets),
+        aiRecommendations:
+          aiAdvice.length > 0 ? aiAdvice : null,
+        createdAt: serverTimestamp(),
+      });
+
+      setIsSaved(true);
+
+      toast({
+        title: "Saved to Dashboard! 🎉",
+        description: "Your fuel plan is now in your dashboard.",
+      });
+
+      ReactGA.event({
+        category: "Fuel Planner",
+        action: "Saved Plan to Dashboard",
+        label: raceType,
+      });
+    } catch (error) {
+      console.error("Failed to save fuel plan:", error);
+      toast({
+        title: "Failed to save",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -665,6 +786,15 @@ const FuelPlannerV2 = () => {
                       </div>
                     </div>
                   </div>
+
+                  {/* Baseline disclaimer */}
+                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-xs text-blue-800">
+                      💡 <strong>Baseline estimate:</strong> You may need
+                      additional fuel sources (sports drinks, chews, etc.) to
+                      meet your total carb needs.
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             )}
@@ -690,13 +820,14 @@ const FuelPlannerV2 = () => {
                   </div>
 
                   {/* Beta Disclaimer */}
-                  <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <p className="text-xs text-yellow-800">
-                      <strong>Beta Notice:</strong> This feature uses Google
-                      Gemini's free API with rate limits. If it stops working,
-                      please wait a few minutes and try again. Data you input
-                      may be used for Google's model training don't share
-                      sensitive personal information.
+                  <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-xs text-blue-800">
+                      <strong>Using Google Gemini (Free):</strong> We use
+                      Google's free AI to personalize your plan. Google may use
+                      your input to improve their models, so avoid sharing
+                      medical info or personal details. Just focus on race-day
+                      scenarios like weather, gut tolerance, and past
+                      experiences!
                     </p>
                   </div>
 
@@ -930,6 +1061,77 @@ const FuelPlannerV2 = () => {
                           </>
                         )}
 
+                        {/* Save to Dashboard Button */}
+                        <div className="mt-6 pt-4 border-t border-white/20">
+                          {user ? (
+                            <button
+                              onClick={handleSaveToDashboard}
+                              disabled={isSaving || isSaved}
+                              className="w-full py-3 text-base font-semibold bg-white text-purple-600 rounded-xl hover:bg-white/90 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            >
+                              {isSaving ? (
+                                <>
+                                  <Loader2 className="h-5 w-5 animate-spin" />
+                                  Saving...
+                                </>
+                              ) : isSaved ? (
+                                <>
+                                  <CheckCircle className="h-5 w-5" />
+                                  Saved to Dashboard
+                                </>
+                              ) : (
+                                <>
+                                  <Download className="h-5 w-5" />
+                                  Save to Dashboard
+                                </>
+                              )}
+                            </button>
+                          ) : (
+                            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                              <p className="text-sm text-white/90 mb-3">
+                                💾 Want to save this plan to your dashboard?
+                              </p>
+                              <button
+                                onClick={handleGuestSaveRedirect}
+                                className="w-full py-3 text-base font-semibold bg-white text-purple-600 rounded-xl hover:bg-white/90 transition-colors shadow-md flex items-center justify-center gap-2"
+                              >
+                                Sign Up to Save (Free)
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Feedback Section */}
+                        {!feedbackGiven ? (
+                          <div className="mt-6 pt-4 border-t border-white/20">
+                            <p className="text-sm text-center text-white/90 mb-3">
+                              Were these recommendations helpful?
+                            </p>
+                            <div className="flex gap-3 justify-center">
+                              <button
+                                onClick={() => handleFeedback(true)}
+                                className="flex-1 py-2 px-4 bg-white/20 hover:bg-white/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+                              >
+                                <span className="text-lg">👍</span>
+                                Helpful
+                              </button>
+                              <button
+                                onClick={() => handleFeedback(false)}
+                                className="flex-1 py-2 px-4 bg-white/20 hover:bg-white/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+                              >
+                                <span className="text-lg">👎</span>
+                                Not helpful
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="mt-6 pt-4 border-t border-white/20 text-center">
+                            <p className="text-sm text-white/90">
+                              ✨ Thanks for your feedback!
+                            </p>
+                          </div>
+                        )}
+
                         <button
                           onClick={() => {
                             setAiAdvice([]);
@@ -937,6 +1139,8 @@ const FuelPlannerV2 = () => {
                             setSelectedPresets(new Set());
                             setCurrentSlide(0);
                             setShowAsList(false);
+                            setFeedbackGiven(false);
+                            setIsSaved(false);
                             // Don't reset cooldown - it continues
                           }}
                           disabled={cooldownSeconds > 0}

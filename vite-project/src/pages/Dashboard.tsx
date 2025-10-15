@@ -10,6 +10,7 @@ import {
   getDoc,
   updateDoc,
   deleteDoc,
+  Timestamp,
 } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { useAuth } from "../features/auth/AuthContext";
@@ -21,6 +22,10 @@ import {
   Eye,
   Bookmark,
   AlertTriangle,
+  Flame,
+  Copy,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
 import { Helmet } from "react-helmet-async";
@@ -60,8 +65,30 @@ interface RouteMetadata {
   previewData?: any; // For bookmarked routes
 }
 
+interface FuelPlan {
+  id: string;
+  userId: string;
+  raceType: "10K" | "Half" | "Full";
+  weight?: number;
+  finishTime: number;
+  carbsPerHour: number;
+  totalCarbs: number;
+  totalCalories: number;
+  gelsNeeded: number;
+  userContext?: string;
+  selectedPresets?: string[];
+  aiRecommendations?: Array<{
+    headline: string;
+    detail: string;
+  }>;
+  helpful?: boolean;
+  createdAt: Timestamp;
+}
+
 export default function Dashboard() {
   const [routes, setRoutes] = useState<RouteMetadata[]>([]);
+  const [fuelPlans, setFuelPlans] = useState<FuelPlan[]>([]);
+  const [activeTab, setActiveTab] = useState<"routes" | "fuel-plans">("routes");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
@@ -69,6 +96,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (user) {
       loadUserRoutes();
+      loadUserFuelPlans();
     }
   }, [user]);
 
@@ -157,12 +185,94 @@ export default function Dashboard() {
     }
   };
 
+  const loadUserFuelPlans = async () => {
+    if (!user) return;
+
+    try {
+      const fuelPlansQuery = query(
+        collection(db, "user_fuel_plans"),
+        where("userId", "==", user.uid),
+        orderBy("createdAt", "desc")
+      );
+
+      const snapshot = await getDocs(fuelPlansQuery);
+      const plans = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as FuelPlan[];
+
+      setFuelPlans(plans);
+    } catch (err) {
+      console.error("Error loading fuel plans:", err);
+      // Don't set error state - fuel plans are optional
+    }
+  };
+
   const formatDate = (timestamp: any) => {
     if (!timestamp) return "Unknown";
     try {
       return timestamp.toDate().toLocaleDateString();
     } catch {
       return "Unknown";
+    }
+  };
+
+  const formatTime = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = Math.round(minutes % 60);
+    if (hours > 0) {
+      return `${hours}h ${mins}m`;
+    }
+    return `${mins}m`;
+  };
+
+  const handleCopyPlan = async (plan: FuelPlan) => {
+    let text = `Fuel Plan for ${plan.raceType}\n\n`;
+    text += `Finish Time: ${formatTime(plan.finishTime)}\n`;
+    text += `Carbs/hr: ${plan.carbsPerHour}g\n`;
+    text += `Total Carbs: ${plan.totalCarbs}g\n`;
+    text += `Calories: ${plan.totalCalories} kcal\n`;
+    text += `Gels: ${plan.gelsNeeded}\n`;
+
+    if (plan.aiRecommendations && plan.aiRecommendations.length > 0) {
+      text += `\n--- AI Recommendations ---\n`;
+      plan.aiRecommendations.forEach((rec, idx) => {
+        text += `\n${idx + 1}. ${rec.headline}\n`;
+        if (rec.detail) {
+          text += `   ${rec.detail}\n`;
+        }
+      });
+    }
+
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Fuel plan copied to clipboard!");
+    } catch {
+      alert("Failed to copy fuel plan.");
+    }
+  };
+
+  const handleDeleteFuelPlan = async (planId: string) => {
+    try {
+      if (!user) return;
+
+      const docRef = doc(db, "user_fuel_plans", planId);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        throw new Error("Plan does not exist");
+      }
+
+      const data = docSnap.data();
+      if (!data.userId || data.userId !== user.uid) {
+        throw new Error("You are not authorized to delete this plan");
+      }
+
+      await deleteDoc(docRef);
+      setFuelPlans((prev) => prev.filter((p) => p.id !== planId));
+    } catch (err) {
+      console.error("Delete failed:", err);
+      alert("Failed to delete fuel plan.");
     }
   };
 
@@ -416,7 +526,108 @@ export default function Dashboard() {
       </div>
     );
   };
+  const FuelPlanCard = ({ plan }: { plan: FuelPlan }) => {
+    const [expanded, setExpanded] = useState(false);
 
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+        {/* Header */}
+        <div className="flex justify-between items-start mb-3">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="font-semibold text-gray-800">
+                {plan.raceType} {plan.raceType !== "10K" && "Marathon"}
+              </h3>
+              {plan.aiRecommendations && plan.aiRecommendations.length > 0 && (
+                <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded flex items-center gap-1">
+                  <Flame className="w-3 h-3" />
+                  AI Enhanced
+                </span>
+              )}
+            </div>
+            <p className="text-sm text-gray-500">
+              {formatDate(plan.createdAt)} • {formatTime(plan.finishTime)}
+            </p>
+          </div>
+          <button
+            onClick={() => handleDeleteFuelPlan(plan.id)}
+            className="text-gray-400 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            title="Delete fuel plan"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </div>
+
+        {/* Quick Stats Grid */}
+        <div className="grid grid-cols-3 gap-2 text-sm mb-3 bg-orange-50 p-3 rounded-lg">
+          <div className="text-center">
+            <div className="text-xs text-gray-600 mb-1">Carbs/hr</div>
+            <div className="font-bold text-orange-600">
+              {plan.carbsPerHour}g
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-xs text-gray-600 mb-1">Gels</div>
+            <div className="font-bold text-orange-600">{plan.gelsNeeded}</div>
+          </div>
+          <div className="text-center">
+            <div className="text-xs text-gray-600 mb-1">Calories</div>
+            <div className="font-bold text-orange-600">
+              {plan.totalCalories}
+            </div>
+          </div>
+        </div>
+
+        {/* AI Recommendations (Expandable) */}
+        {plan.aiRecommendations && plan.aiRecommendations.length > 0 && (
+          <div className="mb-3">
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="w-full text-sm text-purple-600 hover:text-purple-700 flex items-center justify-between bg-purple-50 p-2 rounded-lg"
+            >
+              <span className="font-medium">
+                {plan.aiRecommendations.length} AI Recommendation
+                {plan.aiRecommendations.length > 1 ? "s" : ""}
+              </span>
+              {expanded ? (
+                <ChevronUp className="w-4 h-4" />
+              ) : (
+                <ChevronDown className="w-4 h-4" />
+              )}
+            </button>
+
+            {expanded && (
+              <div className="mt-2 space-y-2 bg-purple-50 p-3 rounded-lg border border-purple-100">
+                {plan.aiRecommendations.map((rec, idx) => (
+                  <div key={idx} className="text-sm">
+                    <p className="font-semibold text-gray-800 mb-1">
+                      {idx + 1}. {rec.headline}
+                    </p>
+                    {rec.detail && (
+                      <p className="text-gray-600 text-xs leading-relaxed pl-4">
+                        {rec.detail}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Action Buttons */}
+        <div className="flex gap-2">
+          <button
+            onClick={() => handleCopyPlan(plan)}
+            className="flex-1 bg-orange-500 text-white py-2 px-3 rounded-md text-sm hover:bg-orange-600 transition-colors flex items-center justify-center gap-1"
+          >
+            <Copy className="w-4 h-4" />
+            Copy Plan
+          </button>
+        </div>
+      </div>
+    );
+  };
   if (!user) {
     return (
       <div className="max-w-4xl mx-auto p-6">
@@ -435,71 +646,146 @@ export default function Dashboard() {
   return (
     <div className="max-w-6xl mx-auto p-6">
       <Helmet>
-        <title>Dashboard | TrainPace - Smarter Race Insights</title>
+        <title>Dashboard | TrainPace</title>
         <meta
           name="description"
-          content="Dashboard to view and manage your uploaded GPX routes and bookmarked marathon courses."
+          content="View and manage your uploaded GPX routes, bookmarked marathons, and AI fuel plans."
         />
-        <link rel="canonical" href="/dashboard" />
       </Helmet>
 
+      {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">My Routes</h1>
-        <p className="text-gray-600">
-          View and manage your uploaded GPX files and bookmarked routes
-        </p>
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">My Dashboard</h1>
+        <p className="text-gray-600">Manage your routes and fuel plans</p>
       </div>
 
+      {/* Tabs */}
+      <div className="mb-6">
+        <div className="flex gap-2 bg-gray-100 p-1 rounded-lg inline-flex">
+          <button
+            onClick={() => setActiveTab("routes")}
+            className={`px-4 py-2 rounded-md font-medium transition-all ${
+              activeTab === "routes"
+                ? "bg-white text-blue-600 shadow-sm hover:bg-white hover:text-blue-600"
+                : "bg-blue-600 text-black hover:text-blue-600 hover:bg-blue-50"
+            }`}
+          >
+            Routes ({routes.length})
+          </button>
+          <button
+            onClick={() => setActiveTab("fuel-plans")}
+            className={`px-4 py-2 rounded-md font-medium transition-all ${
+              activeTab === "fuel-plans"
+                ? "bg-white text-orange-600 shadow-sm hover:bg-white hover:text-orange-600"
+                : "bg-orange-600 text-black hover:text-orange-600 hover:bg-orange-50"
+            }`}
+          >
+            Fuel Plans ({fuelPlans.length})
+          </button>
+        </div>
+      </div>
+
+      {/* Loading State */}
       {loading && (
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="text-gray-600 mt-4">Loading your routes...</p>
+          <p className="text-gray-600 mt-4">Loading...</p>
         </div>
       )}
 
+      {/* Error State */}
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
           <p className="text-red-700">{error}</p>
         </div>
       )}
 
-      {!loading && !error && routes.length === 0 && (
-        <div className="text-center py-12">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            No Routes Yet
-          </h2>
-          <p className="text-gray-600 mb-6">
-            Upload your first GPX file or bookmark a marathon route to get
-            started.
-          </p>
-          <a
-            href="/elevationfinder"
-            className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Upload GPX File
-          </a>
-        </div>
+      {/* Routes Tab Content */}
+      {!loading && activeTab === "routes" && (
+        <>
+          {routes.length === 0 ? (
+            <div className="text-center py-12">
+              <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                No Routes Yet
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Upload your first GPX file or bookmark a marathon route to get
+                started.
+              </p>
+              <a
+                href="/elevationfinder"
+                className="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                Upload GPX File
+              </a>
+            </div>
+          ) : (
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <div className="text-sm text-gray-600">
+                  {routes.length} route{routes.length !== 1 ? "s" : ""} found
+                </div>
+                <a
+                  href="/elevationfinder"
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors text-sm"
+                >
+                  Upload New Route
+                </a>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {routes.map((route) => (
+                  <RouteCard key={route.id} route={route} />
+                ))}
+              </div>
+            </>
+          )}
+        </>
       )}
 
-      {!loading && routes.length > 0 && (
+      {/* Fuel Plans Tab Content */}
+      {!loading && activeTab === "fuel-plans" && (
         <>
-          <div className="flex justify-between items-center mb-6">
-            <div className="text-sm text-gray-600">
-              {routes.length} route{routes.length !== 1 ? "s" : ""} found
+          {fuelPlans.length === 0 ? (
+            <div className="text-center py-12">
+              <Flame className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                No Fuel Plans Yet
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Create your first AI-powered fuel plan to see it here. Plans are
+                automatically saved when you generate AI recommendations.
+              </p>
+              <a
+                href="/fuel"
+                className="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors"
+              >
+                Create Fuel Plan
+              </a>
             </div>
-            <a
-              href="/elevationfinder"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors text-sm"
-            >
-              Upload New Route
-            </a>
-          </div>
+          ) : (
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <div className="text-sm text-gray-600">
+                  {fuelPlans.length} fuel plan
+                  {fuelPlans.length !== 1 ? "s" : ""} saved
+                </div>
+                <a
+                  href="/fuel"
+                  className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors text-sm"
+                >
+                  Create New Plan
+                </a>
+              </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {routes.map((route) => (
-              <RouteCard key={route.id} route={route} />
-            ))}
-          </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {fuelPlans.map((plan) => (
+                  <FuelPlanCard key={plan.id} plan={plan} />
+                ))}
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

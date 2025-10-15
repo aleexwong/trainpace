@@ -6,7 +6,9 @@ import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { auth } from "@/lib/firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { LoginButton } from "@/features/auth/LoginButton";
+import { usePendingFuelPlan } from "@/hooks/usePendingFuelPlan";
 
 import {
   Form,
@@ -28,6 +30,10 @@ const registerSchema = z.object({
 export default function Register() {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  
+  // Handle auto-save of pending plan after signup
+  usePendingFuelPlan();
 
   const form = useForm({
     resolver: zodResolver(registerSchema),
@@ -55,8 +61,18 @@ export default function Register() {
         variant: "default", // or 'success' if you define one
       });
 
+      // Handle redirect after registration
+      const returnTo = searchParams.get("returnTo");
+      const savePlan = searchParams.get("savePlan");
+
       setTimeout(() => {
-        navigate("/");
+        if (returnTo && savePlan) {
+          navigate(`${returnTo}?savePlan=true`);
+        } else if (returnTo) {
+          navigate(returnTo);
+        } else {
+          navigate("/");
+        }
       }, 1500);
     } catch (err: any) {
       console.error(err);
@@ -72,8 +88,23 @@ export default function Register() {
     <div className="flex flex-col items-center justify-center h-[70vh] px-4">
       <h1 className="text-2xl font-bold mb-4">Create an Account</h1>
       <p className="text-gray-600 mb-6">
-        Sign up with your email and password.
+        Sign up to save your fuel plans and track your routes.
       </p>
+
+      {/* Google Sign In Button */}
+      <div className="w-full max-w-sm mb-6">
+        <LoginButton />
+      </div>
+
+      {/* Divider */}
+      <div className="relative w-full max-w-sm mb-6">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-300"></div>
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-2 bg-white text-gray-500">Or continue with email</span>
+        </div>
+      </div>
 
       <Form {...form}>
         <form

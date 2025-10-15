@@ -12,7 +12,6 @@ import RacePredictorOverlay from "./RacePredictorOverlay";
 import Landing from "./components/layout/Landing";
 import MainLayout from "./components/layout/MainLayout";
 import Login from "./pages/Login";
-import Ethos from "./pages/Ethos";
 import Logout from "./components/login/Logout";
 import Register from "./components/login/Register";
 import ResetPassword from "./components/login/ResetPassword";
