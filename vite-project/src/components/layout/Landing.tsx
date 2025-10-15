@@ -97,7 +97,7 @@ export default function Landing() {
           </div>
 
           <p className="text-sm text-gray-500 mt-4">
-            No account required to start • 100% free forever
+            Free to start • No credit card required
           </p>
         </div>
       </section>
@@ -111,9 +111,9 @@ export default function Landing() {
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
               <div className="text-3xl md:text-4xl font-bold text-blue-600">
-                100% Free
+                Always Free
               </div>
-              <div className="text-sm text-gray-600 mt-1">No Premium Tiers</div>
+              <div className="text-sm text-gray-600 mt-1">Core Tools Included</div>
             </div>
             <div>
               <div className="text-3xl md:text-4xl font-bold text-blue-600">
@@ -250,8 +250,8 @@ export default function Landing() {
           <div className="grid md:grid-cols-2 gap-8">
             <ValueProp
               icon={<CheckCircle className="w-8 h-8 text-green-600" />}
-              title="100% Free Forever"
-              desc="No paywalls, no premium tiers, no credit card required. All features are free for all runners, always."
+              title="Free Core Features"
+              desc="Essential training tools are free forever. No credit card required to start. Premium features available for advanced athletes."
             />
             <ValueProp
               icon={<CheckCircle className="w-8 h-8 text-green-600" />}
@@ -307,19 +307,19 @@ export default function Landing() {
               </Button>
             </Link>
 
-            <Link to="/faq">
+            <Link to="/elevationfinder">
               <Button
                 size="lg"
                 variant="outline"
-                className="text-lg px-8 py-4 border-white text-black hover:bg-white hover:text-blue-600"
+                className="text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-blue-600"
               >
-                Learn More
+                Analyze Elevation
               </Button>
             </Link>
           </div>
 
           <p className="text-sm text-blue-100 mt-6">
-            No sign-up required • Works on mobile & desktop • Privacy-focused
+            Free to start • Works on mobile & desktop • Privacy-focused
           </p>
         </div>
       </section>

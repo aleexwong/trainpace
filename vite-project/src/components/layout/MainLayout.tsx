@@ -24,10 +24,10 @@ export default function MainLayout() {
   const [scrolled, setScrolled] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [navVisible, setNavVisible] = useState(true);
-  const [navBehavior] = useState<NavBehavior>("fixed");
   const [mobilePreviewOpen, setMobilePreviewOpen] = useState(false);
-  // Choose your navigation behavior here
-  // const NAV_BEHAVIOR: NavBehavior = "fixed"; // Change this to test different behaviors
+  
+  // Navigation behavior configuration
+  const navBehavior: NavBehavior = "fixed";
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -113,25 +113,25 @@ export default function MainLayout() {
 
     switch (navBehavior) {
       case "static":
-        return `${baseClasses} bg-white relative z-[1000]`;
+        return `${baseClasses} bg-white relative z-50`;
 
       case "sticky":
-        return `${baseClasses} sticky top-0 z-[1000] ${
+        return `${baseClasses} sticky top-0 z-50 ${
           scrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-white"
         }`;
 
       case "fixed":
-        return `${baseClasses} fixed top-0 left-0 right-0 z-[1000] ${
+        return `${baseClasses} fixed top-0 left-0 right-0 z-50 ${
           scrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-white"
         }`;
 
       case "auto-hide":
-        return `${baseClasses} fixed top-0 left-0 right-0 z-[1000] transform transition-transform duration-300 ${
+        return `${baseClasses} fixed top-0 left-0 right-0 z-50 transform transition-transform duration-300 ${
           navVisible ? "translate-y-0" : "-translate-y-full"
         } ${scrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-white"}`;
 
       default:
-        return `${baseClasses} bg-white relative z-[1000]`;
+        return `${baseClasses} bg-white relative z-50`;
     }
   };
 
@@ -145,10 +145,7 @@ export default function MainLayout() {
 
   return (
     <div className="bg-white text-gray-900 min-h-screen flex flex-col">
-      {/* Navigation Behavior Indicator (remove in production)
-      <div className="fixed top-20 right-4 z-50 bg-blue-600 text-white px-2 py-1 rounded text-xs">
-        Nav: {navBehavior}
-      </div> */}
+
 
       <header className={getHeaderClasses()}>
         <Link
@@ -166,6 +163,17 @@ export default function MainLayout() {
               Features
             </a>
           )}
+          
+          <Link
+            to="/about"
+            className={`text-gray-700 hover:text-blue-600 transition-colors ${
+              location.pathname === "/about"
+                ? "text-blue-600 font-medium"
+                : ""
+            }`}
+          >
+            About
+          </Link>
 
           {links.map((link) => {
             // Handle dropdown case
@@ -229,14 +237,14 @@ export default function MainLayout() {
       {/* Mobile Navigation Overlay */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[999] md:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
       {/* Mobile Navigation Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full bg-white shadow-xl z-[1001] transition-transform duration-300 ease-in-out w-80 md:hidden ${
+        className={`fixed top-0 right-0 h-full bg-white shadow-xl z-50 transition-transform duration-300 ease-in-out w-80 md:hidden ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -286,6 +294,18 @@ export default function MainLayout() {
                 Features
               </a>
             )}
+            
+            <Link
+              to="/about"
+              className={`block py-3 px-4 text-lg font-medium rounded-lg transition-colors ${
+                location.pathname === "/about"
+                  ? "bg-blue-50 text-blue-600"
+                  : "text-gray-900 hover:bg-gray-100 hover:text-blue-600"
+              }`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              About
+            </Link>
 
             {/* Regular navigation links */}
             {links.map((link) => {

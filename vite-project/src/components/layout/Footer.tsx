@@ -61,10 +61,10 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/ethos"
+                  to="/about"
                   className="text-gray-600 hover:text-blue-600 transition-colors text-sm"
                 >
-                  Our Ethos
+                  Our Story
                 </Link>
               </li>
               <li>
@@ -107,7 +107,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <Link
-                  to="/ethos"
+                  to="/about"
                   className="text-gray-600 hover:text-blue-600 transition-colors text-sm"
                 >
                   About
@@ -139,9 +139,9 @@ const Footer = () => {
             <p className="text-sm text-gray-600 text-center md:text-left">
               Built by a{" "}
               <Link
-                to="/ethos"
+                to="/about"
                 className="text-gray-900 hover:text-blue-600 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
-                aria-label="Read the TrainPace ethos"
+                aria-label="Read about the TrainPace story"
               >
                 runner
               </Link>{" "}
@@ -165,7 +165,7 @@ const Footer = () => {
         {/* Optional: Tagline/Mission */}
         <div className="mt-6 text-center">
           <p className="text-xs text-gray-500">
-            Science-backed training tools. No ads. No paywalls. 100% free forever.
+            Science-backed training tools. No ads. Free to start.
           </p>
         </div>
       </div>
