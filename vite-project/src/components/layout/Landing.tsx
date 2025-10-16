@@ -113,7 +113,9 @@ export default function Landing() {
               <div className="text-3xl md:text-4xl font-bold text-blue-600">
                 Always Free
               </div>
-              <div className="text-sm text-gray-600 mt-1">Core Tools Included</div>
+              <div className="text-sm text-gray-600 mt-1">
+                Core Tools Included
+              </div>
             </div>
             <div>
               <div className="text-3xl md:text-4xl font-bold text-blue-600">
@@ -301,7 +303,7 @@ export default function Landing() {
             <Link to={user ? "/dashboard" : "/calculator"}>
               <Button
                 size="lg"
-                className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-gray-100"
+                className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-white/90"
               >
                 {user ? "Open Dashboard" : "Start Free Now"}
               </Button>
@@ -311,7 +313,7 @@ export default function Landing() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-blue-600"
+                className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-white/90"
               >
                 Analyze Elevation
               </Button>

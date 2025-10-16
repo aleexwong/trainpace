@@ -25,9 +25,9 @@ export default function MainLayout() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [navVisible, setNavVisible] = useState(true);
   const [mobilePreviewOpen, setMobilePreviewOpen] = useState(false);
-  
+
   // Navigation behavior configuration
-  const navBehavior: NavBehavior = "fixed";
+  const navBehavior: NavBehavior = "auto-hide" as NavBehavior;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -145,8 +145,6 @@ export default function MainLayout() {
 
   return (
     <div className="bg-white text-gray-900 min-h-screen flex flex-col">
-
-
       <header className={getHeaderClasses()}>
         <Link
           to="/"
@@ -163,13 +161,11 @@ export default function MainLayout() {
               Features
             </a>
           )}
-          
+
           <Link
             to="/about"
             className={`text-gray-700 hover:text-blue-600 transition-colors ${
-              location.pathname === "/about"
-                ? "text-blue-600 font-medium"
-                : ""
+              location.pathname === "/about" ? "text-blue-600 font-medium" : ""
             }`}
           >
             About
@@ -196,18 +192,6 @@ export default function MainLayout() {
               </Link>
             );
           })}
-
-          {user && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleLogout}
-              className="text-gray-700 hover:text-blue-600"
-              disabled={loading}
-            >
-              Logout
-            </Button>
-          )}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -294,7 +278,7 @@ export default function MainLayout() {
                 Features
               </a>
             )}
-            
+
             <Link
               to="/about"
               className={`block py-3 px-4 text-lg font-medium rounded-lg transition-colors ${
