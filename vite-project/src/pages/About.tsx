@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Timer, TrendingUp, Code, Heart } from "lucide-react";
+import bmoResults from "@/assets/about/bmo-half-marathon-2025.jpg";
 
 export default function About() {
   return (
@@ -123,6 +124,41 @@ export default function About() {
           </div>
         </div>
 
+        {/* Race Results - Proof */}
+        <div className="mb-16 bg-gray-50 rounded-lg p-8">
+          <h3 className="text-2xl font-bold mb-6 text-center">
+            The Proof: Official Results
+          </h3>
+          <div className="flex flex-col md:flex-row gap-8 items-center">
+            <img
+              src={bmoResults}
+              alt="BMO Vancouver Half Marathon 2025 official race results"
+              className="w-full md:w-1/2 rounded-lg shadow-lg"
+            />
+            <div className="md:w-1/2">
+              <p className="text-lg text-gray-700 mb-4">
+                From barely surviving my first half marathon to executing a
+                controlled, data-driven race plan the numbers don't lie.
+              </p>
+              <p className="text-gray-600 mb-4">
+                This wasn't about luck or talent. It was about consistent
+                training, smart pacing, and using the right tools to make better
+                decisions.
+              </p>
+              <p className="text-gray-600">
+                TrainPace was built during this training cycle. Every feature
+                you see is something I used to plan, execute, and improve my own
+                racing.
+              </p>
+              <p className="text-gray-700 mt-6">
+                A year ago, I could barely walk after finishing 21 kilometers.
+                This time, I crossed the line smiling. TrainPace was built for
+                that feeling{" "}
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Why I Built This */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
@@ -158,10 +194,11 @@ export default function About() {
               </li>
             </ul>
             <p className="text-gray-700 leading-relaxed mb-4">
-              I have a diploma in Computer Science and a degree in Biology. I
-              work as a QA tester, but I've been learning full-stack development
-              for the past three years. I wanted to prove to myself and future
-              employers that I could build something real.
+              I studied computer science at BCIT and biology at UBC. I work in
+              QA, but TrainPace was my test: could I build something end-to-end,
+              from code to performance results? I've been learning full-stack
+              development for the past three years. I wanted to prove to myself
+              and future employers that I could build something real.
             </p>
             <p className="text-gray-700 leading-relaxed mb-4">
               TrainPace started as a personal project: a clean, fast pace
@@ -181,11 +218,10 @@ export default function About() {
           <h2 className="text-3xl font-bold mb-6">About Me</h2>
           <div className="prose prose-lg max-w-none text-left">
             <p className="text-gray-700 leading-relaxed mb-4">
-              I'm Alex, a developer and runner based in{" "}
-              <strong>Vancouver, BC</strong>. I never ran as a kid I was the
-              teenager who couldn't run 6 laps under 15 minutes in gym class.
-              Running now is my way of proving to my inner child that hard
-              things are possible.
+              I'm Alex, a developer and runner based in Vancouver, BC. I never
+              ran as a kid, I was the teenager who couldn't run 6 laps under 15
+              minutes in gym class. Running now is my way of proving to my inner
+              child that hard things are possible.
             </p>
             <p className="text-gray-700 leading-relaxed mb-4">
               I work as a QA tester by day and build side projects by night.
