@@ -666,8 +666,8 @@ export default function Dashboard() {
             onClick={() => setActiveTab("routes")}
             className={`px-4 py-2 rounded-md font-medium transition-all ${
               activeTab === "routes"
-                ? "bg-white text-blue-600 shadow-sm hover:bg-white hover:text-blue-600"
-                : "bg-blue-600 text-black hover:text-blue-600 hover:bg-blue-50"
+                ? "bg-blue-600 text-black hover:text-blue-600 hover:bg-blue-50"
+                : "bg-white text-blue-600 shadow-sm hover:bg-white hover:text-blue-600"
             }`}
           >
             Routes ({routes.length})
@@ -676,8 +676,8 @@ export default function Dashboard() {
             onClick={() => setActiveTab("fuel-plans")}
             className={`px-4 py-2 rounded-md font-medium transition-all ${
               activeTab === "fuel-plans"
-                ? "bg-white text-orange-600 shadow-sm hover:bg-white hover:text-orange-600"
-                : "bg-orange-600 text-black hover:text-orange-600 hover:bg-orange-50"
+                ? "bg-orange-600 text-black hover:text-orange-600 hover:bg-orange-50"
+                : "bg-white text-orange-600 shadow-sm hover:bg-white hover:text-orange-600"
             }`}
           >
             Fuel Plans ({fuelPlans.length})
