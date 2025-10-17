@@ -1,9 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
 
-  "rewrites": [
-    { "source": "/((?!api/)(?!.*\\.).*)", "destination": "/index.html" }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
 
   "headers": [
     {
@@ -52,14 +50,14 @@
     },
 
     {
-      "source": "/(index.html)",
+      "source": "/index.html",
       "headers": [
         { "key": "Cache-Control", "value": "no-store, must-revalidate" },
         { "key": "CDN-Cache-Control", "value": "no-store" }
       ]
     },
     {
-      "source": "/**/*.html",
+      "source": "/:path*.html",
       "headers": [
         { "key": "Cache-Control", "value": "no-store, must-revalidate" },
         { "key": "CDN-Cache-Control", "value": "no-store" }
@@ -82,7 +80,7 @@
     },
 
     {
-      "source": "/assets/(.*)",
+      "source": "/assets/:path*",
       "headers": [
         {
           "key": "Cache-Control",
