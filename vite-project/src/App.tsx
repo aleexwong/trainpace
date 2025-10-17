@@ -21,7 +21,7 @@ import Dashboard from "./pages/Dashboard";
 import FAQ from "./pages/FAQ";
 import Settings from "./pages/Settings";
 import PreviewRoute from "./pages/PreviewRoute";
-import FuelPlannerV2 from "./pages/FuelPlannerV2";
+import { FuelPlannerV2 } from "./features/fuel";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import About from "./pages/About";
