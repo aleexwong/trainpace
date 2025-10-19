@@ -3,7 +3,7 @@
  * Modern UI similar to fuel planner
  */
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent } from "@/components/ui/card";
 import { Info, ChevronDown, ChevronUp } from "lucide-react";
@@ -30,7 +30,7 @@ export function PaceCalculatorV2() {
   const [results, setResults] = useState<PaceResults | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isCalculating, setIsCalculating] = useState(false);
-  
+
   // UI state
   const [showInfo, setShowInfo] = useState(false);
   const [showPhilosophy, setShowPhilosophy] = useState(false);
@@ -53,7 +53,9 @@ export function PaceCalculatorV2() {
   });
 
   // Handlers
-  const handleInputChange = (e: { target: { name: string; value: string } }) => {
+  const handleInputChange = (e: {
+    target: { name: string; value: string };
+  }) => {
     const { name, value } = e.target;
 
     // Time input validation
@@ -150,10 +152,12 @@ export function PaceCalculatorV2() {
 
     const raceInfo = `${inputs.distance}${inputs.units} in ${inputs.hours}:${inputs.minutes}:${inputs.seconds}`;
     let text = `Training Paces for ${raceInfo}\n\n`;
-    
+
     Object.entries(results).forEach(([key, value]) => {
       const displayName = key === "xlong" ? "Long Run" : key;
-      text += `${displayName.charAt(0).toUpperCase() + displayName.slice(1)}: ${value}\n`;
+      text += `${
+        displayName.charAt(0).toUpperCase() + displayName.slice(1)
+      }: ${value}\n`;
     });
 
     try {
@@ -174,10 +178,12 @@ export function PaceCalculatorV2() {
 
     const raceInfo = `${inputs.distance}${inputs.units} in ${inputs.hours}:${inputs.minutes}:${inputs.seconds}`;
     let text = `Training Paces for ${raceInfo}\n\n`;
-    
+
     Object.entries(results).forEach(([key, value]) => {
       const displayName = key === "xlong" ? "Long Run" : key;
-      text += `${displayName.charAt(0).toUpperCase() + displayName.slice(1)}: ${value}\n`;
+      text += `${
+        displayName.charAt(0).toUpperCase() + displayName.slice(1)
+      }: ${value}\n`;
     });
 
     const blob = new Blob([text], { type: "text/plain" });
@@ -232,11 +238,10 @@ export function PaceCalculatorV2() {
           {showInfo && (
             <Card className="mb-8 bg-white">
               <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-3">
-                  How It Works ⚡
-                </h3>
+                <h3 className="text-xl font-semibold mb-3">How It Works ⚡</h3>
                 <p className="text-gray-700 mb-2">
-                  Enter your recent race time and distance, and we'll calculate your optimal training paces for different workout types.
+                  Enter your recent race time and distance, and we'll calculate
+                  your optimal training paces for different workout types.
                 </p>
                 <ul className="list-disc list-inside text-gray-600 space-y-1">
                   <li>Easy runs for recovery and endurance</li>
@@ -294,30 +299,38 @@ export function PaceCalculatorV2() {
               <Card className="mt-2 bg-gray-50">
                 <CardContent className="p-6 text-gray-700 space-y-3 text-left">
                   <p>
-                    Training paces are calculated based on your current race performance and established training principles.
+                    Training paces are calculated based on your current race
+                    performance and established training principles.
                   </p>
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li>
-                      <strong>Easy Runs:</strong> 20-30% slower than race pace for recovery and aerobic base building
+                      <strong>Easy Runs:</strong> 20-30% slower than race pace
+                      for recovery and aerobic base building
                     </li>
                     <li>
-                      <strong>Long Runs:</strong> Similar to easy pace but sustained for longer duration
+                      <strong>Long Runs:</strong> Similar to easy pace but
+                      sustained for longer duration
                     </li>
                     <li>
-                      <strong>Tempo Runs:</strong> Comfortably hard pace, around 5-10% of race pace
+                      <strong>Tempo Runs:</strong> Comfortably hard pace, around
+                      5-10% of race pace
                     </li>
                     <li>
-                      <strong>Intervals:</strong> High-intensity efforts around race pace or slightly faster
+                      <strong>Intervals:</strong> High-intensity efforts around
+                      race pace or slightly faster
                     </li>
                     <li>
-                      <strong>Speed Work:</strong> Near-maximal efforts for developing top-end speed
+                      <strong>Speed Work:</strong> Near-maximal efforts for
+                      developing top-end speed
                     </li>
                     <li>
-                      <strong>Yasso 800s:</strong> Marathon-specific workout matching your goal marathon time
+                      <strong>Yasso 800s:</strong> Marathon-specific workout
+                      matching your goal marathon time
                     </li>
                   </ul>
                   <p className="text-sm italic">
-                    Remember: These are guidelines. Adjust based on how you feel, weather conditions, and terrain.
+                    Remember: These are guidelines. Adjust based on how you
+                    feel, weather conditions, and terrain.
                   </p>
                 </CardContent>
               </Card>
