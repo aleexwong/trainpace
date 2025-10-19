@@ -90,7 +90,7 @@ export default function FAQ() {
       </section>
 
       {/* Quick Jump Navigation */}
-      <section className="sticky top-[71px] z-[999] bg-white border-b border-gray-200 shadow-sm">
+      <section className="sticky top-[71px] z-40 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center gap-2 mb-3">
             <Hash className="w-5 h-5 text-blue-600" />
