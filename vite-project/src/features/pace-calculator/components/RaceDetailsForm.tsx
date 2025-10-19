@@ -4,7 +4,6 @@
  */
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -36,7 +35,7 @@ export function RaceDetailsForm({
 
   const handleUnitToggle = () => {
     const newUnit = isKm ? "miles" : "km";
-    
+
     // Convert existing distance if there is one
     if (inputs.distance && !isNaN(parseFloat(inputs.distance))) {
       const currentDistance = parseFloat(inputs.distance);
@@ -45,7 +44,7 @@ export function RaceDetailsForm({
         inputs.units,
         newUnit
       );
-      
+
       // Update both unit and converted distance
       onInputChange({
         target: {
@@ -54,7 +53,7 @@ export function RaceDetailsForm({
         },
       });
     }
-    
+
     // Update the unit
     onInputChange({
       target: {
@@ -74,7 +73,8 @@ export function RaceDetailsForm({
         {/* Preset Distances - Button Pills */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-3">
-            Quick Select <span className="text-gray-400 text-xs">(Optional)</span>
+            Quick Select{" "}
+            <span className="text-gray-400 text-xs">(Optional)</span>
           </label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {PRESET_DISTANCES.map((preset) => (
