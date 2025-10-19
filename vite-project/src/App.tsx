@@ -8,7 +8,7 @@ import { initAmplitude } from "@/lib/amplitude";
 import ScrollToTop from "./lib/ScrollToTop";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
 import TrainingPaceCalculator from "./pages/TrainingPaceCalculator";
-import RacePredictorOverlay from "./RacePredictorOverlay";
+import RacePredictorOverlay from "./pages/RacePredictorOverlay";
 import Landing from "./components/layout/Landing";
 import MainLayout from "./components/layout/MainLayout";
 import Login from "./pages/Login";
