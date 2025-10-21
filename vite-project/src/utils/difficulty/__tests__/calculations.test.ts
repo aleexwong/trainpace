@@ -19,7 +19,11 @@ describe("calculations", () => {
     challengeRating: "easy",
     estimatedTimeMultiplier: 1,
     pacingAdvice: "",
-    ...overrides,
+    energyRating: "low",
+    racePosition: "mid" as any,
+    ...Object.fromEntries(
+      Object.entries(overrides).filter(([_, value]) => value !== undefined)
+    ),
   });
 
   describe("computeTotalTime", () => {
@@ -41,7 +45,9 @@ describe("calculations", () => {
     });
 
     it("should handle zero-length segments", () => {
-      const segments = [createSegment({ length: 0, estimatedTimeMultiplier: 1 })];
+      const segments = [
+        createSegment({ length: 0, estimatedTimeMultiplier: 1 }),
+      ];
       expect(computeTotalTime(segments, 5)).toBe(0);
     });
   });
@@ -91,13 +97,17 @@ describe("calculations", () => {
     });
 
     it("should handle zero total length", () => {
-      const segments = [createSegment({ length: 0, estimatedTimeMultiplier: 1.5 })];
+      const segments = [
+        createSegment({ length: 0, estimatedTimeMultiplier: 1.5 }),
+      ];
       const cluster = buildCluster(segments);
       expect(computeWeightedMultiplier(cluster)).toBe(0);
     });
 
     it("should handle single segment", () => {
-      const segments = [createSegment({ length: 5, estimatedTimeMultiplier: 1.8 })];
+      const segments = [
+        createSegment({ length: 5, estimatedTimeMultiplier: 1.8 }),
+      ];
       const cluster = buildCluster(segments);
       expect(computeWeightedMultiplier(cluster)).toBe(1.8);
     });
@@ -126,9 +136,12 @@ describe("calculations", () => {
       const basePace = 5;
       const totalTime = computeTotalTime(segments, basePace);
 
-      const easyTime = segments[0].length * basePace * segments[0].estimatedTimeMultiplier;
-      const moderateTime = segments[1].length * basePace * segments[1].estimatedTimeMultiplier;
-      const hardTime = segments[2].length * basePace * segments[2].estimatedTimeMultiplier;
+      const easyTime =
+        segments[0].length * basePace * segments[0].estimatedTimeMultiplier;
+      const moderateTime =
+        segments[1].length * basePace * segments[1].estimatedTimeMultiplier;
+      const hardTime =
+        segments[2].length * basePace * segments[2].estimatedTimeMultiplier;
 
       const easyPercent = (easyTime / totalTime) * 100;
       const moderatePercent = (moderateTime / totalTime) * 100;
