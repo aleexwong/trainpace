@@ -14,7 +14,11 @@ describe("clusterSegments", () => {
     challengeRating: "easy",
     estimatedTimeMultiplier: 1,
     pacingAdvice: "",
-    ...overrides,
+    energyRating: "low",
+    racePosition: "mid" as any,
+    ...Object.fromEntries(
+      Object.entries(overrides).filter(([_, value]) => value !== undefined)
+    ),
   });
 
   it("should NOT mutate the original segments array", () => {
@@ -23,10 +27,13 @@ describe("clusterSegments", () => {
       createSegment({ startDistance: 0, grade: 1 }),
       createSegment({ startDistance: 2, grade: 1.5 }),
     ];
-    
+
     const originalOrder = [...segments];
-    clusterSegments(segments, { gradeThreshold: 1.5, adjacencyEpsilonKm: 0.01 });
-    
+    clusterSegments(segments, {
+      gradeThreshold: 1.5,
+      adjacencyEpsilonKm: 0.01,
+    });
+
     expect(segments).toEqual(originalOrder);
   });
 
@@ -203,7 +210,11 @@ describe("buildCluster", () => {
     challengeRating: "easy",
     estimatedTimeMultiplier: 1,
     pacingAdvice: "",
-    ...overrides,
+    energyRating: "low",
+    racePosition: "mid" as any,
+    ...Object.fromEntries(
+      Object.entries(overrides).filter(([_, value]) => value !== undefined)
+    ),
   });
 
   it("should compute elevation gain as sum of positive deltas", () => {
@@ -229,10 +240,10 @@ describe("buildCluster", () => {
     ];
 
     const cluster = buildCluster(segments);
-    
+
     // Should sum only positive deltas: 20 + 0 + 20 = 40m
     expect(cluster.elevationGain).toBe(40);
-    
+
     // NOT the naive end - start: 135 - 100 = 35m
     expect(cluster.elevationGain).not.toBe(35);
   });
@@ -254,10 +265,10 @@ describe("buildCluster", () => {
     ];
 
     const cluster = buildCluster(segments);
-    
+
     // Weighted: (5*1 + 3*3) / (1+3) = (5 + 9) / 4 = 3.5
     expect(cluster.avgGrade).toBe(3.5);
-    
+
     // NOT simple average: (5 + 3) / 2 = 4
     expect(cluster.avgGrade).not.toBe(4);
   });
@@ -330,11 +341,7 @@ describe("buildCluster", () => {
   });
 
   it("should count segment count correctly", () => {
-    const segments = [
-      createSegment({}),
-      createSegment({}),
-      createSegment({}),
-    ];
+    const segments = [createSegment({}), createSegment({}), createSegment({})];
 
     const cluster = buildCluster(segments);
     expect(cluster.segmentCount).toBe(3);
