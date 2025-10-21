@@ -3,7 +3,7 @@
  * Handles API calls, caching, and settings changes
  */
 
-import { useState, useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/features/auth/AuthContext";
@@ -288,7 +288,9 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
 
           // Fallback methods to get GPX content
           if (!gpxText) {
-            console.log("🔄 originalGpxText not available, trying fallbacks...");
+            console.log(
+              "🔄 originalGpxText not available, trying fallbacks..."
+            );
 
             if (routeMetadata.content) {
               gpxText = routeMetadata.content;
