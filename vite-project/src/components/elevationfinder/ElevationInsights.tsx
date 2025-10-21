@@ -1,23 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import {
-  SegmentType,
-  ChallengeRating,
-  RacePosition,
-  EnergyRating,
-  Segment,
-  ElevationAnalysis,
-} from "@/types/elevation";
+import { Segment, ElevationAnalysis } from "@/types/elevation";
 import {
   TrendingUp,
-  TrendingDown,
-  Minus,
-  Zap,
-  Battery,
   MapPin,
   Clock,
   Activity,
+  List,
+  PieChart as PieChartIcon,
 } from "lucide-react";
 import AuthGuard from "@/features/auth/AuthGuard";
+import { UnifiedDifficultyView } from "./UnifiedDifficultyView";
 
 export interface ElevationInsightsProps {
   elevationInsights: ElevationAnalysis | null;
@@ -30,58 +22,8 @@ export interface ElevationInsightsProps {
   }) => void;
 }
 
-const getChallengeIcon = (rating: ChallengeRating) => {
-  switch (rating) {
-    case "easy":
-      return <span className="text-green-500">😊</span>;
-    case "moderate":
-      return <span className="text-yellow-500">😐</span>;
-    case "hard":
-      return <span className="text-orange-500">😰</span>;
-    case "brutal":
-      return <span className="text-red-500">💀</span>;
-    default:
-      return <span className="text-gray-500">-</span>;
-  }
-};
-
-const getRacePositionColor = (position: RacePosition) => {
-  switch (position) {
-    case "early":
-      return "text-green-600 bg-green-50";
-    case "mid":
-      return "text-yellow-600 bg-yellow-50";
-    case "late":
-      return "text-red-600 bg-red-50";
-    default:
-      return "text-gray-600 bg-gray-50";
-  }
-};
-
-const getSegmentIcon = (type: SegmentType) => {
-  switch (type) {
-    case "uphill":
-      return <TrendingUp className="w-4 h-4" />;
-    case "downhill":
-      return <TrendingDown className="w-4 h-4" />;
-    case "flat":
-      return <Minus className="w-4 h-4" />;
-  }
-};
-
-const getEnergyIcon = (rating: EnergyRating) => {
-  switch (rating) {
-    case "high":
-      return <Battery className="w-4 h-4 text-red-500" />;
-    case "medium":
-      return <Battery className="w-4 h-4 text-yellow-500" />;
-    case "low":
-      return <Zap className="w-4 h-4 text-green-500" />;
-  }
-};
-
 const formatTime = (minutes: number) => {
-  const totalMinutes = Math.round(minutes); // round first!
+  const totalMinutes = Math.round(minutes);
   const hours = Math.floor(totalMinutes / 60);
   const mins = totalMinutes % 60;
   if (hours > 0 && mins > 0) return `${hours}h ${mins}m`;
@@ -102,6 +44,8 @@ const formatPace = (multiplier: number, basePace: number) => {
   return `${minutes}:${seconds.toString().padStart(2, "0")}/km`;
 };
 
+type ViewMode = "unified" | "chronological";
+
 export function ElevationInsights({
   elevationInsights,
   loading = false,
@@ -109,13 +53,15 @@ export function ElevationInsights({
   basePaceMinPerKm = 5,
   onSettingsChange,
 }: ElevationInsightsProps) {
+  const [viewMode, setViewMode] = useState<ViewMode>("unified");
   const [selectedSegment, setSelectedSegment] = useState<Segment | null>(null);
   const [localBasePace, setLocalBasePace] = useState(basePaceMinPerKm);
   const [localGradeThreshold, setLocalGradeThreshold] = useState(2);
+  const [localClusterThreshold, setLocalClusterThreshold] = useState(1.5);
 
   // Rate limiting - prevent spam
   const lastApiCall = useRef<number>(0);
-  const MIN_API_INTERVAL = 2000; // 1 second minimum between calls
+  const MIN_API_INTERVAL = 2000;
 
   // Debounce timer
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
@@ -144,16 +90,6 @@ export function ElevationInsights({
     }
   }, [localBasePace, localGradeThreshold, onSettingsChange]);
 
-  // Clean up any timers on unmount (not needed anymore, but good practice)
-  useEffect(() => {
-    return () => {
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current);
-      }
-    };
-  }, []);
-
-  // Clean up timer on unmount
   useEffect(() => {
     return () => {
       if (debounceTimer.current) {
@@ -211,23 +147,7 @@ export function ElevationInsights({
       >
         <div className="bg-white rounded-lg shadow-sm border p-4">
           <h3 className="font-semibold text-gray-800 mb-3">Settings</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Grade Threshold: {localGradeThreshold}%
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="5"
-                step="0.5"
-                value={localGradeThreshold}
-                onChange={(e) => setLocalGradeThreshold(Number(e.target.value))}
-                onMouseUp={handleSliderRelease}
-                onTouchEnd={handleSliderRelease}
-                className="w-full"
-              />
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Base Pace: {formatPace(1, localBasePace)}
@@ -243,6 +163,48 @@ export function ElevationInsights({
                 onTouchEnd={handleSliderRelease}
                 className="w-full"
               />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Grade Threshold: {localGradeThreshold}%
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                step="0.5"
+                value={localGradeThreshold}
+                onChange={(e) => setLocalGradeThreshold(Number(e.target.value))}
+                onMouseUp={handleSliderRelease}
+                onTouchEnd={handleSliderRelease}
+                className="w-full"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                For segment difficulty classification
+              </p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Cluster Tightness: {(4 - localClusterThreshold).toFixed(1)}
+              </label>
+              <input
+                type="range"
+                min="0.5"
+                max="3"
+                step="0.1"
+                value={localClusterThreshold}
+                onChange={(e) =>
+                  setLocalClusterThreshold(Number(e.target.value))
+                }
+                className="w-full"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                {localClusterThreshold <= 1 && "Very tight (precise)"}
+                {localClusterThreshold > 1 &&
+                  localClusterThreshold <= 1.75 &&
+                  "Moderate (balanced)"}
+                {localClusterThreshold > 1.75 && "Loose (grouped)"}
+              </p>
             </div>
           </div>
         </div>
@@ -313,7 +275,7 @@ export function ElevationInsights({
             Length: {insights.steepestUphill.length?.toFixed(1)} km
           </p>
           <p className="text-sm text-red-600 font-medium">
-            Race-adjusted difficulty
+            Critical race point
           </p>
         </div>
 
@@ -326,124 +288,123 @@ export function ElevationInsights({
             {formatTime(insights.estimatedTotalTime)}
           </p>
           <p className="text-sm text-gray-600">
-            Based on {basePaceMinPerKm} min/km base
+            Based on {localBasePace} min/km base
           </p>
           <p className="text-sm text-gray-600">
             Avg pace:{" "}
             {formatPace(
               insights.estimatedTotalTime /
                 insights.totalDistance /
-                basePaceMinPerKm,
-              basePaceMinPerKm
+                localBasePace,
+              localBasePace
             )}
           </p>
         </div>
       </div>
 
-      {/* Detailed Pacing Strategy */}
+      {/* View Mode Toggle */}
+      <div className="flex gap-2 justify-end">
+        <button
+          onClick={() => setViewMode("unified")}
+          className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors ${
+            viewMode === "unified"
+              ? "bg-blue-600 text-white"
+              : "bg-white text-gray-700 border hover:bg-gray-50"
+          }`}
+        >
+          <PieChartIcon className="w-4 h-4" />
+          Difficulty View
+        </button>
+        <button
+          onClick={() => setViewMode("chronological")}
+          className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors ${
+            viewMode === "chronological"
+              ? "bg-blue-600 text-white"
+              : "bg-white text-gray-700 border hover:bg-gray-50"
+          }`}
+        >
+          <List className="w-4 h-4" />
+          By Kilometer
+        </button>
+      </div>
+
+      {/* Pacing Strategy */}
       <div className="bg-white rounded-lg shadow-sm border">
         <h3 className="font-semibold text-gray-800 p-4 border-b flex items-center">
-          <Zap className="w-5 h-5 mr-2 text-blue-500" />
+          <Clock className="w-5 h-5 mr-2 text-blue-500" />
           Kilometer-by-Kilometer Pacing Strategy
         </h3>
-        <div className="max-h-96 overflow-y-auto">
-          {segments.map((segment, index) => (
-            <div
-              key={index}
-              className={`p-4 border-b hover:bg-gray-50 cursor-pointer ${
-                selectedSegment === segment ? "bg-blue-50 border-blue-200" : ""
-              }`}
-              onClick={() =>
-                setSelectedSegment(selectedSegment === segment ? null : segment)
-              }
-            >
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-3">
-                  {getSegmentIcon(segment.type)}
-                  <div>
-                    <div className="flex items-center space-x-2">
-                      <p className="font-medium text-gray-800 capitalize">
-                        KM {segment.startDistance.toFixed(0)} -{" "}
-                        {segment.endDistance.toFixed(0)} ({segment.type})
-                      </p>
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${getRacePositionColor(
-                          segment.racePosition
-                        )}`}
-                      >
-                        {segment.racePosition}
-                      </span>
-                      {getChallengeIcon(segment.challengeRating)}
-                    </div>
+
+        {viewMode === "unified" ? (
+          <div className="p-4">
+            <UnifiedDifficultyView
+              segments={segments}
+              basePaceMinPerKm={localBasePace}
+              totalRaceTime={insights.estimatedTotalTime}
+              clusterThreshold={localClusterThreshold}
+            />
+          </div>
+        ) : (
+          <div className="max-h-96 overflow-y-auto">
+            {segments.map((segment, index) => (
+              <div
+                key={index}
+                className={`p-4 border-b hover:bg-gray-50 cursor-pointer transition-colors ${
+                  selectedSegment === segment
+                    ? "bg-blue-50 border-l-4 border-blue-500"
+                    : ""
+                }`}
+                onClick={() =>
+                  setSelectedSegment(
+                    selectedSegment === segment ? null : segment
+                  )
+                }
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-800">
+                      KM {segment.startDistance.toFixed(0)} −{" "}
+                      {segment.endDistance.toFixed(0)} ({segment.type})
+                    </p>
                     <p className="text-sm text-gray-600">
-                      Elevation: {segment.startElevation.toFixed(0)}m →{" "}
+                      Grade: {segment.grade.toFixed(1)}% • Elevation:{" "}
+                      {segment.startElevation.toFixed(0)}m →{" "}
                       {segment.endElevation.toFixed(0)}m
-                      <span className="text-gray-400 ml-2">
-                        (
-                        {segment.endElevation > segment.startElevation
-                          ? "+"
-                          : ""}
-                        {(
-                          segment.endElevation - segment.startElevation
-                        ).toFixed(0)}
-                        m)
-                      </span>
                     </p>
                   </div>
-                </div>
-                <div className="flex items-center space-x-4">
                   <div className="text-right">
-                    <p className="text-sm font-medium text-gray-800">
-                      {segment.grade.toFixed(1)}% grade
+                    <p className="font-bold text-gray-800">
+                      {formatPace(
+                        segment.estimatedTimeMultiplier,
+                        localBasePace
+                      )}
                     </p>
                     <p className="text-xs text-gray-600">
-                      {formatPace(
-                        segment.estimatedTimeMultiplier,
-                        basePaceMinPerKm
+                      {formatTime(
+                        segment.length *
+                          localBasePace *
+                          segment.estimatedTimeMultiplier
                       )}
-                    </p>
-                    <p className="text-xs font-medium text-gray-700 capitalize">
-                      {segment.challengeRating}
                     </p>
                   </div>
-                  {getEnergyIcon(segment.energyRating)}
                 </div>
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="p-3 bg-gray-50 rounded">
-                  <p className="text-sm text-gray-700 font-medium mb-1">
-                    💡 Pacing Strategy
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    {segment.pacingAdvice}
-                  </p>
-                </div>
-                <div className="p-3 bg-gray-50 rounded">
-                  <p className="text-sm text-gray-700 font-medium mb-1">
-                    ⏱️ Time Estimate
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    {formatTime(
-                      segment.length *
-                        basePaceMinPerKm *
-                        segment.estimatedTimeMultiplier
-                    )}{" "}
-                    for this km
-                    <span className="text-gray-400 ml-2">
-                      (
-                      {formatPace(
-                        segment.estimatedTimeMultiplier,
-                        basePaceMinPerKm
-                      )}
-                      )
-                    </span>
-                  </p>
-                </div>
+                {selectedSegment === segment && (
+                  <div className="mt-3 pt-3 border-t">
+                    <div className="p-3 bg-gray-50 rounded">
+                      <p className="text-sm text-gray-700 font-medium mb-1">
+                        💡 Pacing Strategy
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {segment.pacingAdvice}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
