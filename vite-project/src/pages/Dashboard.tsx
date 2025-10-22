@@ -30,6 +30,7 @@ import {
 import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import { useRacePlans, RacePlanCard } from "@/features/race";
 
 interface RouteMetadata {
   id: string;
@@ -88,7 +89,10 @@ interface FuelPlan {
 export default function Dashboard() {
   const [routes, setRoutes] = useState<RouteMetadata[]>([]);
   const [fuelPlans, setFuelPlans] = useState<FuelPlan[]>([]);
-  const [activeTab, setActiveTab] = useState<"routes" | "fuel-plans">("routes");
+  const { racePlans, loading: racePlansLoading } = useRacePlans();
+  const [activeTab, setActiveTab] = useState<
+    "routes" | "fuel-plans" | "race-plans"
+  >("routes");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
@@ -682,6 +686,16 @@ export default function Dashboard() {
           >
             Fuel Plans ({fuelPlans.length})
           </button>
+          <button
+            onClick={() => setActiveTab("race-plans")}
+            className={`px-4 py-2 rounded-md font-medium transition-all ${
+              activeTab === "race-plans"
+                ? "bg-green-600 text-black hover:text-green-600 hover:bg-green-50"
+                : "bg-white text-green-600 shadow-sm hover:bg-white hover:text-green-600"
+            }`}
+          >
+            Race Plans ({racePlans.length})
+          </button>
         </div>
       </div>
 
@@ -782,6 +796,55 @@ export default function Dashboard() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {fuelPlans.map((plan) => (
                   <FuelPlanCard key={plan.id} plan={plan} />
+                ))}
+              </div>
+            </>
+          )}
+        </>
+      )}
+
+      {/* Race Plans Tab Content */}
+      {activeTab === "race-plans" && (
+        <>
+          {racePlansLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500 mx-auto"></div>
+              <p className="text-gray-600 mt-4">Loading race plans...</p>
+            </div>
+          ) : racePlans.length === 0 ? (
+            <div className="text-center py-12">
+              <Activity className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                No Race Plans Yet
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Generate a race plan to see it here. Plans include pacing and
+                fueling recommendations.
+              </p>
+              <a
+                href="/race/new"
+                className="inline-block bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors"
+              >
+                Create Race Plan
+              </a>
+            </div>
+          ) : (
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <div className="text-sm text-gray-600">
+                  {racePlans.length} race plan{racePlans.length !== 1 ? "s" : ""}
+                </div>
+                <a
+                  href="/race/new"
+                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors text-sm"
+                >
+                  New Race Plan
+                </a>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {racePlans.map((plan) => (
+                  <RacePlanCard key={plan.id} plan={plan} />
                 ))}
               </div>
             </>
