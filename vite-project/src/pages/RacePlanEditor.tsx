@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Timestamp, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/features/auth/AuthContext";
 import { useRacePlans } from "@/features/race/hooks/useRacePlans";
 import type { RacePlan, RaceStatus } from "@/features/race/types";
-import { calculatePaceStrategy, parseTimeToMinutes, formatTimeFromMinutes } from "@/features/race/utils/paceCalculations";
+import {
+  calculatePaceStrategy,
+  parseTimeToMinutes,
+  formatTimeFromMinutes,
+} from "@/features/race/utils/paceCalculations";
 import { calculateFuelPlan } from "@/features/race/utils/fuelSchedule";
 
 export default function RacePlanEditor() {
@@ -31,14 +35,11 @@ export default function RacePlanEditor() {
   const [targetHours, setTargetHours] = useState<string>("0");
   const [targetMinutes, setTargetMinutes] = useState<string>("0");
   const [targetSeconds, setTargetSeconds] = useState<string>("0");
-  const [pendingRegeneration, setPendingRegeneration] = useState<
-    | {
-        targetTime: number;
-        paceStrategy: RacePlan["paceStrategy"];
-        fuelPlan: RacePlan["fuelPlan"];
-      }
-    | null
-  >(null);
+  const [pendingRegeneration, setPendingRegeneration] = useState<{
+    targetTime: number;
+    paceStrategy: RacePlan["paceStrategy"];
+    fuelPlan: RacePlan["fuelPlan"];
+  } | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -172,8 +173,12 @@ export default function RacePlanEditor() {
     return (
       <div className="max-w-3xl mx-auto p-6">
         <div className="text-center py-12">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Sign In Required</h2>
-          <p className="text-gray-600 mb-6">Please sign in to edit race plans.</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Sign In Required
+          </h2>
+          <p className="text-gray-600 mb-6">
+            Please sign in to edit race plans.
+          </p>
           <button
             onClick={() => navigate("/login")}
             className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600"
@@ -299,7 +304,8 @@ export default function RacePlanEditor() {
               </div>
             </div>
             <p className="text-xs text-gray-500 mt-2">
-              Current route distance: {existing?.routeMetadata.distance.toFixed(1)} km
+              Current route distance:{" "}
+              {existing?.routeMetadata.distance.toFixed(1)} km
             </p>
           </div>
 
@@ -331,7 +337,8 @@ export default function RacePlanEditor() {
                       Current: {formatTimeFromMinutes(existing.targetTime)}
                     </span>
                     <span className="text-green-700 font-medium">
-                      New: {formatTimeFromMinutes(pendingRegeneration.targetTime)}
+                      New:{" "}
+                      {formatTimeFromMinutes(pendingRegeneration.targetTime)}
                     </span>
                   </div>
                 </div>
@@ -368,29 +375,47 @@ export default function RacePlanEditor() {
                     <div>
                       <div className="text-xs text-gray-500">Carbs/hr</div>
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-600">{existing.fuelPlan.carbsPerHour}g</span>
-                        <span className="text-green-700 font-medium">{pendingRegeneration.fuelPlan.carbsPerHour}g</span>
+                        <span className="text-gray-600">
+                          {existing.fuelPlan.carbsPerHour}g
+                        </span>
+                        <span className="text-green-700 font-medium">
+                          {pendingRegeneration.fuelPlan.carbsPerHour}g
+                        </span>
                       </div>
                     </div>
                     <div>
                       <div className="text-xs text-gray-500">Gels</div>
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-600">{existing.fuelPlan.gelsNeeded}</span>
-                        <span className="text-green-700 font-medium">{pendingRegeneration.fuelPlan.gelsNeeded}</span>
+                        <span className="text-gray-600">
+                          {existing.fuelPlan.gelsNeeded}
+                        </span>
+                        <span className="text-green-700 font-medium">
+                          {pendingRegeneration.fuelPlan.gelsNeeded}
+                        </span>
                       </div>
                     </div>
                     <div>
                       <div className="text-xs text-gray-500">Total Carbs</div>
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-600">{existing.fuelPlan.totalCarbs}g</span>
-                        <span className="text-green-700 font-medium">{pendingRegeneration.fuelPlan.totalCarbs}g</span>
+                        <span className="text-gray-600">
+                          {existing.fuelPlan.totalCarbs}g
+                        </span>
+                        <span className="text-green-700 font-medium">
+                          {pendingRegeneration.fuelPlan.totalCarbs}g
+                        </span>
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs text-gray-500">Schedule Items</div>
+                      <div className="text-xs text-gray-500">
+                        Schedule Items
+                      </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-600">{existing.fuelPlan.schedule.length}</span>
-                        <span className="text-green-700 font-medium">{pendingRegeneration.fuelPlan.schedule.length}</span>
+                        <span className="text-gray-600">
+                          {existing.fuelPlan.schedule.length}
+                        </span>
+                        <span className="text-green-700 font-medium">
+                          {pendingRegeneration.fuelPlan.schedule.length}
+                        </span>
                       </div>
                     </div>
                   </div>

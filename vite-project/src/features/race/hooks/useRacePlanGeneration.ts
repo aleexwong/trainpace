@@ -38,86 +38,86 @@ export function useRacePlanGeneration() {
   const { createRacePlan } = useRacePlans();
 
   /**
-   * Generate a complete race plan from inputs
-   */
-  const generateRacePlan = async (
-    inputs: RacePlanInputs,
-    routeData: {
-      routeId: string | null;
-      routeMetadata: {
-        name: string;
-        distance: number;
-        elevationGain: number;
-        city?: string;
-        country?: string;
-        hasElevationData: boolean;
-      };
+  * Generate a complete race plan from inputs
+  * Returns the generated plan object (not persisted yet)
+ */
+const generateRacePlan = async (
+  inputs: RacePlanInputs,
+  routeData: {
+  routeId: string | null;
+  routeMetadata: {
+  name: string;
+  distance: number;
+  elevationGain: number;
+  city?: string;
+  country?: string;
+    hasElevationData: boolean;
+    };
+  }
+): Promise<(Omit<RacePlan, "id" | "userId" | "createdAt" | "updatedAt"> & { tempId: string }) | null> => {
+  try {
+  setGenerating(true);
+    setError(null);
+
+  // Parse target time
+  const targetTime = parseTimeToMinutes(
+  Number(inputs.targetTimeHours),
+  Number(inputs.targetTimeMinutes),
+    Number(inputs.targetTimeSeconds)
+    );
+
+  if (targetTime <= 0) {
+    throw new Error("Please enter a valid target time");
     }
-  ): Promise<string | null> => {
-    try {
-      setGenerating(true);
-      setError(null);
 
-      // Parse target time
-      const targetTime = parseTimeToMinutes(
-        Number(inputs.targetTimeHours),
-        Number(inputs.targetTimeMinutes),
-        Number(inputs.targetTimeSeconds)
-      );
+  // Calculate pace strategy
+  const paceStrategy = calculatePaceStrategy({
+  distance: routeData.routeMetadata.distance,
+    targetTime,
+    });
 
-      if (targetTime <= 0) {
-        throw new Error("Please enter a valid target time");
-      }
+  // Calculate fuel plan
+  const fuelPlan = calculateFuelPlan({
+  distance: routeData.routeMetadata.distance,
+  targetTime,
+    raceType: inputs.raceType,
+    });
 
-      // Calculate pace strategy
-      const paceStrategy = calculatePaceStrategy({
-        distance: routeData.routeMetadata.distance,
-        targetTime,
-      });
-
-      // Calculate fuel plan
-      const fuelPlan = calculateFuelPlan({
-        distance: routeData.routeMetadata.distance,
-        targetTime,
-        raceType: inputs.raceType,
-      });
-
-      // Create the race plan - build object conditionally to avoid undefined values
-      const racePlan: Omit<
-        RacePlan,
-        "id" | "userId" | "createdAt" | "updatedAt"
-      > = {
-        name: inputs.name,
-        date: inputs.date,
-        raceType: inputs.raceType,
-        routeSource: inputs.routeSource,
-        routeId: routeData.routeId,
-        routeMetadata: cleanRouteMetadata(routeData.routeMetadata),
-        targetTime,
-        paceStrategy,
-        fuelPlan,
-        status: "draft",
-        // Only include optional fields if they have actual values
-        ...(inputs.notes && inputs.notes.trim()
-          ? { notes: inputs.notes.trim() }
-          : {}),
-        ...(inputs.goal ? { goal: inputs.goal } : {}),
-      };
-
-      // Save to Firestore
-      const planId = await createRacePlan(racePlan);
-
-      return planId;
-    } catch (err) {
-      console.error("Error generating race plan:", err);
-      setError(
-        err instanceof Error ? err.message : "Failed to generate race plan"
-      );
-      return null;
-    } finally {
-      setGenerating(false);
-    }
+  // Create the race plan - build object conditionally to avoid undefined values
+  const racePlan: Omit<
+  RacePlan,
+    "id" | "userId" | "createdAt" | "updatedAt"
+  > & { tempId: string } = {
+  tempId: `temp-${Date.now()}`,
+  name: inputs.name,
+  date: inputs.date,
+  raceType: inputs.raceType,
+  routeSource: inputs.routeSource,
+  routeId: routeData.routeId,
+  routeMetadata: cleanRouteMetadata(routeData.routeMetadata),
+  targetTime,
+  paceStrategy,
+  fuelPlan,
+  status: "draft",
+  // Only include optional fields if they have actual values
+  ...(inputs.notes && inputs.notes.trim()
+    ? { notes: inputs.notes.trim() }
+      : {}),
+      ...(inputs.goal ? { goal: inputs.goal } : {}),
   };
+
+    // Return the generated plan WITHOUT saving to Firestore yet
+  return racePlan;
+  } catch (err) {
+  console.error("Error generating race plan:", err);
+  setError(
+  err instanceof Error ? err.message : "Failed to generate race plan"
+  );
+  return null;
+  } finally {
+  setGenerating(false);
+  }
+};
 
   /**
    * Validate inputs before generation
@@ -147,7 +147,8 @@ export function useRacePlanGeneration() {
   return {
     generateRacePlan,
     validateInputs,
-    generating,
+    creating: generating,
     error,
+    createRacePlan,
   };
 }
