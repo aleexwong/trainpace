@@ -27,3 +27,10 @@ dist-ssr
 cors.json
 CLAUDE.md
 *.md
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
