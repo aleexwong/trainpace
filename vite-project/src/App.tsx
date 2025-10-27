@@ -16,7 +16,7 @@ import Logout from "./components/login/Logout";
 import Register from "./components/login/Register";
 import ResetPassword from "./components/login/ResetPassword";
 import ResetConfirmed from "./components/login/ResetConfirmed";
-import ElevationPage from "./pages/ElevationPage";
+import ElevationPage from "./pages/ElevationPageV2";
 import Dashboard from "./pages/Dashboard";
 import FAQ from "./pages/FAQ";
 import Settings from "./pages/Settings";
