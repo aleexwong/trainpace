@@ -146,17 +146,6 @@ export default function PreviewRoute() {
         />
       </Helmet>
 
-      {/* Back Link */}
-      <div className="mb-6">
-        <Link
-          to="/"
-          className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Calculator</span>
-        </Link>
-      </div>
-
       {/* Route Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">{route.name}</h1>
