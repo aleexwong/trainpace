@@ -211,7 +211,7 @@ export default function PreviewRoute() {
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Course Profile
         </h2>
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden relative z-0">
           {/* Use Leaflet for public preview to avoid requiring a Mapbox token */}
           <LeafletRoutePreview
             routePoints={
