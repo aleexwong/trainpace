@@ -55,20 +55,21 @@ export function ShareLinkBox({ docId, className }: ShareLinkBoxProps) {
   ];
 
   return (
-    <div className={cn("bg-gray-50 p-4 rounded-lg border", className)}>
+    <div className={cn("space-y-3", className)}>
       <div className="flex items-center gap-2 mb-3">
         <Input
           type="text"
           value={shareUrl}
           readOnly
-          className="flex-1 text-sm bg-white"
+          className="flex-1 text-sm bg-white overflow-x-auto whitespace-nowrap"
         />
         <Button onClick={handleCopy} size="sm" className="shrink-0">
-          <Copy className="h-4 w-4 mr-1" />
+          <Copy className="h-4 w-4 sm:mr-1" />
+          <span className="hidden sm:inline">Copy</span>
         </Button>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {shareLinks.map((link) => {
           const IconComponent = link.icon;
           return (

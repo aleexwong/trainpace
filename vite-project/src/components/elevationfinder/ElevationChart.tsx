@@ -310,33 +310,33 @@ export function ElevationChart({
 
       {/* Grade legend */}
       <div className="px-4 pb-4">
-        <div className="flex items-center justify-center gap-6 text-xs text-gray-700">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-gray-700">
           <div className="flex items-center gap-2">
             <div
-              className="w-16 h-4 rounded border border-gray-300"
+              className="w-12 sm:w-16 h-4 rounded border border-gray-300 shrink-0"
               style={{
                 background:
                   "linear-gradient(to right, rgb(34, 197, 94), rgb(154, 205, 50))",
               }}
             />
-            <span className="font-medium">Downhill (-15% to 0%)</span>
+            <span className="font-medium whitespace-nowrap">Downhill</span>
           </div>
           <div className="flex items-center gap-2">
             <div
-              className="w-4 h-4 rounded border border-gray-300"
+              className="w-4 h-4 rounded border border-gray-300 shrink-0"
               style={{ backgroundColor: "rgb(100, 116, 139)" }}
             />
-            <span className="font-medium">Flat</span>
+            <span className="font-medium whitespace-nowrap">Flat</span>
           </div>
           <div className="flex items-center gap-2">
             <div
-              className="w-16 h-4 rounded border border-gray-300"
+              className="w-12 sm:w-16 h-4 rounded border border-gray-300 shrink-0"
               style={{
                 background:
                   "linear-gradient(to right, rgb(234, 179, 8), rgb(220, 38, 38))",
               }}
             />
-            <span className="font-medium">Uphill (0% to +15%)</span>
+            <span className="font-medium whitespace-nowrap">Uphill</span>
           </div>
         </div>
       </div>

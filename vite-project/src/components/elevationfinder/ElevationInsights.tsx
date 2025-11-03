@@ -147,7 +147,7 @@ export function ElevationInsights({
       >
         <div className="bg-white rounded-lg shadow-sm border p-4">
           <h3 className="font-semibold text-gray-800 mb-3">Settings</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Base Pace: {formatPace(1, localBasePace)}
@@ -211,7 +211,7 @@ export function ElevationInsights({
       </AuthGuard>
 
       {/* Overall Insights */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center mb-2">
             <MapPin className="w-5 h-5 text-blue-500 mr-2" />
@@ -336,14 +336,12 @@ export function ElevationInsights({
         </h3>
 
         {viewMode === "unified" ? (
-          <div className="p-4">
-            <UnifiedDifficultyView
-              segments={segments}
-              basePaceMinPerKm={localBasePace}
-              totalRaceTime={insights.estimatedTotalTime}
-              clusterThreshold={localClusterThreshold}
-            />
-          </div>
+          <UnifiedDifficultyView
+            segments={segments}
+            basePaceMinPerKm={localBasePace}
+            totalRaceTime={insights.estimatedTotalTime}
+            clusterThreshold={localClusterThreshold}
+          />
         ) : (
           <div className="max-h-96 overflow-y-auto">
             {segments.map((segment, index) => (
@@ -360,19 +358,19 @@ export function ElevationInsights({
                   )
                 }
               >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex-1">
-                    <p className="font-medium text-gray-800">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-gray-800 text-sm sm:text-base">
                       KM {segment.startDistance.toFixed(0)} −{" "}
                       {segment.endDistance.toFixed(0)} ({segment.type})
                     </p>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-xs sm:text-sm text-gray-600 break-words">
                       Grade: {segment.grade.toFixed(1)}% • Elevation:{" "}
                       {segment.startElevation.toFixed(0)}m →{" "}
                       {segment.endElevation.toFixed(0)}m
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-left sm:text-right shrink-0">
                     <p className="font-bold text-gray-800">
                       {formatPace(
                         segment.estimatedTimeMultiplier,
