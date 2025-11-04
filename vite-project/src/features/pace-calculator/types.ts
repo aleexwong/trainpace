@@ -38,3 +38,11 @@ export interface FormErrors {
   distance?: string;
   time?: string;
 }
+
+export interface SavePacePlanParams {
+  inputs: PaceInputs;
+  results: PaceResults;
+  planName?: string;
+  notes?: string;
+  raceDate?: string; // ISO date string
+}

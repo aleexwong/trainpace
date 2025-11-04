@@ -8,12 +8,15 @@ import { Helmet } from "react-helmet-async";
 import { Card, CardContent } from "@/components/ui/card";
 import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { usePendingPacePlan } from "@/hooks/usePendingPacePlan";
 import ReactGA from "react-ga4";
 
 import type { PaceInputs, PaceResults, FormErrors, PaceUnit } from "../types";
 import { usePaceCalculation } from "../hooks/usePaceCalculation";
+import { usePacePlanPersistence } from "../hooks/usePacePlanPersistence";
 import { RaceDetailsForm } from "./RaceDetailsForm";
 import { PaceResultsDisplay } from "./PaceResultsDisplay";
+import { SavePlanDialog } from "./SavePlanDialog";
 
 const initialFormState: PaceInputs = {
   distance: "",
@@ -25,6 +28,9 @@ const initialFormState: PaceInputs = {
 };
 
 export function PaceCalculatorV2() {
+  // Handle auto-save of pending plan after signup
+  usePendingPacePlan();
+
   // Form state
   const [inputs, setInputs] = useState<PaceInputs>(initialFormState);
   const [results, setResults] = useState<PaceResults | null>(null);
@@ -34,9 +40,14 @@ export function PaceCalculatorV2() {
   // UI state
   const [showInfo, setShowInfo] = useState(false);
   const [showPhilosophy, setShowPhilosophy] = useState(false);
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
 
   // Calculate paces using hook
   const calculation = usePaceCalculation(inputs);
+
+  // Persistence hook for saving plans
+  const { isSaving, isSaved, saveToDashboard, resetSaveState } =
+    usePacePlanPersistence();
 
   // Auto-update results when pace type changes
   useEffect(() => {
@@ -131,6 +142,7 @@ export function PaceCalculatorV2() {
 
   const handleEdit = () => {
     setResults(null);
+    resetSaveState();
   };
 
   const handlePaceTypeChange = (newPaceType: PaceUnit) => {
@@ -200,6 +212,29 @@ export function PaceCalculatorV2() {
       category: "Pace Calculator",
       action: "Downloaded Plan",
     });
+  };
+
+  const handleSave = async () => {
+    if (!results) return;
+    setShowSaveDialog(true);
+  };
+
+  const handleSaveConfirm = async (
+    planName?: string,
+    notes?: string,
+    raceDate?: string
+  ) => {
+    if (!results) return;
+
+    await saveToDashboard({
+      inputs,
+      results,
+      planName,
+      notes,
+      raceDate,
+    });
+
+    setShowSaveDialog(false);
   };
 
   const getRaceTime = () => {
@@ -275,6 +310,9 @@ export function PaceCalculatorV2() {
                 onCopy={handleCopy}
                 onDownload={handleDownload}
                 onPaceTypeChange={handlePaceTypeChange}
+                onSave={handleSave}
+                isSaving={isSaving}
+                isSaved={isSaved}
               />
             )}
           </div>
@@ -337,6 +375,16 @@ export function PaceCalculatorV2() {
             )}
           </div>
         </div>
+
+        {/* Save Plan Dialog */}
+        <SavePlanDialog
+          isOpen={showSaveDialog}
+          onClose={() => setShowSaveDialog(false)}
+          onSave={handleSaveConfirm}
+          isSaving={isSaving}
+          raceDistance={`${inputs.distance} ${inputs.units}`}
+          raceTime={getRaceTime()}
+        />
       </div>
     </>
   );

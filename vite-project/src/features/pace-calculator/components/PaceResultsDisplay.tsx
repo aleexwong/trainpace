@@ -4,7 +4,7 @@
  */
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Copy, Download } from "lucide-react";
+import { Copy, Download, Save } from "lucide-react";
 import type { PaceResults, PaceUnit } from "../types";
 
 interface PaceResultsDisplayProps {
@@ -16,6 +16,9 @@ interface PaceResultsDisplayProps {
   onCopy: () => void;
   onDownload: () => void;
   onPaceTypeChange: (paceType: PaceUnit) => void;
+  onSave?: () => void;
+  isSaving?: boolean;
+  isSaved?: boolean;
 }
 
 const PACE_DESCRIPTIONS: Record<keyof PaceResults, string> = {
@@ -38,6 +41,9 @@ export function PaceResultsDisplay({
   onCopy,
   onDownload,
   onPaceTypeChange,
+  onSave,
+  isSaving = false,
+  isSaved = false,
 }: PaceResultsDisplayProps) {
   const isPaceKm = paceType === "km";
 
@@ -103,6 +109,25 @@ export function PaceResultsDisplay({
             >
               <Download className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
             </button>
+            {onSave && (
+              <button
+                onClick={onSave}
+                disabled={isSaving || isSaved}
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium rounded-lg transition-all flex items-center gap-1.5 ${
+                  isSaved
+                    ? "bg-green-100 text-green-700 cursor-not-allowed"
+                    : isSaving
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-md hover:shadow-lg"
+                }`}
+                title={isSaved ? "Saved!" : "Save to Dashboard"}
+              >
+                <Save className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">
+                  {isSaved ? "Saved!" : isSaving ? "Saving..." : "Save"}
+                </span>
+              </button>
+            )}
           </div>
         </div>
 

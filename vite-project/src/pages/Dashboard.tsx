@@ -26,10 +26,13 @@ import {
   Copy,
   ChevronDown,
   ChevronUp,
+  Edit,
 } from "lucide-react";
 import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
+import { EditPlanDialog } from "../components/EditPlanDialog";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import { useToast } from "../hooks/use-toast";
 
 interface RouteMetadata {
   id: string;
@@ -85,18 +88,48 @@ interface FuelPlan {
   createdAt: Timestamp;
 }
 
+interface PacePlan {
+  id: string;
+  userId: string;
+  distance: number;
+  units: "km" | "miles";
+  hours: number;
+  minutes: number;
+  seconds: number;
+  totalSeconds: number;
+  paceType: "km" | "Miles";
+  planName?: string;
+  notes?: string;
+  raceDate?: string;
+  paces: {
+    race: string;
+    easy: string;
+    tempo: string;
+    interval: string;
+    maximum: string;
+    speed: string;
+    xlong: string;
+    yasso: string;
+  };
+  createdAt: Timestamp;
+}
+
 export default function Dashboard() {
   const [routes, setRoutes] = useState<RouteMetadata[]>([]);
   const [fuelPlans, setFuelPlans] = useState<FuelPlan[]>([]);
-  const [activeTab, setActiveTab] = useState<"routes" | "fuel-plans">("routes");
+  const [pacePlans, setPacePlans] = useState<PacePlan[]>([]);
+  const [activeTab, setActiveTab] = useState<"routes" | "fuel-plans" | "pace-plans">("routes");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [editingPlan, setEditingPlan] = useState<PacePlan | null>(null);
   const { user } = useAuth();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (user) {
       loadUserRoutes();
       loadUserFuelPlans();
+      loadUserPacePlans();
     }
   }, [user]);
 
@@ -208,6 +241,42 @@ export default function Dashboard() {
     }
   };
 
+  const loadUserPacePlans = async () => {
+    if (!user) return;
+
+    try {
+      const pacePlansQuery = query(
+        collection(db, "user_pace_plans"),
+        where("userId", "==", user.uid),
+        orderBy("createdAt", "desc")
+      );
+
+      const snapshot = await getDocs(pacePlansQuery);
+      const plans = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as PacePlan[];
+
+      // Sort by race date if available, otherwise by created date
+      plans.sort((a, b) => {
+        // If both have race dates, sort by race date (ascending - upcoming races first)
+        if (a.raceDate && b.raceDate) {
+          return new Date(a.raceDate).getTime() - new Date(b.raceDate).getTime();
+        }
+        // Plans with race dates come first
+        if (a.raceDate && !b.raceDate) return -1;
+        if (!a.raceDate && b.raceDate) return 1;
+        // Otherwise sort by creation date (newest first)
+        return (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0);
+      });
+
+      setPacePlans(plans);
+    } catch (err) {
+      console.error("Error loading pace plans:", err);
+      // Don't set error state - pace plans are optional
+    }
+  };
+
   const formatDate = (timestamp: any) => {
     if (!timestamp) return "Unknown";
     try {
@@ -246,9 +315,16 @@ export default function Dashboard() {
 
     try {
       await navigator.clipboard.writeText(text);
-      alert("Fuel plan copied to clipboard!");
+      toast({
+        title: "Copied to clipboard",
+        description: "Fuel plan copied successfully",
+      });
     } catch {
-      alert("Failed to copy fuel plan.");
+      toast({
+        title: "Copy failed",
+        description: "Failed to copy fuel plan to clipboard",
+        variant: "destructive",
+      });
     }
   };
 
@@ -270,9 +346,125 @@ export default function Dashboard() {
 
       await deleteDoc(docRef);
       setFuelPlans((prev) => prev.filter((p) => p.id !== planId));
+      
+      toast({
+        title: "Plan deleted",
+        description: "Fuel plan deleted successfully",
+      });
     } catch (err) {
       console.error("Delete failed:", err);
-      alert("Failed to delete fuel plan.");
+      toast({
+        title: "Delete failed",
+        description: "Failed to delete fuel plan",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeletePacePlan = async (planId: string) => {
+    try {
+      if (!user) return;
+
+      const docRef = doc(db, "user_pace_plans", planId);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        throw new Error("Plan does not exist");
+      }
+
+      const data = docSnap.data();
+      if (!data.userId || data.userId !== user.uid) {
+        throw new Error("You are not authorized to delete this plan");
+      }
+
+      await deleteDoc(docRef);
+      setPacePlans((prev) => prev.filter((p) => p.id !== planId));
+      
+      toast({
+        title: "Plan deleted",
+        description: "Pace plan deleted successfully",
+      });
+    } catch (err) {
+      console.error("Delete failed:", err);
+      toast({
+        title: "Delete failed",
+        description: "Failed to delete pace plan",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleCopyPacePlan = async (plan: PacePlan) => {
+    const raceTime = `${plan.hours}h ${plan.minutes}m ${plan.seconds}s`;
+    let text = `Training Paces for ${plan.distance}${plan.units} in ${raceTime}\n\n`;
+    
+    Object.entries(plan.paces).forEach(([key, value]) => {
+      const displayName = key === "xlong" ? "Long Run" : key;
+      text += `${displayName.charAt(0).toUpperCase() + displayName.slice(1)}: ${value}\n`;
+    });
+
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        title: "Copied to clipboard",
+        description: "Pace plan copied successfully",
+      });
+    } catch {
+      toast({
+        title: "Copy failed",
+        description: "Failed to copy pace plan to clipboard",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEditPacePlan = async (
+    planId: string,
+    planName?: string,
+    notes?: string,
+    raceDate?: string
+  ) => {
+    try {
+      if (!user) return;
+
+      const docRef = doc(db, "user_pace_plans", planId);
+      const docSnap = await getDoc(docRef);
+
+      if (!docSnap.exists()) {
+        throw new Error("Plan does not exist");
+      }
+
+      const data = docSnap.data();
+      if (!data.userId || data.userId !== user.uid) {
+        throw new Error("You are not authorized to edit this plan");
+      }
+
+      await updateDoc(docRef, {
+        planName: planName || null,
+        notes: notes || null,
+        raceDate: raceDate || null,
+      });
+
+      // Update local state
+      setPacePlans((prev) =>
+        prev.map((p) =>
+          p.id === planId
+            ? { ...p, planName, notes, raceDate }
+            : p
+        )
+      );
+
+      toast({
+        title: "Plan updated",
+        description: "Your changes have been saved successfully",
+      });
+    } catch (err) {
+      console.error("Update failed:", err);
+      toast({
+        title: "Update failed",
+        description: "Failed to update pace plan",
+        variant: "destructive",
+      });
     }
   };
 
@@ -325,8 +517,18 @@ export default function Dashboard() {
       setRoutes((prevRoutes) =>
         prevRoutes.filter((route) => route.id !== routeId)
       );
+      
+      toast({
+        title: "Route deleted",
+        description: `${routeType === "uploaded" ? "Route" : "Bookmark"} deleted successfully`,
+      });
     } catch (err) {
       console.error("Delete failed:", err);
+      toast({
+        title: "Delete failed",
+        description: "Failed to delete route",
+        variant: "destructive",
+      });
     }
   }
 
@@ -526,6 +728,138 @@ export default function Dashboard() {
       </div>
     );
   };
+  const PacePlanCard = ({ plan }: { plan: PacePlan }) => {
+    const [expanded, setExpanded] = useState(false);
+    const raceTime = `${plan.hours}:${String(plan.minutes).padStart(2, '0')}:${String(plan.seconds).padStart(2, '0')}`;
+    const paceUnit = plan.paceType === "km" ? "min/km" : "min/mi";
+
+    // Format race date
+    const formatRaceDate = (dateStr?: string) => {
+      if (!dateStr) return null;
+      try {
+        return new Date(dateStr).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
+      } catch {
+        return null;
+      }
+    };
+
+    const raceDate = formatRaceDate(plan.raceDate);
+    const hasNotes = plan.notes && plan.notes.trim().length > 0;
+
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+        {/* Header */}
+        <div className="flex justify-between items-start mb-3">
+          <div className="flex-1">
+            <h3 className="font-semibold text-gray-800 mb-1">
+              {plan.planName || `${plan.distance}${plan.units} Race`}
+            </h3>
+            <p className="text-sm text-gray-500">
+              {formatDate(plan.createdAt)} • {raceTime}
+            </p>
+            {raceDate && (
+              <p className="text-xs text-purple-600 mt-1 flex items-center gap-1">
+                <Calendar className="w-3 h-3" />
+                Race: {raceDate}
+              </p>
+            )}
+          </div>
+          <div className="flex gap-1">
+            <button
+              onClick={() => setEditingPlan(plan)}
+              className="text-gray-400 hover:text-blue-500 transition-colors bg-transparent rounded-full p-1 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              title="Edit plan"
+            >
+              <Edit className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => handleDeletePacePlan(plan.id)}
+              className="text-gray-400 hover:text-red-500 transition-colors bg-transparent rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              title="Delete pace plan"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Pace Unit Badge */}
+        <div className="mb-3">
+          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+            Paces in {paceUnit}
+          </span>
+        </div>
+
+        {/* Paces Grid */}
+        <div className="space-y-2 mb-3 bg-blue-50 p-3 rounded-lg">
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            <div>
+              <div className="text-xs text-gray-600 mb-0.5">Race Pace</div>
+              <div className="font-bold text-blue-600">{plan.paces.race}</div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-600 mb-0.5">Easy</div>
+              <div className="font-bold text-blue-600">{plan.paces.easy}</div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-600 mb-0.5">Tempo</div>
+              <div className="font-bold text-blue-600">{plan.paces.tempo}</div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-600 mb-0.5">Interval</div>
+              <div className="font-bold text-blue-600">{plan.paces.interval}</div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-600 mb-0.5">Long Run</div>
+              <div className="font-bold text-blue-600">{plan.paces.xlong}</div>
+            </div>
+            <div>
+              <div className="text-xs text-gray-600 mb-0.5">Yasso 800s</div>
+              <div className="font-bold text-blue-600">{plan.paces.yasso}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Notes (Expandable) */}
+        {hasNotes && (
+          <div className="mb-3">
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="w-full text-sm text-purple-600 hover:text-purple-700 flex items-center justify-between bg-purple-50 p-2 rounded-lg"
+            >
+              <span className="font-medium">Training Notes</span>
+              {expanded ? (
+                <ChevronUp className="w-4 h-4" />
+              ) : (
+                <ChevronDown className="w-4 h-4" />
+              )}
+            </button>
+
+            {expanded && (
+              <div className="mt-2 bg-purple-50 p-3 rounded-lg border border-purple-100">
+                <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                  {plan.notes}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Action Button */}
+        <button
+          onClick={() => handleCopyPacePlan(plan)}
+          className="w-full bg-blue-500 text-white py-2 px-3 rounded-md text-sm hover:bg-blue-600 transition-colors flex items-center justify-center gap-1"
+        >
+          <Copy className="w-4 h-4" />
+          Copy Paces
+        </button>
+      </div>
+    );
+  };
+
   const FuelPlanCard = ({ plan }: { plan: FuelPlan }) => {
     const [expanded, setExpanded] = useState(false);
 
@@ -673,6 +1007,16 @@ export default function Dashboard() {
             Routes ({routes.length})
           </button>
           <button
+            onClick={() => setActiveTab("pace-plans")}
+            className={`px-4 py-2 rounded-md font-medium transition-all ${
+              activeTab === "pace-plans"
+                ? "bg-purple-600 text-black hover:text-purple-600 hover:bg-purple-50"
+                : "bg-white text-purple-600 shadow-sm hover:bg-white hover:text-purple-600"
+            }`}
+          >
+            Pace Plans ({pacePlans.length})
+          </button>
+          <button
             onClick={() => setActiveTab("fuel-plans")}
             className={`px-4 py-2 rounded-md font-medium transition-all ${
               activeTab === "fuel-plans"
@@ -744,6 +1088,50 @@ export default function Dashboard() {
         </>
       )}
 
+      {/* Pace Plans Tab Content */}
+      {!loading && activeTab === "pace-plans" && (
+        <>
+          {pacePlans.length === 0 ? (
+            <div className="text-center py-12">
+              <Activity className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                No Pace Plans Yet
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Create your first training pace plan based on your race times.
+              </p>
+              <a
+                href="/pace-calculator"
+                className="inline-block bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600 transition-colors"
+              >
+                Create Pace Plan
+              </a>
+            </div>
+          ) : (
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <div className="text-sm text-gray-600">
+                  {pacePlans.length} pace plan
+                  {pacePlans.length !== 1 ? "s" : ""} saved
+                </div>
+                <a
+                  href="/pace-calculator"
+                  className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600 transition-colors text-sm"
+                >
+                  Create New Plan
+                </a>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {pacePlans.map((plan) => (
+                  <PacePlanCard key={plan.id} plan={plan} />
+                ))}
+              </div>
+            </>
+          )}
+        </>
+      )}
+
       {/* Fuel Plans Tab Content */}
       {!loading && activeTab === "fuel-plans" && (
         <>
@@ -787,6 +1175,23 @@ export default function Dashboard() {
             </>
           )}
         </>
+      )}
+
+      {/* Edit Plan Dialog */}
+      {editingPlan && (
+        <EditPlanDialog
+          isOpen={!!editingPlan}
+          onClose={() => setEditingPlan(null)}
+          onSave={async (planName, notes, raceDate) => {
+            await handleEditPacePlan(editingPlan.id, planName, notes, raceDate);
+            setEditingPlan(null);
+          }}
+          currentPlanName={editingPlan.planName}
+          currentNotes={editingPlan.notes}
+          currentRaceDate={editingPlan.raceDate}
+          raceDistance={`${editingPlan.distance}${editingPlan.units}`}
+          raceTime={`${editingPlan.hours}:${String(editingPlan.minutes).padStart(2, '0')}:${String(editingPlan.seconds).padStart(2, '0')}`}
+        />
       )}
     </div>
   );
