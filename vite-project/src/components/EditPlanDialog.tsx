@@ -9,7 +9,11 @@ import { X, Calendar, FileText, Tag, Save } from "lucide-react";
 interface EditPlanDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (planName?: string, notes?: string, raceDate?: string) => Promise<void>;
+  onSave: (
+    planName?: string,
+    notes?: string,
+    raceDate?: string
+  ) => Promise<void>;
   currentPlanName?: string;
   currentNotes?: string;
   currentRaceDate?: string;
@@ -76,7 +80,7 @@ export function EditPlanDialog({
           <button
             onClick={handleClose}
             disabled={isSaving}
-            className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50"
+            className=" border bg-gray-300 text-gray-700 rounded-md hover:bg-gray-500 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -155,14 +159,14 @@ export function EditPlanDialog({
           <button
             onClick={handleClose}
             disabled={isSaving}
-            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-4 py-2 border bg-gray-300 text-gray-700 rounded-md hover:bg-gray-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-md hover:from-purple-700 hover:to-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex-1 px-4 py-2 bg-purple-500 text-white rounded-md hover:from-purple-800 hover:to-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <Save className="w-4 h-4" />
             {isSaving ? "Saving..." : "Save Changes"}
