@@ -17,7 +17,6 @@ import Register from "./components/login/Register";
 import ResetPassword from "./components/login/ResetPassword";
 import ResetConfirmed from "./components/login/ResetConfirmed";
 import ElevationPage from "./pages/ElevationPageV2";
-import Dashboard from "./pages/Dashboard";
 import FAQ from "./pages/FAQ";
 import Settings from "./pages/Settings";
 import PreviewRoute from "./pages/PreviewRoute";
@@ -25,6 +24,7 @@ import { FuelPlannerV2 } from "./features/fuel";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import About from "./pages/About";
+import DashboardV2 from "./pages/DashboardV2";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -47,7 +47,7 @@ function App() {
             />
             <Route path="/elevationfinder/:docId" element={<ElevationPage />} />
             <Route path="/elevationfinder" element={<ElevationPage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<DashboardV2 />} />
             <Route path="/ethos" element={<About />} />
             <Route path="login" element={<Login />} />
             <Route path="logout" element={<Logout />} />
