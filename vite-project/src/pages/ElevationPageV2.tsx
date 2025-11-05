@@ -26,6 +26,11 @@ import {
   RouteResults,
 } from "@/features/elevation";
 
+// Chat imports
+import { useGPXChat } from "@/features/chat/hooks/useGPXChat";
+import { GPXChatInterface } from "@/components/chat/GPXChatInterface";
+import { buildGPXContext } from "@/services/gpxChat";
+
 export default function ElevationPage() {
   const { docId: urlDocId } = useParams();
   const navigate = useNavigate();
@@ -75,6 +80,18 @@ export default function ElevationPage() {
     },
   });
 
+  // Chat hook for RAG-based GPX queries
+  const {
+    messages,
+    isLoading: chatLoading,
+    error: chatError,
+    context: chatContext,
+    sendMessage,
+    updateContext,
+    clearChat,
+    clearError: clearChatError,
+  } = useGPXChat();
+
   // Determine which data source to use (shared route vs fresh upload)
   const isSharedRoute = !!urlDocId;
   const analysisData = isSharedRoute
@@ -115,6 +132,19 @@ export default function ElevationPage() {
     );
     setCurrentDocId(urlDocId || null);
   }, [urlDocId]);
+
+  // Update chat context when analysis data changes
+  useEffect(() => {
+    if (analysisData && currentDocId && filename) {
+      const context = buildGPXContext(
+        currentDocId,
+        filename,
+        analysisData,
+        analysisSettings
+      );
+      updateContext(context);
+    }
+  }, [analysisData, currentDocId, filename, analysisSettings, updateContext]);
 
   // Handle settings change
   const onSettingsChange = async (newSettings: AnalysisSettings) => {
@@ -323,6 +353,21 @@ export default function ElevationPage() {
           }
           onSettingsChange={onSettingsChange}
         />
+
+        {/* GPX Chat Interface */}
+        {(analysisData || chatContext) && (
+          <div className="h-[600px]">
+            <GPXChatInterface
+              messages={messages}
+              isLoading={chatLoading}
+              error={chatError}
+              context={chatContext}
+              onSendMessage={sendMessage}
+              onClearChat={clearChat}
+              onClearError={clearChatError}
+            />
+          </div>
+        )}
 
         {/* Development Cache Debug Info */}
         {import.meta.env.MODE === "development" &&
