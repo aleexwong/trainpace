@@ -139,3 +139,12 @@ button:focus-visible {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .delay-500 {
+    animation-delay: 0.5s;
+  }
+  .delay-1000 {
+    animation-delay: 1s;
+  }
+}
