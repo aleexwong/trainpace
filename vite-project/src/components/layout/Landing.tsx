@@ -28,7 +28,7 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen relative">
+    <div className="bg-gradient-to-b from-white via-blue-50/30 to-white text-gray-900 min-h-screen relative overflow-hidden">
       {/* SEO: Structured Data */}
       <StructuredData type="Organization" />
       <StructuredData type="WebSite" />
@@ -39,111 +39,162 @@ export default function Landing() {
         applicationCategory="HealthApplication"
         offers={{ price: "0", priceCurrency: "USD" }}
       />
-      {/* Hero Section - Upgraded */}
-      <section className="relative px-0 pt-0 pb-24 text-center">
-        {/* Mobile image */}
-        <img
-          src={trainPaceHeroMobile}
-          alt="TrainPace Mobile Hero"
-          className="w-full h-[500px] object-cover object-top md:hidden"
-        />
 
-        {/* Desktop image */}
-        <img
-          src={trainPaceHeroImage}
-          alt="TrainPace Desktop Hero"
-          className="hidden md:block w-full h-[600px] object-cover object-left-top"
-        />
+      {/* Decorative background elements */}
+      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-br from-blue-100/40 to-transparent blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-blue-100/40 to-transparent blur-3xl pointer-events-none" />
 
-        <div className="px-6 max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+      {/* Hero Section - Modern SaaS Design */}
+      <section className="relative px-6 pt-16 md:pt-24 pb-20 text-center">
+        {/* Mobile image with overlay */}
+        <div className="relative md:hidden mb-12">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white z-10" />
+          <img
+            src={trainPaceHeroMobile}
+            alt="TrainPace Mobile Hero"
+            className="w-full h-[400px] object-cover object-top rounded-2xl shadow-2xl"
+          />
+        </div>
+
+        {/* Desktop image with overlay */}
+        <div className="relative hidden md:block mb-12">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white z-10" />
+          <img
+            src={trainPaceHeroImage}
+            alt="TrainPace Desktop Hero"
+            className="w-full h-[500px] object-cover object-left-top rounded-3xl shadow-2xl"
+          />
+        </div>
+
+        <div className="max-w-5xl mx-auto relative z-20">
+          {/* Pill badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-medium text-blue-700 mb-6">
+            <Zap className="w-4 h-4" />
+            Trusted by runners worldwide
+          </div>
+
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent">
             Train Smarter, Race Faster
           </h1>
 
-          {/* Value props - scannable bullets */}
-          <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm md:text-base">
-            <span className="flex items-center gap-2 text-gray-700">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-              Science-backed training paces
-            </span>
-            <span className="flex items-center gap-2 text-gray-700">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-              Interactive route elevation analysis
-            </span>
-            <span className="flex items-center gap-2 text-gray-700">
-              <CheckCircle className="w-5 h-5 text-green-600" />
-              Personalized fueling plans
-            </span>
-          </div>
-
-          <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
             The complete toolkit for self-coached runners. No paywalls, no ads,
             no BS — just powerful tools that help you train injury-free and
             reach your goals.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          {/* Value props - Modern pills */}
+          <div className="flex flex-wrap justify-center gap-3 mb-10">
+            <span className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-200 text-sm font-medium text-gray-700">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              Science-backed training
+            </span>
+            <span className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-200 text-sm font-medium text-gray-700">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              Route elevation analysis
+            </span>
+            <span className="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-200 text-sm font-medium text-gray-700">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              Personalized fueling
+            </span>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
             <Link to={user ? "/dashboard" : "/calculator"}>
-              <Button size="lg" className="text-lg px-8 py-4">
-                {user ? "Go to Dashboard" : "Try Free Calculator"}
+              <Button
+                size="lg"
+                className="text-lg px-10 py-6 bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              >
+                {user ? "Go to Dashboard" : "Get Started Free"}
               </Button>
             </Link>
 
             <Link to="/elevationfinder">
-              <Button size="lg" variant="outline" className="text-lg px-8 py-4">
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-lg px-10 py-6 border-2 hover:bg-gray-50 transition-all duration-300"
+              >
                 Upload GPX File
               </Button>
             </Link>
           </div>
 
-          <p className="text-sm text-gray-500 mt-4">
-            Free to start • No credit card required
+          <p className="text-sm text-gray-500 flex items-center justify-center gap-4 flex-wrap">
+            <span className="flex items-center gap-1">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              Free forever
+            </span>
+            <span className="text-gray-300">•</span>
+            <span className="flex items-center gap-1">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              No credit card
+            </span>
+            <span className="text-gray-300">•</span>
+            <span className="flex items-center gap-1">
+              <CheckCircle className="w-4 h-4 text-green-600" />
+              Works offline
+            </span>
           </p>
         </div>
       </section>
 
-      {/* Social Proof - Trust Signals */}
-      <section className="py-12 px-6 bg-gray-50 border-y border-gray-200">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-sm text-gray-600 mb-6 text-center">
-            Trusted by runners worldwide
-          </p>
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-blue-600">
+      {/* Social Proof - Modern Stats Cards */}
+      <section className="py-16 px-6 relative">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-100 rounded-xl mb-4">
+                <CheckCircle className="w-6 h-6 text-blue-600" />
+              </div>
+              <div className="text-4xl font-bold text-gray-900 mb-2">
                 Always Free
               </div>
-              <div className="text-sm text-gray-600 mt-1">
-                Core Tools Included
+              <div className="text-gray-600">
+                Core training tools included with no hidden costs
               </div>
             </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-blue-600">
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-green-100 rounded-xl mb-4">
+                <Zap className="w-6 h-6 text-green-600" />
+              </div>
+              <div className="text-4xl font-bold text-gray-900 mb-2">
                 No Ads
               </div>
-              <div className="text-sm text-gray-600 mt-1">Clean Experience</div>
+              <div className="text-gray-600">
+                Clean, distraction-free experience for focused training
+              </div>
             </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-blue-600">
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-orange-100 rounded-xl mb-4">
+                <TrendingUp className="w-6 h-6 text-orange-600" />
+              </div>
+              <div className="text-4xl font-bold text-gray-900 mb-2">
                 Open Source
               </div>
-              <div className="text-sm text-gray-600 mt-1">
-                Built for Runners
+              <div className="text-gray-600">
+                Transparent, community-driven, built for runners
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features - Detailed & Accurate */}
-      <section id="features" className="py-20 px-6 max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-          Everything You Need to Train Smarter
-        </h2>
-        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-          Three powerful tools designed to help self-coached runners optimize
-          training, analyze routes, and fuel for peak performance.
-        </p>
+      {/* Features - Modern SaaS Cards */}
+      <section id="features" className="py-24 px-6 max-w-7xl mx-auto relative">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-medium text-blue-700 mb-4">
+            <Zap className="w-4 h-4" />
+            Powerful Features
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent">
+            Everything You Need to Train Smarter
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Three powerful tools designed to help self-coached runners optimize
+            training, analyze routes, and fuel for peak performance.
+          </p>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-8">
           <FeatureCard
@@ -168,16 +219,19 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-20 px-6 bg-blue-50">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-            How TrainPace Works
-          </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            Simple, powerful, and designed for runners who take their training
-            seriously.
-          </p>
+      {/* How It Works - Modern Flow */}
+      <section className="py-24 px-6 bg-gradient-to-br from-blue-50 via-white to-blue-50 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-gray-100 bg-[size:20px_20px] opacity-30" />
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent">
+              How TrainPace Works
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Simple, powerful, and designed for runners who take their training
+              seriously.
+            </p>
+          </div>
 
           <div className="grid md:grid-cols-4 gap-8">
             <Step
@@ -205,16 +259,18 @@ export default function Landing() {
       </section>
 
       {/* Use Cases - Real Runner Scenarios */}
-      <section className="py-20 px-6 max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-          Built for Real Runners
-        </h2>
-        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-          Whether you're training for your first 5K or your tenth marathon,
-          TrainPace has the tools you need.
-        </p>
+      <section className="py-24 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent">
+            Built for Real Runners
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Whether you're training for your first 5K or your tenth marathon,
+            TrainPace has the tools you need.
+          </p>
+        </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-6">
           <UseCase
             emoji="🏃‍♀️"
             title="Marathon Race Prep"
@@ -243,13 +299,15 @@ export default function Landing() {
       </section>
 
       {/* Why TrainPace - Value Props */}
-      <section className="py-20 px-6 bg-gray-50">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-            Why Runners Choose TrainPace
-          </h2>
+      <section className="py-24 px-6 bg-gradient-to-br from-gray-50 via-white to-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 bg-clip-text text-transparent">
+              Why Runners Choose TrainPace
+            </h2>
+          </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <ValueProp
               icon={<CheckCircle className="w-8 h-8 text-green-600" />}
               title="Free Core Features"
@@ -284,28 +342,35 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Final CTA - Strong & Specific */}
+      {/* Final CTA - Modern Gradient */}
       <section
         id="cta"
-        className="py-24 text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white"
+        className="relative py-32 text-center overflow-hidden"
       >
-        <div className="max-w-3xl mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+        {/* Animated gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utb3BhY2l0eT0iLjA1IiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9zdmc+')] opacity-10" />
+
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm font-medium text-white mb-6">
+            <Zap className="w-4 h-4" />
+            Join thousands of runners
+          </div>
+
+          <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white">
             Ready to Level Up Your Training?
           </h2>
-          <p className="text-lg md:text-xl mb-8 text-blue-100">
-            Join thousands of runners using TrainPace to train smarter, avoid
-            injury, and achieve their goals. Get started in under 30 seconds —
-            no credit card required.
+          <p className="text-xl md:text-2xl mb-10 text-blue-100 max-w-3xl mx-auto">
+            Get started in under 30 seconds. No credit card required, no commitment — just better training.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link to={user ? "/dashboard" : "/calculator"}>
               <Button
                 size="lg"
-                className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-white/90"
+                className="text-lg px-12 py-6 bg-white text-blue-600 hover:bg-gray-50 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
               >
-                {user ? "Open Dashboard" : "Start Free Now"}
+                {user ? "Open Dashboard" : "Get Started Free"}
               </Button>
             </Link>
 
@@ -313,16 +378,27 @@ export default function Landing() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-white/90"
+                className="text-lg px-12 py-6 bg-transparent border-2 border-white text-white hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
               >
-                Analyze Elevation
+                Upload GPX
               </Button>
             </Link>
           </div>
 
-          <p className="text-sm text-blue-100 mt-6">
-            Free to start • Works on mobile & desktop • Privacy-focused
-          </p>
+          <div className="flex items-center justify-center gap-6 flex-wrap text-sm text-blue-100">
+            <span className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5" />
+              Free forever
+            </span>
+            <span className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5" />
+              No credit card
+            </span>
+            <span className="flex items-center gap-2">
+              <CheckCircle className="w-5 h-5" />
+              Privacy-focused
+            </span>
+          </div>
         </div>
       </section>
 
@@ -348,23 +424,23 @@ function FeatureCard({
   return (
     <Link
       to={link}
-      className="relative p-6 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all hover:border-blue-300 group"
+      className="relative p-8 bg-white border border-gray-200 rounded-2xl hover:shadow-2xl transition-all duration-300 hover:border-blue-300 group hover:-translate-y-1"
     >
       {badge && (
-        <div className="absolute top-4 right-4 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
+        <div className="absolute top-6 right-6 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg">
           {badge}
         </div>
       )}
-      <div className="mb-4 group-hover:scale-110 transition-transform">
+      <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300">
         {icon}
       </div>
-      <h3 className="text-xl font-semibold mb-3 group-hover:text-blue-600 transition-colors">
+      <h3 className="text-2xl font-bold mb-4 text-gray-900 group-hover:text-blue-600 transition-colors">
         {title}
       </h3>
-      <p className="text-gray-600 text-sm leading-relaxed mb-4">{desc}</p>
-      <div className="text-blue-600 text-sm font-medium flex items-center">
+      <p className="text-gray-600 leading-relaxed mb-6">{desc}</p>
+      <div className="text-blue-600 font-semibold flex items-center gap-2">
         Try it now{" "}
-        <span className="ml-1 group-hover:translate-x-1 transition-transform">
+        <span className="group-hover:translate-x-2 transition-transform duration-300">
           →
         </span>
       </div>
@@ -382,12 +458,15 @@ function Step({
   desc: string;
 }) {
   return (
-    <div className="text-center">
-      <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
-        {number}
+    <div className="text-center group">
+      <div className="relative inline-flex items-center justify-center w-16 h-16 mb-6">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl rotate-3 group-hover:rotate-6 transition-transform duration-300" />
+        <div className="relative w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center text-2xl font-bold text-white shadow-lg">
+          {number}
+        </div>
       </div>
-      <h3 className="font-semibold mb-2 text-gray-900">{title}</h3>
-      <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
+      <h3 className="font-bold text-lg mb-3 text-gray-900">{title}</h3>
+      <p className="text-gray-600 leading-relaxed">{desc}</p>
     </div>
   );
 }
@@ -404,13 +483,15 @@ function UseCase({
   icon: JSX.Element;
 }) {
   return (
-    <div className="p-6 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-      <div className="flex items-center gap-3 mb-3">
-        <div className="text-4xl">{emoji}</div>
-        <div className="p-2 bg-gray-50 rounded-lg">{icon}</div>
+    <div className="p-8 bg-white border border-gray-200 rounded-2xl hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+      <div className="flex items-center gap-4 mb-4">
+        <div className="text-5xl">{emoji}</div>
+        <div className="p-3 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl group-hover:scale-110 transition-transform duration-300">
+          {icon}
+        </div>
       </div>
-      <h3 className="text-xl font-semibold mb-3 text-gray-900">{title}</h3>
-      <p className="text-gray-600 text-sm leading-relaxed">{scenario}</p>
+      <h3 className="text-2xl font-bold mb-4 text-gray-900">{title}</h3>
+      <p className="text-gray-600 leading-relaxed">{scenario}</p>
     </div>
   );
 }
@@ -425,11 +506,15 @@ function ValueProp({
   desc: string;
 }) {
   return (
-    <div className="flex gap-4">
-      <div className="flex-shrink-0">{icon}</div>
-      <div>
-        <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
-        <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
+    <div className="p-6 bg-white rounded-2xl border border-gray-200 hover:shadow-lg transition-all duration-300 group hover:-translate-y-1">
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0 p-2 bg-gradient-to-br from-green-50 to-green-100 rounded-xl group-hover:scale-110 transition-transform duration-300">
+          {icon}
+        </div>
+        <div>
+          <h3 className="font-bold text-lg text-gray-900 mb-2">{title}</h3>
+          <p className="text-gray-600 leading-relaxed">{desc}</p>
+        </div>
       </div>
     </div>
   );
