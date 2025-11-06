@@ -344,6 +344,12 @@ export default function PreviewRoute() {
             }}
           />
           <Link
+            to={`/elevationfinder/${route.slug}`}
+            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
+          >
+            ElevationFinder
+          </Link>
+          <Link
             to="/calculator"
             className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
           >
