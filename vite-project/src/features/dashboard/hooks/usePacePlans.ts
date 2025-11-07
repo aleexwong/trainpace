@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   collection,
   query,
@@ -14,16 +14,7 @@ export function usePacePlans(userId: string | undefined) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!userId) {
-      setLoading(false);
-      return;
-    }
-
-    loadPacePlans();
-  }, [userId]);
-
-  const loadPacePlans = async () => {
+  const loadPacePlans = useCallback(async () => {
     if (!userId) return;
 
     try {
@@ -60,7 +51,16 @@ export function usePacePlans(userId: string | undefined) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) {
+      setLoading(false);
+      return;
+    }
+
+    loadPacePlans();
+  }, [userId, loadPacePlans]);
 
   const removePacePlan = (planId: string) => {
     setPacePlans((prev) => prev.filter((p) => p.id !== planId));

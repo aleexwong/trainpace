@@ -265,6 +265,7 @@ export function PaceCalculatorV2() {
             <button
               onClick={() => setShowInfo(!showInfo)}
               className="p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all"
+              aria-label={showInfo ? "Hide information" : "Show information"}
             >
               <Info className="h-6 w-6 text-blue-600" />
             </button>
