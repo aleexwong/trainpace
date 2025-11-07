@@ -14,7 +14,6 @@
     "test-gemini": "vite-node scripts/testGemini.ts"
   },
   "dependencies": {
-    "@amplitude/analytics-browser": "^2.17.6",
     "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-dialog": "^1.1.2",

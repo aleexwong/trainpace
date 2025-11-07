@@ -4,7 +4,6 @@ import { HelmetProvider } from "react-helmet-async";
 import { Routes, Route } from "react-router-dom";
 import { Button } from "./components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
-import { initAmplitude } from "@/lib/amplitude";
 import ScrollToTop from "./lib/ScrollToTop";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
 import TrainingPaceCalculator from "./pages/TrainingPaceCalculator";
@@ -28,8 +27,6 @@ import DashboardV2 from "./pages/DashboardV2";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
-  initAmplitude();
-  // Initialize Amplitude Analytics
   return (
     <>
       <ScrollToTop />
