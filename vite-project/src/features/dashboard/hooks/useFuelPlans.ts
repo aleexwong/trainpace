@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   collection,
   query,
@@ -14,16 +14,7 @@ export function useFuelPlans(userId: string | undefined) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!userId) {
-      setLoading(false);
-      return;
-    }
-
-    loadFuelPlans();
-  }, [userId]);
-
-  const loadFuelPlans = async () => {
+  const loadFuelPlans = useCallback(async () => {
     if (!userId) return;
 
     try {
@@ -47,7 +38,16 @@ export function useFuelPlans(userId: string | undefined) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) {
+      setLoading(false);
+      return;
+    }
+
+    loadFuelPlans();
+  }, [userId, loadFuelPlans]);
 
   const removeFuelPlan = (planId: string) => {
     setFuelPlans((prev) => prev.filter((p) => p.id !== planId));

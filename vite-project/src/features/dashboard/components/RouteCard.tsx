@@ -91,6 +91,7 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
               onClick={() => setDeleteConfirm(true)}
               className="text-gray-400 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
               title={isBookmarked ? "Remove bookmark" : "Delete route"}
+              aria-label={isBookmarked ? "Remove bookmark" : "Delete route"}
             >
               <Trash2 className="w-4 h-4" />
             </button>
