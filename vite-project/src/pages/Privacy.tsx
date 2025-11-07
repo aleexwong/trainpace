@@ -52,7 +52,7 @@ export default function Privacy() {
               <li><strong>Device information</strong> - Browser type, operating system, device type</li>
               <li><strong>Usage analytics</strong> - Pages visited, features used, time spent on the Service</li>
               <li><strong>IP address</strong> - For security and analytics purposes</li>
-              <li><strong>Cookies and tracking technologies</strong> - For analytics via Google Analytics and Amplitude</li>
+              <li><strong>Cookies and tracking technologies</strong> - For analytics via Google Analytics</li>
             </ul>
 
             <h3 className="text-xl font-semibold mb-3 mt-6">GPX Files and Route Data</h3>
@@ -106,13 +106,6 @@ export default function Privacy() {
                 <h3 className="text-lg font-semibold mb-2">Google Analytics</h3>
                 <p className="text-gray-700 leading-relaxed">
                   We use Google Analytics to understand how users interact with TrainPace. Google Analytics may collect cookies and usage data. You can opt out using the Google Analytics Opt-out Browser Add-on.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Amplitude</h3>
-                <p className="text-gray-700 leading-relaxed">
-                  We use Amplitude for product analytics to improve features and user experience.
                 </p>
               </div>
 
