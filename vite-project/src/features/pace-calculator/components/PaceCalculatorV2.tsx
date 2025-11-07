@@ -129,7 +129,7 @@ export function PaceCalculatorV2() {
           label: `${inputs.distance}${inputs.units}`,
         });
       }
-    } catch (error) {
+    } catch (_error) {
       toast({
         title: "Calculation Error",
         description: "An error occurred while calculating paces.",

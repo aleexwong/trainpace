@@ -195,7 +195,7 @@ export default function GpxUploader({
       const hasWaypoint = doc.querySelector("wpt");
 
       return !!(hasTrack || hasRoute || hasWaypoint);
-    } catch (error) {
+    } catch (_error) {
       return false;
     }
   };

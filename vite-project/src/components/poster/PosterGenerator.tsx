@@ -372,7 +372,7 @@ export default function PosterGenerator({
       } else {
         throw new Error("No Mapbox token");
       }
-    } catch (error) {
+    } catch (_error) {
       addDebugInfo(`❌ Map tiles failed, using fallback`);
 
       // Fallback: draw simple background
