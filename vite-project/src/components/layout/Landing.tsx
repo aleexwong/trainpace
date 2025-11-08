@@ -35,7 +35,7 @@ export default function Landing() {
       <StructuredData
         type="SoftwareApplication"
         name="TrainPace - Running Training Calculator"
-        description="Free running training tools with science-backed pace zones, GPX elevation analysis, and race fuel planning. Perfect for self-coached runners."
+        description="Free running training tools with science-backed pace zones, GPX elevation analysis, and ai race fuel planning. Perfect for self-coached runners."
         applicationCategory="HealthApplication"
         offers={{ price: "0", priceCurrency: "USD" }}
       />
