@@ -8,3 +8,9 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+interface Window {
+  posthog?: {
+    capture: (eventName: string, properties?: Record<string, unknown>) => void;
+  };
+}
