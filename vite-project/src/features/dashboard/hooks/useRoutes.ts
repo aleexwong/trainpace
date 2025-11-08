@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   collection,
   query,
@@ -14,16 +14,7 @@ export function useRoutes(userId: string | undefined) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!userId) {
-      setLoading(false);
-      return;
-    }
-
-    loadRoutes();
-  }, [userId]);
-
-  const loadRoutes = async () => {
+  const loadRoutes = useCallback(async () => {
     if (!userId) return;
 
     try {
@@ -106,7 +97,16 @@ export function useRoutes(userId: string | undefined) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) {
+      setLoading(false);
+      return;
+    }
+
+    loadRoutes();
+  }, [userId, loadRoutes]);
 
   const removeRoute = (routeId: string) => {
     setRoutes((prev) => prev.filter((route) => route.id !== routeId));
