@@ -16,6 +16,7 @@ import trainPaceHeroImage from "@/assets/trainPaceHeroImage.png";
 import trainPaceHeroMobile from "@/assets/trainPaceHeroMobile.png";
 import MiniFAQ from "@/components/faq/MiniFAQ";
 import StructuredData from "@/components/seo/StructuredData";
+import SocialProofMarquee from "@/components/layout/SocialProofMarquee";
 
 export default function Landing() {
   const [user, setUser] = useState<User | null>(null);
@@ -101,6 +102,9 @@ export default function Landing() {
           </p>
         </div>
       </section>
+
+      {/* Scrolling Social Proof Marquee */}
+      <SocialProofMarquee />
 
       {/* Social Proof - Trust Signals */}
       <section className="py-12 px-6 bg-gray-50 border-y border-gray-200">
