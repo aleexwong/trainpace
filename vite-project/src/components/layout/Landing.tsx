@@ -298,9 +298,9 @@ export default function Landing() {
             Ready to Level Up Your Training?
           </h2>
           <p className="text-lg md:text-xl mb-8 text-blue-100">
-            Join thousands of runners using TrainPace to train smarter, avoid
-            injury, and achieve their goals. Get started in under 30 seconds —
-            no credit card required.
+            Join a growing community of runners using TrainPace to train
+            smarter, avoid injury, and achieve their goals. Get started in under
+            30 seconds — no credit card required.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

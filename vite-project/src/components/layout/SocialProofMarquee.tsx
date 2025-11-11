@@ -1,46 +1,30 @@
 import { Marquee, MarqueeItem } from "@/components/ui/marquee";
-import { Star, MapPin, Trophy, Target, Zap, Heart } from "lucide-react";
+import { MapPin, Target, Flame, Calculator } from "lucide-react";
+import marathonData from "@/data/marathon-data.json";
 
-const testimonials = [
+// Real marathon routes available in the app
+const marathonRoutes = Object.entries(marathonData).map(([slug, route]) => ({
+  name: route.name,
+  slug: slug,
+}));
+
+// Real features of the app
+const features = [
   {
-    text: "Perfect for self-coached runners!",
-    icon: Star,
-  },
-  {
-    text: "Boston Marathon Ready",
-    icon: Trophy,
-  },
-  {
-    text: "Science-backed training zones",
+    text: "Science-Backed Training Zones",
     icon: Target,
   },
   {
-    text: "NYC Marathon Route Analyzed",
+    text: "GPX Elevation Analysis",
     icon: MapPin,
   },
   {
-    text: "Saved me from bonking!",
-    icon: Heart,
+    text: "AI Race Fuel Planning",
+    icon: Flame,
   },
   {
-    text: "Chicago Marathon Fueling",
-    icon: Zap,
-  },
-  {
-    text: "Finally nailed my tempo pace",
-    icon: Target,
-  },
-  {
-    text: "Berlin Marathon Elevation",
-    icon: MapPin,
-  },
-  {
-    text: "Game changer for race prep",
-    icon: Star,
-  },
-  {
-    text: "London Marathon Profile",
-    icon: Trophy,
+    text: "Pace Calculator & Predictions",
+    icon: Calculator,
   },
 ];
 
@@ -48,11 +32,11 @@ export default function SocialProofMarquee() {
   return (
     <section className="py-8 bg-gradient-to-r from-blue-50 via-white to-blue-50 border-y border-gray-100 overflow-hidden">
       <div className="relative">
-        {/* Top marquee - moving right */}
+        {/* Top marquee - Features */}
         <Marquee pauseOnHover speed="slow" className="[--duration:40s]">
-          {testimonials.slice(0, 5).map((item, idx) => (
+          {features.map((item, idx) => (
             <MarqueeItem key={idx}>
-              <div className="mx-4 flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+              <div className="mx-4 flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-sm border border-blue-200 hover:shadow-md transition-shadow">
                 <item.icon className="w-4 h-4 text-blue-600 flex-shrink-0" />
                 <span className="text-sm font-medium text-gray-700">
                   {item.text}
@@ -62,19 +46,19 @@ export default function SocialProofMarquee() {
           ))}
         </Marquee>
 
-        {/* Bottom marquee - moving left */}
+        {/* Bottom marquee - Real marathon routes available */}
         <Marquee
           pauseOnHover
           reverse
           speed="slow"
-          className="[--duration:40s] mt-4"
+          className="[--duration:45s] mt-4"
         >
-          {testimonials.slice(5).map((item, idx) => (
+          {marathonRoutes.map((route, idx) => (
             <MarqueeItem key={idx}>
-              <div className="mx-4 flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-                <item.icon className="w-4 h-4 text-blue-600 flex-shrink-0" />
+              <div className="mx-4 flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-sm border border-green-200 hover:shadow-md transition-shadow">
+                <MapPin className="w-4 h-4 text-green-600 flex-shrink-0" />
                 <span className="text-sm font-medium text-gray-700">
-                  {item.text}
+                  {route.name}
                 </span>
               </div>
             </MarqueeItem>
