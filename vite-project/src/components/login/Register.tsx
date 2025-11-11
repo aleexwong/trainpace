@@ -27,6 +27,26 @@ const registerSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+// Helper to get friendly error messages
+const getAuthErrorMessage = (code: string): string => {
+  switch (code) {
+    case "auth/email-already-in-use":
+      return "This email is already registered. Try logging in instead.";
+    case "auth/invalid-email":
+      return "Please enter a valid email address.";
+    case "auth/operation-not-allowed":
+      return "Email/password accounts are not enabled. Contact support.";
+    case "auth/weak-password":
+      return "Password is too weak. Use at least 6 characters.";
+    case "auth/network-request-failed":
+      return "Network error. Check your connection and try again.";
+    case "auth/too-many-requests":
+      return "Too many attempts. Please try again later.";
+    default:
+      return "Registration failed. Please try again.";
+  }
+};
+
 export default function Register() {
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -58,7 +78,7 @@ export default function Register() {
       toast({
         title: "account created 🎉",
         description: `welcome, ${name}! you're all set.`,
-        variant: "default", // or 'success' if you define one
+        variant: "default",
       });
 
       // Handle redirect after registration
@@ -75,10 +95,15 @@ export default function Register() {
         }
       }, 1500);
     } catch (err: any) {
-      console.error(err);
+      console.error("Registration error:", err);
+      
+      const errorMessage = err.code 
+        ? getAuthErrorMessage(err.code)
+        : "Something went wrong. Please try again.";
+
       toast({
         title: "registration failed",
-        description: err.message || "something went wrong.",
+        description: errorMessage,
         variant: "destructive",
       });
     }
