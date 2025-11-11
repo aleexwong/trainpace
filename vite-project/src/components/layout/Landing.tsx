@@ -41,7 +41,7 @@ export default function Landing() {
         offers={{ price: "0", priceCurrency: "USD" }}
       />
       {/* Hero Section - Upgraded */}
-      <section className="relative px-0 pt-0 pb-24 text-center">
+      <section className="relative px-0 pt-0 pb-20 text-center">
         {/* Mobile image */}
         <img
           src={trainPaceHeroMobile}
@@ -86,7 +86,7 @@ export default function Landing() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to={user ? "/dashboard" : "/calculator"}>
               <Button size="lg" className="text-lg px-8 py-4">
-                {user ? "Go to Dashboard" : "Try Free Calculator"}
+                {user ? "Go to Dashboard" : "Get Started Free"}
               </Button>
             </Link>
 
@@ -105,39 +105,6 @@ export default function Landing() {
 
       {/* Scrolling Social Proof Marquee */}
       <SocialProofMarquee />
-
-      {/* Social Proof - Trust Signals */}
-      <section className="py-12 px-6 bg-gray-50 border-y border-gray-200">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-sm text-gray-600 mb-6 text-center">
-            Trusted by runners worldwide
-          </p>
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-blue-600">
-                Always Free
-              </div>
-              <div className="text-sm text-gray-600 mt-1">
-                Core Tools Included
-              </div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-blue-600">
-                No Ads
-              </div>
-              <div className="text-sm text-gray-600 mt-1">Clean Experience</div>
-            </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-blue-600">
-                Open Source
-              </div>
-              <div className="text-sm text-gray-600 mt-1">
-                Built for Runners
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Features - Detailed & Accurate */}
       <section id="features" className="py-20 px-6 max-w-6xl mx-auto">
@@ -162,12 +129,14 @@ export default function Landing() {
             title="ElevationFinder"
             desc="Upload GPX files to analyze elevation profiles with interactive Mapbox maps. See grade percentages, total gain/loss, and terrain difficulty. Share routes, bookmark marathons, manage everything in your Dashboard."
             link="/elevationfinder"
+            badge="Power Users"
           />
           <FeatureCard
-            icon={<Flame className="w-12 h-12 text-orange-500" />}
+            icon={<Flame className="w-12 h-12 text-orange-600" />}
             title="Race Fuel Planner"
             desc="Calculate carbs per hour, total nutrition needs, and recommended gel count based on distance, time, and body weight. Export your plan for race day. Never bonk again."
             link="/fuel"
+            badge="Essential"
           />
         </div>
       </section>
@@ -223,13 +192,13 @@ export default function Landing() {
             emoji="🏃‍♀️"
             title="Marathon Race Prep"
             scenario="Download the Boston Marathon GPX from the official website. Upload to ElevationFinder to see every hill. Use Fuel Planner to calculate exactly how many gels to carry. Set training paces based on your qualifying time."
-            icon={<TrendingUp className="w-6 h-6 text-blue-600" />}
+            icon={<TrendingUp className="w-6 h-6 text-purple-600" />}
           />
           <UseCase
             emoji="⚡"
             title="First 10K Training"
             scenario="Enter your 5K time into the Pace Calculator. Get your Easy and Tempo zones instantly. Train at the right intensity to avoid injury and burnout. No guesswork, just science-backed paces."
-            icon={<Zap className="w-6 h-6 text-orange-600" />}
+            icon={<Zap className="w-6 h-6 text-blue-600" />}
           />
           <UseCase
             emoji="🗺️"
@@ -241,7 +210,7 @@ export default function Landing() {
             emoji="💪"
             title="Self-Coached Athlete"
             scenario="Calculate training paces from your recent race. Plan fueling strategy for your next event. Track all your routes in one dashboard. No expensive coaching needed — train smart on your own."
-            icon={<Timer className="w-6 h-6 text-purple-600" />}
+            icon={<Timer className="w-6 h-6 text-blue-600" />}
           />
         </div>
       </section>
@@ -291,7 +260,7 @@ export default function Landing() {
       {/* Final CTA - Strong & Specific */}
       <section
         id="cta"
-        className="py-24 text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white"
+        className="py-20 text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white"
       >
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -309,7 +278,7 @@ export default function Landing() {
                 size="lg"
                 className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-white/90"
               >
-                {user ? "Open Dashboard" : "Start Free Now"}
+                {user ? "Go to Dashboard" : "Get Started Free"}
               </Button>
             </Link>
 
