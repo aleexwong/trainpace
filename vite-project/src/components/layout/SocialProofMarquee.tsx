@@ -1,6 +1,7 @@
 import { Marquee, MarqueeItem } from "@/components/ui/marquee";
 import { MapPin, Target, Flame, Calculator } from "lucide-react";
 import marathonData from "@/data/marathon-data.json";
+import { Link } from "react-router-dom";
 
 // Real marathon routes available in the app
 const marathonRoutes = Object.entries(marathonData).map(([slug, route]) => ({
@@ -55,12 +56,14 @@ export default function SocialProofMarquee() {
         >
           {marathonRoutes.map((route, idx) => (
             <MarqueeItem key={idx}>
-              <div className="mx-4 flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-sm border border-green-200 hover:shadow-md transition-shadow">
-                <MapPin className="w-4 h-4 text-green-600 flex-shrink-0" />
-                <span className="text-sm font-medium text-gray-700">
-                  {route.name}
-                </span>
-              </div>
+              <Link to={`/preview-route/${route.slug}`}>
+                <div className="mx-4 flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-sm border border-green-200 hover:shadow-md hover:border-green-300 transition-all cursor-pointer">
+                  <MapPin className="w-4 h-4 text-green-600 flex-shrink-0" />
+                  <span className="text-sm font-medium text-gray-700">
+                    {route.name}
+                  </span>
+                </div>
+              </Link>
             </MarqueeItem>
           ))}
         </Marquee>
