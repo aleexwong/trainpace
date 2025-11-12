@@ -5,7 +5,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ShoppingCart, Info } from "lucide-react";
-import { GEL_BRANDS, type GelBrand } from "../types";
+import { GEL_BRANDS } from "../types";
 import { useState } from "react";
 
 interface BrandRecommendationsProps {
