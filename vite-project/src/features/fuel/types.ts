@@ -94,3 +94,79 @@ export const GELS_PER_HOUR = 1.5;
 export const MAX_GELS = 7;
 export const MIN_10K_TIME_FOR_GEL = 0.75; // 45 minutes in hours
 export const AI_COOLDOWN_SECONDS = 30;
+
+// Brand recommendations
+export interface GelBrand {
+  name: string;
+  carbsPerGel: number;
+  pricePerGel: number;
+  flavors: string[];
+  caffeine?: boolean;
+  description: string;
+}
+
+export const GEL_BRANDS: GelBrand[] = [
+  {
+    name: "Maurten",
+    carbsPerGel: 25,
+    pricePerGel: 3.50,
+    flavors: ["Original"],
+    description: "Hydrogel technology, stomach-friendly",
+  },
+  {
+    name: "GU Energy",
+    carbsPerGel: 22,
+    pricePerGel: 1.50,
+    flavors: ["Vanilla", "Chocolate", "Salted Caramel", "Strawberry Banana"],
+    caffeine: true,
+    description: "Most popular, wide variety of flavors",
+  },
+  {
+    name: "SiS (Science in Sport)",
+    carbsPerGel: 22,
+    pricePerGel: 1.75,
+    flavors: ["Apple", "Orange", "Lemon & Lime"],
+    description: "Light texture, easy to digest",
+  },
+  {
+    name: "Huma",
+    carbsPerGel: 21,
+    pricePerGel: 2.25,
+    flavors: ["Strawberry", "Chocolate", "Apple Cinnamon"],
+    description: "Made with real fruit, all-natural",
+  },
+  {
+    name: "Spring Energy",
+    carbsPerGel: 22,
+    pricePerGel: 2.50,
+    flavors: ["Canaberry", "Awesome Sauce"],
+    description: "Real food ingredients, unique flavors",
+  },
+];
+
+// Aid station mapper
+export interface AidStation {
+  id: string;
+  distance: number; // in km or miles
+  x: number; // percentage position on map
+  y: number; // percentage position on map
+  gelIntake?: boolean;
+  waterAvailable?: boolean;
+  notes?: string;
+}
+
+export interface CourseMap {
+  imageUrl: string;
+  aidStations: AidStation[];
+  distanceUnit: "km" | "miles";
+  totalDistance: number;
+}
+
+// Practice schedule
+export interface PracticeSchedule {
+  weekNumber: number;
+  runType: string;
+  distance: number;
+  distanceUnit: "km" | "miles";
+  fuelPlanToTest: string;
+}

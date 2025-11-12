@@ -28,6 +28,9 @@ import {
   getFuelPlanPrompt,
   type FuelPlanContext,
 } from "@/services/gemini";
+import { BrandRecommendations } from "@/features/fuel/components/BrandRecommendations";
+import { AidStationMapper } from "@/features/fuel/components/AidStationMapper";
+import { PracticeSchedule } from "@/features/fuel/components/PracticeSchedule";
 
 const raceSettings = {
   "10K": 30,
@@ -797,6 +800,24 @@ const FuelPlannerV2 = () => {
                   </div>
                 </CardContent>
               </Card>
+            )}
+
+            {/* Brand Recommendations */}
+            {result && (
+              <BrandRecommendations gelsNeeded={result.gelsNeeded} />
+            )}
+
+            {/* Aid Station Mapper */}
+            {result && (
+              <AidStationMapper gelsNeeded={result.gelsNeeded} />
+            )}
+
+            {/* Practice Schedule */}
+            {result && (
+              <PracticeSchedule
+                raceType={raceType}
+                gelsNeeded={result.gelsNeeded}
+              />
             )}
 
             {/* 2. AI Personalization (only appears after plan is shown) */}
