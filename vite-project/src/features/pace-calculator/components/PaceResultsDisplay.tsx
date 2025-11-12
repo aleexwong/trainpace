@@ -13,7 +13,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { PaceResults, PaceUnit } from "../types";
-import { calculateElevationAdjustment } from "../utils";
+import { adjustPaceForTerrain } from "../utils";
 
 interface PaceResultsDisplayProps {
   results: PaceResults;
@@ -63,13 +63,6 @@ export function PaceResultsDisplay({
   const handleTerrainToggle = () => {
     setTerrainMode((prev) => (prev === "flat" ? "hilly" : "flat"));
   };
-
-  // Calculate elevation adjustment dynamically
-  const elevationAdjustment = calculateElevationAdjustment(
-    results.easy,
-    terrainMode,
-    paceType
-  );
 
   return (
     <Card className="bg-white shadow-lg">
@@ -184,6 +177,11 @@ export function PaceResultsDisplay({
         <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-blue-50 rounded-xl">
           <p className="text-xs sm:text-sm text-blue-800">
             <strong>Race:</strong> {raceDistance} in {raceTime}
+            {terrainMode === "hilly" && (
+              <span className="ml-2 px-2 py-0.5 bg-orange-200 text-orange-800 rounded text-xs font-semibold">
+                ⛰️ Hilly Terrain (+30s/{paceType.toLowerCase() === "km" ? "km" : "mi"})
+              </span>
+            )}
           </p>
         </div>
 
@@ -193,10 +191,16 @@ export function PaceResultsDisplay({
             .filter(([key]) => key !== "heartRateZones" && key !== "adjustments")
             .map(([key, value]) => {
               const displayName = key === "xlong" ? "Long Run" : key;
+              const adjustedValue = adjustPaceForTerrain(value as string, terrainMode, paceType);
+
               return (
                 <div
                   key={key}
-                  className="flex md:block items-center justify-between p-3 md:p-5 bg-gradient-to-r md:bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg md:rounded-xl border border-blue-100 hover:border-blue-200 md:hover:shadow-md transition-all"
+                  className={`flex md:block items-center justify-between p-3 md:p-5 rounded-lg md:rounded-xl border transition-all ${
+                    terrainMode === "hilly"
+                      ? "bg-gradient-to-r md:bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-100 hover:border-orange-200 md:hover:shadow-md"
+                      : "bg-gradient-to-r md:bg-gradient-to-br from-blue-50 to-purple-50 border-blue-100 hover:border-blue-200 md:hover:shadow-md"
+                  }`}
                 >
                   <div className="flex-1 md:flex-none min-w-0 md:min-w-full">
                     <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 capitalize truncate md:whitespace-normal md:mb-2">
@@ -206,8 +210,10 @@ export function PaceResultsDisplay({
                       {PACE_DESCRIPTIONS[key]}
                     </p>
                   </div>
-                  <div className="text-base sm:text-lg md:text-2xl font-bold text-blue-700 ml-3 md:ml-0 whitespace-nowrap">
-                    {value as string}
+                  <div className={`text-base sm:text-lg md:text-2xl font-bold ml-3 md:ml-0 whitespace-nowrap ${
+                    terrainMode === "hilly" ? "text-orange-700" : "text-blue-700"
+                  }`}>
+                    {adjustedValue}
                   </div>
                 </div>
               );
@@ -263,29 +269,8 @@ export function PaceResultsDisplay({
         )}
 
         {/* Pace Adjustments Section */}
-        <div className="mt-6 space-y-3">
-          {/* Terrain Adjustment - Always shown based on toggle */}
-          {terrainMode === "hilly" && elevationAdjustment && (
-            <div className="p-4 bg-orange-50 border border-orange-200 rounded-xl">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                ⛰️ Elevation Adjustment
-              </h3>
-              <p className="text-sm text-gray-700">
-                {elevationAdjustment.message}
-              </p>
-              {elevationAdjustment.adjustedEasyPace && (
-                <div className="mt-2 p-2 bg-white rounded-lg">
-                  <p className="text-xs text-gray-600">Adjusted Easy Pace:</p>
-                  <p className="text-base font-semibold text-orange-700">
-                    {elevationAdjustment.adjustedEasyPace}
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Weather Adjustment */}
-          {results.adjustments?.weather && (
+        {results.adjustments?.weather && (
+          <div className="mt-6">
             <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
               <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
                 🌡️ Weather Adjustment
@@ -302,15 +287,16 @@ export function PaceResultsDisplay({
                 </div>
               )}
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Info Box */}
         <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
           <p className="text-xs sm:text-sm text-yellow-800">
             💡 <strong>Training Tip:</strong> These paces are guidelines based
-            on your race performance. Adjust based on how you feel, weather
-            conditions, and terrain. Toggle between min/km and min/mile above!
+            on your race performance. Use the toggles above to switch between pace units
+            (min/km or min/mi) and terrain types (flat or hilly). Hilly terrain adds ~30s
+            per mile to all paces.
           </p>
         </div>
       </CardContent>

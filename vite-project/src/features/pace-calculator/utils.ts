@@ -223,6 +223,37 @@ export function calculateHeartRateZones(age: number): HeartRateZones {
 }
 
 /**
+ * Adjust any pace string by adding seconds for hilly terrain
+ * Works with pace ranges like "9:00-9:30 min/mi"
+ */
+export function adjustPaceForTerrain(
+  paceString: string,
+  terrain: "flat" | "hilly",
+  paceUnit: PaceUnit
+): string {
+  if (terrain === "flat") {
+    return paceString;
+  }
+
+  // Parse the pace range (e.g., "9:00-9:30 min/mi")
+  const paceMatch = paceString.match(/(\d+):(\d+)-(\d+):(\d+)(.+)/);
+  if (!paceMatch) {
+    return paceString; // Return original if can't parse
+  }
+
+  const [, minMin, minSec, maxMin, maxSec, suffix] = paceMatch;
+  const minPaceSeconds = parseInt(minMin) * 60 + parseInt(minSec);
+  const maxPaceSeconds = parseInt(maxMin) * 60 + parseInt(maxSec);
+
+  // Add 30 seconds per mile (or ~19 seconds per km) for hilly terrain
+  const adjustmentSeconds = paceUnit.toLowerCase() === "miles" ? 30 : 19;
+  const adjustedMin = minPaceSeconds + adjustmentSeconds;
+  const adjustedMax = maxPaceSeconds + adjustmentSeconds;
+
+  return `${secondsToTimeString(adjustedMin)}-${secondsToTimeString(adjustedMax)}${suffix}`;
+}
+
+/**
  * Calculate elevation adjustments for pace
  * Adds approximately 30 seconds per mile on hilly terrain for easy pace
  */
