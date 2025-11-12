@@ -96,7 +96,6 @@ export function calculateTrainingPaces(
   paceType: PaceUnit,
   options?: {
     age?: number;
-    elevation?: "flat" | "hilly";
     temperature?: number;
   }
 ): PaceResults {
@@ -146,16 +145,8 @@ export function calculateTrainingPaces(
     results.heartRateZones = calculateHeartRateZones(options.age);
   }
 
-  // Add pace adjustments if elevation or temperature is provided
+  // Add pace adjustments if temperature is provided
   const adjustments: PaceAdjustments = {};
-
-  if (options?.elevation) {
-    adjustments.elevation = calculateElevationAdjustment(
-      results.easy,
-      options.elevation,
-      paceType
-    );
-  }
 
   if (options?.temperature !== undefined && options.temperature > 0) {
     adjustments.weather = calculateWeatherAdjustment(

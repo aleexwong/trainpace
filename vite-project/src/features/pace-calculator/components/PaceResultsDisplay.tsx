@@ -3,9 +3,17 @@
  * Shows calculated training paces in a clean card layout
  */
 
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Copy, Download, Save } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { PaceResults, PaceUnit } from "../types";
+import { calculateElevationAdjustment } from "../utils";
 
 interface PaceResultsDisplayProps {
   results: PaceResults;
@@ -46,10 +54,22 @@ export function PaceResultsDisplay({
   isSaved = false,
 }: PaceResultsDisplayProps) {
   const isPaceKm = paceType === "km";
+  const [terrainMode, setTerrainMode] = useState<"flat" | "hilly">("flat");
 
   const handlePaceToggle = () => {
     onPaceTypeChange(isPaceKm ? "Miles" : "km");
   };
+
+  const handleTerrainToggle = () => {
+    setTerrainMode((prev) => (prev === "flat" ? "hilly" : "flat"));
+  };
+
+  // Calculate elevation adjustment dynamically
+  const elevationAdjustment = calculateElevationAdjustment(
+    results.easy,
+    terrainMode,
+    paceType
+  );
 
   return (
     <Card className="bg-white shadow-lg">
@@ -84,6 +104,35 @@ export function PaceResultsDisplay({
                   }`}
                 >
                   min/mi
+                </div>
+              </div>
+            </div>
+
+            {/* Terrain Toggle */}
+            <div
+              className="relative w-32 sm:w-36 h-9 sm:h-10 bg-orange-100 rounded-full cursor-pointer overflow-hidden"
+              onClick={handleTerrainToggle}
+              title="Toggle terrain adjustment"
+            >
+              <div
+                className={`absolute top-0.5 sm:top-1 left-0.5 sm:left-1 w-[calc(50%-0.25rem)] h-8 sm:h-8 bg-orange-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
+                  terrainMode === "hilly" ? "translate-x-full" : "translate-x-0"
+                }`}
+              />
+              <div className="absolute inset-0 flex items-center">
+                <div
+                  className={`w-1/2 text-center text-xs font-medium transition-colors ${
+                    terrainMode === "flat" ? "text-white" : "text-orange-700"
+                  }`}
+                >
+                  Flat
+                </div>
+                <div
+                  className={`w-1/2 text-center text-xs font-medium transition-colors ${
+                    terrainMode === "hilly" ? "text-white" : "text-orange-700"
+                  }`}
+                >
+                  Hilly
                 </div>
               </div>
             </div>
@@ -173,6 +222,16 @@ export function PaceResultsDisplay({
               <span className="text-sm font-normal text-gray-600">
                 (Max HR: {results.heartRateZones.maxHR} bpm)
               </span>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="text-gray-400 cursor-help text-base">ⓘ</span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Calculated using the formula: Max HR = 220 - age</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="p-3 bg-white rounded-lg">
@@ -204,47 +263,47 @@ export function PaceResultsDisplay({
         )}
 
         {/* Pace Adjustments Section */}
-        {results.adjustments && (
-          <div className="mt-6 space-y-3">
-            {results.adjustments.elevation && (
-              <div className="p-4 bg-orange-50 border border-orange-200 rounded-xl">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                  ⛰️ Elevation Adjustment
-                </h3>
-                <p className="text-sm text-gray-700">
-                  {results.adjustments.elevation.message}
-                </p>
-                {results.adjustments.elevation.adjustedEasyPace && (
-                  <div className="mt-2 p-2 bg-white rounded-lg">
-                    <p className="text-xs text-gray-600">Adjusted Easy Pace:</p>
-                    <p className="text-base font-semibold text-orange-700">
-                      {results.adjustments.elevation.adjustedEasyPace}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
+        <div className="mt-6 space-y-3">
+          {/* Terrain Adjustment - Always shown based on toggle */}
+          {terrainMode === "hilly" && elevationAdjustment && (
+            <div className="p-4 bg-orange-50 border border-orange-200 rounded-xl">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                ⛰️ Elevation Adjustment
+              </h3>
+              <p className="text-sm text-gray-700">
+                {elevationAdjustment.message}
+              </p>
+              {elevationAdjustment.adjustedEasyPace && (
+                <div className="mt-2 p-2 bg-white rounded-lg">
+                  <p className="text-xs text-gray-600">Adjusted Easy Pace:</p>
+                  <p className="text-base font-semibold text-orange-700">
+                    {elevationAdjustment.adjustedEasyPace}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
-            {results.adjustments.weather && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                  🌡️ Weather Adjustment
-                </h3>
-                <p className="text-sm text-gray-700">
-                  {results.adjustments.weather.message}
-                </p>
-                {results.adjustments.weather.adjustedEasyPace && (
-                  <div className="mt-2 p-2 bg-white rounded-lg">
-                    <p className="text-xs text-gray-600">Adjusted Easy Pace:</p>
-                    <p className="text-base font-semibold text-red-700">
-                      {results.adjustments.weather.adjustedEasyPace}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+          {/* Weather Adjustment */}
+          {results.adjustments?.weather && (
+            <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                🌡️ Weather Adjustment
+              </h3>
+              <p className="text-sm text-gray-700">
+                {results.adjustments.weather.message}
+              </p>
+              {results.adjustments.weather.adjustedEasyPace && (
+                <div className="mt-2 p-2 bg-white rounded-lg">
+                  <p className="text-xs text-gray-600">Adjusted Easy Pace:</p>
+                  <p className="text-base font-semibold text-red-700">
+                    {results.adjustments.weather.adjustedEasyPace}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Info Box */}
         <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-yellow-50 border border-yellow-200 rounded-lg">

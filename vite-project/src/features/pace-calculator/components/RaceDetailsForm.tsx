@@ -217,7 +217,7 @@ export function RaceDetailsForm({
             </span>
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Age Input for Heart Rate Zones */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -244,32 +244,6 @@ export function RaceDetailsForm({
                 onChange={onInputChange}
                 className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
-            </div>
-
-            {/* Elevation Selection */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Terrain{" "}
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <span className="text-gray-400 cursor-help">ⓘ</span>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Adjusts pace for elevation</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </label>
-              <select
-                name="elevation"
-                value={inputs.elevation || "flat"}
-                onChange={onInputChange}
-                className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="flat">Flat</option>
-                <option value="hilly">Hilly</option>
-              </select>
             </div>
 
             {/* Temperature Input for Weather Adjustments */}

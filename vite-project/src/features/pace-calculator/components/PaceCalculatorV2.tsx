@@ -26,7 +26,6 @@ const initialFormState: PaceInputs = {
   seconds: "",
   paceType: "km",
   age: "",
-  elevation: "flat",
   temperature: "",
 };
 

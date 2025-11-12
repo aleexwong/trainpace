@@ -21,7 +21,7 @@ export function usePaceCalculation(
   inputs: PaceInputs
 ): UsePaceCalculationReturn {
   return useMemo(() => {
-    const { distance, units, hours, minutes, seconds, paceType, age, elevation, temperature } = inputs;
+    const { distance, units, hours, minutes, seconds, paceType, age, temperature } = inputs;
 
     // Validate inputs
     const validation = validatePaceInputs(distance, hours, minutes, seconds);
@@ -40,16 +40,11 @@ export function usePaceCalculation(
     // Prepare optional parameters
     const options: {
       age?: number;
-      elevation?: "flat" | "hilly";
       temperature?: number;
     } = {};
 
     if (age && parseInt(age) > 0) {
       options.age = parseInt(age);
-    }
-
-    if (elevation) {
-      options.elevation = elevation;
     }
 
     if (temperature && parseFloat(temperature) > 0) {
