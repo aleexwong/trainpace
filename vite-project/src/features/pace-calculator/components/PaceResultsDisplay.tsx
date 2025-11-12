@@ -21,7 +21,7 @@ interface PaceResultsDisplayProps {
   isSaved?: boolean;
 }
 
-const PACE_DESCRIPTIONS: Record<keyof PaceResults, string> = {
+const PACE_DESCRIPTIONS: Record<string, string> = {
   race: "Your target race pace",
   easy: "Easy/Recovery runs",
   tempo: "Threshold training",
@@ -140,28 +140,111 @@ export function PaceResultsDisplay({
 
         {/* Pace Cards Grid - Responsive Layout */}
         <div className="space-y-2 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
-          {Object.entries(results).map(([key, value]) => {
-            const displayName = key === "xlong" ? "Long Run" : key;
-            return (
-              <div
-                key={key}
-                className="flex md:block items-center justify-between p-3 md:p-5 bg-gradient-to-r md:bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg md:rounded-xl border border-blue-100 hover:border-blue-200 md:hover:shadow-md transition-all"
-              >
-                <div className="flex-1 md:flex-none min-w-0 md:min-w-full">
-                  <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 capitalize truncate md:whitespace-normal md:mb-2">
-                    {displayName}
-                  </h3>
-                  <p className="text-xs md:text-sm text-gray-600 truncate md:whitespace-normal md:mb-3">
-                    {PACE_DESCRIPTIONS[key as keyof PaceResults]}
-                  </p>
+          {Object.entries(results)
+            .filter(([key]) => key !== "heartRateZones" && key !== "adjustments")
+            .map(([key, value]) => {
+              const displayName = key === "xlong" ? "Long Run" : key;
+              return (
+                <div
+                  key={key}
+                  className="flex md:block items-center justify-between p-3 md:p-5 bg-gradient-to-r md:bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg md:rounded-xl border border-blue-100 hover:border-blue-200 md:hover:shadow-md transition-all"
+                >
+                  <div className="flex-1 md:flex-none min-w-0 md:min-w-full">
+                    <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 capitalize truncate md:whitespace-normal md:mb-2">
+                      {displayName}
+                    </h3>
+                    <p className="text-xs md:text-sm text-gray-600 truncate md:whitespace-normal md:mb-3">
+                      {PACE_DESCRIPTIONS[key]}
+                    </p>
+                  </div>
+                  <div className="text-base sm:text-lg md:text-2xl font-bold text-blue-700 ml-3 md:ml-0 whitespace-nowrap">
+                    {value as string}
+                  </div>
                 </div>
-                <div className="text-base sm:text-lg md:text-2xl font-bold text-blue-700 ml-3 md:ml-0 whitespace-nowrap">
-                  {value}
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
+
+        {/* Heart Rate Zones Section */}
+        {results.heartRateZones && (
+          <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              ❤️ Heart Rate Zones
+              <span className="text-sm font-normal text-gray-600">
+                (Max HR: {results.heartRateZones.maxHR} bpm)
+              </span>
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="p-3 bg-white rounded-lg">
+                <p className="text-sm font-medium text-gray-700">Easy Pace</p>
+                <p className="text-base font-semibold text-green-700">
+                  {results.heartRateZones.easyZone}
+                </p>
+              </div>
+              <div className="p-3 bg-white rounded-lg">
+                <p className="text-sm font-medium text-gray-700">Tempo Pace</p>
+                <p className="text-base font-semibold text-yellow-700">
+                  {results.heartRateZones.tempoZone}
+                </p>
+              </div>
+              <div className="p-3 bg-white rounded-lg">
+                <p className="text-sm font-medium text-gray-700">Intervals</p>
+                <p className="text-base font-semibold text-orange-700">
+                  {results.heartRateZones.intervalZone}
+                </p>
+              </div>
+              <div className="p-3 bg-white rounded-lg">
+                <p className="text-sm font-medium text-gray-700">Maximum Effort</p>
+                <p className="text-base font-semibold text-red-700">
+                  {results.heartRateZones.maximumZone}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Pace Adjustments Section */}
+        {results.adjustments && (
+          <div className="mt-6 space-y-3">
+            {results.adjustments.elevation && (
+              <div className="p-4 bg-orange-50 border border-orange-200 rounded-xl">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  ⛰️ Elevation Adjustment
+                </h3>
+                <p className="text-sm text-gray-700">
+                  {results.adjustments.elevation.message}
+                </p>
+                {results.adjustments.elevation.adjustedEasyPace && (
+                  <div className="mt-2 p-2 bg-white rounded-lg">
+                    <p className="text-xs text-gray-600">Adjusted Easy Pace:</p>
+                    <p className="text-base font-semibold text-orange-700">
+                      {results.adjustments.elevation.adjustedEasyPace}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {results.adjustments.weather && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                  🌡️ Weather Adjustment
+                </h3>
+                <p className="text-sm text-gray-700">
+                  {results.adjustments.weather.message}
+                </p>
+                {results.adjustments.weather.adjustedEasyPace && (
+                  <div className="mt-2 p-2 bg-white rounded-lg">
+                    <p className="text-xs text-gray-600">Adjusted Easy Pace:</p>
+                    <p className="text-base font-semibold text-red-700">
+                      {results.adjustments.weather.adjustedEasyPace}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Info Box */}
         <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-yellow-50 border border-yellow-200 rounded-lg">

@@ -25,6 +25,9 @@ const initialFormState: PaceInputs = {
   minutes: "",
   seconds: "",
   paceType: "km",
+  age: "",
+  elevation: "flat",
+  temperature: "",
 };
 
 export function PaceCalculatorV2() {
