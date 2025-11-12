@@ -72,7 +72,7 @@ export function BrandRecommendations({ gelsNeeded }: BrandRecommendationsProps) 
                       </span>
                       <span className="text-gray-400">•</span>
                       <span className="font-semibold text-green-700">
-                        ${brand.pricePerGel}/gel
+                        ${brand.pricePerGel.toFixed(2)}/gel
                       </span>
                     </div>
                   </div>
