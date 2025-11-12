@@ -208,6 +208,74 @@ export function RaceDetailsForm({
           </div>
         </div>
 
+        {/* Optional Fields Section */}
+        <div className="pt-6 border-t border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Optional Adjustments{" "}
+            <span className="text-gray-400 text-xs font-normal">
+              (for more personalized results)
+            </span>
+          </h3>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Age Input for Heart Rate Zones */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Age{" "}
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span className="text-gray-400 cursor-help">ⓘ</span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>For heart rate zone calculations</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </label>
+              <input
+                type="number"
+                inputMode="tel"
+                placeholder="e.g., 30"
+                name="age"
+                min="10"
+                max="100"
+                value={inputs.age}
+                onChange={onInputChange}
+                className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            {/* Temperature Input for Weather Adjustments */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Temperature (°F){" "}
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span className="text-gray-400 cursor-help">ⓘ</span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Adjusts pace for hot weather (80°F+)</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </label>
+              <input
+                type="number"
+                inputMode="decimal"
+                placeholder="e.g., 75"
+                name="temperature"
+                min="0"
+                max="130"
+                value={inputs.temperature}
+                onChange={onInputChange}
+                className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+        </div>
+
         <button
           onClick={onCalculate}
           disabled={isCalculating}
