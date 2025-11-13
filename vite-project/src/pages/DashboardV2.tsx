@@ -231,12 +231,12 @@ export default function DashboardV2() {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="lg:hidden fixed top-20 left-4 z-30 p-3 bg-white rounded-lg shadow-md border border-gray-200 hover:bg-gray-50 transition-colors"
+        className="lg:hidden fixed top-20 left-3 z-30 p-2 bg-white rounded-md shadow-md border border-gray-200 hover:bg-gray-50 transition-colors"
       >
         {sidebarOpen ? (
-          <X className="w-6 h-6 text-gray-700" />
+          <X className="w-5 h-5 text-gray-700" />
         ) : (
-          <Menu className="w-6 h-6 text-gray-700" />
+          <Menu className="w-5 h-5 text-gray-700" />
         )}
       </button>
 
@@ -251,23 +251,13 @@ export default function DashboardV2() {
       <div className="flex">
         {/* Sidebar */}
         <aside
-          className={`fixed lg:sticky top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 z-30 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+          className={`fixed lg:sticky top-0 left-0 h-screen w-60 lg:w-52 bg-white border-r border-gray-200 z-30 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="p-4">
-            {/* Header */}
-            <div className="mb-6">
-              <h1 className="text-xl font-bold text-gray-900 mb-1">
-                My Dashboard
-              </h1>
-              <p className="text-xs text-gray-600">
-                Manage your training data
-              </p>
-            </div>
-
+          <div className="p-3 pt-4">
             {/* Navigation */}
-            <nav className="space-y-2">
+            <nav className="space-y-1">
               {sidebarNavItems.map((item) => {
                 const isActive = activeTab === item.id;
                 const getButtonClasses = () => {
@@ -290,13 +280,13 @@ export default function DashboardV2() {
                       setActiveTab(item.id);
                       setSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${getButtonClasses()}`}
+                    className={`w-full flex items-center justify-between px-2.5 py-2 rounded-md text-sm font-medium transition-all ${getButtonClasses()}`}
                   >
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2">
                       {item.icon}
-                      <span>{item.label}</span>
+                      <span className="text-sm">{item.label}</span>
                     </div>
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${getBadgeClasses()}`}>
+                    <span className={`text-xs font-semibold px-1.5 py-0.5 rounded ${getBadgeClasses()}`}>
                       {item.count}
                     </span>
                   </button>
@@ -307,7 +297,7 @@ export default function DashboardV2() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-4 lg:p-6 max-w-[1800px]">
+        <main className="flex-1 p-4 lg:p-8 max-w-[1800px]">
           {/* Mobile Page Title */}
           <div className="lg:hidden mb-6">
             <div className="flex items-center gap-3 mb-2">
