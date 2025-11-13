@@ -169,7 +169,7 @@ export default function ElevationPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="text-gray-600 mt-4">Redirecting...</p>
+          <p className="text-muted-foreground mt-4">Redirecting...</p>
         </div>
       </div>
     );
@@ -281,7 +281,7 @@ export default function ElevationPage() {
             height="400px"
             width="100%"
             showStartEnd={true}
-            className="border border-gray-200"
+            className="border border"
             lineColor="#3b82f6"
             lineWidth={3}
             mapStyle="mapbox://styles/mapbox/outdoors-v11"
@@ -328,7 +328,7 @@ export default function ElevationPage() {
         {import.meta.env.MODE === "development" &&
           urlDocId &&
           analysisData?.cacheOptimization && (
-            <details className="bg-gray-50 border rounded p-4">
+            <details className="bg-muted border rounded p-4">
               <summary className="cursor-pointer font-medium text-sm">
                 🔧 Cache Debug Info
               </summary>

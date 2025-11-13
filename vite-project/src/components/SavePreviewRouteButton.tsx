@@ -162,7 +162,7 @@ export function SavePreviewRouteButton({
         ${
           isSaved
             ? "bg-blue-100 text-blue-700 border border-blue-200 hover:bg-blue-200"
-            : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+            : "bg-background text-muted-foreground border border-gray-300 hover:bg-muted hover:border-gray-400"
         }
         ${className}`}
       title={isSaved ? "Remove from dashboard" : "Save to dashboard"}

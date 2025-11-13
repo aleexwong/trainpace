@@ -513,13 +513,13 @@ export default function GpxUploader({
       {/* Duplicate File Modal */}
       {duplicateFound && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+          <div className="bg-background rounded-lg p-6 max-w-md w-full mx-4">
             <div className="flex items-center space-x-3 mb-4">
               <FileX className="w-6 h-6 text-orange-500" />
               <h3 className="text-lg font-semibold">Duplicate File Detected</h3>
             </div>
 
-            <p className="text-gray-600 mb-4">
+            <p className="text-muted-foreground mb-4">
               You've already uploaded this file:{" "}
               <strong>{duplicateFound.filename}</strong>
             </p>
@@ -539,7 +539,7 @@ export default function GpxUploader({
               </button>
               <button
                 onClick={() => handleDuplicateAction("cancel")}
-                className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                className="flex-1 bg-gray-300 text-muted-foreground px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
               >
                 Cancel
               </button>
@@ -632,7 +632,7 @@ export default function GpxUploader({
             <h3 className="text-lg font-semibold text-gray-800">
               {isUploading ? "Processing GPX..." : "Upload Your Route"}
             </h3>
-            <p className="text-gray-600 text-sm">
+            <p className="text-muted-foreground text-sm">
               {isUploading
                 ? "Checking for duplicates and validating data..."
                 : "Drop your GPX file here or click to browse"}
@@ -657,7 +657,7 @@ export default function GpxUploader({
 
           {/* Limits info */}
           <div className="flex flex-col items-center space-y-1 text-xs text-gray-400">
-            <div className="bg-gray-50 px-3 py-1 rounded-full">
+            <div className="bg-muted px-3 py-1 rounded-full">
               Max {maxFileSize}MB • {allowedFileTypes.join(", ")} files
             </div>
             {user && (

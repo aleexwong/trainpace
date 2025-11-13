@@ -67,7 +67,7 @@ const ResultsWithToolTips: React.FC<ResultsProps> = ({ results }) => {
           return (
             <div
               key={key}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 p-2 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 p-2 sm:p-3 bg-muted rounded-lg hover:bg-muted transition-colors"
             >
               <label className="font-medium capitalize text-center sm:text-right flex items-center sm:justify-end justify-center gap-2">
                 {displayName} Pace:
@@ -76,7 +76,7 @@ const ResultsWithToolTips: React.FC<ResultsProps> = ({ results }) => {
                     {/* Desktop Tooltip */}
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <HelpCircle className="w-4 h-4 text-gray-500 hover:text-gray-700 cursor-pointer hidden sm:block" />
+                        <HelpCircle className="w-4 h-4 text-gray-500 hover:text-muted-foreground cursor-pointer hidden sm:block" />
                       </TooltipTrigger>
                       <TooltipContent side="top" className="max-w-xs">
                         <div>
@@ -95,7 +95,7 @@ const ResultsWithToolTips: React.FC<ResultsProps> = ({ results }) => {
                     {/* Mobile Dialog */}
                     <HelpCircle
                       onClick={() => handleOpenDialog(key as PaceType)}
-                      className="w-4 h-4 text-gray-500 hover:text-gray-700 cursor-pointer sm:hidden"
+                      className="w-4 h-4 text-gray-500 hover:text-muted-foreground cursor-pointer sm:hidden"
                     />
 
                     <Dialog
@@ -122,7 +122,7 @@ const ResultsWithToolTips: React.FC<ResultsProps> = ({ results }) => {
                 type="text"
                 value={value}
                 readOnly
-                className="bg-white w-full"
+                className="bg-background w-full"
               />
             </div>
           );

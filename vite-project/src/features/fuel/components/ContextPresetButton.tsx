@@ -23,11 +23,11 @@ export function ContextPresetButton({
       className={`relative p-3 text-left border-2 rounded-lg transition-all ${
         isSelected
           ? "bg-purple-100 border-purple-500"
-          : "bg-white border-purple-200 hover:bg-purple-50"
+          : "bg-background border-purple-200 hover:bg-purple-50"
       }`}
     >
       <div className="text-2xl mb-1">{preset.icon}</div>
-      <div className="text-xs font-medium text-gray-700">{preset.label}</div>
+      <div className="text-xs font-medium text-muted-foreground">{preset.label}</div>
       {isSelected && (
         <CheckCircle className="h-4 w-4 text-purple-600 absolute top-2 right-2" />
       )}

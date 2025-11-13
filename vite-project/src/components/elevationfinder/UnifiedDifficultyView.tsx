@@ -375,12 +375,12 @@ export function UnifiedDifficultyView({
       </div>
 
       {/* Donut Chart Section */}
-      <div className="w-full bg-white rounded-lg border border-gray-200 py-4 sm:py-6">
+      <div className="w-full bg-background rounded-lg border border py-4 sm:py-6">
         <div className="text-center mb-4">
           <h3 className="font-semibold text-gray-800 text-base sm:text-lg mb-1 sm:mb-2">
             Race Difficulty Distribution
           </h3>
-          <p className="text-xs sm:text-sm text-gray-600">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Click a chart segment to jump to details
           </p>
         </div>
@@ -391,9 +391,9 @@ export function UnifiedDifficultyView({
           </div>
         </div>
 
-        <div className="text-center pt-4 border-t border-gray-200">
-          <p className="text-xs sm:text-sm text-gray-600 mb-1">Total Race Time</p>
-          <p className="text-2xl sm:text-3xl font-bold text-gray-900">
+        <div className="text-center pt-4 border-t border">
+          <p className="text-xs sm:text-sm text-muted-foreground mb-1">Total Race Time</p>
+          <p className="text-2xl sm:text-3xl font-bold text-foreground">
             {formatTime(totalRaceTime)}
           </p>
         </div>
@@ -507,7 +507,7 @@ export function UnifiedDifficultyView({
                               isClusterExpanded ? null : clusterId
                             )
                           }
-                          className="w-full p-3 sm:p-4 bg-white hover:bg-opacity-75 transition-colors text-left"
+                          className="w-full p-3 sm:p-4 bg-background hover:bg-opacity-75 transition-colors text-left"
                           aria-expanded={isClusterExpanded}
                           aria-controls={clusterContentId}
                         >
@@ -524,7 +524,7 @@ export function UnifiedDifficultyView({
                                     { units, locale }
                                   )}
                                 </p>
-                                <p className="text-xs text-gray-600">
+                                <p className="text-xs text-muted-foreground">
                                   {cluster.clusterLength.toFixed(1)}{" "}
                                   {units === "imperial" ? "mi" : "km"} • Avg {cluster.avgGrade.toFixed(1)}%
                                 </p>
@@ -535,7 +535,7 @@ export function UnifiedDifficultyView({
                               <p className={`font-bold ${group.color.accent} text-sm sm:text-base`}>
                                 {cluster.avgPace}
                               </p>
-                              <p className="text-xs text-gray-600">
+                              <p className="text-xs text-muted-foreground">
                                 {formatTime(
                                   computeTotalTime(
                                     cluster.segments,
@@ -550,10 +550,10 @@ export function UnifiedDifficultyView({
                         {isClusterExpanded && (
                           <div
                             id={clusterContentId}
-                            className="px-4 pb-4 space-y-3 bg-white/50"
+                            className="px-4 pb-4 space-y-3 bg-background/50"
                           >
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-600">
+                              <span className="text-muted-foreground">
                                 Elevation:{" "}
                                 {formatElevation(cluster.startElevation, {
                                   units,
@@ -565,7 +565,7 @@ export function UnifiedDifficultyView({
                                   locale,
                                 })}
                               </span>
-                              <span className="font-medium text-gray-700">
+                              <span className="font-medium text-muted-foreground">
                                 {cluster.elevationGain > 0 ? "+" : ""}
                                 {formatElevation(cluster.elevationGain, {
                                   units,
@@ -584,7 +584,7 @@ export function UnifiedDifficultyView({
                                 {cluster.segments.map((seg, sidx) => (
                                   <div
                                     key={sidx}
-                                    className="text-xs text-gray-700"
+                                    className="text-xs text-muted-foreground"
                                   >
                                     <span className="font-medium">
                                       {units === "imperial" ? "MI" : "KM"}{" "}
@@ -603,11 +603,11 @@ export function UnifiedDifficultyView({
                             </div>
 
                             {cluster.segments[0].pacingAdvice && (
-                              <div className="p-3 bg-white rounded text-sm">
+                              <div className="p-3 bg-background rounded text-sm">
                                 <p className="font-medium text-gray-800 mb-1">
                                   💡 Strategy
                                 </p>
-                                <p className="text-gray-700">
+                                <p className="text-muted-foreground">
                                   {cluster.segments[0].pacingAdvice}
                                 </p>
                               </div>

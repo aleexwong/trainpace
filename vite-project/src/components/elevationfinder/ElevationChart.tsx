@@ -264,9 +264,9 @@ export function ElevationChart({
   };
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="w-full bg-background rounded-lg shadow-sm border border">
       {/* Editable filename header */}
-      <div className="px-4 py-3 border-b border-gray-200">
+      <div className="px-4 py-3 border-b border">
         {isEditing ? (
           <div className="flex items-center gap-2">
             <input
@@ -293,7 +293,7 @@ export function ElevationChart({
             {isOwner && docId && (
               <button
                 onClick={handleEdit}
-                className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                className="p-1 text-gray-400 hover:text-muted-foreground transition-colors"
                 title="Edit filename"
               >
                 <PencilIcon className="w-4 h-4" />
@@ -310,7 +310,7 @@ export function ElevationChart({
 
       {/* Grade legend */}
       <div className="px-4 pb-4">
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-gray-700">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <div
               className="w-12 sm:w-16 h-4 rounded border border-gray-300 shrink-0"

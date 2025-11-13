@@ -16,7 +16,7 @@ const RunningTips = () => {
       >
         <AccordionItem value="tips">
           <AccordionTrigger
-            className="shadow-lg bg-white hover:bg-white hover:no-underline 
+            className="shadow-lg bg-background hover:bg-background hover:no-underline 
             focus:outline-none focus:ring-0 focus:border-none
             border-none border-transparent
             data-[state=open]:border-none data-[state=open]:border-transparent"

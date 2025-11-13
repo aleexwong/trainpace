@@ -54,7 +54,7 @@ export function PacePlanCard({
   const hasNotes = plan.notes && plan.notes.trim().length > 0;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+    <div className="bg-background rounded-lg shadow-sm border border p-4 hover:shadow-md transition-shadow">
       {/* Header */}
       <div className="flex justify-between items-start mb-3">
         <div className="flex-1">
@@ -82,7 +82,7 @@ export function PacePlanCard({
           </button>
           <button
             onClick={() => onDelete(plan.id)}
-            className="text-gray-400 hover:text-red-500 transition-colors bg-transparent rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            className="text-gray-400 hover:text-red-500 transition-colors bg-transparent rounded-full p-1 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
             title="Delete pace plan"
             aria-label="Delete pace plan"
           >
@@ -102,27 +102,27 @@ export function PacePlanCard({
       <div className="space-y-2 mb-3 bg-blue-50 p-3 rounded-lg">
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div>
-            <div className="text-xs text-gray-600 mb-0.5">Race Pace</div>
+            <div className="text-xs text-muted-foreground mb-0.5">Race Pace</div>
             <div className="font-bold text-blue-600">{plan.paces.race}</div>
           </div>
           <div>
-            <div className="text-xs text-gray-600 mb-0.5">Easy</div>
+            <div className="text-xs text-muted-foreground mb-0.5">Easy</div>
             <div className="font-bold text-blue-600">{plan.paces.easy}</div>
           </div>
           <div>
-            <div className="text-xs text-gray-600 mb-0.5">Tempo</div>
+            <div className="text-xs text-muted-foreground mb-0.5">Tempo</div>
             <div className="font-bold text-blue-600">{plan.paces.tempo}</div>
           </div>
           <div>
-            <div className="text-xs text-gray-600 mb-0.5">Interval</div>
+            <div className="text-xs text-muted-foreground mb-0.5">Interval</div>
             <div className="font-bold text-blue-600">{plan.paces.interval}</div>
           </div>
           <div>
-            <div className="text-xs text-gray-600 mb-0.5">Long Run</div>
+            <div className="text-xs text-muted-foreground mb-0.5">Long Run</div>
             <div className="font-bold text-blue-600">{plan.paces.xlong}</div>
           </div>
           <div>
-            <div className="text-xs text-gray-600 mb-0.5">Yasso 800s</div>
+            <div className="text-xs text-muted-foreground mb-0.5">Yasso 800s</div>
             <div className="font-bold text-blue-600">{plan.paces.yasso}</div>
           </div>
         </div>
@@ -145,7 +145,7 @@ export function PacePlanCard({
 
           {expanded && (
             <div className="mt-2 bg-purple-50 p-3 rounded-lg border border-purple-100">
-              <p className="text-sm text-gray-700 whitespace-pre-wrap">
+              <p className="text-sm text-muted-foreground whitespace-pre-wrap">
                 {plan.notes}
               </p>
             </div>

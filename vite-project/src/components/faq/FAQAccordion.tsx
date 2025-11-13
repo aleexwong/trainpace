@@ -42,19 +42,19 @@ export default function FAQAccordion({
         return (
           <div
             key={item.id}
-            className="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
+            className="border border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
           >
             <button
               onClick={() => toggleItem(item.id)}
               aria-expanded={isOpen}
               aria-controls={answerId}
-              className="w-full px-6 py-5 text-left bg-white hover:bg-gray-50 transition-colors duration-200 flex items-center justify-between group"
+              className="w-full px-6 py-5 text-left bg-background hover:bg-muted transition-colors duration-200 flex items-center justify-between group"
             >
               <div className="flex items-center space-x-3">
                 <span className="text-2xl" role="img" aria-label="emoji">
                   {item.emoji}
                 </span>
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+                <h3 className="text-lg font-semibold text-foreground group-hover:text-blue-600 transition-colors duration-200">
                   {item.question}
                 </h3>
               </div>
@@ -75,7 +75,7 @@ export default function FAQAccordion({
                 className="px-6 pb-5 bg-gradient-to-r from-blue-50 to-white"
               >
                 <div className="pl-11">
-                  <p className="text-left text-gray-700 leading-relaxed">
+                  <p className="text-left text-muted-foreground leading-relaxed">
                     {item.answer}
                   </p>
                 </div>

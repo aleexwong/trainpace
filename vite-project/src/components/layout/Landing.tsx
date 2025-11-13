@@ -29,7 +29,7 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen relative">
+    <div className="bg-background text-foreground min-h-screen relative">
       {/* SEO: Structured Data */}
       <StructuredData type="Organization" />
       <StructuredData type="WebSite" />
@@ -63,21 +63,21 @@ export default function Landing() {
 
           {/* Value props - scannable bullets */}
           <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm md:text-base">
-            <span className="flex items-center gap-2 text-gray-700">
+            <span className="flex items-center gap-2 text-muted-foreground">
               <CheckCircle className="w-5 h-5 text-green-600" />
               Science-backed training paces
             </span>
-            <span className="flex items-center gap-2 text-gray-700">
+            <span className="flex items-center gap-2 text-muted-foreground">
               <CheckCircle className="w-5 h-5 text-green-600" />
               Interactive route elevation analysis
             </span>
-            <span className="flex items-center gap-2 text-gray-700">
+            <span className="flex items-center gap-2 text-muted-foreground">
               <CheckCircle className="w-5 h-5 text-green-600" />
               Personalized fueling plans
             </span>
           </div>
 
-          <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             The complete toolkit for self-coached runners. No paywalls, no ads,
             no BS — just powerful tools that help you train injury-free and
             reach your goals.
@@ -111,7 +111,7 @@ export default function Landing() {
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
           Everything You Need to Train Smarter
         </h2>
-        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
           Three powerful tools designed to help self-coached runners optimize
           training, analyze routes, and fuel for peak performance.
         </p>
@@ -147,7 +147,7 @@ export default function Landing() {
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
             How TrainPace Works
           </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
             Simple, powerful, and designed for runners who take their training
             seriously.
           </p>
@@ -182,7 +182,7 @@ export default function Landing() {
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
           Built for Real Runners
         </h2>
-        <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
           Whether you're training for your first 5K or your tenth marathon,
           TrainPace has the tools you need.
         </p>
@@ -216,7 +216,7 @@ export default function Landing() {
       </section>
 
       {/* Why TrainPace - Value Props */}
-      <section className="py-20 px-6 bg-gray-50">
+      <section className="py-20 px-6 bg-muted">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
             Why Runners Choose TrainPace
@@ -276,7 +276,7 @@ export default function Landing() {
             <Link to={user ? "/dashboard" : "/calculator"}>
               <Button
                 size="lg"
-                className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-white/90"
+                className="text-lg px-8 py-4 bg-background text-blue-600 hover:bg-background/90"
               >
                 {user ? "Go to Dashboard" : "Get Started Free"}
               </Button>
@@ -286,7 +286,7 @@ export default function Landing() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-white/90"
+                className="text-lg px-8 py-4 bg-background text-blue-600 hover:bg-background/90"
               >
                 Analyze Elevation
               </Button>
@@ -321,7 +321,7 @@ function FeatureCard({
   return (
     <Link
       to={link}
-      className="relative p-6 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all hover:border-blue-300 group"
+      className="relative p-6 bg-card border rounded-lg hover:shadow-lg transition-all hover:border-blue-300 group"
     >
       {badge && (
         <div className="absolute top-4 right-4 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
@@ -334,7 +334,7 @@ function FeatureCard({
       <h3 className="text-xl font-semibold mb-3 group-hover:text-blue-600 transition-colors">
         {title}
       </h3>
-      <p className="text-gray-600 text-sm leading-relaxed mb-4">{desc}</p>
+      <p className="text-muted-foreground text-sm leading-relaxed mb-4">{desc}</p>
       <div className="text-blue-600 text-sm font-medium flex items-center">
         Try it now{" "}
         <span className="ml-1 group-hover:translate-x-1 transition-transform">
@@ -359,8 +359,8 @@ function Step({
       <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
         {number}
       </div>
-      <h3 className="font-semibold mb-2 text-gray-900">{title}</h3>
-      <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
+      <h3 className="font-semibold mb-2 text-foreground">{title}</h3>
+      <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
     </div>
   );
 }
@@ -377,13 +377,13 @@ function UseCase({
   icon: JSX.Element;
 }) {
   return (
-    <div className="p-6 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+    <div className="p-6 bg-card border rounded-lg hover:shadow-md transition-shadow">
       <div className="flex items-center gap-3 mb-3">
         <div className="text-4xl">{emoji}</div>
-        <div className="p-2 bg-gray-50 rounded-lg">{icon}</div>
+        <div className="p-2 bg-muted rounded-lg">{icon}</div>
       </div>
-      <h3 className="text-xl font-semibold mb-3 text-gray-900">{title}</h3>
-      <p className="text-gray-600 text-sm leading-relaxed">{scenario}</p>
+      <h3 className="text-xl font-semibold mb-3 text-foreground">{title}</h3>
+      <p className="text-muted-foreground text-sm leading-relaxed">{scenario}</p>
     </div>
   );
 }
@@ -401,8 +401,8 @@ function ValueProp({
     <div className="flex gap-4">
       <div className="flex-shrink-0">{icon}</div>
       <div>
-        <h3 className="font-semibold text-gray-900 mb-1">{title}</h3>
-        <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
+        <h3 className="font-semibold text-foreground mb-1">{title}</h3>
+        <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
       </div>
     </div>
   );

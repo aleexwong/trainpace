@@ -230,28 +230,28 @@ export function FuelPlannerV2() {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-4xl font-bold text-gray-900">
+            <h1 className="text-4xl font-bold text-foreground">
               🏃 Fuel Planner
             </h1>
             <button
               onClick={() => setShowInfo(!showInfo)}
-              className="p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all"
+              className="p-3 rounded-full bg-background shadow-md hover:shadow-lg transition-all"
             >
               <Info className="h-6 w-6 text-blue-600" />
             </button>
           </div>
 
           {showInfo && (
-            <Card className="mb-8 bg-white">
+            <Card className="mb-8 bg-background">
               <CardContent className="p-6">
                 <h3 className="text-xl font-semibold mb-3">
                   Why Fueling Matters ⚡
                 </h3>
-                <p className="text-gray-700 mb-2">
+                <p className="text-muted-foreground mb-2">
                   Your body needs carbs to perform. This tool estimates how many
                   carbs and gels you'll need.
                 </p>
-                <ul className="list-disc list-inside text-gray-600 space-y-1">
+                <ul className="list-disc list-inside text-muted-foreground space-y-1">
                   <li>30–60g carbs/hr for efforts over 1 hour</li>
                   <li>Gels usually contain ~25g carbs each</li>
                   <li>Proper fueling avoids energy crashes</li>
@@ -309,21 +309,21 @@ export function FuelPlannerV2() {
           <div className="mt-12 max-w-4xl mx-auto">
             <button
               onClick={() => setShowPhilosophy(!showPhilosophy)}
-              className="w-full flex items-center justify-between p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all"
+              className="w-full flex items-center justify-between p-4 bg-background rounded-xl shadow-md hover:shadow-lg transition-all"
             >
-              <span className="text-lg font-semibold text-gray-900">
+              <span className="text-lg font-semibold text-foreground">
                 Fueling Philosophy
               </span>
               {showPhilosophy ? (
-                <ChevronUp className="h-5 w-5 text-gray-600" />
+                <ChevronUp className="h-5 w-5 text-muted-foreground" />
               ) : (
-                <ChevronDown className="h-5 w-5 text-gray-600" />
+                <ChevronDown className="h-5 w-5 text-muted-foreground" />
               )}
             </button>
 
             {showPhilosophy && (
-              <Card className="mt-2 bg-gray-50">
-                <CardContent className="p-6 text-gray-700 space-y-3 text-left">
+              <Card className="mt-2 bg-muted">
+                <CardContent className="p-6 text-muted-foreground space-y-3 text-left">
                   <p>
                     Fuel needs depend on race distance, duration, and personal
                     tolerance.

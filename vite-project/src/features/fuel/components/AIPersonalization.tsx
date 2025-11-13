@@ -125,13 +125,13 @@ export function AIPersonalization({
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <Sparkles className="h-6 w-6 text-purple-600" />
-              <h3 className="text-xl font-semibold text-gray-900">
+              <h3 className="text-xl font-semibold text-foreground">
                 AI Personalization
               </h3>
             </div>
             <button
               onClick={() => setShowPromptModal(true)}
-              className="p-2 rounded-full bg-white hover:bg-purple-200 transition-colors"
+              className="p-2 rounded-full bg-background hover:bg-purple-200 transition-colors"
               title="View system prompt"
             >
               <FileText className="h-5 w-5 text-purple-600" />
@@ -153,7 +153,7 @@ export function AIPersonalization({
             <>
               {/* Preset Buttons */}
               <div className="mb-4">
-                <p className="text-sm font-medium text-gray-700 mb-3">
+                <p className="text-sm font-medium text-muted-foreground mb-3">
                   Quick select common scenarios:
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -189,9 +189,9 @@ export function AIPersonalization({
                     setSelectedPresets(new Set());
                   }
                 }}
-                className="w-full px-4 py-3 text-base border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 min-h-[120px] bg-white"
+                className="w-full px-4 py-3 text-base border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 min-h-[120px] bg-background"
               />
-              <p className="text-xs text-gray-600 mt-2 mb-4">
+              <p className="text-xs text-muted-foreground mt-2 mb-4">
                 {selectedPresets.size > 0 ? (
                   <span className="text-purple-600 font-medium">
                     ✓ {selectedPresets.size} scenario
@@ -249,7 +249,7 @@ export function AIPersonalization({
                   <button
                     onClick={onSave}
                     disabled={isSaving || isSaved}
-                    className="w-full py-3 text-base font-semibold bg-white text-purple-600 rounded-xl hover:bg-white/90 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full py-3 text-base font-semibold bg-background text-purple-600 rounded-xl hover:bg-background/90 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {isSaving ? (
                       <>
@@ -269,13 +269,13 @@ export function AIPersonalization({
                     )}
                   </button>
                 ) : (
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                    <p className="text-sm text-gray-700 mb-3">
+                  <div className="bg-background/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                    <p className="text-sm text-muted-foreground mb-3">
                       💾 Want to save this plan to your dashboard?
                     </p>
                     <button
                       onClick={onSave}
-                      className="w-full py-3 text-base font-semibold bg-white text-purple-600 rounded-xl hover:bg-white/90 transition-colors shadow-md flex items-center justify-center gap-2"
+                      className="w-full py-3 text-base font-semibold bg-background text-purple-600 rounded-xl hover:bg-background/90 transition-colors shadow-md flex items-center justify-center gap-2"
                     >
                       Sign Up to Save (Free)
                     </button>
@@ -286,20 +286,20 @@ export function AIPersonalization({
               {/* Feedback Section */}
               {!feedbackGiven ? (
                 <div className="mt-6 pt-4 border-t border-white/20">
-                  <p className="text-sm text-center text-gray-700 mb-3">
+                  <p className="text-sm text-center text-muted-foreground mb-3">
                     Were these recommendations helpful?
                   </p>
                   <div className="flex gap-3 justify-center">
                     <button
                       onClick={() => onFeedback(true)}
-                      className="flex-1 py-2 px-4 bg-white/20 hover:bg-white/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium text-gray-700"
+                      className="flex-1 py-2 px-4 bg-background/20 hover:bg-background/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground"
                     >
                       <span className="text-lg">👍</span>
                       Helpful
                     </button>
                     <button
                       onClick={() => onFeedback(false)}
-                      className="flex-1 py-2 px-4 bg-white/20 hover:bg-white/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium text-gray-700"
+                      className="flex-1 py-2 px-4 bg-background/20 hover:bg-background/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground"
                     >
                       <span className="text-lg">👎</span>
                       Not helpful
@@ -308,7 +308,7 @@ export function AIPersonalization({
                 </div>
               ) : (
                 <div className="mt-6 pt-4 border-t border-white/20 text-center">
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-muted-foreground">
                     ✨ Thanks for your feedback!
                   </p>
                 </div>
@@ -317,7 +317,7 @@ export function AIPersonalization({
               <button
                 onClick={handleReset}
                 disabled={cooldownSeconds > 0}
-                className="mt-6 w-full py-3 text-sm font-medium bg-white/10 hover:bg-white/20 rounded-xl transition-colors border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700"
+                className="mt-6 w-full py-3 text-sm font-medium bg-background/10 hover:bg-background/20 rounded-xl transition-colors border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed text-muted-foreground"
               >
                 {cooldownSeconds > 0
                   ? `Wait ${cooldownSeconds}s to refine`
@@ -335,13 +335,13 @@ export function AIPersonalization({
           onClick={() => setShowPromptModal(false)}
         >
           <div
-            className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
+            className="bg-background rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-6 border-b border-gray-200 flex items-center justify-between bg-purple-50">
+            <div className="p-6 border-b border flex items-center justify-between bg-purple-50">
               <div className="flex items-center gap-2">
                 <FileText className="h-6 w-6 text-purple-600" />
-                <h3 className="text-xl font-semibold text-gray-900">
+                <h3 className="text-xl font-semibold text-foreground">
                   AI System Prompt
                 </h3>
               </div>
@@ -365,7 +365,7 @@ export function AIPersonalization({
               </button>
             </div>
             <div className="p-6 overflow-y-auto max-h-[calc(80vh-100px)]">
-              <div className="bg-gray-50 rounded-lg p-4 font-mono text-sm">
+              <div className="bg-muted rounded-lg p-4 font-mono text-sm">
                 <pre className="whitespace-pre-wrap text-gray-800">
                   {getFuelPlanPrompt(
                     planContext,

@@ -61,7 +61,7 @@ export function ShareLinkBox({ docId, className }: ShareLinkBoxProps) {
           type="text"
           value={shareUrl}
           readOnly
-          className="flex-1 text-sm bg-white overflow-x-auto whitespace-nowrap"
+          className="flex-1 text-sm bg-background overflow-x-auto whitespace-nowrap"
         />
         <Button onClick={handleCopy} size="sm" className="shrink-0">
           <Copy className="h-4 w-4 sm:mr-1" />

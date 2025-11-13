@@ -179,7 +179,7 @@ export default function DashboardV2() {
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             Sign In Required
           </h2>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Please sign in to view your uploaded routes.
           </p>
         </div>
@@ -200,18 +200,18 @@ export default function DashboardV2() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">My Dashboard</h1>
-        <p className="text-gray-600">Manage your routes and fuel plans</p>
+        <p className="text-muted-foreground">Manage your routes and fuel plans</p>
       </div>
 
       {/* Tabs */}
       <div className="mb-6">
-        <div className="flex gap-2 bg-gray-100 p-1 rounded-lg inline-flex">
+        <div className="flex gap-2 bg-muted p-1 rounded-lg inline-flex">
           <button
             onClick={() => setActiveTab("routes")}
             className={`px-4 py-2 rounded-md font-medium transition-all ${
               activeTab === "routes"
                 ? "bg-blue-600 text-black hover:text-blue-600 hover:bg-blue-50"
-                : "bg-white text-blue-600 shadow-sm hover:bg-white hover:text-blue-600"
+                : "bg-background text-blue-600 shadow-sm hover:bg-background hover:text-blue-600"
             }`}
           >
             Routes ({routes.length})
@@ -221,7 +221,7 @@ export default function DashboardV2() {
             className={`px-4 py-2 rounded-md font-medium transition-all ${
               activeTab === "pace-plans"
                 ? "bg-purple-600 text-black hover:text-purple-600 hover:bg-purple-50"
-                : "bg-white text-purple-600 shadow-sm hover:bg-white hover:text-purple-600"
+                : "bg-background text-purple-600 shadow-sm hover:bg-background hover:text-purple-600"
             }`}
           >
             Pace Plans ({pacePlans.length})
@@ -231,7 +231,7 @@ export default function DashboardV2() {
             className={`px-4 py-2 rounded-md font-medium transition-all ${
               activeTab === "fuel-plans"
                 ? "bg-orange-600 text-black hover:text-orange-600 hover:bg-orange-50"
-                : "bg-white text-orange-600 shadow-sm hover:bg-white hover:text-orange-600"
+                : "bg-background text-orange-600 shadow-sm hover:bg-background hover:text-orange-600"
             }`}
           >
             Fuel Plans ({fuelPlans.length})

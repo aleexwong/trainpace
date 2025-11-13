@@ -30,7 +30,7 @@ export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+    <div className="bg-background rounded-lg shadow-sm border border p-4 hover:shadow-md transition-shadow">
       {/* Header */}
       <div className="flex justify-between items-start mb-3">
         <div className="flex-1">
@@ -51,7 +51,7 @@ export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
         </div>
         <button
           onClick={() => onDelete(plan.id)}
-          className="text-gray-400 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          className="text-gray-400 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
           title="Delete fuel plan"
           aria-label="Delete fuel plan"
         >
@@ -62,17 +62,17 @@ export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
       {/* Quick Stats Grid */}
       <div className="grid grid-cols-3 gap-2 text-sm mb-3 bg-orange-50 p-3 rounded-lg">
         <div className="text-center">
-          <div className="text-xs text-gray-600 mb-1">Carbs/hr</div>
+          <div className="text-xs text-muted-foreground mb-1">Carbs/hr</div>
           <div className="font-bold text-orange-600">
             {plan.carbsPerHour}g
           </div>
         </div>
         <div className="text-center">
-          <div className="text-xs text-gray-600 mb-1">Gels</div>
+          <div className="text-xs text-muted-foreground mb-1">Gels</div>
           <div className="font-bold text-orange-600">{plan.gelsNeeded}</div>
         </div>
         <div className="text-center">
-          <div className="text-xs text-gray-600 mb-1">Calories</div>
+          <div className="text-xs text-muted-foreground mb-1">Calories</div>
           <div className="font-bold text-orange-600">
             {plan.totalCalories}
           </div>
@@ -105,7 +105,7 @@ export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
                     {idx + 1}. {rec.headline}
                   </p>
                   {rec.detail && (
-                    <p className="text-gray-600 text-xs leading-relaxed pl-4">
+                    <p className="text-muted-foreground text-xs leading-relaxed pl-4">
                       {rec.detail}
                     </p>
                   )}

@@ -81,7 +81,7 @@ export default function Login() {
   return (
     <div className="flex flex-col items-center justify-center h-[70vh] text-center w-full px-4">
       <h1 className="text-2xl font-bold mb-4">Welcome back</h1>
-      <p className="text-gray-600 mb-6">
+      <p className="text-muted-foreground mb-6">
         Sign in with Google or email to get started.
       </p>
 

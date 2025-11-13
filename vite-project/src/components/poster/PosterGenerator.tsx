@@ -673,7 +673,7 @@ export default function PosterGenerator({
           <Trophy className="w-5 h-5" />
           Course Poster Generator
         </CardTitle>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted-foreground">
           Create a printable 8x10" poster of your race course with Mapbox
           satellite imagery
         </p>
@@ -682,7 +682,7 @@ export default function PosterGenerator({
       <CardContent className="space-y-6">
         {/* Debug Info */}
         {debugInfo.length > 0 && (
-          <div className="bg-gray-100 p-3 rounded text-xs font-mono">
+          <div className="bg-muted p-3 rounded text-xs font-mono">
             <div className="font-bold mb-1">Debug Info:</div>
             {debugInfo.map((info, i) => (
               <div key={i}>{info}</div>
@@ -703,7 +703,7 @@ export default function PosterGenerator({
                   ${
                     selectedTemplate === index
                       ? "border-blue-500 scale-105"
-                      : "border-gray-200 hover:border-gray-300"
+                      : "border hover:border-gray-300"
                   }
                 `}
                 style={{ backgroundColor: template.bg }}
@@ -731,7 +731,7 @@ export default function PosterGenerator({
                 ${
                   !showDetailedView
                     ? "border-blue-500 bg-blue-50 text-blue-700"
-                    : "border-gray-200 hover:border-gray-300 text-gray-700"
+                    : "border hover:border-gray-300 text-muted-foreground"
                 }
               `}
             >
@@ -744,7 +744,7 @@ export default function PosterGenerator({
                 ${
                   showDetailedView
                     ? "border-blue-500 bg-blue-50 text-blue-700"
-                    : "border-gray-200 hover:border-gray-300 text-gray-700"
+                    : "border hover:border-gray-300 text-muted-foreground"
                 }
               `}
             >
@@ -940,7 +940,7 @@ export default function PosterGenerator({
           {/* Preview */}
           <div className="space-y-3">
             <Label className="text-base font-medium">Preview</Label>
-            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+            <div className="border border rounded-lg p-4 bg-muted">
               <canvas
                 ref={previewCanvasRef}
                 className="w-full max-w-[300px] mx-auto h-auto border border-gray-300 rounded shadow-lg"

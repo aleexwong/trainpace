@@ -71,7 +71,7 @@ export default function PreviewRoutesDropdown() {
         className={`flex items-center space-x-1 transition-colors focus:outline-none bg-transparent border-none p-0 ${
           isPreviewRouteActive
             ? "text-blue-600 font-medium"
-            : "text-gray-700 hover:text-blue-600"
+            : "text-muted-foreground hover:text-blue-600"
         }`}
         aria-expanded={isOpen}
         aria-haspopup="true"
@@ -94,10 +94,10 @@ export default function PreviewRoutesDropdown() {
             className="p-3 border-b"
             style={{ backgroundColor: "#f9fafb", borderColor: "#f3f4f6" }}
           >
-            <h3 className="font-semibold text-gray-900 text-sm">
+            <h3 className="font-semibold text-foreground text-sm">
               Major Marathon Routes
             </h3>
-            <p className="text-xs text-gray-600 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Explore world-famous marathon courses
             </p>
           </div>
@@ -110,7 +110,7 @@ export default function PreviewRoutesDropdown() {
                 className={`block px-4 py-3 transition-colors border-b border-gray-50 last:border-b-0 ${
                   location.pathname === `/preview-route/${route.slug}`
                     ? "bg-blue-50 border-blue-100"
-                    : "hover:bg-gray-50"
+                    : "hover:bg-muted"
                 }`}
                 onClick={() => setIsOpen(false)}
               >
@@ -120,7 +120,7 @@ export default function PreviewRoutesDropdown() {
                       className={`font-medium text-sm truncate ${
                         location.pathname === `/preview-route/${route.slug}`
                           ? "text-blue-700"
-                          : "text-gray-900"
+                          : "text-foreground"
                       }`}
                     >
                       {route.name}

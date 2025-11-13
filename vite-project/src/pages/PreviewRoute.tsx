@@ -148,59 +148,59 @@ export default function PreviewRoute() {
 
       {/* Route Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">{route.name}</h1>
-        <p className="text-xl text-gray-600 mb-4">
+        <h1 className="text-4xl font-bold text-foreground mb-2">{route.name}</h1>
+        <p className="text-xl text-muted-foreground mb-4">
           {route.city}, {route.country}
         </p>
 
         {/* Key Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <div className="bg-background rounded-lg border border p-4">
             <div className="flex items-center space-x-2 mb-1">
               <MapPin className="w-4 h-4 text-blue-500" />
               <span className="text-sm text-gray-500">Distance</span>
             </div>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-foreground">
               {(routeStats.distanceKm ?? route.distance).toFixed(1)}km
             </p>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <div className="bg-background rounded-lg border border p-4">
             <div className="flex items-center space-x-2 mb-1">
               <Activity className="w-4 h-4 text-green-500" />
               <span className="text-sm text-gray-500">Elevation Gain</span>
             </div>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-foreground">
               {Math.round(routeStats.elevationGain ?? route.elevationGain)}m
             </p>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <div className="bg-background rounded-lg border border p-4">
             <div className="flex items-center space-x-2 mb-1">
               <Activity className="w-4 h-4 text-red-500" />
               <span className="text-sm text-gray-500">Elevation Loss</span>
             </div>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-foreground">
               {Math.round(routeStats.elevationLoss ?? route.elevationLoss)}m
             </p>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <div className="bg-background rounded-lg border border p-4">
             <div className="flex items-center space-x-2 mb-1">
               <Calendar className="w-4 h-4 text-purple-500" />
               <span className="text-sm text-gray-500">Race Date</span>
             </div>
-            <p className="text-lg font-bold text-gray-900">{route.raceDate}</p>
+            <p className="text-lg font-bold text-foreground">{route.raceDate}</p>
           </div>
         </div>
       </div>
 
       {/* Route Map */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <h2 className="text-2xl font-bold text-foreground mb-4">
           Course Profile
         </h2>
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden relative z-0">
+        <div className="bg-background rounded-lg border border overflow-hidden relative z-0">
           {/* Use Leaflet for public preview to avoid requiring a Mapbox token */}
           <LeafletRoutePreview
             routePoints={
@@ -228,11 +228,11 @@ export default function PreviewRoute() {
 
       {/* Route Description & Tips */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">
+        <div className="bg-background rounded-lg border border p-6">
+          <h3 className="text-xl font-bold text-foreground mb-4">
             Course Description
           </h3>
-          <p className="text-gray-700 leading-relaxed">{route.description}</p>
+          <p className="text-muted-foreground leading-relaxed">{route.description}</p>
 
           <div className="mt-6">
             <a
@@ -259,15 +259,15 @@ export default function PreviewRoute() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">
+        <div className="bg-background rounded-lg border border p-6">
+          <h3 className="text-xl font-bold text-foreground mb-4">
             Training Tips
           </h3>
           <ul className="space-y-3">
             {route.tips.map((tip, index) => (
               <li key={index} className="flex items-start space-x-3">
                 <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-700">{tip}</span>
+                <span className="text-muted-foreground">{tip}</span>
               </li>
             ))}
           </ul>
@@ -275,8 +275,8 @@ export default function PreviewRoute() {
       </div>
 
       {/* Elevation Profile Summary */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
-        <h3 className="text-xl font-bold text-gray-900 mb-4">
+      <div className="bg-background rounded-lg border border p-6 mb-8">
+        <h3 className="text-xl font-bold text-foreground mb-4">
           Elevation Summary
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -311,10 +311,10 @@ export default function PreviewRoute() {
 
       {/* Call to Action */}
       <div className="bg-blue-50 rounded-lg border border-blue-200 p-6 text-center">
-        <h3 className="text-xl font-bold text-gray-900 mb-2">
+        <h3 className="text-xl font-bold text-foreground mb-2">
           Ready to Train for {route.name}?
         </h3>
-        <p className="text-gray-600 mb-4">
+        <p className="text-muted-foreground mb-4">
           Use our training tools to prepare for this incredible marathon course.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -357,7 +357,7 @@ export default function PreviewRoute() {
           </Link>
           <Link
             to="/fuel"
-            className="bg-white text-blue-600 px-6 py-3 rounded-lg border border-blue-600 hover:bg-blue-50 transition-colors"
+            className="bg-background text-blue-600 px-6 py-3 rounded-lg border border-blue-600 hover:bg-blue-50 transition-colors"
           >
             Fuel Planner
           </Link>

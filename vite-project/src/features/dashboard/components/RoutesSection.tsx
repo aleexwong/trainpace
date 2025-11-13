@@ -17,7 +17,7 @@ export function RoutesSection({
     return (
       <div className="text-center py-12">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-        <p className="text-gray-600 mt-4">Loading routes...</p>
+        <p className="text-muted-foreground mt-4">Loading routes...</p>
       </div>
     );
   }
@@ -29,7 +29,7 @@ export function RoutesSection({
         <h2 className="text-xl font-semibold text-gray-800 mb-4">
           No Routes Yet
         </h2>
-        <p className="text-gray-600 mb-6">
+        <p className="text-muted-foreground mb-6">
           Upload your first GPX file or bookmark a marathon route to get
           started.
         </p>
@@ -46,7 +46,7 @@ export function RoutesSection({
   return (
     <>
       <div className="flex justify-between items-center mb-6">
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-muted-foreground">
           {routes.length} route{routes.length !== 1 ? "s" : ""} found
         </div>
         <a

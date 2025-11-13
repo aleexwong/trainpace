@@ -51,7 +51,7 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+      <div className="bg-background rounded-lg shadow-sm border border overflow-hidden hover:shadow-md transition-shadow">
         {/* Route Header */}
         <div className="p-4 pb-0">
           {/* Migration Notice */}
@@ -89,7 +89,7 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
             </div>
             <button
               onClick={() => setDeleteConfirm(true)}
-              className="text-gray-400 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              className="text-gray-400 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
               title={isBookmarked ? "Remove bookmark" : "Delete route"}
               aria-label={isBookmarked ? "Remove bookmark" : "Delete route"}
             >
@@ -107,12 +107,12 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
               lineColor={isBookmarked ? "#8b5cf6" : "#3b82f6"}
               height="225px"
               showStartEnd={true}
-              className="border border-gray-200"
+              className="border border"
               mapStyle="mapbox://styles/mapbox/outdoors-v11"
               interactive={false}
             />
           ) : (
-            <div className="h-32 bg-gray-100 rounded-md border border-gray-200 flex items-center justify-center">
+            <div className="h-32 bg-muted rounded-md border border flex items-center justify-center">
               <div className="text-center">
                 <MapPin className="w-6 h-6 text-gray-400 mx-auto mb-1" />
                 <div className="text-xs text-gray-500">
@@ -138,13 +138,13 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="flex items-center space-x-2">
               <MapPin className="w-4 h-4 text-blue-500 flex-shrink-0" />
-              <span className="text-gray-600 truncate">
+              <span className="text-muted-foreground truncate">
                 {route.metadata?.totalDistance?.toFixed(1) || "0"} km
               </span>
             </div>
             <div className="flex items-center space-x-2">
               <Activity className="w-4 h-4 text-green-500 flex-shrink-0" />
-              <span className="text-gray-600 truncate">
+              <span className="text-muted-foreground truncate">
                 {route.metadata?.elevationGain?.toFixed(0) || "0"} m
               </span>
             </div>
@@ -180,9 +180,9 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+          <div className="bg-background p-6 rounded-lg max-w-md w-full mx-4">
             <h3 className="text-lg font-semibold mb-2">Delete Route</h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-muted-foreground mb-4">
               Are you sure you want to delete "
               {route.metadata?.routeName || route.filename || "Unknown Route"}"?
               This action cannot be undone.
@@ -196,7 +196,7 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
               </button>
               <button
                 onClick={() => setDeleteConfirm(false)}
-                className="px-4 py-2 bg-white text-black rounded hover:text-gray-800 outline-none border border-gray-300 hover:bg-gray-100"
+                className="px-4 py-2 bg-background text-black rounded hover:text-gray-800 outline-none border border-gray-300 hover:bg-muted"
               >
                 Cancel
               </button>

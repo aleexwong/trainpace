@@ -151,7 +151,7 @@ const LeafletRoutePreview: React.FC<LeafletPreviewProps> = ({
   if (!routePoints?.length) {
     return (
       <div
-        className={`bg-gray-100 rounded-md flex items-center justify-center ${className}`}
+        className={`bg-muted rounded-md flex items-center justify-center ${className}`}
         style={{ height, width }}
       >
         <div className="text-gray-400 text-sm">No route data</div>

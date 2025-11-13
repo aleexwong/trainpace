@@ -64,15 +64,15 @@ export function RaceDetailsForm({
   };
 
   return (
-    <Card className="bg-white shadow-lg">
+    <Card className="bg-background shadow-lg">
       <CardContent className="p-8 space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+        <h2 className="text-2xl font-semibold text-foreground mb-4">
           Race Details
         </h2>
 
         {/* Preset Distances - Button Pills */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-3">
+          <label className="block text-sm font-medium text-muted-foreground mb-3">
             Quick Select{" "}
             <span className="text-gray-400 text-xs">(Optional)</span>
           </label>
@@ -86,7 +86,7 @@ export function RaceDetailsForm({
                       className={`py-4 px-2 text-sm sm:text-base font-semibold rounded-xl transition-all hover:scale-105 ${
                         inputs.distance === preset.distance.toString()
                           ? "bg-blue-600 text-white shadow-md"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          : "bg-muted text-muted-foreground hover:bg-gray-200"
                       }`}
                     >
                       {preset.name}
@@ -104,7 +104,7 @@ export function RaceDetailsForm({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Distance Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Race Distance <span className="text-red-500">*</span>
             </label>
             <div className="flex items-center gap-2">
@@ -156,7 +156,7 @@ export function RaceDetailsForm({
 
           {/* Time Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Finish Time <span className="text-red-500">*</span>
             </label>
             <div className="flex items-center gap-2">
@@ -209,8 +209,8 @@ export function RaceDetailsForm({
         </div>
 
         {/* Optional Fields Section */}
-        <div className="pt-6 border-t border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="pt-6 border-t border">
+          <h3 className="text-lg font-semibold text-foreground mb-4">
             Optional Adjustments{" "}
             <span className="text-gray-400 text-xs font-normal">
               (for more personalized results)
@@ -220,7 +220,7 @@ export function RaceDetailsForm({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Age Input for Heart Rate Zones */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Age{" "}
                 <TooltipProvider>
                   <Tooltip>
@@ -248,7 +248,7 @@ export function RaceDetailsForm({
 
             {/* Temperature Input for Weather Adjustments */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Temperature (°F){" "}
                 <TooltipProvider>
                   <Tooltip>

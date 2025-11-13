@@ -50,13 +50,13 @@ export default function ResetPassword() {
           <p className="text-green-600">
             ✅ Password reset email sent!
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Check your inbox and spam folder for the reset link.
           </p>
         </div>
       ) : (
         <>
-          <p className="text-gray-600 mb-6">
+          <p className="text-muted-foreground mb-6">
             Enter your email to receive reset instructions.
           </p>
 

@@ -65,10 +65,10 @@ export function PaceResultsDisplay({
   };
 
   return (
-    <Card className="bg-white shadow-lg">
+    <Card className="bg-background shadow-lg">
       <CardContent className="p-4 sm:p-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">
+          <h2 className="text-xl sm:text-2xl font-semibold text-foreground">
             Your Training Paces 🎯
           </h2>
           <div className="flex flex-wrap items-center gap-2">
@@ -133,7 +133,7 @@ export function PaceResultsDisplay({
             {/* Action Buttons */}
             <button
               onClick={onEdit}
-              className="px-3 sm:px- py-1.5 sm:py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              className="px-3 sm:px- py-1.5 sm:py-2 text-sm font-medium text-muted-foreground bg-muted hover:bg-gray-200 rounded-lg transition-colors"
             >
               ← Edit
             </button>
@@ -159,7 +159,7 @@ export function PaceResultsDisplay({
                   isSaved
                     ? "bg-green-100 text-green-700 cursor-not-allowed"
                     : isSaving
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    ? "bg-muted text-gray-400 cursor-not-allowed"
                     : "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-md hover:shadow-lg"
                 }`}
                 title={isSaved ? "Saved!" : "Save to Dashboard"}
@@ -203,10 +203,10 @@ export function PaceResultsDisplay({
                   }`}
                 >
                   <div className="flex-1 md:flex-none min-w-0 md:min-w-full">
-                    <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 capitalize truncate md:whitespace-normal md:mb-2">
+                    <h3 className="text-sm sm:text-base md:text-lg font-semibold text-foreground capitalize truncate md:whitespace-normal md:mb-2">
                       {displayName}
                     </h3>
-                    <p className="text-xs md:text-sm text-gray-600 truncate md:whitespace-normal md:mb-3">
+                    <p className="text-xs md:text-sm text-muted-foreground truncate md:whitespace-normal md:mb-3">
                       {PACE_DESCRIPTIONS[key]}
                     </p>
                   </div>
@@ -223,9 +223,9 @@ export function PaceResultsDisplay({
         {/* Heart Rate Zones Section */}
         {results.heartRateZones && (
           <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
               ❤️ Heart Rate Zones
-              <span className="text-sm font-normal text-gray-600">
+              <span className="text-sm font-normal text-muted-foreground">
                 (Max HR: {results.heartRateZones.maxHR} bpm)
               </span>
               <TooltipProvider>
@@ -240,26 +240,26 @@ export function PaceResultsDisplay({
               </TooltipProvider>
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="p-3 bg-white rounded-lg">
-                <p className="text-sm font-medium text-gray-700">Easy Pace</p>
+              <div className="p-3 bg-background rounded-lg">
+                <p className="text-sm font-medium text-muted-foreground">Easy Pace</p>
                 <p className="text-base font-semibold text-green-700">
                   {results.heartRateZones.easyZone}
                 </p>
               </div>
-              <div className="p-3 bg-white rounded-lg">
-                <p className="text-sm font-medium text-gray-700">Tempo Pace</p>
+              <div className="p-3 bg-background rounded-lg">
+                <p className="text-sm font-medium text-muted-foreground">Tempo Pace</p>
                 <p className="text-base font-semibold text-yellow-700">
                   {results.heartRateZones.tempoZone}
                 </p>
               </div>
-              <div className="p-3 bg-white rounded-lg">
-                <p className="text-sm font-medium text-gray-700">Intervals</p>
+              <div className="p-3 bg-background rounded-lg">
+                <p className="text-sm font-medium text-muted-foreground">Intervals</p>
                 <p className="text-base font-semibold text-orange-700">
                   {results.heartRateZones.intervalZone}
                 </p>
               </div>
-              <div className="p-3 bg-white rounded-lg">
-                <p className="text-sm font-medium text-gray-700">Maximum Effort</p>
+              <div className="p-3 bg-background rounded-lg">
+                <p className="text-sm font-medium text-muted-foreground">Maximum Effort</p>
                 <p className="text-base font-semibold text-red-700">
                   {results.heartRateZones.maximumZone}
                 </p>
@@ -272,15 +272,15 @@ export function PaceResultsDisplay({
         {results.adjustments?.weather && (
           <div className="mt-6">
             <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
                 🌡️ Weather Adjustment
               </h3>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-muted-foreground">
                 {results.adjustments.weather.message}
               </p>
               {results.adjustments.weather.adjustedEasyPace && (
-                <div className="mt-2 p-2 bg-white rounded-lg">
-                  <p className="text-xs text-gray-600">Adjusted Easy Pace:</p>
+                <div className="mt-2 p-2 bg-background rounded-lg">
+                  <p className="text-xs text-muted-foreground">Adjusted Easy Pace:</p>
                   <p className="text-base font-semibold text-red-700">
                     {results.adjustments.weather.adjustedEasyPace}
                   </p>

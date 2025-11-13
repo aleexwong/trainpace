@@ -15,7 +15,7 @@ const CalculatorModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild className="bg-white">
+      <DialogTrigger asChild className="bg-background">
         <Button
           variant="outline"
           size="icon"
@@ -38,7 +38,7 @@ const CalculatorModal = () => {
         <div className="space-y-4">
           <section>
             <h3 className="font-semibold mb-2">Enter Your Race Info 🥇</h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               Input your recent race time (e.g., 25 minutes for a 5K) and the
               race distance in miles or kilometers. Select whether to calculate
               pace in minutes per kilometer or per mile.
@@ -47,7 +47,7 @@ const CalculatorModal = () => {
 
           <section>
             <h3 className="font-semibold mb-2">Calculate Your Base Pace 🏎️</h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               The calculator determines your "base" pace, which is your average
               speed during the race. For example, if you ran a 10K in 50
               minutes, your base pace would be 5 minutes per kilometer.
@@ -56,11 +56,11 @@ const CalculatorModal = () => {
 
           <section>
             <h3 className="font-semibold mb-2">Adjust for Training Types 🏋️</h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               Training runs vary based on their purpose. The calculator adjusts
               your base pace for these common training types:
             </p>
-            <ul className="list-disc list-inside text-sm text-gray-600">
+            <ul className="list-disc list-inside text-sm text-muted-foreground">
               <li>
                 <strong>Easy Runs:</strong> Slower pace, focusing on recovery
                 and endurance.

@@ -205,7 +205,7 @@ export function RaceInputForm({
               value={inputs.paceType}
               onChange={onInputChange}
               name="paceType"
-              className="w-1/2 border rounded-md p-2 bg-white"
+              className="w-1/2 border rounded-md p-2 bg-background"
             >
               <option value="km">min/km</option>
               <option value="Miles">min/mile</option>

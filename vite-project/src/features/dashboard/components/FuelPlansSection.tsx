@@ -19,7 +19,7 @@ export function FuelPlansSection({
     return (
       <div className="text-center py-12">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto"></div>
-        <p className="text-gray-600 mt-4">Loading fuel plans...</p>
+        <p className="text-muted-foreground mt-4">Loading fuel plans...</p>
       </div>
     );
   }
@@ -31,7 +31,7 @@ export function FuelPlansSection({
         <h2 className="text-xl font-semibold text-gray-800 mb-4">
           No Fuel Plans Yet
         </h2>
-        <p className="text-gray-600 mb-6">
+        <p className="text-muted-foreground mb-6">
           Create your first AI-powered fuel plan to see it here. Plans are
           automatically saved when you generate AI recommendations.
         </p>
@@ -48,7 +48,7 @@ export function FuelPlansSection({
   return (
     <>
       <div className="flex justify-between items-center mb-6">
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-muted-foreground">
           {fuelPlans.length} fuel plan
           {fuelPlans.length !== 1 ? "s" : ""} saved
         </div>

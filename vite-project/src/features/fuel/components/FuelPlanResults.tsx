@@ -23,16 +23,16 @@ export function FuelPlanResults({
   onDownload,
 }: FuelPlanResultsProps) {
   return (
-    <Card className="bg-white shadow-lg">
+    <Card className="bg-background shadow-lg">
       <CardContent className="p-8">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-semibold text-gray-900">
+          <h2 className="text-2xl font-semibold text-foreground">
             Your Plan 🔋
           </h2>
           <div className="flex gap-2">
             <button
               onClick={onEdit}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              className="px-4 py-2 text-sm font-medium text-muted-foreground bg-muted hover:bg-gray-200 rounded-lg transition-colors"
             >
               ← Edit
             </button>
@@ -59,28 +59,28 @@ export function FuelPlanResults({
             <div className="text-3xl font-bold text-blue-700">
               {result.carbsPerHour}g
             </div>
-            <div className="text-sm text-gray-600 mt-1">Carbs/hour</div>
+            <div className="text-sm text-muted-foreground mt-1">Carbs/hour</div>
           </div>
 
           <div className="p-6 bg-blue-50 rounded-xl">
             <div className="text-3xl font-bold text-blue-700">
               {result.totalCarbs}g
             </div>
-            <div className="text-sm text-gray-600 mt-1">Total carbs</div>
+            <div className="text-sm text-muted-foreground mt-1">Total carbs</div>
           </div>
 
           <div className="p-6 bg-blue-50 rounded-xl">
             <div className="text-3xl font-bold text-blue-700">
               {result.totalCalories}
             </div>
-            <div className="text-sm text-gray-600 mt-1">Calories</div>
+            <div className="text-sm text-muted-foreground mt-1">Calories</div>
           </div>
 
           <div className="p-6 bg-blue-50 rounded-xl">
             <div className="text-3xl font-bold text-blue-700">
               {result.gelsNeeded}
             </div>
-            <div className="text-sm text-gray-600 mt-1">
+            <div className="text-sm text-muted-foreground mt-1">
               {result.gelsNeeded === 0 ? "Gels (optional)" : "Gels"}
             </div>
           </div>
