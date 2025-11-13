@@ -193,21 +193,21 @@ export default function DashboardV2() {
     {
       id: "routes" as DashboardTab,
       label: "Routes",
-      icon: <MapPin className="w-5 h-5" />,
+      icon: <MapPin className="w-4 h-4" />,
       count: routes.length,
       color: "blue",
     },
     {
       id: "pace-plans" as DashboardTab,
       label: "Pace Plans",
-      icon: <Zap className="w-5 h-5" />,
+      icon: <Zap className="w-4 h-4" />,
       count: pacePlans.length,
       color: "purple",
     },
     {
       id: "fuel-plans" as DashboardTab,
       label: "Fuel Plans",
-      icon: <Utensils className="w-5 h-5" />,
+      icon: <Utensils className="w-4 h-4" />,
       count: fuelPlans.length,
       color: "orange",
     },
@@ -251,17 +251,17 @@ export default function DashboardV2() {
       <div className="flex">
         {/* Sidebar */}
         <aside
-          className={`fixed lg:sticky top-0 left-0 h-screen w-72 bg-white border-r border-gray-200 z-30 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+          className={`fixed lg:sticky top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 z-30 transition-transform duration-300 ease-in-out lg:translate-x-0 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="p-6">
+          <div className="p-4">
             {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-2xl font-bold text-gray-900 mb-1">
+            <div className="mb-6">
+              <h1 className="text-xl font-bold text-gray-900 mb-1">
                 My Dashboard
               </h1>
-              <p className="text-sm text-gray-600">
+              <p className="text-xs text-gray-600">
                 Manage your training data
               </p>
             </div>
@@ -290,13 +290,13 @@ export default function DashboardV2() {
                       setActiveTab(item.id);
                       setSidebarOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-lg font-medium transition-all ${getButtonClasses()}`}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${getButtonClasses()}`}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2.5">
                       {item.icon}
                       <span>{item.label}</span>
                     </div>
-                    <span className={`text-sm font-semibold px-2 py-1 rounded-full ${getBadgeClasses()}`}>
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${getBadgeClasses()}`}>
                       {item.count}
                     </span>
                   </button>
@@ -307,7 +307,7 @@ export default function DashboardV2() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6 lg:p-8">
+        <main className="flex-1 p-4 lg:p-6 max-w-[1800px]">
           {/* Mobile Page Title */}
           <div className="lg:hidden mb-6">
             <div className="flex items-center gap-3 mb-2">
