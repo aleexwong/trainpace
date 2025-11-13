@@ -174,29 +174,21 @@ export default function DashboardV2() {
   // Auth guard
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-        <div className="text-center max-w-md">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              Sign In Required
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Please sign in to view your dashboard and manage your routes and training plans.
-            </p>
-            <a
-              href="/login"
-              className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Go to Login
-            </a>
-          </div>
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="text-center py-12">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Sign In Required
+          </h2>
+          <p className="text-gray-600">
+            Please sign in to view your uploaded routes.
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="max-w-6xl mx-auto p-6">
       <Helmet>
         <title>Dashboard | TrainPace</title>
         <meta
@@ -205,16 +197,11 @@ export default function DashboardV2() {
         />
       </Helmet>
 
-      {/* Page Header with Background */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">My Dashboard</h1>
-          <p className="text-gray-600">Manage your routes and training plans</p>
-        </div>
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">My Dashboard</h1>
+        <p className="text-gray-600">Manage your routes and fuel plans</p>
       </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
       {/* Tabs */}
       <div className="mb-6">
@@ -313,7 +300,6 @@ export default function DashboardV2() {
           )}`}
         />
       )}
-      </div>
     </div>
   );
 }
