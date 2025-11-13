@@ -6,6 +6,34 @@ const Footer = () => {
   return (
     <footer className="bg-gray-50 border-t border-gray-200 mt-auto">
       <div className="max-w-7xl mx-auto px-6 py-12">
+        {/* Stats Section */}
+        <div className="max-w-5xl mx-auto mb-12 pb-8 border-b border-gray-200">
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-blue-600">
+                Always Free
+              </div>
+              <div className="text-sm text-gray-600 mt-1">
+                Core Tools Included
+              </div>
+            </div>
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-blue-600">
+                No Ads
+              </div>
+              <div className="text-sm text-gray-600 mt-1">Clean Experience</div>
+            </div>
+            <div>
+              <div className="text-3xl md:text-4xl font-bold text-blue-600">
+                Open Source
+              </div>
+              <div className="text-sm text-gray-600 mt-1">
+                Built for Runners
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Main Footer Content */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           {/* Product Column */}

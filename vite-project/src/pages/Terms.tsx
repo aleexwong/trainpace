@@ -213,7 +213,6 @@ export default function Terms() {
               <li><strong>Firebase (Google)</strong> - Authentication and file storage</li>
               <li><strong>Mapbox</strong> - Interactive maps and elevation rendering</li>
               <li><strong>Google Analytics</strong> - Usage analytics</li>
-              <li><strong>Amplitude</strong> - Product analytics</li>
               <li><strong>Vercel</strong> - Hosting infrastructure</li>
             </ul>
             <p className="text-gray-700 leading-relaxed">

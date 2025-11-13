@@ -283,21 +283,26 @@ export function UnifiedDifficultyView({
     () => ({
       responsive: true,
       maintainAspectRatio: true,
+      aspectRatio: 1,
       plugins: {
         legend: {
           position: "bottom" as const,
+          align: "center" as const,
           labels: {
-            font: { size: 12 },
-            padding: 15,
+            font: { size: 11 },
+            padding: 12,
             usePointStyle: true,
+            boxWidth: 12,
+            boxHeight: 12,
           },
         },
         tooltip: {
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
-          padding: 12,
+          backgroundColor: "rgba(0, 0, 0, 0.9)",
+          padding: 14,
           cornerRadius: 8,
-          titleFont: { size: 13, weight: "bold" as const },
-          bodyFont: { size: 12 },
+          titleFont: { size: 14, weight: "bold" as const },
+          bodyFont: { size: 13 },
+          bodySpacing: 6,
           callbacks: {
             title: (ctx: any) => {
               const idx = ctx[0]?.dataIndex;
@@ -310,9 +315,12 @@ export function UnifiedDifficultyView({
                 `${data?.segmentCount} section${
                   data?.segmentCount !== 1 ? "s" : ""
                 }`,
-                `${data?.time}`,
+                `Time: ${data?.time}`,
                 `${data?.percentage} of race`,
               ];
+            },
+            footer: () => {
+              return "Click to expand details";
             },
           },
         },
@@ -324,6 +332,13 @@ export function UnifiedDifficultyView({
           if (difficulty) {
             setExpandedGroup(expandedGroup === difficulty ? null : difficulty);
             setExpandedCluster(null);
+            // Scroll to accordion section
+            setTimeout(() => {
+              const element = document.getElementById(`difficulty-group-${difficulty}`);
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }
+            }, 100);
           }
         }
       },
@@ -360,30 +375,32 @@ export function UnifiedDifficultyView({
       </div>
 
       {/* Donut Chart Section */}
-      <div className="w-full bg-white rounded-lg border border-gray-200 p-6">
+      <div className="w-full bg-white rounded-lg border border-gray-200 py-4 sm:py-6">
         <div className="text-center mb-4">
-          <h3 className="font-semibold text-gray-800 mb-2">
+          <h3 className="font-semibold text-gray-800 text-base sm:text-lg mb-1 sm:mb-2">
             Race Difficulty Distribution
           </h3>
-          <p className="text-sm text-gray-600">
-            Click a segment to expand details below
+          <p className="text-xs sm:text-sm text-gray-600">
+            Click a chart segment to jump to details
           </p>
         </div>
 
-        <div className="w-full max-w-sm mx-auto h-80">
-          <Doughnut data={chart} options={options} />
+        <div className="w-full mb-6 flex justify-center">
+          <div className="w-full max-w-sm" style={{ maxHeight: '400px' }}>
+            <Doughnut data={chart} options={options} />
+          </div>
         </div>
 
-        <div className="text-center mt-6">
-          <p className="text-sm text-gray-600 mb-1">Total Race Time</p>
-          <p className="text-3xl font-bold text-gray-900">
+        <div className="text-center pt-4 border-t border-gray-200">
+          <p className="text-xs sm:text-sm text-gray-600 mb-1">Total Race Time</p>
+          <p className="text-2xl sm:text-3xl font-bold text-gray-900">
             {formatTime(totalRaceTime)}
           </p>
         </div>
       </div>
 
       {/* Accordion Sections */}
-      <div className="space-y-3 ">
+      <div className="space-y-3 overflow-hidden px-4">
         {groupedData.map((group) => {
           const isExpanded = expandedGroup === group.rating;
           const groupId = `difficulty-group-${group.rating}`;
@@ -392,8 +409,9 @@ export function UnifiedDifficultyView({
           return (
             <div
               key={group.rating}
+              id={`difficulty-group-${group.rating}`}
               className={`rounded-lg border ${group.color.bg} transition-all ${
-                isExpanded ? "shadow-lg" : ""
+                isExpanded ? "shadow-lg ring-2 ring-blue-400" : "shadow-sm"
               }`}
             >
               <button
@@ -401,7 +419,7 @@ export function UnifiedDifficultyView({
                   setExpandedGroup(isExpanded ? null : group.rating);
                   setExpandedCluster(null);
                 }}
-                className={`w-full px-4 py-3 flex items-center justify-between ${
+                className={`w-full px-3 sm:px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0 ${
                   group.color.header
                 }font-semibold transition-colors ${
                   isExpanded ? "opacity-100" : "opacity-80"
@@ -409,22 +427,22 @@ export function UnifiedDifficultyView({
                 aria-expanded={isExpanded}
                 aria-controls={contentId}
               >
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-3 min-w-0">
                   <ChevronDown
-                    className={`w-5 h-5 transition-transform ${
+                    className={`w-5 h-5 shrink-0 transition-transform ${
                       isExpanded ? "rotate-0" : "-rotate-90"
                     }`}
                     aria-hidden="true"
                   />
-                  <span className={group.color.text}>{group.label}</span>
-                  <span className={`text-sm ${group.color.accent}`}>
-                    ({group.clusters.length} sections)
+                  <span className={`${group.color.text} truncate`}>{group.label}</span>
+                  <span className={`text-xs sm:text-sm ${group.color.accent} whitespace-nowrap`}>
+                    ({group.clusters.length})
                   </span>
                 </div>
 
-                <div className="flex items-center space-x-4 text-sm">
-                  <div className={`text-right ${group.color.accent}`}>
-                    <div className="font-bold">
+                <div className="flex items-center justify-between sm:justify-end sm:space-x-4 text-sm w-full sm:w-auto">
+                  <div className={`text-left sm:text-right ${group.color.accent}`}>
+                    <div className="font-bold text-sm sm:text-base">
                       {formatTime(group.totalTime)}
                     </div>
                     <div className="text-xs opacity-75">
@@ -433,7 +451,7 @@ export function UnifiedDifficultyView({
                     </div>
                   </div>
                   <div className={`text-right ${group.color.accent}`}>
-                    <div className="font-bold">
+                    <div className="font-bold text-sm sm:text-base">
                       +
                       {formatElevation(group.totalElevationGain, {
                         units,
@@ -442,7 +460,9 @@ export function UnifiedDifficultyView({
                     </div>
                     <div className="text-xs opacity-75">elevation</div>
                   </div>
-                  {getChallengeIcon(group.rating)}
+                  <div className="shrink-0">
+                    {getChallengeIcon(group.rating)}
+                  </div>
                 </div>
               </button>
 
@@ -487,16 +507,16 @@ export function UnifiedDifficultyView({
                               isClusterExpanded ? null : clusterId
                             )
                           }
-                          className="w-full p-4 bg-white hover:bg-opacity-75 transition-colors text-left"
+                          className="w-full p-3 sm:p-4 bg-white hover:bg-opacity-75 transition-colors text-left"
                           aria-expanded={isClusterExpanded}
                           aria-controls={clusterContentId}
                         >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-2 flex-1">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div className="flex items-center space-x-2 flex-1 min-w-0">
                               {getSegmentIcon(cluster.segments[0].type)}
-                              <div>
+                              <div className="min-w-0 flex-1">
                                 <p
-                                  className={`font-medium ${group.color.text}`}
+                                  className={`font-medium ${group.color.text} text-sm sm:text-base truncate`}
                                 >
                                   {formatDistanceRange(
                                     cluster.startDistance,
@@ -506,14 +526,13 @@ export function UnifiedDifficultyView({
                                 </p>
                                 <p className="text-xs text-gray-600">
                                   {cluster.clusterLength.toFixed(1)}{" "}
-                                  {units === "imperial" ? "mi" : "km"} section •
-                                  Avg {cluster.avgGrade.toFixed(1)}% grade
+                                  {units === "imperial" ? "mi" : "km"} • Avg {cluster.avgGrade.toFixed(1)}%
                                 </p>
                               </div>
                             </div>
 
-                            <div className="text-right space-y-1">
-                              <p className={`font-bold ${group.color.accent}`}>
+                            <div className="text-left sm:text-right shrink-0 space-y-1 pl-6 sm:pl-0">
+                              <p className={`font-bold ${group.color.accent} text-sm sm:text-base`}>
                                 {cluster.avgPace}
                               </p>
                               <p className="text-xs text-gray-600">

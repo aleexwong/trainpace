@@ -21,7 +21,7 @@ export function usePaceCalculation(
   inputs: PaceInputs
 ): UsePaceCalculationReturn {
   return useMemo(() => {
-    const { distance, units, hours, minutes, seconds, paceType } = inputs;
+    const { distance, units, hours, minutes, seconds, paceType, age, temperature } = inputs;
 
     // Validate inputs
     const validation = validatePaceInputs(distance, hours, minutes, seconds);
@@ -37,11 +37,26 @@ export function usePaceCalculation(
     const totalSeconds = timeToSeconds(hours, minutes, seconds);
     const distanceNum = parseFloat(distance);
 
+    // Prepare optional parameters
+    const options: {
+      age?: number;
+      temperature?: number;
+    } = {};
+
+    if (age && parseInt(age) > 0) {
+      options.age = parseInt(age);
+    }
+
+    if (temperature && parseFloat(temperature) > 0) {
+      options.temperature = parseFloat(temperature);
+    }
+
     const result = calculateTrainingPaces(
       totalSeconds,
       distanceNum,
       units,
-      paceType
+      paceType,
+      options
     );
 
     return {

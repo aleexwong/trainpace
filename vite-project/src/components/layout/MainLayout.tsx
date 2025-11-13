@@ -76,6 +76,18 @@ export default function MainLayout() {
     }
   }, [mobileMenuOpen]);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   const getNavigationLinks = (): NavLink[] => {
     const publicLinks: NavLink[] = [
       { href: "#", label: "Preview Routes", isDropdown: true },
@@ -228,13 +240,12 @@ export default function MainLayout() {
 
       {/* Mobile Navigation Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full bg-white shadow-xl z-50 transition-transform duration-300 ease-in-out w-80 md:hidden ${
+        className={`fixed top-0 right-0 h-full bg-white shadow-xl z-50 transition-transform duration-300 ease-in-out w-80 md:hidden flex flex-col ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-8">
-            <span className="font-bold text-xl text-gray-900">Menu</span>
+        <div className="p-6 flex-shrink-0">
+          <div className="flex items-center justify-end mb-4">
             <Button
               variant="outline"
               size="sm"
@@ -258,8 +269,55 @@ export default function MainLayout() {
             </Button>
           </div>
 
-          <nav className="space-y-4">
-            {location.pathname !== "/" && (
+          {/* Preview Routes Section - Now in header area */}
+          <div className="pb-4 border-b border-gray-200">
+            <Button
+              variant="outline"
+              onClick={() => setMobilePreviewOpen(!mobilePreviewOpen)}
+              className="flex items-center justify-between w-full px-4 py-3 text-lg font-medium bg-white text-gray-900 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors"
+            >
+              <span>Preview Routes</span>
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-200 ${
+                  mobilePreviewOpen ? "rotate-180" : ""
+                }`}
+              />
+            </Button>
+
+            {mobilePreviewOpen && (
+              <div className="mt-2 space-y-1 bg-white p-2 rounded-lg">
+                {[
+                  { name: "Boston Marathon", slug: "boston" },
+                  { name: "NYC Marathon", slug: "nyc" },
+                  { name: "Chicago Marathon", slug: "chicago" },
+                  { name: "Berlin Marathon", slug: "berlin" },
+                  { name: "London Marathon", slug: "london" },
+                  { name: "Tokyo Marathon", slug: "tokyo" },
+                ].map((route) => (
+                  <Link
+                    key={route.slug}
+                    to={`/preview-route/${route.slug}`}
+                    className={`block py-2 px-6 text-base text-gray-700 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors ${
+                      location.pathname === `/preview-route/${route.slug}`
+                        ? "bg-blue-50 text-blue-600 font-medium"
+                        : "bg-white"
+                    }`}
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setMobilePreviewOpen(false);
+                    }}
+                  >
+                    {route.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Scrollable nav content */}
+        <div className="flex-1 overflow-y-auto px-6 pb-6">
+          <nav className="space-y-4">            {location.pathname !== "/" && (
               <Link
                 to="/"
                 className="block py-3 px-4 text-lg font-medium rounded-lg text-gray-900 hover:bg-gray-100 hover:text-blue-600"
@@ -311,51 +369,6 @@ export default function MainLayout() {
                 </Link>
               );
             })}
-
-            {/* Collapsible Preview Routes Section for Mobile */}
-            <div className="border-t border-gray-200 pt-4 mt-4">
-              <Button
-                variant="outline"
-                onClick={() => setMobilePreviewOpen(!mobilePreviewOpen)}
-                className="flex items-center justify-between w-full px-4 py-3 text-lg font-medium bg-white text-gray-900 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors"
-              >
-                <span>Preview Routes</span>
-                <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    mobilePreviewOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </Button>
-
-              {mobilePreviewOpen && (
-                <div className="mt-2 space-y-1 bg-white p-2 rounded-lg">
-                  {[
-                    { name: "Boston Marathon", slug: "boston" },
-                    { name: "NYC Marathon", slug: "nyc" },
-                    { name: "Chicago Marathon", slug: "chicago" },
-                    { name: "Berlin Marathon", slug: "berlin" },
-                    { name: "London Marathon", slug: "london" },
-                    { name: "Tokyo Marathon", slug: "tokyo" },
-                  ].map((route) => (
-                    <Link
-                      key={route.slug}
-                      to={`/preview-route/${route.slug}`}
-                      className={`block py-2 px-6 text-base text-gray-700 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors ${
-                        location.pathname === `/preview-route/${route.slug}`
-                          ? "bg-blue-50 text-blue-600 font-medium"
-                          : "bg-white"
-                      }`}
-                      onClick={() => {
-                        setMobileMenuOpen(false);
-                        setMobilePreviewOpen(false);
-                      }}
-                    >
-                      {route.name}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
 
             {user && (
               <Button

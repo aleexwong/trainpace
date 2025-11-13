@@ -9,7 +9,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/features/auth/AuthContext";
 import { getCurrentDocumentId, needsMigration } from "../config/routes";
 import { Button } from "@/components/ui/button";
-import { ShareLinkBox } from "@/components/ui/ShareLinkBox";
+import { ShareButton } from "@/components/ui/ShareButton";
 import MapboxRoutePreview from "@/components/utils/MapboxRoutePreview";
 import PosterButton from "@/components/poster/PosterButton";
 import ElevationInsights from "@/components/elevationfinder/ElevationInsights";
@@ -166,7 +166,7 @@ export default function ElevationPage() {
   // Check if we're in the middle of a migration
   if (urlDocId && needsMigration(urlDocId)) {
     return (
-      <div className="max-w-6xl mx-auto p-6 space-y-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
           <p className="text-gray-600 mt-4">Redirecting...</p>
@@ -186,7 +186,7 @@ export default function ElevationPage() {
         <link rel="canonical" href="/elevationfinder" />
       </Helmet>
 
-      <div className="max-w-6xl mx-auto p-6 space-y-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         {/* Header */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-700 text-center">
           <a
@@ -205,10 +205,12 @@ export default function ElevationPage() {
         {/* Action Buttons (show when we have a route) */}
         {currentDocId && (
           <div className="text-center space-y-3">
-            <div className="flex justify-center gap-3 flex-wrap">
+            <div className="flex justify-center gap-2 sm:gap-3 flex-wrap">
               <Button variant="outline" onClick={handleUploadNew}>
                 📁 Upload New Route
               </Button>
+
+              <ShareButton docId={currentDocId} />
 
               <PosterButton
                 displayPoints={
@@ -285,21 +287,6 @@ export default function ElevationPage() {
             mapStyle="mapbox://styles/mapbox/outdoors-v11"
             maxZoom={16}
           />
-        )}
-
-        {/* Share Link */}
-        {currentDocId && (
-          <div className="bg-white rounded-lg shadow-sm border p-4">
-            <h2 className="font-semibold text-gray-800 mb-2">
-              Share Your Route
-            </h2>
-            {import.meta.env.MODE === "development" && (
-              <div className="text-xs text-gray-500 mb-2">
-                Debug: currentDocId = {currentDocId}, urlDocId = {urlDocId}
-              </div>
-            )}
-            <ShareLinkBox docId={currentDocId} />
-          </div>
         )}
 
         {/* Error Display */}

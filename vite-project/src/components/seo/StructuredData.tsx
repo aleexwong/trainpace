@@ -29,7 +29,7 @@ export default function StructuredData(props: StructuredDataProps) {
           url: baseUrl,
           logo: `${baseUrl}/logo.png`,
           description:
-            "Free running training tools including pace calculator, elevation finder, and race fuel planner. Science-backed training zones for runners.",
+            "Free running training tools including pace calculator, elevation finder, and ai race fuel planner. Science-backed training zones for runners.",
           contactPoint: {
             "@type": "ContactPoint",
             email: "alex@trainpace.com",

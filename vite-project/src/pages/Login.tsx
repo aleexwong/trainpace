@@ -6,6 +6,30 @@ import { auth } from "@/lib/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
+// Security-conscious error messages that don't reveal account existence
+const getLoginErrorMessage = (code: string): string => {
+  switch (code) {
+    // Group these together to prevent account enumeration
+    case "auth/wrong-password":
+    case "auth/user-not-found":
+    case "auth/invalid-credential":
+    case "auth/invalid-email":
+      return "Invalid email or password. Please try again.";
+    
+    case "auth/user-disabled":
+      return "This account has been disabled. Contact support for help.";
+    
+    case "auth/network-request-failed":
+      return "Network error. Check your connection and try again.";
+    
+    case "auth/too-many-requests":
+      return "Too many failed attempts. Please try again later or reset your password.";
+    
+    default:
+      return "Unable to sign in. Please try again.";
+  }
+};
+
 export default function Login() {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -18,7 +42,7 @@ export default function Login() {
   // Redirect authenticated users away from login page
   useEffect(() => {
     if (user) {
-      navigate("/dashboard"); // or wherever you want them to go
+      navigate("/dashboard");
     }
   }, [user, navigate]);
 
@@ -37,15 +61,13 @@ export default function Login() {
       });
       // Don't manually navigate here - let the useEffect handle it
     } catch (err: any) {
-      const code = err.code;
-      if (code === "auth/user-not-found") {
-        setError("No account found with that email.");
-      } else if (code === "auth/wrong-password") {
-        setError("Incorrect password.");
-      } else {
-        setError("Something went wrong.");
-      }
-      console.error(err);
+      console.error("Login error:", err.code || err);
+      
+      const errorMessage = err.code 
+        ? getLoginErrorMessage(err.code)
+        : "Unable to sign in. Please try again.";
+      
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -92,10 +114,10 @@ export default function Login() {
             required
             disabled={isLoading}
           />
-          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {error && <p className="text-red-500 text-sm text-left">{error}</p>}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:opacity-50"
+            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:opacity-50 transition-colors"
             disabled={isLoading}
           >
             {isLoading ? "Signing in..." : "Sign in with Email"}

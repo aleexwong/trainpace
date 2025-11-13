@@ -1,7 +1,7 @@
 // src/pages/PreviewRoute.tsx
 import { useParams, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { MapPin, Activity, Calendar, ArrowLeft } from "lucide-react";
+import { MapPin, Activity, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 // import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
 import LeafletRoutePreview from "../components/utils/LeafletRoutePreview";
@@ -146,17 +146,6 @@ export default function PreviewRoute() {
         />
       </Helmet>
 
-      {/* Back Link */}
-      <div className="mb-6">
-        <Link
-          to="/"
-          className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Calculator</span>
-        </Link>
-      </div>
-
       {/* Route Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">{route.name}</h1>
@@ -211,7 +200,7 @@ export default function PreviewRoute() {
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
           Course Profile
         </h2>
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden relative z-0">
           {/* Use Leaflet for public preview to avoid requiring a Mapbox token */}
           <LeafletRoutePreview
             routePoints={
@@ -354,6 +343,12 @@ export default function PreviewRoute() {
               tips: route.tips,
             }}
           />
+          <Link
+            to={`/elevationfinder/${route.slug}`}
+            className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
+          >
+            ElevationFinder
+          </Link>
           <Link
             to="/calculator"
             className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"

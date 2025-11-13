@@ -30,7 +30,7 @@ export function RouteResults({
       <Card className="bg-white shadow-sm">
         <CardContent className="p-4">
           <h3 className="font-semibold text-gray-800 mb-2">Route Summary</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-sm">
             <div>
               <span className="text-gray-600">Distance:</span>
               <span className="font-medium ml-2">
