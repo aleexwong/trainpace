@@ -126,9 +126,9 @@ const Settings: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600 mb-4">
+          <p className="text-muted-foreground mb-4">
             Please sign in to access settings
           </p>
           <Button onClick={() => navigate("/login")}>Sign In</Button>
@@ -138,28 +138,28 @@ const Settings: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-          <p className="text-gray-600">Manage your account and preferences</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Settings</h1>
+          <p className="text-muted-foreground">Manage your account and preferences</p>
         </div>
 
         {/* Account Information Card */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="bg-card border rounded-lg p-6 mb-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-card-foreground mb-4">
             Account Information
           </h2>
           <div className="space-y-3">
-            <div className="flex items-center justify-between py-2 border-b border-gray-100">
-              <span className="font-medium text-gray-700">Name</span>
+            <div className="flex items-center justify-between py-2 border-b">
+              <span className="font-medium text-muted-foreground">Name</span>
               {editingName ? (
                 <div className="flex items-center gap-2">
                   <input
                     type="text"
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
-                    className="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="px-2 py-1 border border-input rounded text-sm focus:outline-none focus:ring-2 focus:ring-ring bg-background text-foreground"
                     placeholder="Enter your name"
                     maxLength={50}
                   />
@@ -186,27 +186,27 @@ const Settings: React.FC = () => {
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-900">
+                  <span className="text-foreground">
                     {user.displayName || "No name set"}
                   </span>
                   <Button
                     variant="outline"
                     onClick={() => setEditingName(true)}
                     size="sm"
-                    className="text-xs hover:text-blue-600"
+                    className="text-xs hover:text-primary"
                   >
                     Edit
                   </Button>
                 </div>
               )}
             </div>
-            <div className="flex items-center justify-between py-2 border-b border-gray-100">
-              <span className="font-medium text-gray-700">Email</span>
-              <span className="text-gray-900">{user.email}</span>
+            <div className="flex items-center justify-between py-2 border-b">
+              <span className="font-medium text-muted-foreground">Email</span>
+              <span className="text-foreground">{user.email}</span>
             </div>
             <div className="flex items-center justify-between py-2">
-              <span className="font-medium text-gray-700">Sign-in method</span>
-              <span className="text-gray-900 flex items-center">
+              <span className="font-medium text-muted-foreground">Sign-in method</span>
+              <span className="text-foreground flex items-center">
                 {isGoogleUser ? (
                   <>
                     <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
@@ -238,15 +238,15 @@ const Settings: React.FC = () => {
         </div>
 
         {/* Security Actions */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Security</h2>
+        <div className="bg-card border rounded-lg p-6 mb-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-card-foreground mb-4">Security</h2>
           <div className="space-y-4">
             {/* Password Reset - only for email/password users */}
             {!isGoogleUser && (
-              <div className="flex items-center justify-between py-3 border-b border-gray-100">
+              <div className="flex items-center justify-between py-3 border-b">
                 <div>
-                  <h3 className="font-medium text-gray-900">Password</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-medium text-foreground">Password</h3>
+                  <p className="text-sm text-muted-foreground">
                     Send a password reset email to your account
                   </p>
                 </div>
@@ -254,7 +254,7 @@ const Settings: React.FC = () => {
                   variant="outline"
                   onClick={handlePasswordReset}
                   disabled={isLoading}
-                  className="hover:text-blue-600"
+                  className="hover:text-primary"
                 >
                   {isLoading ? "Sending..." : "Reset Password"}
                 </Button>
@@ -264,15 +264,14 @@ const Settings: React.FC = () => {
             {/* Sign Out */}
             <div className="flex items-center justify-between py-3">
               <div>
-                <h3 className="font-medium text-gray-900">Log out</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="font-medium text-foreground">Log out</h3>
+                <p className="text-sm text-muted-foreground">
                   Log out of your current session
                 </p>
               </div>
               <Button
                 variant="outline"
                 onClick={handleSignOut}
-                className="hover:text-gray-600"
               >
                 Log Out
               </Button>
@@ -281,7 +280,7 @@ const Settings: React.FC = () => {
         </div>
 
         {/* Danger Zone */}
-        <div className="bg-white border border-red-200 rounded-lg p-6 shadow-sm">
+        <div className="bg-card border border-red-200 rounded-lg p-6 shadow-sm">
           <h2 className="text-xl font-semibold text-red-600 mb-4">
             Danger Zone
           </h2>
@@ -289,8 +288,8 @@ const Settings: React.FC = () => {
           {!showDeleteConfirm ? (
             <div className="flex items-center justify-between py-3">
               <div>
-                <h3 className="font-medium text-gray-900">Delete Account</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="font-medium text-foreground">Delete Account</h3>
+                <p className="text-sm text-muted-foreground">
                   Permanently delete your account and all data
                 </p>
               </div>
@@ -344,7 +343,6 @@ const Settings: React.FC = () => {
                     setShowDeleteConfirm(false);
                     setDeletePassword("");
                   }}
-                  className="text-gray-600 hover:text-gray-700"
                 >
                   Cancel
                 </Button>

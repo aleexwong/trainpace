@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import PreviewRoutesDropdown from "./PreviewRoutesDropdown";
 import Footer from "./Footer";
+import ThemeToggle from "@/features/theme/ThemeToggle";
 
 type NavBehavior = "static" | "sticky" | "fixed" | "auto-hide";
 interface NavLink {
@@ -121,29 +122,29 @@ export default function MainLayout() {
   // Dynamic header classes based on behavior
   const getHeaderClasses = () => {
     const baseClasses =
-      "flex justify-between items-center px-4 py-4 border-b border-gray-200 transition-all duration-300";
+      "flex justify-between items-center px-4 py-4 border-b transition-all duration-300";
 
     switch (navBehavior) {
       case "static":
-        return `${baseClasses} bg-white relative z-50`;
+        return `${baseClasses} bg-background relative z-50`;
 
       case "sticky":
         return `${baseClasses} sticky top-0 z-50 ${
-          scrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-white"
+          scrolled ? "bg-background/90 backdrop-blur-md shadow-md" : "bg-background"
         }`;
 
       case "fixed":
         return `${baseClasses} fixed top-0 left-0 right-0 z-50 ${
-          scrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-white"
+          scrolled ? "bg-background/90 backdrop-blur-md shadow-md" : "bg-background"
         }`;
 
       case "auto-hide":
         return `${baseClasses} fixed top-0 left-0 right-0 z-50 transform transition-transform duration-300 ${
           navVisible ? "translate-y-0" : "-translate-y-full"
-        } ${scrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-white"}`;
+        } ${scrolled ? "bg-background/90 backdrop-blur-md shadow-md" : "bg-background"}`;
 
       default:
-        return `${baseClasses} bg-white relative z-50`;
+        return `${baseClasses} bg-background relative z-50`;
     }
   };
 
@@ -156,11 +157,11 @@ export default function MainLayout() {
   };
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen flex flex-col">
+    <div className="bg-background text-foreground min-h-screen flex flex-col">
       <header className={getHeaderClasses()}>
         <Link
           to="/"
-          className="text-xl font-bold text-gray-900 z-30 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="text-xl font-bold text-foreground z-30 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
           aria-label="Go to homepage"
         >
           TrainPace
@@ -169,15 +170,15 @@ export default function MainLayout() {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-4">
           {location.pathname === "/" && (
-            <a href="#features" className="text-gray-700 hover:text-blue-600">
+            <a href="#features" className="text-muted-foreground hover:text-primary">
               Features
             </a>
           )}
 
           <Link
             to="/about"
-            className={`text-gray-700 hover:text-blue-600 transition-colors ${
-              location.pathname === "/about" ? "text-blue-600 font-medium" : ""
+            className={`text-muted-foreground hover:text-primary transition-colors ${
+              location.pathname === "/about" ? "text-primary font-medium" : ""
             }`}
           >
             About
@@ -194,9 +195,9 @@ export default function MainLayout() {
               <Link
                 key={link.href}
                 to={link.href}
-                className={`text-gray-700 hover:text-blue-600 transition-colors ${
+                className={`text-muted-foreground hover:text-primary transition-colors ${
                   location.pathname === link.href
-                    ? "text-blue-600 font-medium"
+                    ? "text-primary font-medium"
                     : ""
                 }`}
               >
@@ -204,6 +205,8 @@ export default function MainLayout() {
               </Link>
             );
           })}
+
+          <ThemeToggle />
         </nav>
 
         {/* Mobile Menu Button */}
@@ -240,7 +243,7 @@ export default function MainLayout() {
 
       {/* Mobile Navigation Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full bg-white shadow-xl z-50 transition-transform duration-300 ease-in-out w-80 md:hidden flex flex-col ${
+        className={`fixed top-0 right-0 h-full bg-background shadow-xl z-50 transition-transform duration-300 ease-in-out w-80 md:hidden flex flex-col ${
           mobileMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -270,11 +273,11 @@ export default function MainLayout() {
           </div>
 
           {/* Preview Routes Section - Now in header area */}
-          <div className="pb-4 border-b border-gray-200">
+          <div className="pb-4 border-b">
             <Button
               variant="outline"
               onClick={() => setMobilePreviewOpen(!mobilePreviewOpen)}
-              className="flex items-center justify-between w-full px-4 py-3 text-lg font-medium bg-white text-gray-900 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors"
+              className="flex items-center justify-between w-full px-4 py-3 text-lg font-medium bg-background text-foreground hover:bg-accent hover:text-primary rounded-lg transition-colors"
             >
               <span>Preview Routes</span>
               <ChevronDown
@@ -285,7 +288,7 @@ export default function MainLayout() {
             </Button>
 
             {mobilePreviewOpen && (
-              <div className="mt-2 space-y-1 bg-white p-2 rounded-lg">
+              <div className="mt-2 space-y-1 bg-background p-2 rounded-lg">
                 {[
                   { name: "Boston Marathon", slug: "boston" },
                   { name: "NYC Marathon", slug: "nyc" },
@@ -297,10 +300,10 @@ export default function MainLayout() {
                   <Link
                     key={route.slug}
                     to={`/preview-route/${route.slug}`}
-                    className={`block py-2 px-6 text-base text-gray-700 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors ${
+                    className={`block py-2 px-6 text-base text-muted-foreground hover:bg-accent hover:text-primary rounded-lg transition-colors ${
                       location.pathname === `/preview-route/${route.slug}`
-                        ? "bg-blue-50 text-blue-600 font-medium"
-                        : "bg-white"
+                        ? "bg-accent text-primary font-medium"
+                        : "bg-background"
                     }`}
                     onClick={() => {
                       setMobileMenuOpen(false);
@@ -320,7 +323,7 @@ export default function MainLayout() {
           <nav className="space-y-4">            {location.pathname !== "/" && (
               <Link
                 to="/"
-                className="block py-3 px-4 text-lg font-medium rounded-lg text-gray-900 hover:bg-gray-100 hover:text-blue-600"
+                className="block py-3 px-4 text-lg font-medium rounded-lg text-foreground hover:bg-accent hover:text-primary"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
@@ -330,7 +333,7 @@ export default function MainLayout() {
             {location.pathname === "/" && (
               <a
                 href="#features"
-                className="block py-3 px-4 text-lg font-medium rounded-lg text-gray-900 hover:bg-gray-100 hover:text-blue-600"
+                className="block py-3 px-4 text-lg font-medium rounded-lg text-foreground hover:bg-accent hover:text-primary"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Features
@@ -341,8 +344,8 @@ export default function MainLayout() {
               to="/about"
               className={`block py-3 px-4 text-lg font-medium rounded-lg transition-colors ${
                 location.pathname === "/about"
-                  ? "bg-blue-50 text-blue-600"
-                  : "text-gray-900 hover:bg-gray-100 hover:text-blue-600"
+                  ? "bg-accent text-primary"
+                  : "text-foreground hover:bg-accent hover:text-primary"
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -360,8 +363,8 @@ export default function MainLayout() {
                   to={link.href}
                   className={`block py-3 px-4 text-lg font-medium rounded-lg transition-colors ${
                     location.pathname === link.href
-                      ? "bg-blue-50 text-blue-600"
-                      : "text-gray-900 hover:bg-gray-100 hover:text-blue-600"
+                      ? "bg-accent text-primary"
+                      : "text-foreground hover:bg-accent hover:text-primary"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -370,16 +373,19 @@ export default function MainLayout() {
               );
             })}
 
-            {user && (
-              <Button
-                variant="outline"
-                className="w-full mt-6"
-                onClick={handleLogout}
-                disabled={loading}
-              >
-                Logout
-              </Button>
-            )}
+            <div className="flex items-center gap-2 mt-6">
+              <ThemeToggle />
+              {user && (
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={handleLogout}
+                  disabled={loading}
+                >
+                  Logout
+                </Button>
+              )}
+            </div>
           </nav>
         </div>
       </div>
