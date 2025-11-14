@@ -46,14 +46,14 @@ export default function Landing() {
         <img
           src={trainPaceHeroMobile}
           alt="TrainPace Mobile Hero"
-          className="w-full h-[500px] object-cover object-top md:hidden"
+          className="w-full h-[500px] object-cover object-top md:hidden rounded-b-3xl"
         />
 
         {/* Desktop image */}
         <img
           src={trainPaceHeroImage}
           alt="TrainPace Desktop Hero"
-          className="hidden md:block w-full h-[600px] object-cover object-left-top"
+          className="hidden md:block w-full h-[600px] object-cover object-left-top rounded-b-3xl"
         />
 
         <div className="px-6 max-w-4xl mx-auto">
@@ -85,13 +85,13 @@ export default function Landing() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link to={user ? "/dashboard" : "/calculator"}>
-              <Button size="lg" className="text-lg px-8 py-4">
+              <Button size="lg" className="text-lg px-8 py-4 rounded-full shadow-lg hover:shadow-xl">
                 {user ? "Go to Dashboard" : "Get Started Free"}
               </Button>
             </Link>
 
             <Link to="/elevationfinder">
-              <Button size="lg" variant="outline" className="text-lg px-8 py-4">
+              <Button size="lg" variant="outline" className="text-lg px-8 py-4 rounded-full">
                 Upload GPX File
               </Button>
             </Link>
@@ -107,7 +107,7 @@ export default function Landing() {
       <SocialProofMarquee />
 
       {/* Features - Detailed & Accurate */}
-      <section id="features" className="py-20 px-6 max-w-6xl mx-auto">
+      <section id="features" className="py-24 px-6 max-w-6xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
           Everything You Need to Train Smarter
         </h2>
@@ -142,7 +142,7 @@ export default function Landing() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 px-6 bg-blue-50">
+      <section className="py-24 px-6 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
             How TrainPace Works
@@ -178,7 +178,7 @@ export default function Landing() {
       </section>
 
       {/* Use Cases - Real Runner Scenarios */}
-      <section className="py-20 px-6 max-w-6xl mx-auto">
+      <section className="py-24 px-6 max-w-6xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
           Built for Real Runners
         </h2>
@@ -216,7 +216,7 @@ export default function Landing() {
       </section>
 
       {/* Why TrainPace - Value Props */}
-      <section className="py-20 px-6 bg-gray-50">
+      <section className="py-24 px-6 bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
             Why Runners Choose TrainPace
@@ -260,7 +260,7 @@ export default function Landing() {
       {/* Final CTA - Strong & Specific */}
       <section
         id="cta"
-        className="py-20 text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white"
+        className="py-24 text-center bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white"
       >
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -276,7 +276,7 @@ export default function Landing() {
             <Link to={user ? "/dashboard" : "/calculator"}>
               <Button
                 size="lg"
-                className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-white/90"
+                className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-white/90 rounded-full shadow-xl"
               >
                 {user ? "Go to Dashboard" : "Get Started Free"}
               </Button>
@@ -286,7 +286,7 @@ export default function Landing() {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-white/90"
+                className="text-lg px-8 py-4 bg-white text-blue-600 hover:bg-white/90 rounded-full"
               >
                 Analyze Elevation
               </Button>
@@ -321,10 +321,10 @@ function FeatureCard({
   return (
     <Link
       to={link}
-      className="relative p-6 bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-all hover:border-blue-300 group"
+      className="relative p-8 bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all group"
     >
       {badge && (
-        <div className="absolute top-4 right-4 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
+        <div className="absolute top-4 right-4 bg-blue-600 text-white text-xs px-3 py-1.5 rounded-full">
           {badge}
         </div>
       )}
@@ -356,7 +356,7 @@ function Step({
 }) {
   return (
     <div className="text-center">
-      <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4 shadow-lg">
         {number}
       </div>
       <h3 className="font-semibold mb-2 text-gray-900">{title}</h3>
@@ -377,10 +377,10 @@ function UseCase({
   icon: JSX.Element;
 }) {
   return (
-    <div className="p-6 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+    <div className="p-8 bg-white rounded-3xl shadow-md hover:shadow-xl transition-shadow">
       <div className="flex items-center gap-3 mb-3">
         <div className="text-4xl">{emoji}</div>
-        <div className="p-2 bg-gray-50 rounded-lg">{icon}</div>
+        <div className="p-2 bg-gray-50 rounded-2xl">{icon}</div>
       </div>
       <h3 className="text-xl font-semibold mb-3 text-gray-900">{title}</h3>
       <p className="text-gray-600 text-sm leading-relaxed">{scenario}</p>
