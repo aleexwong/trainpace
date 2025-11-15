@@ -1,7 +1,7 @@
 import { Button } from "../ui/button";
 import { Image } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
-import { PosterGenerator } from "./index";
+import { PosterGeneratorV3 } from "./index";
 import type { GPXMetadata } from "../../lib/gpxMetaData";
 
 type GpxPoint = { lat: number; lng: number; ele?: number };
@@ -46,7 +46,7 @@ export default function PosterButton({
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-5xl w-full h-[90vh] overflow-y-auto">
-        <PosterGenerator
+        <PosterGeneratorV3
           displayPoints={displayPoints}
           metadata={metadata}
           filename={filename}
