@@ -69,23 +69,23 @@ const TEMPLATE_COLORS = [
     bg: "#ecf8ff",
     mapStyle: "mapbox://styles/mapbox/satellite-streets-v12",
   },
-  { 
-    name: "Forest", 
-    route: "#27ae60", 
-    bg: "#f0fdf4", 
-    mapStyle: "mapbox://styles/mapbox/outdoors-v12" 
+  {
+    name: "Forest",
+    route: "#27ae60",
+    bg: "#f0fdf4",
+    mapStyle: "mapbox://styles/mapbox/outdoors-v12",
   },
-  { 
-    name: "Sunset", 
-    route: "#f39c12", 
-    bg: "#fef7ed", 
-    mapStyle: "mapbox://styles/mapbox/light-v11" 
+  {
+    name: "Sunset",
+    route: "#f39c12",
+    bg: "#fef7ed",
+    mapStyle: "mapbox://styles/mapbox/light-v11",
   },
-  { 
-    name: "Purple", 
-    route: "#9b59b6", 
-    bg: "#faf5ff", 
-    mapStyle: "mapbox://styles/mapbox/dark-v11" 
+  {
+    name: "Purple",
+    route: "#9b59b6",
+    bg: "#faf5ff",
+    mapStyle: "mapbox://styles/mapbox/dark-v11",
   },
   {
     name: "Night",
@@ -93,11 +93,11 @@ const TEMPLATE_COLORS = [
     bg: "#1a1a1a",
     mapStyle: "mapbox://styles/mapbox/navigation-night-v1",
   },
-  { 
-    name: "Minimal", 
-    route: "#f39c12", 
-    bg: "#f9fafb", 
-    mapStyle: "mapbox://styles/mapbox/light-v11" 
+  {
+    name: "Minimal",
+    route: "#f39c12",
+    bg: "#f9fafb",
+    mapStyle: "mapbox://styles/mapbox/light-v11",
   },
   {
     name: "Satellite",
@@ -172,7 +172,9 @@ export default function PosterGeneratorV3({
   });
 
   const [selectedTemplate, setSelectedTemplate] = useState(0);
-  const [currentMapStyle, setCurrentMapStyle] = useState(TEMPLATE_COLORS[0].mapStyle);
+  const [currentMapStyle, setCurrentMapStyle] = useState(
+    TEMPLATE_COLORS[0].mapStyle
+  );
   const [isGenerating, setIsGenerating] = useState(false);
   const [debugInfo, setDebugInfo] = useState<string[]>([]);
   const [showStartEndMarkers, setShowStartEndMarkers] = useState(true);
@@ -207,9 +209,9 @@ export default function PosterGeneratorV3({
     const geocodeCity = async () => {
       setIsGeocodingCity(true);
       addDebugInfo("🌍 Geocoding city from route...");
-      
+
       const result = await getCityFromRoute(displayPoints, MAPBOX_TOKEN);
-      
+
       if (result.city) {
         setPosterData((prev) => ({
           ...prev,
@@ -219,7 +221,7 @@ export default function PosterGeneratorV3({
       } else {
         addDebugInfo("⚠️ Could not detect city, using default");
       }
-      
+
       setIsGeocodingCity(false);
     };
 
@@ -229,8 +231,15 @@ export default function PosterGeneratorV3({
   // Update template colors and map style when template changes
   useEffect(() => {
     const template = TEMPLATE_COLORS[selectedTemplate];
-    console.log('🎯 Template changed to:', template.name, '| Style:', template.mapStyle, '| Color:', template.route);
-    
+    console.log(
+      "🎯 Template changed to:",
+      template.name,
+      "| Style:",
+      template.mapStyle,
+      "| Color:",
+      template.route
+    );
+
     setPosterData((prev) => ({
       ...prev,
       routeColor: template.route,
@@ -241,7 +250,8 @@ export default function PosterGeneratorV3({
 
   // Initialize preview map
   useEffect(() => {
-    if (!previewMapRef.current || !MAPBOX_TOKEN || !displayPoints.length) return;
+    if (!previewMapRef.current || !MAPBOX_TOKEN || !displayPoints.length)
+      return;
 
     const initializeMap = async () => {
       try {
@@ -262,39 +272,44 @@ export default function PosterGeneratorV3({
           (Math.min(...lngs) + Math.max(...lngs)) / 2,
           (Math.min(...lats) + Math.max(...lats)) / 2,
         ];
-        
+
         // Calculate zoom using proper web mercator math
         const latSpan = Math.max(...lats) - Math.min(...lats);
         const lngSpan = Math.max(...lngs) - Math.min(...lngs);
-        
+
         // Get container dimensions
-        const containerWidth = previewMapRef.current.offsetWidth;
-        const containerHeight = previewMapRef.current.offsetHeight;
-        
+        const containerWidth = previewMapRef.current?.offsetWidth || 400;
+        const containerHeight = previewMapRef.current?.offsetHeight || 500;
+
         // Calculate zoom for lat and lng separately, use the smaller
         const WORLD_DIM = { height: 256, width: 256 };
         const ZOOM_MAX = 18;
-        
+
         function latRad(lat: number) {
           const sin = Math.sin((lat * Math.PI) / 180);
           const radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
           return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
         }
-        
+
         function zoom(mapPx: number, worldPx: number, fraction: number) {
           return Math.floor(Math.log(mapPx / worldPx / fraction) / Math.LN2);
         }
-        
-        const latFraction = (latRad(Math.max(...lats)) - latRad(Math.min(...lats))) / Math.PI;
+
+        const latFraction =
+          (latRad(Math.max(...lats)) - latRad(Math.min(...lats))) / Math.PI;
         const lngFraction = lngSpan / 360;
-        
+
         const latZoom = zoom(containerHeight, WORLD_DIM.height, latFraction);
         const lngZoom = zoom(containerWidth, WORLD_DIM.width, lngFraction);
-        
+
         // Use the lower zoom to ensure route fits, subtract 1 for padding
         const calculatedZoom = Math.min(latZoom, lngZoom, ZOOM_MAX) - 1;
         const maxSpan = Math.max(latSpan, lngSpan);
-        addDebugInfo(`🗺️ Initial zoom: ${calculatedZoom} (span: ${(maxSpan * 111).toFixed(1)}km)`);
+        addDebugInfo(
+          `🗺️ Initial zoom: ${calculatedZoom} (span: ${(maxSpan * 111).toFixed(
+            1
+          )}km)`
+        );
 
         // Initialize map with manual center/zoom - user has full control from start
         previewMap.current = new mapboxgl.Map({
@@ -357,20 +372,30 @@ export default function PosterGeneratorV3({
   useEffect(() => {
     if (previewMap.current && mapReady) {
       const currentStyle = previewMap.current.getStyle();
-      const currentStyleUrl = currentStyle?.sprite?.split('/styles/')[1]?.split('/')[0];
-      const newStyleUrl = currentMapStyle.split('/styles/')[1]?.split('/')[0];
-      
-      console.log('🎨 Style check - current:', currentStyleUrl, '| new:', newStyleUrl);
-      
+      const currentStyleUrl = currentStyle?.sprite
+        ?.split("/styles/")[1]
+        ?.split("/")[0];
+      const newStyleUrl = currentMapStyle.split("/styles/")[1]?.split("/")[0];
+
+      console.log(
+        "🎨 Style check - current:",
+        currentStyleUrl,
+        "| new:",
+        newStyleUrl
+      );
+
       // Only reload style if it actually changed
       if (currentStyleUrl !== newStyleUrl) {
-        console.log('🔄 Style changing to:', currentMapStyle);
+        console.log("🔄 Style changing to:", currentMapStyle);
         previewMap.current.setStyle(currentMapStyle);
-        
+
         // Re-add route after style loads
         previewMap.current.once("styledata", () => {
-          console.log('🎨 Style loaded, re-adding route with color:', posterData.routeColor);
-          
+          console.log(
+            "🎨 Style loaded, re-adding route with color:",
+            posterData.routeColor
+          );
+
           if (previewMap.current.getSource("route")) {
             previewMap.current.removeLayer("route");
             previewMap.current.removeSource("route");
@@ -401,17 +426,19 @@ export default function PosterGeneratorV3({
               "line-width": 3,
             },
           });
-          
-          console.log('✅ Route layer added after style change');
-          
+
+          console.log("✅ Route layer added after style change");
+
           // Wait for idle to ensure everything is rendered
-          previewMap.current.once('idle', () => {
-            console.log('✅ Map idle after style change');
-            previewMap.current.fire('moveend'); // Trigger canvas redraw
+          previewMap.current.once("idle", () => {
+            console.log("✅ Map idle after style change");
+            previewMap.current.fire("moveend"); // Trigger canvas redraw
           });
         });
       } else {
-        console.log('⏭️ Same style, skipping reload - color will update separately');
+        console.log(
+          "⏭️ Same style, skipping reload - color will update separately"
+        );
       }
     }
   }, [currentMapStyle, mapReady, displayPoints, showStartEndMarkers]);
@@ -419,30 +446,34 @@ export default function PosterGeneratorV3({
   // Update route color when it changes (separate from style changes)
   useEffect(() => {
     if (!previewMap.current || !mapReady) {
-      console.log('⏳ Color update blocked: map not ready');
+      console.log("⏳ Color update blocked: map not ready");
       return;
     }
-    
+
     // Short delay to ensure style change effect completed if triggered
     const timer = setTimeout(() => {
       // Wait for style to be fully loaded before updating paint properties
       if (!previewMap.current.isStyleLoaded()) {
-        console.log('⏳ Style not loaded, skipping color update');
+        console.log("⏳ Style not loaded, skipping color update");
         return;
       }
-      
+
       // Check if layer exists before updating
       if (previewMap.current.getLayer("route")) {
-        console.log('🎨 Updating route color to:', posterData.routeColor);
-        previewMap.current.setPaintProperty("route", "line-color", posterData.routeColor);
-        
+        console.log("🎨 Updating route color to:", posterData.routeColor);
+        previewMap.current.setPaintProperty(
+          "route",
+          "line-color",
+          posterData.routeColor
+        );
+
         // Force a repaint to ensure the color change is visible
         previewMap.current.triggerRepaint();
       } else {
-        console.log('⚠️ Route layer not found for color update');
+        console.log("⚠️ Route layer not found for color update");
       }
     }, 50);
-    
+
     return () => clearTimeout(timer);
   }, [posterData.routeColor, mapReady]);
 
@@ -451,7 +482,7 @@ export default function PosterGeneratorV3({
     if (!previewMap.current || !mapReady || !displayPoints.length) return;
 
     // Clear existing markers
-    markersRef.current.forEach(marker => marker.remove());
+    markersRef.current.forEach((marker) => marker.remove());
     markersRef.current = [];
 
     // Add markers if enabled
@@ -461,20 +492,20 @@ export default function PosterGeneratorV3({
       const end = displayPoints[displayPoints.length - 1];
 
       // Create custom circle element for start marker
-      const startEl = document.createElement('div');
-      startEl.style.width = '10px';
-      startEl.style.height = '10px';
-      startEl.style.borderRadius = '50%'; // Circle
+      const startEl = document.createElement("div");
+      startEl.style.width = "10px";
+      startEl.style.height = "10px";
+      startEl.style.borderRadius = "50%"; // Circle
       startEl.style.backgroundColor = posterData.routeColor;
-      startEl.style.cursor = 'pointer';
+      startEl.style.cursor = "pointer";
 
       // Create custom square element for end marker
-      const endEl = document.createElement('div');
-      endEl.style.width = '10px';
-      endEl.style.height = '10px';
-      endEl.style.borderRadius = '2px'; // Square with slight rounding
+      const endEl = document.createElement("div");
+      endEl.style.width = "10px";
+      endEl.style.height = "10px";
+      endEl.style.borderRadius = "2px"; // Square with slight rounding
       endEl.style.backgroundColor = posterData.routeColor;
-      endEl.style.cursor = 'pointer';
+      endEl.style.cursor = "pointer";
 
       const startMarker = new mapboxgl.Marker({ element: startEl })
         .setLngLat([start.lng, start.lat])
@@ -485,9 +516,9 @@ export default function PosterGeneratorV3({
         .addTo(previewMap.current);
 
       markersRef.current = [startMarker, endMarker];
-      console.log('✅ Markers added: circle (start) + square (end)');
+      console.log("✅ Markers added: circle (start) + square (end)");
     } else {
-      console.log('🚫 Markers removed');
+      console.log("🚫 Markers removed");
     }
   }, [showStartEndMarkers, mapReady, displayPoints, posterData.routeColor]);
 
@@ -502,13 +533,17 @@ export default function PosterGeneratorV3({
 
       updatePreviewTimeoutRef.current = setTimeout(() => {
         if (!previewMap.current || !previewCanvasRef.current) {
-          console.log('Preview update skipped: missing refs');
+          console.log("Preview update skipped: missing refs");
           return;
         }
-        
-        console.log('Drawing stats overlay with data:', posterData.city, posterData.time);
+
+        console.log(
+          "Drawing stats overlay with data:",
+          posterData.city,
+          posterData.time
+        );
         const canvas = previewCanvasRef.current;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
         // Set canvas size to match container (retina)
@@ -517,8 +552,8 @@ export default function PosterGeneratorV3({
         const scale = window.devicePixelRatio || 2;
         canvas.width = displayWidth * scale;
         canvas.height = displayHeight * scale;
-        canvas.style.width = displayWidth + 'px';
-        canvas.style.height = displayHeight + 'px';
+        canvas.style.width = displayWidth + "px";
+        canvas.style.height = displayHeight + "px";
         ctx.scale(scale, scale);
 
         // Clear canvas
@@ -527,7 +562,7 @@ export default function PosterGeneratorV3({
         // Only draw stats at the bottom - map is already visible underneath
         const statsHeight = displayHeight * PRINT_CONFIG.statsHeight;
         const statsTop = displayHeight * PRINT_CONFIG.mapHeight;
-        
+
         // Draw stats background
         ctx.fillStyle = posterData.backgroundColor;
         ctx.fillRect(0, statsTop, displayWidth, statsHeight);
@@ -553,9 +588,9 @@ export default function PosterGeneratorV3({
 
       updatePreviewTimeoutRef.current = setTimeout(() => {
         if (!previewMap.current || !previewCanvasRef.current) return;
-        
+
         const canvas = previewCanvasRef.current;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
         const displayWidth = canvas.offsetWidth;
@@ -563,15 +598,15 @@ export default function PosterGeneratorV3({
         const scale = window.devicePixelRatio || 2;
         canvas.width = displayWidth * scale;
         canvas.height = displayHeight * scale;
-        canvas.style.width = displayWidth + 'px';
-        canvas.style.height = displayHeight + 'px';
+        canvas.style.width = displayWidth + "px";
+        canvas.style.height = displayHeight + "px";
         ctx.scale(scale, scale);
 
         ctx.clearRect(0, 0, displayWidth, displayHeight);
 
         const statsHeight = displayHeight * PRINT_CONFIG.statsHeight;
         const statsTop = displayHeight * PRINT_CONFIG.mapHeight;
-        
+
         ctx.fillStyle = posterData.backgroundColor;
         ctx.fillRect(0, statsTop, displayWidth, statsHeight);
 
@@ -582,11 +617,11 @@ export default function PosterGeneratorV3({
 
     // Listen to moveend for map pan/zoom updates
     const onMapUpdate = () => updatePreview();
-    previewMap.current.on('moveend', onMapUpdate);
+    previewMap.current.on("moveend", onMapUpdate);
 
     return () => {
       if (previewMap.current) {
-        previewMap.current.off('moveend', onMapUpdate);
+        previewMap.current.off("moveend", onMapUpdate);
       }
       if (updatePreviewTimeoutRef.current) {
         clearTimeout(updatePreviewTimeoutRef.current);
@@ -614,7 +649,7 @@ export default function PosterGeneratorV3({
         if (previewMap.current.loaded()) {
           resolve();
         } else {
-          previewMap.current.once('idle', () => resolve());
+          previewMap.current.once("idle", () => resolve());
         }
       });
 
@@ -635,20 +670,33 @@ export default function PosterGeneratorV3({
 
       // Calculate map area with margins
       const margin = PRINT_CONFIG.width * 0.05;
-      const mapWidth = PRINT_CONFIG.width - (margin * 2);
-      const mapHeight = PRINT_CONFIG.height * PRINT_CONFIG.mapHeight - (margin * 2);
+      const mapWidth = PRINT_CONFIG.width - margin * 2;
+      const mapHeight =
+        PRINT_CONFIG.height * PRINT_CONFIG.mapHeight - margin * 2;
 
       // Draw the preview map scaled up to print resolution
       // This is EXACTLY what you see in the preview
       ctx.drawImage(
         previewCanvas,
-        0, 0, previewCanvas.width, previewCanvas.height, // source
-        margin, margin, mapWidth, mapHeight // destination
+        0,
+        0,
+        previewCanvas.width,
+        previewCanvas.height, // source
+        margin,
+        margin,
+        mapWidth,
+        mapHeight // destination
       );
 
       // Draw stats
       const statsTop = PRINT_CONFIG.height * PRINT_CONFIG.mapHeight;
-      renderStats(ctx, PRINT_CONFIG.width, PRINT_CONFIG.height * PRINT_CONFIG.statsHeight, statsTop, 6);
+      renderStats(
+        ctx,
+        PRINT_CONFIG.width,
+        PRINT_CONFIG.height * PRINT_CONFIG.statsHeight,
+        statsTop,
+        6
+      );
 
       addDebugInfo("💾 Exporting poster");
 
@@ -658,7 +706,10 @@ export default function PosterGeneratorV3({
           if (blob) {
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
-            const safeRaceName = posterData.raceName.replace(/[^a-zA-Z0-9]/g, "_");
+            const safeRaceName = posterData.raceName.replace(
+              /[^a-zA-Z0-9]/g,
+              "_"
+            );
             link.download = `${safeRaceName}_poster_8x10_300dpi.png`;
             link.href = url;
             link.click();
@@ -681,7 +732,8 @@ export default function PosterGeneratorV3({
       console.error("Error generating poster:", error);
       toast({
         title: "Generation Failed",
-        description: "There was an error creating your poster. Please try again.",
+        description:
+          "There was an error creating your poster. Please try again.",
         variant: "destructive",
       });
       setIsGenerating(false);
@@ -830,7 +882,9 @@ export default function PosterGeneratorV3({
                   <MapPin className="w-4 h-4" />
                   City
                   {isGeocodingCity && (
-                    <span className="text-xs text-blue-600 ml-1">(detecting...)</span>
+                    <span className="text-xs text-blue-600 ml-1">
+                      (detecting...)
+                    </span>
                   )}
                 </Label>
                 <Input
@@ -978,7 +1032,9 @@ export default function PosterGeneratorV3({
               <div>• Use the map to frame your route perfectly</div>
               <div>• Customize colors, text, and markers below</div>
               <div>• Download at 300 DPI for print-ready quality</div>
-              <div className="font-semibold text-blue-600">• Simple workflow: frame, customize, download</div>
+              <div className="font-semibold text-blue-600">
+                • Simple workflow: frame, customize, download
+              </div>
               {!MAPBOX_TOKEN && (
                 <div className="text-red-500">
                   ⚠ Mapbox token not configured
@@ -990,41 +1046,42 @@ export default function PosterGeneratorV3({
           {/* Preview - Map with poster overlay */}
           <div className="space-y-3">
             <Label className="text-base font-medium">Preview Poster</Label>
-            <div 
-              className="border border-gray-200 rounded-lg overflow-hidden relative" 
-              style={{ 
+            <div
+              className="border border-gray-200 rounded-lg overflow-hidden relative"
+              style={{
                 aspectRatio: "4/5",
-                backgroundColor: posterData.backgroundColor 
+                backgroundColor: posterData.backgroundColor,
               }}
             >
               {/* Interactive map with 5% padding to match final poster */}
               <div
                 ref={previewMapRef}
                 style={{
-                  position: 'absolute',
-                  top: '2.5%',
-                  left: '2.5%',
-                  width: '95%',
+                  position: "absolute",
+                  top: "2.5%",
+                  left: "2.5%",
+                  width: "95%",
                   height: `${80 * 0.95}%`, // 80% map height * 95% width for padding
-                  zIndex: 1
+                  zIndex: 1,
                 }}
               />
               {/* Canvas overlay with stats text - only covers bottom 20% */}
               <canvas
                 ref={previewCanvasRef}
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: 0,
                   left: 0,
                   width: "100%",
                   height: "100%",
-                  pointerEvents: 'none',
-                  zIndex: 2
+                  pointerEvents: "none",
+                  zIndex: 2,
                 }}
               />
             </div>
             <p className="text-xs text-gray-500 text-center">
-              <span className="font-medium">Drag to pan, scroll to zoom</span> to frame your route perfectly
+              <span className="font-medium">Drag to pan, scroll to zoom</span>{" "}
+              to frame your route perfectly
               {mapReady && <span className="text-green-600"> • Ready ✓</span>}
             </p>
             <p className="text-xs text-blue-600 text-center font-medium">
