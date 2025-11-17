@@ -474,4 +474,4 @@ Built with [shadcn/ui](https://ui.shadcn.com/), [Mapbox](https://www.mapbox.com/
 
 **Made with ❤️ for runners who take their training seriously.**
 
-*Last Updated: November 2024*
+*Last Updated: Nov 2025*
