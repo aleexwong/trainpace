@@ -662,7 +662,14 @@ export default function PosterGeneratorV3({
       const finalCanvas = document.createElement("canvas");
       finalCanvas.width = PRINT_CONFIG.width;
       finalCanvas.height = PRINT_CONFIG.height;
-      const ctx = finalCanvas.getContext("2d")!;
+      const ctx = finalCanvas.getContext("2d", {
+        alpha: false, // No transparency needed, improves performance
+        desynchronized: false, // Synchronous rendering for quality
+      })!;
+
+      // Enable high-quality image smoothing for sharper scaling
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
 
       // Fill background
       ctx.fillStyle = posterData.backgroundColor;
@@ -674,8 +681,8 @@ export default function PosterGeneratorV3({
       const mapHeight =
         PRINT_CONFIG.height * PRINT_CONFIG.mapHeight - margin * 2;
 
-      // Draw the preview map scaled up to print resolution
-      // This is EXACTLY what you see in the preview
+      // Draw the preview map scaled up to print resolution with high-quality smoothing
+      // This is EXACTLY what you see in the preview, but sharper
       ctx.drawImage(
         previewCanvas,
         0,
@@ -747,6 +754,10 @@ export default function PosterGeneratorV3({
     top: number,
     scale: number
   ) => {
+    // Enable text rendering quality hints
+    ctx.textRendering = 'optimizeLegibility' as any;
+    ctx.fontKerning = 'normal' as any;
+    
     const fontSize = Math.max(8, 14 * scale);
     const headerFontSize = Math.max(10, 16 * scale);
     const margin = 60 * scale;
