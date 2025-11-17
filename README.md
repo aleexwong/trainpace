@@ -664,15 +664,6 @@ This project is **open source for educational purposes**.
 
 ---
 
-## 📧 Contact
-
-**Alex Wong**
-- Portfolio: [alexwong.dev](https://alexwong.dev)
-- GitHub: [@aleexwong](https://github.com/aleexwong)
-- Twitter: [@aleexwong](https://twitter.com/aleexwong)
-
----
-
 **Made with ❤️ for runners who take their training seriously.**
 
 *Last Updated: November 2024*
