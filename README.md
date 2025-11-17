@@ -120,45 +120,6 @@ graph TB
     style Shared fill:#fce4ec
 ```
 
-### Data Flow Architecture
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant App
-    participant Feature
-    participant Firebase
-    participant AI
-
-    User->>App: Navigate to Feature
-    App->>Feature: Load Component
-
-    alt Authenticated User
-        Feature->>Firebase: Check Auth State
-        Firebase-->>Feature: User Session
-        Feature->>Firebase: Fetch User Data
-        Firebase-->>Feature: Routes/Plans/Settings
-    end
-
-    User->>Feature: Input Data
-    Feature->>Feature: Local Validation (Zod)
-
-    alt AI-Powered Feature
-        Feature->>AI: Request Recommendation
-        AI-->>Feature: AI Response
-    end
-
-    Feature->>Feature: Calculate/Process
-    Feature-->>User: Display Results
-
-    opt Save Data
-        User->>Feature: Click Save
-        Feature->>Firebase: Persist to Firestore
-        Firebase-->>Feature: Confirmation
-        Feature-->>User: Success Toast
-    end
-```
-
 ### Feature Module Structure
 
 Each feature follows a consistent internal structure:
@@ -187,55 +148,10 @@ features/[feature-name]/
 
 ### Key Architectural Patterns
 
-#### 1. Context + Hooks Pattern
-```typescript
-// Auth state management
-<AuthProvider>
-  <App />
-</AuthProvider>
-
-// Consumed via custom hook
-const { user } = useAuth();
-```
-
-#### 2. Compound Components
-```typescript
-// Pace calculator uses compound component pattern
-<PaceCalculator>
-  <RaceDetailsForm />
-  <PaceResultsDisplay />
-  <RunningTips />
-</PaceCalculator>
-```
-
-#### 3. Custom Hooks for Business Logic
-```typescript
-// Separation of concerns - UI vs Logic
-const {
-  results,
-  isLoading,
-  calculate
-} = usePaceCalculation();
-
-const {
-  save,
-  saved
-} = usePacePlanPersistence(user?.uid);
-```
-
-#### 4. Type-Safe Form Handling
-```typescript
-// Zod schema validation + React Hook Form
-const schema = z.object({
-  distance: z.number().positive(),
-  hours: z.number().min(0),
-  // ...
-});
-
-const form = useForm<FormData>({
-  resolver: zodResolver(schema),
-});
-```
+- **Context + Hooks**: Global state (auth) managed via React Context, consumed through custom hooks
+- **Compound Components**: Complex features built with composable sub-components
+- **Custom Hooks**: Business logic separated from UI components for reusability and testing
+- **Type-Safe Forms**: Zod schema validation + React Hook Form for runtime safety
 
 ---
 
@@ -525,142 +441,34 @@ The production build:
 
 ## 🎯 Design Philosophy
 
-### Core Principles
-
-1. **Mobile-First Design**
-   - Every feature designed for on-the-go runners
-   - Touch-friendly interfaces with accessible tap targets
-   - Responsive layouts that work on all screen sizes
-
-2. **Zero Friction**
-   - No account required for basic calculations
-   - Instant results without page reloads
-   - Smart defaults and one-click presets
-
-3. **Progressive Enhancement**
-   - Core features work offline via service worker
-   - Advanced features (save, sync) require authentication
-   - Graceful degradation when services are unavailable
-
-4. **Performance First**
-   - Optimized bundle size with code splitting
-   - Lazy loading of heavy components (maps, charts)
-   - Minimal initial page load time
-
-5. **Accessibility**
-   - WCAG 2.1 AA compliant
-   - Keyboard navigation support
-   - Screen reader optimized
-   - High contrast mode support
-
-6. **Type Safety**
-   - TypeScript throughout the codebase
-   - Runtime validation with Zod
-   - Type-safe API calls and data fetching
-
-### Technical Decisions
-
-**Why Vite over Create React App?**
-- 10x faster dev server startup
-- Lightning-fast HMR (Hot Module Replacement)
-- Optimized production builds with Rollup
-- Better TypeScript support out of the box
-
-**Why Firebase over traditional backend?**
-- Zero backend maintenance
-- Real-time data synchronization
-- Built-in authentication with OAuth providers
-- Generous free tier for side projects
-- Global CDN for fast data access
-
-**Why shadcn/ui over component libraries?**
-- Components live in your codebase (full control)
-- Built on Radix UI (accessibility by default)
-- Tailwind-based (no CSS conflicts)
-- No package lock-in (modify as needed)
-
-**Why feature-based architecture?**
-- Scales better than layer-based (components/hooks/utils)
-- Features are self-contained and portable
-- Easier to understand for new developers
-- Natural code splitting boundaries
+- **Mobile-First**: Responsive design with touch-friendly interfaces
+- **Zero Friction**: No account required for core features, instant results
+- **Progressive Enhancement**: Offline-capable PWA with advanced authenticated features
+- **Performance First**: Code splitting, lazy loading, optimized bundle size
+- **Accessibility**: WCAG 2.1 AA compliant with keyboard and screen reader support
+- **Type Safety**: TypeScript throughout with Zod runtime validation
 
 ---
 
 ## 📊 Performance Metrics
 
-### Lighthouse Scores (Production)
+**Lighthouse Scores**: Performance 95+ | Accessibility 100 | Best Practices 100 | SEO 100 | PWA ✓
 
-- **Performance**: 95+
-- **Accessibility**: 100
-- **Best Practices**: 100
-- **SEO**: 100
-- **PWA**: ✓ Installable
-
-### Bundle Size
-
-- **Initial JS**: ~180KB (gzipped)
-- **Initial CSS**: ~12KB (gzipped)
-- **Total Initial Load**: <200KB
-- **Time to Interactive**: <2s on 4G
-
-### Real-World Usage (30 Days)
+**Bundle Size**: ~180KB JS + ~12KB CSS (gzipped) | TTI <2s on 4G
 
 <img width="637" alt="TrainPace Analytics" src="https://github.com/user-attachments/assets/6f881b3f-b53e-4128-8b6b-baa93a466add" />
 
 ---
 
-## 🤝 Contributing
-
-This is a personal portfolio project, but feedback and suggestions are welcome!
-
-### How to Contribute
-
-1. **Report Bugs**: Open an issue with detailed reproduction steps
-2. **Suggest Features**: Describe your use case and desired outcome
-3. **Share Success Stories**: Let me know how TrainPace helped your training!
-4. **Improve Documentation**: Submit PRs for README improvements
-
-### Not Accepting
-
-- Major architectural changes
-- New dependencies without strong justification
-- Features that don't align with the core mission
-
----
-
 ## 📝 License
 
-This project is **open source for educational purposes**.
-
-**You may:**
-- Study the code and learn from it
-- Fork it for personal use
-- Use code snippets in your own projects (with attribution)
-
-**Please don't:**
-- Deploy a competing product without significant modifications
-- Remove attribution or rebrand as your own work
+Open source for educational purposes. Feel free to learn from the code and use snippets in your own projects with attribution.
 
 ---
 
 ## 🙏 Acknowledgments
 
-### Built With
-
-- [**shadcn/ui**](https://ui.shadcn.com/) - Beautiful, accessible component library
-- [**Radix UI**](https://www.radix-ui.com/) - Unstyled, accessible primitives
-- [**Mapbox**](https://www.mapbox.com/) - Interactive mapping platform
-- [**Firebase**](https://firebase.google.com/) - Backend infrastructure
-- [**Vercel**](https://vercel.com/) - Deployment and hosting
-- [**Chart.js**](https://www.chartjs.org/) - Data visualization library
-- [**Leaflet**](https://leafletjs.com/) - Open-source mapping library
-
-### Inspired By
-
-- Jack Daniels' Running Formula (pace calculation methodology)
-- Strava's elevation analysis features
-- Modern web app development best practices
+Built with [shadcn/ui](https://ui.shadcn.com/), [Mapbox](https://www.mapbox.com/), [Firebase](https://firebase.google.com/), and [Vercel](https://vercel.com/). Pace calculations based on Jack Daniels' Running Formula.
 
 ---
 
