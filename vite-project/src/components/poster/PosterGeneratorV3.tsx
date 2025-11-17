@@ -6,6 +6,7 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useAuth } from "../../features/auth/AuthContext";
 import { useToast } from "../../hooks/use-toast";
+import { getCityFromRoute } from "../../utils/geocoding";
 
 // Types matching your existing GPX structure
 type GpxPoint = { lat: number; lng: number; ele?: number };
@@ -150,6 +151,7 @@ export default function PosterGeneratorV3({
   const previewMapRef = useRef<HTMLDivElement>(null);
   const previewMap = useRef<any>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
+  const markersRef = useRef<any[]>([]); // Track markers for cleanup
   const { user } = useAuth();
   const { toast } = useToast();
 
@@ -175,6 +177,7 @@ export default function PosterGeneratorV3({
   const [debugInfo, setDebugInfo] = useState<string[]>([]);
   const [showStartEndMarkers, setShowStartEndMarkers] = useState(true);
   const [mapReady, setMapReady] = useState(false);
+  const [isGeocodingCity, setIsGeocodingCity] = useState(false);
   const updatePreviewTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Debug logging function
@@ -197,9 +200,37 @@ export default function PosterGeneratorV3({
     }
   }, []);
 
+  // Geocode city name from route coordinates
+  useEffect(() => {
+    if (!displayPoints.length || !MAPBOX_TOKEN) return;
+
+    const geocodeCity = async () => {
+      setIsGeocodingCity(true);
+      addDebugInfo("🌍 Geocoding city from route...");
+      
+      const result = await getCityFromRoute(displayPoints, MAPBOX_TOKEN);
+      
+      if (result.city) {
+        setPosterData((prev) => ({
+          ...prev,
+          city: result.city || "Vancouver",
+        }));
+        addDebugInfo(`📍 City detected: ${result.city}`);
+      } else {
+        addDebugInfo("⚠️ Could not detect city, using default");
+      }
+      
+      setIsGeocodingCity(false);
+    };
+
+    geocodeCity();
+  }, [displayPoints, MAPBOX_TOKEN]); // Run once when component mounts with data
+
   // Update template colors and map style when template changes
   useEffect(() => {
     const template = TEMPLATE_COLORS[selectedTemplate];
+    console.log('🎯 Template changed to:', template.name, '| Style:', template.mapStyle, '| Color:', template.route);
+    
     setPosterData((prev) => ({
       ...prev,
       routeColor: template.route,
@@ -303,19 +334,6 @@ export default function PosterGeneratorV3({
             },
           });
 
-          if (showStartEndMarkers && displayPoints.length > 1) {
-            const start = displayPoints[0];
-            const end = displayPoints[displayPoints.length - 1];
-
-            new mapboxgl.Marker({ color: "#22c55e" })
-              .setLngLat([start.lng, start.lat])
-              .addTo(previewMap.current);
-
-            new mapboxgl.Marker({ color: posterData.routeColor })
-              .setLngLat([end.lng, end.lat])
-              .addTo(previewMap.current);
-          }
-
           setMapReady(true);
           addDebugInfo("✅ Preview map ready");
         });
@@ -335,53 +353,143 @@ export default function PosterGeneratorV3({
     };
   }, [displayPoints, MAPBOX_TOKEN]);
 
-  // Update map style when template changes
+  // Update map style when template changes (only runs when style URL actually changes)
   useEffect(() => {
     if (previewMap.current && mapReady) {
-      previewMap.current.setStyle(currentMapStyle);
+      const currentStyle = previewMap.current.getStyle();
+      const currentStyleUrl = currentStyle?.sprite?.split('/styles/')[1]?.split('/')[0];
+      const newStyleUrl = currentMapStyle.split('/styles/')[1]?.split('/')[0];
       
-      // Re-add route after style loads
-      previewMap.current.once("styledata", () => {
-        if (previewMap.current.getSource("route")) {
-          previewMap.current.removeLayer("route");
-          previewMap.current.removeSource("route");
-        }
+      console.log('🎨 Style check - current:', currentStyleUrl, '| new:', newStyleUrl);
+      
+      // Only reload style if it actually changed
+      if (currentStyleUrl !== newStyleUrl) {
+        console.log('🔄 Style changing to:', currentMapStyle);
+        previewMap.current.setStyle(currentMapStyle);
+        
+        // Re-add route after style loads
+        previewMap.current.once("styledata", () => {
+          console.log('🎨 Style loaded, re-adding route with color:', posterData.routeColor);
+          
+          if (previewMap.current.getSource("route")) {
+            previewMap.current.removeLayer("route");
+            previewMap.current.removeSource("route");
+          }
 
-        previewMap.current.addSource("route", {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            properties: {},
-            geometry: {
-              type: "LineString",
-              coordinates: displayPoints.map((p) => [p.lng, p.lat]),
+          previewMap.current.addSource("route", {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "LineString",
+                coordinates: displayPoints.map((p) => [p.lng, p.lat]),
+              },
             },
-          },
-        });
+          });
 
-        previewMap.current.addLayer({
-          id: "route",
-          type: "line",
-          source: "route",
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": posterData.routeColor,
-            "line-width": 3,
-          },
+          previewMap.current.addLayer({
+            id: "route",
+            type: "line",
+            source: "route",
+            layout: {
+              "line-join": "round",
+              "line-cap": "round",
+            },
+            paint: {
+              "line-color": posterData.routeColor,
+              "line-width": 3,
+            },
+          });
+          
+          console.log('✅ Route layer added after style change');
+          
+          // Wait for idle to ensure everything is rendered
+          previewMap.current.once('idle', () => {
+            console.log('✅ Map idle after style change');
+            previewMap.current.fire('moveend'); // Trigger canvas redraw
+          });
         });
-      });
+      } else {
+        console.log('⏭️ Same style, skipping reload - color will update separately');
+      }
     }
-  }, [currentMapStyle, mapReady]);
+  }, [currentMapStyle, mapReady, displayPoints, showStartEndMarkers]);
 
-  // Update route color when it changes
+  // Update route color when it changes (separate from style changes)
   useEffect(() => {
-    if (previewMap.current && mapReady && previewMap.current.getLayer("route")) {
-      previewMap.current.setPaintProperty("route", "line-color", posterData.routeColor);
+    if (!previewMap.current || !mapReady) {
+      console.log('⏳ Color update blocked: map not ready');
+      return;
     }
+    
+    // Short delay to ensure style change effect completed if triggered
+    const timer = setTimeout(() => {
+      // Wait for style to be fully loaded before updating paint properties
+      if (!previewMap.current.isStyleLoaded()) {
+        console.log('⏳ Style not loaded, skipping color update');
+        return;
+      }
+      
+      // Check if layer exists before updating
+      if (previewMap.current.getLayer("route")) {
+        console.log('🎨 Updating route color to:', posterData.routeColor);
+        previewMap.current.setPaintProperty("route", "line-color", posterData.routeColor);
+        
+        // Force a repaint to ensure the color change is visible
+        previewMap.current.triggerRepaint();
+      } else {
+        console.log('⚠️ Route layer not found for color update');
+      }
+    }, 50);
+    
+    return () => clearTimeout(timer);
   }, [posterData.routeColor, mapReady]);
+
+  // Manage markers when toggle changes
+  useEffect(() => {
+    if (!previewMap.current || !mapReady || !displayPoints.length) return;
+
+    // Clear existing markers
+    markersRef.current.forEach(marker => marker.remove());
+    markersRef.current = [];
+
+    // Add markers if enabled
+    if (showStartEndMarkers && displayPoints.length > 1) {
+      const mapboxgl = (window as any).mapboxgl;
+      const start = displayPoints[0];
+      const end = displayPoints[displayPoints.length - 1];
+
+      // Create custom circle element for start marker
+      const startEl = document.createElement('div');
+      startEl.style.width = '10px';
+      startEl.style.height = '10px';
+      startEl.style.borderRadius = '50%'; // Circle
+      startEl.style.backgroundColor = posterData.routeColor;
+      startEl.style.cursor = 'pointer';
+
+      // Create custom square element for end marker
+      const endEl = document.createElement('div');
+      endEl.style.width = '10px';
+      endEl.style.height = '10px';
+      endEl.style.borderRadius = '2px'; // Square with slight rounding
+      endEl.style.backgroundColor = posterData.routeColor;
+      endEl.style.cursor = 'pointer';
+
+      const startMarker = new mapboxgl.Marker({ element: startEl })
+        .setLngLat([start.lng, start.lat])
+        .addTo(previewMap.current);
+
+      const endMarker = new mapboxgl.Marker({ element: endEl })
+        .setLngLat([end.lng, end.lat])
+        .addTo(previewMap.current);
+
+      markersRef.current = [startMarker, endMarker];
+      console.log('✅ Markers added: circle (start) + square (end)');
+    } else {
+      console.log('🚫 Markers removed');
+    }
+  }, [showStartEndMarkers, mapReady, displayPoints, posterData.routeColor]);
 
   // Update poster preview canvas whenever map or data changes
   useEffect(() => {
@@ -393,9 +501,12 @@ export default function PosterGeneratorV3({
       }
 
       updatePreviewTimeoutRef.current = setTimeout(() => {
-        if (!previewMap.current || !previewCanvasRef.current) return;
-
-        const mapCanvas = previewMap.current.getCanvas();
+        if (!previewMap.current || !previewCanvasRef.current) {
+          console.log('Preview update skipped: missing refs');
+          return;
+        }
+        
+        console.log('Drawing stats overlay with data:', posterData.city, posterData.time);
         const canvas = previewCanvasRef.current;
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
@@ -410,43 +521,78 @@ export default function PosterGeneratorV3({
         canvas.style.height = displayHeight + 'px';
         ctx.scale(scale, scale);
 
-        // Calculate layout
-        const margin = displayWidth * 0.05;
-        const mapHeight = displayHeight * PRINT_CONFIG.mapHeight;
+        // Clear canvas
+        ctx.clearRect(0, 0, displayWidth, displayHeight);
+
+        // Only draw stats at the bottom - map is already visible underneath
         const statsHeight = displayHeight * PRINT_CONFIG.statsHeight;
-
-        // Fill background
+        const statsTop = displayHeight * PRINT_CONFIG.mapHeight;
+        
+        // Draw stats background
         ctx.fillStyle = posterData.backgroundColor;
-        ctx.fillRect(0, 0, displayWidth, displayHeight);
+        ctx.fillRect(0, statsTop, displayWidth, statsHeight);
 
-        // Draw map
-        const mapWidth = displayWidth - (margin * 2);
-        const mapDrawHeight = mapHeight - (margin * 2);
-        ctx.drawImage(mapCanvas, margin, margin, mapWidth, mapDrawHeight);
-
-        // Draw stats
+        // Draw stats text
         const statsScale = displayWidth / PRINT_CONFIG.width;
-        renderStats(ctx, displayWidth, statsHeight, mapHeight, statsScale);
-      }, 150);
+        renderStats(ctx, displayWidth, statsHeight, statsTop, statsScale);
+      }, 50); // Reduced timeout for faster response
     };
 
+    // Call update immediately when posterData changes
     updatePreview();
+  }, [posterData]); // Trigger on any posterData change
 
-    // Update on map move
+  // Set up map event listeners separately (only once)
+  useEffect(() => {
+    if (!previewMap.current || !mapReady) return;
+
+    const updatePreview = () => {
+      if (updatePreviewTimeoutRef.current) {
+        clearTimeout(updatePreviewTimeoutRef.current);
+      }
+
+      updatePreviewTimeoutRef.current = setTimeout(() => {
+        if (!previewMap.current || !previewCanvasRef.current) return;
+        
+        const canvas = previewCanvasRef.current;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const displayWidth = canvas.offsetWidth;
+        const displayHeight = canvas.offsetHeight;
+        const scale = window.devicePixelRatio || 2;
+        canvas.width = displayWidth * scale;
+        canvas.height = displayHeight * scale;
+        canvas.style.width = displayWidth + 'px';
+        canvas.style.height = displayHeight + 'px';
+        ctx.scale(scale, scale);
+
+        ctx.clearRect(0, 0, displayWidth, displayHeight);
+
+        const statsHeight = displayHeight * PRINT_CONFIG.statsHeight;
+        const statsTop = displayHeight * PRINT_CONFIG.mapHeight;
+        
+        ctx.fillStyle = posterData.backgroundColor;
+        ctx.fillRect(0, statsTop, displayWidth, statsHeight);
+
+        const statsScale = displayWidth / PRINT_CONFIG.width;
+        renderStats(ctx, displayWidth, statsHeight, statsTop, statsScale);
+      }, 50);
+    };
+
+    // Listen to moveend for map pan/zoom updates
     const onMapUpdate = () => updatePreview();
     previewMap.current.on('moveend', onMapUpdate);
-    previewMap.current.on('idle', onMapUpdate);
 
     return () => {
       if (previewMap.current) {
         previewMap.current.off('moveend', onMapUpdate);
-        previewMap.current.off('idle', onMapUpdate);
       }
       if (updatePreviewTimeoutRef.current) {
         clearTimeout(updatePreviewTimeoutRef.current);
       }
     };
-  }, [mapReady, posterData, showStartEndMarkers]);
+  }, [mapReady]); // Only set up listeners once
 
   // Generate full quality poster DIRECTLY from preview map (no hidden map)
   const generateFullPoster = async () => {
@@ -667,10 +813,25 @@ export default function PosterGeneratorV3({
           {/* Controls */}
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
+              <div className="col-span-2">
+                <Label htmlFor="raceName">Race Title</Label>
+                <Input
+                  id="raceName"
+                  value={posterData.raceName}
+                  onChange={(e) =>
+                    setPosterData({ ...posterData, raceName: e.target.value })
+                  }
+                  placeholder="Bank of America Chicago Marathon"
+                />
+              </div>
+
               <div>
                 <Label htmlFor="city" className="flex items-center gap-1">
                   <MapPin className="w-4 h-4" />
                   City
+                  {isGeocodingCity && (
+                    <span className="text-xs text-blue-600 ml-1">(detecting...)</span>
+                  )}
                 </Label>
                 <Input
                   id="city"
@@ -679,6 +840,7 @@ export default function PosterGeneratorV3({
                     setPosterData({ ...posterData, city: e.target.value })
                   }
                   placeholder="Vancouver"
+                  disabled={isGeocodingCity}
                 />
               </div>
 
@@ -828,31 +990,41 @@ export default function PosterGeneratorV3({
           {/* Preview - Map with poster overlay */}
           <div className="space-y-3">
             <Label className="text-base font-medium">Preview Poster</Label>
-            <div className="border border-gray-200 rounded-lg overflow-hidden relative" style={{ aspectRatio: "4/5" }}>
-              {/* Hidden interactive map */}
+            <div 
+              className="border border-gray-200 rounded-lg overflow-hidden relative" 
+              style={{ 
+                aspectRatio: "4/5",
+                backgroundColor: posterData.backgroundColor 
+              }}
+            >
+              {/* Interactive map with 5% padding to match final poster */}
               <div
                 ref={previewMapRef}
                 style={{
                   position: 'absolute',
-                  width: "100%",
-                  height: "100%",
-                  opacity: 0,
-                  pointerEvents: 'all'
+                  top: '2.5%',
+                  left: '2.5%',
+                  width: '95%',
+                  height: `${80 * 0.95}%`, // 80% map height * 95% width for padding
+                  zIndex: 1
                 }}
               />
-              {/* Visible poster preview */}
+              {/* Canvas overlay with stats text - only covers bottom 20% */}
               <canvas
                 ref={previewCanvasRef}
                 style={{
                   position: 'absolute',
+                  top: 0,
+                  left: 0,
                   width: "100%",
                   height: "100%",
-                  pointerEvents: 'none'
+                  pointerEvents: 'none',
+                  zIndex: 2
                 }}
               />
             </div>
             <p className="text-xs text-gray-500 text-center">
-              <span className="font-medium">Pan & zoom</span> to frame your route perfectly
+              <span className="font-medium">Drag to pan, scroll to zoom</span> to frame your route perfectly
               {mapReady && <span className="text-green-600"> • Ready ✓</span>}
             </p>
             <p className="text-xs text-blue-600 text-center font-medium">
