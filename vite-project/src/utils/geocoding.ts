@@ -11,6 +11,43 @@ interface GeocodeResult {
   source?: 'nominatim' | 'mapbox' | 'fallback';
 }
 
+// ========== CACHE & THROTTLE ==========
+
+// In-memory cache for geocoding results
+// Keys are rounded coordinates (e.g., "45.52,-122.68")
+const geocodeCache = new Map<string, GeocodeResult>();
+
+// Throttle mechanism for Nominatim (1 req/sec limit)
+let lastNominatimRequest = 0;
+const NOMINATIM_MIN_INTERVAL = 1100; // 1.1 seconds to be safe
+
+/**
+ * Generate cache key from coordinates (rounded to 2 decimal places)
+ * This prevents cache misses from minor coordinate differences
+ */
+function getCacheKey(lat: number, lng: number): string {
+  return `${lat.toFixed(2)},${lng.toFixed(2)}`;
+}
+
+/**
+ * Throttle helper for Nominatim requests
+ * Waits if necessary to respect 1 req/sec rate limit
+ */
+async function throttleNominatim(): Promise<void> {
+  const now = Date.now();
+  const timeSinceLastRequest = now - lastNominatimRequest;
+  
+  if (timeSinceLastRequest < NOMINATIM_MIN_INTERVAL) {
+    const waitTime = NOMINATIM_MIN_INTERVAL - timeSinceLastRequest;
+    console.log(`⏱️  Throttling Nominatim request (waiting ${waitTime}ms)`);
+    await new Promise(resolve => setTimeout(resolve, waitTime));
+  }
+  
+  lastNominatimRequest = Date.now();
+}
+
+// ======================================
+
 /**
  * Primary: Use free Nominatim API (OpenStreetMap)
  * No API key needed, rate limited to 1 request per second
@@ -28,6 +65,17 @@ export async function getCityFromRouteNominatim(
     const lngs = points.map((p) => p.lng);
     const centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
     const centerLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+
+    // Check cache first
+    const cacheKey = getCacheKey(centerLat, centerLng);
+    const cached = geocodeCache.get(cacheKey);
+    if (cached) {
+      console.log('💾 Cache hit for location:', cached.city, '(Nominatim)');
+      return cached;
+    }
+
+    // Throttle request to respect rate limits
+    await throttleNominatim();
 
     // Nominatim reverse geocoding API (free, no API key)
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${centerLat}&lon=${centerLng}&zoom=10`;
@@ -51,8 +99,13 @@ export async function getCityFromRouteNominatim(
     const country = address.country;
 
     if (city) {
-      console.log('📍 Geocoded location (Nominatim):', city, country);
-      return { city, country, source: 'nominatim' };
+      const result: GeocodeResult = { city, country, source: 'nominatim' };
+      
+      // Cache the successful result
+      geocodeCache.set(cacheKey, result);
+      console.log('📍 Geocoded location (Nominatim):', city, country, '- cached');
+      
+      return result;
     }
 
     return { city: null, country: null, source: 'fallback' };
@@ -81,6 +134,14 @@ export async function getCityFromRouteMapbox(
     const centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
     const centerLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
 
+    // Check cache first
+    const cacheKey = getCacheKey(centerLat, centerLng);
+    const cached = geocodeCache.get(cacheKey);
+    if (cached) {
+      console.log('💾 Cache hit for location:', cached.city, '(Mapbox)');
+      return cached;
+    }
+
     // Mapbox reverse geocoding API
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${centerLng},${centerLat}.json?access_token=${mapboxToken}&types=place,locality`;
 
@@ -107,8 +168,13 @@ export async function getCityFromRouteMapbox(
         country = countryContext?.text || null;
       }
 
-      console.log('📍 Geocoded location (Mapbox):', city, country);
-      return { city, country, source: 'mapbox' };
+      const result: GeocodeResult = { city, country, source: 'mapbox' };
+      
+      // Cache the successful result
+      geocodeCache.set(cacheKey, result);
+      console.log('📍 Geocoded location (Mapbox):', city, country, '- cached');
+      
+      return result;
     }
 
     return { city: null, country: null, source: 'fallback' };
