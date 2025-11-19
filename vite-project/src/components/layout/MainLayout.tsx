@@ -79,12 +79,12 @@ export default function MainLayout() {
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [mobileMenuOpen]);
 
@@ -150,7 +150,7 @@ export default function MainLayout() {
   // Add padding to body when using fixed/auto-hide nav
   const getMainClasses = () => {
     if (navBehavior === "fixed" || navBehavior === "auto-hide") {
-      return "pt-[73px]"; // Adjust based on your header height
+      return "pt-[72px]"; // Adjust based on your header height
     }
     return "";
   };
@@ -317,7 +317,9 @@ export default function MainLayout() {
 
         {/* Scrollable nav content */}
         <div className="flex-1 overflow-y-auto px-6 pb-6">
-          <nav className="space-y-4">            {location.pathname !== "/" && (
+          <nav className="space-y-4">
+            {" "}
+            {location.pathname !== "/" && (
               <Link
                 to="/"
                 className="block py-3 px-4 text-lg font-medium rounded-lg text-gray-900 hover:bg-gray-100 hover:text-blue-600"
@@ -326,7 +328,6 @@ export default function MainLayout() {
                 Home
               </Link>
             )}
-
             {location.pathname === "/" && (
               <a
                 href="#features"
@@ -336,7 +337,6 @@ export default function MainLayout() {
                 Features
               </a>
             )}
-
             <Link
               to="/about"
               className={`block py-3 px-4 text-lg font-medium rounded-lg transition-colors ${
@@ -348,7 +348,6 @@ export default function MainLayout() {
             >
               About
             </Link>
-
             {/* Regular navigation links */}
             {links.map((link) => {
               // Skip the dropdown item in mobile - we'll handle it separately
@@ -369,7 +368,6 @@ export default function MainLayout() {
                 </Link>
               );
             })}
-
             {user && (
               <Button
                 variant="outline"
