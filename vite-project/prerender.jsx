@@ -81,7 +81,7 @@ export async function prerender(data) {
             type: "meta",
             props: {
               property: "og:image",
-              content: "https://trainpace.com/twitter-cover.png",
+              content: "https://trainpace.com/landing-page-2025.png",
             },
           },
           {
@@ -124,7 +124,7 @@ export async function prerender(data) {
             type: "meta",
             props: {
               name: "twitter:image",
-              content: "https://trainpace.com/twitter-cover.png",
+              content: "https://trainpace.com/landing-page-2025.png",
             },
           },
           // Canonical URL
