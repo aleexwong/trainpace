@@ -165,44 +165,44 @@ function getPageContent(url) {
       return React.createElement(
         "div",
         null,
-        React.createElement("h1", null, "TrainPace - Running Pace Calculator"),
+        React.createElement("h1", null, "TrainPace – Smarter Running Training & Race Planning"),
         React.createElement(
           "p",
           null,
-          "Calculate your running pace, plan fuel strategy, and find elevation profiles for your training."
+          "Free running tools for serious athletes. Calculate science-backed training paces, analyze course elevation profiles, and plan race-day nutrition with personalized recommendations."
         )
       );
     case "/calculator":
       return React.createElement(
         "div",
         null,
-        React.createElement("h1", null, "Pace Calculator"),
+        React.createElement("h1", null, "Running Pace Calculator"),
         React.createElement(
           "p",
           null,
-          "Advanced running pace calculator for training and race planning."
+          "Get science-backed training paces from any race result. Calculate Easy, Tempo, Speed, and Maximum pace zones, plus Yasso 800s and race time predictions for 5K to marathon."
         )
       );
     case "/fuel":
       return React.createElement(
         "div",
         null,
-        React.createElement("h1", null, "Fuel Planner"),
+        React.createElement("h1", null, "Race Fuel Planner"),
         React.createElement(
           "p",
           null,
-          "Plan your fuel strategy for long runs and races."
+          "Plan your race nutrition with personalized carb and calorie targets based on pace and body weight. Get hourly fueling breakdowns for gels, chews, and drinks to avoid bonking."
         )
       );
     case "/elevationfinder":
       return React.createElement(
         "div",
         null,
-        React.createElement("h1", null, "Elevation Finder"),
+        React.createElement("h1", null, "Course Elevation Analyzer"),
         React.createElement(
           "p",
           null,
-          "Find elevation profiles for your running routes."
+          "Upload GPX files to analyze course elevation profiles. Visualize climbs, grade percentages, and terrain difficulty on interactive maps. Know every hill before race day."
         )
       );
     default:
@@ -211,11 +211,11 @@ function getPageContent(url) {
         return React.createElement(
           "div",
           null,
-          React.createElement("h1", null, `${city} Running Route`),
+          React.createElement("h1", null, `${city} Marathon Course`),
           React.createElement(
             "p",
             null,
-            `Explore running routes in ${city} with elevation profiles and pace recommendations.`
+            `Analyze the ${city} marathon course with detailed elevation profile, grade percentages, and terrain difficulty. Plan your pacing strategy for every hill.`
           )
         );
       }
@@ -223,7 +223,7 @@ function getPageContent(url) {
         "div",
         null,
         React.createElement("h1", null, "TrainPace"),
-        React.createElement("p", null, "Your running training companion")
+        React.createElement("p", null, "Free running tools for pace calculation, course analysis, and race nutrition planning.")
       );
   }
 }
@@ -231,17 +231,17 @@ function getPageContent(url) {
 function getPageTitle(url) {
   switch (url) {
     case "/":
-      return "TrainPace - Running Pace Calculator";
+      return "TrainPace – Smarter Running Training & Race Planning";
     case "/calculator":
-      return "Pace Calculator - TrainPace";
+      return "Running Pace Calculator – Science-Backed Training Zones | TrainPace";
     case "/fuel":
-      return "Fuel Planner - TrainPace";
+      return "Race Fuel Planner – Personalized Nutrition Calculator | TrainPace";
     case "/elevationfinder":
-      return "Elevation Finder - TrainPace";
+      return "Course Elevation Analyzer – GPX Route Analysis | TrainPace";
     default:
       if (url.includes("/preview-route/")) {
         const city = url.split("/").pop();
-        return `${city} Running Route - TrainPace`;
+        return `${city} Marathon Course – Elevation Profile & Route Analysis | TrainPace`;
       }
       return "TrainPace";
   }
@@ -250,18 +250,18 @@ function getPageTitle(url) {
 function getPageDescription(url) {
   switch (url) {
     case "/":
-      return "Calculate your running pace, plan fuel strategy, and find elevation profiles for your training.";
+      return "Free running tools for serious athletes. Calculate science-backed training paces, analyze course elevation profiles, and plan race-day nutrition with personalized recommendations.";
     case "/calculator":
-      return "Advanced running pace calculator for training and race planning.";
+      return "Get science-backed training paces from any race result. Calculate Easy, Tempo, Speed, and Maximum pace zones, plus Yasso 800s and race time predictions for 5K to marathon.";
     case "/fuel":
-      return "Plan your fuel strategy for long runs and races.";
+      return "Plan your race nutrition with personalized carb and calorie targets based on pace and body weight. Get hourly fueling breakdowns for gels, chews, and drinks to avoid bonking.";
     case "/elevationfinder":
-      return "Find elevation profiles for your running routes.";
+      return "Upload GPX files to analyze course elevation profiles. Visualize climbs, grade percentages, and terrain difficulty on interactive maps. Know every hill before race day.";
     default:
       if (url.includes("/preview-route/")) {
         const city = url.split("/").pop();
-        return `Explore running routes in ${city} with elevation profiles and pace recommendations.`;
+        return `Analyze the ${city} marathon course with detailed elevation profile, grade percentages, and terrain difficulty. Plan your pacing strategy for every hill.`;
       }
-      return "TrainPace - Your running training companion";
+      return "TrainPace – Free running tools for pace calculation, course analysis, and race nutrition planning.";
   }
 }
