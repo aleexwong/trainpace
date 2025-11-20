@@ -10,6 +10,9 @@ import {
   Check,
   ShieldCheck,
   ArrowRight,
+  BarChart3,
+  Target,
+  LineChart,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -60,7 +63,7 @@ const Hero = () => {
   const navigate = useNavigate();
 
   const scrollToFeatures = () => {
-    const featuresSection = document.getElementById("features");
+    const featuresSection = document.getElementById("how-it-works");
     if (featuresSection) {
       featuresSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -79,17 +82,17 @@ const Hero = () => {
             <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-1.5 shadow-sm border border-emerald-100 mb-6">
               <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
               <span className="text-sm font-semibold text-emerald-800 tracking-wide uppercase">
-                Free forever for the basics
+                Free Forever
               </span>
             </div>
             <h1 className="text-4xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
-              Train Smarter. <br />
+              Train Smarter, <br />
               <span className="text-emerald-600">Race Faster.</span>
             </h1>
             <p className="text-lg text-slate-600 mb-8 leading-relaxed max-w-lg">
-              Science-backed pace zones, real-world course analysis, and
-              personalized race fueling strategies. Used by runners who want
-              results without expensive coaching.
+              Science-backed pace zones, real-world elevation analysis, and
+              personalized fuel planning—all in one place. Used by runners who
+              want results without expensive coaching.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -106,14 +109,17 @@ const Hero = () => {
               </Button>
             </div>
 
-            <div className="mt-8 flex items-center space-x-6 text-sm text-slate-500">
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-500">
               <span className="flex items-center">
                 <Check className="w-4 h-4 text-emerald-500 mr-2" /> No credit
-                card
+                card required
               </span>
               <span className="flex items-center">
-                <Check className="w-4 h-4 text-emerald-500 mr-2" /> No account
-                needed
+                <Check className="w-4 h-4 text-emerald-500 mr-2" /> Free forever
+              </span>
+              <span className="flex items-center">
+                <Check className="w-4 h-4 text-emerald-500 mr-2" /> Built by
+                runners
               </span>
             </div>
           </div>
@@ -209,18 +215,18 @@ const ValueProps = () => {
   const props = [
     {
       icon: TrendingUp,
-      title: "Science-Backed Zones",
-      desc: "Get personalized Easy, Tempo, Speed, and Long Run paces from any race result. Stop guessing.",
+      title: "Science-Backed Training Zones",
+      desc: "Get personalized Easy, Tempo, Speed, and Long Run paces from any race result. Stop guessing, start training smart.",
     },
     {
       icon: Map,
       title: "Analyze Any Course",
-      desc: "Upload GPX files to visualize elevation and terrain difficulty. Intel for marathons & trails.",
+      desc: "Upload GPX files to visualize elevation, grade, and terrain difficulty. Race-ready intel for marathons, trail runs, and training routes.",
     },
     {
       icon: Battery,
       title: "Never Bonk Again",
-      desc: "Calculate exactly how many gels and carbs needed based on your race duration and weight.",
+      desc: "Calculate exactly how many gels, when to fuel, and total carbs needed based on your race distance, time, and body weight.",
     },
   ];
 
@@ -248,20 +254,20 @@ const ValueProps = () => {
 const PainPoints = () => {
   const pains = [
     {
-      problem: "I train too hard on easy days and crash on hard days.",
-      solution: "Precision pace zones based on proven formulas.",
+      problem: "I train too hard on easy days and crash on hard days",
+      solution: "Precision pace zones based on proven formulas",
     },
     {
-      problem: "I don't know if my race course is hilly or runnable.",
-      solution: "Upload any GPX file, see elevation profiles in seconds.",
+      problem: "I don't know if my race course is hilly or runnable",
+      solution: "Upload any GPX file, see elevation profile in seconds",
     },
     {
-      problem: "I hit the wall at mile 18 because I didn't fuel right.",
-      solution: "Personalized gel timing and carb calculations.",
+      problem: "I hit the wall at mile 18 because I didn't fuel right",
+      solution: "Personalized gel timing and carb calculations",
     },
     {
-      problem: "Coaches are expensive ($150+/mo).",
-      solution: "TrainPace is 100% free, forever.",
+      problem: "Coaches are expensive, and apps lock features behind paywalls",
+      solution: "TrainPace is 100% free, forever",
     },
   ];
 
@@ -361,7 +367,7 @@ const FeatureSection = ({
 
           <div className="flex-1 w-full">
             <div className="bg-slate-100 rounded-2xl p-8 aspect-[4/3] flex items-center justify-center relative overflow-hidden shadow-inner">
-              {/* Placeholder for Feature Visuals - In a real app these would be generic interactive components or screenshots */}
+              {/* Placeholder for Feature Visuals */}
               <div className="absolute inset-0 bg-gradient-to-br from-slate-100 to-slate-200 opacity-50"></div>
               <div className="relative bg-white rounded-xl shadow-lg p-6 w-full max-w-sm border border-slate-200">
                 {badge === "Pace Calculator" && (
@@ -391,6 +397,12 @@ const FeatureSection = ({
                         </span>{" "}
                         <span className="font-mono">6:45 - 6:55 /mi</span>
                       </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-purple-600 font-semibold">
+                          Yasso 800s
+                        </span>{" "}
+                        <span className="font-mono">3:22</span>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -406,7 +418,7 @@ const FeatureSection = ({
                     </div>
                     <div className="flex justify-between text-xs text-slate-500 font-mono">
                       <span>Start</span>
-                      <span>13.1 mi</span>
+                      <span>26.2 mi</span>
                     </div>
                     <div className="flex gap-2">
                       <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded font-medium">
@@ -462,74 +474,75 @@ const FeatureSection = ({
   );
 };
 
-// const FounderStory = () => {
-//   const navigate = useNavigate();
+const HowItWorks = () => {
+  const steps = [
+    {
+      number: "1",
+      icon: Target,
+      title: "Enter Your Info",
+      desc: "Input race time, upload GPX, or set race goals",
+    },
+    {
+      number: "2",
+      icon: BarChart3,
+      title: "Get Instant Results",
+      desc: "Science-backed calculations in seconds",
+    },
+    {
+      number: "3",
+      icon: LineChart,
+      title: "Save to Dashboard",
+      desc: "Organize all your plans, routes, and data",
+    },
+    {
+      number: "4",
+      icon: Activity,
+      title: "Train Smarter",
+      desc: "Use your personalized insights to race faster",
+    },
+  ];
 
-//   return (
-//     <section
-//       id="story"
-//       className="py-20 bg-slate-900 text-white relative overflow-hidden"
-//     >
-//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-//         <div className="grid lg:grid-cols-2 gap-12 items-center">
-//           <div>
-//             <h2 className="text-3xl font-bold mb-6">
-//               Built By a Runner Who Knows Your Struggle
-//             </h2>
-//             <div className="prose prose-invert prose-lg opacity-90">
-//               <p>
-//                 Meet <strong>Alex Wong</strong>, TrainPace founder. In 2023,
-//                 Alex ran his first half marathon in 3:01:00—undertrained,
-//                 overpacing, and hitting the wall hard.
-//               </p>
-//               <p>
-//                 Determined to improve, he built TrainPace to apply proper
-//                 training zones, analyze courses, and nail his fueling.
-//               </p>
-//               <p className="text-xl font-semibold text-emerald-400 my-4">
-//                 24 weeks later, he ran 2:06:00. A 55-minute improvement.
-//               </p>
-//               <p className="italic border-l-4 border-emerald-500 pl-4 text-slate-300">
-//                 "I built TrainPace because every runner deserves access to the
-//                 tools that elite athletes use. No paywalls. No BS. Just
-//                 science-backed training that works."
-//               </p>
-//             </div>
-//             <div className="mt-8">
-//               <Button variant="primary" onClick={() => navigate("/about")}>
-//                 Read Alex's Full Story
-//               </Button>
-//             </div>
-//           </div>
+  return (
+    <section id="how-it-works" className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">
+            How It Works
+          </h2>
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            From input to insights in four simple steps
+          </p>
+        </div>
 
-//           <div className="relative">
-//             <div className="bg-slate-800 rounded-2xl p-8 border border-slate-700">
-//               <div className="flex justify-between items-end border-b border-slate-700 pb-4 mb-4">
-//                 <div>
-//                   <p className="text-sm text-slate-400">First Race</p>
-//                   <p className="text-3xl font-bold text-slate-200">3:01:00</p>
-//                 </div>
-//                 <span className="text-red-400 text-sm font-medium">
-//                   Bonked @ Mile 8
-//                 </span>
-//               </div>
+        <div className="grid md:grid-cols-4 gap-8">
+          {steps.map((step, idx) => (
+            <div key={idx} className="relative text-center">
+              {/* Connector line */}
+              {idx < steps.length - 1 && (
+                <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-emerald-100"></div>
+              )}
 
-//               <div className="flex justify-between items-start pt-4">
-//                 <div>
-//                   <p className="text-sm text-slate-400">After TrainPace</p>
-//                   <p className="text-4xl font-bold text-emerald-400">2:06:00</p>
-//                 </div>
-//                 <span className="text-emerald-400 text-sm font-medium bg-emerald-400/10 px-2 py-1 rounded">
-//                   -55 Minutes
-//                 </span>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
+              <div className="relative">
+                <div className="mx-auto w-20 h-20 bg-emerald-100 rounded-2xl flex items-center justify-center mb-4">
+                  <step.icon className="w-8 h-8 text-emerald-600" />
+                </div>
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                  {step.number}
+                </div>
+              </div>
+
+              <h3 className="text-lg font-bold text-slate-900 mb-2">
+                {step.title}
+              </h3>
+              <p className="text-slate-600 text-sm">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const FounderStory = () => {
   const navigate = useNavigate();
 
@@ -553,8 +566,9 @@ const FounderStory = () => {
             </h2>
             <div className="prose prose-invert prose-lg opacity-90">
               <p>
-                Meet <strong>Alex Wong</strong>, TrainPace founder. In 2024,
-                Alex ran his first half marathon in{" "}
+                Meet <strong>Alex Wong</strong>, TrainPace founder and
+                Vancouver-based runner. In 2024, Alex ran his first half
+                marathon in{" "}
                 <span className="text-white font-semibold">3:01:00</span>
                 —undertrained, overpacing, and hitting the wall hard.
               </p>
@@ -635,84 +649,205 @@ const FounderStory = () => {
     </section>
   );
 };
+
 const Comparison = () => {
   return (
     <section className="py-20 bg-white">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-slate-900">
             Why Runners Choose TrainPace
           </h2>
         </div>
-        <div className="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 text-slate-900 font-bold uppercase text-xs tracking-wider">
-              <tr>
-                <th className="p-4 border-b border-slate-200">Feature</th>
-                <th className="p-4 border-b border-slate-200 bg-emerald-50 text-emerald-800 border-l border-r border-emerald-100 w-1/3">
-                  TrainPace
-                </th>
-                <th className="p-4 border-b border-slate-200 w-1/3 text-slate-500">
-                  Typical Apps
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              <tr>
-                <td className="p-4 font-medium text-slate-900">Price</td>
-                <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100 font-bold text-emerald-700">
-                  Free Forever
-                </td>
-                <td className="p-4 text-slate-500">$10-20/month</td>
-              </tr>
-              <tr>
-                <td className="p-4 font-medium text-slate-900">Pace Zones</td>
-                <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
-                  <span className="flex items-center">
-                    <Check className="w-4 h-4 text-emerald-500 mr-2" />{" "}
-                    Science-backed
-                  </span>
-                </td>
-                <td className="p-4 text-slate-500">Generic / Basic</td>
-              </tr>
-              <tr>
-                <td className="p-4 font-medium text-slate-900">
-                  Course Analysis
-                </td>
-                <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
-                  <span className="flex items-center">
-                    <Check className="w-4 h-4 text-emerald-500 mr-2" />{" "}
-                    Unlimited GPX
-                  </span>
-                </td>
-                <td className="p-4 text-slate-500">Premium Only</td>
-              </tr>
-              <tr>
-                <td className="p-4 font-medium text-slate-900">
-                  Fuel Planning
-                </td>
-                <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
-                  <span className="flex items-center">
-                    <Check className="w-4 h-4 text-emerald-500 mr-2" />{" "}
-                    AI-Powered
-                  </span>
-                </td>
-                <td className="p-4 text-slate-500">Rarely included</td>
-              </tr>
-              <tr>
-                <td className="p-4 font-medium text-slate-900">
-                  Account Required?
-                </td>
-                <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
-                  <span className="flex items-center">
-                    <X className="w-4 h-4 text-emerald-500 mr-2" /> No, use
-                    instantly
-                  </span>
-                </td>
-                <td className="p-4 text-slate-500">Yes, mandatory signup</td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="overflow-x-auto">
+          <div className="overflow-hidden border border-slate-200 rounded-xl shadow-sm min-w-[600px]">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-slate-50 text-slate-900 font-bold uppercase text-xs tracking-wider">
+                <tr>
+                  <th className="p-4 border-b border-slate-200">Feature</th>
+                  <th className="p-4 border-b border-slate-200 bg-emerald-50 text-emerald-800 border-l border-r border-emerald-100">
+                    TrainPace
+                  </th>
+                  <th className="p-4 border-b border-slate-200 text-slate-500">
+                    Running Apps
+                  </th>
+                  <th className="p-4 border-b border-slate-200 text-slate-500">
+                    Coaches
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                <tr>
+                  <td className="p-4 font-medium text-slate-900">Price</td>
+                  <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100 font-bold text-emerald-700">
+                    Free forever
+                  </td>
+                  <td className="p-4 text-slate-500">$10-20/month</td>
+                  <td className="p-4 text-slate-500">$100-300/month</td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium text-slate-900">Pace Zones</td>
+                  <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
+                    <span className="flex items-center">
+                      <Check className="w-4 h-4 text-emerald-500 mr-2" />{" "}
+                      Science-backed
+                    </span>
+                  </td>
+                  <td className="p-4 text-slate-500">
+                    <span className="flex items-center">
+                      <Check className="w-4 h-4 text-slate-400 mr-2" /> Basic
+                    </span>
+                  </td>
+                  <td className="p-4 text-slate-500">
+                    <span className="flex items-center">
+                      <Check className="w-4 h-4 text-slate-400 mr-2" />{" "}
+                      Personalized
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium text-slate-900">
+                    Elevation Analysis
+                  </td>
+                  <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
+                    <span className="flex items-center">
+                      <Check className="w-4 h-4 text-emerald-500 mr-2" />{" "}
+                      Unlimited GPX
+                    </span>
+                  </td>
+                  <td className="p-4 text-slate-500">
+                    <span className="flex items-center">
+                      <X className="w-4 h-4 text-red-400 mr-2" /> Premium only
+                    </span>
+                  </td>
+                  <td className="p-4 text-slate-500">
+                    <span className="flex items-center">
+                      <Check className="w-4 h-4 text-slate-400 mr-2" /> Manual
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium text-slate-900">
+                    Fuel Planning
+                  </td>
+                  <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
+                    <span className="flex items-center">
+                      <Check className="w-4 h-4 text-emerald-500 mr-2" />{" "}
+                      AI-powered
+                    </span>
+                  </td>
+                  <td className="p-4 text-slate-500">
+                    <span className="flex items-center">
+                      <X className="w-4 h-4 text-red-400 mr-2" /> Not included
+                    </span>
+                  </td>
+                  <td className="p-4 text-slate-500">
+                    <span className="flex items-center">
+                      <Check className="w-4 h-4 text-slate-400 mr-2" /> If they
+                      know nutrition
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium text-slate-900">
+                    No Account Needed
+                  </td>
+                  <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
+                    <span className="flex items-center">
+                      <Check className="w-4 h-4 text-emerald-500 mr-2" /> Use
+                      instantly
+                    </span>
+                  </td>
+                  <td className="p-4 text-slate-500">
+                    <span className="flex items-center">
+                      <X className="w-4 h-4 text-red-400 mr-2" /> Signup required
+                    </span>
+                  </td>
+                  <td className="p-4 text-slate-500">
+                    <span className="flex items-center">
+                      <X className="w-4 h-4 text-red-400 mr-2" /> Commitment
+                      needed
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-medium text-slate-900">All-in-One</td>
+                  <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
+                    <span className="flex items-center">
+                      <Check className="w-4 h-4 text-emerald-500 mr-2" /> Yes
+                    </span>
+                  </td>
+                  <td className="p-4 text-slate-500">
+                    <span className="flex items-center">
+                      <X className="w-4 h-4 text-red-400 mr-2" /> No
+                    </span>
+                  </td>
+                  <td className="p-4 text-slate-500">
+                    <span className="flex items-center">
+                      <Check className="w-4 h-4 text-slate-400 mr-2" /> Yes
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const UseCases = () => {
+  const cases = [
+    {
+      icon: "🏃",
+      role: "First-Time Marathoner",
+      quote:
+        "I'm running my first marathon. I analyzed the Boston course elevation, calculated my fueling needs (6 gels every 40 minutes), and set conservative pace zones. I finished strong without hitting the wall.",
+      color: "bg-blue-50 border-blue-100",
+    },
+    {
+      icon: "🏃‍♀️",
+      role: "Comeback Runner",
+      quote:
+        "After 2 years off, I didn't know where to start. I plugged in my old 10K time, got my Easy pace (9:30/mi), and built a base safely. 12 weeks later, I'm running pain-free.",
+      color: "bg-orange-50 border-orange-100",
+    },
+    {
+      icon: "🏃",
+      role: "Data-Driven Athlete",
+      quote:
+        "I upload every long run to see elevation patterns, save multiple fuel plans for A/B/C goals, and track pace progressions. TrainPace is my training command center.",
+      color: "bg-purple-50 border-purple-100",
+    },
+    {
+      icon: "🏃‍♀️",
+      role: "Trail Runner",
+      quote:
+        "I analyze trail GPX files before races—seeing grade percentages helps me plan walk breaks and fueling. The terrain difficulty score is spot-on.",
+      color: "bg-emerald-50 border-emerald-100",
+    },
+  ];
+
+  return (
+    <section className="py-20 bg-slate-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-slate-900">
+            Built for Every Runner
+          </h2>
+          <p className="mt-4 text-lg text-slate-600">
+            From first 5K to marathon PR, TrainPace adapts to your goals
+          </p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {cases.map((card, i) => (
+            <div key={i} className={`p-6 rounded-xl border ${card.color}`}>
+              <div className="text-2xl mb-3">{card.icon}</div>
+              <div className="font-bold text-slate-900 mb-2">{card.role}</div>
+              <p className="text-slate-600 text-sm italic">"{card.quote}"</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -727,20 +862,28 @@ const FAQ = () => {
     },
     {
       q: "Do I need an account?",
-      a: "No! You can use the Pace Calculator and ElevationFinder without signing up. Create an account (free) only if you want to save plans.",
+      a: "No! You can use the Pace Calculator and ElevationFinder without signing up. Create an account (free) to save plans and access your Dashboard.",
     },
     {
       q: "Where do the pace formulas come from?",
-      a: "We use proven exercise science formulas (Jack Daniels' VDOT and Riegel's formula) used by elite coaches.",
+      a: "We use proven exercise science formulas from Jack Daniels' Running Formula and Riegel's race prediction model—the same methods elite coaches use.",
+    },
+    {
+      q: "Can I use TrainPace on my phone?",
+      a: "Absolutely. TrainPace is a Progressive Web App (PWA) that works on any device, with offline support.",
+    },
+    {
+      q: "What file formats does ElevationFinder support?",
+      a: "GPX files from any GPS watch, Strava, Garmin Connect, or running app. (TCX/FIT support coming soon.)",
     },
     {
       q: "How accurate is the fuel planning?",
-      a: "It's based on sports nutrition research recommending 30-60g carbs/hour, tailored to your body weight and goal time.",
+      a: "Based on sports nutrition research recommending 30-60g carbs/hour. AI suggestions from Google Gemini provide additional context. Always test your fueling strategy in training!",
     },
   ];
 
   return (
-    <section className="py-20 bg-slate-50">
+    <section className="py-20 bg-white">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-3xl font-bold text-slate-900 text-center mb-12">
           Common Questions
@@ -749,7 +892,7 @@ const FAQ = () => {
           {faqs.map((faq, i) => (
             <details
               key={i}
-              className="group bg-white rounded-lg shadow-sm border border-slate-200 p-6 cursor-pointer"
+              className="group bg-slate-50 rounded-lg shadow-sm border border-slate-200 p-6 cursor-pointer"
             >
               <summary className="flex justify-between items-center font-medium text-slate-900 list-none">
                 <span>{faq.q}</span>
@@ -792,15 +935,13 @@ const CTA = () => {
           </button>
         </div>
         <p className="mt-8 text-sm text-emerald-200 flex items-center justify-center gap-2">
-          <ShieldCheck className="w-4 h-4" /> Your data is private. We never
-          sell your info.
+          <ShieldCheck className="w-4 h-4" /> Your data is private and secure.
+          We never sell your information.
         </p>
       </div>
     </section>
   );
 };
-
-// Footer is provided by MainLayout, so we don't need to define it here
 
 // --- Main App Component ---
 
@@ -814,12 +955,14 @@ export default function LandingPage() {
       <FeatureSection
         badge="Pace Calculator"
         title="Get Your Personal Training Zones in 30 Seconds"
-        subtitle="Enter any recent race time (5K to Marathon) and instantly get science-backed pace zones for all your training runs."
+        subtitle="Enter any recent race time (5K, 10K, half, or marathon) and instantly get science-backed pace zones for all your training runs."
         icon={Clock}
         features={[
-          "Easy & Recovery paces to prevent burnout",
-          "Lactate Threshold & Tempo zones",
+          "Easy & Recovery paces (20-30% slower than race pace)",
+          "Tempo / Lactate Threshold zones",
           "VO2 Max & Interval targets",
+          "Extra Long & Yasso 800s paces",
+          "Predict race times across distances",
           "Save unlimited plans to dashboard",
         ]}
         cta="Calculate My Paces"
@@ -830,13 +973,15 @@ export default function LandingPage() {
       <FeatureSection
         badge="Elevation Finder"
         title="Know Every Hill Before Race Day"
-        subtitle="Upload GPX files from your watch or Strava to get instant elevation insights and terrain difficulty ratings."
+        subtitle="Upload GPX files from your watch or download courses from Strava, and get instant elevation insights."
         icon={TrendingUp}
         features={[
-          "Interactive elevation profiles",
-          "Terrain difficulty scoring (Flat vs Hilly)",
-          "Total gain/loss analysis",
-          "Analyze Boston, NYC, or local trails",
+          "Interactive elevation profiles with mile markers",
+          "Total elevation gain/loss and grade percentages",
+          "Terrain difficulty rating (flat, rolling, hilly, steep)",
+          "Pre-loaded: Boston, NYC, Chicago, London, Berlin, Tokyo",
+          "Beautiful Mapbox terrain visualization",
+          "Share routes with permanent links",
         ]}
         cta="Analyze a Route"
         ctaRoute="/elevation-finder"
@@ -846,60 +991,25 @@ export default function LandingPage() {
       <FeatureSection
         badge="Fuel Planner"
         title="Never Hit the Wall Again"
-        subtitle="Get a personalized fueling strategy based on your specific race distance, goal time, and body weight."
+        subtitle="Get personalized fueling strategy based on your race distance, goal time, and body weight."
         icon={Zap}
         features={[
-          "Exact gel count and timing",
-          "Carbohydrate targets per hour",
-          "AI-powered nutrition suggestions",
-          "Prevent energy crashes",
+          "Science-based carb recommendations (30-60g/hour)",
+          "Exact gel count and timing (hourly breakdown)",
+          "Total calories and carbohydrates needed",
+          "AI-powered nutrition suggestions (Google Gemini)",
+          "Export your plan (copy or download)",
+          "Save multiple plans for different race goals",
         ]}
         cta="Plan My Fueling"
         ctaRoute="/fuel"
         imageSide="right"
       />
 
+      <HowItWorks />
       <FounderStory />
       <Comparison />
-
-      {/* Use Cases Grid */}
-      <section className="py-20 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900">
-              Built for Every Runner
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                role: "First-Time Marathoner",
-                quote:
-                  "I analyzed the Boston course elevation and calculated my fueling needs. I finished strong without hitting the wall.",
-                color: "bg-blue-50 border-blue-100",
-              },
-              {
-                role: "Comeback Runner",
-                quote:
-                  "After 2 years off, I didn't know where to start. I plugged in my old 10K time, got my Easy pace, and built a base safely.",
-                color: "bg-orange-50 border-orange-100",
-              },
-              {
-                role: "Trail Runner",
-                quote:
-                  "I analyze trail GPX files before races—seeing grade percentages helps me plan walk breaks. The terrain difficulty score is spot-on.",
-                color: "bg-emerald-50 border-emerald-100",
-              },
-            ].map((card, i) => (
-              <div key={i} className={`p-6 rounded-xl border ${card.color}`}>
-                <div className="font-bold text-slate-900 mb-2">{card.role}</div>
-                <p className="text-slate-600 text-sm italic">"{card.quote}"</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      <UseCases />
       <FAQ />
       <CTA />
     </div>
