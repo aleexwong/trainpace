@@ -172,6 +172,7 @@ export default function PosterGeneratorV3({
   });
 
   const [selectedTemplate, setSelectedTemplate] = useState(0);
+  const [hasClickedTemplate, setHasClickedTemplate] = useState(false);
   const [currentMapStyle, setCurrentMapStyle] = useState(
     TEMPLATE_COLORS[0].mapStyle
   );
@@ -829,29 +830,35 @@ export default function PosterGeneratorV3({
         <div>
           <Label className="text-base font-medium">Color Template</Label>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
-            {TEMPLATE_COLORS.map((template, index) => (
-              <button
-                key={template.name}
-                onClick={() => setSelectedTemplate(index)}
-                className={`
-                  relative h-12 rounded-lg border-2 transition-all
-                  ${
-                    selectedTemplate === index
-                      ? "border-blue-500 scale-105"
-                      : "border-gray-200 hover:border-gray-300"
-                  }
-                `}
-                style={{ backgroundColor: template.bg }}
-              >
-                <div
-                  className="absolute inset-2 rounded-md"
-                  style={{ backgroundColor: template.route, opacity: 0.7 }}
-                />
-                <span className="absolute bottom-0 left-0 right-0 text-xs font-medium text-center bg-black bg-opacity-50 text-white rounded-b-lg py-0.5">
-                  {template.name}
-                </span>
-              </button>
-            ))}
+            {TEMPLATE_COLORS.slice(1).map((template, index) => {
+              const actualIndex = index + 1; // Adjust index since we sliced off first item
+              return (
+                <button
+                  key={template.name}
+                  onClick={() => {
+                    setSelectedTemplate(actualIndex);
+                    setHasClickedTemplate(true);
+                  }}
+                  className={`
+                    relative h-12 rounded-lg border-2 transition-all
+                    ${
+                      selectedTemplate === actualIndex
+                        ? "border-blue-500 scale-105"
+                        : "border-gray-200 hover:border-gray-300"
+                    }
+                  `}
+                  style={{ backgroundColor: template.bg }}
+                >
+                  <div
+                    className="absolute inset-2 rounded-md"
+                    style={{ backgroundColor: template.route, opacity: 0.7 }}
+                  />
+                  <span className="absolute bottom-0 left-0 right-0 text-xs font-medium text-center bg-black bg-opacity-50 text-white rounded-b-lg py-0.5">
+                    {template.name}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -1057,38 +1064,55 @@ export default function PosterGeneratorV3({
           {/* Preview - Map with poster overlay */}
           <div className="space-y-3">
             <Label className="text-base font-medium">Preview Poster</Label>
-            <div
-              className="border border-gray-200 rounded-lg overflow-hidden relative"
-              style={{
-                aspectRatio: "4/5",
-                backgroundColor: posterData.backgroundColor,
-              }}
-            >
-              {/* Interactive map with 5% padding to match final poster */}
+            <div className="relative">
               <div
-                ref={previewMapRef}
+                className="border border-gray-200 rounded-lg overflow-hidden relative"
                 style={{
-                  position: "absolute",
-                  top: "2.5%",
-                  left: "2.5%",
-                  width: "95%",
-                  height: `${80 * 0.95}%`, // 80% map height * 95% width for padding
-                  zIndex: 1,
+                  aspectRatio: "4/5",
+                  backgroundColor: posterData.backgroundColor,
                 }}
-              />
-              {/* Canvas overlay with stats text - only covers bottom 20% */}
-              <canvas
-                ref={previewCanvasRef}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  pointerEvents: "none",
-                  zIndex: 2,
-                }}
-              />
+              >
+                {/* Interactive map with 5% padding to match final poster */}
+                <div
+                  ref={previewMapRef}
+                  style={{
+                    position: "absolute",
+                    top: "2.5%",
+                    left: "2.5%",
+                    width: "95%",
+                    height: `${80 * 0.95}%`, // 80% map height * 95% width for padding
+                    zIndex: 1,
+                  }}
+                />
+                {/* Canvas overlay with stats text - only covers bottom 20% */}
+                <canvas
+                  ref={previewCanvasRef}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    pointerEvents: "none",
+                    zIndex: 2,
+                  }}
+                />
+              </div>
+              {/* Loading overlay - covers entire preview component */}
+              {!hasClickedTemplate && (
+                <div
+                  className="absolute inset-0 border border-gray-200 rounded-lg bg-gray-100 flex items-center justify-center"
+                  style={{
+                    zIndex: 50,
+                  }}
+                >
+                  <div className="text-center space-y-2 px-4">
+                    <p className="text-sm text-gray-600 font-medium">
+                      Click a color template above to reveal preview poster
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
             <p className="text-xs text-gray-500 text-center">
               <span className="font-medium">Drag to pan, scroll to zoom</span>{" "}
