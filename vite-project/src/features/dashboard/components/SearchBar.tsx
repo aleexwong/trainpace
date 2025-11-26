@@ -70,9 +70,6 @@ export function SearchBar({
           </Button>
         )}
       </div>
-      {localValue && (
-        <p className="text-xs text-gray-500 mt-2">Press ESC to clear search</p>
-      )}
     </div>
   );
 }
