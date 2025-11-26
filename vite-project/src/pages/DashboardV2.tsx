@@ -7,9 +7,11 @@ import {
   useRoutes,
   useFuelPlans,
   usePacePlans,
+  useSearch,
   RoutesSection,
   FuelPlansSection,
   PacePlansSection,
+  SearchBar,
   deleteRoute,
   deleteFuelPlan,
   deletePacePlan,
@@ -24,6 +26,7 @@ import {
 export default function DashboardV2() {
   const [activeTab, setActiveTab] = useState<DashboardTab>("routes");
   const [editingPlan, setEditingPlan] = useState<PacePlan | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const { user } = useAuth();
   const { toast } = useToast();
 
@@ -47,6 +50,20 @@ export default function DashboardV2() {
     removePacePlan,
     updatePacePlan: updateLocalPacePlan,
   } = usePacePlans(user?.uid);
+
+  // Client-side search filtering (zero Firebase operations)
+  const {
+    filteredPacePlans,
+    filteredFuelPlans,
+    filteredRoutes,
+    hasActiveSearch,
+    totalResults,
+  } = useSearch({
+    searchQuery,
+    pacePlans,
+    fuelPlans,
+    routes,
+  });
 
   // Action handlers
   const handleDeleteRoute = async (
@@ -203,6 +220,17 @@ export default function DashboardV2() {
         <p className="text-gray-600">Manage your routes and fuel plans</p>
       </div>
 
+      {/* Search Bar */}
+      <div className="mb-6">
+        <SearchBar value={searchQuery} onChange={setSearchQuery} />
+        {hasActiveSearch && (
+          <div className="mt-3 text-sm text-gray-600">
+            Found <span className="font-semibold">{totalResults}</span> result
+            {totalResults !== 1 ? "s" : ""} across all tabs
+          </div>
+        )}
+      </div>
+
       {/* Tabs */}
       <div className="mb-6">
         <div className="flex gap-2 bg-gray-100 p-1 rounded-lg inline-flex">
@@ -214,7 +242,7 @@ export default function DashboardV2() {
                 : "bg-white text-blue-600 shadow-sm hover:bg-white hover:text-blue-600"
             }`}
           >
-            Routes ({routes.length})
+            Routes ({hasActiveSearch ? filteredRoutes.length : routes.length})
           </button>
           <button
             onClick={() => setActiveTab("pace-plans")}
@@ -224,7 +252,7 @@ export default function DashboardV2() {
                 : "bg-white text-purple-600 shadow-sm hover:bg-white hover:text-purple-600"
             }`}
           >
-            Pace Plans ({pacePlans.length})
+            Pace Plans ({hasActiveSearch ? filteredPacePlans.length : pacePlans.length})
           </button>
           <button
             onClick={() => setActiveTab("fuel-plans")}
@@ -234,7 +262,7 @@ export default function DashboardV2() {
                 : "bg-white text-orange-600 shadow-sm hover:bg-white hover:text-orange-600"
             }`}
           >
-            Fuel Plans ({fuelPlans.length})
+            Fuel Plans ({hasActiveSearch ? filteredFuelPlans.length : fuelPlans.length})
           </button>
         </div>
       </div>
@@ -249,7 +277,7 @@ export default function DashboardV2() {
       {/* Tab Content */}
       {activeTab === "routes" && (
         <RoutesSection
-          routes={routes}
+          routes={filteredRoutes}
           loading={routesLoading}
           onDeleteRoute={handleDeleteRoute}
         />
@@ -257,7 +285,7 @@ export default function DashboardV2() {
 
       {activeTab === "pace-plans" && (
         <PacePlansSection
-          pacePlans={pacePlans}
+          pacePlans={filteredPacePlans}
           loading={pacePlansLoading}
           onDeletePlan={handleDeletePacePlan}
           onCopyPlan={handleCopyPacePlan}
@@ -267,7 +295,7 @@ export default function DashboardV2() {
 
       {activeTab === "fuel-plans" && (
         <FuelPlansSection
-          fuelPlans={fuelPlans}
+          fuelPlans={filteredFuelPlans}
           loading={fuelPlansLoading}
           onDeletePlan={handleDeleteFuelPlan}
           onCopyPlan={handleCopyFuelPlan}
