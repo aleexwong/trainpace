@@ -2,6 +2,7 @@ import { Button } from "../ui/button";
 import { Image } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { PosterGeneratorV3 } from "./index";
+import { useAuth } from "../../features/auth/AuthContext";
 import type { GPXMetadata } from "../../lib/gpxMetaData";
 
 type GpxPoint = { lat: number; lng: number; ele?: number };
@@ -19,12 +20,17 @@ export default function PosterButton({
   filename,
   disabled = false,
 }: PosterButtonProps) {
+  // Get auth state
+  const { user } = useAuth();
+
   // Feature flag check
   const isPosterFeatureEnabled =
-    import.meta.env.VITE_ENABLE_POSTER_FEATURE === "true";
+    import.meta.env.VITE_ENABLE_POSTER_FEATURE === "false";
 
+  // Check both feature flag AND authentication
   const canGeneratePoster =
     isPosterFeatureEnabled &&
+    user !== null && // User must be authenticated
     displayPoints &&
     displayPoints.length > 0 &&
     metadata;
