@@ -859,7 +859,7 @@ export default function PosterGeneratorV3({
               {/* Loading overlay */}
               {!hasClickedTemplate && (
                 <div
-                  className="absolute inset-0 border-2 border-gray-300 rounded-lg bg-gray-50/95 flex items-center justify-center backdrop-blur-sm"
+                  className="absolute inset-0 border-2 border-gray-300 rounded-lg bg-white/65 flex items-center justify-center backdrop-blur-sm"
                   style={{
                     zIndex: 50,
                   }}
