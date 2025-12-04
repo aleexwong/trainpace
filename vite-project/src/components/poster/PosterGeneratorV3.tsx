@@ -1,5 +1,13 @@
 import { useRef, useEffect, useState } from "react";
-import { Download, MapPin, Clock, Calendar, Trophy } from "lucide-react";
+import {
+  Download,
+  MapPin,
+  Clock,
+  Calendar,
+  Trophy,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
@@ -37,6 +45,7 @@ interface PosterGeneratorProps {
   displayPoints: GpxPoint[];
   metadata: GPXMetadata;
   filename?: string;
+  onDataChange?: () => void; // Callback when user makes changes
 }
 
 const PRINT_CONFIG = {
@@ -93,18 +102,6 @@ const TEMPLATE_COLORS = [
     bg: "#1a1a1a",
     mapStyle: "mapbox://styles/mapbox/navigation-night-v1",
   },
-  {
-    name: "Minimal",
-    route: "#f39c12",
-    bg: "#f9fafb",
-    mapStyle: "mapbox://styles/mapbox/light-v11",
-  },
-  {
-    name: "Satellite",
-    route: "#ef4444",
-    bg: "#000000",
-    mapStyle: "mapbox://styles/mapbox/satellite-v9",
-  },
 ];
 
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN?.trim();
@@ -143,10 +140,41 @@ const loadMapbox = (): Promise<void> => {
   return mapboxLoadPromise;
 };
 
+// Collapsible Section Component
+function CollapsibleSection({
+  title,
+  children,
+  defaultOpen = true,
+}: {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  return (
+    <div className="border border-gray-200 rounded-lg overflow-hidden">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-4 py-3 bg-gray-50 hover:bg-gray-100 flex items-center justify-between text-sm font-medium transition-colors"
+      >
+        <span>{title}</span>
+        {isOpen ? (
+          <ChevronUp className="w-4 h-4 text-gray-500" />
+        ) : (
+          <ChevronDown className="w-4 h-4 text-gray-500" />
+        )}
+      </button>
+      {isOpen && <div className="p-4 space-y-3">{children}</div>}
+    </div>
+  );
+}
+
 export default function PosterGeneratorV3({
   displayPoints,
   metadata,
   filename,
+  onDataChange,
 }: PosterGeneratorProps) {
   const previewMapRef = useRef<HTMLDivElement>(null);
   const previewMap = useRef<any>(null);
@@ -159,7 +187,7 @@ export default function PosterGeneratorV3({
     city: "Vancouver",
     raceName:
       metadata.routeName || filename?.replace(/\.[^/.]+$/, "") || "My Race",
-    time: "",
+    time: "1:30:00",
     distance: `${metadata.totalDistance.toFixed(1)} km`,
     date: new Date().toLocaleDateString("en-US", {
       year: "numeric",
@@ -226,7 +254,7 @@ export default function PosterGeneratorV3({
     };
 
     geocodeCity();
-  }, [displayPoints, MAPBOX_TOKEN]); // Run once when component mounts with data
+  }, [displayPoints, MAPBOX_TOKEN]);
 
   // Update template colors and map style when template changes
   useEffect(() => {
@@ -368,7 +396,7 @@ export default function PosterGeneratorV3({
     };
   }, [displayPoints, MAPBOX_TOKEN]);
 
-  // Update map style when template changes (only runs when style URL actually changes)
+  // Update map style when template changes
   useEffect(() => {
     if (previewMap.current && mapReady) {
       const currentStyle = previewMap.current.getStyle();
@@ -443,7 +471,7 @@ export default function PosterGeneratorV3({
     }
   }, [currentMapStyle, mapReady, displayPoints]);
 
-  // Update route color when it changes (separate from style changes)
+  // Update route color when it changes
   useEffect(() => {
     if (!previewMap.current || !mapReady) {
       console.log("⏳ Color update blocked: map not ready");
@@ -534,12 +562,11 @@ export default function PosterGeneratorV3({
         // Draw stats text
         const statsScale = displayWidth / PRINT_CONFIG.width;
         renderStats(ctx, displayWidth, statsHeight, statsTop, statsScale);
-      }, 50); // Reduced timeout for faster response
+      }, 50);
     };
 
-    // Call update immediately when posterData changes
     updatePreview();
-  }, [posterData]); // Trigger on any posterData change
+  }, [posterData]);
 
   // Set up map event listeners separately (only once)
   useEffect(() => {
@@ -579,8 +606,10 @@ export default function PosterGeneratorV3({
       }, 50);
     };
 
-    // Listen to moveend for map pan/zoom updates
-    const onMapUpdate = () => updatePreview();
+    const onMapUpdate = () => {
+      updatePreview();
+      onDataChange?.(); // Track map movements as changes
+    };
     previewMap.current.on("moveend", onMapUpdate);
 
     return () => {
@@ -591,9 +620,9 @@ export default function PosterGeneratorV3({
         clearTimeout(updatePreviewTimeoutRef.current);
       }
     };
-  }, [mapReady]); // Only set up listeners once
+  }, [mapReady]);
 
-  // Generate full quality poster DIRECTLY from preview map (no hidden map)
+  // Generate full quality poster DIRECTLY from preview map
   const generateFullPoster = async () => {
     if (!previewMap.current || !mapReady) {
       toast({
@@ -619,7 +648,7 @@ export default function PosterGeneratorV3({
 
       addDebugInfo("📸 Capturing preview map");
 
-      // Get the preview map canvas directly - this is what you see
+      // Get the preview map canvas directly
       const previewCanvas = previewMap.current.getCanvas();
 
       // Create final poster canvas at print resolution
@@ -627,11 +656,11 @@ export default function PosterGeneratorV3({
       finalCanvas.width = PRINT_CONFIG.width;
       finalCanvas.height = PRINT_CONFIG.height;
       const ctx = finalCanvas.getContext("2d", {
-        alpha: false, // No transparency needed, improves performance
-        desynchronized: false, // Synchronous rendering for quality
+        alpha: false,
+        desynchronized: false,
       })!;
 
-      // Enable high-quality image smoothing for sharper scaling
+      // Enable high-quality image smoothing
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = "high";
 
@@ -645,18 +674,17 @@ export default function PosterGeneratorV3({
       const mapHeight =
         PRINT_CONFIG.height * PRINT_CONFIG.mapHeight - margin * 2;
 
-      // Draw the preview map scaled up to print resolution with high-quality smoothing
-      // This is EXACTLY what you see in the preview, but sharper
+      // Draw the preview map scaled up to print resolution
       ctx.drawImage(
         previewCanvas,
         0,
         0,
         previewCanvas.width,
-        previewCanvas.height, // source
+        previewCanvas.height,
         margin,
         margin,
         mapWidth,
-        mapHeight // destination
+        mapHeight
       );
 
       // Draw stats
@@ -767,252 +795,35 @@ export default function PosterGeneratorV3({
   };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full max-w-7xl mx-auto">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Trophy className="w-5 h-5" />
           Course Poster Generator
         </CardTitle>
         <p className="text-sm text-gray-600">
-          Build your custom race poster by selecting a color template
+          Create your custom race poster with live preview and full
+          customization
         </p>
       </CardHeader>
 
-      <CardContent className="space-y-6">
-        {/* Debug Info */}
-        {/* {debugInfo.length > 0 && (
-          <div className="bg-gray-100 p-3 rounded text-xs font-mono">
-            <div className="font-bold mb-1">Debug Info:</div>
-            {debugInfo.map((info, i) => (
-              <div key={i}>{info}</div>
-            ))}
-          </div>
-        )} */}
-
-        {/* Template Selection */}
-        <div>
-          <Label className="text-base font-medium">Color Template</Label>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
-            {TEMPLATE_COLORS.slice(1).map((template, index) => {
-              const actualIndex = index + 1; // Adjust index since we sliced off first item
-              return (
-                <button
-                  key={template.name}
-                  onClick={() => {
-                    setSelectedTemplate(actualIndex);
-                    setHasClickedTemplate(true);
-                  }}
-                  className={`
-                    relative h-12 rounded-lg border-2 transition-all
-                    ${
-                      selectedTemplate === actualIndex
-                        ? "border-blue-500 scale-105"
-                        : "border-gray-200 hover:border-gray-300"
-                    }
-                  `}
-                  style={{ backgroundColor: template.bg }}
-                >
-                  <div
-                    className="absolute inset-2 rounded-md"
-                    style={{ backgroundColor: template.route, opacity: 0.7 }}
-                  />
-                  <span className="absolute bottom-0 left-0 right-0 text-xs font-medium text-center bg-black bg-opacity-50 text-white rounded-b-lg py-0.5">
-                    {template.name}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Controls */}
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="col-span-2">
-                <Label htmlFor="raceName">Race Title</Label>
-                <Input
-                  id="raceName"
-                  value={posterData.raceName}
-                  onChange={(e) =>
-                    setPosterData({ ...posterData, raceName: e.target.value })
-                  }
-                  placeholder="Bank of America Chicago Marathon"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="city" className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4" />
-                  City
-                  {isGeocodingCity && (
-                    <span className="text-xs text-blue-600 ml-1">
-                      (detecting...)
-                    </span>
-                  )}
-                </Label>
-                <Input
-                  id="city"
-                  value={posterData.city}
-                  onChange={(e) =>
-                    setPosterData({ ...posterData, city: e.target.value })
-                  }
-                  placeholder="Vancouver"
-                  disabled={isGeocodingCity}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="time" className="flex items-center gap-1">
-                  <Clock className="w-4 h-4" />
-                  Time
-                </Label>
-                <Input
-                  id="time"
-                  value={posterData.time}
-                  onChange={(e) =>
-                    setPosterData({ ...posterData, time: e.target.value })
-                  }
-                  placeholder="3:45:22"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="distance">Distance</Label>
-                <Input
-                  id="distance"
-                  value={posterData.distance}
-                  onChange={(e) =>
-                    setPosterData({ ...posterData, distance: e.target.value })
-                  }
-                  placeholder="42.195 km"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="date" className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4" />
-                  Date
-                </Label>
-                <Input
-                  id="date"
-                  value={posterData.date}
-                  onChange={(e) =>
-                    setPosterData({ ...posterData, date: e.target.value })
-                  }
-                  placeholder="Sep 21, 2025"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="athleteName">Athlete Name</Label>
-                <Input
-                  id="athleteName"
-                  value={posterData.athleteName}
-                  onChange={(e) =>
-                    setPosterData({
-                      ...posterData,
-                      athleteName: e.target.value,
-                    })
-                  }
-                  placeholder="Runner Name"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <Label htmlFor="routeColor">Route Color</Label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    id="routeColor"
-                    value={posterData.routeColor}
-                    onChange={(e) =>
-                      setPosterData({
-                        ...posterData,
-                        routeColor: e.target.value,
-                      })
-                    }
-                    className="w-12 h-10 rounded border border-gray-300"
-                  />
-                  <Input
-                    value={posterData.routeColor}
-                    onChange={(e) =>
-                      setPosterData({
-                        ...posterData,
-                        routeColor: e.target.value,
-                      })
-                    }
-                    placeholder="#e74c3c"
-                    className="flex-1"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="backgroundColor">Background</Label>
-                <div className="flex gap-2">
-                  <input
-                    type="color"
-                    id="backgroundColor"
-                    value={posterData.backgroundColor}
-                    onChange={(e) =>
-                      setPosterData({
-                        ...posterData,
-                        backgroundColor: e.target.value,
-                      })
-                    }
-                    className="w-12 h-10 rounded border border-gray-300"
-                  />
-                  <Input
-                    value={posterData.backgroundColor}
-                    onChange={(e) =>
-                      setPosterData({
-                        ...posterData,
-                        backgroundColor: e.target.value,
-                      })
-                    }
-                    placeholder="#ffffff"
-                    className="flex-1"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <Button
-              onClick={generateFullPoster}
-              disabled={isGenerating || !MAPBOX_TOKEN || !mapReady}
-              className="w-full"
-              size="lg"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              {isGenerating
-                ? "Generating Map..."
-                : 'Generate 8×10" Poster (300 DPI)'}
-            </Button>
-
-            <div className="text-xs text-gray-500 space-y-1">
-              <div>• Use the map to frame your route perfectly</div>
-              <div>• Customize colors, text, and markers below</div>
-              <div>• Download at 300 DPI for print-ready quality</div>
-              <div className="font-semibold text-blue-600">
-                • Simple workflow: frame, customize, download
-              </div>
-              {!MAPBOX_TOKEN && (
-                <div className="text-red-500">
-                  ⚠ Mapbox token not configured
-                </div>
+      <CardContent>
+        {/* Two-Column Layout */}
+        <div className="grid lg:grid-cols-[60%_40%] gap-6">
+          {/* LEFT: POSTER PREVIEW (Dominant 60%) */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <Label className="text-base font-medium">Live Preview</Label>
+              {mapReady && (
+                <span className="text-xs text-green-600 font-medium">
+                  Ready ✓
+                </span>
               )}
             </div>
-          </div>
 
-          {/* Preview - Map with poster overlay */}
-          <div className="space-y-3">
-            <Label className="text-base font-medium">Preview Poster</Label>
             <div className="relative">
               <div
-                className="border border-gray-200 rounded-lg overflow-hidden relative"
+                className="border-2 border-gray-300 rounded-lg overflow-hidden relative shadow-lg"
                 style={{
                   aspectRatio: "4/5",
                   backgroundColor: posterData.backgroundColor,
@@ -1026,11 +837,11 @@ export default function PosterGeneratorV3({
                     top: "2.5%",
                     left: "2.5%",
                     width: "95%",
-                    height: `${80 * 0.95}%`, // 80% map height * 95% width for padding
+                    height: `${80 * 0.95}%`,
                     zIndex: 1,
                   }}
                 />
-                {/* Canvas overlay with stats text - only covers bottom 20% */}
+                {/* Canvas overlay with stats text */}
                 <canvas
                   ref={previewCanvasRef}
                   style={{
@@ -1044,30 +855,307 @@ export default function PosterGeneratorV3({
                   }}
                 />
               </div>
-              {/* Loading overlay - covers entire preview component */}
+
+              {/* Loading overlay */}
               {!hasClickedTemplate && (
                 <div
-                  className="absolute inset-0 border border-gray-200 rounded-lg bg-gray-100 flex items-center justify-center"
+                  className="absolute inset-0 border-2 border-gray-300 rounded-lg bg-gray-50/95 flex items-center justify-center backdrop-blur-sm"
                   style={{
                     zIndex: 50,
                   }}
                 >
                   <div className="text-center space-y-2 px-4">
-                    <p className="text-sm text-gray-600 font-medium">
-                      Click a color template above to reveal preview poster
+                    <p className="text-base text-gray-700 font-semibold">
+                      👉 Select a color template to start
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Preview will appear here
                     </p>
                   </div>
                 </div>
               )}
             </div>
-            <p className="text-xs text-gray-500 text-center">
-              <span className="font-medium">Drag to pan, scroll to zoom</span>{" "}
-              to frame your route perfectly
-              {mapReady && <span className="text-green-600"> • Ready ✓</span>}
-            </p>
-            <p className="text-xs text-blue-600 text-center font-medium">
-              This exact poster will be downloaded at 300 DPI
-            </p>
+
+            <div className="text-xs text-gray-500 space-y-1 text-center">
+              <p className="font-medium">
+                🖱️ Drag to pan • 🔍 Scroll to zoom • Frame your route
+              </p>
+              <p className="text-blue-600 font-medium">
+                This exact poster will be downloaded at 300 DPI
+              </p>
+            </div>
+          </div>
+
+          {/* RIGHT: CONTROLS PANEL (40%) - Stacked Collapsible Groups */}
+          <div className="space-y-4">
+            {/* Export */}
+            <CollapsibleSection title="💾 Export" defaultOpen={true}>
+              <Button
+                onClick={generateFullPoster}
+                disabled={isGenerating || !MAPBOX_TOKEN || !mapReady}
+                className="w-full"
+                size="lg"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                {isGenerating
+                  ? "Generating..."
+                  : 'Download 8×10" Poster (300 DPI)'}
+              </Button>
+
+              <div className="text-xs text-gray-500 space-y-1 mt-3">
+                <div>✓ Frame your route with the map controls</div>
+                <div>✓ Customize all details below</div>
+                <div>✓ Download print-ready 300 DPI poster</div>
+                {!MAPBOX_TOKEN && (
+                  <div className="text-red-500">
+                    ⚠️ Mapbox token not configured
+                  </div>
+                )}
+              </div>
+            </CollapsibleSection>
+
+            {/* Color Template */}
+            <CollapsibleSection title="🎨 Color Template" defaultOpen={true}>
+              <div className="grid grid-cols-3 gap-2">
+                {TEMPLATE_COLORS.slice(1).map((template, index) => {
+                  const actualIndex = index + 1;
+                  return (
+                    <button
+                      key={template.name}
+                      onClick={() => {
+                        setSelectedTemplate(actualIndex);
+                        setHasClickedTemplate(true);
+                        onDataChange?.();
+                      }}
+                      className={`
+                        relative h-16 rounded-lg border-2 transition-all
+                        ${
+                          selectedTemplate === actualIndex
+                            ? "border-blue-500 ring-2 ring-blue-200 scale-105"
+                            : "border-gray-200 hover:border-gray-300"
+                        }
+                      `}
+                      style={{ backgroundColor: template.bg }}
+                    >
+                      <div
+                        className="absolute inset-2 rounded-md"
+                        style={{
+                          backgroundColor: template.route,
+                          opacity: 0.7,
+                        }}
+                      />
+                      <span className="absolute bottom-0 left-0 right-0 text-[10px] font-medium text-center bg-black bg-opacity-60 text-white rounded-b-lg py-1">
+                        {template.name}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </CollapsibleSection>
+
+            {/* Race Details */}
+            <CollapsibleSection title="🏁 Race Details" defaultOpen={true}>
+              <div className="space-y-3">
+                <div>
+                  <Label htmlFor="raceName" className="text-sm">
+                    Race Title
+                  </Label>
+                  <Input
+                    id="raceName"
+                    value={posterData.raceName}
+                    onChange={(e) => {
+                      setPosterData({
+                        ...posterData,
+                        raceName: e.target.value,
+                      });
+                      onDataChange?.();
+                    }}
+                    placeholder="Bank of America Chicago Marathon"
+                    className="mt-1"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label
+                      htmlFor="city"
+                      className="text-sm flex items-center gap-1"
+                    >
+                      <MapPin className="w-3 h-3" />
+                      City
+                      {isGeocodingCity && (
+                        <span className="text-xs text-blue-600">...</span>
+                      )}
+                    </Label>
+                    <Input
+                      id="city"
+                      value={posterData.city}
+                      onChange={(e) => {
+                        setPosterData({ ...posterData, city: e.target.value });
+                        onDataChange?.();
+                      }}
+                      placeholder="Vancouver"
+                      disabled={isGeocodingCity}
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="distance" className="text-sm">
+                      Distance
+                    </Label>
+                    <Input
+                      id="distance"
+                      value={posterData.distance}
+                      onChange={(e) => {
+                        setPosterData({
+                          ...posterData,
+                          distance: e.target.value,
+                        });
+                        onDataChange?.();
+                      }}
+                      placeholder="42.195 km"
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <Label
+                      htmlFor="time"
+                      className="text-sm flex items-center gap-1"
+                    >
+                      <Clock className="w-3 h-3" />
+                      Time
+                    </Label>
+                    <Input
+                      id="time"
+                      value={posterData.time}
+                      onChange={(e) => {
+                        setPosterData({ ...posterData, time: e.target.value });
+                        onDataChange?.();
+                      }}
+                      placeholder="3:45:22"
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label
+                      htmlFor="date"
+                      className="text-sm flex items-center gap-1"
+                    >
+                      <Calendar className="w-3 h-3" />
+                      Race Date
+                    </Label>
+                    <Input
+                      id="date"
+                      value={posterData.date}
+                      onChange={(e) => {
+                        setPosterData({ ...posterData, date: e.target.value });
+                        onDataChange?.();
+                      }}
+                      placeholder="Sep 21, 2025"
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
+              </div>
+            </CollapsibleSection>
+
+            {/* Athlete Details */}
+            <CollapsibleSection title="👤 Athlete Details" defaultOpen={false}>
+              <div>
+                <Label htmlFor="athleteName" className="text-sm">
+                  Athlete Name
+                </Label>
+                <Input
+                  id="athleteName"
+                  value={posterData.athleteName}
+                  onChange={(e) => {
+                    setPosterData({
+                      ...posterData,
+                      athleteName: e.target.value,
+                    });
+                    onDataChange?.();
+                  }}
+                  placeholder="Runner Name"
+                  className="mt-1"
+                />
+              </div>
+            </CollapsibleSection>
+
+            {/* Route Styling */}
+            <CollapsibleSection title="🎨 Route Styling" defaultOpen={false}>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label htmlFor="routeColor" className="text-sm">
+                    Route Color
+                  </Label>
+                  <div className="flex gap-2 mt-1">
+                    <input
+                      type="color"
+                      id="routeColor"
+                      value={posterData.routeColor}
+                      onChange={(e) => {
+                        setPosterData({
+                          ...posterData,
+                          routeColor: e.target.value,
+                        });
+                        onDataChange?.();
+                      }}
+                      className="w-12 h-10 rounded border border-gray-300 cursor-pointer"
+                    />
+                    <Input
+                      value={posterData.routeColor}
+                      onChange={(e) => {
+                        setPosterData({
+                          ...posterData,
+                          routeColor: e.target.value,
+                        });
+                        onDataChange?.();
+                      }}
+                      placeholder="#e74c3c"
+                      className="flex-1"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="backgroundColor" className="text-sm">
+                    Background
+                  </Label>
+                  <div className="flex gap-2 mt-1">
+                    <input
+                      type="color"
+                      id="backgroundColor"
+                      value={posterData.backgroundColor}
+                      onChange={(e) => {
+                        setPosterData({
+                          ...posterData,
+                          backgroundColor: e.target.value,
+                        });
+                        onDataChange?.();
+                      }}
+                      className="w-12 h-10 rounded border border-gray-300 cursor-pointer"
+                    />
+                    <Input
+                      value={posterData.backgroundColor}
+                      onChange={(e) => {
+                        setPosterData({
+                          ...posterData,
+                          backgroundColor: e.target.value,
+                        });
+                        onDataChange?.();
+                      }}
+                      placeholder="#ffffff"
+                      className="flex-1"
+                    />
+                  </div>
+                </div>
+              </div>
+            </CollapsibleSection>
           </div>
         </div>
       </CardContent>
