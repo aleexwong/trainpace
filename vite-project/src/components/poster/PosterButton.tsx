@@ -25,7 +25,7 @@ export default function PosterButton({
 
   // Feature flag check
   const isPosterFeatureEnabled =
-    import.meta.env.VITE_ENABLE_POSTER_FEATURE === "false";
+    import.meta.env.VITE_ENABLE_POSTER_FEATURE === "true";
 
   // Check both feature flag AND authentication
   const canGeneratePoster =
