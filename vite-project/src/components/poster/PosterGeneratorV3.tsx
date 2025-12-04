@@ -670,7 +670,7 @@ export default function PosterGeneratorV3({
 
       // Enable high-quality image smoothing for sharper scaling
       ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
+      ctx.imageSmoothingQuality = "high";
 
       // Fill background
       ctx.fillStyle = posterData.backgroundColor;
@@ -756,9 +756,9 @@ export default function PosterGeneratorV3({
     scale: number
   ) => {
     // Enable text rendering quality hints
-    ctx.textRendering = 'optimizeLegibility' as any;
-    ctx.fontKerning = 'normal' as any;
-    
+    ctx.textRendering = "optimizeLegibility" as any;
+    ctx.fontKerning = "normal" as any;
+
     const fontSize = Math.max(8, 14 * scale);
     const headerFontSize = Math.max(10, 16 * scale);
     const margin = 60 * scale;
@@ -808,23 +808,23 @@ export default function PosterGeneratorV3({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Trophy className="w-5 h-5" />
-          Course Poster Generator V3
+          Course Poster Generator
         </CardTitle>
         <p className="text-sm text-gray-600">
-          Using Mapbox GL JS for perfect route alignment
+          Build your custom race poster by selecting a color template
         </p>
       </CardHeader>
 
       <CardContent className="space-y-6">
         {/* Debug Info */}
-        {debugInfo.length > 0 && (
+        {/* {debugInfo.length > 0 && (
           <div className="bg-gray-100 p-3 rounded text-xs font-mono">
             <div className="font-bold mb-1">Debug Info:</div>
             {debugInfo.map((info, i) => (
               <div key={i}>{info}</div>
             ))}
           </div>
-        )}
+        )} */}
 
         {/* Template Selection */}
         <div>
@@ -862,7 +862,7 @@ export default function PosterGeneratorV3({
           </div>
         </div>
 
-        {/* Start/End Markers Toggle */}
+        {/* Start/End Markers Toggle
         <div className="flex items-center space-x-2">
           <input
             type="checkbox"
@@ -877,7 +877,7 @@ export default function PosterGeneratorV3({
           >
             Show start/end markers
           </Label>
-        </div>
+        </div> */}
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Controls */}
