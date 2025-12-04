@@ -177,8 +177,7 @@ export default function PosterGeneratorV3({
     TEMPLATE_COLORS[0].mapStyle
   );
   const [isGenerating, setIsGenerating] = useState(false);
-  const [debugInfo, setDebugInfo] = useState<string[]>([]);
-  const [showStartEndMarkers, setShowStartEndMarkers] = useState(true);
+  const [, setDebugInfo] = useState<string[]>([]);
   const [mapReady, setMapReady] = useState(false);
   const [isGeocodingCity, setIsGeocodingCity] = useState(false);
   const updatePreviewTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -442,7 +441,7 @@ export default function PosterGeneratorV3({
         );
       }
     }
-  }, [currentMapStyle, mapReady, displayPoints, showStartEndMarkers]);
+  }, [currentMapStyle, mapReady, displayPoints]);
 
   // Update route color when it changes (separate from style changes)
   useEffect(() => {
@@ -485,43 +484,7 @@ export default function PosterGeneratorV3({
     // Clear existing markers
     markersRef.current.forEach((marker) => marker.remove());
     markersRef.current = [];
-
-    // Add markers if enabled
-    if (showStartEndMarkers && displayPoints.length > 1) {
-      const mapboxgl = (window as any).mapboxgl;
-      const start = displayPoints[0];
-      const end = displayPoints[displayPoints.length - 1];
-
-      // Create custom circle element for start marker
-      const startEl = document.createElement("div");
-      startEl.style.width = "10px";
-      startEl.style.height = "10px";
-      startEl.style.borderRadius = "50%"; // Circle
-      startEl.style.backgroundColor = posterData.routeColor;
-      startEl.style.cursor = "pointer";
-
-      // Create custom square element for end marker
-      const endEl = document.createElement("div");
-      endEl.style.width = "10px";
-      endEl.style.height = "10px";
-      endEl.style.borderRadius = "2px"; // Square with slight rounding
-      endEl.style.backgroundColor = posterData.routeColor;
-      endEl.style.cursor = "pointer";
-
-      const startMarker = new mapboxgl.Marker({ element: startEl })
-        .setLngLat([start.lng, start.lat])
-        .addTo(previewMap.current);
-
-      const endMarker = new mapboxgl.Marker({ element: endEl })
-        .setLngLat([end.lng, end.lat])
-        .addTo(previewMap.current);
-
-      markersRef.current = [startMarker, endMarker];
-      console.log("✅ Markers added: circle (start) + square (end)");
-    } else {
-      console.log("🚫 Markers removed");
-    }
-  }, [showStartEndMarkers, mapReady, displayPoints, posterData.routeColor]);
+  }, [mapReady, displayPoints, posterData.routeColor]);
 
   // Update poster preview canvas whenever map or data changes
   useEffect(() => {
@@ -861,23 +824,6 @@ export default function PosterGeneratorV3({
             })}
           </div>
         </div>
-
-        {/* Start/End Markers Toggle
-        <div className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            id="showMarkers"
-            checked={showStartEndMarkers}
-            onChange={(e) => setShowStartEndMarkers(e.target.checked)}
-            className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-          />
-          <Label
-            htmlFor="showMarkers"
-            className="text-sm font-medium cursor-pointer"
-          >
-            Show start/end markers
-          </Label>
-        </div> */}
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Controls */}
