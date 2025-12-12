@@ -80,4 +80,4 @@ export interface PacePlan {
   createdAt: Timestamp;
 }
 
-export type DashboardTab = "routes" | "fuel-plans" | "pace-plans";
+export type DashboardTab = "routes" | "fuel-plans" | "pace-plans" | "strava";

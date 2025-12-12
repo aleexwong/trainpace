@@ -124,8 +124,8 @@ export const DEFAULT_ANALYSIS_SETTINGS: AnalysisSettings = {
 };
 
 export const API_ENDPOINTS = {
-  ANALYZE_GPX: "https://api.trainpace.com/api/analyze-gpx-cache",
-  // ANALYZE_GPX: "http://localhost:3000/api/analyze-gpx-cache", // Dev
+  // ANALYZE_GPX: "https://api.trainpace.com/api/analyze-gpx-cache", // Production
+  ANALYZE_GPX: "http://localhost:3000/api/analyze-gpx-cache", // Dev
 };
 
 export const CACHE_SETTINGS = {

@@ -13,6 +13,7 @@ import { auth } from "@/lib/firebase";
 import { useAuth } from "@/features/auth/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { StravaConnectButton } from "@/features/strava";
 
 const Settings: React.FC = () => {
   const { user } = useAuth();
@@ -233,6 +234,34 @@ const Settings: React.FC = () => {
                   "Email/Password"
                 )}
               </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Integrations */}
+        <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            Connected Apps
+          </h2>
+          <div className="space-y-4">
+            <div className="py-3">
+              <div className="mb-3">
+                <h3 className="font-medium text-gray-900 mb-1">Strava</h3>
+                <p className="text-sm text-gray-600">
+                  Import activities and GPX files from your Strava account
+                </p>
+              </div>
+              <StravaConnectButton
+                onStatusChange={(connected) => {
+                  if (connected) {
+                    const params = new URLSearchParams(window.location.search);
+                    const athlete = params.get("athlete");
+                    if (athlete) {
+                      showMessage(`Successfully connected to Strava as ${athlete}!`, "success");
+                    }
+                  }
+                }}
+              />
             </div>
           </div>
         </div>

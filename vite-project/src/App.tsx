@@ -24,6 +24,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import About from "./pages/About";
 import DashboardV2 from "./pages/DashboardV2";
+import PosterPage from "./pages/PosterPage";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -44,6 +45,7 @@ function App() {
             />
             <Route path="/elevationfinder/:docId" element={<ElevationPage />} />
             <Route path="/elevationfinder" element={<ElevationPage />} />
+            <Route path="/poster" element={<PosterPage />} />
             <Route path="/dashboard" element={<DashboardV2 />} />
             <Route path="/ethos" element={<About />} />
             <Route path="login" element={<Login />} />

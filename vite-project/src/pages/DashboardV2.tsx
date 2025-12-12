@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { useAuth } from "../features/auth/AuthContext";
 import { useToast } from "../hooks/use-toast";
 import { EditPlanDialog } from "../components/EditPlanDialog";
+import { StravaActivityList, useStravaConnection, useStravaImport } from "../features/strava";
 import {
   useRoutes,
   useFuelPlans,
@@ -24,11 +25,13 @@ import {
 } from "../features/dashboard";
 
 export default function DashboardV2() {
-  const [activeTab, setActiveTab] = useState<DashboardTab>("routes");
+  const [activeTab, setActiveTab] = useState<DashboardTab>("strava"); // Default to Strava
   const [editingPlan, setEditingPlan] = useState<PacePlan | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { user } = useAuth();
   const { toast } = useToast();
+  const { status: stravaStatus } = useStravaConnection();
+  const { importActivity, loading: importLoading } = useStravaImport();
 
   // Load data using custom hooks
   const {
@@ -235,6 +238,16 @@ export default function DashboardV2() {
       <div className="mb-6">
         <div className="flex gap-2 bg-gray-100 p-1 rounded-lg inline-flex">
           <button
+            onClick={() => setActiveTab("strava")}
+            className={`px-4 py-2 rounded-md font-medium transition-all ${
+              activeTab === "strava"
+                ? "bg-[#FC4C02] text-white hover:bg-[#E34402]"
+                : "bg-white text-[#FC4C02] shadow-sm hover:bg-orange-50"
+            }`}
+          >
+            Strava {stravaStatus.connected && "✓"}
+          </button>
+          <button
             onClick={() => setActiveTab("routes")}
             className={`px-4 py-2 rounded-md font-medium transition-all ${
               activeTab === "routes"
@@ -275,6 +288,59 @@ export default function DashboardV2() {
       )}
 
       {/* Tab Content */}
+      {activeTab === "strava" && (
+        <div>
+          {stravaStatus.connected ? (
+            <StravaActivityList
+              showImportButton={true}
+              onImport={async (activity) => {
+                if (!activity.hasGps) {
+                  toast({
+                    title: "No GPS data",
+                    description: "This activity doesn't have GPS coordinates",
+                    variant: "destructive",
+                  });
+                  return;
+                }
+                
+                toast({
+                  title: "Importing activity...",
+                  description: `Loading "${activity.name}" from Strava`,
+                });
+                
+                const result = await importActivity(activity.id, activity.name);
+                
+                if (!result) {
+                  // Error was already set in the hook
+                  toast({
+                    title: "Import failed",
+                    description: "Unable to load activity GPS data",
+                    variant: "destructive",
+                  });
+                }
+              }}
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center py-12 gap-4 bg-white rounded-lg border-2 border-dashed border-gray-300">
+              <div className="text-6xl mb-2">🏃</div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Connect Strava to View Activities
+              </h3>
+              <p className="text-sm text-gray-600 text-center max-w-md">
+                Connect your Strava account in Settings to see your recent activities
+                and import GPX files for poster generation.
+              </p>
+              <button
+                onClick={() => (window.location.href = "/settings")}
+                className="mt-2 px-4 py-2 bg-[#FC4C02] hover:bg-[#E34402] text-white rounded-md font-medium transition-colors"
+              >
+                Go to Settings
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
       {activeTab === "routes" && (
         <RoutesSection
           routes={filteredRoutes}

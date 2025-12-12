@@ -32,6 +32,10 @@ export default function ElevationPage() {
   const location = useLocation();
   const auth = useAuth();
 
+  // Check for Strava import data in location state
+  const stravaData = (location.state as any)?.stravaData;
+  const autoOpenPoster = (location.state as any)?.autoOpenPoster;
+
   // Settings state
   const [analysisSettings, setAnalysisSettings] = useState<AnalysisSettings>(
     DEFAULT_ANALYSIS_SETTINGS
@@ -92,7 +96,31 @@ export default function ElevationPage() {
     ? sharedOriginalGpxText
     : uploadState.originalGpxText;
 
-  // Document ID migration redirect logic
+  // Document ID migration redirect logic  
+  useEffect(() => {
+    // Handle Strava import on mount (ephemeral - no Firestore save)
+    if (stravaData && !uploadState.loading) {
+      console.log("[Strava Import] Processing imported activity data (temporary import)");
+      
+      // Process Strava data WITHOUT saving to Firestore
+      // Pass empty strings for fileUrl and docId to keep it ephemeral
+      handleFileParsed(
+        "", // no raw GPX text
+        stravaData.metadata.routeName,
+        null, // no file URL - indicates ephemeral
+        null, // no docId - indicates ephemeral
+        stravaData.displayPoints,
+        null // no display URL
+      );
+      
+      // Clear location state to prevent re-processing (after a short delay)
+      setTimeout(() => {
+        navigate(location.pathname, { replace: true, state: {} });
+      }, 100);
+    }
+  }, [stravaData]); // Only depend on stravaData
+
+  // URL migration redirect logic
   useEffect(() => {
     if (!urlDocId) return;
 
