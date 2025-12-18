@@ -46,31 +46,33 @@ ${basePlan.weight ? `- Weight: ${basePlan.weight}kg` : ""}
 ${userContext}
 
 **IMPORTANT DEFINITIONS:**
-- "Gels" includes: energy gels, gel packets, energy chews, gummies, and any packaged sports nutrition products
-- "Real food" means: bananas, dates, bread, bars made with whole ingredients, honey, maple syrup, sports drinks
-- If the runner says they prefer "real food" or "don't like gels", DO NOT recommend any packaged sports products including chews or gummies
+- "Gels" includes: energy gels, gel packets, energy chews, gummies, and engineered sports nutrition.
+- "Real food" includes: maple syrup, honey, mashed potatoes, white bread, pretzels, dried fruit (apricots/figs), or bananas.
+- **Forbidden:** Do not suggest "dates" unless explicitly requested by the user.
+- If the runner says "real food" or "no gels," you are STRICTLY FORBIDDEN from recommending packaged sports products.
 
-Your task: Provide 3-5 recommendations that:
-1. **Completely respect the runner's constraints** - if they can't do gels/chews, ONLY suggest real food alternatives
-2. **Hit the carb target using their preferred foods** - be specific about portions/timing
-3. **Address their specific challenges** - appetite loss, fasted training, etc.
+**Your Task:**
+Provide 3-5 specific fueling options that strictly adhere to the user's constraints and hit the **${
+    basePlan.carbsPerHour
+  }g/hour** target.
 
-Use this format (show portion sizes, timing, and reasoning):
+**Requirements for "Better Details":**
+1. **The Math Must Match:** You must calculate the carb count of the food to match the target. (e.g., if target is 60g, do not suggest just 1 banana which is only 27g).
+2. **Logistics:** Explain *how* to carry it (e.g., "in a ziplock," "crushed in a flask").
+3. **Variety:** Do not rely on a single food source unless necessary.
 
-HEADLINE: Pack 2 bananas + 2 Kind bars in race vest
-DETAIL: 1 banana = 27g carbs, 1 bar = 20g. Eat ¼ banana every 15min starting at 30min mark. Alternate with bar chunks at 45min intervals. Hits 65g/hour without forcing gels.
+**Output Format:**
+Use exactly this structure. No intro, no outro.
 
-HEADLINE: Carry honey packets for quick energy boosts
-DETAIL: Single-serve honey packets (15g each) provide fast carbs without GI issues. Take one at 20min and another at 40min. Natural, easy to digest, and doesn't require chewing when appetite is low.
+HEADLINE: [Actionable Instruction with specific food]
+DETAIL: [Logistics & Math] -> Explain specific portion sizes (grams/pieces), the timing strategy, and the total carbs provided per hour to prove it hits the ${
+    basePlan.carbsPerHour
+  }g target.
 
-Now provide YOUR recommendations:
+HEADLINE: [Alternative Actionable Instruction]
+DETAIL: [Logistics & Math] -> ...
 
-**Output Requirements:**
-- Use directive language: "Take gel at 30min" not "Consider taking a gel"
-- Focus on race-day execution: specific foods, portions, and timing
-- Each HEADLINE should be a clear, actionable instruction
-- Each DETAIL should explain why + how to implement (be specific with numbers)
-- Jump straight to recommendations - no introductions or disclaimers`;
+Now provide YOUR recommendations:`;
 }
 
 /**
