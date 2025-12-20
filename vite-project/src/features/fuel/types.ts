@@ -10,11 +10,27 @@ export const RACE_SETTINGS = {
 
 export type RaceType = keyof typeof RACE_SETTINGS;
 
+// Race distances in km for fuel stop calculations
+export const RACE_DISTANCES: Record<RaceType, number> = {
+  "10K": 10,
+  Half: 21.1,
+  Full: 42.2,
+};
+
+export interface FuelStop {
+  time: string; // e.g. "0:20"
+  distance: string; // e.g. "5.2km"
+  distanceKm: number;
+  carbsNeeded: number;
+  suggestion: string;
+}
+
 export interface FuelPlanResult {
   carbsPerHour: number;
   totalCarbs: number;
   totalCalories: number;
   gelsNeeded: number;
+  fuelStops: FuelStop[];
 }
 
 export interface FuelPlanInputs {
@@ -22,6 +38,7 @@ export interface FuelPlanInputs {
   weight: string;
   timeHours: string;
   timeMinutes: string;
+  carbsPerHour?: number;
 }
 
 export interface AIRecommendation {
@@ -87,6 +104,21 @@ export const FUEL_CONTEXT_PRESETS: FuelContextPreset[] = [
   },
 ];
 
+// Common fuel products for reference section
+export interface FuelProduct {
+  name: string;
+  carbs: number;
+}
+
+export const FUEL_PRODUCTS: FuelProduct[] = [
+  { name: "GU Gel", carbs: 22 },
+  { name: "Maurten Gel", carbs: 25 },
+  { name: "SiS Go Gel", carbs: 22 },
+  { name: "Clif Bloks (3)", carbs: 24 },
+  { name: "Banana", carbs: 27 },
+  { name: "Gatorade (500ml)", carbs: 30 },
+];
+
 // Calculation constants
 export const CALORIES_PER_GRAM_CARB = 4;
 export const CARBS_PER_KG_MULTIPLIER = 0.7;
@@ -94,3 +126,7 @@ export const GELS_PER_HOUR = 1.5;
 export const MAX_GELS = 7;
 export const MIN_10K_TIME_FOR_GEL = 0.75; // 45 minutes in hours
 export const AI_COOLDOWN_SECONDS = 30;
+
+// Fuel stop timing constants
+export const FUEL_INTERVAL_MINUTES = 20; // Take fuel every 20 minutes
+export const MIN_RACE_TIME_FOR_FUELING = 60; // Only generate stops for races > 1 hour

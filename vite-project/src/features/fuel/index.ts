@@ -3,4 +3,13 @@
  */
 
 export { FuelPlannerV2 } from "./components/FuelPlannerV2";
-export type { RaceType, FuelPlanResult, AIRecommendation } from "./types";
+export { FuelProductsReference } from "./components/FuelProductsReference";
+export { FuelPlanPlaceholder } from "./components/FuelPlanPlaceholder";
+export type {
+  RaceType,
+  FuelPlanResult,
+  FuelStop,
+  AIRecommendation,
+  FuelProduct,
+} from "./types";
+export { FUEL_PRODUCTS, RACE_DISTANCES } from "./types";

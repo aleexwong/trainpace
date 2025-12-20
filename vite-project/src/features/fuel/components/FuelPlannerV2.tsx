@@ -1,6 +1,6 @@
 /**
  * Fuel Planner V2 - Main Orchestrator
- * Thin component that composes the feature together
+ * 2-panel layout: side-by-side on desktop, stacked/conditional on mobile
  */
 
 import { useState } from "react";
@@ -13,7 +13,7 @@ import ReactGA from "react-ga4";
 import { type FuelPlanContext } from "@/services/gemini";
 
 // Feature imports
-import { type RaceType, type FuelPlanResult } from "../types";
+import { type RaceType, type FuelPlanResult, RACE_SETTINGS } from "../types";
 import {
   useFuelCalculation,
   getFinishTimeInMinutes,
@@ -22,6 +22,8 @@ import { useAIRecommendations } from "../hooks/useAIRecommendations";
 import { useFuelPlanPersistence } from "../hooks/useFuelPlanPersistence";
 import { RaceDetailsForm } from "./RaceDetailsForm";
 import { FuelPlanResults } from "./FuelPlanResults";
+import { FuelPlanPlaceholder } from "./FuelPlanPlaceholder";
+import { FuelProductsReference } from "./FuelProductsReference";
 import { AIPersonalization } from "./AIPersonalization";
 
 export function FuelPlannerV2() {
@@ -38,16 +40,23 @@ export function FuelPlannerV2() {
   });
 
   // Form state
-  const [raceType, setRaceType] = useState<RaceType>("10K");
+  const [raceType, setRaceType] = useState<RaceType>("Half");
   const [weight, setWeight] = useState("");
   const [timeHours, setTimeHours] = useState("");
   const [timeMinutes, setTimeMinutes] = useState("");
+  const [carbsPerHour, setCarbsPerHour] = useState(RACE_SETTINGS["Half"]);
   const [result, setResult] = useState<FuelPlanResult | null>(null);
 
   // UI state
   const [showInfo, setShowInfo] = useState(false);
   const [showPhilosophy, setShowPhilosophy] = useState(false);
   const [feedbackGiven, setFeedbackGiven] = useState(false);
+
+  // Update default carbs when race type changes
+  const handleRaceTypeChange = (type: RaceType) => {
+    setRaceType(type);
+    setCarbsPerHour(RACE_SETTINGS[type]);
+  };
 
   // Hooks
   const { result: calculationResult, error: calculationError } =
@@ -56,6 +65,7 @@ export function FuelPlannerV2() {
       weight,
       timeHours,
       timeMinutes,
+      customCarbsPerHour: carbsPerHour,
     });
 
   const planContext: FuelPlanContext | null = result
@@ -118,6 +128,13 @@ export function FuelPlannerV2() {
 
     let text = `Fuel Plan for ${raceType}\n\nCarbs/hr: ${result.carbsPerHour}g\nTotal Carbs: ${result.totalCarbs}g\nCalories: ${result.totalCalories} kcal\nGels: ${result.gelsNeeded}`;
 
+    if (result.fuelStops.length > 0) {
+      text += `\n\n--- Fueling Timeline ---\n`;
+      result.fuelStops.forEach((stop, idx) => {
+        text += `\n${idx + 1}. ${stop.time} (${stop.distance}) - ${stop.carbsNeeded}g: ${stop.suggestion}`;
+      });
+    }
+
     if (recommendations.length > 0) {
       text += `\n\n--- AI Recommendations ---\n`;
       recommendations.forEach((rec, idx) => {
@@ -146,6 +163,13 @@ export function FuelPlannerV2() {
     if (!result) return;
 
     let text = `Fuel Plan for ${raceType}\n\nCarbs/hr: ${result.carbsPerHour}g\nTotal Carbs: ${result.totalCarbs}g\nCalories: ${result.totalCalories} kcal\nGels: ${result.gelsNeeded}`;
+
+    if (result.fuelStops.length > 0) {
+      text += `\n\n--- Fueling Timeline ---\n`;
+      result.fuelStops.forEach((stop, idx) => {
+        text += `\n${idx + 1}. ${stop.time} (${stop.distance}) - ${stop.carbsNeeded}g: ${stop.suggestion}`;
+      });
+    }
 
     if (recommendations.length > 0) {
       text += `\n\n--- AI Recommendations ---\n`;
@@ -204,7 +228,7 @@ export function FuelPlannerV2() {
       timeMinutes,
       finishTimeMin: getFinishTimeInMinutes(raceType, timeHours, timeMinutes),
       result,
-      userContext: "", // Context is managed inside AIPersonalization
+      userContext: "",
       selectedPresets: [],
       recommendations,
     });
@@ -230,14 +254,14 @@ export function FuelPlannerV2() {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-4xl font-bold text-gray-900">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
               🏃 Fuel Planner
             </h1>
             <button
               onClick={() => setShowInfo(!showInfo)}
               className="p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all"
             >
-              <Info className="h-6 w-6 text-blue-600" />
+              <Info className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
             </button>
           </div>
 
@@ -260,31 +284,67 @@ export function FuelPlannerV2() {
             </Card>
           )}
 
-          {/* Main Content */}
-          <div className="max-w-4xl mx-auto space-y-8">
-            {/* Race Details OR Results */}
-            {!result ? (
+          {/* Main Content - 2 Panel Layout */}
+          <div className="space-y-8">
+            {/* Desktop: Side-by-side panels */}
+            <div className="hidden md:grid md:grid-cols-2 gap-6">
+              {/* Left Panel - Form */}
               <RaceDetailsForm
                 raceType={raceType}
-                setRaceType={setRaceType}
+                setRaceType={handleRaceTypeChange}
                 weight={weight}
                 setWeight={setWeight}
                 timeHours={timeHours}
                 setTimeHours={setTimeHours}
                 timeMinutes={timeMinutes}
                 setTimeMinutes={setTimeMinutes}
+                carbsPerHour={carbsPerHour}
+                setCarbsPerHour={setCarbsPerHour}
                 onCalculate={handleCalculate}
               />
-            ) : (
-              <FuelPlanResults
-                result={result}
-                raceType={raceType}
-                aiRecommendations={recommendations}
-                onEdit={handleEdit}
-                onCopy={handleCopy}
-                onDownload={handleDownload}
-              />
-            )}
+
+              {/* Right Panel - Results or Placeholder */}
+              {result ? (
+                <FuelPlanResults
+                  result={result}
+                  raceType={raceType}
+                  aiRecommendations={recommendations}
+                  onEdit={handleEdit}
+                  onCopy={handleCopy}
+                  onDownload={handleDownload}
+                />
+              ) : (
+                <FuelPlanPlaceholder />
+              )}
+            </div>
+
+            {/* Mobile: Conditional rendering (form OR results) */}
+            <div className="md:hidden">
+              {!result ? (
+                <RaceDetailsForm
+                  raceType={raceType}
+                  setRaceType={handleRaceTypeChange}
+                  weight={weight}
+                  setWeight={setWeight}
+                  timeHours={timeHours}
+                  setTimeHours={setTimeHours}
+                  timeMinutes={timeMinutes}
+                  setTimeMinutes={setTimeMinutes}
+                  carbsPerHour={carbsPerHour}
+                  setCarbsPerHour={setCarbsPerHour}
+                  onCalculate={handleCalculate}
+                />
+              ) : (
+                <FuelPlanResults
+                  result={result}
+                  raceType={raceType}
+                  aiRecommendations={recommendations}
+                  onEdit={handleEdit}
+                  onCopy={handleCopy}
+                  onDownload={handleDownload}
+                />
+              )}
+            </div>
 
             {/* AI Personalization (only after plan is calculated) */}
             {result && planContext && (
@@ -303,10 +363,13 @@ export function FuelPlannerV2() {
                 isSaved={isSaved}
               />
             )}
+
+            {/* Fuel Products Reference */}
+            <FuelProductsReference />
           </div>
 
           {/* Fueling Philosophy */}
-          <div className="mt-12 max-w-4xl mx-auto">
+          <div className="mt-8">
             <button
               onClick={() => setShowPhilosophy(!showPhilosophy)}
               className="w-full flex items-center justify-between p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all"
