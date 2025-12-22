@@ -44,7 +44,7 @@ export function FuelPlannerV2() {
   const [weight, setWeight] = useState("");
   const [timeHours, setTimeHours] = useState("");
   const [timeMinutes, setTimeMinutes] = useState("");
-  const [carbsPerHour, setCarbsPerHour] = useState(RACE_SETTINGS["Half"]);
+  const [carbsPerHour, setCarbsPerHour] = useState<number>(RACE_SETTINGS["Half"]);
   const [result, setResult] = useState<FuelPlanResult | null>(null);
 
   // UI state
