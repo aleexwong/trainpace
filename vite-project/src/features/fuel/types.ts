@@ -121,11 +121,12 @@ export const FUEL_PRODUCTS: FuelProduct[] = [
 
 // Calculation constants
 export const CALORIES_PER_GRAM_CARB = 4;
-export const CARBS_PER_KG_MULTIPLIER = 0.7;
+export const CARBS_PER_KG_MULTIPLIER = 0.7; // 0.7g carbs per kg body weight per hour
 export const GELS_PER_HOUR = 1.5;
 export const MAX_GELS = 7;
 export const MIN_10K_TIME_FOR_GEL = 0.75; // 45 minutes in hours
 export const AI_COOLDOWN_SECONDS = 30;
+export const LBS_TO_KG = 0.453592; // Conversion factor
 
 // Fuel stop timing constants
 export const FUEL_INTERVAL_MINUTES = 20; // Take fuel every 20 minutes

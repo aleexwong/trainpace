@@ -139,14 +139,24 @@ export function useFuelCalculation({
       };
     }
 
-    // Calculate carbs per hour (priority: custom slider > weight-based > race default)
+    // Calculate carbs per hour based on weight + race baseline
+    // Logic: weight-based calc provides a floor above race baseline, slider overrides all
+    const raceBaseline = RACE_SETTINGS[raceType];
     let carbsPerHour: number;
+    
     if (customCarbsPerHour !== undefined) {
+      // Manual slider override - use as-is
       carbsPerHour = customCarbsPerHour;
+      console.log(`[Fuel Calc] Using custom slider: ${carbsPerHour}g/hr`);
     } else if (!isNaN(weightKg) && weightKg > 0) {
-      carbsPerHour = Math.round(weightKg * CARBS_PER_KG_MULTIPLIER);
+      // Weight-based calculation: max(weight × 0.7, race baseline)
+      const weightBased = Math.round(weightKg * CARBS_PER_KG_MULTIPLIER);
+      carbsPerHour = Math.max(weightBased, raceBaseline);
+      console.log(`[Fuel Calc] Weight-based: ${weightKg}kg × 0.7 = ${weightBased}g, max(${weightBased}, ${raceBaseline}) = ${carbsPerHour}g/hr`);
     } else {
-      carbsPerHour = RACE_SETTINGS[raceType];
+      // No weight provided - use race baseline
+      carbsPerHour = raceBaseline;
+      console.log(`[Fuel Calc] Using race baseline: ${carbsPerHour}g/hr`);
     }
 
     // Calculate totals

@@ -44,7 +44,7 @@ export function FuelPlannerV2() {
   const [weight, setWeight] = useState("");
   const [timeHours, setTimeHours] = useState("");
   const [timeMinutes, setTimeMinutes] = useState("");
-  const [carbsPerHour, setCarbsPerHour] = useState<number>(RACE_SETTINGS["Half"]);
+  const [customCarbsPerHour, setCustomCarbsPerHour] = useState<number | undefined>(undefined);
   const [result, setResult] = useState<FuelPlanResult | null>(null);
 
   // UI state
@@ -52,10 +52,11 @@ export function FuelPlannerV2() {
   const [showPhilosophy, setShowPhilosophy] = useState(false);
   const [feedbackGiven, setFeedbackGiven] = useState(false);
 
-  // Update default carbs when race type changes
+  // Update race type and reset custom carbs override
   const handleRaceTypeChange = (type: RaceType) => {
+    console.log(`[FuelPlannerV2] Race type changed to: ${type}, resetting custom carbs`);
     setRaceType(type);
-    setCarbsPerHour(RACE_SETTINGS[type]);
+    setCustomCarbsPerHour(undefined); // Reset to auto-calculate
   };
 
   // Hooks
@@ -65,8 +66,15 @@ export function FuelPlannerV2() {
       weight,
       timeHours,
       timeMinutes,
-      customCarbsPerHour: carbsPerHour,
+      customCarbsPerHour,
     });
+  
+  // Calculate displayed carbs per hour for the slider
+  // Priority: custom override > weight-based > race baseline
+  const displayedCarbsPerHour = customCarbsPerHour ?? calculationResult?.carbsPerHour ?? RACE_SETTINGS[raceType];
+  
+  // Debug logging
+  console.log(`[FuelPlannerV2] displayedCarbsPerHour: ${displayedCarbsPerHour}, custom: ${customCarbsPerHour}, calculated: ${calculationResult?.carbsPerHour}, baseline: ${RACE_SETTINGS[raceType]}`);
 
   const planContext: FuelPlanContext | null = result
     ? {
@@ -298,8 +306,8 @@ export function FuelPlannerV2() {
                 setTimeHours={setTimeHours}
                 timeMinutes={timeMinutes}
                 setTimeMinutes={setTimeMinutes}
-                carbsPerHour={carbsPerHour}
-                setCarbsPerHour={setCarbsPerHour}
+                carbsPerHour={displayedCarbsPerHour}
+                setCarbsPerHour={setCustomCarbsPerHour}
                 onCalculate={handleCalculate}
               />
 
@@ -330,8 +338,8 @@ export function FuelPlannerV2() {
                   setTimeHours={setTimeHours}
                   timeMinutes={timeMinutes}
                   setTimeMinutes={setTimeMinutes}
-                  carbsPerHour={carbsPerHour}
-                  setCarbsPerHour={setCarbsPerHour}
+                  carbsPerHour={displayedCarbsPerHour}
+                  setCarbsPerHour={setCustomCarbsPerHour}
                   onCalculate={handleCalculate}
                 />
               ) : (

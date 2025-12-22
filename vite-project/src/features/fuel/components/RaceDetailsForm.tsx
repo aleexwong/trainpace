@@ -3,9 +3,10 @@
  * Input form for race type, finish time, weight, and carbs per hour
  */
 
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
-import { RACE_SETTINGS, type RaceType } from "../types";
+import { RACE_SETTINGS, LBS_TO_KG, type RaceType } from "../types";
 
 interface RaceDetailsFormProps {
   raceType: RaceType;
@@ -34,6 +35,63 @@ export function RaceDetailsForm({
   setCarbsPerHour,
   onCalculate,
 }: RaceDetailsFormProps) {
+  const [weightUnit, setWeightUnit] = useState<"kg" | "lbs">("kg");
+  const [displayValue, setDisplayValue] = useState("");
+  
+  // Handle weight input changes
+  const handleWeightChange = (value: string) => {
+    // Allow empty, numbers, and one decimal point
+    if (value && !/^\d*\.?\d*$/.test(value)) {
+      return; // Reject invalid input
+    }
+    
+    setDisplayValue(value);
+    
+    if (!value) {
+      setWeight("");
+      console.log("[Weight Input] Cleared");
+      return;
+    }
+    
+    const numValue = parseFloat(value);
+    if (isNaN(numValue)) return;
+    
+    // Always store weight in kg internally
+    if (weightUnit === "lbs") {
+      const kg = numValue * LBS_TO_KG;
+      setWeight(kg.toString());
+      console.log(`[Weight Input] ${numValue} lbs → ${kg.toFixed(2)} kg`);
+    } else {
+      setWeight(value);
+      console.log(`[Weight Input] ${value} kg`);
+    }
+  };
+  
+  // Handle unit toggle
+  const handleUnitChange = (newUnit: "kg" | "lbs") => {
+    setWeightUnit(newUnit);
+    
+    if (!weight) {
+      setDisplayValue("");
+      return;
+    }
+    
+    const weightKg = parseFloat(weight);
+    if (isNaN(weightKg)) return;
+    
+    if (newUnit === "lbs") {
+      const lbs = weightKg / LBS_TO_KG;
+      // Format to reasonable precision for display
+      const displayLbs = Math.round(lbs * 10) / 10; // 1 decimal place
+      setDisplayValue(displayLbs.toString());
+      console.log(`[Weight Unit] Switched to lbs: ${weightKg.toFixed(2)} kg → ${displayLbs} lbs`);
+    } else {
+      // Format kg to reasonable precision
+      const displayKg = Math.round(weightKg * 10) / 10; // 1 decimal place
+      setDisplayValue(displayKg.toString());
+      console.log(`[Weight Unit] Switched to kg: ${displayKg} kg`);
+    }
+  };
   return (
     <Card className="bg-white shadow-lg h-full">
       <CardContent className="p-6 md:p-8 space-y-5">
@@ -115,23 +173,48 @@ export function RaceDetailsForm({
             )}
           </div>
 
-          {/* Weight */}
+          {/* Weight with inline kg/lbs toggle */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Weight (kg){" "}
+              Weight{" "}
               <span className="text-gray-400 text-xs">(Optional)</span>
             </label>
-            <input
-              type="number"
-              placeholder="e.g. 68"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              min={1}
-              max={1000}
-            />
+            <div className="relative">
+              <input
+                type="text"
+                inputMode="decimal"
+                placeholder={weightUnit === "kg" ? "e.g. 68.5" : "e.g. 150"}
+                value={displayValue}
+                onChange={(e) => handleWeightChange(e.target.value)}
+                className="w-full px-4 py-3 pr-20 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1">
+                <button
+                  type="button"
+                  onClick={() => handleUnitChange("kg")}
+                  className={`px-3 py-1 text-sm font-medium rounded-lg transition-all ${
+                    weightUnit === "kg"
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  kg
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleUnitChange("lbs")}
+                  className={`px-3 py-1 text-sm font-medium rounded-lg transition-all ${
+                    weightUnit === "lbs"
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  lbs
+                </button>
+              </div>
+            </div>
             <span className="text-xs text-gray-500 mt-1 block">
-              Used for personalized carb calculation
+              Increases carb needs for heavier athletes
             </span>
           </div>
         </div>
