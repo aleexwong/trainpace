@@ -62,6 +62,8 @@ function getFuelSuggestion(carbsNeeded: number): string {
 
 /**
  * Generate fuel stops timeline based on race duration and carb goals
+ * Strategy: Front-load carbs early (15-20 min intervals) since glucose takes time to absorb,
+ * then space out to 25-30 min intervals later in the race
  */
 function generateFuelStops(
   finishTimeMin: number,
@@ -75,25 +77,65 @@ function generateFuelStops(
 
   const stops: FuelStop[] = [];
   const paceMinPerKm = finishTimeMin / distanceKm;
-  const carbsPerInterval = (carbsPerHour / 60) * FUEL_INTERVAL_MINUTES;
-
-  // Start first fuel at 20 min, then every 20 min until 10 min before finish
-  let currentTime = FUEL_INTERVAL_MINUTES;
-  const lastFuelTime = finishTimeMin - 10; // Don't fuel in last 10 minutes
-
+  
+  // Define fueling schedule with front-loaded strategy
+  // Early stops: 15-20 min (get carbs in early while stomach is fresh)
+  // Mid stops: 25-30 min (energy system primed, longer intervals work)
+  // Stop fueling ~15 min before finish (nothing will process in time)
+  
+  const fuelingSchedule: number[] = [];
+  let currentTime = 15; // Start first fuel at 15 minutes
+  const lastFuelTime = finishTimeMin - 15; // Stop 15 min before finish
+  
+  // Build dynamic schedule based on race duration
   while (currentTime <= lastFuelTime) {
-    const currentDistanceKm = currentTime / paceMinPerKm;
-
+    fuelingSchedule.push(currentTime);
+    
+    // Determine next interval based on race progress
+    const raceProgress = currentTime / finishTimeMin;
+    let interval: number;
+    
+    if (raceProgress < 0.3) {
+      // First 30% of race: 15-20 min intervals (front-load)
+      interval = 17;
+    } else if (raceProgress < 0.7) {
+      // Middle 40% of race: 25 min intervals (steady state)
+      interval = 25;
+    } else {
+      // Final 30% of race: 30 min intervals (less frequent, harder to digest)
+      interval = 30;
+    }
+    
+    currentTime += interval;
+  }
+  
+  console.log(`[Fuel Timeline] Generated ${fuelingSchedule.length} stops for ${(finishTimeMin/60).toFixed(2)}hr race:`, fuelingSchedule.map(t => formatTime(t)).join(', '));
+  
+  // Calculate carbs per stop to hit target carbs/hour
+  // Distribute total carbs across stops
+  const totalRaceCarbs = (finishTimeMin / 60) * carbsPerHour;
+  const carbsPerStop = fuelingSchedule.length > 0 
+    ? totalRaceCarbs / fuelingSchedule.length 
+    : 0;
+  
+  // Generate fuel stops with realistic carb amounts
+  fuelingSchedule.forEach((timeMin, index) => {
+    const currentDistanceKm = timeMin / paceMinPerKm;
+    const isEarlyStop = index < Math.ceil(fuelingSchedule.length * 0.4);
+    
+    // Front-load slightly more carbs early (easier to digest)
+    const adjustedCarbs = isEarlyStop 
+      ? Math.round(carbsPerStop * 1.1) 
+      : Math.round(carbsPerStop * 0.95);
+    
     stops.push({
-      time: formatTime(currentTime),
+      time: formatTime(timeMin),
       distance: `${currentDistanceKm.toFixed(1)}km`,
       distanceKm: currentDistanceKm,
-      carbsNeeded: Math.round(carbsPerInterval),
-      suggestion: getFuelSuggestion(Math.round(carbsPerInterval)),
+      carbsNeeded: adjustedCarbs,
+      suggestion: getFuelSuggestion(adjustedCarbs),
     });
-
-    currentTime += FUEL_INTERVAL_MINUTES;
-  }
+  });
 
   return stops;
 }

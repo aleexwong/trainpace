@@ -21,7 +21,9 @@ const Footer = () => {
               <div className="text-3xl md:text-4xl font-bold text-emerald-600">
                 No Ads
               </div>
-              <div className="text-sm text-slate-600 mt-1">Clean Experience</div>
+              <div className="text-sm text-slate-600 mt-1">
+                Clean Experience
+              </div>
             </div>
             <div>
               <div className="text-3xl md:text-4xl font-bold text-emerald-600">
@@ -38,7 +40,7 @@ const Footer = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           {/* Product Column */}
           <div>
-            <h3 className="font-semibold text-slate-900 mb-4">Product</h3>
+            <h3 className="font-semibold text-slate-900 mb-4">Free Tools</h3>
             <ul className="space-y-3">
               <li>
                 <Link
@@ -62,14 +64,6 @@ const Footer = () => {
                   className="text-slate-600 hover:text-emerald-600 transition-colors text-sm"
                 >
                   ElevationFinder
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/dashboard"
-                  className="text-slate-600 hover:text-emerald-600 transition-colors text-sm"
-                >
-                  Dashboard
                 </Link>
               </li>
             </ul>
@@ -175,7 +169,7 @@ const Footer = () => {
               </Link>{" "}
               for runners. © {currentYear} TrainPace. All rights reserved.
             </p>
-            
+
             <div className="flex items-center gap-6">
               <p className="text-sm text-slate-600">
                 Questions?{" "}
