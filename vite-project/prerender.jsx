@@ -165,65 +165,66 @@ function getPageContent(url) {
       return React.createElement(
         "div",
         null,
-        React.createElement("h1", null, "TrainPace – Smarter Running Training & Race Planning"),
+        React.createElement("h1", null, "TrainPace – Free Running Pace Calculator & Race Day Tools"),
         React.createElement(
           "p",
           null,
-          "Free running tools for serious athletes. Calculate science-backed training paces, analyze course elevation profiles, and plan race-day nutrition with personalized recommendations."
+          "Free running calculator for training paces, race fueling, and GPX elevation analysis. Get VDOT-based pace zones, plan how many gels to carry, and preview marathon course profiles."
         )
       );
     case "/calculator":
       return React.createElement(
         "div",
         null,
-        React.createElement("h1", null, "Running Pace Calculator"),
+        React.createElement("h1", null, "Running Pace Calculator – VDOT Training Zones"),
         React.createElement(
           "p",
           null,
-          "Get science-backed training paces from any race result. Calculate Easy, Tempo, Speed, and Maximum pace zones, plus Yasso 800s and race time predictions for 5K to marathon."
+          "Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s, race predictor for 5K to marathon, and printable pace charts."
         )
       );
     case "/fuel":
       return React.createElement(
         "div",
         null,
-        React.createElement("h1", null, "Race Fuel Planner"),
+        React.createElement("h1", null, "Marathon Fuel Calculator – How Many Gels Do You Need?"),
         React.createElement(
           "p",
           null,
-          "Plan your race nutrition with personalized carb and calorie targets based on pace and body weight. Get hourly fueling breakdowns for gels, chews, and drinks to avoid bonking."
+          "Calculate exactly how many gels you need for your marathon or half marathon. Get a personalized fueling schedule with 60-90g/hr carb targets, timing recommendations, and avoid hitting the wall."
         )
       );
     case "/elevationfinder":
       return React.createElement(
         "div",
         null,
-        React.createElement("h1", null, "Course Elevation Analyzer"),
+        React.createElement("h1", null, "GPX Elevation Profile Viewer – Free Route Analysis"),
         React.createElement(
           "p",
           null,
-          "Upload GPX files to analyze course elevation profiles. Visualize climbs, grade percentages, and terrain difficulty on interactive maps. Know every hill before race day."
+          "Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty on an interactive map. Analyze marathon courses before race day."
         )
       );
     default:
       if (url.includes("/preview-route/")) {
         const city = url.split("/").pop();
+        const cityFormatted = city.charAt(0).toUpperCase() + city.slice(1);
         return React.createElement(
           "div",
           null,
-          React.createElement("h1", null, `${city} Marathon Course`),
+          React.createElement("h1", null, `${cityFormatted} Marathon Elevation Profile & Course Map`),
           React.createElement(
             "p",
             null,
-            `Analyze the ${city} marathon course with detailed elevation profile, grade percentages, and terrain difficulty. Plan your pacing strategy for every hill.`
+            `${cityFormatted} Marathon elevation profile with interactive course map. See every hill, grade percentage, and total elevation gain. Plan your pacing strategy for race day.`
           )
         );
       }
       return React.createElement(
         "div",
         null,
-        React.createElement("h1", null, "TrainPace"),
-        React.createElement("p", null, "Free running tools for pace calculation, course analysis, and race nutrition planning.")
+        React.createElement("h1", null, "TrainPace – Free Running Tools"),
+        React.createElement("p", null, "Free running tools: pace calculator with VDOT zones, marathon fuel planner, and GPX elevation analyzer. No signup required.")
       );
   }
 }
@@ -231,37 +232,39 @@ function getPageContent(url) {
 function getPageTitle(url) {
   switch (url) {
     case "/":
-      return "TrainPace – Smarter Running Training & Race Planning";
+      return "TrainPace – Free Running Pace Calculator & Race Day Tools";
     case "/calculator":
-      return "Running Pace Calculator – Science-Backed Training Zones | TrainPace";
+      return "Running Pace Calculator – VDOT Training Zones, Easy to Tempo Pace | TrainPace";
     case "/fuel":
-      return "Race Fuel Planner – Personalized Nutrition Calculator | TrainPace";
+      return "Marathon Fuel Calculator – How Many Gels & When to Take Them | TrainPace";
     case "/elevationfinder":
-      return "Course Elevation Analyzer – GPX Route Analysis | TrainPace";
+      return "GPX Elevation Profile Viewer – Free Route Analysis & Climb Stats | TrainPace";
     default:
       if (url.includes("/preview-route/")) {
         const city = url.split("/").pop();
-        return `${city} Marathon Course – Elevation Profile & Route Analysis | TrainPace`;
+        const cityFormatted = city.charAt(0).toUpperCase() + city.slice(1);
+        return `${cityFormatted} Marathon Elevation Profile – Course Map & Hill Analysis | TrainPace`;
       }
-      return "TrainPace";
+      return "TrainPace – Free Running Tools";
   }
 }
 
 function getPageDescription(url) {
   switch (url) {
     case "/":
-      return "Free running tools for serious athletes. Calculate science-backed training paces, analyze course elevation profiles, and plan race-day nutrition with personalized recommendations.";
+      return "Free running calculator for training paces, race fueling, and GPX elevation analysis. Get VDOT-based pace zones, plan how many gels to carry, and preview marathon course profiles.";
     case "/calculator":
-      return "Get science-backed training paces from any race result. Calculate Easy, Tempo, Speed, and Maximum pace zones, plus Yasso 800s and race time predictions for 5K to marathon.";
+      return "Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s, race predictor for 5K to marathon, and printable pace charts.";
     case "/fuel":
-      return "Plan your race nutrition with personalized carb and calorie targets based on pace and body weight. Get hourly fueling breakdowns for gels, chews, and drinks to avoid bonking.";
+      return "Calculate exactly how many gels you need for your marathon or half marathon. Get a personalized fueling schedule with 60-90g/hr carb targets, timing recommendations, and avoid hitting the wall.";
     case "/elevationfinder":
-      return "Upload GPX files to analyze course elevation profiles. Visualize climbs, grade percentages, and terrain difficulty on interactive maps. Know every hill before race day.";
+      return "Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty on an interactive map. Analyze marathon courses before race day.";
     default:
       if (url.includes("/preview-route/")) {
         const city = url.split("/").pop();
-        return `Analyze the ${city} marathon course with detailed elevation profile, grade percentages, and terrain difficulty. Plan your pacing strategy for every hill.`;
+        const cityFormatted = city.charAt(0).toUpperCase() + city.slice(1);
+        return `${cityFormatted} Marathon elevation profile with interactive course map. See every hill, grade percentage, and total elevation gain. Plan your pacing strategy for race day.`;
       }
-      return "TrainPace – Free running tools for pace calculation, course analysis, and race nutrition planning.";
+      return "Free running tools: pace calculator with VDOT zones, marathon fuel planner, and GPX elevation analyzer. No signup required.";
   }
 }
