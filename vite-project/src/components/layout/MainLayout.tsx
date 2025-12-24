@@ -93,6 +93,7 @@ export default function MainLayout() {
       { href: "#", label: "Preview Routes", isDropdown: true },
       { href: "/calculator", label: "Calculator" },
       { href: "/fuel", label: "Fuel Planner" },
+      { href: "/training-plan-builder", label: "Training Plans" },
     ];
 
     const authLinks: NavLink[] = user
