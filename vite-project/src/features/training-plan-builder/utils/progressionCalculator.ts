@@ -122,8 +122,7 @@ export function generateMileageProgression(
     // Recovery week every 3-4 weeks during base and build phases
     const isRecoveryWeek =
       (week + 1) % (RECOVERY_WEEK_FREQUENCY + 1) === 0 &&
-      phaseType !== "peak" &&
-      phaseType !== "taper";
+      phaseType !== "peak";
 
     if (isRecoveryWeek) {
       currentMileage = Math.round(currentMileage * (1 - RECOVERY_WEEK_REDUCTION));

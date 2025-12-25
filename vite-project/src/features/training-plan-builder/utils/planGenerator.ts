@@ -19,7 +19,6 @@ import {
 import {
   calculateTrainingPaces,
   timeInputsToSeconds,
-  secondsToPaceString,
 } from "./paceCalculator";
 import {
   WORKOUT_DESCRIPTIONS,
@@ -122,10 +121,8 @@ function generateWeeklyWorkouts(
   // Calculate mileage allocation
   const longRunDay = preferences.longRunDay === "flexible" ? 7 : preferences.longRunDay === "saturday" ? 6 : 7;
   const longRunDistance = Math.round(weeklyMileage * LONG_RUN_PERCENTAGE[phaseType]);
-  const remainingMileage = weeklyMileage - longRunDistance;
 
   // Assign workout types to days
-  let dayIndex = 0;
   let assignedMileage = 0;
 
   // 1. Add long run

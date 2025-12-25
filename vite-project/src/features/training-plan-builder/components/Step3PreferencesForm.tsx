@@ -144,7 +144,7 @@ export function Step3PreferencesForm({
               </div>
               <Switch
                 checked={data.includeCrossTraining}
-                onCheckedChange={(checked) =>
+                onCheckedChange={(checked: boolean) =>
                   onChange({ includeCrossTraining: checked })
                 }
               />

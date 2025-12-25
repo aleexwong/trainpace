@@ -82,7 +82,7 @@ export function calculateTrainingPaces(
 export function validateGoalTime(
   goalTimeSeconds: number,
   distance: TrainingDistance,
-  experienceLevel: string
+  _experienceLevel: string
 ): { isValid: boolean; message?: string } {
   const racePace = calculateRacePace(goalTimeSeconds, distance);
 
