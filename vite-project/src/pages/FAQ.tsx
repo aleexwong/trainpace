@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
+import { Helmet } from "react-helmet-async";
 import { Hash, ChevronDown } from "lucide-react";
 import FAQAccordion from "@/components/faq/FAQAccordion";
+import StructuredData from "@/components/seo/StructuredData";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
+import RelatedTools from "@/components/seo/RelatedTools";
 import faqData from "@/data/faq-data.json";
+import { PAGE_SEO, BASE_URL } from "@/config/seo";
 
 interface FAQItem {
   id: string;
@@ -17,6 +22,15 @@ interface FAQSection {
 }
 
 export default function FAQ() {
+  // Flatten all questions for FAQ schema
+  const allQuestions = useMemo(() => {
+    return faqData.sections.flatMap((section: FAQSection) =>
+      section.questions.map((q: FAQItem) => ({
+        question: q.question,
+        answer: q.answer,
+      }))
+    );
+  }, []);
   const [activeSection, setActiveSection] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -77,9 +91,28 @@ export default function FAQ() {
 
   return (
     <div className="bg-white text-gray-900 min-h-screen">
+      {/* SEO Meta Tags */}
+      <Helmet>
+        <title>{PAGE_SEO.faq.title}</title>
+        <meta name="description" content={PAGE_SEO.faq.description} />
+        <meta name="keywords" content={PAGE_SEO.faq.keywords.join(", ")} />
+        <link rel="canonical" href={`${BASE_URL}/faq`} />
+        <meta property="og:title" content={PAGE_SEO.faq.title} />
+        <meta property="og:description" content={PAGE_SEO.faq.description} />
+        <meta property="og:url" content={`${BASE_URL}/faq`} />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
+      {/* FAQ Schema for rich results */}
+      <StructuredData type="FAQPage" questions={allQuestions} />
+
       {/* Header */}
       <section className="py-12 px-6 text-center bg-blue-50">
         <div className="max-w-3xl mx-auto">
+          {/* Breadcrumbs */}
+          <div className="flex justify-center mb-6">
+            <Breadcrumbs />
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
             Frequently Asked Questions
           </h1>
@@ -201,6 +234,17 @@ export default function FAQ() {
             </div>
           );
         })}
+      </section>
+
+      {/* Related Tools Section */}
+      <section className="py-12 px-6 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <RelatedTools
+            currentTool="calculator"
+            title="Explore TrainPace Tools"
+            showMarathons={true}
+          />
+        </div>
       </section>
 
       {/* CTA Section */}

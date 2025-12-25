@@ -1,22 +1,26 @@
 User-agent: *
 Allow: /
 
-# Allow specific important pages
+# Core pages
 Allow: /calculator
 Allow: /fuel
-Allow: /preview-route/*
 Allow: /elevationfinder
 Allow: /faq
+Allow: /about
 Allow: /ethos
 Allow: /privacy
 Allow: /terms
 
-# Allow PWA files
+# Programmatic SEO pages
+Allow: /preview-route/*
+Allow: /guide/*
+
+# PWA files
 Allow: /registerSW.js
 Allow: /manifest.webmanifest
 Allow: /assets/*
 
-# Block unnecessary pages (auth, user-specific)
+# Block auth and user-specific pages
 Disallow: /login
 Disallow: /register
 Disallow: /dashboard
@@ -25,4 +29,8 @@ Disallow: /reset-password
 Disallow: /reset-confirmed
 Disallow: /logout
 
+# Crawl delay (optional, be gentle with crawlers)
+Crawl-delay: 1
+
+# Sitemap
 Sitemap: https://www.trainpace.com/sitemap.xml

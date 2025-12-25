@@ -6,16 +6,25 @@ import { vitePrerenderPlugin } from "vite-prerender-plugin";
 
 // Prerendered routes for SEO
 const prerenderedRoutes = [
+  // Core pages
   "/",
   "/calculator",
   "/fuel",
   "/elevationfinder",
+  "/faq",
+  "/about",
+  // Marathon course previews (programmatic SEO)
   "/preview-route/boston",
   "/preview-route/nyc",
   "/preview-route/chicago",
   "/preview-route/berlin",
   "/preview-route/london",
   "/preview-route/tokyo",
+  // Race distance guides (programmatic SEO)
+  "/guide/5k",
+  "/guide/10k",
+  "/guide/half-marathon",
+  "/guide/marathon",
 ];
 
 // https://vite.dev/config/

@@ -1,9 +1,8 @@
 // src/pages/PreviewRoute.tsx
 import { useParams, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { MapPin, Activity, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
-// import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
 import LeafletRoutePreview from "../components/utils/LeafletRoutePreview";
 import { Helmet } from "react-helmet-async";
 import { SavePreviewRouteButton } from "../components/SavePreviewRouteButton";
@@ -11,6 +10,10 @@ import { db } from "../lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { getCurrentDocumentId } from "../config/routes";
 import marathonData from "@/data/marathon-data.json";
+import StructuredData from "@/components/seo/StructuredData";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
+import { MarathonGrid } from "@/components/seo/RelatedTools";
+import { MARATHON_COURSES, BASE_URL, getMarathonPageSEO } from "@/config/seo";
 
 interface MarathonRoute {
   id: string;
@@ -128,23 +131,46 @@ export default function PreviewRoute() {
     };
   }, [route.slug]);
 
+  // Get SEO config for this marathon
+  const seoConfig = useMemo(() => {
+    if (slug && slug in MARATHON_COURSES) {
+      return getMarathonPageSEO(slug as keyof typeof MARATHON_COURSES);
+    }
+    return {
+      title: `${route.name} Elevation Profile – Course Map & Hill Analysis | TrainPace`,
+      description: `Explore the ${route.name} course profile, elevation changes, and race insights. Distance: ${route.distance.toFixed(1)}km, Elevation gain: ${Math.round(route.elevationGain)}m.`,
+      keywords: ['marathon elevation profile', 'race course analysis', route.name.toLowerCase()],
+    };
+  }, [slug, route]);
+
+
   return (
     <div className="max-w-6xl mx-auto p-6">
+      {/* SEO Meta Tags */}
       <Helmet>
-        <title>
-          {route.name} Preview | TrainPace - Marathon Route Analysis
-        </title>
-        <meta
-          name="description"
-          content={`Explore the ${
-            route.name
-          } course profile, elevation changes, and race insights. Distance: ${(
-            routeStats.distanceKm ?? route.distance
-          ).toFixed(1)}km, Elevation gain: ${Math.round(
-            routeStats.elevationGain ?? route.elevationGain
-          )}m.`}
-        />
+        <title>{seoConfig.title}</title>
+        <meta name="description" content={seoConfig.description} />
+        <meta name="keywords" content={seoConfig.keywords.join(", ")} />
+        <link rel="canonical" href={`${BASE_URL}/preview-route/${slug}`} />
+        <meta property="og:title" content={seoConfig.title} />
+        <meta property="og:description" content={seoConfig.description} />
+        <meta property="og:url" content={`${BASE_URL}/preview-route/${slug}`} />
+        <meta property="og:type" content="website" />
       </Helmet>
+
+      {/* Structured Data */}
+      <StructuredData
+        type="SportsEvent"
+        name={route.name}
+        description={route.description}
+        url={`${BASE_URL}/preview-route/${slug}`}
+        location={`${route.city}, ${route.country}`}
+      />
+
+      {/* Breadcrumbs */}
+      <div className="mb-6">
+        <Breadcrumbs />
+      </div>
 
       {/* Route Header */}
       <div className="mb-8">
@@ -319,8 +345,8 @@ export default function PreviewRoute() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <SavePreviewRouteButton
-            routeKey={route.slug} // Use the Firebase document ID from route.slug
-            routeSlug={route.slug} // Also pass as routeSlug for backwards compatibility
+            routeKey={route.slug}
+            routeSlug={route.slug}
             routeName={route.name}
             size="lg"
             routeData={{
@@ -363,6 +389,14 @@ export default function PreviewRoute() {
           </Link>
         </div>
       </div>
+
+      {/* Other Marathon Courses - Internal Linking */}
+      <section className="mt-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          Explore Other World Marathon Majors
+        </h2>
+        <MarathonGrid columns={3} />
+      </section>
     </div>
   );
 }

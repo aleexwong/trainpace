@@ -1,6 +1,14 @@
 import React from "react";
 import { renderToString } from "react-dom/server";
 
+// Race distance data for guide pages
+const RACE_DISTANCES = {
+  "5k": { name: "5K", distanceKm: 5 },
+  "10k": { name: "10K", distanceKm: 10 },
+  "half-marathon": { name: "Half Marathon", distanceKm: 21.1 },
+  "marathon": { name: "Marathon", distanceKm: 42.2 },
+};
+
 // Helper function to get structured data
 function getStructuredData(url) {
   const baseSchema = {
@@ -205,6 +213,28 @@ function getPageContent(url) {
           "Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty on an interactive map. Analyze marathon courses before race day."
         )
       );
+    case "/faq":
+      return React.createElement(
+        "div",
+        null,
+        React.createElement("h1", null, "Frequently Asked Questions – TrainPace"),
+        React.createElement(
+          "p",
+          null,
+          "Get answers to frequently asked questions about TrainPace pace calculator, elevation finder, fuel planner, and more."
+        )
+      );
+    case "/about":
+      return React.createElement(
+        "div",
+        null,
+        React.createElement("h1", null, "About TrainPace – Free Running Tools"),
+        React.createElement(
+          "p",
+          null,
+          "Learn about TrainPace, the free running tools platform built by runners for runners."
+        )
+      );
     default:
       if (url.includes("/preview-route/")) {
         const city = url.split("/").pop();
@@ -219,6 +249,22 @@ function getPageContent(url) {
             `${cityFormatted} Marathon elevation profile with interactive course map. See every hill, grade percentage, and total elevation gain. Plan your pacing strategy for race day.`
           )
         );
+      }
+      if (url.includes("/guide/")) {
+        const distance = url.split("/").pop();
+        const race = RACE_DISTANCES[distance];
+        if (race) {
+          return React.createElement(
+            "div",
+            null,
+            React.createElement("h1", null, `${race.name} Training Guide – TrainPace`),
+            React.createElement(
+              "p",
+              null,
+              `Complete ${race.name} training guide with pace calculator, training zones, and race day strategies. Free science-backed training tools for runners.`
+            )
+          );
+        }
       }
       return React.createElement(
         "div",
@@ -239,11 +285,22 @@ function getPageTitle(url) {
       return "Marathon Fuel Calculator – How Many Gels & When to Take Them | TrainPace";
     case "/elevationfinder":
       return "GPX Elevation Profile Viewer – Free Route Analysis & Climb Stats | TrainPace";
+    case "/faq":
+      return "FAQ – TrainPace Running Tools Help & Support";
+    case "/about":
+      return "About TrainPace – Free Running Tools for Self-Coached Athletes";
     default:
       if (url.includes("/preview-route/")) {
         const city = url.split("/").pop();
         const cityFormatted = city.charAt(0).toUpperCase() + city.slice(1);
         return `${cityFormatted} Marathon Elevation Profile – Course Map & Hill Analysis | TrainPace`;
+      }
+      if (url.includes("/guide/")) {
+        const distance = url.split("/").pop();
+        const race = RACE_DISTANCES[distance];
+        if (race) {
+          return `${race.name} Training Guide – Pace Calculator & Training Plans | TrainPace`;
+        }
       }
       return "TrainPace – Free Running Tools";
   }
@@ -259,11 +316,22 @@ function getPageDescription(url) {
       return "Calculate exactly how many gels you need for your marathon or half marathon. Get a personalized fueling schedule with 60-90g/hr carb targets, timing recommendations, and avoid hitting the wall.";
     case "/elevationfinder":
       return "Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty on an interactive map. Analyze marathon courses before race day.";
+    case "/faq":
+      return "Get answers to frequently asked questions about TrainPace pace calculator, elevation finder, fuel planner, and more. Learn how to use our free running tools.";
+    case "/about":
+      return "Learn about TrainPace, the free running tools platform built by runners for runners. No ads, no paywalls, just science-backed training tools.";
     default:
       if (url.includes("/preview-route/")) {
         const city = url.split("/").pop();
         const cityFormatted = city.charAt(0).toUpperCase() + city.slice(1);
         return `${cityFormatted} Marathon elevation profile with interactive course map. See every hill, grade percentage, and total elevation gain. Plan your pacing strategy for race day.`;
+      }
+      if (url.includes("/guide/")) {
+        const distance = url.split("/").pop();
+        const race = RACE_DISTANCES[distance];
+        if (race) {
+          return `Complete ${race.name} training guide with pace calculator, training zones, and race day strategies. Free science-backed training tools for runners.`;
+        }
       }
       return "Free running tools: pace calculator with VDOT zones, marathon fuel planner, and GPX elevation analyzer. No signup required.";
   }
