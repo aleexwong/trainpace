@@ -1,25 +1,23 @@
 /**
- * Training Plan Builder - Main Orchestrator Component
- * Manages multi-step form flow and plan generation
+ * Onboarding Wizard Screen
+ * Multi-step form flow that navigates to PlanScreen after generation
  */
 
-import { useState } from "react";
+import { useMemo } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { StepIndicator } from "./StepIndicator";
-import { Step1GoalSelection } from "./Step1GoalSelection";
-import { Step2PersonalDetails } from "./Step2PersonalDetails";
-import { Step3PreferencesForm } from "./Step3PreferencesForm";
-import { Step4PlanPreview } from "./Step4PlanPreview";
-import { PlanResultsDisplay } from "./PlanResultsDisplay";
-import { SavePlanDialog } from "./SavePlanDialog";
+import { StepIndicator } from "../components/StepIndicator";
+import { Step1GoalSelection } from "../forms/Step1GoalSelection";
+import { Step2PersonalDetails } from "../forms/Step2PersonalDetails";
+import { Step3PreferencesForm } from "../forms/Step3PreferencesForm";
+import { ReviewAndGenerateStep } from "../forms/ReviewAndGenerateStep";
+import { PlanScreen } from "./PlanScreen";
 import { useMultiStepForm } from "../hooks/useMultiStepForm";
 import { usePlanGeneration } from "../hooks/usePlanGeneration";
-import { useTrainingPlanPersistence } from "../hooks/useTrainingPlanPersistence";
-import { formatTime } from "../utils/paceCalculator";
+import type { TrainingPlanWithStatus } from "../domain/types";
 
-export function TrainingPlanBuilder() {
+export function OnboardingWizardScreen() {
   const {
     currentStep,
     formData,
@@ -35,9 +33,24 @@ export function TrainingPlanBuilder() {
   const { generatedPlan, isGenerating, generatePlan, clearPlan } =
     usePlanGeneration();
 
-  const { isSaving, saveToDashboard } = useTrainingPlanPersistence();
+  // Convert generated plan to TrainingPlanWithStatus
+  const planWithStatus = useMemo<TrainingPlanWithStatus | null>(() => {
+    if (!generatedPlan) return null;
 
-  const [showSaveDialog, setShowSaveDialog] = useState(false);
+    return {
+      ...generatedPlan,
+      currentWeek: 1, // Default to week 1
+      weeks: generatedPlan.weeks.map((week) => ({
+        ...week,
+        completedCount: 0,
+        totalWorkouts: week.workouts.filter((w) => w.type !== "rest").length,
+        workouts: week.workouts.map((workout) => ({
+          ...workout,
+          status: "pending" as const,
+        })),
+      })),
+    };
+  }, [generatedPlan]);
 
   // Handle form navigation
   const handleNext = () => {
@@ -52,63 +65,21 @@ export function TrainingPlanBuilder() {
 
   // Handle plan generation
   const handleGeneratePlan = async () => {
-    const plan = await generatePlan(formData);
-    if (plan) {
-      // Successfully generated plan, results will be displayed
-    }
+    await generatePlan(formData);
   };
 
-  // Handle save to dashboard
-  const handleSave = () => {
-    setShowSaveDialog(true);
-  };
-
-  const handleSaveConfirm = async (planName?: string, notes?: string) => {
-    if (!generatedPlan) return;
-
-    await saveToDashboard({
-      plan: generatedPlan,
-      inputs: formData,
-      planName,
-      notes,
-    });
-
-    setShowSaveDialog(false);
-  };
-
-  // Handle back from results
-  const handleBackToForm = () => {
+  // Handle back from plan screen
+  const handleBackToWizard = () => {
     clearPlan();
     goToStep(4);
   };
 
-  // If plan is generated, show results
-  if (generatedPlan) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          <PlanResultsDisplay
-            plan={generatedPlan}
-            onSave={handleSave}
-            isSaving={isSaving}
-            onBack={handleBackToForm}
-          />
-
-          <SavePlanDialog
-            isOpen={showSaveDialog}
-            onClose={() => setShowSaveDialog(false)}
-            onSave={handleSaveConfirm}
-            isSaving={isSaving}
-            distance={generatedPlan.distance}
-            goalTime={formatTime(generatedPlan.goalTime)}
-            raceDate={generatedPlan.raceDate}
-          />
-        </div>
-      </div>
-    );
+  // If plan is generated, show PlanScreen
+  if (planWithStatus) {
+    return <PlanScreen plan={planWithStatus} onExit={handleBackToWizard} />;
   }
 
-  // Show multi-step form
+  // Show multi-step form wizard
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-8 px-4">
       <div className="max-w-3xl mx-auto">
@@ -167,9 +138,8 @@ export function TrainingPlanBuilder() {
             )}
 
             {currentStep === 4 && (
-              <Step4PlanPreview
+              <ReviewAndGenerateStep
                 formData={formData}
-                onEdit={goToStep}
                 onGenerate={handleGeneratePlan}
                 isGenerating={isGenerating}
               />

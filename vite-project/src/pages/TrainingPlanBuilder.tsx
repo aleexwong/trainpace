@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { TrainingPlanBuilder } from "@/features/training-plan-builder";
+import { OnboardingWizardScreen } from "@/features/training-plan-builder";
 
 const TrainingPlanBuilderPage = () => {
   return (
@@ -15,7 +15,7 @@ const TrainingPlanBuilderPage = () => {
           content="training plan, running plan, marathon training, 5K training, 10K training, half marathon training, running schedule, workout plan"
         />
       </Helmet>
-      <TrainingPlanBuilder />
+      <OnboardingWizardScreen />
     </>
   );
 };
