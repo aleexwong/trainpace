@@ -12,9 +12,5 @@ export interface PlanScreenProps {
 }
 
 export function PlanScreen({ plan, onSave, onExit }: PlanScreenProps) {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <TrainingPlanWorkspace plan={plan} onSave={onSave} onExit={onExit} />
-    </div>
-  );
+  return <TrainingPlanWorkspace plan={plan} onSave={onSave} onExit={onExit} />;
 }

@@ -33,41 +33,43 @@ export function TrainingPlanWorkspace({
   );
 
   return (
-    <div className="flex h-screen">
-      {/* Left Navigation */}
-      <LeftNav
-        activeSection={activeSection}
-        onSectionChange={setActiveSection}
-        planName={plan.planName}
-        raceDate={plan.raceDate}
-        raceDistance={plan.distance}
-      />
-
-      {/* Center: Week Column */}
-      {activeSection === "plan" && workspaceState.plan && (
-        <WeekColumn
-          weeks={workspaceState.plan.weeks}
-          selectedWeekNumber={workspaceState.selectedWeekNumber}
-          selectedWorkoutId={workspaceState.selectedWorkoutId}
-          onWeekSelect={selectWeek}
-          onWorkoutSelect={selectWorkout}
-          currentWeek={workspaceState.plan.currentWeek}
+    <div className="flex justify-center min-h-screen bg-gray-50">
+      <div className="flex w-full max-w-7xl shadow-lg">
+        {/* Left Navigation */}
+        <LeftNav
+          activeSection={activeSection}
+          onSectionChange={setActiveSection}
+          planName={plan.planName}
+          raceDate={plan.raceDate}
+          raceDistance={plan.distance}
         />
-      )}
 
-      {/* Right: Inspector */}
-      {activeSection === "plan" && (
-        <InspectorColumn
-          selectedWorkout={selectedWorkout || null}
-          selectedWeek={selectedWeek || null}
-          onMarkComplete={markWorkoutComplete}
-          onMoveWorkout={(id) => moveWorkout(id, 1)}
-          onSwapWorkout={(id) => swapWorkouts(id, "")}
-          onReduceWeek={(wn) => console.log("Reduce week", wn)}
-        />
-      )}
+        {/* Center: Week Column */}
+        {activeSection === "plan" && workspaceState.plan && (
+          <WeekColumn
+            weeks={workspaceState.plan.weeks}
+            selectedWeekNumber={workspaceState.selectedWeekNumber}
+            selectedWorkoutId={workspaceState.selectedWorkoutId}
+            onWeekSelect={selectWeek}
+            onWorkoutSelect={selectWorkout}
+            currentWeek={workspaceState.plan.currentWeek}
+          />
+        )}
 
-      {/* TODO: Add other sections (Today, Progress, Coach, Settings) */}
+        {/* Right: Inspector */}
+        {activeSection === "plan" && (
+          <InspectorColumn
+            selectedWorkout={selectedWorkout || null}
+            selectedWeek={selectedWeek || null}
+            onMarkComplete={markWorkoutComplete}
+            onMoveWorkout={(id) => moveWorkout(id, 1)}
+            onSwapWorkout={(id) => swapWorkouts(id, "")}
+            onReduceWeek={(wn) => console.log("Reduce week", wn)}
+          />
+        )}
+
+        {/* TODO: Add other sections (Today, Progress, Coach, Settings) */}
+      </div>
     </div>
   );
 }
