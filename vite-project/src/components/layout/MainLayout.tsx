@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import PreviewRoutesDropdown from "./PreviewRoutesDropdown";
 import Footer from "./Footer";
+import { featureFlags } from "@/config/featureFlags";
 
 type NavBehavior = "static" | "sticky" | "fixed" | "auto-hide";
 interface NavLink {
@@ -93,8 +94,12 @@ export default function MainLayout() {
       { href: "#", label: "Preview Routes", isDropdown: true },
       { href: "/calculator", label: "Calculator" },
       { href: "/fuel", label: "Fuel Planner" },
-      { href: "/training-plan-builder", label: "Training Plans" },
     ];
+
+    // Add training plan builder if feature flag is enabled
+    if (featureFlags.trainingPlans) {
+      publicLinks.push({ href: "/training-plan-builder", label: "Training Plans" });
+    }
 
     const authLinks: NavLink[] = user
       ? [

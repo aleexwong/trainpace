@@ -25,6 +25,7 @@ import Terms from "./pages/Terms";
 import About from "./pages/About";
 import DashboardV2 from "./pages/DashboardV2";
 import TrainingPlanBuilder from "./pages/TrainingPlanBuilder";
+import { featureFlags } from "./config/featureFlags";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -38,7 +39,9 @@ function App() {
             <Route index element={<Landing />} />
             <Route path="/calculator" element={<TrainingPaceCalculator />} />
             <Route path="/fuel" element={<FuelPlannerV2 />} />
-            <Route path="/training-plan-builder" element={<TrainingPlanBuilder />} />
+            {featureFlags.trainingPlans && (
+              <Route path="/training-plan-builder" element={<TrainingPlanBuilder />} />
+            )}
             <Route path="/elevation-finder" element={<ElevationPage />} />
             <Route
               path="/elevation-finder/:docId"

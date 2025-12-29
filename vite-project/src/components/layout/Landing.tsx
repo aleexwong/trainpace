@@ -13,6 +13,7 @@ import {
   Target,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { featureFlags } from "@/config/featureFlags";
 
 // --- Components ---
 
@@ -860,21 +861,23 @@ export default function LandingPage() {
         imageSide="right"
       />
 
-      <FeatureSection
-        badge="Training Plan Builder"
-        title="Your Personal Coach in Your Pocket"
-        subtitle="Create customized training plans for 5K to Marathon based on your goals, experience level, and schedule."
-        icon={Target}
-        features={[
-          "Personalized week-by-week training schedule",
-          "Progressive mileage and intensity buildup",
-          "Science-backed training phases",
-          "Save and track your progress",
-        ]}
-        cta="Build My Plan"
-        ctaRoute="/training-plan-builder"
-        imageSide="left"
-      />
+      {featureFlags.trainingPlans && (
+        <FeatureSection
+          badge="Training Plan Builder"
+          title="Your Personal Coach in Your Pocket"
+          subtitle="Create customized training plans for 5K to Marathon based on your goals, experience level, and schedule."
+          icon={Target}
+          features={[
+            "Personalized week-by-week training schedule",
+            "Progressive mileage and intensity buildup",
+            "Science-backed training phases",
+            "Save and track your progress",
+          ]}
+          cta="Build My Plan"
+          ctaRoute="/training-plan-builder"
+          imageSide="left"
+        />
+      )}
 
       <FounderStory />
       <Comparison />
