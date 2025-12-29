@@ -31,16 +31,16 @@ export function StepIndicator({
   completedSteps = [],
 }: StepIndicatorProps) {
   return (
-    <div className="w-full py-6">
+    <div className="w-full py-6 px-4">
       {/* Desktop view */}
-      <div className="hidden md:flex items-center justify-between">
+      <div className="hidden md:flex items-center justify-center max-w-4xl mx-auto">
         {STEPS.map((step, index) => {
           const isCompleted = completedSteps.includes(step.number);
           const isCurrent = currentStep === step.number;
           const isClickable = isCompleted || onStepClick;
 
           return (
-            <div key={step.number} className="flex items-center flex-1">
+            <div key={step.number} className="flex items-center">
               {/* Step circle */}
               <div className="flex flex-col items-center relative">
                 <button

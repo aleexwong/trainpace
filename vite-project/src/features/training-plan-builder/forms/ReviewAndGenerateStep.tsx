@@ -3,7 +3,7 @@
  * Compact review + generate button → navigates to PlanScreen
  */
 
-import { Sparkles } from "lucide-react";
+import { Sparkles, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { PlanInputs } from "../types";
@@ -37,10 +37,16 @@ export function ReviewAndGenerateStep({
   );
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
+    <div className="space-y-8 animate-in fade-in duration-500">
+      {/* Header */}
       <div className="text-center space-y-2">
-        <h3 className="text-2xl font-bold">Ready to Build Your Plan</h3>
-        <p className="text-gray-600">Review your goals and generate your plan</p>
+        <div className="flex items-center justify-center gap-2 text-blue-600">
+          <CheckCircle className="w-8 h-8" />
+        </div>
+        <h3 className="text-2xl font-bold">Review Your Plan</h3>
+        <p className="text-gray-600">
+          Check your details and generate your personalized training plan
+        </p>
       </div>
 
       {/* Compact Summary */}
