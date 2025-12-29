@@ -7,3 +7,4 @@ export * from "./progressionCalculator";
 export * from "./paceCalculator";
 export * from "./validation";
 export * from "./planGenerator";
+export * from "./planApiClient";
