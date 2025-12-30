@@ -67,6 +67,7 @@ export interface PacePlan {
   planName?: string;
   notes?: string;
   raceDate?: string;
+  trainingDays?: string[]; // Array of selected training days (e.g., ["Monday", "Wednesday", "Friday"])
   paces: {
     race: string;
     easy: string;

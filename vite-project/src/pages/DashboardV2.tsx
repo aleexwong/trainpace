@@ -135,13 +135,19 @@ export default function DashboardV2() {
     planId: string,
     planName?: string,
     notes?: string,
-    raceDate?: string
+    raceDate?: string,
+    trainingDays?: string[]
   ) => {
     if (!user) return;
 
     try {
-      await updatePacePlan(user.uid, planId, { planName, notes, raceDate });
-      updateLocalPacePlan(planId, { planName, notes, raceDate });
+      await updatePacePlan(user.uid, planId, {
+        planName,
+        notes,
+        raceDate,
+        trainingDays,
+      });
+      updateLocalPacePlan(planId, { planName, notes, raceDate, trainingDays });
       toast({
         title: "Plan updated",
         description: "Your changes have been saved successfully",
@@ -307,18 +313,20 @@ export default function DashboardV2() {
         <EditPlanDialog
           isOpen={!!editingPlan}
           onClose={() => setEditingPlan(null)}
-          onSave={async (planName, notes, raceDate) => {
+          onSave={async (planName, notes, raceDate, trainingDays) => {
             await handleEditPacePlan(
               editingPlan.id,
               planName,
               notes,
-              raceDate
+              raceDate,
+              trainingDays
             );
             setEditingPlan(null);
           }}
           currentPlanName={editingPlan.planName}
           currentNotes={editingPlan.notes}
           currentRaceDate={editingPlan.raceDate}
+          currentTrainingDays={editingPlan.trainingDays}
           raceDistance={`${editingPlan.distance}${editingPlan.units}`}
           raceTime={`${editingPlan.hours}:${String(
             editingPlan.minutes

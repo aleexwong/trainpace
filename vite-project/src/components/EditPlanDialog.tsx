@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { X, Calendar, FileText, Tag, Save } from "lucide-react";
+import { TrainingDaysSelector } from "@/features/pace-calculator/components/TrainingDaysSelector";
 
 interface EditPlanDialogProps {
   isOpen: boolean;
@@ -12,11 +13,13 @@ interface EditPlanDialogProps {
   onSave: (
     planName?: string,
     notes?: string,
-    raceDate?: string
+    raceDate?: string,
+    trainingDays?: string[]
   ) => Promise<void>;
   currentPlanName?: string;
   currentNotes?: string;
   currentRaceDate?: string;
+  currentTrainingDays?: string[];
   raceDistance: string;
   raceTime: string;
 }
@@ -28,12 +31,14 @@ export function EditPlanDialog({
   currentPlanName,
   currentNotes,
   currentRaceDate,
+  currentTrainingDays,
   raceDistance,
   raceTime,
 }: EditPlanDialogProps) {
   const [planName, setPlanName] = useState("");
   const [notes, setNotes] = useState("");
   const [raceDate, setRaceDate] = useState("");
+  const [trainingDays, setTrainingDays] = useState<string[]>([]);
   const [isSaving, setIsSaving] = useState(false);
 
   // Initialize form with current values when dialog opens
@@ -42,8 +47,9 @@ export function EditPlanDialog({
       setPlanName(currentPlanName || "");
       setNotes(currentNotes || "");
       setRaceDate(currentRaceDate || "");
+      setTrainingDays(currentTrainingDays || []);
     }
-  }, [isOpen, currentPlanName, currentNotes, currentRaceDate]);
+  }, [isOpen, currentPlanName, currentNotes, currentRaceDate, currentTrainingDays]);
 
   if (!isOpen) return null;
 
@@ -53,7 +59,8 @@ export function EditPlanDialog({
       await onSave(
         planName.trim() || undefined,
         notes.trim() || undefined,
-        raceDate || undefined
+        raceDate || undefined,
+        trainingDays.length > 0 ? trainingDays : undefined
       );
       onClose();
     } catch (error) {
@@ -131,6 +138,15 @@ export function EditPlanDialog({
             <p className="text-xs text-gray-500 mt-1">
               When is your target race?
             </p>
+          </div>
+
+          {/* Training Days */}
+          <div>
+            <TrainingDaysSelector
+              selectedDays={trainingDays}
+              onChange={setTrainingDays}
+              disabled={isSaving}
+            />
           </div>
 
           {/* Notes */}

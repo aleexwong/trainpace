@@ -5,11 +5,17 @@
 
 import { useState } from "react";
 import { X, Calendar, FileText, Tag } from "lucide-react";
+import { TrainingDaysSelector } from "./TrainingDaysSelector";
 
 interface SavePlanDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (planName?: string, notes?: string, raceDate?: string) => void;
+  onSave: (
+    planName?: string,
+    notes?: string,
+    raceDate?: string,
+    trainingDays?: string[]
+  ) => void;
   isSaving: boolean;
   raceDistance: string;
   raceTime: string;
@@ -26,6 +32,7 @@ export function SavePlanDialog({
   const [planName, setPlanName] = useState("");
   const [notes, setNotes] = useState("");
   const [raceDate, setRaceDate] = useState("");
+  const [trainingDays, setTrainingDays] = useState<string[]>([]);
 
   if (!isOpen) return null;
 
@@ -33,7 +40,8 @@ export function SavePlanDialog({
     onSave(
       planName.trim() || undefined,
       notes.trim() || undefined,
-      raceDate || undefined
+      raceDate || undefined,
+      trainingDays.length > 0 ? trainingDays : undefined
     );
   };
 
@@ -105,6 +113,15 @@ export function SavePlanDialog({
             <p className="text-xs text-gray-500 mt-1">
               When is your target race?
             </p>
+          </div>
+
+          {/* Training Days */}
+          <div>
+            <TrainingDaysSelector
+              selectedDays={trainingDays}
+              onChange={setTrainingDays}
+              disabled={isSaving}
+            />
           </div>
 
           {/* Notes */}

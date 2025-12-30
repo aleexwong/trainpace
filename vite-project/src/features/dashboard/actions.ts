@@ -82,6 +82,7 @@ export async function updatePacePlan(
     planName?: string;
     notes?: string;
     raceDate?: string;
+    trainingDays?: string[];
   }
 ) {
   const docRef = doc(db, "user_pace_plans", planId);
@@ -100,6 +101,7 @@ export async function updatePacePlan(
     planName: updates.planName || null,
     notes: updates.notes || null,
     raceDate: updates.raceDate || null,
+    trainingDays: updates.trainingDays || null,
   });
 }
 

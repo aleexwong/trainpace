@@ -18,6 +18,7 @@ interface SavePlanParams {
   planName?: string;
   notes?: string;
   raceDate?: string;
+  trainingDays?: string[];
 }
 
 interface UsePacePlanPersistenceReturn {
@@ -43,6 +44,7 @@ export function usePacePlanPersistence(): UsePacePlanPersistenceReturn {
         planName: params.planName,
         notes: params.notes,
         raceDate: params.raceDate,
+        trainingDays: params.trainingDays,
       };
 
       sessionStorage.setItem("pending_pace_plan", JSON.stringify(planData));
@@ -88,6 +90,7 @@ export function usePacePlanPersistence(): UsePacePlanPersistenceReturn {
           planName: params.planName || null,
           notes: params.notes || null,
           raceDate: params.raceDate || null,
+          trainingDays: params.trainingDays || null,
           paces: {
             race: results.race,
             easy: results.easy,

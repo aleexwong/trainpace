@@ -52,6 +52,8 @@ export function PacePlanCard({
 
   const raceDate = formatRaceDate(plan.raceDate);
   const hasNotes = plan.notes && plan.notes.trim().length > 0;
+  const hasTrainingDays =
+    plan.trainingDays && plan.trainingDays.length > 0;
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
@@ -69,6 +71,18 @@ export function PacePlanCard({
               <Calendar className="w-3 h-3" />
               Race: {raceDate}
             </p>
+          )}
+          {hasTrainingDays && (
+            <div className="mt-2 flex flex-wrap gap-1">
+              {plan.trainingDays!.map((day) => (
+                <span
+                  key={day}
+                  className="inline-flex items-center bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-medium"
+                >
+                  {day.slice(0, 3)}
+                </span>
+              ))}
+            </div>
           )}
         </div>
         <div className="flex gap-1">

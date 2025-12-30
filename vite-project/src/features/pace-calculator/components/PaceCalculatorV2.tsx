@@ -224,7 +224,8 @@ export function PaceCalculatorV2() {
   const handleSaveConfirm = async (
     planName?: string,
     notes?: string,
-    raceDate?: string
+    raceDate?: string,
+    trainingDays?: string[]
   ) => {
     if (!results) return;
 
@@ -234,6 +235,7 @@ export function PaceCalculatorV2() {
       planName,
       notes,
       raceDate,
+      trainingDays,
     });
 
     setShowSaveDialog(false);

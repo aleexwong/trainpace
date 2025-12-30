@@ -25,7 +25,8 @@ export function usePendingPacePlan() {
 
       try {
         const planData = JSON.parse(pendingPlanJson);
-        const { inputs, results, planName, notes, raceDate } = planData;
+        const { inputs, results, planName, notes, raceDate, trainingDays } =
+          planData;
 
         // Convert time inputs to numbers for storage
         const hours = inputs.hours ? parseInt(inputs.hours, 10) : 0;
@@ -46,6 +47,7 @@ export function usePendingPacePlan() {
           planName: planName || null,
           notes: notes || null,
           raceDate: raceDate || null,
+          trainingDays: trainingDays || null,
           paces: {
             race: results.race,
             easy: results.easy,

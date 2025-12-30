@@ -68,7 +68,7 @@ export function usePacePlans(userId: string | undefined) {
 
   const updatePacePlan = (
     planId: string,
-    updates: Partial<Pick<PacePlan, "planName" | "notes" | "raceDate">>
+    updates: Partial<Pick<PacePlan, "planName" | "notes" | "raceDate" | "trainingDays">>
   ) => {
     setPacePlans((prev) =>
       prev.map((p) => (p.id === planId ? { ...p, ...updates } : p))
