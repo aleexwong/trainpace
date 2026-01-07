@@ -180,13 +180,17 @@ const Footer = () => {
                   Get in touch
                 </a>
               </p>
-              <a href="https://tinylaunch.com" target="_blank" rel="noopener">
+              <a
+                href="https://www.tinylaunch.com/launch/8134"
+                target="_blank"
+                rel="noopener"
+              >
                 <img
                   src="https://tinylaunch.com/tinylaunch_badge_featured_on.svg"
                   alt="TinyLaunch Badge"
                   style={{
                     width: 202,
-                    height: 'auto'
+                    height: "auto",
                   }}
                 />
               </a>
