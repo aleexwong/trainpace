@@ -6,7 +6,8 @@
 import { auth } from "@/lib/firebase";
 import type { TrainingPlan, PlanInputs } from "../types";
 
-const API_BASE_URL = import.meta.env.VITE_GPX_API_URL || "http://localhost:3000";
+const API_BASE_URL =
+  import.meta.env.VITE_GPX_API_URL || "http://localhost:3000";
 
 interface CreatePlanRequest {
   plan: TrainingPlan;
@@ -35,14 +36,16 @@ interface GetPlanResponse {
 
 interface ListPlansResponse {
   success: boolean;
-  plans: Array<TrainingPlan & {
-    planId: string;
-    userId: string;
-    status: "draft" | "active" | "completed" | "archived";
-    createdAt: string;
-    updatedAt: string;
-    lastAccessedAt: string;
-  }>;
+  plans: Array<
+    TrainingPlan & {
+      planId: string;
+      userId: string;
+      status: "draft" | "active" | "completed" | "archived";
+      createdAt: string;
+      updatedAt: string;
+      lastAccessedAt: string;
+    }
+  >;
   count: number;
 }
 
@@ -104,7 +107,9 @@ export async function createTrainingPlan(
 /**
  * Get a specific training plan by ID
  */
-export async function getTrainingPlan(planId: string): Promise<GetPlanResponse> {
+export async function getTrainingPlan(
+  planId: string
+): Promise<GetPlanResponse> {
   const token = await getAuthToken();
 
   const response = await fetch(`${API_BASE_URL}/api/training-plans/${planId}`, {
@@ -172,7 +177,9 @@ export async function updateTrainingPlan(
 /**
  * Delete a training plan
  */
-export async function deleteTrainingPlan(planId: string): Promise<DeletePlanResponse> {
+export async function deleteTrainingPlan(
+  planId: string
+): Promise<DeletePlanResponse> {
   const token = await getAuthToken();
 
   const response = await fetch(`${API_BASE_URL}/api/training-plans/${planId}`, {

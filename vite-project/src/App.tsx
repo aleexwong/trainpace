@@ -9,6 +9,7 @@ import GoogleAnalytics from "./lib/GoogleAnalytics";
 import TrainingPaceCalculator from "./pages/TrainingPaceCalculator";
 import RacePredictorOverlay from "./pages/RacePredictorOverlay";
 import Landing from "./components/layout/Landing";
+import { AuthAwareHome } from "./components/layout/AuthAwareHome";
 import MainLayout from "./components/layout/MainLayout";
 import Login from "./pages/Login";
 import Logout from "./components/login/Logout";
@@ -36,11 +37,14 @@ function App() {
         {/* Side Navigation */}
         <Routes>
           <Route path="/" element={<MainLayout />}>
-            <Route index element={<Landing />} />
+            <Route index element={<AuthAwareHome />} />
             <Route path="/calculator" element={<TrainingPaceCalculator />} />
             <Route path="/fuel" element={<FuelPlannerV2 />} />
             {featureFlags.trainingPlans && (
-              <Route path="/training-plan-builder" element={<TrainingPlanBuilder />} />
+              <>
+                <Route path="/training-plan-builder" element={<TrainingPlanBuilder />} />
+                <Route path="/training-plan-builder/:planId" element={<TrainingPlanBuilder />} />
+              </>
             )}
             <Route path="/elevation-finder" element={<ElevationPage />} />
             <Route

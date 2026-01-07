@@ -7,10 +7,12 @@ import {
   useRoutes,
   useFuelPlans,
   usePacePlans,
+  useTrainingPlans,
   useSearch,
   RoutesSection,
   FuelPlansSection,
   PacePlansSection,
+  TrainingPlansSection,
   SearchBar,
   deleteRoute,
   deleteFuelPlan,
@@ -22,6 +24,7 @@ import {
   PacePlan,
   FuelPlan,
 } from "../features/dashboard";
+import { featureFlags } from "../config/featureFlags";
 
 export default function DashboardV2() {
   const [activeTab, setActiveTab] = useState<DashboardTab>("routes");
@@ -51,6 +54,12 @@ export default function DashboardV2() {
     updatePacePlan: updateLocalPacePlan,
   } = usePacePlans(user?.uid);
 
+  const {
+    trainingPlans,
+    loading: trainingPlansLoading,
+    removeTrainingPlan,
+  } = useTrainingPlans();
+
   // Client-side search filtering (zero Firebase operations)
   const {
     filteredPacePlans,
@@ -64,6 +73,18 @@ export default function DashboardV2() {
     fuelPlans,
     routes,
   });
+
+  // Filter training plans by search query
+  const filteredTrainingPlans = hasActiveSearch
+    ? trainingPlans.filter((plan) => {
+        const query = searchQuery.toLowerCase();
+        return (
+          (plan.planName?.toLowerCase().includes(query) ?? false) ||
+          plan.distance.toLowerCase().includes(query) ||
+          plan.experienceLevel.toLowerCase().includes(query)
+        );
+      })
+    : trainingPlans;
 
   // Action handlers
   const handleDeleteRoute = async (
@@ -126,6 +147,23 @@ export default function DashboardV2() {
       toast({
         title: "Delete failed",
         description: "Failed to delete pace plan",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeleteTrainingPlan = async (planId: string) => {
+    try {
+      await removeTrainingPlan(planId);
+      toast({
+        title: "Plan deleted",
+        description: "Training plan deleted successfully",
+      });
+    } catch (err) {
+      console.error("Delete failed:", err);
+      toast({
+        title: "Delete failed",
+        description: "Failed to delete training plan",
         variant: "destructive",
       });
     }
@@ -204,6 +242,11 @@ export default function DashboardV2() {
     );
   }
 
+  // Calculate total results including training plans
+  const totalResultsWithTraining = hasActiveSearch
+    ? totalResults + filteredTrainingPlans.length
+    : 0;
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       <Helmet>
@@ -217,7 +260,7 @@ export default function DashboardV2() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">My Dashboard</h1>
-        <p className="text-gray-600">Manage your routes and fuel plans</p>
+        <p className="text-gray-600">Manage your routes, plans, and training</p>
       </div>
 
       {/* Search Bar */}
@@ -225,15 +268,15 @@ export default function DashboardV2() {
         <SearchBar value={searchQuery} onChange={setSearchQuery} />
         {hasActiveSearch && (
           <div className="mt-3 text-sm text-gray-600">
-            Found <span className="font-semibold">{totalResults}</span> result
-            {totalResults !== 1 ? "s" : ""} across all tabs
+            Found <span className="font-semibold">{totalResultsWithTraining}</span> result
+            {totalResultsWithTraining !== 1 ? "s" : ""} across all tabs
           </div>
         )}
       </div>
 
       {/* Tabs */}
       <div className="mb-6">
-        <div className="flex gap-2 bg-gray-100 p-1 rounded-lg inline-flex">
+        <div className="flex gap-2 bg-gray-100 p-1 rounded-lg inline-flex flex-wrap">
           <button
             onClick={() => setActiveTab("routes")}
             className={`px-4 py-2 rounded-md font-medium transition-all ${
@@ -244,6 +287,18 @@ export default function DashboardV2() {
           >
             Routes ({hasActiveSearch ? filteredRoutes.length : routes.length})
           </button>
+          {featureFlags.trainingPlans && (
+            <button
+              onClick={() => setActiveTab("training-plans")}
+              className={`px-4 py-2 rounded-md font-medium transition-all ${
+                activeTab === "training-plans"
+                  ? "bg-green-600 text-black hover:text-green-600 hover:bg-green-50"
+                  : "bg-white text-green-600 shadow-sm hover:bg-white hover:text-green-600"
+              }`}
+            >
+              Training Plans ({hasActiveSearch ? filteredTrainingPlans.length : trainingPlans.length})
+            </button>
+          )}
           <button
             onClick={() => setActiveTab("pace-plans")}
             className={`px-4 py-2 rounded-md font-medium transition-all ${
@@ -280,6 +335,14 @@ export default function DashboardV2() {
           routes={filteredRoutes}
           loading={routesLoading}
           onDeleteRoute={handleDeleteRoute}
+        />
+      )}
+
+      {activeTab === "training-plans" && featureFlags.trainingPlans && (
+        <TrainingPlansSection
+          trainingPlans={filteredTrainingPlans}
+          loading={trainingPlansLoading}
+          onDeletePlan={handleDeleteTrainingPlan}
         />
       )}
 

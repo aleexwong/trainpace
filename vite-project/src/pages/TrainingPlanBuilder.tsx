@@ -1,7 +1,11 @@
 import { Helmet } from "react-helmet-async";
+import { useParams } from "react-router-dom";
 import { OnboardingWizardScreen } from "@/features/training-plan-builder";
+import { TrainingPlanWorkspaceLoader } from "@/features/training-plan-builder/screens/TrainingPlanWorkspaceLoader";
 
 const TrainingPlanBuilderPage = () => {
+  const { planId } = useParams<{ planId?: string }>();
+
   return (
     <>
       <Helmet>
@@ -15,7 +19,11 @@ const TrainingPlanBuilderPage = () => {
           content="training plan, running plan, marathon training, 5K training, 10K training, half marathon training, running schedule, workout plan"
         />
       </Helmet>
-      <OnboardingWizardScreen />
+      {planId ? (
+        <TrainingPlanWorkspaceLoader planId={planId} />
+      ) : (
+        <OnboardingWizardScreen />
+      )}
     </>
   );
 };

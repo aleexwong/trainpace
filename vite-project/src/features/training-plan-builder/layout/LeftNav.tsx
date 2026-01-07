@@ -2,7 +2,8 @@
  * Left Navigation Sidebar
  */
 
-import { Calendar, TrendingUp, MessageSquare, Settings, List } from "lucide-react";
+import { Calendar, TrendingUp, MessageSquare, Settings, List, Save, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import type { NavSection } from "../domain/types";
 
 export interface LeftNavProps {
@@ -11,6 +12,10 @@ export interface LeftNavProps {
   planName?: string;
   raceDate?: string;
   raceDistance?: string;
+  onSave?: () => void;
+  isSaving?: boolean;
+  hasUnsavedChanges?: boolean;
+  planId?: string; // If planId exists, plan is already saved
 }
 
 const NAV_ITEMS: Array<{ section: NavSection; label: string; icon: any }> = [
@@ -27,6 +32,10 @@ export function LeftNav({
   planName,
   raceDate,
   raceDistance,
+  onSave,
+  isSaving = false,
+  hasUnsavedChanges = false,
+  planId,
 }: LeftNavProps) {
   return (
     <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
@@ -50,7 +59,8 @@ export function LeftNav({
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 p-4 space-y-1 flex flex-col">
+        <div className="flex-1 space-y-1">
         {NAV_ITEMS.map(({ section, label, icon: Icon }) => (
           <button
             key={section}
@@ -65,6 +75,36 @@ export function LeftNav({
             <span>{label}</span>
           </button>
         ))}
+        </div>
+
+        {/* Save Button - Show for both new and existing plans */}
+        {onSave && (
+          <div className="mt-4 pt-4 border-t border-gray-200 space-y-2">
+            {hasUnsavedChanges && (
+              <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 text-amber-800 rounded-lg text-sm">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{planId ? "Unsaved changes" : "Plan not saved yet"}</span>
+              </div>
+            )}
+            <Button
+              onClick={onSave}
+              disabled={isSaving || !hasUnsavedChanges}
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+            >
+              {isSaving ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4 mr-2" />
+                  {planId ? "Save Changes" : "Save Plan"}
+                </>
+              )}
+            </Button>
+          </div>
+        )}
       </nav>
     </div>
   );

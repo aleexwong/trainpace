@@ -1,6 +1,7 @@
 /**
  * Onboarding Wizard Screen
  * Multi-step form flow that navigates to PlanScreen after generation
+ * Shows sidebar with previous plans if user has any saved plans
  */
 
 import { useMemo } from "react";
@@ -8,6 +9,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StepIndicator } from "../components/StepIndicator";
+import { PlansSidebar } from "../components/PlansSidebar";
 import { Step1GoalSelection } from "../forms/Step1GoalSelection";
 import { Step2PersonalDetails } from "../forms/Step2PersonalDetails";
 import { Step3PreferencesForm } from "../forms/Step3PreferencesForm";
@@ -15,9 +17,14 @@ import { ReviewAndGenerateStep } from "../forms/ReviewAndGenerateStep";
 import { PlanScreen } from "./PlanScreen";
 import { useMultiStepForm } from "../hooks/useMultiStepForm";
 import { usePlanGeneration } from "../hooks/usePlanGeneration";
+import { useTrainingPlans } from "@/features/dashboard/hooks/useTrainingPlans";
+import { useAuth } from "@/features/auth/AuthContext";
 import type { TrainingPlanWithStatus } from "../domain/types";
 
 export function OnboardingWizardScreen() {
+  const { user } = useAuth();
+  const { trainingPlans, loading: plansLoading } = useTrainingPlans();
+  
   const {
     currentStep,
     formData,
@@ -76,11 +83,21 @@ export function OnboardingWizardScreen() {
 
   // If plan is generated, show PlanScreen
   if (planWithStatus) {
-    return <PlanScreen plan={planWithStatus} onExit={handleBackToWizard} />;
+    return (
+      <PlanScreen
+        plan={planWithStatus}
+        wizardInputs={formData} // Pass wizard inputs for saving
+        onExit={handleBackToWizard}
+      />
+    );
   }
 
-  // Show multi-step form wizard
-  return (
+  // Determine if we should show the sidebar
+  // Only show for authenticated users with at least 1 plan
+  const showSidebar = user && trainingPlans.length > 0;
+
+  // Wizard content (extracted to avoid duplication)
+  const wizardContent = (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-8 px-4">
       <div className="max-w-3xl mx-auto">
         <Card className="shadow-xl">
@@ -181,4 +198,25 @@ export function OnboardingWizardScreen() {
       </div>
     </div>
   );
+
+  // If user has plans, show with sidebar layout
+  if (showSidebar) {
+    return (
+      <div className="flex min-h-screen">
+        {/* Sidebar */}
+        <PlansSidebar
+          plans={trainingPlans}
+          loading={plansLoading}
+        />
+        
+        {/* Main content - wizard */}
+        <div className="flex-1 overflow-auto">
+          {wizardContent}
+        </div>
+      </div>
+    );
+  }
+
+  // Default: show wizard without sidebar
+  return wizardContent;
 }

@@ -9,3 +9,4 @@ export * from "./WeekCard";
 export * from "./WorkoutDetailsPanel";
 export * from "./QuickActionsBar";
 export * from "./WeekHeader";
+export * from "./PlansSidebar";

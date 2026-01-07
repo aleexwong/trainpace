@@ -136,7 +136,10 @@ export function useTrainingPlanPersistence(): UseTrainingPlanPersistenceReturn {
    */
   const loadPlan = useCallback(
     async (planId: string): Promise<TrainingPlan | null> => {
+      console.log("[loadPlan] Called with planId:", planId, "user:", user?.uid);
+      
       if (!user) {
+        console.log("[loadPlan] No user, redirecting to login");
         toast({
           title: "Authentication required",
           description: "Please sign in to view your training plan.",
@@ -149,7 +152,9 @@ export function useTrainingPlanPersistence(): UseTrainingPlanPersistenceReturn {
       setIsLoading(true);
 
       try {
+        console.log("[loadPlan] About to call getTrainingPlan API...");
         const response = await getTrainingPlan(planId);
+        console.log("[loadPlan] API response:", response);
         
         ReactGA.event({
           category: "Training Plan Builder",
