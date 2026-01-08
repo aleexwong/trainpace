@@ -16,6 +16,7 @@ const prerenderedRoutes = [
   "/preview-route/berlin",
   "/preview-route/london",
   "/preview-route/tokyo",
+  "/preview-route/sydney",
 ];
 
 // https://vite.dev/config/
