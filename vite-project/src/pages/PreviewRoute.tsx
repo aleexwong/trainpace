@@ -79,7 +79,7 @@ function FAQAccordionItem({
     <div className="border-b border-gray-200 last:border-b-0">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-4 text-left hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center justify-between py-4 text-left bg-white hover:bg-gray-50 transition-colors"
       >
         <span className="font-medium text-gray-900 pr-4">{item.question}</span>
         {isOpen ? (
@@ -89,7 +89,7 @@ function FAQAccordionItem({
         )}
       </button>
       {isOpen && (
-        <div className="pb-4 pr-8">
+        <div className="pb-4 pr-8 bg-white">
           <p className="text-gray-600 leading-relaxed">{item.answer}</p>
         </div>
       )}
@@ -253,7 +253,9 @@ export default function PreviewRoute() {
   }, [route.slug]);
 
   // Generate SEO-optimized description
-  const seoDescription = `${route.name} elevation profile and course analysis. ${Math.round(
+  const seoDescription = `${
+    route.name
+  } elevation profile and course analysis. ${Math.round(
     routeStats.elevationGain ?? route.elevationGain
   )}m elevation gain, ${(routeStats.distanceKm ?? route.distance).toFixed(
     1
@@ -291,7 +293,9 @@ export default function PreviewRoute() {
 
         {/* Structured Data */}
         {faqSchema && (
-          <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+          <script type="application/ld+json">
+            {JSON.stringify(faqSchema)}
+          </script>
         )}
         <script type="application/ld+json">
           {JSON.stringify(courseSchema)}
@@ -459,7 +463,9 @@ export default function PreviewRoute() {
           </p>
 
           <div className="space-y-4">
-            <h4 className="font-semibold text-gray-900">Mile-by-Mile Breakdown</h4>
+            <h4 className="font-semibold text-gray-900">
+              Mile-by-Mile Breakdown
+            </h4>
             <div className="grid gap-3">
               {route.paceStrategy.segments.map((segment, index) => (
                 <div
@@ -499,7 +505,9 @@ export default function PreviewRoute() {
         <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-lg border border-orange-200 p-6 mb-8">
           <div className="flex items-center space-x-3 mb-4">
             <Utensils className="w-6 h-6 text-orange-600" />
-            <h3 className="text-xl font-bold text-gray-900">Race Day Fueling</h3>
+            <h3 className="text-xl font-bold text-gray-900">
+              Race Day Fueling
+            </h3>
           </div>
 
           <p className="text-gray-700 leading-relaxed mb-4">
