@@ -1,9 +1,17 @@
 // src/pages/PreviewRoute.tsx
 import { useParams, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { MapPin, Activity, Calendar } from "lucide-react";
+import {
+  MapPin,
+  Activity,
+  Calendar,
+  TrendingUp,
+  Zap,
+  ChevronDown,
+  ChevronUp,
+  Utensils,
+} from "lucide-react";
 import { Link } from "react-router-dom";
-// import MapboxRoutePreview from "../components/utils/MapboxRoutePreview";
 import LeafletRoutePreview from "../components/utils/LeafletRoutePreview";
 import { Helmet } from "react-helmet-async";
 import { SavePreviewRouteButton } from "../components/SavePreviewRouteButton";
@@ -11,6 +19,23 @@ import { db } from "../lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { getCurrentDocumentId } from "../config/routes";
 import marathonData from "@/data/marathon-data.json";
+
+interface PaceSegment {
+  miles: string;
+  terrain: string;
+  advice: string;
+}
+
+interface PaceStrategy {
+  type: string;
+  summary: string;
+  segments: PaceSegment[];
+}
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
 
 interface MarathonRoute {
   id: string;
@@ -33,9 +58,44 @@ interface MarathonRoute {
   slug: string;
   website: string;
   tips: string[];
+  paceStrategy?: PaceStrategy;
+  fuelingNotes?: string;
+  faq?: FAQItem[];
 }
 
 const marathonRoutesData: Record<string, MarathonRoute> = marathonData;
+
+// FAQ Accordion Item Component
+function FAQAccordionItem({
+  item,
+  isOpen,
+  onToggle,
+}: {
+  item: FAQItem;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div className="border-b border-gray-200 last:border-b-0">
+      <button
+        onClick={onToggle}
+        className="w-full flex items-center justify-between py-4 text-left hover:bg-gray-50 transition-colors"
+      >
+        <span className="font-medium text-gray-900 pr-4">{item.question}</span>
+        {isOpen ? (
+          <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
+        ) : (
+          <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
+        )}
+      </button>
+      {isOpen && (
+        <div className="pb-4 pr-8">
+          <p className="text-gray-600 leading-relaxed">{item.answer}</p>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function PreviewRoute() {
   const { slug } = useParams<{ slug: string }>();
@@ -51,6 +111,7 @@ export default function PreviewRoute() {
     startElevation?: number;
     endElevation?: number;
   }>({});
+  const [openFAQIndex, setOpenFAQIndex] = useState<number | null>(0);
 
   if (!slug) {
     return <Navigate to="/" replace />;
@@ -62,6 +123,69 @@ export default function PreviewRoute() {
   if (!route) {
     return <Navigate to="/" replace />;
   }
+
+  // Generate FAQ Schema JSON-LD
+  const faqSchema = route.faq
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: route.faq.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer,
+          },
+        })),
+      }
+    : null;
+
+  // Generate Course/Event Schema
+  const courseSchema = {
+    "@context": "https://schema.org",
+    "@type": "SportsEvent",
+    name: route.name,
+    description: route.description,
+    location: {
+      "@type": "Place",
+      name: `${route.city}, ${route.country}`,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: route.city,
+        addressCountry: route.country,
+      },
+    },
+    url: route.website,
+    startDate: route.raceDate,
+    sport: "Running",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  };
+
+  // Generate BreadcrumbList Schema
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://trainpace.com",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Race Courses",
+        item: "https://trainpace.com/preview-route",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: route.name,
+        item: `https://trainpace.com/preview-route/${slug}`,
+      },
+    ],
+  };
 
   // Load display/thumbnail points and dynamic stats from ElevationFinder doc
   useEffect(() => {
@@ -128,23 +252,69 @@ export default function PreviewRoute() {
     };
   }, [route.slug]);
 
+  // Generate SEO-optimized description
+  const seoDescription = `${route.name} elevation profile and course analysis. ${Math.round(
+    routeStats.elevationGain ?? route.elevationGain
+  )}m elevation gain, ${(routeStats.distanceKm ?? route.distance).toFixed(
+    1
+  )}km distance. Get pace strategy, fueling tips, and race day advice for ${
+    route.city
+  }.`;
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       <Helmet>
         <title>
-          {route.name} Preview | TrainPace - Marathon Route Analysis
+          {route.name} Elevation Profile & Course Analysis | TrainPace
         </title>
+        <meta name="description" content={seoDescription} />
         <meta
-          name="description"
-          content={`Explore the ${
-            route.name
-          } course profile, elevation changes, and race insights. Distance: ${(
-            routeStats.distanceKm ?? route.distance
-          ).toFixed(1)}km, Elevation gain: ${Math.round(
-            routeStats.elevationGain ?? route.elevationGain
-          )}m.`}
+          name="keywords"
+          content={`${route.name} elevation, ${route.name} course, ${route.city} marathon elevation profile, ${route.name} pace strategy, ${route.name} hills`}
         />
+        <link
+          rel="canonical"
+          href={`https://trainpace.com/preview-route/${slug}`}
+        />
+
+        {/* Open Graph */}
+        <meta
+          property="og:title"
+          content={`${route.name} Elevation Profile & Course Analysis`}
+        />
+        <meta property="og:description" content={seoDescription} />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:url"
+          content={`https://trainpace.com/preview-route/${slug}`}
+        />
+
+        {/* Structured Data */}
+        {faqSchema && (
+          <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        )}
+        <script type="application/ld+json">
+          {JSON.stringify(courseSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
       </Helmet>
+
+      {/* Breadcrumb */}
+      <nav className="text-sm mb-4" aria-label="Breadcrumb">
+        <ol className="flex items-center space-x-2 text-gray-500">
+          <li>
+            <Link to="/" className="hover:text-blue-600">
+              Home
+            </Link>
+          </li>
+          <li>/</li>
+          <li>
+            <span className="text-gray-900">{route.name}</span>
+          </li>
+        </ol>
+      </nav>
 
       {/* Route Header */}
       <div className="mb-8">
@@ -201,7 +371,6 @@ export default function PreviewRoute() {
           Course Profile
         </h2>
         <div className="bg-white rounded-lg border border-gray-200 overflow-hidden relative z-0">
-          {/* Use Leaflet for public preview to avoid requiring a Mapbox token */}
           <LeafletRoutePreview
             routePoints={
               firebaseThumbPoints.length
@@ -274,6 +443,78 @@ export default function PreviewRoute() {
         </div>
       </div>
 
+      {/* Pace Strategy Section */}
+      {route.paceStrategy && (
+        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+          <div className="flex items-center space-x-3 mb-4">
+            <TrendingUp className="w-6 h-6 text-blue-600" />
+            <h3 className="text-xl font-bold text-gray-900">Pace Strategy</h3>
+            <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full capitalize">
+              {route.paceStrategy.type.replace("-", " ")}
+            </span>
+          </div>
+
+          <p className="text-gray-700 mb-6 leading-relaxed">
+            {route.paceStrategy.summary}
+          </p>
+
+          <div className="space-y-4">
+            <h4 className="font-semibold text-gray-900">Mile-by-Mile Breakdown</h4>
+            <div className="grid gap-3">
+              {route.paceStrategy.segments.map((segment, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col sm:flex-row sm:items-start gap-2 p-4 bg-gray-50 rounded-lg"
+                >
+                  <div className="flex items-center gap-2 sm:w-32 flex-shrink-0">
+                    <span className="font-bold text-blue-600">
+                      Miles {segment.miles}
+                    </span>
+                  </div>
+                  <div className="flex-1">
+                    <span className="text-sm font-medium text-gray-500 block mb-1">
+                      {segment.terrain}
+                    </span>
+                    <span className="text-gray-700">{segment.advice}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <Link
+              to="/calculator"
+              className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium"
+            >
+              <Zap className="w-4 h-4" />
+              <span>Calculate your personalized training paces →</span>
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {/* Fueling Notes Section */}
+      {route.fuelingNotes && (
+        <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-lg border border-orange-200 p-6 mb-8">
+          <div className="flex items-center space-x-3 mb-4">
+            <Utensils className="w-6 h-6 text-orange-600" />
+            <h3 className="text-xl font-bold text-gray-900">Race Day Fueling</h3>
+          </div>
+
+          <p className="text-gray-700 leading-relaxed mb-4">
+            {route.fuelingNotes}
+          </p>
+
+          <Link
+            to="/fuel"
+            className="inline-flex items-center space-x-2 text-orange-600 hover:text-orange-700 font-medium"
+          >
+            <span>Create your personalized fuel plan →</span>
+          </Link>
+        </div>
+      )}
+
       {/* Elevation Profile Summary */}
       <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
         <h3 className="text-xl font-bold text-gray-900 mb-4">
@@ -309,6 +550,27 @@ export default function PreviewRoute() {
         </div>
       </div>
 
+      {/* FAQ Section */}
+      {route.faq && route.faq.length > 0 && (
+        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">
+            Frequently Asked Questions about {route.name}
+          </h3>
+          <div className="divide-y divide-gray-200">
+            {route.faq.map((item, index) => (
+              <FAQAccordionItem
+                key={index}
+                item={item}
+                isOpen={openFAQIndex === index}
+                onToggle={() =>
+                  setOpenFAQIndex(openFAQIndex === index ? null : index)
+                }
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Call to Action */}
       <div className="bg-blue-50 rounded-lg border border-blue-200 p-6 text-center">
         <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -319,8 +581,8 @@ export default function PreviewRoute() {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <SavePreviewRouteButton
-            routeKey={route.slug} // Use the Firebase document ID from route.slug
-            routeSlug={route.slug} // Also pass as routeSlug for backwards compatibility
+            routeKey={route.slug}
+            routeSlug={route.slug}
             routeName={route.name}
             size="lg"
             routeData={{

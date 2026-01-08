@@ -19,6 +19,25 @@
       "Weather can be unpredictable in April",
       "Qualifying time required for entry"
     ],
+    "paceStrategy": {
+      "type": "negative-split",
+      "summary": "Start conservative despite downhill opening. Save energy for Newton Hills (miles 16-21), then use the final downhill miles to close strong.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Downhill", "advice": "Resist the temptation to bank time. Run 10-15 sec/mile slower than goal pace." },
+        { "miles": "6-10", "terrain": "Rolling", "advice": "Settle into goal pace. Stay relaxed through Framingham and Natick." },
+        { "miles": "11-15", "terrain": "Flat to rolling", "advice": "Maintain rhythm. Wellesley College crowds will energize you at mile 13." },
+        { "miles": "16-20", "terrain": "Newton Hills", "advice": "Run by effort, not pace. Expect to slow 15-30 sec/mile. This is where races are lost." },
+        { "miles": "20-21", "terrain": "Heartbreak Hill", "advice": "Stay mentally strong. Shorten stride, maintain cadence. Don't surge at the top." },
+        { "miles": "22-26", "terrain": "Downhill", "advice": "Let gravity help. Pick up pace gradually. Trust your training." }
+      ]
+    },
+    "fuelingNotes": "Take an extra gel at mile 15-16 before Newton Hills. The climbs increase energy demand significantly. Consider salt tabs if racing in warmer conditions.",
+    "faq": [
+      { "question": "How hilly is the Boston Marathon?", "answer": "Boston has 156m (512ft) of elevation gain, with the famous Newton Hills from miles 16-21 including Heartbreak Hill. Despite being net downhill (140m drop), the late hills make it challenging." },
+      { "question": "Is Boston Marathon good for a PR?", "answer": "Boston is harder than flat courses like Chicago or Berlin due to the Newton Hills coming when you're already fatigued. Most runners find it 2-5 minutes slower than their flat marathon potential." },
+      { "question": "What is Heartbreak Hill?", "answer": "Heartbreak Hill is the fourth and final hill in the Newton Hills section, located between miles 20-21. It rises about 27m (88ft) over 0.4 miles. The name comes from the 1936 race when Johnny Kelley's heart was 'broken' after being passed here." },
+      { "question": "What pace should I run at Boston?", "answer": "Start 10-15 seconds per mile slower than goal pace for the first 5 miles. The downhill start tempts fast early splits that you'll pay for on the Newton Hills." }
+    ],
     "thumbnailPoints": [
       { "lat": 42.2287, "lng": -71.5226, "ele": 150, "dist": 0 },
       { "lat": 42.2298, "lng": -71.5134, "ele": 145, "dist": 1.2 },
@@ -64,6 +83,25 @@
       "Crowd energy is amazing but can lead to going out too fast",
       "Weather in November can vary greatly",
       "Lottery system for entry - very competitive"
+    ],
+    "paceStrategy": {
+      "type": "even-effort",
+      "summary": "Run by effort, not pace. The bridges will slow you down - don't fight them. The crowds in Brooklyn can pull you too fast. Save energy for the Queensboro Bridge and the final Central Park hills.",
+      "segments": [
+        { "miles": "1-2", "terrain": "Verrazzano Bridge", "advice": "Uphill then downhill. Don't chase fast starters. Stay controlled." },
+        { "miles": "3-8", "terrain": "Brooklyn (flat)", "advice": "Incredible crowds. Resist surging. Lock into goal pace rhythm." },
+        { "miles": "9-13", "terrain": "Brooklyn/Queens", "advice": "Pulaski Bridge at mile 13 - small climb. Stay focused." },
+        { "miles": "14-16", "terrain": "Queensboro Bridge", "advice": "Long, quiet climb. No crowds. Mental challenge. Run your own race." },
+        { "miles": "17-20", "terrain": "Manhattan/Bronx", "advice": "Crowds return on 1st Ave. Willis Ave Bridge at mile 20. Stay patient." },
+        { "miles": "21-26", "terrain": "Manhattan/Central Park", "advice": "Rolling hills in the park. Final push. Trust your training." }
+      ]
+    },
+    "fuelingNotes": "Take a gel before the Queensboro Bridge (mile 14) - you'll need the energy for the quiet, mental miles on the bridge. The aid stations on the bridge are limited.",
+    "faq": [
+      { "question": "How hard is the NYC Marathon course?", "answer": "NYC has 234m (768ft) of elevation gain - more than Boston. The five bridges create challenging climbs, especially the long Queensboro Bridge at miles 15-16. It's not a PR course for most runners." },
+      { "question": "Which bridge is hardest in NYC Marathon?", "answer": "The Queensboro Bridge (miles 15-16) is the toughest mentally and physically. It's a long, gradual climb with no crowd support, and comes when you're already fatigued." },
+      { "question": "What's the best pacing strategy for NYC?", "answer": "Run by effort, not pace. Accept that bridges will slow you. Many runners go out too fast in Brooklyn due to crowd energy and pay for it later. Even effort is key." },
+      { "question": "How are the crowds at NYC Marathon?", "answer": "NYC has the best crowd support of any marathon - over 1 million spectators. The only quiet section is the Queensboro Bridge. Brooklyn and 1st Avenue are electric." }
     ],
     "thumbnailPoints": [
       { "lat": 40.6062, "lng": -74.0641, "ele": 45, "dist": 0 },
@@ -112,6 +150,25 @@
       "October weather is usually ideal for running",
       "Pace yourself early - it's easy to go out too fast"
     ],
+    "paceStrategy": {
+      "type": "even-pace",
+      "summary": "Chicago is built for even splits. The flat course and ideal October weather make it perfect for locking into goal pace from the start. Don't go out too fast - the lack of hills means no excuses.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Flat (Loop north)", "advice": "Easy to go out fast. Stick to goal pace. The crowd energy in Lincoln Park is incredible." },
+        { "miles": "6-10", "terrain": "Flat (North side)", "advice": "Settle into rhythm. Boystown crowds at mile 8-9 are legendary." },
+        { "miles": "11-15", "terrain": "Flat (West loop)", "advice": "Halfway point. Check in with your body. Maintain form." },
+        { "miles": "16-20", "terrain": "Flat (South/Pilsen)", "advice": "This is where flat becomes mentally tough. Stay focused. Crowds thin slightly." },
+        { "miles": "21-23", "terrain": "Flat (Chinatown)", "advice": "Dig deep. The dragons and drums in Chinatown will lift you." },
+        { "miles": "24-26", "terrain": "Flat (Michigan Ave)", "advice": "Final push on Michigan Ave. Trust your training. PR awaits." }
+      ]
+    },
+    "fuelingNotes": "Standard fueling works well on this flat course. Take gels every 45-60 minutes. The predictable pace makes it easy to plan exact timing. Don't experiment on race day.",
+    "faq": [
+      { "question": "Is Chicago Marathon good for a PR?", "answer": "Yes! Chicago is one of the fastest courses in the world with only 89m of elevation gain. The flat terrain, great weather, and crowd support make it ideal for personal bests." },
+      { "question": "How flat is the Chicago Marathon?", "answer": "Chicago has just 89m (292ft) of elevation gain - essentially pancake flat. The only 'hills' are highway overpasses that feel like speed bumps." },
+      { "question": "What's the weather like for Chicago Marathon?", "answer": "October in Chicago typically offers ideal marathon conditions: 7-15°C (45-60°F), low humidity. Occasionally it can be warm or windy off the lake." },
+      { "question": "How does Chicago compare to other majors?", "answer": "Chicago is the fastest of the World Marathon Majors due to its flat course. It's easier than Boston, NYC, and Tokyo. Similar to Berlin in terms of PR potential." }
+    ],
     "thumbnailPoints": [
       { "lat": 41.8781, "lng": -87.6298, "ele": 181, "dist": 0 },
       { "lat": 41.8823, "lng": -87.6256, "ele": 179, "dist": 1.4 },
@@ -156,6 +213,25 @@
       "Crowd support is legendary, especially at Tower Bridge",
       "Weather can be unpredictable in April",
       "Ballot entry system - very competitive"
+    ],
+    "paceStrategy": {
+      "type": "even-pace",
+      "summary": "London is relatively flat with a fast finish. The crowd support is exceptional throughout. Use the landmarks as mental checkpoints and stay patient through the quieter Docklands section.",
+      "segments": [
+        { "miles": "1-3", "terrain": "Greenwich (downhill start)", "advice": "Three start areas merge. Don't weave. Settle into pace." },
+        { "miles": "4-8", "terrain": "Docklands", "advice": "Quieter section. Stay mentally engaged. Don't zone out." },
+        { "miles": "9-13", "terrain": "Canary Wharf loop", "advice": "Around the skyscrapers. Crowds pick up. Halfway approaching." },
+        { "miles": "14-18", "terrain": "Back through Docklands", "advice": "Mental challenge seeing faster runners coming back. Run your race." },
+        { "miles": "19-22", "terrain": "Tower Bridge to Embankment", "advice": "Tower Bridge is iconic and loud. Use the energy. Big Ben ahead." },
+        { "miles": "23-26", "terrain": "Westminster to The Mall", "advice": "Buckingham Palace finish. Dig deep. Crowds are incredible." }
+      ]
+    },
+    "fuelingNotes": "Fuel well before mile 18 - the final stretch along the Embankment and The Mall is fast and you'll want full energy for the iconic finish. UK gels at aid stations may differ from US brands.",
+    "faq": [
+      { "question": "Is the London Marathon flat?", "answer": "London has 145m of elevation gain - relatively flat but not as flat as Chicago or Berlin. The course is gentle with no major hills, making it suitable for PRs." },
+      { "question": "What landmarks do you pass in London Marathon?", "answer": "You'll pass the Cutty Sark, Tower Bridge, the Tower of London, Big Ben, the Houses of Parliament, and finish on The Mall in front of Buckingham Palace." },
+      { "question": "How hard is it to get into London Marathon?", "answer": "Very competitive. The ballot has over 500,000 applicants for about 50,000 spots. Charity places, Good for Age times, and Championship entries offer other routes in." },
+      { "question": "What's the weather like for London Marathon?", "answer": "April weather is unpredictable: typically 8-15°C (46-59°F) but can range from cold rain to unexpected warmth. Layer up for the start and prepare for anything." }
     ],
     "thumbnailPoints": [
       { "lat": 51.4769, "lng": 0.0005, "ele": 45, "dist": 0 },
@@ -206,6 +282,25 @@
       "Incredible organization and crowd support",
       "Brandenburg Gate finish is iconic"
     ],
+    "paceStrategy": {
+      "type": "even-pace",
+      "summary": "Berlin is THE course for even splits and world records. Lock into goal pace from kilometer 1 and don't deviate. The flat terrain and September weather create perfect conditions.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Flat (Tiergarten)", "advice": "Start near the Victory Column. Large field - don't weave. Lock into pace immediately." },
+        { "miles": "6-10", "terrain": "Flat (East Berlin)", "advice": "Through former East Berlin. Consistent pace. Soak in the history." },
+        { "miles": "11-16", "terrain": "Flat (Kreuzberg)", "advice": "Halfway point. Check your splits. You should be on exact pace." },
+        { "miles": "17-21", "terrain": "Flat (Neukölln)", "advice": "The 'business district' of the race. No surprises. Execute the plan." },
+        { "miles": "22-24", "terrain": "Flat (Heading to center)", "advice": "Final 10K. If you've run smart, you have energy to push." },
+        { "miles": "25-26", "terrain": "Brandenburg Gate finish", "advice": "Unter den Linden to the Gate. One of the greatest finishes in running. Enjoy it." }
+      ]
+    },
+    "fuelingNotes": "Perfect course for precise fueling. With virtually no elevation change, your energy expenditure is predictable. Stick to your practiced plan - this is not the race to experiment.",
+    "faq": [
+      { "question": "Why is Berlin the fastest marathon?", "answer": "Berlin has just 67m of elevation gain - the flattest World Major. Combined with ideal September weather (12-18°C), wide roads, and great organization, it has hosted more world records than any other course." },
+      { "question": "How many world records have been set at Berlin?", "answer": "Berlin has hosted 11 world records, including Eliud Kipchoge's 2:01:09 in 2022 and Tigist Assefa's women's record of 2:11:53 in 2023." },
+      { "question": "What's the best strategy for Berlin Marathon?", "answer": "Even pace from start to finish. The flat course rewards consistent running. Pick your goal pace, lock in, and execute. Don't go out fast hoping to 'bank time.'" },
+      { "question": "How does Berlin compare to Chicago for a PR?", "answer": "Both are excellent PR courses. Berlin is slightly flatter (67m vs 89m gain) and has more world records. Chicago has better crowd support. Weather is similar in September/October." }
+    ],
     "thumbnailPoints": [
       { "lat": 52.5145, "lng": 13.3501, "ele": 55, "dist": 0 },
       { "lat": 52.5123, "lng": 13.3623, "ele": 53, "dist": 1.8 },
@@ -255,6 +350,25 @@
       "Cultural experience unlike any other marathon",
       "Lottery system with very low acceptance rate"
     ],
+    "paceStrategy": {
+      "type": "negative-split",
+      "summary": "Tokyo starts with more climbing and finishes flatter. The net uphill profile favors a conservative start. The polite, organized crowds provide steady support throughout.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Gentle climb from Shinjuku", "advice": "Start conservative. The crowds are enthusiastic but polite. Find your rhythm." },
+        { "miles": "6-10", "terrain": "Undulating through central Tokyo", "advice": "Pass the Imperial Palace. Enjoy the scenery. Stay patient." },
+        { "miles": "11-16", "terrain": "Through Ginza district", "advice": "Shopping district. Crowds thick. Halfway point - assess how you feel." },
+        { "miles": "17-22", "terrain": "Out and back section", "advice": "Can be mentally challenging. You'll see elite runners returning. Stay focused." },
+        { "miles": "23-25", "terrain": "Flatter finish approach", "advice": "Course flattens. If you ran smart, you can push now." },
+        { "miles": "26", "terrain": "Tokyo Station finish", "advice": "Finish near Tokyo Station. Soak in the accomplishment." }
+      ]
+    },
+    "fuelingNotes": "Japanese aid stations are impeccable but may have unfamiliar products. Bring your own gels. Aid stations offer rice balls and miso soup later in the race - an acquired taste during a marathon!",
+    "faq": [
+      { "question": "How hard is Tokyo Marathon to get into?", "answer": "Extremely competitive. The lottery has over 300,000 applicants for about 38,000 spots - roughly 12% acceptance rate. Charity and tour packages offer guaranteed entry." },
+      { "question": "Is Tokyo Marathon a fast course?", "answer": "Tokyo has 198m of elevation gain - more than Chicago or Berlin but still runnable for PRs. The net uphill makes it slightly harder than the flattest majors." },
+      { "question": "What makes Tokyo Marathon special?", "answer": "The organization is legendary - everything runs like clockwork. Spectators bow and cheer politely. Aid stations offer unique Japanese snacks. It's a cultural experience beyond just a race." },
+      { "question": "What's the weather like for Tokyo Marathon?", "answer": "Early March typically offers 5-12°C (41-54°F) with low humidity. Occasionally cold rain. Generally good marathon weather but bring layers for the start." }
+    ],
     "thumbnailPoints": [
       { "lat": 35.6896, "lng": 139.6917, "ele": 25, "dist": 0 },
       { "lat": 35.6923, "lng": 139.7034, "ele": 32, "dist": 1.7 },
@@ -303,6 +417,25 @@
       "Spring weather in September is ideal",
       "Stunning harbor views throughout the course",
       "Recently became a World Marathon Major - growing prestige"
+    ],
+    "paceStrategy": {
+      "type": "conservative-start",
+      "summary": "Sydney front-loads its climbing with the Harbour Bridge in the first 10K. Start conservative, tackle the bridge patiently, then use the flatter back half to make up time.",
+      "segments": [
+        { "miles": "1-3", "terrain": "Climb to Harbour Bridge", "advice": "Significant climb early. Don't fight it. Run by effort." },
+        { "miles": "4-6", "terrain": "Harbour Bridge + descent", "advice": "Iconic crossing. Enjoy the view. Control your descent." },
+        { "miles": "7-12", "terrain": "North Sydney rolling", "advice": "Undulating terrain. Stay patient. Opera House views ahead." },
+        { "miles": "13-18", "terrain": "Eastern suburbs", "advice": "Some hills remain. Halfway done with climbing. Maintain effort." },
+        { "miles": "19-23", "terrain": "Centennial Park", "advice": "Flatter section. Time to settle and push if feeling good." },
+        { "miles": "24-26", "terrain": "City finish", "advice": "Downhill finish to the Opera House. Let gravity help. Iconic end." }
+      ]
+    },
+    "fuelingNotes": "Front-load your fueling given the early climbs. Take your first gel earlier than usual (mile 4-5) before the Harbour Bridge effort depletes your stores. The net downhill finish means less fuel needed late.",
+    "faq": [
+      { "question": "Is Sydney Marathon a World Major?", "answer": "Yes! Sydney became the 7th World Marathon Major in 2025, joining Boston, NYC, Chicago, London, Berlin, and Tokyo. It's the first major in the Southern Hemisphere." },
+      { "question": "How hilly is Sydney Marathon?", "answer": "Sydney has 234m of elevation gain - the hilliest World Major. The Harbour Bridge crossing in the first 10K is the main challenge. The course is net downhill overall." },
+      { "question": "When is the best time to run Sydney Marathon?", "answer": "The race is in August/September, which is early spring in Australia. Temperatures are typically 10-18°C (50-64°F) - ideal marathon weather." },
+      { "question": "What landmarks do you pass in Sydney Marathon?", "answer": "You cross the iconic Harbour Bridge, run past the Sydney Opera House, through the Royal Botanic Gardens, Centennial Park, and finish with harbor views." }
     ],
     "thumbnailPoints": [
       { "lat": -33.815, "lng": 151.2094, "ele": 85, "dist": 0 },
