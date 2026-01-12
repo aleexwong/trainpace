@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Hash, ChevronDown } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 import FAQAccordion from "@/components/faq/FAQAccordion";
 import faqData from "@/data/faq-data.json";
 
@@ -75,8 +76,34 @@ export default function FAQ() {
     return section?.title || "Select a section";
   };
 
+  // Generate FAQPage schema for all questions
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqData.sections.flatMap((section) =>
+      section.questions.map((q) => ({
+        "@type": "Question",
+        name: q.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: q.answer,
+        },
+      }))
+    ),
+  };
+
   return (
     <div className="bg-white text-gray-900 min-h-screen">
+      <Helmet>
+        <title>FAQ - Running Pace Calculator, GPX Analysis & Fuel Planning | TrainPace</title>
+        <meta
+          name="description"
+          content="Answers to common questions about TrainPace: VDOT pace calculator, GPX elevation analysis, marathon fuel planning, training zones, and more. Free tools for self-coached runners."
+        />
+        <link rel="canonical" href="https://trainpace.com/faq" />
+        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+      </Helmet>
+
       {/* Header */}
       <section className="py-12 px-6 text-center bg-blue-50">
         <div className="max-w-3xl mx-auto">

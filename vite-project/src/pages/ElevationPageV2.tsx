@@ -178,12 +178,58 @@ export default function ElevationPage() {
   return (
     <>
       <Helmet>
-        <title>ElevationFinder | TrainPace - Smarter Race Insights</title>
+        <title>GPX Elevation Profile Viewer – Free Route Analysis | TrainPace</title>
         <meta
           name="description"
-          content="Upload your GPX files to analyze elevation profiles, gain insights, and optimize your training."
+          content="Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty. Analyze marathon courses and training routes."
         />
-        <link rel="canonical" href="/elevationfinder" />
+        <link rel="canonical" href="https://trainpace.com/elevationfinder" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to Analyze GPX Elevation Profiles",
+            description:
+              "Upload your GPX file from Strava, Garmin, or any GPS device to visualize elevation gain, grade percentages, and route difficulty.",
+            totalTime: "PT1M",
+            tool: {
+              "@type": "HowToTool",
+              name: "TrainPace ElevationFinder",
+            },
+            step: [
+              {
+                "@type": "HowToStep",
+                position: 1,
+                name: "Export your GPX file",
+                text: "Download your GPX file from Strava, Garmin Connect, COROS, Suunto, or any running app.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 2,
+                name: "Upload your GPX file",
+                text: "Drag and drop your GPX file onto the upload area, or click to browse from your device.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 3,
+                name: "View your elevation profile",
+                text: "See your route on an interactive map with total distance, elevation gain/loss, and grade percentages.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 4,
+                name: "Get terrain insights",
+                text: "View segment-by-segment analysis showing flat, rolling, hilly, and steep sections with difficulty ratings.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 5,
+                name: "Share your route (optional)",
+                text: "Sign in to save your route and get a shareable link to send to your running friends.",
+              },
+            ],
+          })}
+        </script>
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6">
