@@ -10,6 +10,7 @@ const prerenderedRoutes = [
   "/calculator",
   "/fuel",
   "/elevationfinder",
+  // World Marathon Majors
   "/preview-route/boston",
   "/preview-route/nyc",
   "/preview-route/chicago",
@@ -17,6 +18,20 @@ const prerenderedRoutes = [
   "/preview-route/london",
   "/preview-route/tokyo",
   "/preview-route/sydney",
+  // US Popular Marathons
+  "/preview-route/la",
+  "/preview-route/marinecorps",
+  "/preview-route/bigsur",
+  "/preview-route/philadelphia",
+  "/preview-route/houston",
+  "/preview-route/twincities",
+  "/preview-route/grandmas",
+  "/preview-route/disney",
+  "/preview-route/portland",
+  // European Marathons
+  "/preview-route/paris",
+  "/preview-route/amsterdam",
+  "/preview-route/valencia",
 ];
 
 // https://vite.dev/config/

@@ -468,5 +468,747 @@
       { "lat": -33.8678, "lng": 151.2223, "ele": 18, "dist": 42.0 },
       { "lat": -33.8568, "lng": 151.2153, "ele": 15, "dist": 42.195 }
     ]
+  },
+  "la": {
+    "id": "8",
+    "name": "LA Marathon",
+    "city": "Los Angeles",
+    "country": "California, USA",
+    "distance": 42.195,
+    "elevationGain": 282,
+    "elevationLoss": 378,
+    "startElevation": 125,
+    "endElevation": 15,
+    "slug": "la-marathon-2026",
+    "raceDate": "March 15, 2026",
+    "website": "https://www.lamarathon.com/",
+    "description": "The LA Marathon's 'Stadium to the Sea' course runs from Dodger Stadium through Hollywood, Beverly Hills, and Santa Monica, finishing at the Pacific Ocean. A point-to-point course showcasing iconic LA landmarks.",
+    "tips": [
+      "Net downhill course but don't underestimate the climbs",
+      "Early morning start helps avoid heat",
+      "Hollywood and Sunset Boulevard sections are highlight",
+      "Finish on Ocean Avenue with Pacific views"
+    ],
+    "paceStrategy": {
+      "type": "conservative-start",
+      "summary": "Despite being net downhill, LA has significant climbing early. The heat can build as the morning progresses. Start conservative and take advantage of the downhill finish.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Downhill from Dodger Stadium", "advice": "Tempting to fly. Resist. Save your quads for later hills." },
+        { "miles": "6-10", "terrain": "Hollywood/Sunset climb", "advice": "Main climbing section. Run by effort. Enjoy the Hollywood sign views." },
+        { "miles": "11-15", "terrain": "Beverly Hills rolling", "advice": "Rodeo Drive section. Some rollers. Maintain rhythm." },
+        { "miles": "16-20", "terrain": "West LA gradual descent", "advice": "Course flattens and descends. Time to settle into pace." },
+        { "miles": "21-24", "terrain": "Santa Monica approach", "advice": "Can feel the ocean breeze. Crowds build. Push if feeling good." },
+        { "miles": "25-26", "terrain": "Ocean Avenue finish", "advice": "Downhill to the sea. Pacific Ocean finish is iconic. Enjoy it." }
+      ]
+    },
+    "fuelingNotes": "The early climbs demand extra fuel. Take your first gel by mile 5. The potential heat means prioritizing hydration - drink early and often. Carry salt tabs if racing in warm conditions.",
+    "faq": [
+      { "question": "Is the LA Marathon a good PR course?", "answer": "LA is net downhill (378m loss vs 282m gain) but the early climbs and potential heat make it challenging. It's possible to PR, but not as fast as Chicago or Berlin." },
+      { "question": "What landmarks do you pass in LA Marathon?", "answer": "Dodger Stadium start, Hollywood Boulevard, Sunset Strip, Beverly Hills, Rodeo Drive, Santa Monica, and finish at the Pacific Ocean." },
+      { "question": "What's the weather like for LA Marathon?", "answer": "March in LA can range from 10-25°C (50-77°F). Early morning is usually cool but temperatures can rise quickly. Prepare for potential heat." },
+      { "question": "Why is it called Stadium to the Sea?", "answer": "The course runs from Dodger Stadium in the hills above downtown LA to Santa Monica's Ocean Avenue, finishing with Pacific Ocean views." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 34.0739, "lng": -118.2400, "ele": 125, "dist": 0 },
+      { "lat": 34.0723, "lng": -118.2534, "ele": 115, "dist": 1.5 },
+      { "lat": 34.0756, "lng": -118.2678, "ele": 95, "dist": 3.2 },
+      { "lat": 34.0834, "lng": -118.2823, "ele": 85, "dist": 5.1 },
+      { "lat": 34.0912, "lng": -118.2967, "ele": 105, "dist": 7.0 },
+      { "lat": 34.0978, "lng": -118.3234, "ele": 135, "dist": 9.8 },
+      { "lat": 34.0934, "lng": -118.3456, "ele": 125, "dist": 12.1 },
+      { "lat": 34.0856, "lng": -118.3678, "ele": 105, "dist": 14.5 },
+      { "lat": 34.0778, "lng": -118.3889, "ele": 95, "dist": 16.8 },
+      { "lat": 34.0689, "lng": -118.4123, "ele": 75, "dist": 19.2 },
+      { "lat": 34.0567, "lng": -118.4334, "ele": 55, "dist": 21.8 },
+      { "lat": 34.0456, "lng": -118.4545, "ele": 45, "dist": 24.1 },
+      { "lat": 34.0345, "lng": -118.4756, "ele": 35, "dist": 26.5 },
+      { "lat": 34.0234, "lng": -118.4912, "ele": 25, "dist": 28.9 },
+      { "lat": 34.0167, "lng": -118.4978, "ele": 20, "dist": 31.2 },
+      { "lat": 34.0112, "lng": -118.4934, "ele": 18, "dist": 33.8 },
+      { "lat": 34.0067, "lng": -118.4889, "ele": 16, "dist": 36.1 },
+      { "lat": 34.0034, "lng": -118.4934, "ele": 15, "dist": 38.5 },
+      { "lat": 34.0012, "lng": -118.4978, "ele": 14, "dist": 40.2 },
+      { "lat": 33.9989, "lng": -118.5012, "ele": 15, "dist": 42.195 }
+    ]
+  },
+  "marinecorps": {
+    "id": "9",
+    "name": "Marine Corps Marathon",
+    "city": "Washington D.C.",
+    "country": "Virginia/D.C., USA",
+    "distance": 42.195,
+    "elevationGain": 198,
+    "elevationLoss": 189,
+    "startElevation": 25,
+    "endElevation": 35,
+    "slug": "marine-corps-marathon-2026",
+    "raceDate": "October 25, 2026",
+    "website": "https://www.marinemarathon.com/",
+    "description": "Known as 'The People's Marathon,' the Marine Corps Marathon passes iconic monuments including the Lincoln Memorial, Washington Monument, and finishes at the Iwo Jima Memorial. No prize money - just the honor of finishing.",
+    "tips": [
+      "Marines cheer you on throughout - incredible support",
+      "No prize money - run for the honor and the medal",
+      "October weather is usually ideal for running",
+      "Hilly course with challenging bridges"
+    ],
+    "paceStrategy": {
+      "type": "even-effort",
+      "summary": "MCM has rolling hills throughout, including challenging bridge crossings. The monuments provide mental markers. The 14th Street Bridge at mile 20 is notorious. Run by effort, not pace.",
+      "segments": [
+        { "miles": "1-4", "terrain": "Arlington rolling hills", "advice": "Start in Arlington. Some early rollers. Settle into rhythm." },
+        { "miles": "5-8", "terrain": "Georgetown/Rock Creek", "advice": "Through Georgetown. Creek path is pleasant but has some climbs." },
+        { "miles": "9-14", "terrain": "National Mall", "advice": "Past monuments - Lincoln, Washington. Flat and inspiring. Crowds great." },
+        { "miles": "15-19", "terrain": "Hains Point loop", "advice": "Out and back on peninsula. Can be windy and mentally tough." },
+        { "miles": "20-22", "terrain": "14th Street Bridge", "advice": "The 'Beat the Bridge' section. Infamous climb. Marines cheering. Dig deep." },
+        { "miles": "23-26", "terrain": "Crystal City to Iwo Jima", "advice": "Final push through Crystal City to the iconic Iwo Jima finish." }
+      ]
+    },
+    "fuelingNotes": "Save an extra gel for before the 14th Street Bridge (mile 19). The bridge climb at mile 20 is where many runners hit the wall. The Marine support will carry you through.",
+    "faq": [
+      { "question": "Why is it called The People's Marathon?", "answer": "Marine Corps Marathon awards no prize money - everyone runs for the same reason: personal achievement. It's about the journey, not the prize." },
+      { "question": "What's the 14th Street Bridge?", "answer": "The bridge at mile 20-21 is the most challenging section. You must cross before the 'Beat the Bridge' cutoff time. Marines line the bridge cheering runners up." },
+      { "question": "How hard is Marine Corps Marathon?", "answer": "MCM has 198m of elevation gain with rolling hills throughout. It's not a PR course for most, but the experience and Marine support are unmatched." },
+      { "question": "What monuments do you pass?", "answer": "Lincoln Memorial, Washington Monument, Capitol Building, and finish at the iconic Iwo Jima Memorial. The course is a patriotic journey through American history." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 38.8799, "lng": -77.0685, "ele": 25, "dist": 0 },
+      { "lat": 38.8834, "lng": -77.0756, "ele": 35, "dist": 1.8 },
+      { "lat": 38.8889, "lng": -77.0823, "ele": 45, "dist": 3.5 },
+      { "lat": 38.8956, "lng": -77.0889, "ele": 55, "dist": 5.2 },
+      { "lat": 38.9034, "lng": -77.0756, "ele": 48, "dist": 7.1 },
+      { "lat": 38.9089, "lng": -77.0623, "ele": 35, "dist": 9.0 },
+      { "lat": 38.8978, "lng": -77.0456, "ele": 18, "dist": 11.2 },
+      { "lat": 38.8889, "lng": -77.0345, "ele": 12, "dist": 13.5 },
+      { "lat": 38.8823, "lng": -77.0234, "ele": 8, "dist": 15.8 },
+      { "lat": 38.8756, "lng": -77.0178, "ele": 6, "dist": 18.2 },
+      { "lat": 38.8678, "lng": -77.0234, "ele": 8, "dist": 20.5 },
+      { "lat": 38.8612, "lng": -77.0345, "ele": 12, "dist": 22.8 },
+      { "lat": 38.8534, "lng": -77.0456, "ele": 25, "dist": 25.1 },
+      { "lat": 38.8567, "lng": -77.0534, "ele": 35, "dist": 27.4 },
+      { "lat": 38.8623, "lng": -77.0612, "ele": 42, "dist": 29.8 },
+      { "lat": 38.8689, "lng": -77.0678, "ele": 48, "dist": 32.1 },
+      { "lat": 38.8756, "lng": -77.0756, "ele": 42, "dist": 34.5 },
+      { "lat": 38.8812, "lng": -77.0812, "ele": 38, "dist": 36.8 },
+      { "lat": 38.8867, "lng": -77.0756, "ele": 35, "dist": 39.2 },
+      { "lat": 38.8901, "lng": -77.0712, "ele": 35, "dist": 42.195 }
+    ]
+  },
+  "bigsur": {
+    "id": "10",
+    "name": "Big Sur Marathon",
+    "city": "Big Sur",
+    "country": "California, USA",
+    "distance": 42.195,
+    "elevationGain": 610,
+    "elevationLoss": 524,
+    "startElevation": 135,
+    "endElevation": 45,
+    "slug": "big-sur-marathon-2026",
+    "raceDate": "April 26, 2026",
+    "website": "https://www.bigsurmarathon.org/",
+    "description": "Called 'The Ultimate Run,' Big Sur offers the most scenic marathon course in the world. Running along Highway 1 with Pacific Ocean cliffs, redwood forests, and the iconic Bixby Bridge. This is not a PR course - it's an experience.",
+    "tips": [
+      "NOT a PR course - run for the experience",
+      "Hurricane Point at mile 12 is brutal but stunning",
+      "Bring layers - coastal fog is common",
+      "Grand piano on Bixby Bridge is a tradition"
+    ],
+    "paceStrategy": {
+      "type": "conservative",
+      "summary": "Big Sur has 610m of climbing - forget about pace. Hurricane Point at mile 12 gains 500 feet in 2 miles. Run by effort, walk the hills if needed, and soak in the views.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Coastal highway (rolling)", "advice": "Gorgeous coastline. Don't start fast. You need every ounce of energy." },
+        { "miles": "6-10", "terrain": "Approaching Hurricane Point", "advice": "Beautiful but deceptive. The big climb is coming. Stay patient." },
+        { "miles": "11-13", "terrain": "Hurricane Point", "advice": "The monster climb. 500ft gain in 2 miles. Walk if needed. Breathe." },
+        { "miles": "14-16", "terrain": "Post-Hurricane descent", "advice": "Recovery descent. Bixby Bridge ahead. Listen for the piano!" },
+        { "miles": "17-20", "terrain": "Bixby Bridge + rolling", "advice": "Iconic bridge crossing. Piano playing. Crowds cheering. Emotional moment." },
+        { "miles": "21-26", "terrain": "Rolling to Carmel", "advice": "Still hilly but manageable. Redwoods ahead. Finish in Carmel." }
+      ]
+    },
+    "fuelingNotes": "Increase your fueling by 20-30% compared to flat courses. The climbing burns significantly more calories. Take gels at the base of Hurricane Point (mile 10-11) and at the top.",
+    "faq": [
+      { "question": "Is Big Sur Marathon good for a PR?", "answer": "No. With 610m of elevation gain including the brutal Hurricane Point, Big Sur is 15-30 minutes slower than your flat marathon potential. Run it for the experience." },
+      { "question": "What is Hurricane Point?", "answer": "Hurricane Point (miles 11-13) is a 2-mile climb gaining 500 feet. It's the most challenging section but offers stunning Pacific views. Many runners walk portions." },
+      { "question": "Why is there a piano on the course?", "answer": "A grand piano on Bixby Bridge has been a Big Sur tradition since 1989. A pianist plays for runners crossing the iconic bridge - one of the most emotional moments in marathoning." },
+      { "question": "What makes Big Sur special?", "answer": "Big Sur is consistently rated the most scenic marathon in the world. Dramatic Pacific cliffs, redwood forests, the Bixby Bridge, and stunning coastal views make it a bucket-list race." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 36.4234, "lng": -121.9234, "ele": 135, "dist": 0 },
+      { "lat": 36.4156, "lng": -121.9156, "ele": 125, "dist": 2.1 },
+      { "lat": 36.4067, "lng": -121.9089, "ele": 115, "dist": 4.3 },
+      { "lat": 36.3978, "lng": -121.9023, "ele": 105, "dist": 6.5 },
+      { "lat": 36.3889, "lng": -121.8956, "ele": 98, "dist": 8.7 },
+      { "lat": 36.3756, "lng": -121.8889, "ele": 125, "dist": 11.2 },
+      { "lat": 36.3656, "lng": -121.8823, "ele": 185, "dist": 13.5 },
+      { "lat": 36.3567, "lng": -121.8756, "ele": 245, "dist": 15.8 },
+      { "lat": 36.3512, "lng": -121.8689, "ele": 198, "dist": 17.6 },
+      { "lat": 36.3456, "lng": -121.8623, "ele": 165, "dist": 19.4 },
+      { "lat": 36.3389, "lng": -121.8556, "ele": 142, "dist": 21.2 },
+      { "lat": 36.3312, "lng": -121.8489, "ele": 125, "dist": 23.0 },
+      { "lat": 36.3234, "lng": -121.8423, "ele": 108, "dist": 24.8 },
+      { "lat": 36.3156, "lng": -121.8356, "ele": 95, "dist": 26.6 },
+      { "lat": 36.3078, "lng": -121.8289, "ele": 82, "dist": 28.4 },
+      { "lat": 36.2989, "lng": -121.8234, "ele": 75, "dist": 30.5 },
+      { "lat": 36.2912, "lng": -121.8167, "ele": 68, "dist": 32.8 },
+      { "lat": 36.2834, "lng": -121.8089, "ele": 58, "dist": 35.2 },
+      { "lat": 36.2756, "lng": -121.8023, "ele": 52, "dist": 37.5 },
+      { "lat": 36.2678, "lng": -121.7956, "ele": 48, "dist": 39.8 },
+      { "lat": 36.2612, "lng": -121.7889, "ele": 45, "dist": 42.195 }
+    ]
+  },
+  "paris": {
+    "id": "11",
+    "name": "Paris Marathon",
+    "city": "Paris",
+    "country": "France",
+    "distance": 42.195,
+    "elevationGain": 156,
+    "elevationLoss": 178,
+    "startElevation": 65,
+    "endElevation": 45,
+    "slug": "paris-marathon-2026",
+    "raceDate": "April 5, 2026",
+    "website": "https://www.schneiderelectricparismarathon.com/",
+    "description": "The Paris Marathon runs past the city's iconic landmarks from Champs-Élysées to the Eiffel Tower, through the Bois de Vincennes and Bois de Boulogne. One of the world's largest marathons with over 50,000 finishers.",
+    "tips": [
+      "Start on the Champs-Élysées - iconic setting",
+      "Two forest sections provide shade but can feel long",
+      "French crowds are enthusiastic with wine and cheese stations",
+      "Finish with Eiffel Tower views"
+    ],
+    "paceStrategy": {
+      "type": "even-pace",
+      "summary": "Paris is relatively flat with some gentle rolling sections. The Bois de Vincennes and Bois de Boulogne sections can feel monotonous - stay mentally engaged. The landmarks keep motivation high.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Champs-Élysées to Bastille", "advice": "Electric start on Champs-Élysées. Don't get caught up in the excitement. Settle in." },
+        { "miles": "6-12", "terrain": "Bois de Vincennes", "advice": "Large forest loop. Can feel long. Stay mentally present. Aid stations often have wine!" },
+        { "miles": "13-17", "terrain": "Along the Seine", "advice": "Beautiful river section. Notre-Dame views. Halfway point. Check your form." },
+        { "miles": "18-22", "terrain": "Bois de Boulogne", "advice": "Second forest section. Mental challenge. This is where the race is won or lost." },
+        { "miles": "23-24", "terrain": "Exit to Trocadéro", "advice": "Leaving the park. Eiffel Tower coming into view. Crowds building." },
+        { "miles": "25-26", "terrain": "Finish at Foch", "advice": "Eiffel Tower backdrop for finish. Soak in the moment. C'est magnifique!" }
+      ]
+    },
+    "fuelingNotes": "French aid stations often include wine, cheese, and fruit - tempting but stick to your plan! Bring your own gels. The forest sections have fewer spectators, so mental fuel matters here.",
+    "faq": [
+      { "question": "Is Paris Marathon good for a PR?", "answer": "Paris has 156m of elevation gain - faster than Boston or NYC but not as flat as Berlin or Chicago. With good weather and execution, PRs are possible." },
+      { "question": "What landmarks do you pass in Paris Marathon?", "answer": "Champs-Élysées start, Bastille, Notre-Dame, the Seine riverbanks, Bois de Vincennes, Bois de Boulogne, and finish near the Eiffel Tower." },
+      { "question": "Do they really serve wine during Paris Marathon?", "answer": "Yes! French aid stations often include wine, cheese, chocolate, and fruit alongside traditional sports nutrition. It's part of the cultural experience." },
+      { "question": "How big is the Paris Marathon?", "answer": "Paris is one of the world's largest marathons with 50,000+ finishers annually. The massive field can cause congestion in the early miles." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 48.8698, "lng": 2.3076, "ele": 65, "dist": 0 },
+      { "lat": 48.8656, "lng": 2.3234, "ele": 58, "dist": 2.1 },
+      { "lat": 48.8578, "lng": 2.3456, "ele": 52, "dist": 4.5 },
+      { "lat": 48.8489, "lng": 2.3678, "ele": 48, "dist": 6.8 },
+      { "lat": 48.8423, "lng": 2.4012, "ele": 55, "dist": 9.2 },
+      { "lat": 48.8356, "lng": 2.4234, "ele": 62, "dist": 11.5 },
+      { "lat": 48.8289, "lng": 2.4156, "ele": 58, "dist": 13.8 },
+      { "lat": 48.8334, "lng": 2.3923, "ele": 52, "dist": 16.2 },
+      { "lat": 48.8489, "lng": 2.3567, "ele": 42, "dist": 18.5 },
+      { "lat": 48.8567, "lng": 2.3234, "ele": 38, "dist": 20.8 },
+      { "lat": 48.8612, "lng": 2.2912, "ele": 45, "dist": 23.2 },
+      { "lat": 48.8689, "lng": 2.2678, "ele": 52, "dist": 25.5 },
+      { "lat": 48.8756, "lng": 2.2456, "ele": 58, "dist": 27.8 },
+      { "lat": 48.8823, "lng": 2.2289, "ele": 55, "dist": 30.2 },
+      { "lat": 48.8756, "lng": 2.2123, "ele": 52, "dist": 32.5 },
+      { "lat": 48.8678, "lng": 2.2234, "ele": 48, "dist": 34.8 },
+      { "lat": 48.8623, "lng": 2.2456, "ele": 45, "dist": 37.2 },
+      { "lat": 48.8567, "lng": 2.2678, "ele": 48, "dist": 39.5 },
+      { "lat": 48.8634, "lng": 2.2889, "ele": 45, "dist": 41.8 },
+      { "lat": 48.8698, "lng": 2.2912, "ele": 45, "dist": 42.195 }
+    ]
+  },
+  "amsterdam": {
+    "id": "12",
+    "name": "Amsterdam Marathon",
+    "city": "Amsterdam",
+    "country": "Netherlands",
+    "distance": 42.195,
+    "elevationGain": 32,
+    "elevationLoss": 32,
+    "startElevation": 2,
+    "endElevation": 2,
+    "slug": "amsterdam-marathon-2026",
+    "raceDate": "October 18, 2026",
+    "website": "https://www.tcsamsterdammarathon.nl/",
+    "description": "Amsterdam Marathon is one of the flattest courses in the world, starting and finishing at Olympic Stadium. The course runs through historic streets, along canals, and through the Vondelpark. A fast course with a rich history.",
+    "tips": [
+      "One of the flattest courses in the world - PR territory",
+      "October weather is usually ideal",
+      "Historic Olympic Stadium start/finish",
+      "Canal-side running is scenic and flat"
+    ],
+    "paceStrategy": {
+      "type": "even-pace",
+      "summary": "Amsterdam is pancake flat - perfect for even splits. The only 'hills' are canal bridges that are barely noticeable. Lock into your goal pace and execute. The course rewards consistent running.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Olympic Stadium to city", "advice": "Start in iconic 1928 Olympic Stadium. Perfect setting. Find your rhythm immediately." },
+        { "miles": "6-10", "terrain": "Canal district", "advice": "Along the famous canals. Flat as a pancake. Lock into pace." },
+        { "miles": "11-16", "terrain": "Amstel River out", "advice": "Alongside the Amstel River. Out and back section begins. Mentally steady." },
+        { "miles": "17-21", "terrain": "Amstel River return", "advice": "Heading back to city. Can be windy along river. Stay focused." },
+        { "miles": "22-24", "terrain": "Through Vondelpark", "advice": "City's famous park. Crowds building. Final push approaching." },
+        { "miles": "25-26", "terrain": "Back to Olympic Stadium", "advice": "Enter the stadium for the finish. Track finish like the 1928 Olympics. Glorious." }
+      ]
+    },
+    "fuelingNotes": "Flat courses make fueling easy - your effort is predictable. Standard protocol works well here. Take gels every 5 miles. The only variable is potential wind along the Amstel River.",
+    "faq": [
+      { "question": "How flat is Amsterdam Marathon?", "answer": "Amsterdam has just 32m of elevation gain - virtually flat. The only 'elevation' comes from canal bridge crossings. It's one of the best PR courses in Europe." },
+      { "question": "Is Amsterdam Marathon good for a first marathon?", "answer": "Excellent choice. The flat course, great organization, and reasonable field size make it ideal for first-timers. October weather is typically good." },
+      { "question": "Where does Amsterdam Marathon start and finish?", "answer": "Both start and finish are at the historic 1928 Olympic Stadium. You enter the stadium and finish on the track - very special experience." },
+      { "question": "How does Amsterdam compare to Berlin?", "answer": "Amsterdam is actually flatter (32m vs 67m gain) but has fewer world records due to smaller elite field. For age-groupers seeking PRs, both are excellent." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 52.3434, "lng": 4.8534, "ele": 2, "dist": 0 },
+      { "lat": 52.3512, "lng": 4.8678, "ele": 2, "dist": 2.2 },
+      { "lat": 52.3623, "lng": 4.8823, "ele": 2, "dist": 4.5 },
+      { "lat": 52.3745, "lng": 4.8956, "ele": 2, "dist": 6.8 },
+      { "lat": 52.3834, "lng": 4.9089, "ele": 3, "dist": 9.1 },
+      { "lat": 52.3712, "lng": 4.9234, "ele": 2, "dist": 11.4 },
+      { "lat": 52.3589, "lng": 4.9378, "ele": 2, "dist": 13.7 },
+      { "lat": 52.3456, "lng": 4.9512, "ele": 1, "dist": 16.0 },
+      { "lat": 52.3334, "lng": 4.9623, "ele": 1, "dist": 18.3 },
+      { "lat": 52.3212, "lng": 4.9512, "ele": 1, "dist": 20.6 },
+      { "lat": 52.3089, "lng": 4.9378, "ele": 2, "dist": 22.9 },
+      { "lat": 52.2967, "lng": 4.9234, "ele": 2, "dist": 25.2 },
+      { "lat": 52.3089, "lng": 4.9089, "ele": 2, "dist": 27.5 },
+      { "lat": 52.3212, "lng": 4.8956, "ele": 2, "dist": 29.8 },
+      { "lat": 52.3334, "lng": 4.8823, "ele": 2, "dist": 32.1 },
+      { "lat": 52.3389, "lng": 4.8678, "ele": 2, "dist": 34.4 },
+      { "lat": 52.3456, "lng": 4.8612, "ele": 2, "dist": 36.7 },
+      { "lat": 52.3489, "lng": 4.8556, "ele": 2, "dist": 39.0 },
+      { "lat": 52.3467, "lng": 4.8534, "ele": 2, "dist": 41.3 },
+      { "lat": 52.3434, "lng": 4.8534, "ele": 2, "dist": 42.195 }
+    ]
+  },
+  "valencia": {
+    "id": "13",
+    "name": "Valencia Marathon",
+    "city": "Valencia",
+    "country": "Spain",
+    "distance": 42.195,
+    "elevationGain": 28,
+    "elevationLoss": 28,
+    "startElevation": 8,
+    "endElevation": 8,
+    "slug": "valencia-marathon-2026",
+    "raceDate": "December 6, 2026",
+    "website": "https://www.valenciaciudaddelrunning.com/",
+    "description": "Valencia has become one of the world's fastest marathons, nicknamed 'The Marathon of World Records.' The virtually flat course along the Mediterranean coast has produced numerous elite times and thousands of personal bests.",
+    "tips": [
+      "One of the fastest courses in the world",
+      "December weather is ideal - cool and calm",
+      "City of Arts and Sciences finish is stunning",
+      "Excellent pacers throughout the race"
+    ],
+    "paceStrategy": {
+      "type": "aggressive-even",
+      "summary": "Valencia is built for fast times. The flat course, December weather, and excellent pacers allow for aggressive pacing. If you're chasing a PR, this is the place to go for it.",
+      "segments": [
+        { "miles": "1-5", "terrain": "City center start", "advice": "Fast field. Excellent pacers. Lock into your group and trust the plan." },
+        { "miles": "6-10", "terrain": "Port area", "advice": "Near the Mediterranean. Usually calm winds. Consistent effort." },
+        { "miles": "11-16", "terrain": "Northern loop", "advice": "Through residential areas. Crowds enthusiastic. Stay with your pace group." },
+        { "miles": "17-21", "terrain": "Returning south", "advice": "Heading back toward City of Arts and Sciences. You can start to see it." },
+        { "miles": "22-24", "terrain": "Final approach", "advice": "Crowds building. The stunning architecture ahead. Dig deep for the finish." },
+        { "miles": "25-26", "terrain": "City of Arts and Sciences finish", "advice": "One of the most beautiful finishes in world running. Trust your fitness. PR awaits." }
+      ]
+    },
+    "fuelingNotes": "Valencia's fast pace means higher carb needs. Consider taking gels slightly more frequently (every 4 miles instead of 5). The flat course and cool weather make absorption easier.",
+    "faq": [
+      { "question": "Why is Valencia so fast?", "answer": "Valencia has just 28m of elevation gain (virtually flat), ideal December weather (10-15°C), excellent organization, and fast pacers. It's produced numerous world records and thousands of PRs." },
+      { "question": "Is Valencia Marathon good for a PR?", "answer": "Valencia is arguably the best PR course in the world right now. The flat terrain, perfect weather, and fast atmosphere have made it the marathon of choice for runners chasing times." },
+      { "question": "What's the City of Arts and Sciences?", "answer": "It's a stunning futuristic complex designed by architect Santiago Calatrava. The marathon finish weaves through this architectural marvel - one of the most photogenic finishes in running." },
+      { "question": "When should I run Valencia for best weather?", "answer": "The main marathon in early December offers ideal conditions: 10-15°C (50-59°F), low humidity, and usually calm winds. It's peak PR weather." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 39.4699, "lng": -0.3763, "ele": 8, "dist": 0 },
+      { "lat": 39.4623, "lng": -0.3634, "ele": 8, "dist": 2.1 },
+      { "lat": 39.4545, "lng": -0.3512, "ele": 7, "dist": 4.3 },
+      { "lat": 39.4467, "lng": -0.3389, "ele": 7, "dist": 6.5 },
+      { "lat": 39.4534, "lng": -0.3234, "ele": 8, "dist": 8.7 },
+      { "lat": 39.4623, "lng": -0.3123, "ele": 8, "dist": 10.9 },
+      { "lat": 39.4712, "lng": -0.3012, "ele": 9, "dist": 13.1 },
+      { "lat": 39.4823, "lng": -0.3089, "ele": 9, "dist": 15.3 },
+      { "lat": 39.4912, "lng": -0.3189, "ele": 8, "dist": 17.5 },
+      { "lat": 39.4989, "lng": -0.3312, "ele": 8, "dist": 19.7 },
+      { "lat": 39.4912, "lng": -0.3434, "ele": 8, "dist": 21.9 },
+      { "lat": 39.4823, "lng": -0.3534, "ele": 7, "dist": 24.1 },
+      { "lat": 39.4734, "lng": -0.3634, "ele": 7, "dist": 26.3 },
+      { "lat": 39.4656, "lng": -0.3734, "ele": 8, "dist": 28.5 },
+      { "lat": 39.4578, "lng": -0.3834, "ele": 8, "dist": 30.7 },
+      { "lat": 39.4512, "lng": -0.3912, "ele": 8, "dist": 32.9 },
+      { "lat": 39.4534, "lng": -0.3789, "ele": 8, "dist": 35.1 },
+      { "lat": 39.4589, "lng": -0.3656, "ele": 8, "dist": 37.3 },
+      { "lat": 39.4623, "lng": -0.3534, "ele": 8, "dist": 39.5 },
+      { "lat": 39.4589, "lng": -0.3423, "ele": 8, "dist": 42.195 }
+    ]
+  },
+  "philadelphia": {
+    "id": "14",
+    "name": "Philadelphia Marathon",
+    "city": "Philadelphia",
+    "country": "Pennsylvania, USA",
+    "distance": 42.195,
+    "elevationGain": 178,
+    "elevationLoss": 185,
+    "startElevation": 25,
+    "endElevation": 18,
+    "slug": "philadelphia-marathon-2026",
+    "raceDate": "November 22, 2026",
+    "website": "https://www.philadelphiamarathon.com/",
+    "description": "The Philadelphia Marathon showcases American history, passing Independence Hall, the Liberty Bell area, and the famous Rocky Steps. The course loops through diverse neighborhoods and finishes at the Art Museum.",
+    "tips": [
+      "Run the famous Rocky Steps at the Art Museum",
+      "Historic course past Independence Hall",
+      "November weather can be variable",
+      "Strong local crowd support"
+    ],
+    "paceStrategy": {
+      "type": "even-effort",
+      "summary": "Philadelphia has moderate elevation change with some rolling sections. The Manayunk Hill around mile 20 is the key challenge. Run conservatively early to have energy for the final hills.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Center City start", "advice": "Start near the Art Museum. Historic downtown. Easy to go out too fast with crowds." },
+        { "miles": "6-10", "terrain": "Through Fairmount Park", "advice": "Beautiful park running. Some gentle rollers. Enjoy the scenery." },
+        { "miles": "11-15", "terrain": "West Philadelphia loop", "advice": "University area. Good crowd support. Stay consistent." },
+        { "miles": "16-20", "terrain": "Manayunk approach", "advice": "Heading toward the hill. Save energy. The climb is coming." },
+        { "miles": "20-22", "terrain": "Manayunk Hill", "advice": "The 'wall' of Philly. Steady effort up. Don't blow up here." },
+        { "miles": "23-26", "terrain": "Return to Art Museum", "advice": "Downhill return. Rocky Steps finish. Dig deep for the iconic end." }
+      ]
+    },
+    "fuelingNotes": "Save an extra gel for mile 18-19 before Manayunk Hill. The late climb requires reserves. The descent back to the finish allows for recovery fueling.",
+    "faq": [
+      { "question": "What is Manayunk Hill?", "answer": "Manayunk Hill (miles 20-22) is the challenging section of Philly. It's a steady climb through the historic Manayunk neighborhood. Expect to slow down here." },
+      { "question": "Do you run up the Rocky Steps?", "answer": "You finish near the Art Museum where the famous Rocky Steps are located. Many runners celebrate by running up the steps after crossing the finish line." },
+      { "question": "Is Philadelphia Marathon a good PR course?", "answer": "Philly has 178m of elevation gain - moderate difficulty. PRs are possible but it's not as fast as Chicago or Berlin. The Manayunk Hill is the main challenge." },
+      { "question": "What historic sites do you pass?", "answer": "The course passes near Independence Hall, the Liberty Bell area, and other historic Philadelphia landmarks. The city's revolutionary history is on display." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 39.9656, "lng": -75.1810, "ele": 25, "dist": 0 },
+      { "lat": 39.9589, "lng": -75.1734, "ele": 22, "dist": 2.0 },
+      { "lat": 39.9512, "lng": -75.1656, "ele": 18, "dist": 4.2 },
+      { "lat": 39.9434, "lng": -75.1789, "ele": 15, "dist": 6.4 },
+      { "lat": 39.9512, "lng": -75.1923, "ele": 18, "dist": 8.6 },
+      { "lat": 39.9623, "lng": -75.2056, "ele": 25, "dist": 10.8 },
+      { "lat": 39.9734, "lng": -75.2189, "ele": 32, "dist": 13.0 },
+      { "lat": 39.9845, "lng": -75.2312, "ele": 38, "dist": 15.2 },
+      { "lat": 39.9956, "lng": -75.2189, "ele": 35, "dist": 17.4 },
+      { "lat": 40.0067, "lng": -75.2056, "ele": 42, "dist": 19.6 },
+      { "lat": 40.0178, "lng": -75.1923, "ele": 55, "dist": 21.8 },
+      { "lat": 40.0234, "lng": -75.1789, "ele": 68, "dist": 24.0 },
+      { "lat": 40.0145, "lng": -75.1656, "ele": 52, "dist": 26.2 },
+      { "lat": 40.0034, "lng": -75.1589, "ele": 42, "dist": 28.4 },
+      { "lat": 39.9923, "lng": -75.1656, "ele": 35, "dist": 30.6 },
+      { "lat": 39.9812, "lng": -75.1734, "ele": 28, "dist": 32.8 },
+      { "lat": 39.9734, "lng": -75.1789, "ele": 22, "dist": 35.0 },
+      { "lat": 39.9689, "lng": -75.1823, "ele": 20, "dist": 37.2 },
+      { "lat": 39.9667, "lng": -75.1812, "ele": 18, "dist": 39.4 },
+      { "lat": 39.9656, "lng": -75.1810, "ele": 18, "dist": 42.195 }
+    ]
+  },
+  "houston": {
+    "id": "15",
+    "name": "Houston Marathon",
+    "city": "Houston",
+    "country": "Texas, USA",
+    "distance": 42.195,
+    "elevationGain": 45,
+    "elevationLoss": 45,
+    "startElevation": 15,
+    "endElevation": 15,
+    "slug": "houston-marathon-2026",
+    "raceDate": "January 18, 2026",
+    "website": "https://www.chevronhoustonmarathon.com/",
+    "description": "The Chevron Houston Marathon is one of the flattest and fastest courses in America. January timing offers ideal racing weather. The course loops through diverse Houston neighborhoods before finishing in downtown.",
+    "tips": [
+      "One of the flattest courses in America",
+      "January weather is usually ideal for PRs",
+      "Excellent organization with chip timing",
+      "Strong qualifier race for Boston"
+    ],
+    "paceStrategy": {
+      "type": "even-pace",
+      "summary": "Houston is pancake flat - perfect for even pacing from start to finish. January weather is usually cool and calm. This is a race where you can execute your goal pace with precision.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Downtown start", "advice": "Start in downtown Houston. Flat from the gun. Lock into goal pace immediately." },
+        { "miles": "6-10", "terrain": "Heights neighborhood", "advice": "Through historic Heights. Flat terrain. Great local support." },
+        { "miles": "11-16", "terrain": "Memorial Park loop", "advice": "Around the park. Some tree cover. Stay consistent." },
+        { "miles": "17-21", "terrain": "Rice University area", "advice": "University district. Flat and fast. You should feel strong here." },
+        { "miles": "22-24", "terrain": "Return to downtown", "advice": "Heading back to finish. Crowds building. Execute the plan." },
+        { "miles": "25-26", "terrain": "Downtown finish", "advice": "Finish in downtown. If you've run smart, you have a PR. Trust it." }
+      ]
+    },
+    "fuelingNotes": "Flat courses make fueling straightforward. Standard protocol works well. Take gels every 45-60 minutes. Houston's organization means well-stocked aid stations.",
+    "faq": [
+      { "question": "Is Houston Marathon good for a PR?", "answer": "Absolutely. Houston has just 45m of elevation gain - one of the flattest courses in America. Combined with January weather, it's excellent for Boston qualifying and PRs." },
+      { "question": "What's the weather like in January?", "answer": "Houston in January typically offers 7-15°C (45-60°F) with low humidity. Occasionally it can be warmer or have cold fronts. Generally excellent marathon conditions." },
+      { "question": "Is Houston a good Boston qualifier?", "answer": "Yes. Houston is known as a premier BQ race. The flat course, good weather, and excellent pacers help many runners achieve their qualifying times." },
+      { "question": "How does Houston compare to other fast courses?", "answer": "Houston (45m gain) is comparable to Chicago (89m) and flatter than most. It's one of the best PR opportunities in North America." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 29.7604, "lng": -95.3698, "ele": 15, "dist": 0 },
+      { "lat": 29.7689, "lng": -95.3789, "ele": 15, "dist": 2.1 },
+      { "lat": 29.7778, "lng": -95.3889, "ele": 14, "dist": 4.3 },
+      { "lat": 29.7867, "lng": -95.3989, "ele": 14, "dist": 6.5 },
+      { "lat": 29.7956, "lng": -95.4089, "ele": 15, "dist": 8.7 },
+      { "lat": 29.7867, "lng": -95.4189, "ele": 15, "dist": 10.9 },
+      { "lat": 29.7778, "lng": -95.4289, "ele": 14, "dist": 13.1 },
+      { "lat": 29.7689, "lng": -95.4389, "ele": 14, "dist": 15.3 },
+      { "lat": 29.7604, "lng": -95.4289, "ele": 15, "dist": 17.5 },
+      { "lat": 29.7512, "lng": -95.4189, "ele": 15, "dist": 19.7 },
+      { "lat": 29.7423, "lng": -95.4089, "ele": 15, "dist": 21.9 },
+      { "lat": 29.7334, "lng": -95.3989, "ele": 16, "dist": 24.1 },
+      { "lat": 29.7423, "lng": -95.3889, "ele": 15, "dist": 26.3 },
+      { "lat": 29.7512, "lng": -95.3789, "ele": 15, "dist": 28.5 },
+      { "lat": 29.7556, "lng": -95.3698, "ele": 15, "dist": 30.7 },
+      { "lat": 29.7589, "lng": -95.3612, "ele": 15, "dist": 32.9 },
+      { "lat": 29.7623, "lng": -95.3534, "ele": 15, "dist": 35.1 },
+      { "lat": 29.7656, "lng": -95.3612, "ele": 15, "dist": 37.3 },
+      { "lat": 29.7623, "lng": -95.3678, "ele": 15, "dist": 39.5 },
+      { "lat": 29.7604, "lng": -95.3698, "ele": 15, "dist": 42.195 }
+    ]
+  },
+  "twincities": {
+    "id": "16",
+    "name": "Twin Cities Marathon",
+    "city": "Minneapolis-St. Paul",
+    "country": "Minnesota, USA",
+    "distance": 42.195,
+    "elevationGain": 167,
+    "elevationLoss": 234,
+    "startElevation": 95,
+    "endElevation": 28,
+    "slug": "twin-cities-marathon-2026",
+    "raceDate": "October 4, 2026",
+    "website": "https://www.tcmevents.org/",
+    "description": "Called 'The Most Beautiful Urban Marathon in America,' Twin Cities runs between Minneapolis and St. Paul along scenic parkways and around lakes. The net downhill course offers PR potential with gorgeous fall scenery.",
+    "tips": [
+      "Net downhill course - good for PRs",
+      "Peak fall colors in October",
+      "Lakes and parkways throughout",
+      "Summit Avenue finish in St. Paul"
+    ],
+    "paceStrategy": {
+      "type": "negative-split",
+      "summary": "Twin Cities is net downhill with early rollers. The first half has more climbing. Save energy early, enjoy the lake views, and take advantage of the downhill finish on Summit Avenue.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Minneapolis start (rolling)", "advice": "Downtown Minneapolis start. Some early rollers. Don't chase the downhills." },
+        { "miles": "6-10", "terrain": "Lake Calhoun/Harriet", "advice": "Around the chain of lakes. Stunning fall scenery. Enjoy but stay controlled." },
+        { "miles": "11-15", "terrain": "Creek paths", "advice": "Along Minnehaha Creek. Generally flat. Find your rhythm." },
+        { "miles": "16-20", "terrain": "River Road", "advice": "Mississippi River views. Course flattens. Time to settle." },
+        { "miles": "21-24", "terrain": "Approaching St. Paul", "advice": "Entering St. Paul. Net downhill begins. Crowds building." },
+        { "miles": "25-26", "terrain": "Summit Avenue finish", "advice": "Beautiful tree-lined boulevard. Downhill to Capitol. Stunning finish." }
+      ]
+    },
+    "fuelingNotes": "The rolling first half requires steady fueling. Don't skip gels even when you feel good on the downhills. The net descent helps late-race energy but early hills still demand fuel.",
+    "faq": [
+      { "question": "Is Twin Cities Marathon good for a PR?", "answer": "Yes. Twin Cities is net downhill (167m up, 234m down) with ideal October weather and beautiful scenery. Many runners achieve PRs on this course." },
+      { "question": "What makes Twin Cities the 'most beautiful urban marathon'?", "answer": "The course runs around multiple lakes, along tree-lined parkways, past Mississippi River views, and finishes on historic Summit Avenue. Peak fall colors make it stunning." },
+      { "question": "What's Summit Avenue?", "answer": "Summit Avenue is a historic, tree-lined boulevard in St. Paul with Victorian mansions. The final miles run down this gorgeous street toward the Minnesota State Capitol." },
+      { "question": "How's the weather for Twin Cities Marathon?", "answer": "Early October in Minnesota typically offers 5-15°C (41-59°F) - excellent marathon weather. Fall colors are usually at peak. Occasionally it can be cold." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 44.9778, "lng": -93.2650, "ele": 95, "dist": 0 },
+      { "lat": 44.9712, "lng": -93.2789, "ele": 88, "dist": 2.1 },
+      { "lat": 44.9623, "lng": -93.2912, "ele": 82, "dist": 4.3 },
+      { "lat": 44.9534, "lng": -93.3034, "ele": 78, "dist": 6.5 },
+      { "lat": 44.9445, "lng": -93.3156, "ele": 85, "dist": 8.7 },
+      { "lat": 44.9356, "lng": -93.3089, "ele": 88, "dist": 10.9 },
+      { "lat": 44.9267, "lng": -93.2945, "ele": 82, "dist": 13.1 },
+      { "lat": 44.9178, "lng": -93.2812, "ele": 75, "dist": 15.3 },
+      { "lat": 44.9089, "lng": -93.2678, "ele": 68, "dist": 17.5 },
+      { "lat": 44.9012, "lng": -93.2534, "ele": 62, "dist": 19.7 },
+      { "lat": 44.9089, "lng": -93.2389, "ele": 58, "dist": 21.9 },
+      { "lat": 44.9178, "lng": -93.2234, "ele": 52, "dist": 24.1 },
+      { "lat": 44.9267, "lng": -93.2089, "ele": 48, "dist": 26.3 },
+      { "lat": 44.9356, "lng": -93.1945, "ele": 42, "dist": 28.5 },
+      { "lat": 44.9434, "lng": -93.1812, "ele": 38, "dist": 30.7 },
+      { "lat": 44.9512, "lng": -93.1678, "ele": 35, "dist": 32.9 },
+      { "lat": 44.9534, "lng": -93.1534, "ele": 32, "dist": 35.1 },
+      { "lat": 44.9489, "lng": -93.1389, "ele": 30, "dist": 37.3 },
+      { "lat": 44.9445, "lng": -93.1245, "ele": 28, "dist": 39.5 },
+      { "lat": 44.9489, "lng": -93.1023, "ele": 28, "dist": 42.195 }
+    ]
+  },
+  "grandmas": {
+    "id": "17",
+    "name": "Grandma's Marathon",
+    "city": "Duluth",
+    "country": "Minnesota, USA",
+    "distance": 42.195,
+    "elevationGain": 187,
+    "elevationLoss": 298,
+    "startElevation": 165,
+    "endElevation": 65,
+    "slug": "grandmas-marathon-2026",
+    "raceDate": "June 20, 2026",
+    "website": "https://www.grandmasmarathon.com/",
+    "description": "Grandma's Marathon is one of America's most popular marathons, running along the scenic North Shore of Lake Superior. The point-to-point, net-downhill course from Two Harbors to Duluth offers beautiful views and PR potential.",
+    "tips": [
+      "Net downhill course - good for PRs",
+      "Stunning Lake Superior views throughout",
+      "June weather can vary - be prepared",
+      "Named after the Grandma's Restaurant sponsor"
+    ],
+    "paceStrategy": {
+      "type": "conservative-start",
+      "summary": "Grandma's is net downhill but has rollers in the first half. The final 10 miles along Lake Superior are faster. Start conservative and use the downhill finish to close strong.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Two Harbors start (rolling)", "advice": "Start in Two Harbors. Early rollers. Resist the temptation to go fast." },
+        { "miles": "6-10", "terrain": "North Shore Highway", "advice": "Along the highway. Lake glimpses. Some rolling terrain." },
+        { "miles": "11-15", "terrain": "Approaching Duluth", "advice": "Course trends downward. Lake Superior views. Find your rhythm." },
+        { "miles": "16-20", "terrain": "Lake Superior shore", "advice": "Beautiful lakeshore running. Crowds build. Time to settle." },
+        { "miles": "21-24", "terrain": "Lester Park to city", "advice": "Entering Duluth proper. Downhill trend continues. Push if feeling good." },
+        { "miles": "25-26", "terrain": "Canal Park finish", "advice": "Downtown Duluth finish. Crowds amazing. Enjoy the lakefront finish." }
+      ]
+    },
+    "fuelingNotes": "The net downhill helps energy conservation but the early rollers still require fuel. The cooler Lake Superior air can make you forget to drink - stay on top of hydration.",
+    "faq": [
+      { "question": "Why is it called Grandma's Marathon?", "answer": "The marathon is named after its founding sponsor, Grandma's Saloon & Grill, a restaurant chain in the Duluth area. The name has become iconic in American running." },
+      { "question": "Is Grandma's Marathon good for a PR?", "answer": "Yes. With 111m net elevation drop (187m up, 298m down) and the beautiful Lake Superior scenery for motivation, many runners achieve PRs at Grandma's." },
+      { "question": "What's the weather like in June?", "answer": "June in Duluth can range from 10-25°C (50-77°F). Lake Superior moderates temperatures but fog and wind are possible. Be prepared for variable conditions." },
+      { "question": "How scenic is Grandma's Marathon?", "answer": "Grandma's is one of the most scenic races in America. The North Shore of Lake Superior provides stunning views throughout, especially the final 10 miles along the shoreline." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 47.0211, "lng": -91.6708, "ele": 165, "dist": 0 },
+      { "lat": 47.0134, "lng": -91.7012, "ele": 155, "dist": 2.5 },
+      { "lat": 47.0056, "lng": -91.7345, "ele": 148, "dist": 5.2 },
+      { "lat": 46.9978, "lng": -91.7678, "ele": 142, "dist": 7.8 },
+      { "lat": 46.9889, "lng": -91.8012, "ele": 135, "dist": 10.5 },
+      { "lat": 46.9812, "lng": -91.8345, "ele": 128, "dist": 13.2 },
+      { "lat": 46.9734, "lng": -91.8678, "ele": 118, "dist": 15.8 },
+      { "lat": 46.9656, "lng": -91.9012, "ele": 108, "dist": 18.5 },
+      { "lat": 46.9578, "lng": -91.9345, "ele": 98, "dist": 21.2 },
+      { "lat": 46.9489, "lng": -91.9678, "ele": 92, "dist": 23.8 },
+      { "lat": 46.9412, "lng": -92.0012, "ele": 85, "dist": 26.5 },
+      { "lat": 46.9334, "lng": -92.0345, "ele": 78, "dist": 29.2 },
+      { "lat": 46.9256, "lng": -92.0512, "ele": 72, "dist": 31.8 },
+      { "lat": 46.9178, "lng": -92.0634, "ele": 68, "dist": 34.5 },
+      { "lat": 46.9089, "lng": -92.0756, "ele": 65, "dist": 37.2 },
+      { "lat": 46.8989, "lng": -92.0823, "ele": 65, "dist": 39.8 },
+      { "lat": 46.7867, "lng": -92.0945, "ele": 65, "dist": 42.195 }
+    ]
+  },
+  "disney": {
+    "id": "18",
+    "name": "Walt Disney World Marathon",
+    "city": "Orlando",
+    "country": "Florida, USA",
+    "distance": 42.195,
+    "elevationGain": 48,
+    "elevationLoss": 48,
+    "startElevation": 32,
+    "endElevation": 32,
+    "slug": "disney-marathon-2026",
+    "raceDate": "January 11, 2026",
+    "website": "https://www.rundisney.com/",
+    "description": "The Walt Disney World Marathon runs through all four Disney theme parks: Magic Kingdom, Epcot, Hollywood Studios, and Animal Kingdom. Character photo ops, incredible theming, and a magical experience make this a bucket-list race.",
+    "tips": [
+      "Run through all four Disney theme parks",
+      "Character photo ops throughout the course",
+      "Very early start (5:30 AM) to beat Florida heat",
+      "More about experience than speed"
+    ],
+    "paceStrategy": {
+      "type": "experience-focused",
+      "summary": "Disney is flat but not designed for PRs - it's designed for magic. The 5:30 AM start, character stops, and backstage sections make it a unique experience. Run for fun, not for time.",
+      "segments": [
+        { "miles": "1-4", "terrain": "Epcot area start", "advice": "Pre-dawn start at Epcot. Find your corral. Enjoy the fireworks." },
+        { "miles": "5-9", "terrain": "Magic Kingdom", "advice": "Through Cinderella Castle! Character photo ops. Don't worry about pace." },
+        { "miles": "10-14", "terrain": "Backstage/Transportation", "advice": "Less magical backstage miles. Stay positive. More parks ahead." },
+        { "miles": "15-19", "terrain": "Animal Kingdom", "advice": "Safari theming. Characters. Midpoint of the magic." },
+        { "miles": "20-23", "terrain": "ESPN Wide World/Hollywood Studios", "advice": "Sports complex and movie theming. Crowds support you." },
+        { "miles": "24-26", "terrain": "Epcot finish", "advice": "Back to Epcot. World Showcase. Medal and character meet awaits!" }
+      ]
+    },
+    "fuelingNotes": "The early start and Florida humidity (even in January) mean extra hydration focus. Disney aid stations are excellent and themed. Take your time at character stops - that's the point!",
+    "faq": [
+      { "question": "Is Disney Marathon good for a PR?", "answer": "No. Disney is designed for experience, not speed. Character photo ops, early start time, and backstage miles make it slower. Run Disney for the magic, not the PR." },
+      { "question": "Which parks do you run through?", "answer": "All four: Magic Kingdom (including through Cinderella Castle), Epcot, Hollywood Studios, and Animal Kingdom. Each park has unique theming and characters." },
+      { "question": "Why does Disney Marathon start so early?", "answer": "The 5:30 AM start helps beat Florida heat and allows runners to finish before the parks open to regular guests. You'll run in the dark for the first few miles." },
+      { "question": "Are there character photo opportunities?", "answer": "Yes! Characters are stationed throughout the course for photos. Lines can form. If you want photos, expect to add 20-60 minutes to your finish time." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 28.3747, "lng": -81.5494, "ele": 32, "dist": 0 },
+      { "lat": 28.3812, "lng": -81.5567, "ele": 32, "dist": 2.1 },
+      { "lat": 28.3889, "lng": -81.5634, "ele": 31, "dist": 4.3 },
+      { "lat": 28.3978, "lng": -81.5712, "ele": 31, "dist": 6.5 },
+      { "lat": 28.4167, "lng": -81.5789, "ele": 32, "dist": 8.7 },
+      { "lat": 28.4189, "lng": -81.5823, "ele": 32, "dist": 10.9 },
+      { "lat": 28.4112, "lng": -81.5912, "ele": 32, "dist": 13.1 },
+      { "lat": 28.4034, "lng": -81.5989, "ele": 31, "dist": 15.3 },
+      { "lat": 28.3956, "lng": -81.5912, "ele": 31, "dist": 17.5 },
+      { "lat": 28.3867, "lng": -81.5823, "ele": 32, "dist": 19.7 },
+      { "lat": 28.3789, "lng": -81.5734, "ele": 32, "dist": 21.9 },
+      { "lat": 28.3534, "lng": -81.5567, "ele": 32, "dist": 24.1 },
+      { "lat": 28.3456, "lng": -81.5489, "ele": 33, "dist": 26.3 },
+      { "lat": 28.3534, "lng": -81.5412, "ele": 32, "dist": 28.5 },
+      { "lat": 28.3612, "lng": -81.5334, "ele": 32, "dist": 30.7 },
+      { "lat": 28.3689, "lng": -81.5412, "ele": 32, "dist": 32.9 },
+      { "lat": 28.3756, "lng": -81.5489, "ele": 32, "dist": 35.1 },
+      { "lat": 28.3789, "lng": -81.5534, "ele": 32, "dist": 37.3 },
+      { "lat": 28.3756, "lng": -81.5512, "ele": 32, "dist": 39.5 },
+      { "lat": 28.3747, "lng": -81.5494, "ele": 32, "dist": 42.195 }
+    ]
+  },
+  "portland": {
+    "id": "19",
+    "name": "Portland Marathon",
+    "city": "Portland",
+    "country": "Oregon, USA",
+    "distance": 42.195,
+    "elevationGain": 156,
+    "elevationLoss": 178,
+    "startElevation": 15,
+    "endElevation": 12,
+    "slug": "portland-marathon-2026",
+    "raceDate": "October 4, 2026",
+    "website": "https://www.portlandmarathon.com/",
+    "description": "The Portland Marathon showcases the City of Roses with a scenic course through diverse neighborhoods, along the Willamette River, and past downtown landmarks. Known for enthusiastic local support and beautiful fall conditions.",
+    "tips": [
+      "October offers ideal Pacific Northwest running weather",
+      "Course runs through diverse Portland neighborhoods",
+      "Strong local running community support",
+      "Relatively flat with some gentle rollers"
+    ],
+    "paceStrategy": {
+      "type": "even-effort",
+      "summary": "Portland is relatively flat with some gentle rolling sections. The October weather is usually ideal. Focus on even effort, enjoy the neighborhoods, and use the river sections to find rhythm.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Downtown start", "advice": "Start in downtown Portland. Flat and fast. Don't go out too quickly." },
+        { "miles": "6-10", "terrain": "Northwest neighborhoods", "advice": "Through charming neighborhoods. Some gentle rollers. Find your pace." },
+        { "miles": "11-15", "terrain": "Industrial/river area", "advice": "Along the Willamette River. Flat and scenic. Lock into rhythm." },
+        { "miles": "16-20", "terrain": "East Portland", "advice": "Through diverse neighborhoods. Great local support. Maintain effort." },
+        { "miles": "21-24", "terrain": "Return to river", "advice": "Back along the river. Course flattens. Crowds building." },
+        { "miles": "25-26", "terrain": "Downtown finish", "advice": "Finish in downtown Portland. Strong local cheering. Enjoy it." }
+      ]
+    },
+    "fuelingNotes": "Pacific Northwest weather can be cool and damp - dress in layers and don't forget to fuel even if you don't feel as thirsty as in warmer climates.",
+    "faq": [
+      { "question": "Is Portland Marathon good for a PR?", "answer": "Portland has 156m of elevation gain - moderately flat. With good October weather and a supportive local community, PRs are definitely achievable." },
+      { "question": "What's the weather like in October?", "answer": "October in Portland typically offers 8-18°C (46-64°F) with possible light rain. The Pacific Northwest climate provides good marathon conditions." },
+      { "question": "What neighborhoods does the course go through?", "answer": "The course showcases Portland's diversity: downtown, Northwest Portland, industrial areas, East Portland neighborhoods, and scenic river sections." },
+      { "question": "How's the crowd support at Portland Marathon?", "answer": "Portland has a strong running community and enthusiastic local support. The diverse neighborhoods each bring their own energy and character." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 45.5231, "lng": -122.6765, "ele": 15, "dist": 0 },
+      { "lat": 45.5289, "lng": -122.6834, "ele": 18, "dist": 2.1 },
+      { "lat": 45.5356, "lng": -122.6912, "ele": 22, "dist": 4.3 },
+      { "lat": 45.5423, "lng": -122.6989, "ele": 28, "dist": 6.5 },
+      { "lat": 45.5489, "lng": -122.7067, "ele": 25, "dist": 8.7 },
+      { "lat": 45.5423, "lng": -122.7145, "ele": 22, "dist": 10.9 },
+      { "lat": 45.5356, "lng": -122.7089, "ele": 18, "dist": 13.1 },
+      { "lat": 45.5289, "lng": -122.6989, "ele": 15, "dist": 15.3 },
+      { "lat": 45.5212, "lng": -122.6912, "ele": 12, "dist": 17.5 },
+      { "lat": 45.5134, "lng": -122.6834, "ele": 10, "dist": 19.7 },
+      { "lat": 45.5056, "lng": -122.6756, "ele": 12, "dist": 21.9 },
+      { "lat": 45.4978, "lng": -122.6678, "ele": 14, "dist": 24.1 },
+      { "lat": 45.5056, "lng": -122.6612, "ele": 12, "dist": 26.3 },
+      { "lat": 45.5134, "lng": -122.6534, "ele": 10, "dist": 28.5 },
+      { "lat": 45.5212, "lng": -122.6612, "ele": 12, "dist": 30.7 },
+      { "lat": 45.5267, "lng": -122.6689, "ele": 14, "dist": 32.9 },
+      { "lat": 45.5234, "lng": -122.6734, "ele": 13, "dist": 35.1 },
+      { "lat": 45.5212, "lng": -122.6756, "ele": 12, "dist": 37.3 },
+      { "lat": 45.5223, "lng": -122.6767, "ele": 12, "dist": 39.5 },
+      { "lat": 45.5231, "lng": -122.6765, "ele": 12, "dist": 42.195 }
+    ]
   }
 }

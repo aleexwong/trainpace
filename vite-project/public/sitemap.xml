@@ -94,7 +94,83 @@
   </url>
   <url>
     <loc>https://www.trainpace.com/preview-route/sydney</loc>
-    <lastmod>2026-01-12</lastmod>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- US Popular Marathons -->
+  <url>
+    <loc>https://www.trainpace.com/preview-route/la</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.trainpace.com/preview-route/marinecorps</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.trainpace.com/preview-route/bigsur</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.trainpace.com/preview-route/philadelphia</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.trainpace.com/preview-route/houston</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.trainpace.com/preview-route/twincities</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.trainpace.com/preview-route/grandmas</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.trainpace.com/preview-route/disney</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.trainpace.com/preview-route/portland</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- European Marathons -->
+  <url>
+    <loc>https://www.trainpace.com/preview-route/paris</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.trainpace.com/preview-route/amsterdam</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.trainpace.com/preview-route/valencia</loc>
+    <lastmod>2026-01-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>

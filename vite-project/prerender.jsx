@@ -3,6 +3,7 @@ import { renderToString } from "react-dom/server";
 
 // Marathon-specific SEO data (defined first so all functions can use it)
 const marathonSeoData = {
+  // World Marathon Majors
   boston: {
     name: "Boston Marathon",
     elevation: "156m",
@@ -44,6 +45,80 @@ const marathonSeoData = {
     elevation: "234m",
     highlight: "Harbour Bridge",
     difficulty: "Moderate-Hard",
+  },
+  // US Popular Marathons
+  la: {
+    name: "LA Marathon",
+    elevation: "282m",
+    highlight: "Stadium to the Sea",
+    difficulty: "Moderate (Net Downhill)",
+  },
+  marinecorps: {
+    name: "Marine Corps Marathon",
+    elevation: "198m",
+    highlight: "The People's Marathon",
+    difficulty: "Moderate-Hard",
+  },
+  bigsur: {
+    name: "Big Sur Marathon",
+    elevation: "610m",
+    highlight: "Most Scenic Course",
+    difficulty: "Very Hard (Not PR Course)",
+  },
+  philadelphia: {
+    name: "Philadelphia Marathon",
+    elevation: "178m",
+    highlight: "Rocky Steps Finish",
+    difficulty: "Moderate",
+  },
+  houston: {
+    name: "Houston Marathon",
+    elevation: "45m",
+    highlight: "BQ Qualifier Favorite",
+    difficulty: "Easy (PR Course)",
+  },
+  twincities: {
+    name: "Twin Cities Marathon",
+    elevation: "167m",
+    highlight: "Most Beautiful Urban",
+    difficulty: "Moderate (Net Downhill)",
+  },
+  grandmas: {
+    name: "Grandma's Marathon",
+    elevation: "187m",
+    highlight: "Lake Superior Views",
+    difficulty: "Moderate (Net Downhill)",
+  },
+  disney: {
+    name: "Walt Disney World Marathon",
+    elevation: "48m",
+    highlight: "Through All 4 Parks",
+    difficulty: "Easy (Experience Focus)",
+  },
+  portland: {
+    name: "Portland Marathon",
+    elevation: "156m",
+    highlight: "City of Roses",
+    difficulty: "Moderate",
+  },
+  // European Marathons
+  paris: {
+    name: "Paris Marathon",
+    elevation: "156m",
+    highlight: "Champs-Élysées to Eiffel Tower",
+    difficulty: "Moderate",
+  },
+  amsterdam: {
+    name: "Amsterdam Marathon",
+    elevation: "32m",
+    highlight: "Olympic Stadium Finish",
+    difficulty: "Easy (PR Course)",
+  },
+  valencia: {
+    name: "Valencia Marathon",
+    elevation: "28m",
+    highlight: "World Record Course",
+    difficulty: "Easy (Fastest PR Course)",
   },
 };
 
