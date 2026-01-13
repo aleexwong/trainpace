@@ -565,11 +565,58 @@ const FuelPlannerV2 = () => {
   return (
     <>
       <Helmet>
-        <title>Fuel Planner by TrainPace</title>
+        <title>Marathon Fuel Calculator – How Many Gels Do You Need? | TrainPace</title>
         <meta
           name="description"
-          content="Optimize your running fuel strategy with AI-powered personalized recommendations."
+          content="Calculate exactly how many gels you need for your marathon or half marathon. Get a personalized fueling schedule with carb targets and timing recommendations."
         />
+        <link rel="canonical" href="https://trainpace.com/fuel" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to Calculate Your Marathon Fueling Strategy",
+            description:
+              "Plan your race day nutrition by calculating exactly how many gels, carbs, and calories you need based on your race distance and finish time.",
+            totalTime: "PT2M",
+            tool: {
+              "@type": "HowToTool",
+              name: "TrainPace Fuel Planner",
+            },
+            step: [
+              {
+                "@type": "HowToStep",
+                position: 1,
+                name: "Select your race distance",
+                text: "Choose your race type: 10K, Half Marathon, or Full Marathon.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 2,
+                name: "Enter your target finish time",
+                text: "Input your estimated finish time in hours and minutes.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 3,
+                name: "Add your weight (optional)",
+                text: "Enter your body weight for more personalized carbohydrate recommendations.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 4,
+                name: "Get your fuel plan",
+                text: "Calculate to see your carbs per hour, total carbs needed, and recommended gel count with timing.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 5,
+                name: "Get AI recommendations (optional)",
+                text: "Add context about your situation (GI issues, hot weather, etc.) and get personalized AI advice.",
+              },
+            ],
+          })}
+        </script>
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
