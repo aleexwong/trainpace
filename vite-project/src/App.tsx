@@ -24,6 +24,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import About from "./pages/About";
 import DashboardV2 from "./pages/DashboardV2";
+import { BlogList, BlogPost } from "./features/blog";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -57,6 +58,9 @@ function App() {
             <Route path="/terms" element={<Terms />} />
             <Route path="/about" element={<About />} />
             <Route path="/preview-route/:slug" element={<PreviewRoute />} />
+            {/* Blog routes */}
+            <Route path="/blog" element={<BlogList />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
             {/* Wildcard route should be last */}
             <Route path="*" element={<Landing />} />
           </Route>

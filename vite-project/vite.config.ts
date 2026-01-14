@@ -17,6 +17,12 @@ const prerenderedRoutes = [
   "/preview-route/london",
   "/preview-route/tokyo",
   "/preview-route/sydney",
+  // Blog routes
+  "/blog",
+  "/blog/understanding-vdot-training-paces",
+  "/blog/marathon-fueling-complete-guide",
+  "/blog/elevation-impact-race-strategy",
+  "/blog/beginner-marathon-training-tips",
 ];
 
 // https://vite.dev/config/
