@@ -2,20 +2,19 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Search, Tag, Filter } from "lucide-react";
 import BlogCard from "./BlogCard";
-import {
-  BlogCategory,
-  categoryLabels,
-  categoryColors,
-} from "../types";
+import { BlogCategory, categoryLabels, categoryColors } from "../types";
 import {
   getAllPosts,
   getFeaturedPosts,
   getActiveCategories,
   getAllTags,
 } from "../utils";
+import { Button } from "@/components/ui/button";
 
 export default function BlogList() {
-  const [selectedCategory, setSelectedCategory] = useState<BlogCategory | "all">("all");
+  const [selectedCategory, setSelectedCategory] = useState<
+    BlogCategory | "all"
+  >("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
 
@@ -49,7 +48,8 @@ export default function BlogList() {
     "@context": "https://schema.org",
     "@type": "Blog",
     name: "TrainPace Blog",
-    description: "Running tips, training guides, and race strategy advice for marathoners and distance runners",
+    description:
+      "Running tips, training guides, and race strategy advice for marathoners and distance runners",
     url: "https://trainpace.com/blog",
     publisher: {
       "@type": "Organization",
@@ -72,7 +72,9 @@ export default function BlogList() {
   return (
     <div className="bg-white text-gray-900 min-h-screen">
       <Helmet>
-        <title>Running Blog - Training Tips, Race Strategy & Nutrition | TrainPace</title>
+        <title>
+          Running Blog - Training Tips, Race Strategy & Nutrition | TrainPace
+        </title>
         <meta
           name="description"
           content="Expert running advice for marathoners and distance runners. Training tips, race strategy guides, nutrition planning, and more from TrainPace."
@@ -110,44 +112,39 @@ export default function BlogList() {
             </div>
 
             {/* Filter toggle (mobile) */}
-            <button
+            <Button
               onClick={() => setShowFilters(!showFilters)}
-              className="md:hidden flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              variant="outline"
+              className="md:hidden flex items-center justify-center gap-2"
             >
               <Filter className="w-5 h-5" />
               <span>Filters</span>
-            </button>
+            </Button>
 
             {/* Category filters (desktop) */}
             <div className="hidden md:flex items-center gap-2">
-              <button
+              <Button
                 onClick={() => setSelectedCategory("all")}
-                className={`
-                  px-4 py-2 rounded-full text-sm font-medium transition-all
-                  ${
-                    selectedCategory === "all"
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }
-                `}
+                variant={selectedCategory === "all" ? "default" : "secondary"}
+                className="rounded-full"
               >
                 All
-              </button>
+              </Button>
               {categories.map((category) => (
-                <button
+                <Button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`
-                    px-4 py-2 rounded-full text-sm font-medium transition-all
-                    ${
-                      selectedCategory === category
-                        ? categoryColors[category]
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }
-                  `}
+                  variant={
+                    selectedCategory === category ? "default" : "secondary"
+                  }
+                  className={`rounded-full ${
+                    selectedCategory === category
+                      ? categoryColors[category]
+                      : ""
+                  }`}
                 >
                   {categoryLabels[category]}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -156,40 +153,34 @@ export default function BlogList() {
           {showFilters && (
             <div className="md:hidden mt-4 pt-4 border-t border-gray-200">
               <div className="flex flex-wrap gap-2">
-                <button
+                <Button
                   onClick={() => {
                     setSelectedCategory("all");
                     setShowFilters(false);
                   }}
-                  className={`
-                    px-4 py-2 rounded-full text-sm font-medium transition-all
-                    ${
-                      selectedCategory === "all"
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-100 text-gray-700"
-                    }
-                  `}
+                  variant={selectedCategory === "all" ? "default" : "secondary"}
+                  className="rounded-full"
                 >
                   All
-                </button>
+                </Button>
                 {categories.map((category) => (
-                  <button
+                  <Button
                     key={category}
                     onClick={() => {
                       setSelectedCategory(category);
                       setShowFilters(false);
                     }}
-                    className={`
-                      px-4 py-2 rounded-full text-sm font-medium transition-all
-                      ${
-                        selectedCategory === category
-                          ? categoryColors[category]
-                          : "bg-gray-100 text-gray-700"
-                      }
-                    `}
+                    variant={
+                      selectedCategory === category ? "default" : "secondary"
+                    }
+                    className={`rounded-full ${
+                      selectedCategory === category
+                        ? categoryColors[category]
+                        : ""
+                    }`}
                   >
                     {categoryLabels[category]}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -198,21 +189,23 @@ export default function BlogList() {
       </section>
 
       {/* Featured Posts */}
-      {selectedCategory === "all" && !searchQuery && featuredPosts.length > 0 && (
-        <section className="py-12 px-6 bg-gray-50">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-              <span className="text-yellow-500">★</span>
-              Featured Articles
-            </h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              {featuredPosts.slice(0, 2).map((post) => (
-                <BlogCard key={post.slug} post={post} featured />
-              ))}
+      {selectedCategory === "all" &&
+        !searchQuery &&
+        featuredPosts.length > 0 && (
+          <section className="py-12 px-6 bg-gray-50">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <span className="text-yellow-500">★</span>
+                Featured Articles
+              </h2>
+              <div className="grid md:grid-cols-2 gap-6">
+                {featuredPosts.slice(0, 2).map((post) => (
+                  <BlogCard key={post.slug} post={post} featured />
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        )}
 
       {/* All Posts */}
       <section className="py-12 px-6">
@@ -249,13 +242,13 @@ export default function BlogList() {
             </h2>
             <div className="flex flex-wrap gap-2">
               {tags.map((tag) => (
-                <button
+                <Button
                   key={tag}
                   onClick={() => setSearchQuery(tag)}
                   className="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:border-blue-300 hover:text-blue-600 transition-all"
                 >
                   {tag}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -267,7 +260,8 @@ export default function BlogList() {
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-3xl font-bold mb-4">Ready to Train Smarter?</h2>
           <p className="text-blue-100 mb-8 text-lg">
-            Use our free tools to calculate your paces, plan your nutrition, and analyze your race courses.
+            Use our free tools to calculate your paces, plan your nutrition, and
+            analyze your race courses.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
