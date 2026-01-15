@@ -23,6 +23,12 @@ const prerenderedRoutes = [
   "/blog/marathon-fueling-complete-guide",
   "/blog/elevation-impact-race-strategy",
   "/blog/beginner-marathon-training-tips",
+  "/blog/recovery-strategies-for-runners",
+  "/blog/tempo-runs-explained",
+  "/blog/running-shoes-guide",
+  "/blog/half-marathon-pacing-strategy",
+  "/blog/strength-training-for-runners",
+  "/blog/taper-marathon-guide",
 ];
 
 // https://vite.dev/config/
