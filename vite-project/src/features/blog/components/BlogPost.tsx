@@ -1,22 +1,31 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { ArrowLeft, Clock, Calendar, Tag, Share2, ChevronRight } from "lucide-react";
+import {
+  ArrowLeft,
+  Clock,
+  Calendar,
+  Tag,
+  Share2,
+  ChevronRight,
+} from "lucide-react";
 import { categoryLabels, categoryColors } from "../types";
 import { getPostBySlug, formatDate, getRelatedPosts } from "../utils";
 import BlogCard from "./BlogCard";
+import { Button } from "@/components/ui/button";
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
   const post = getPostBySlug(slug || "");
 
   if (!post) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center px-6">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Post Not Found</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Post Not Found
+          </h1>
           <p className="text-gray-600 mb-8">
             The article you're looking for doesn't exist or has been moved.
           </p>
@@ -109,17 +118,29 @@ export default function BlogPost() {
       <Helmet>
         <title>{post.title} | TrainPace Blog</title>
         <meta name="description" content={post.excerpt} />
-        <link rel="canonical" href={`https://trainpace.com/blog/${post.slug}`} />
+        <link
+          rel="canonical"
+          href={`https://trainpace.com/blog/${post.slug}`}
+        />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://trainpace.com/blog/${post.slug}`} />
-        {post.coverImage && <meta property="og:image" content={post.coverImage} />}
+        <meta
+          property="og:url"
+          content={`https://trainpace.com/blog/${post.slug}`}
+        />
+        {post.coverImage && (
+          <meta property="og:image" content={post.coverImage} />
+        )}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={post.excerpt} />
-        <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
-        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(articleSchema)}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
       </Helmet>
 
       {/* Breadcrumb */}
@@ -148,15 +169,6 @@ export default function BlogPost() {
       {/* Article Header */}
       <header className="py-12 px-6 bg-gradient-to-br from-blue-50 to-indigo-50">
         <div className="max-w-4xl mx-auto">
-          {/* Back link */}
-          <button
-            onClick={() => navigate(-1)}
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Back
-          </button>
-
           {/* Category */}
           <div className="mb-4">
             <Link
@@ -182,7 +194,9 @@ export default function BlogPost() {
                 {post.author.name.charAt(0)}
               </div>
               <div>
-                <div className="font-medium text-gray-900">{post.author.name}</div>
+                <div className="font-medium text-gray-900">
+                  {post.author.name}
+                </div>
                 {post.author.bio && (
                   <div className="text-sm text-gray-500">{post.author.bio}</div>
                 )}
@@ -206,7 +220,7 @@ export default function BlogPost() {
       <article className="py-12 px-6">
         <div className="max-w-4xl mx-auto">
           {/* Markdown content */}
-          <div className="prose prose-lg prose-blue max-w-none">
+          <div className="prose prose-lg prose-blue max-w-none text-left">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
@@ -215,7 +229,10 @@ export default function BlogPost() {
                   const isInternal = href?.startsWith("/");
                   if (isInternal) {
                     return (
-                      <Link to={href || "/"} className="text-blue-600 hover:text-blue-800">
+                      <Link
+                        to={href || "/"}
+                        className="text-blue-600 hover:text-blue-800"
+                      >
                         {children}
                       </Link>
                     );
@@ -262,9 +279,7 @@ export default function BlogPost() {
                       </code>
                     );
                   }
-                  return (
-                    <code className={className}>{children}</code>
-                  );
+                  return <code className={className}>{children}</code>;
                 },
                 // Styled blockquotes
                 blockquote: ({ children }) => (
@@ -296,14 +311,13 @@ export default function BlogPost() {
 
           {/* Share */}
           <div className="mt-8 flex items-center gap-4">
-            <span className="text-gray-600 font-medium">Share this article:</span>
-            <button
-              onClick={handleShare}
-              className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
+            <span className="text-gray-600 font-medium">
+              Share this article:
+            </span>
+            <Button onClick={handleShare} variant="outline" className="gap-2">
               <Share2 className="w-5 h-5" />
               Share
-            </button>
+            </Button>
           </div>
         </div>
       </article>
