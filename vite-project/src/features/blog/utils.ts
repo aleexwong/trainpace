@@ -1,8 +1,12 @@
 import blogData from "@/data/blog-posts.json";
 import { BlogPost, BlogCategory } from "./types";
+import { getAllPSEOPosts, getAllPSEOSlugs } from "./pseo";
 
 // Type assertion for imported JSON data
-const posts = blogData.posts as BlogPost[];
+const manualPosts = blogData.posts as BlogPost[];
+
+// Combine manual posts with programmatically generated pSEO posts
+const posts: BlogPost[] = [...manualPosts, ...getAllPSEOPosts()];
 
 // Get all blog posts, sorted by date (newest first)
 export function getAllPosts(): BlogPost[] {
@@ -102,4 +106,14 @@ export function getRelatedPosts(
 // Get all post slugs (useful for prerendering)
 export function getAllPostSlugs(): string[] {
   return posts.map((post) => post.slug);
+}
+
+// Get only manual (non-pSEO) post slugs
+export function getManualPostSlugs(): string[] {
+  return manualPosts.map((post) => post.slug);
+}
+
+// Get only pSEO post slugs
+export function getPSEOPostSlugs(): string[] {
+  return getAllPSEOSlugs();
 }
