@@ -188,30 +188,23 @@ export default function BlogPost() {
           </h1>
 
           {/* Meta */}
-          <div className="flex flex-wrap items-center gap-4 text-gray-600">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+          <div className="flex items-center gap-6 text-sm text-gray-600">
+            <span className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">
                 {post.author.name.charAt(0)}
               </div>
-              <div>
-                <div className="font-medium text-gray-900">
-                  {post.author.name}
-                </div>
-                {post.author.bio && (
-                  <div className="text-sm text-gray-500">{post.author.bio}</div>
-                )}
-              </div>
-            </div>
-            <div className="flex items-center gap-4 text-sm">
-              <span className="flex items-center gap-1">
-                <Calendar className="w-4 h-4" />
-                {formatDate(post.date)}
+              <span className="font-medium text-gray-900">
+                {post.author.name}
               </span>
-              <span className="flex items-center gap-1">
-                <Clock className="w-4 h-4" />
-                {post.readingTime} min read
-              </span>
-            </div>
+            </span>
+            <span className="flex items-center gap-1">
+              <Calendar className="w-4 h-4" />
+              {formatDate(post.date)}
+            </span>
+            <span className="flex items-center gap-1">
+              <Clock className="w-4 h-4" />
+              {post.readingTime} min read
+            </span>
           </div>
         </div>
       </header>
@@ -224,6 +217,8 @@ export default function BlogPost() {
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
+                // Skip the first h1 since we already have the title in the header
+                h1: () => null,
                 // Custom link handling for internal links
                 a: ({ href, children }) => {
                   const isInternal = href?.startsWith("/");

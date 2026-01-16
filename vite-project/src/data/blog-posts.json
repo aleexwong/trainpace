@@ -7,13 +7,13 @@
       "date": "2026-01-10",
       "author": {
         "name": "Alex",
-        "bio": "Developer & runner. Went from 3:01 to 2:06 in the half marathon."
+        "bio": "Editor"
       },
       "category": "training",
       "tags": ["vdot", "pace calculator", "training zones", "jack daniels"],
       "readingTime": 8,
       "featured": true,
-      "content": "# Understanding VDOT and Training Paces\n\nWhen I ran my first half marathon at BMO Vancouver in 2024, I finished in 3:01:00. I had no idea what pace I should be running in training. I just ran as hard as I could, every single day.\n\nA year later, I crossed the same finish line in 2:06:00—55 minutes faster. The difference wasn't just more miles. It was running the *right* pace on the *right* days. And that started with understanding VDOT.\n\n## What is VDOT?\n\nVDOT is a measure of your current running fitness, developed by legendary coach Dr. Jack Daniels. Unlike VO2max (which requires lab testing), VDOT can be estimated from any recent race performance.\n\nThe beauty of VDOT is that it gives you a single number that unlocks all your training paces:\n\n- **Easy pace** for recovery runs\n- **Marathon pace** for long run segments\n- **Threshold pace** for tempo runs\n- **Interval pace** for track workouts\n- **Repetition pace** for speed development\n\n## Why This Changed Everything for Me\n\nBefore I understood pace zones, I ran every run at the same moderate effort. It felt productive, but I was actually sabotaging my training.\n\nWhen I joined a run club in Vancouver, they forced me to slow down on easy days. I'm talking runs that felt almost embarrassingly slow. But here's what happened:\n\n1. I stopped feeling constantly exhausted\n2. My speed workouts actually felt fast\n3. I could string together consistent weeks without breaking down\n4. I stopped obsessing over my watch during runs\n\nThe breakthrough wasn't running harder. It was **running smarter**.\n\n## How to Find Your VDOT\n\nThe easiest way is to use a [pace calculator](/calculator) with a recent race result. Enter your time from a 5K, 10K, half marathon, or marathon, and you'll get your VDOT score instantly.\n\nI built the TrainPace calculator because I got frustrated with other tools—buried in ads, clunky unit conversions, hidden features. I just wanted my zones without dodging clickbait.\n\n### Example VDOT Paces\n\nFor a runner with a 45:00 10K (VDOT ~45):\n\n| Zone | Pace/Mile | Purpose |\n|------|-----------|----------|\n| Easy | 9:30-10:00 | Recovery, base building |\n| Marathon | 8:15 | Race-specific endurance |\n| Threshold | 7:35 | Lactate clearance |\n| Interval | 7:00 | VO2max development |\n| Repetition | 6:30 | Running economy |\n\n## The Hardest Lesson: Easy Days Are Easy\n\nMost runners—myself included—run their easy days too fast. You feel good, so you push the pace. But this leads to:\n\n- Incomplete recovery between hard sessions\n- Diminished quality on workout days\n- Plateauing or declining performance\n\nMy run club taught me that easy pace should be 2 minutes slower than race pace. When I first tried this, it felt ridiculous. But that's where the adaptation happens.\n\n## Adjusting Your VDOT\n\nYour VDOT should increase as you get fitter. Re-test every 4-6 weeks with a time trial or race. As your VDOT rises, your training paces will adjust accordingly.\n\nI went from barely finishing a half marathon to targeting sub-2:00. Every feature in TrainPace is something I used to plan, execute, and improve my own racing.\n\n## Getting Started\n\nReady to find your training paces? Head to our [Pace Calculator](/calculator) and enter your most recent race time. You'll have personalized paces in seconds.\n\nRemember: the goal isn't to run fast every day. It's to run the *right* pace every day. That's how a 3:01 becomes a 2:06."
+      "content": "# Understanding VDOT and Training Paces\n\nOkay, so my first half marathon at BMO Vancouver in 2024? I finished in 3:01:00 and honestly had no clue what I was doing. I just ran as hard as I could every single day. Which... yeah, terrible strategy.\n\nFast forward a year—I crossed the same finish line in 2:06:00. That's 55 minutes faster. And it wasn't because I suddenly became superhuman or started running more miles. It's because I learned to run *smarter*.\n\nThe game-changer? Understanding VDOT. Let me explain what it is and why it changed everything.\n\n## What Even Is VDOT?\n\nVDOT sounds intimidating but it's actually simple. It's just a number that tells you how fit you are right now. Dr. Jack Daniels developed it (yes, the running legend, not the whiskey), and the cool part is you don't need a lab to figure it out. Just run a recent race and boom—you've got your VDOT.\n\nHere's the magic: that one number unlocks all your training paces. Like a cheat code for running.\n\n- **Easy pace** for recovery runs\n- **Marathon pace** for long run segments\n- **Threshold pace** for tempo runs\n- **Interval pace** for track workouts\n- **Repetition pace** for speed development\n\n## Why This Actually Mattered to Me\n\nBefore I knew about VDOT, I was that runner. You know the one. Running every single day at the same moderate pace, thinking I was being productive. Spoiler alert: I was just beating myself up.\n\nThen I joined a run club in Vancouver and they were like \"slow down\" on my easy days. I'm talking embarrassingly slow. Like my grandma could keep up. But something weird happened:\n\n1. I actually felt good between workouts\n2. My speed sessions felt *fast* because I was rested\n3. I could actually run consistently without falling apart\n4. My watch stopped being my enemy\n\nTurns out running the right pace on the right days is kind of important.\n\n## How to Actually Find Your VDOT\n\nJust use the [pace calculator](/calculator). Seriously. Plug in your most recent race time—5K, 10K, half marathon, whatever—and you'll get your VDOT instantly.\n\nI built this because other tools made me want to scream. Ads everywhere, confusing interface, hidden features. I just wanted to know my zones without having to decode some programmer's weird design choices.\n\n### Quick Example\n\nSay you just ran a 45:00 10K. Here's what your paces would look like:\n\n| Zone | Pace/Mile | What It's For |\n|------|-----------|----------|\n| Easy | 9:30-10:00 | Just recovering and building a base |\n| Marathon | 8:15 | Long run pace |\n| Threshold | 7:35 | Tempo work (the stuff that stings a bit) |\n| Interval | 7:00 | Speed work (the real speed stuff) |\n| Repetition | 6:30 | Short, fast reps |\n\n## The Hardest Lesson: Easy Days Need to Actually Be Easy\n\nThis was my biggest mental block. When you feel good, you want to push. But here's the thing—if you're running your easy days too fast, you're stealing from your hard days.\n\nMost runners (including me for way too long) mess this up. You feel good so you push the pace. Then your tempo runs suck because you're not recovered. It's a trap.\n\nMy run club literally had to force me to slow down. Two minutes slower than race pace. I felt ridiculously slow at first. But then I realized—that's where the actual adaptation happens.\n\n## Adjusting Your VDOT\n\nYour VDOT should increase as you get fitter. Re-test every 4-6 weeks with a time trial or race. As your VDOT rises, your training paces will adjust accordingly.\n\nI went from barely finishing a half marathon to targeting sub-2:00. Every feature in TrainPace is something I used to plan, execute, and improve my own racing.\n\n## So, What Now?\n\nHead over to the [Pace Calculator](/calculator) and plug in your race time. You'll have personalized paces in like 10 seconds.\n\nThen remember: the goal isn't to run fast every day. It's to run the *right* pace every day. That's how you go from 3:01 to 2:06."
     },
     {
       "slug": "marathon-fueling-complete-guide",
@@ -22,13 +22,19 @@
       "date": "2026-01-05",
       "author": {
         "name": "Alex",
-        "bio": "Developer & runner. Went from 3:01 to 2:06 in the half marathon."
+        "bio": "Editor"
       },
       "category": "nutrition",
-      "tags": ["marathon", "fueling", "carbohydrates", "race nutrition", "bonking"],
+      "tags": [
+        "marathon",
+        "fueling",
+        "carbohydrates",
+        "race nutrition",
+        "bonking"
+      ],
       "readingTime": 10,
       "featured": true,
-      "content": "# Marathon Fueling: Everything You Need to Know\n\nMy first half marathon at BMO Vancouver, I brought 10 gels and 2 clunky water bottles. I had no idea what I actually needed. I just wanted to prove I could do something hard.\n\nI finished in 3:01:00 and spent the next week barely able to walk down stairs.\n\nA year later, I used the fuel planner I'd built, and it told me I needed 3 gels. I didn't fully trust it, so I brought 5. Turns out, 3 would've been enough. Even I didn't believe my own math at first.\n\nThat's why I'm writing this—so you don't make the same mistakes I did.\n\n## Why Fueling Matters\n\nYour body stores about 2,000 calories of glycogen (stored carbs) in your muscles and liver. A marathon burns approximately 2,600-3,000 calories. A half marathon burns about 1,300-1,500.\n\nWithout taking in fuel during the race, you *will* run out of glycogen. When that happens, you \"bonk\" or \"hit the wall\"—a sudden, dramatic loss of energy that can turn a great race into a survival march.\n\n## Pre-Race Nutrition\n\n### Carb Loading (2-3 Days Before)\n\nCarb loading isn't about eating pasta until you're sick. It's about:\n\n- Increasing carb intake to 8-10g per kg of body weight\n- Reducing fiber to avoid GI issues\n- Staying well-hydrated\n\n**Good carb loading foods:**\n- White rice and pasta\n- Bread, bagels, English muffins\n- Potatoes (without skin)\n- Bananas\n- Sports drinks\n\n### Race Morning (2-4 Hours Before)\n\nEat a familiar breakfast with 100-150g of carbs:\n\n- Oatmeal with banana\n- Bagel with peanut butter\n- Toast with jam\n\nAvoid high-fiber, high-fat foods that could cause stomach issues.\n\n## During the Race\n\n### The Golden Rules\n\n1. **Start early** - Begin fueling by mile 4-5, not when you're already hungry\n2. **Stay consistent** - Take fuel every 20-30 minutes\n3. **Practice in training** - Never try anything new on race day\n\n### How Much to Take\n\nAim for 30-60g of carbs per hour. Most gels contain 20-25g, so that's:\n\n- 1 gel every 20-30 minutes, OR\n- Equivalent from sports drink, chews, or real food\n\n### Gel vs. Chews vs. Drink\n\n| Option | Pros | Cons |\n|--------|------|------|\n| Gels | Fast absorption, portable | Can cause GI distress |\n| Chews | Easier on stomach, satisfying | Need to chew while running |\n| Sports drink | Combines fuel + hydration | Heavy to carry |\n\n## Creating Your Fueling Plan\n\nI built the [Fuel Planner](/fuel) because fueling calculators didn't exist when I was training. How many gels do I actually need? I had to do the math myself.\n\nNow you can create a personalized race-day nutrition strategy based on:\n\n- Your target pace\n- Race distance\n- Aid station locations\n- Preferred fuel sources\n\n## Common Mistakes\n\n1. **Bringing too much** - Like me with 10 gels. Calculate what you need.\n2. **Skipping breakfast** - You need those pre-race carbs\n3. **Starting fuel too late** - By the time you're hungry, it's too late\n4. **Trying new products** - Test everything in training\n5. **Ignoring electrolytes** - Sodium loss affects performance\n\n## What I Do Now\n\nFor my 2:06 half marathon, I had a plan:\n- Gel at km 7\n- Gel at km 14\n- Water at every aid station\n\nSimple. Practiced. Executed.\n\nNo bonking. No regrets. I crossed the line smiling instead of limping.\n\n## The Bottom Line\n\nProper fueling won't make you faster than your fitness allows, but improper fueling will definitely make you slower. Plan ahead, practice in training, and execute on race day.\n\nReady to create your plan? Try our [Fuel Planner](/fuel) to dial in your nutrition strategy. Don't be the person with 10 gels and 2 bottles wondering what went wrong."
+      "content": "# Marathon Fueling: Everything You Need to Know\n\nMy first half marathon at BMO Vancouver, I brought 10 gels and 2 clunky water bottles. I had no idea what I actually needed. I just wanted to prove I could do something hard.\n\nI finished in 3:01:00 and spent the next week barely able to walk down stairs.\n\nA year later, I used the fuel planner I'd built, and it told me I needed 3 gels. I didn't fully trust it, so I brought 5. Turns out, 3 would've been enough. Even I didn't believe my own math at first.\n\nThat's why I'm writing this—so you don't make the same mistakes I did.\n\n## Why Fuel Actually Matters\n\nYour body has about 2,000 calories of glycogen stored up. A marathon burns 2,600-3,000. A half marathon burns 1,300-1,500. Do the math—you're gonna run out of gas.\n\nWhen that happens? You \"bonk\" or \"hit the wall.\" It's not fun. It's like someone turned off the lights in your legs. A race that was going great becomes a death march.\n\n## Pre-Race Nutrition\n\n### Carb Loading (Like 2-3 Days Out)\n\nIt's not about eating pasta until you're miserable (even though that sounds fun). It's about:\n\n- Eating more carbs than usual (8-10g per kg of body weight)\n- Cutting back on fiber so your stomach doesn't hate you\n- Staying hydrated\n\n**Good carb loading foods:**\n- White rice and pasta\n- Bread, bagels, English muffins\n- Potatoes (without skin)\n- Bananas\n- Sports drinks\n\n### Race Morning Breakfast\n\nEat something familiar. Something you know your stomach likes. 2-4 hours before the race, eat 100-150g of carbs:\n\n- Oatmeal with banana\n- Bagel with peanut butter\n- Toast with jam\n\nAvoid anything that might upset your stomach. This isn't the time to try that fancy new cereal.\n\n## During the Race (The Important Part)\n\n### The Rules\n\n1. **Start fueling early** - like mile 4-5, before you're actually hungry\n2. **Be consistent** - fuel every 20-30 minutes\n3. **Don't try anything new** - ever. Test everything in training.\n\n### How Much?\n\nAim for 30-60g of carbs per hour. Most gels have 20-25g, so that's roughly 1 gel every 20-30 minutes.\n\n### Gel vs. Chews vs. Drink\n\n| Option | Why It's Good | Why It Sucks |\n|--------|-------------|----------|\n| Gels | Fast, portable, easy | Can mess with your stomach |\n| Chews | Easier on your gut, satisfying | You gotta chew while running |\n| Sports drink | Fuel + hydration in one | Heavy to carry |\n\n## Making a Plan\n\nI built the [Fuel Planner](/fuel) because I was doing manual math and it was annoying. How many gels do I actually need? Nobody had a simple calculator.\n\nJust plug in your target pace, distance, and preferred fuel and boom—you've got a race-day nutrition plan.\n\n## Mistakes I See People Make\n\n1. **Bringing way too much** - Spoiler: you don't need 10 gels\n2. **Skipping breakfast** - Your morning meal actually matters\n3. **Waiting until you're hungry to fuel** - Too late by then\n4. **Trying new products on race day** - Why would you do this?\n5. **Forgetting about electrolytes** - Your body loses salt when you sweat\n\n## What Actually Worked For Me\n\nFor my 2:06 half marathon, I kept it simple:\n- Gel at km 7\n- Gel at km 14\n- Water at every aid station\n\nThat's it. No overthinking. No surprises. Just executing the plan.\n\n## The Bottom Line\n\nGood fueling won't make you faster than you actually are, but bad fueling will definitely make you slower. Maybe a lot slower.\n\nPlan it out, practice it in training, and execute it on race day.\n\nGo to the [Fuel Planner](/fuel) and dial in your strategy. Don't be the person with 10 gels wondering what went wrong."
     },
     {
       "slug": "elevation-impact-race-strategy",
@@ -37,7 +43,7 @@
       "date": "2025-12-28",
       "author": {
         "name": "Alex",
-        "bio": "Developer & runner. Went from 3:01 to 2:06 in the half marathon."
+        "bio": "Editor"
       },
       "category": "race-strategy",
       "tags": ["elevation", "hills", "pacing", "race strategy", "gpx"],
@@ -52,7 +58,7 @@
       "date": "2025-12-20",
       "author": {
         "name": "Alex",
-        "bio": "Developer & runner. Went from 3:01 to 2:06 in the half marathon."
+        "bio": "Editor"
       },
       "category": "beginner",
       "tags": ["marathon", "beginner", "first marathon", "training tips"],
@@ -67,7 +73,7 @@
       "date": "2025-12-15",
       "author": {
         "name": "Alex",
-        "bio": "Developer & runner. Went from 3:01 to 2:06 in the half marathon."
+        "bio": "Editor"
       },
       "category": "recovery",
       "tags": ["recovery", "rest", "sleep", "stretching", "injury prevention"],
@@ -82,7 +88,7 @@
       "date": "2025-12-10",
       "author": {
         "name": "Alex",
-        "bio": "Developer & runner. Went from 3:01 to 2:06 in the half marathon."
+        "bio": "Editor"
       },
       "category": "training",
       "tags": ["tempo", "threshold", "workouts", "speed", "lactate"],
@@ -97,7 +103,7 @@
       "date": "2025-12-05",
       "author": {
         "name": "Alex",
-        "bio": "Developer & runner. Went from 3:01 to 2:06 in the half marathon."
+        "bio": "Editor"
       },
       "category": "gear",
       "tags": ["shoes", "gear", "equipment", "injury prevention"],
@@ -112,7 +118,7 @@
       "date": "2025-11-28",
       "author": {
         "name": "Alex",
-        "bio": "Developer & runner. Went from 3:01 to 2:06 in the half marathon."
+        "bio": "Editor"
       },
       "category": "race-strategy",
       "tags": ["half marathon", "pacing", "race strategy", "21K"],
@@ -127,7 +133,7 @@
       "date": "2025-11-20",
       "author": {
         "name": "Alex",
-        "bio": "Developer & runner. Went from 3:01 to 2:06 in the half marathon."
+        "bio": "Editor"
       },
       "category": "training",
       "tags": ["strength", "cross-training", "injury prevention", "exercises"],
@@ -142,7 +148,7 @@
       "date": "2025-11-15",
       "author": {
         "name": "Alex",
-        "bio": "Developer & runner. Went from 3:01 to 2:06 in the half marathon."
+        "bio": "Editor"
       },
       "category": "race-strategy",
       "tags": ["taper", "marathon", "race prep", "training"],
