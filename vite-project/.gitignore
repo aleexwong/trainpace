@@ -25,5 +25,4 @@ dist-ssr
 *.sw?
 .env
 cors.json
-CLAUDE.md
 *.md
