@@ -11,7 +11,7 @@ import { getCurrentDocumentId, needsMigration } from "../config/routes";
 import { Button } from "@/components/ui/button";
 import { ShareButton } from "@/components/ui/ShareButton";
 import MapboxRoutePreview from "@/components/utils/MapboxRoutePreview";
-import PosterButton from "@/components/poster/PosterButton";
+import { PosterButton } from "@/features/poster";
 import ElevationInsights from "@/components/elevationfinder/ElevationInsights";
 
 // Feature imports
@@ -178,7 +178,9 @@ export default function ElevationPage() {
   return (
     <>
       <Helmet>
-        <title>GPX Elevation Profile Viewer – Free Route Analysis | TrainPace</title>
+        <title>
+          GPX Elevation Profile Viewer – Free Route Analysis | TrainPace
+        </title>
         <meta
           name="description"
           content="Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty. Analyze marathon courses and training routes."

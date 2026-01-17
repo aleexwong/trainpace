@@ -1,5 +1,10 @@
+/**
+ * Poster Button Component
+ * Dialog trigger for opening the poster generator
+ */
+
 import { useState } from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { Image } from "lucide-react";
 import {
   Dialog,
@@ -9,21 +14,12 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "../ui/dialog";
-import { PosterGeneratorV3 } from "./index";
-import { useAuth } from "../../features/auth/AuthContext";
-import type { GPXMetadata } from "../../lib/gpxMetaData";
+} from "@/components/ui/dialog";
+import { useAuth } from "@/features/auth/AuthContext";
+import { type PosterButtonProps } from "../types";
+import { PosterGenerator } from "./PosterGenerator";
 
-type GpxPoint = { lat: number; lng: number; ele?: number };
-
-interface PosterButtonProps {
-  displayPoints: GpxPoint[];
-  metadata: GPXMetadata;
-  filename?: string;
-  disabled?: boolean;
-}
-
-export default function PosterButton({
+export function PosterButton({
   displayPoints,
   metadata,
   filename,
@@ -92,7 +88,7 @@ export default function PosterButton({
           </Button>
         </DialogTrigger>
         <DialogContent className="max-w-5xl w-full h-[90vh] overflow-y-auto">
-          <PosterGeneratorV3
+          <PosterGenerator
             displayPoints={displayPoints}
             metadata={metadata}
             filename={filename}
@@ -101,22 +97,22 @@ export default function PosterButton({
         </DialogContent>
       </Dialog>
 
-      {/* Confirmation Dialog */}
+      {/* Confirm Close Dialog */}
       <Dialog open={showConfirmClose} onOpenChange={setShowConfirmClose}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Unsaved Changes</DialogTitle>
+            <DialogTitle>Discard changes?</DialogTitle>
             <DialogDescription>
-              You have unsaved changes to your poster. Are you sure you want to
-              close without downloading?
+              You have unsaved poster customizations. Are you sure you want to
+              close without downloading your poster?
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter className="gap-2">
+          <DialogFooter className="flex gap-2 sm:gap-0">
             <Button variant="outline" onClick={handleCancelClose}>
               Cancel
             </Button>
             <Button variant="destructive" onClick={handleConfirmClose}>
-              Close Without Saving
+              Discard Changes
             </Button>
           </DialogFooter>
         </DialogContent>
