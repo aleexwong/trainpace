@@ -11,7 +11,11 @@
     "generate-pwa-assets": "pwa-assets-generator",
     "host": "vite --host",
     "seed-boston": "vite-node scripts/seedBostonMarathon.ts",
-    "test-gemini": "vite-node scripts/testGemini.ts"
+    "test-gemini": "vite-node scripts/testGemini.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -45,9 +49,15 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "vite-prerender-plugin": "^0.5.12",
+    "web-vitals": "^4.2.4",
     "zod": "^3.25.13"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
     "@eslint/js": "^9.13.0",
     "@types/jsdom": "^21.0.0",
     "@types/leaflet": "^1.9.20",

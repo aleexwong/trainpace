@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import { HelmetProvider } from "react-helmet-async";
 import { Routes, Route } from "react-router-dom";
@@ -26,10 +26,22 @@ import About from "./pages/About";
 import DashboardV2 from "./pages/DashboardV2";
 import { BlogList, BlogPost } from "./features/blog";
 
+// Production infrastructure
+import { ErrorBoundary } from "./lib/errors";
+import { initWebVitals, logger } from "./lib/observability";
+
 function App() {
+  // Initialize production monitoring
+  useEffect(() => {
+    initWebVitals();
+    logger.info("Application initialized", {
+      version: "2.0.0",
+      environment: import.meta.env.MODE,
+    });
+  }, []);
   const [showPredictor, setShowPredictor] = useState(false);
   return (
-    <>
+    <ErrorBoundary>
       <ScrollToTop />
       <HelmetProvider>
         {/* Side Navigation */}
@@ -79,7 +91,7 @@ function App() {
         onClose={() => setShowPredictor(false)}
       />
       <Toaster />
-    </>
+    </ErrorBoundary>
   );
 }
 
