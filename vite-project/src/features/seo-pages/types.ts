@@ -23,6 +23,7 @@ export interface SeoPageConfig {
     href: string;
     label: string;
   };
+  previewRouteKey?: string;
   initialPaceDistanceKm?: number;
   faq?: SeoFaqItem[];
   howTo?: {

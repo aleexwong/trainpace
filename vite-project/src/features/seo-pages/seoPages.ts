@@ -452,7 +452,11 @@ export const calculatorSeoPages: SeoPageConfig[] = [
   },
 ];
 
-function makeRacePage(raceName: string, slug: string): SeoPageConfig {
+function makeRacePage(
+  raceName: string,
+  slug: string,
+  previewRouteKey?: string
+): SeoPageConfig {
   return {
     slug,
     tool: "race",
@@ -468,6 +472,7 @@ function makeRacePage(raceName: string, slug: string): SeoPageConfig {
       "Elevation analysis: hills, grades, and difficulty",
     ],
     cta: { href: "/calculator", label: "Start With Pacing" },
+    previewRouteKey,
     howTo: {
       name: `How to prepare for ${raceName}`,
       description:
@@ -496,13 +501,13 @@ function makeRacePage(raceName: string, slug: string): SeoPageConfig {
 
 export const raceSeoPages: SeoPageConfig[] = [
   // Marathon majors + big-city marathons
-  makeRacePage("Boston Marathon", "boston-marathon"),
-  makeRacePage("New York City Marathon", "nyc-marathon"),
-  makeRacePage("Chicago Marathon", "chicago-marathon"),
-  makeRacePage("Berlin Marathon", "berlin-marathon"),
-  makeRacePage("London Marathon", "london-marathon"),
-  makeRacePage("Tokyo Marathon", "tokyo-marathon"),
-  makeRacePage("Sydney Marathon", "sydney-marathon"),
+  makeRacePage("Boston Marathon", "boston-marathon", "boston"),
+  makeRacePage("New York City Marathon", "nyc-marathon", "nyc"),
+  makeRacePage("Chicago Marathon", "chicago-marathon", "chicago"),
+  makeRacePage("Berlin Marathon", "berlin-marathon", "berlin"),
+  makeRacePage("London Marathon", "london-marathon", "london"),
+  makeRacePage("Tokyo Marathon", "tokyo-marathon", "tokyo"),
+  makeRacePage("Sydney Marathon", "sydney-marathon", "sydney"),
   makeRacePage("Paris Marathon", "paris-marathon"),
   makeRacePage("Amsterdam Marathon", "amsterdam-marathon"),
   makeRacePage("Valencia Marathon", "valencia-marathon"),

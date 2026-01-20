@@ -3,6 +3,28 @@ import { Helmet } from "react-helmet-async";
 import { Navigate, useParams } from "react-router-dom";
 
 import { getSeoUrl, raceSeoPageMap } from "@/features/seo-pages/seoPages";
+import marathonData from "@/data/marathon-data.json";
+import LeafletRoutePreview from "@/components/utils/LeafletRoutePreview";
+
+type MarathonPreviewRoute = {
+  name: string;
+  city: string;
+  country: string;
+  distance: number;
+  elevationGain: number;
+  elevationLoss: number;
+  startElevation: number;
+  endElevation: number;
+  description: string;
+  raceDate: string;
+  website: string;
+  tips: string[];
+  fuelingNotes?: string;
+  faq?: Array<{ question: string; answer: string }>;
+  thumbnailPoints: Array<{ lat: number; lng: number; ele?: number; dist?: number }>;
+};
+
+const marathonRoutesData = marathonData as Record<string, MarathonPreviewRoute>;
 
 function buildBreadcrumbJsonLd(path: string, label: string) {
   return {
@@ -37,6 +59,10 @@ export default function RaceSeoLanding() {
   const page = raceSlug ? raceSeoPageMap.get(raceSlug) : undefined;
   if (!page) return <Navigate to="/" replace />;
 
+  const previewRoute = page.previewRouteKey
+    ? marathonRoutesData[page.previewRouteKey]
+    : undefined;
+
   const jsonLd = useMemo(() => {
     const graph: unknown[] = [
       {
@@ -53,6 +79,28 @@ export default function RaceSeoLanding() {
       },
       buildBreadcrumbJsonLd(page.path, page.h1),
     ];
+
+    if (previewRoute) {
+      graph.push({
+        "@context": "https://schema.org",
+        "@type": "SportsEvent",
+        name: previewRoute.name,
+        description: previewRoute.description,
+        url: previewRoute.website,
+        startDate: previewRoute.raceDate,
+        sport: "Running",
+        location: {
+          "@type": "Place",
+          name: `${previewRoute.city}, ${previewRoute.country}`,
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: previewRoute.city,
+            addressCountry: previewRoute.country,
+          },
+        },
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      });
+    }
 
     if (page.howTo) {
       graph.push({
@@ -74,11 +122,18 @@ export default function RaceSeoLanding() {
       });
     }
 
-    if (page.faq?.length) {
+    const faqItems =
+      page.faq?.length
+        ? page.faq
+        : previewRoute?.faq?.length
+          ? previewRoute.faq
+          : undefined;
+
+    if (faqItems?.length) {
       graph.push({
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        mainEntity: page.faq.map((q: { question: string; answer: string }) => ({
+        mainEntity: faqItems.map((q: { question: string; answer: string }) => ({
           "@type": "Question",
           name: q.question,
           acceptedAnswer: {
@@ -93,7 +148,7 @@ export default function RaceSeoLanding() {
       "@context": "https://schema.org",
       "@graph": graph,
     };
-  }, [page]);
+  }, [page, previewRoute]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-orange-50">
@@ -134,6 +189,125 @@ export default function RaceSeoLanding() {
           </div>
         </div>
       </section>
+
+      {previewRoute && (
+        <section className="px-4 sm:px-6 pb-10">
+          <div className="max-w-5xl mx-auto">
+            <div className="rounded-3xl border border-orange-100 bg-white/70 overflow-hidden">
+              <div className="p-6 sm:p-8">
+                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                  <div>
+                    <div className="text-sm font-semibold text-orange-800">
+                      Featured Course Data
+                    </div>
+                    <h2 className="mt-2 text-2xl sm:text-3xl font-bold text-gray-900">
+                      {previewRoute.name}
+                    </h2>
+                    <p className="mt-2 text-gray-700">
+                      {previewRoute.city}, {previewRoute.country} - {previewRoute.raceDate}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    <a
+                      href={`/preview-route/${page.previewRouteKey}`}
+                      className="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-white font-semibold hover:bg-black transition-colors"
+                    >
+                      Full Course Page
+                    </a>
+                    <a
+                      href={previewRoute.website}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center rounded-lg border border-orange-200 bg-white px-4 py-2 text-orange-900 font-semibold hover:bg-orange-50 transition-colors"
+                    >
+                      Official Site
+                    </a>
+                  </div>
+                </div>
+
+                <p className="mt-4 text-gray-700 leading-relaxed">
+                  {previewRoute.description}
+                </p>
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  <div className="rounded-2xl border border-orange-100 bg-white p-4">
+                    <div className="text-xs font-semibold text-gray-500">Distance</div>
+                    <div className="mt-1 text-lg font-bold text-gray-900">
+                      {previewRoute.distance.toFixed(2)} km
+                    </div>
+                  </div>
+                  <div className="rounded-2xl border border-orange-100 bg-white p-4">
+                    <div className="text-xs font-semibold text-gray-500">Elevation Gain</div>
+                    <div className="mt-1 text-lg font-bold text-gray-900">
+                      {previewRoute.elevationGain} m
+                    </div>
+                  </div>
+                  <div className="rounded-2xl border border-orange-100 bg-white p-4">
+                    <div className="text-xs font-semibold text-gray-500">Elevation Loss</div>
+                    <div className="mt-1 text-lg font-bold text-gray-900">
+                      {previewRoute.elevationLoss} m
+                    </div>
+                  </div>
+                  <div className="rounded-2xl border border-orange-100 bg-white p-4">
+                    <div className="text-xs font-semibold text-gray-500">Start / Finish</div>
+                    <div className="mt-1 text-lg font-bold text-gray-900">
+                      {previewRoute.startElevation}m - {previewRoute.endElevation}m
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-orange-100 bg-white">
+                <LeafletRoutePreview
+                  routePoints={previewRoute.thumbnailPoints}
+                  height="320px"
+                  interactive={false}
+                  lineColor="#c2410c"
+                  lineWidth={4}
+                  showStartEnd={true}
+                />
+              </div>
+
+              {(previewRoute.tips?.length || previewRoute.fuelingNotes) && (
+                <div className="p-6 sm:p-8 border-t border-orange-100">
+                  <div className="grid gap-6 lg:grid-cols-2">
+                    {previewRoute.tips?.length ? (
+                      <div className="rounded-2xl border border-orange-100 bg-white p-6">
+                        <h3 className="text-lg font-bold text-gray-900">Quick Tips</h3>
+                        <div className="mt-3 space-y-2">
+                          {previewRoute.tips.slice(0, 6).map((t) => (
+                            <div key={t} className="text-gray-700">
+                              {t}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {previewRoute.fuelingNotes ? (
+                      <div className="rounded-2xl border border-orange-100 bg-white p-6">
+                        <h3 className="text-lg font-bold text-gray-900">Fueling Note</h3>
+                        <p className="mt-3 text-gray-700 leading-relaxed">
+                          {previewRoute.fuelingNotes}
+                        </p>
+                        <div className="mt-4">
+                          <a
+                            href="/fuel"
+                            className="inline-flex items-center rounded-lg bg-amber-700 px-4 py-2 text-white font-semibold hover:bg-amber-800 transition-colors"
+                          >
+                            Build a Fuel Plan
+                          </a>
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="px-4 sm:px-6 pb-16">
         <div className="max-w-5xl mx-auto grid gap-4 sm:grid-cols-3">
