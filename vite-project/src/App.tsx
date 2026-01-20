@@ -20,6 +20,11 @@ import FAQ from "./pages/FAQ";
 import Settings from "./pages/Settings";
 import PreviewRoute from "./pages/PreviewRoute";
 import { FuelPlannerV2 } from "./features/fuel";
+import CalculatorSeoLanding from "./pages/CalculatorSeoLanding";
+import FuelSeoLanding from "./pages/FuelSeoLanding";
+import ElevationGuidesSeoLanding from "./pages/ElevationGuidesSeoLanding";
+import RaceSeoLanding from "./pages/RaceSeoLanding";
+import RaceIndex from "./pages/RaceIndex";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import About from "./pages/About";
@@ -35,17 +40,32 @@ function App() {
         {/* Side Navigation */}
         <Routes>
           <Route path="/" element={<MainLayout />}>
-            <Route index element={<Landing />} />
-            <Route path="/calculator" element={<TrainingPaceCalculator />} />
-            <Route path="/fuel" element={<FuelPlannerV2 />} />
-            <Route path="/elevation-finder" element={<ElevationPage />} />
-            <Route
-              path="/elevation-finder/:docId"
-              element={<ElevationPage />}
-            />
-            <Route path="/elevationfinder/:docId" element={<ElevationPage />} />
-            <Route path="/elevationfinder" element={<ElevationPage />} />
-            <Route path="/dashboard" element={<DashboardV2 />} />
+          <Route index element={<Landing />} />
+          <Route path="/calculator" element={<TrainingPaceCalculator />} />
+          <Route
+            path="/calculator/:seoSlug"
+            element={<CalculatorSeoLanding />}
+          />
+          <Route path="/fuel" element={<FuelPlannerV2 />} />
+          <Route path="/fuel/:seoSlug" element={<FuelSeoLanding />} />
+          <Route path="/race" element={<RaceIndex />} />
+          <Route path="/race/:raceSlug" element={<RaceSeoLanding />} />
+          <Route path="/elevation-finder" element={<ElevationPage />} />
+          <Route
+            path="/elevation-finder/:docId"
+            element={<ElevationPage />}
+          />
+          <Route
+            path="/elevation-finder/guides/:seoSlug"
+            element={<ElevationGuidesSeoLanding />}
+          />
+          <Route path="/elevationfinder/:docId" element={<ElevationPage />} />
+          <Route
+            path="/elevationfinder/guides/:seoSlug"
+            element={<ElevationGuidesSeoLanding />}
+          />
+          <Route path="/elevationfinder" element={<ElevationPage />} />
+          <Route path="/dashboard" element={<DashboardV2 />} />
             <Route path="/ethos" element={<About />} />
             <Route path="login" element={<Login />} />
             <Route path="logout" element={<Logout />} />

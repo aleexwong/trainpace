@@ -4,12 +4,17 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import { vitePrerenderPlugin } from "vite-prerender-plugin";
 
+import { getAllSeoPaths } from "./src/features/seo-pages/seoPages";
+
 // Prerendered routes for SEO
 const prerenderedRoutes = [
   "/",
   "/calculator",
   "/fuel",
   "/elevationfinder",
+  "/race",
+  // Programmatic SEO routes
+  ...getAllSeoPaths(),
   "/preview-route/boston",
   "/preview-route/nyc",
   "/preview-route/chicago",

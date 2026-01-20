@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "generate-sitemap": "vite-node scripts/generateSitemap.ts",
     "generate-pwa-assets": "pwa-assets-generator",
     "host": "vite --host",
     "seed-boston": "vite-node scripts/seedBostonMarathon.ts",

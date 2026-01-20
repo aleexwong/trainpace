@@ -26,7 +26,11 @@ import { FuelPlanPlaceholder } from "./FuelPlanPlaceholder";
 import { FuelProductsReference } from "./FuelProductsReference";
 import { AIPersonalization } from "./AIPersonalization";
 
-export function FuelPlannerV2() {
+export interface FuelPlannerV2Props {
+  seoMode?: "default" | "none";
+}
+
+export function FuelPlannerV2({ seoMode = "default" }: FuelPlannerV2Props) {
   const { toast } = useToast();
 
   // Handle auto-save of pending plan after signup
@@ -250,13 +254,15 @@ export function FuelPlannerV2() {
 
   return (
     <>
-      <Helmet>
-        <title>Fuel Planner by TrainPace</title>
-        <meta
-          name="description"
-          content="Optimize your running fuel strategy with AI-powered personalized recommendations."
-        />
-      </Helmet>
+      {seoMode !== "none" && (
+        <Helmet>
+          <title>Fuel Planner by TrainPace</title>
+          <meta
+            name="description"
+            content="Optimize your running fuel strategy with AI-powered personalized recommendations."
+          />
+        </Helmet>
+      )}
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">

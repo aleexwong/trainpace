@@ -29,12 +29,23 @@ const initialFormState: PaceInputs = {
   temperature: "",
 };
 
-export function PaceCalculatorV2() {
+export interface PaceCalculatorV2Props {
+  seoMode?: "default" | "none";
+  initialInputs?: Partial<PaceInputs>;
+}
+
+export function PaceCalculatorV2({
+  seoMode = "default",
+  initialInputs,
+}: PaceCalculatorV2Props) {
   // Handle auto-save of pending plan after signup
   usePendingPacePlan();
 
   // Form state
-  const [inputs, setInputs] = useState<PaceInputs>(initialFormState);
+  const [inputs, setInputs] = useState<PaceInputs>(() => ({
+    ...initialFormState,
+    ...initialInputs,
+  }));
   const [results, setResults] = useState<PaceResults | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isCalculating, setIsCalculating] = useState(false);
@@ -249,54 +260,56 @@ export function PaceCalculatorV2() {
 
   return (
     <>
-      <Helmet>
-        <title>Running Pace Calculator – VDOT Training Zones | TrainPace</title>
-        <meta
-          name="description"
-          content="Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s and race predictor."
-        />
-        <link rel="canonical" href="https://trainpace.com/calculator" />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "HowTo",
-            name: "How to Calculate Your Running Training Paces",
-            description:
-              "Use your recent race time to calculate personalized training paces for Easy, Tempo, Threshold, and Interval runs using VDOT methodology.",
-            totalTime: "PT1M",
-            tool: {
-              "@type": "HowToTool",
-              name: "TrainPace Calculator",
-            },
-            step: [
-              {
-                "@type": "HowToStep",
-                position: 1,
-                name: "Enter your race distance",
-                text: "Select or enter your recent race distance (5K, 10K, Half Marathon, or Marathon) using kilometers or miles.",
+      {seoMode !== "none" && (
+        <Helmet>
+          <title>Running Pace Calculator – VDOT Training Zones | TrainPace</title>
+          <meta
+            name="description"
+            content="Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s and race predictor."
+          />
+          <link rel="canonical" href="https://trainpace.com/calculator" />
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "HowTo",
+              name: "How to Calculate Your Running Training Paces",
+              description:
+                "Use your recent race time to calculate personalized training paces for Easy, Tempo, Threshold, and Interval runs using VDOT methodology.",
+              totalTime: "PT1M",
+              tool: {
+                "@type": "HowToTool",
+                name: "TrainPace Calculator",
               },
-              {
-                "@type": "HowToStep",
-                position: 2,
-                name: "Enter your finish time",
-                text: "Input your finish time in hours, minutes, and seconds from your recent race.",
-              },
-              {
-                "@type": "HowToStep",
-                position: 3,
-                name: "Calculate your paces",
-                text: "Click Calculate to get your personalized training zones: Easy, Tempo, Maximum, Speed, Extra Long, and Yasso 800s.",
-              },
-              {
-                "@type": "HowToStep",
-                position: 4,
-                name: "Save your plan (optional)",
-                text: "Save your training paces to your dashboard for easy reference during workouts.",
-              },
-            ],
-          })}
-        </script>
-      </Helmet>
+              step: [
+                {
+                  "@type": "HowToStep",
+                  position: 1,
+                  name: "Enter your race distance",
+                  text: "Select or enter your recent race distance (5K, 10K, Half Marathon, or Marathon) using kilometers or miles.",
+                },
+                {
+                  "@type": "HowToStep",
+                  position: 2,
+                  name: "Enter your finish time",
+                  text: "Input your finish time in hours, minutes, and seconds from your recent race.",
+                },
+                {
+                  "@type": "HowToStep",
+                  position: 3,
+                  name: "Calculate your paces",
+                  text: "Click Calculate to get your personalized training zones: Easy, Tempo, Maximum, Speed, Extra Long, and Yasso 800s.",
+                },
+                {
+                  "@type": "HowToStep",
+                  position: 4,
+                  name: "Save your plan (optional)",
+                  text: "Save your training paces to your dashboard for easy reference during workouts.",
+                },
+              ],
+            })}
+          </script>
+        </Helmet>
+      )}
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
