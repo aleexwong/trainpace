@@ -18,8 +18,8 @@ import {
   generateSchemaGraph,
   generateBreadcrumbs,
   type RaceEventData,
-} from '@/lib/seo';
-import LeafletRoutePreview from '@/components/utils/LeafletRoutePreview';
+} from '../../lib/seo';
+import LeafletRoutePreview from '../utils/LeafletRoutePreview';
 
 // =============================================================================
 // Types

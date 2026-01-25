@@ -21,7 +21,7 @@ import {
   generateSchemaGraph,
   generateBreadcrumbs,
   type SchemaGeneratorOptions,
-} from '@/lib/seo';
+} from '../../lib/seo';
 
 // =============================================================================
 // Types
