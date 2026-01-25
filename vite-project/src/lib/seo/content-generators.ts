@@ -12,13 +12,12 @@ import type {
   SeoPageConfig,
   SeoFaqItem,
   SeoHowTo,
-  SeoHowToStep,
   ContentVariables,
   ContentTemplate,
   SeoToolType,
   SeoCta,
 } from './types';
-import { generatePageId, normalizeSlug } from './types';
+import { generatePageId } from './types';
 
 // =============================================================================
 // Template Interpolation

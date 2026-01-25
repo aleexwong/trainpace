@@ -12,8 +12,6 @@
 
 import type {
   SeoPageConfig,
-  SeoToolType,
-  SeoValidationResult,
   SeoValidationError,
   SeoValidationWarning,
 } from './types';

@@ -367,8 +367,6 @@ export function generateCrossToolLinks(
     blog: [],
   };
 
-  const topics = extractTopics(page);
-
   for (const toolType of Object.keys(result) as SeoToolType[]) {
     if (toolType === page.tool) continue;
 
@@ -493,7 +491,6 @@ export interface LinkValidationResult {
 export function validateInternalLinks(
   pages: SeoPageConfig[]
 ): LinkValidationResult {
-  const errors: string[] = [];
   const warnings: string[] = [];
   const brokenLinks: string[] = [];
   const pageIds = new Set(pages.map((p) => p.id));

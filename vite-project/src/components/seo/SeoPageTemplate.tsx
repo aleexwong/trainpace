@@ -16,12 +16,10 @@ import {
   type SeoPageConfig,
   type SeoToolType,
   type InternalLink,
-  type BreadcrumbItem,
   generateMetaTags,
   generateSchemaGraph,
   generateBreadcrumbs,
   type SchemaGeneratorOptions,
-  type RaceEventData,
 } from '@/lib/seo';
 
 // =============================================================================

@@ -9,7 +9,7 @@
  */
 
 import type { SeoPageConfig, SeoToolType, DataSourceManifest } from './types';
-import { BASE_URL, withBaseUrl } from './types';
+import { BASE_URL } from './types';
 import { calculateSitemapPriority } from './internal-linking';
 
 // =============================================================================
@@ -142,7 +142,7 @@ export function generateSitemapUrls(
   pages: SeoPageConfig[],
   config: SitemapConfig = {}
 ): SitemapUrl[] {
-  const { baseUrl, defaultChangefreq, defaultPriority } = {
+  const { baseUrl, defaultChangefreq } = {
     ...DEFAULT_SITEMAP_CONFIG,
     ...config,
   };

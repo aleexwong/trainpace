@@ -68,8 +68,7 @@ export function generateWebSiteSchema(): SchemaWebSite {
 // =============================================================================
 
 export function generateWebPageSchema(
-  page: SeoPageConfig,
-  breadcrumbs?: BreadcrumbItem[]
+  page: SeoPageConfig
 ): SchemaWebPage {
   const schema: SchemaWebPage = {
     '@context': 'https://schema.org',
@@ -385,7 +384,7 @@ export function generateSchemaGraph(
   schemas.push(generateBreadcrumbSchema(breadcrumbs));
 
   // Add WebPage schema
-  schemas.push(generateWebPageSchema(page, breadcrumbs));
+  schemas.push(generateWebPageSchema(page));
 
   // Add FAQ schema if page has FAQs
   if (page.faq && page.faq.length > 0) {
