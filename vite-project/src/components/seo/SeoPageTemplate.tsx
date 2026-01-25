@@ -16,6 +16,7 @@ import {
   type SeoPageConfig,
   type SeoToolType,
   type InternalLink,
+  type BreadcrumbItem,
   generateMetaTags,
   generateSchemaGraph,
   generateBreadcrumbs,
