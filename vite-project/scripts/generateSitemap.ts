@@ -24,6 +24,7 @@ const staticPaths: Array<{ loc: string; changefreq: string; priority: string }> 
   { loc: `${BASE_URL}/preview-route/london`, changefreq: "yearly", priority: "0.7" },
   { loc: `${BASE_URL}/preview-route/tokyo`, changefreq: "yearly", priority: "0.7" },
   { loc: `${BASE_URL}/preview-route/sydney`, changefreq: "yearly", priority: "0.7" },
+  { loc: `${BASE_URL}/preview-route/oslo`, changefreq: "yearly", priority: "0.7" },
 ];
 
 const today = new Date().toISOString().slice(0, 10);

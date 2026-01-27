@@ -22,6 +22,7 @@ const prerenderedRoutes = [
   "/preview-route/london",
   "/preview-route/tokyo",
   "/preview-route/sydney",
+  "/preview-route/oslo",
   // Blog routes
   "/blog",
   "/blog/understanding-vdot-training-paces",

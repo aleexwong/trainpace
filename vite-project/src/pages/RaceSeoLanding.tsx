@@ -1,10 +1,13 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Navigate, useParams } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
 
 import { getSeoUrl, raceSeoPageMap } from "@/features/seo-pages/seoPages";
 import marathonData from "@/data/marathon-data.json";
 import LeafletRoutePreview from "@/components/utils/LeafletRoutePreview";
+import { db } from "@/lib/firebase";
+import { getCurrentDocumentId } from "@/config/routes";
 
 type MarathonPreviewRoute = {
   name: string;
@@ -21,6 +24,7 @@ type MarathonPreviewRoute = {
   tips: string[];
   fuelingNotes?: string;
   faq?: Array<{ question: string; answer: string }>;
+  slug: string;
   thumbnailPoints: Array<{ lat: number; lng: number; ele?: number; dist?: number }>;
 };
 
@@ -55,13 +59,85 @@ function buildBreadcrumbJsonLd(path: string, label: string) {
 
 export default function RaceSeoLanding() {
   const { raceSlug } = useParams();
+  const [routeOverrides, setRouteOverrides] =
+    useState<Partial<MarathonPreviewRoute> | null>(null);
 
   const page = raceSlug ? raceSeoPageMap.get(raceSlug) : undefined;
   if (!page) return <Navigate to="/" replace />;
 
-  const previewRoute = page.previewRouteKey
+  const basePreviewRoute = page.previewRouteKey
     ? marathonRoutesData[page.previewRouteKey]
     : undefined;
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadFromFirestore = async () => {
+      if (!page.previewRouteKey || !basePreviewRoute?.slug) {
+        setRouteOverrides(null);
+        return;
+      }
+
+      try {
+        const resolvedId = getCurrentDocumentId(basePreviewRoute.slug);
+        const ref = doc(db, "gpx_uploads", resolvedId);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) return;
+
+        const data: any = snap.data();
+        const staticData = data?.staticRouteData;
+        const meta = data?.metadata;
+        const points: Array<{ lat: number; lng: number; ele?: number; dist?: number }> =
+          data?.thumbnailPoints || data?.displayPoints || [];
+
+        const profile: Array<{ elevation: number }> = staticData?.elevationProfile || [];
+        const startElevation =
+          profile.length > 0 ? Math.round(profile[0].elevation) : undefined;
+        const endElevation =
+          profile.length > 0
+            ? Math.round(profile[profile.length - 1].elevation)
+            : undefined;
+
+        const overrides: Partial<MarathonPreviewRoute> = {};
+
+        const distance = staticData?.totalDistance ?? meta?.totalDistance;
+        if (Number.isFinite(distance)) overrides.distance = distance;
+
+        const elevationGain =
+          staticData?.totalElevationGain ?? meta?.elevationGain;
+        if (Number.isFinite(elevationGain)) overrides.elevationGain = elevationGain;
+
+        const elevationLoss =
+          staticData?.totalElevationLoss ?? meta?.elevationLoss;
+        if (Number.isFinite(elevationLoss)) overrides.elevationLoss = elevationLoss;
+
+        const start = startElevation ?? meta?.startElevation;
+        if (Number.isFinite(start)) overrides.startElevation = start;
+
+        const end = endElevation ?? meta?.endElevation;
+        if (Number.isFinite(end)) overrides.endElevation = end;
+
+        if (points.length > 0) overrides.thumbnailPoints = points;
+
+        if (!cancelled) {
+          setRouteOverrides(overrides);
+        }
+      } catch (err) {
+        console.error("Failed to load race route from Firestore:", err);
+      }
+    };
+
+    loadFromFirestore();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [page.previewRouteKey, basePreviewRoute?.slug]);
+
+  const previewRoute = useMemo(() => {
+    if (!basePreviewRoute) return undefined;
+    return routeOverrides ? { ...basePreviewRoute, ...routeOverrides } : basePreviewRoute;
+  }, [basePreviewRoute, routeOverrides]);
 
   const jsonLd = useMemo(() => {
     const graph: unknown[] = [
@@ -240,19 +316,19 @@ export default function RaceSeoLanding() {
                   <div className="rounded-2xl border border-orange-100 bg-white p-4">
                     <div className="text-xs font-semibold text-gray-500">Elevation Gain</div>
                     <div className="mt-1 text-lg font-bold text-gray-900">
-                      {previewRoute.elevationGain} m
+                      {Math.round(previewRoute.elevationGain)} m
                     </div>
                   </div>
                   <div className="rounded-2xl border border-orange-100 bg-white p-4">
                     <div className="text-xs font-semibold text-gray-500">Elevation Loss</div>
                     <div className="mt-1 text-lg font-bold text-gray-900">
-                      {previewRoute.elevationLoss} m
+                      {Math.round(previewRoute.elevationLoss)} m
                     </div>
                   </div>
                   <div className="rounded-2xl border border-orange-100 bg-white p-4">
                     <div className="text-xs font-semibold text-gray-500">Start / Finish</div>
                     <div className="mt-1 text-lg font-bold text-gray-900">
-                      {previewRoute.startElevation}m - {previewRoute.endElevation}m
+                      {Math.round(previewRoute.startElevation)}m - {Math.round(previewRoute.endElevation)}m
                     </div>
                   </div>
                 </div>

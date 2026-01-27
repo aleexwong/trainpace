@@ -1410,7 +1410,7 @@ export const raceSeoPages: SeoPageConfig[] = [
   makeRacePage('Edinburgh Marathon', 'edinburgh-marathon'),
   makeRacePage('Copenhagen Marathon', 'copenhagen-marathon'),
   makeRacePage('Stockholm Marathon', 'stockholm-marathon'),
-  makeRacePage('Oslo Marathon', 'oslo-marathon'),
+  makeRacePage('Oslo Marathon', 'oslo-marathon', 'oslo'),
   makeRacePage('Helsinki Marathon', 'helsinki-marathon'),
   makeRacePage('Athens Marathon', 'athens-marathon'),
   makeRacePage('Istanbul Marathon', 'istanbul-marathon'),

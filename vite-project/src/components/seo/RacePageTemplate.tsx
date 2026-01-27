@@ -267,15 +267,15 @@ export function RacePageTemplate({
                   />
                   <RouteStatCard
                     label="Elevation Gain"
-                    value={`${routeData.elevationGain} m`}
+                    value={`${Math.round(routeData.elevationGain)} m`}
                   />
                   <RouteStatCard
                     label="Elevation Loss"
-                    value={`${routeData.elevationLoss} m`}
+                    value={`${Math.round(routeData.elevationLoss)} m`}
                   />
                   <RouteStatCard
                     label="Start / Finish"
-                    value={`${routeData.startElevation}m - ${routeData.endElevation}m`}
+                    value={`${Math.round(routeData.startElevation)}m - ${Math.round(routeData.endElevation)}m`}
                   />
                 </div>
               </div>
