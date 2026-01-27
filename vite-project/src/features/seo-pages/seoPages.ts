@@ -493,6 +493,849 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     ],
     cta: { href: '/calculator', label: 'Calculate Training Paces' },
   },
+
+  // ==========================================================================
+  // Marathon Time Goal Pages
+  // ==========================================================================
+  {
+    id: generatePageId('pace', 'sub-3-marathon-pace'),
+    slug: 'sub-3-marathon-pace',
+    tool: 'pace',
+    path: '/calculator/sub-3-marathon-pace',
+    title: 'Sub-3 Hour Marathon Pace - Training Plan + Pace Chart | TrainPace',
+    description:
+      'Sub-3 marathon pace guide. Required pace is 4:16/km (6:52/mi). Get training zones, workout targets, and pacing strategy to break 3 hours.',
+    h1: 'Sub-3 Hour Marathon Pace',
+    intro:
+      'Breaking 3 hours requires 4:16/km (6:52/mi) pace. This is an elite amateur goal that demands consistent training, smart pacing, and precise execution.',
+    bullets: [
+      'Required pace: 4:16/km or 6:52/mile',
+      'Training zones for sub-3 fitness',
+      'Pacing strategy and fueling tips',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-3 Training Paces' },
+    initialInputs: { distance: '42.195' },
+    faq: [
+      {
+        question: 'What pace do I need to run sub-3?',
+        answer:
+          'You need to average 4:16/km (6:52/mile) or faster. Most successful sub-3 runners aim for 4:14-4:15/km to build in a small buffer.',
+      },
+      {
+        question: 'How hard is it to run a sub-3 marathon?',
+        answer:
+          'Very hard. Only about 4% of male marathon finishers and less than 1% of female finishers break 3 hours. It requires consistent training of 80-100+ km/week for most runners.',
+      },
+      {
+        question: 'What 5K or 10K time predicts sub-3?',
+        answer:
+          'A sub-18:30 5K or sub-38:00 10K suggests sub-3 marathon potential. A sub-1:25 half marathon is an even better predictor.',
+      },
+    ],
+    howTo: {
+      name: 'How to train for a sub-3 marathon',
+      description:
+        'Build the fitness and pacing skills to break 3 hours in the marathon.',
+      steps: [
+        { name: 'Build your base', text: 'Establish 80-100+ km weekly volume with mostly easy running.' },
+        { name: 'Add quality workouts', text: 'Include tempo runs at 4:00-4:05/km and long runs with marathon pace segments.' },
+        { name: 'Practice race pace', text: 'Run portions of long runs at 4:16/km to lock in the feel.' },
+        { name: 'Execute on race day', text: 'Start at 4:16-4:17/km, stay patient, and negative split if possible.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-3-15-marathon-pace'),
+    slug: 'sub-3-15-marathon-pace',
+    tool: 'pace',
+    path: '/calculator/sub-3-15-marathon-pace',
+    title: 'Sub-3:15 Marathon Pace - Required Pace + Training Zones | TrainPace',
+    description:
+      'Sub-3:15 marathon pace guide. Required pace is 4:37/km (7:26/mi). Get training zones and workout targets to break 3 hours 15 minutes.',
+    h1: 'Sub-3:15 Marathon Pace',
+    intro:
+      'Breaking 3:15 requires 4:37/km (7:26/mi) pace. This is a Boston Qualifying time for many age groups and a strong amateur achievement.',
+    bullets: [
+      'Required pace: 4:37/km or 7:26/mile',
+      'Boston Qualifier for many age groups',
+      'Training zones for sub-3:15 fitness',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-3:15 Training Paces' },
+    initialInputs: { distance: '42.195', hours: '3', minutes: '14', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace do I need for sub-3:15?',
+        answer:
+          'You need to average 4:37/km (7:26/mile) or faster. Aim for 4:35/km to build in a small cushion.',
+      },
+      {
+        question: 'Is sub-3:15 a Boston Qualifier?',
+        answer:
+          'Yes, for many age groups. Sub-3:15 qualifies men 45-49 and women 18-34 (with additional buffer time often needed).',
+      },
+      {
+        question: 'What half marathon predicts sub-3:15?',
+        answer:
+          'A sub-1:32 half marathon suggests you have sub-3:15 marathon potential with proper marathon-specific training.',
+      },
+    ],
+    howTo: {
+      name: 'How to train for a sub-3:15 marathon',
+      description:
+        'Build fitness to break 3:15 in the marathon.',
+      steps: [
+        { name: 'Build mileage', text: 'Target 65-85 km/week with most runs at easy pace.' },
+        { name: 'Add tempo work', text: 'Run tempo efforts at 4:20-4:25/km to build threshold.' },
+        { name: 'Long runs with pace work', text: 'Include marathon pace segments in your long runs.' },
+        { name: 'Race smart', text: 'Start conservatively and execute even splits.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-3-30-marathon-pace'),
+    slug: 'sub-3-30-marathon-pace',
+    tool: 'pace',
+    path: '/calculator/sub-3-30-marathon-pace',
+    title: 'Sub-3:30 Marathon Pace - Required Pace + Training Zones | TrainPace',
+    description:
+      'Sub-3:30 marathon pace guide. Required pace is 4:59/km (8:02/mi). Get training zones and pacing strategy to break 3 hours 30 minutes.',
+    h1: 'Sub-3:30 Marathon Pace',
+    intro:
+      'Breaking 3:30 requires just under 5:00/km (8:02/mi) pace. This is a popular goal and Boston Qualifier for several age groups.',
+    bullets: [
+      'Required pace: 4:59/km or 8:02/mile',
+      'Popular BQ time for many age groups',
+      'Achievable with consistent training',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-3:30 Training Paces' },
+    initialInputs: { distance: '42.195', hours: '3', minutes: '29', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace is needed for sub-3:30?',
+        answer:
+          'You need to average 4:59/km (8:02/mile). Aim for 4:57/km to have a small buffer.',
+      },
+      {
+        question: 'How many miles per week for sub-3:30?',
+        answer:
+          'Most runners need 50-70 km (30-45 miles) per week minimum. Quality matters as much as quantity.',
+      },
+      {
+        question: 'What half marathon predicts sub-3:30?',
+        answer:
+          'A sub-1:40 half marathon indicates sub-3:30 potential. A 1:35-1:38 half gives you a comfortable buffer.',
+      },
+    ],
+    howTo: {
+      name: 'How to train for a sub-3:30 marathon',
+      description:
+        'Build the endurance and speed to break 3:30.',
+      steps: [
+        { name: 'Consistent mileage', text: 'Build to 50-70 km/week over several months.' },
+        { name: 'Weekly long run', text: 'Progress long runs to 32-35 km, some with marathon pace.' },
+        { name: 'Tempo workouts', text: 'Run 20-30 minute tempo efforts at 4:40-4:50/km.' },
+        { name: 'Practice pacing', text: 'Know what 4:59/km feels like before race day.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-3-45-marathon-pace'),
+    slug: 'sub-3-45-marathon-pace',
+    tool: 'pace',
+    path: '/calculator/sub-3-45-marathon-pace',
+    title: 'Sub-3:45 Marathon Pace - Required Pace + Training Zones | TrainPace',
+    description:
+      'Sub-3:45 marathon pace guide. Required pace is 5:20/km (8:35/mi). Get training zones and strategy to break 3 hours 45 minutes.',
+    h1: 'Sub-3:45 Marathon Pace',
+    intro:
+      'Breaking 3:45 requires 5:20/km (8:35/mi) pace. This is an achievable goal for dedicated recreational runners.',
+    bullets: [
+      'Required pace: 5:20/km or 8:35/mile',
+      'Achievable intermediate goal',
+      'Stepping stone to sub-3:30',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-3:45 Training Paces' },
+    initialInputs: { distance: '42.195', hours: '3', minutes: '44', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-3:45 marathon?',
+        answer:
+          'Average 5:20/km (8:35/mile) or faster. Target 5:18/km for a small buffer.',
+      },
+      {
+        question: 'What half marathon time predicts sub-3:45?',
+        answer:
+          'A sub-1:47 half marathon suggests sub-3:45 potential. Around 1:42-1:45 gives comfortable fitness.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-3:45 marathon',
+      description:
+        'Training approach to break 3:45 in the marathon.',
+      steps: [
+        { name: 'Build base', text: 'Run 40-60 km/week consistently for 3-4 months.' },
+        { name: 'Long runs', text: 'Progress to 28-32 km long runs.' },
+        { name: 'Quality sessions', text: 'Include tempo and marathon pace work weekly.' },
+        { name: 'Race execution', text: 'Start at goal pace, fuel consistently, finish strong.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-4-30-marathon-pace'),
+    slug: 'sub-4-30-marathon-pace',
+    tool: 'pace',
+    path: '/calculator/sub-4-30-marathon-pace',
+    title: 'Sub-4:30 Marathon Pace - Required Pace + Training Zones | TrainPace',
+    description:
+      'Sub-4:30 marathon pace guide. Required pace is 6:24/km (10:18/mi). Training zones and pacing strategy for your first or fastest marathon.',
+    h1: 'Sub-4:30 Marathon Pace',
+    intro:
+      'Breaking 4:30 requires 6:24/km (10:18/mi) pace. This is an excellent goal for intermediate marathoners.',
+    bullets: [
+      'Required pace: 6:24/km or 10:18/mile',
+      'Great intermediate goal',
+      'Focus on fueling and pacing',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-4:30 Training Paces' },
+    initialInputs: { distance: '42.195', hours: '4', minutes: '29', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-4:30?',
+        answer:
+          'Average 6:24/km (10:18/mile). Give yourself a buffer by targeting 6:20/km.',
+      },
+      {
+        question: 'Is sub-4:30 a good marathon time?',
+        answer:
+          'Yes! Sub-4:30 puts you in the top half of marathon finishers and shows solid endurance fitness.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-4:30 marathon',
+      description:
+        'Training and race strategy for sub-4:30.',
+      steps: [
+        { name: 'Build consistency', text: 'Run 4-5 days per week for several months.' },
+        { name: 'Long runs', text: 'Build up to 25-30 km long runs.' },
+        { name: 'Practice fueling', text: 'Take gels every 30-45 minutes in training.' },
+        { name: 'Pace yourself', text: 'Start conservatively and stay consistent.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-5-marathon-pace'),
+    slug: 'sub-5-marathon-pace',
+    tool: 'pace',
+    path: '/calculator/sub-5-marathon-pace',
+    title: 'Sub-5 Hour Marathon Pace - Required Pace + Training Plan | TrainPace',
+    description:
+      'Sub-5 marathon pace guide. Required pace is 7:07/km (11:27/mi). Training zones and tips to break 5 hours in your marathon.',
+    h1: 'Sub-5 Hour Marathon Pace',
+    intro:
+      'Breaking 5 hours requires 7:07/km (11:27/mi) pace. This is a great first marathon goal that\'s achievable with proper training.',
+    bullets: [
+      'Required pace: 7:07/km or 11:27/mile',
+      'Great first marathon goal',
+      'Focus on finishing strong',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-5 Training Paces' },
+    initialInputs: { distance: '42.195', hours: '4', minutes: '59', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-5 marathon?',
+        answer:
+          'Average 7:07/km (11:27/mile). Target 7:00/km to build in a cushion.',
+      },
+      {
+        question: 'Is sub-5 a good marathon time?',
+        answer:
+          'Absolutely! Finishing a marathon is an achievement. Sub-5 shows you trained properly and executed well.',
+      },
+      {
+        question: 'How should I train for sub-5?',
+        answer:
+          'Focus on building endurance with long runs up to 25-28 km. Run most training at a comfortable, conversational pace.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-5 marathon',
+      description:
+        'Training approach for a sub-5 hour marathon.',
+      steps: [
+        { name: 'Build endurance', text: 'Run 4 days per week, gradually increasing long runs.' },
+        { name: 'Stay consistent', text: 'Consistency matters more than speed.' },
+        { name: 'Practice fueling', text: 'Learn to take gels and water during long runs.' },
+        { name: 'Walk if needed', text: 'Planned walk breaks are fine - just keep moving forward.' },
+      ],
+    },
+  },
+
+  // ==========================================================================
+  // Half Marathon Time Goal Pages
+  // ==========================================================================
+  {
+    id: generatePageId('pace', 'sub-1-20-half-marathon-pace'),
+    slug: 'sub-1-20-half-marathon-pace',
+    tool: 'pace',
+    path: '/calculator/sub-1-20-half-marathon-pace',
+    title: 'Sub-1:20 Half Marathon Pace - Training Zones + Strategy | TrainPace',
+    description:
+      'Sub-1:20 half marathon pace guide. Required pace is 3:47/km (6:06/mi). Training zones and race strategy for elite amateur half marathon.',
+    h1: 'Sub-1:20 Half Marathon Pace',
+    intro:
+      'Breaking 1:20 requires 3:47/km (6:06/mi) pace. This is a highly competitive time that demands serious training.',
+    bullets: [
+      'Required pace: 3:47/km or 6:06/mile',
+      'Elite amateur achievement',
+      'Requires high-volume training',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-1:20 Training Paces' },
+    initialInputs: { distance: '21.0975', hours: '1', minutes: '19', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-1:20 half?',
+        answer:
+          'Average 3:47/km (6:06/mile). Most aim for 3:45-3:46/km to build a cushion.',
+      },
+      {
+        question: 'What 5K predicts sub-1:20 half?',
+        answer:
+          'A sub-17:00 5K suggests sub-1:20 half marathon potential.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-1:20 half marathon',
+      description:
+        'Training for an elite amateur half marathon time.',
+      steps: [
+        { name: 'High mileage', text: 'Run 80-100+ km/week consistently.' },
+        { name: 'Speed work', text: 'Include VO2max intervals and threshold work.' },
+        { name: 'Race tactics', text: 'Even pacing with a strong final 5K.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-1-30-half-marathon-pace'),
+    slug: 'sub-1-30-half-marathon-pace',
+    tool: 'pace',
+    path: '/calculator/sub-1-30-half-marathon-pace',
+    title: 'Sub-1:30 Half Marathon Pace - Training Zones + Plan | TrainPace',
+    description:
+      'Sub-1:30 half marathon pace guide. Required pace is 4:16/km (6:52/mi). Get training zones and race strategy to break 90 minutes.',
+    h1: 'Sub-1:30 Half Marathon Pace',
+    intro:
+      'Breaking 90 minutes requires 4:16/km (6:52/mi) pace. This is a classic benchmark that requires dedicated training.',
+    bullets: [
+      'Required pace: 4:16/km or 6:52/mile',
+      'Classic running milestone',
+      'Requires consistent training',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-90 Training Paces' },
+    initialInputs: { distance: '21.0975', hours: '1', minutes: '29', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-1:30 half?',
+        answer:
+          'Average 4:16/km (6:52/mile). Target 4:14/km for a small buffer.',
+      },
+      {
+        question: 'What 10K predicts sub-1:30 half?',
+        answer:
+          'A sub-40:00 10K suggests sub-90 half marathon fitness.',
+      },
+      {
+        question: 'How many miles per week for sub-90?',
+        answer:
+          'Most runners need 50-70 km (30-45 miles) weekly minimum with quality threshold work.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-90 half marathon',
+      description:
+        'Training approach to break 90 minutes.',
+      steps: [
+        { name: 'Build base', text: 'Run 50-70 km/week consistently.' },
+        { name: 'Tempo work', text: 'Regular threshold runs at 4:05-4:10/km.' },
+        { name: 'Long runs', text: 'Build to 18-22 km long runs with pace work.' },
+        { name: 'Race execution', text: 'Even splits or slight negative split.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-1-45-half-marathon-pace'),
+    slug: 'sub-1-45-half-marathon-pace',
+    tool: 'pace',
+    path: '/calculator/sub-1-45-half-marathon-pace',
+    title: 'Sub-1:45 Half Marathon Pace - Training Zones + Strategy | TrainPace',
+    description:
+      'Sub-1:45 half marathon pace guide. Required pace is 4:58/km (8:00/mi). Training zones and tips to break 1 hour 45 minutes.',
+    h1: 'Sub-1:45 Half Marathon Pace',
+    intro:
+      'Breaking 1:45 requires just under 5:00/km (8:00/mi) pace. This is an achievable goal for dedicated recreational runners.',
+    bullets: [
+      'Required pace: 4:58/km or 8:00/mile',
+      'Popular intermediate goal',
+      'Stepping stone to sub-90',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-1:45 Training Paces' },
+    initialInputs: { distance: '21.0975', hours: '1', minutes: '44', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-1:45 half?',
+        answer:
+          'Average 4:58/km (8:00/mile). Aim for 4:55/km for a comfortable buffer.',
+      },
+      {
+        question: 'What 10K predicts sub-1:45 half?',
+        answer:
+          'A sub-47:00 10K indicates sub-1:45 half marathon potential.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-1:45 half marathon',
+      description:
+        'Training approach for sub-1:45.',
+      steps: [
+        { name: 'Consistent training', text: 'Run 4-5 days per week.' },
+        { name: 'Build to 15-18 km long runs', text: 'Practice sustained running.' },
+        { name: 'Add tempo work', text: 'Run 15-20 min tempos at 4:45/km.' },
+        { name: 'Race smart', text: 'Start at goal pace and stay consistent.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-2-hour-half-marathon-pace'),
+    slug: 'sub-2-hour-half-marathon-pace',
+    tool: 'pace',
+    path: '/calculator/sub-2-hour-half-marathon-pace',
+    title: 'Sub-2 Hour Half Marathon Pace - Training Plan + Tips | TrainPace',
+    description:
+      'Sub-2 hour half marathon pace guide. Required pace is 5:41/km (9:09/mi). Training zones and strategy to break 2 hours.',
+    h1: 'Sub-2 Hour Half Marathon Pace',
+    intro:
+      'Breaking 2 hours requires 5:41/km (9:09/mi) pace. This is an excellent first half marathon goal.',
+    bullets: [
+      'Required pace: 5:41/km or 9:09/mile',
+      'Great first half marathon goal',
+      'Achievable with consistent training',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-2 Hour Training Paces' },
+    initialInputs: { distance: '21.0975', hours: '1', minutes: '59', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-2 hour half?',
+        answer:
+          'Average 5:41/km (9:09/mile). Target 5:38/km for a small buffer.',
+      },
+      {
+        question: 'Is sub-2 hour a good half marathon time?',
+        answer:
+          'Yes! Breaking 2 hours is a significant achievement and shows solid running fitness.',
+      },
+      {
+        question: 'How should I train for sub-2?',
+        answer:
+          'Run 4-5 days per week, build long runs to 16-18 km, and practice running at goal pace.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-2 hour half marathon',
+      description:
+        'Training approach for sub-2 hours.',
+      steps: [
+        { name: 'Build endurance', text: 'Progress long runs to 16-18 km.' },
+        { name: 'Consistent running', text: 'Run 4-5 days per week for several months.' },
+        { name: 'Practice race pace', text: 'Know what 5:41/km feels like.' },
+        { name: 'Start conservative', text: 'Better to speed up late than slow down.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-2-15-half-marathon-pace'),
+    slug: 'sub-2-15-half-marathon-pace',
+    tool: 'pace',
+    path: '/calculator/sub-2-15-half-marathon-pace',
+    title: 'Sub-2:15 Half Marathon Pace - Training Zones + Tips | TrainPace',
+    description:
+      'Sub-2:15 half marathon pace guide. Required pace is 6:24/km (10:18/mi). Training zones for intermediate half marathon runners.',
+    h1: 'Sub-2:15 Half Marathon Pace',
+    intro:
+      'Breaking 2:15 requires 6:24/km (10:18/mi) pace. This is a great intermediate goal before targeting sub-2.',
+    bullets: [
+      'Required pace: 6:24/km or 10:18/mile',
+      'Good intermediate target',
+      'Stepping stone to sub-2',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-2:15 Training Paces' },
+    initialInputs: { distance: '21.0975', hours: '2', minutes: '14', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-2:15 half?',
+        answer:
+          'Average 6:24/km (10:18/mile). Target 6:20/km for a buffer.',
+      },
+      {
+        question: 'Is sub-2:15 a good beginner goal?',
+        answer:
+          'Yes! For newer runners, sub-2:15 is an achievable first half marathon goal.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-2:15 half marathon',
+      description:
+        'Training approach for sub-2:15.',
+      steps: [
+        { name: 'Build base', text: 'Run consistently 3-4 days per week.' },
+        { name: 'Long runs', text: 'Build up to 14-16 km long runs.' },
+        { name: 'Stay consistent', text: 'Consistency matters more than speed.' },
+        { name: 'Race your pace', text: 'Start at 6:24/km and hold steady.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-2-30-half-marathon-pace'),
+    slug: 'sub-2-30-half-marathon-pace',
+    tool: 'pace',
+    path: '/calculator/sub-2-30-half-marathon-pace',
+    title: 'Sub-2:30 Half Marathon Pace - Training Plan + Tips | TrainPace',
+    description:
+      'Sub-2:30 half marathon pace guide. Required pace is 7:07/km (11:27/mi). Training tips for completing your first half marathon strong.',
+    h1: 'Sub-2:30 Half Marathon Pace',
+    intro:
+      'Breaking 2:30 requires 7:07/km (11:27/mi) pace. This is a realistic first half marathon goal.',
+    bullets: [
+      'Required pace: 7:07/km or 11:27/mile',
+      'Great first half marathon goal',
+      'Focus on finishing strong',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-2:30 Training Paces' },
+    initialInputs: { distance: '21.0975', hours: '2', minutes: '29', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-2:30 half?',
+        answer:
+          'Average 7:07/km (11:27/mile). Give yourself cushion with 7:00/km.',
+      },
+      {
+        question: 'Can I walk and still break 2:30?',
+        answer:
+          'Short walk breaks are fine. Use a run-walk strategy (run 4-5 min, walk 1 min) if needed.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-2:30 half marathon',
+      description:
+        'Training approach for sub-2:30.',
+      steps: [
+        { name: 'Build slowly', text: 'Start running 3 days per week.' },
+        { name: 'Long runs', text: 'Build up to 12-14 km long runs.' },
+        { name: 'Run-walk is okay', text: 'Use walk breaks if they help you go farther.' },
+        { name: 'Pace yourself', text: 'Start easy and finish strong.' },
+      ],
+    },
+  },
+
+  // ==========================================================================
+  // 5K Time Goal Pages
+  // ==========================================================================
+  {
+    id: generatePageId('pace', 'sub-18-5k-pace'),
+    slug: 'sub-18-5k-pace',
+    tool: 'pace',
+    path: '/calculator/sub-18-5k-pace',
+    title: 'Sub-18 Minute 5K Pace - Training Plan + Workouts | TrainPace',
+    description:
+      'Sub-18 5K pace guide. Required pace is 3:36/km (5:47/mi). Training zones and interval workouts to break 18 minutes.',
+    h1: 'Sub-18 Minute 5K Pace',
+    intro:
+      'Breaking 18 minutes requires 3:36/km (5:47/mi) pace. This is a competitive goal that requires speed work and race experience.',
+    bullets: [
+      'Required pace: 3:36/km or 5:47/mile',
+      'Competitive club-level time',
+      'Requires structured speed work',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-18 Training Paces' },
+    initialInputs: { distance: '5', minutes: '17', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-18 5K?',
+        answer:
+          'Average 3:36/km (5:47/mile). Most aim for 3:34-3:35/km to have a buffer.',
+      },
+      {
+        question: 'How do I train for sub-18?',
+        answer:
+          'Combine interval training (400m-1000m repeats), tempo runs, and easy mileage. Volume of 50-70 km/week typically needed.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-18 5K',
+      description:
+        'Training approach for sub-18 minutes.',
+      steps: [
+        { name: 'Build aerobic base', text: 'Run 50+ km/week with mostly easy running.' },
+        { name: 'Interval training', text: 'Run 400m-1K repeats at faster than race pace.' },
+        { name: 'Tempo runs', text: 'Regular threshold work at 3:50-4:00/km.' },
+        { name: 'Race tactics', text: 'Even pacing or slight negative split.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-25-5k-pace'),
+    slug: 'sub-25-5k-pace',
+    tool: 'pace',
+    path: '/calculator/sub-25-5k-pace',
+    title: 'Sub-25 Minute 5K Pace - Training Plan + Tips | TrainPace',
+    description:
+      'Sub-25 5K pace guide. Required pace is 5:00/km (8:03/mi). Training zones and tips to break 25 minutes in the 5K.',
+    h1: 'Sub-25 Minute 5K Pace',
+    intro:
+      'Breaking 25 minutes requires exactly 5:00/km (8:03/mi) pace. This is a satisfying milestone for recreational runners.',
+    bullets: [
+      'Required pace: 5:00/km or 8:03/mile',
+      'Popular recreational milestone',
+      'Achievable with consistent training',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-25 Training Paces' },
+    initialInputs: { distance: '5', minutes: '24', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-25 5K?',
+        answer:
+          'Average 5:00/km (8:03/mile). Target 4:55/km for a comfortable cushion.',
+      },
+      {
+        question: 'How long to get to sub-25?',
+        answer:
+          'Varies by starting fitness. Many runners can achieve sub-25 within 3-6 months of consistent training.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-25 5K',
+      description:
+        'Training approach for sub-25 minutes.',
+      steps: [
+        { name: 'Run consistently', text: 'Run 3-4 days per week.' },
+        { name: 'Add one faster run', text: 'Include intervals or tempo once per week.' },
+        { name: 'Build to 8-10 km long runs', text: 'Endurance helps speed.' },
+        { name: 'Practice race pace', text: 'Know what 5:00/km feels like.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-30-5k-pace'),
+    slug: 'sub-30-5k-pace',
+    tool: 'pace',
+    path: '/calculator/sub-30-5k-pace',
+    title: 'Sub-30 Minute 5K Pace - Training Plan + Tips | TrainPace',
+    description:
+      'Sub-30 5K pace guide. Required pace is 6:00/km (9:39/mi). Training tips to break 30 minutes in your first 5K.',
+    h1: 'Sub-30 Minute 5K Pace',
+    intro:
+      'Breaking 30 minutes requires 6:00/km (9:39/mi) pace. This is an excellent first 5K goal.',
+    bullets: [
+      'Required pace: 6:00/km or 9:39/mile',
+      'Great first 5K goal',
+      'Focus on consistent running',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-30 Training Paces' },
+    initialInputs: { distance: '5', minutes: '29', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-30 5K?',
+        answer:
+          'Average 6:00/km (9:39/mile). Aim for 5:55/km for a small buffer.',
+      },
+      {
+        question: 'Is sub-30 a good 5K time?',
+        answer:
+          'Yes! Breaking 30 minutes is a meaningful achievement for beginner runners.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-30 5K',
+      description:
+        'Training approach for sub-30 minutes.',
+      steps: [
+        { name: 'Run regularly', text: 'Run 3 days per week.' },
+        { name: 'Build up to running 5K', text: 'Use run-walk intervals if needed.' },
+        { name: 'Gradually increase pace', text: 'As fitness improves, speed follows.' },
+        { name: 'Run your own race', text: 'Don\'t go out too fast.' },
+      ],
+    },
+  },
+
+  // ==========================================================================
+  // 10K Time Goal Pages
+  // ==========================================================================
+  {
+    id: generatePageId('pace', 'sub-40-10k-pace'),
+    slug: 'sub-40-10k-pace',
+    tool: 'pace',
+    path: '/calculator/sub-40-10k-pace',
+    title: 'Sub-40 Minute 10K Pace - Training Plan + Workouts | TrainPace',
+    description:
+      'Sub-40 10K pace guide. Required pace is 4:00/km (6:26/mi). Training zones and workouts to break 40 minutes.',
+    h1: 'Sub-40 Minute 10K Pace',
+    intro:
+      'Breaking 40 minutes requires 4:00/km (6:26/mi) pace. This is a competitive time that requires dedicated training.',
+    bullets: [
+      'Required pace: 4:00/km or 6:26/mile',
+      'Competitive club-level time',
+      'Requires structured training',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-40 Training Paces' },
+    initialInputs: { distance: '10', minutes: '39', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-40 10K?',
+        answer:
+          'Average 4:00/km (6:26/mile). Aim for 3:58/km for a buffer.',
+      },
+      {
+        question: 'What 5K predicts sub-40 10K?',
+        answer:
+          'A sub-19:00 5K suggests sub-40 10K potential.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-40 10K',
+      description:
+        'Training approach for sub-40 minutes.',
+      steps: [
+        { name: 'Build mileage', text: 'Run 50-70 km/week consistently.' },
+        { name: 'Tempo work', text: 'Regular tempo runs at 3:50-3:55/km.' },
+        { name: 'Intervals', text: 'Include 1K repeats at 3:45-3:50/km.' },
+        { name: 'Race smart', text: 'Even pacing throughout.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-45-10k-pace'),
+    slug: 'sub-45-10k-pace',
+    tool: 'pace',
+    path: '/calculator/sub-45-10k-pace',
+    title: 'Sub-45 Minute 10K Pace - Training Plan + Tips | TrainPace',
+    description:
+      'Sub-45 10K pace guide. Required pace is 4:30/km (7:15/mi). Training zones to break 45 minutes in the 10K.',
+    h1: 'Sub-45 Minute 10K Pace',
+    intro:
+      'Breaking 45 minutes requires 4:30/km (7:15/mi) pace. This is a great intermediate goal.',
+    bullets: [
+      'Required pace: 4:30/km or 7:15/mile',
+      'Popular intermediate milestone',
+      'Stepping stone to sub-40',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-45 Training Paces' },
+    initialInputs: { distance: '10', minutes: '44', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-45 10K?',
+        answer:
+          'Average 4:30/km (7:15/mile). Target 4:27/km for a small buffer.',
+      },
+      {
+        question: 'What 5K predicts sub-45 10K?',
+        answer:
+          'A sub-21:30 5K suggests sub-45 10K potential.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-45 10K',
+      description:
+        'Training approach for sub-45.',
+      steps: [
+        { name: 'Run 4-5 days/week', text: 'Build consistent training habits.' },
+        { name: 'One tempo run weekly', text: 'Run 15-20 min at 4:20/km.' },
+        { name: 'Long runs', text: 'Build to 14-16 km long runs.' },
+        { name: 'Practice race pace', text: 'Know what 4:30/km feels like.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-50-10k-pace'),
+    slug: 'sub-50-10k-pace',
+    tool: 'pace',
+    path: '/calculator/sub-50-10k-pace',
+    title: 'Sub-50 Minute 10K Pace - Training Plan + Tips | TrainPace',
+    description:
+      'Sub-50 10K pace guide. Required pace is 5:00/km (8:03/mi). Training zones and tips to break 50 minutes.',
+    h1: 'Sub-50 Minute 10K Pace',
+    intro:
+      'Breaking 50 minutes requires exactly 5:00/km (8:03/mi) pace. This is an excellent goal for recreational runners.',
+    bullets: [
+      'Required pace: 5:00/km or 8:03/mile',
+      'Popular recreational milestone',
+      'Achievable with consistent training',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-50 Training Paces' },
+    initialInputs: { distance: '10', minutes: '49', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-50 10K?',
+        answer:
+          'Average 5:00/km (8:03/mile). Target 4:55/km for a comfortable buffer.',
+      },
+      {
+        question: 'What 5K predicts sub-50 10K?',
+        answer:
+          'A sub-24:00 5K suggests sub-50 10K potential.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-50 10K',
+      description:
+        'Training approach for sub-50.',
+      steps: [
+        { name: 'Run consistently', text: 'Run 3-4 days per week.' },
+        { name: 'Build to 12 km long runs', text: 'Endurance helps speed.' },
+        { name: 'One faster run weekly', text: 'Include tempo or intervals.' },
+        { name: 'Start conservatively', text: 'Even pacing is key.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'sub-60-10k-pace'),
+    slug: 'sub-60-10k-pace',
+    tool: 'pace',
+    path: '/calculator/sub-60-10k-pace',
+    title: 'Sub-60 Minute 10K Pace - Training Plan + Tips | TrainPace',
+    description:
+      'Sub-60 10K pace guide. Required pace is 6:00/km (9:39/mi). Training tips to break 1 hour in the 10K.',
+    h1: 'Sub-60 Minute 10K Pace',
+    intro:
+      'Breaking 60 minutes requires 6:00/km (9:39/mi) pace. This is a great first 10K goal.',
+    bullets: [
+      'Required pace: 6:00/km or 9:39/mile',
+      'Great first 10K goal',
+      'Focus on consistent running',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Sub-60 Training Paces' },
+    initialInputs: { distance: '10', minutes: '59', seconds: '59' },
+    faq: [
+      {
+        question: 'What pace for sub-60 10K?',
+        answer:
+          'Average 6:00/km (9:39/mile). Target 5:55/km for a small buffer.',
+      },
+      {
+        question: 'Is sub-60 a good 10K time?',
+        answer:
+          'Yes! Breaking an hour is a meaningful achievement for beginner to intermediate runners.',
+      },
+    ],
+    howTo: {
+      name: 'How to run a sub-60 10K',
+      description:
+        'Training approach for sub-60.',
+      steps: [
+        { name: 'Build endurance', text: 'Run 3 days per week consistently.' },
+        { name: 'Progress slowly', text: 'Add distance gradually each week.' },
+        { name: 'Practice 10K distance', text: 'Run at least one 10K before race day.' },
+        { name: 'Pace yourself', text: 'Start at 6:00/km and hold steady.' },
+      ],
+    },
+  },
 ];
 
 // =============================================================================
@@ -556,9 +1399,9 @@ export const raceSeoPages: SeoPageConfig[] = [
   makeRacePage('London Marathon', 'london-marathon', 'london'),
   makeRacePage('Tokyo Marathon', 'tokyo-marathon', 'tokyo'),
   makeRacePage('Sydney Marathon', 'sydney-marathon', 'sydney'),
-  makeRacePage('Paris Marathon', 'paris-marathon'),
-  makeRacePage('Amsterdam Marathon', 'amsterdam-marathon'),
-  makeRacePage('Valencia Marathon', 'valencia-marathon'),
+  makeRacePage('Paris Marathon', 'paris-marathon', 'paris'),
+  makeRacePage('Amsterdam Marathon', 'amsterdam-marathon', 'amsterdam'),
+  makeRacePage('Valencia Marathon', 'valencia-marathon', 'valencia'),
   makeRacePage('Barcelona Marathon', 'barcelona-marathon'),
   makeRacePage('Rome Marathon', 'rome-marathon'),
   makeRacePage('Vienna City Marathon', 'vienna-city-marathon'),
@@ -587,12 +1430,12 @@ export const raceSeoPages: SeoPageConfig[] = [
   makeRacePage('Austin Marathon', 'austin-marathon'),
   makeRacePage('Miami Marathon', 'miami-marathon'),
   makeRacePage('Philadelphia Marathon', 'philadelphia-marathon'),
-  makeRacePage('Marine Corps Marathon', 'marine-corps-marathon'),
+  makeRacePage('Marine Corps Marathon', 'marine-corps-marathon', 'marine-corps'),
   makeRacePage('Twin Cities Marathon', 'twin-cities-marathon'),
   makeRacePage('Detroit Free Press Marathon', 'detroit-marathon'),
   makeRacePage('Indianapolis Monumental Marathon', 'indianapolis-monumental-marathon'),
-  makeRacePage('California International Marathon', 'california-international-marathon'),
-  makeRacePage('Big Sur International Marathon', 'big-sur-marathon'),
+  makeRacePage('California International Marathon', 'california-international-marathon', 'california-international'),
+  makeRacePage('Big Sur International Marathon', 'big-sur-marathon', 'big-sur'),
   makeRacePage('Grandmas Marathon', 'grandmas-marathon'),
   makeRacePage('St George Marathon', 'st-george-marathon'),
   makeRacePage('Reykjavik Marathon', 'reykjavik-marathon'),
@@ -604,7 +1447,7 @@ export const raceSeoPages: SeoPageConfig[] = [
   makeRacePage('Vancouver Marathon', 'vancouver-marathon'),
   makeRacePage('Ottawa Marathon', 'ottawa-marathon'),
   makeRacePage('Montreal Marathon', 'montreal-marathon'),
-  makeRacePage('Rotterdam Marathon', 'rotterdam-marathon'),
+  makeRacePage('Rotterdam Marathon', 'rotterdam-marathon', 'rotterdam'),
   makeRacePage('Manchester Marathon', 'manchester-marathon'),
   makeRacePage('Brighton Marathon', 'brighton-marathon'),
   makeRacePage('Geneva Marathon', 'geneva-marathon'),

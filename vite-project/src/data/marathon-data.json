@@ -468,5 +468,393 @@
       { "lat": -33.8678, "lng": 151.2223, "ele": 18, "dist": 42.0 },
       { "lat": -33.8568, "lng": 151.2153, "ele": 15, "dist": 42.195 }
     ]
+  },
+  "paris": {
+    "id": "8",
+    "name": "Paris Marathon",
+    "city": "Paris",
+    "country": "France",
+    "distance": 42.195,
+    "elevationGain": 135,
+    "elevationLoss": 130,
+    "startElevation": 40,
+    "endElevation": 45,
+    "slug": "paris-marathon",
+    "raceDate": "April 5, 2026",
+    "website": "https://www.schneiderelectricparismarathon.com/",
+    "description": "The Paris Marathon is one of the world's most scenic marathons, starting on the Champs-Élysées and finishing near the Arc de Triomphe. The course passes iconic landmarks including the Louvre, Place de la Bastille, and the Bois de Vincennes.",
+    "tips": [
+      "Start at Champs-Élysées is electric - don't go out too fast",
+      "Cobblestones in some sections require careful footing",
+      "Bois de Vincennes (miles 8-15) can feel lonely after city crowds",
+      "Fast finish downhill toward Arc de Triomphe"
+    ],
+    "paceStrategy": {
+      "type": "even-pace",
+      "summary": "Paris is relatively flat with a few gentle climbs. The course suits even pacing, but watch out for cobblestones and the quieter stretch through the parks.",
+      "segments": [
+        { "miles": "1-4", "terrain": "Flat (Champs-Élysées to Bastille)", "advice": "Iconic start. Huge crowds. Don't get caught up in the excitement." },
+        { "miles": "5-10", "terrain": "Bois de Vincennes", "advice": "Park section. Crowds thin. Stay mentally engaged." },
+        { "miles": "11-16", "terrain": "Return through eastern Paris", "advice": "Back in the city. Crowds return. Check your splits." },
+        { "miles": "17-21", "terrain": "Along the Seine", "advice": "Beautiful scenery. Some cobblestones. Stay patient." },
+        { "miles": "22-24", "terrain": "Bois de Boulogne", "advice": "Final park. Dig deep. Finish approaching." },
+        { "miles": "25-26", "terrain": "Avenue Foch to Arc de Triomphe", "advice": "Fast downhill finish. Give it everything." }
+      ]
+    },
+    "fuelingNotes": "French aid stations have excellent variety but may differ from what you've practiced with. Bring your own gels. The park sections (Vincennes, Boulogne) have consistent aid stations.",
+    "faq": [
+      { "question": "Is the Paris Marathon a good PR course?", "answer": "Yes, Paris is relatively flat (135m gain) and can produce fast times. The cobblestone sections require some caution, but overall it's comparable to London for speed." },
+      { "question": "What landmarks do you pass in the Paris Marathon?", "answer": "You'll start at the Champs-Élysées, pass the Louvre, Place de la Bastille, run through Bois de Vincennes and Bois de Boulogne, along the Seine, and finish near the Arc de Triomphe." },
+      { "question": "What's the weather like for Paris Marathon?", "answer": "April weather is variable: typically 8-16°C (46-61°F). Can be chilly at the start and warm by finish. Prepare for potential rain." },
+      { "question": "How hard is it to get into Paris Marathon?", "answer": "Easier than London or Tokyo. Registration typically opens in the fall and sells out in days to weeks. No lottery - first come, first served." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 48.8698, "lng": 2.3078, "ele": 40, "dist": 0 },
+      { "lat": 48.8656, "lng": 2.3234, "ele": 38, "dist": 2.1 },
+      { "lat": 48.8534, "lng": 2.3456, "ele": 42, "dist": 4.8 },
+      { "lat": 48.8456, "lng": 2.3678, "ele": 45, "dist": 7.2 },
+      { "lat": 48.8378, "lng": 2.3912, "ele": 48, "dist": 10.1 },
+      { "lat": 48.8312, "lng": 2.4134, "ele": 52, "dist": 13.5 },
+      { "lat": 48.8389, "lng": 2.4345, "ele": 55, "dist": 16.2 },
+      { "lat": 48.8478, "lng": 2.4123, "ele": 50, "dist": 19.1 },
+      { "lat": 48.8567, "lng": 2.3901, "ele": 45, "dist": 22.4 },
+      { "lat": 48.8623, "lng": 2.3678, "ele": 42, "dist": 25.3 },
+      { "lat": 48.8589, "lng": 2.3456, "ele": 38, "dist": 28.7 },
+      { "lat": 48.8534, "lng": 2.3234, "ele": 35, "dist": 31.5 },
+      { "lat": 48.8612, "lng": 2.3012, "ele": 40, "dist": 34.8 },
+      { "lat": 48.8689, "lng": 2.2834, "ele": 45, "dist": 37.6 },
+      { "lat": 48.8745, "lng": 2.2756, "ele": 48, "dist": 39.8 },
+      { "lat": 48.8738, "lng": 2.2945, "ele": 45, "dist": 42.195 }
+    ]
+  },
+  "amsterdam": {
+    "id": "9",
+    "name": "Amsterdam Marathon",
+    "city": "Amsterdam",
+    "country": "Netherlands",
+    "distance": 42.195,
+    "elevationGain": 25,
+    "elevationLoss": 25,
+    "startElevation": 0,
+    "endElevation": 0,
+    "slug": "amsterdam-marathon",
+    "raceDate": "October 19, 2025",
+    "website": "https://www.tcsamsterdammarathon.nl/",
+    "description": "The TCS Amsterdam Marathon is one of the flattest marathons in the world, starting and finishing at the Olympic Stadium. Known for fast times, the course loops through the city and along the Amstel River.",
+    "tips": [
+      "One of the flattest courses in the world - perfect for PRs",
+      "Start and finish at historic 1928 Olympic Stadium",
+      "October weather is usually ideal but can be windy",
+      "Loop course means you can use the Olympic Stadium for warm-up"
+    ],
+    "paceStrategy": {
+      "type": "even-pace",
+      "summary": "Amsterdam is pancake flat - one of the flattest in the world. Lock into goal pace and execute. Watch for wind along the Amstel River.",
+      "segments": [
+        { "miles": "1-4", "terrain": "Flat (Olympic Stadium to city)", "advice": "Start in the historic stadium. Find your pace group early." },
+        { "miles": "5-10", "terrain": "Flat (City center)", "advice": "Through Amsterdam's canals. Consistent footing. Lock in." },
+        { "miles": "11-18", "terrain": "Flat (Amstel River)", "advice": "Out and back along the river. Can be exposed to wind. Draft if possible." },
+        { "miles": "19-23", "terrain": "Flat (Return)", "advice": "Heading back. Check your splits. Execute the plan." },
+        { "miles": "24-26", "terrain": "Flat (Olympic Stadium finish)", "advice": "Finish on the stadium track. Iconic ending. Push to the line." }
+      ]
+    },
+    "fuelingNotes": "The flat course makes pacing and fueling predictable. Stick to your practiced plan. Wind along the river can increase energy expenditure - account for this.",
+    "faq": [
+      { "question": "How flat is the Amsterdam Marathon?", "answer": "Amsterdam has just 25m (82ft) of elevation gain - it's essentially sea level flat. One of the 5 flattest major marathons in the world." },
+      { "question": "Is Amsterdam good for a PR?", "answer": "Excellent! The flat course, moderate October weather, and fast pack running make Amsterdam one of the best PR courses. Many runners set personal bests here." },
+      { "question": "What's unique about Amsterdam Marathon?", "answer": "The start and finish in the 1928 Olympic Stadium is iconic. You finish running on the track where athletes competed nearly 100 years ago." },
+      { "question": "How does Amsterdam compare to Berlin?", "answer": "Both are fast and flat. Berlin has slightly more prestige and more world records, but Amsterdam is equally fast and easier to enter." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 52.3434, "lng": 4.8565, "ele": 0, "dist": 0 },
+      { "lat": 52.3512, "lng": 4.8678, "ele": 0, "dist": 2.5 },
+      { "lat": 52.3623, "lng": 4.8789, "ele": 0, "dist": 5.2 },
+      { "lat": 52.3734, "lng": 4.8912, "ele": 0, "dist": 8.1 },
+      { "lat": 52.3845, "lng": 4.9034, "ele": 0, "dist": 11.3 },
+      { "lat": 52.3723, "lng": 4.9156, "ele": 0, "dist": 14.7 },
+      { "lat": 52.3589, "lng": 4.9278, "ele": 0, "dist": 18.2 },
+      { "lat": 52.3456, "lng": 4.9156, "ele": 0, "dist": 21.5 },
+      { "lat": 52.3378, "lng": 4.9034, "ele": 0, "dist": 24.8 },
+      { "lat": 52.3289, "lng": 4.8912, "ele": 0, "dist": 28.3 },
+      { "lat": 52.3345, "lng": 4.8789, "ele": 0, "dist": 31.6 },
+      { "lat": 52.3412, "lng": 4.8678, "ele": 0, "dist": 35.1 },
+      { "lat": 52.3478, "lng": 4.8565, "ele": 0, "dist": 38.9 },
+      { "lat": 52.3434, "lng": 4.8565, "ele": 0, "dist": 42.195 }
+    ]
+  },
+  "valencia": {
+    "id": "10",
+    "name": "Valencia Marathon",
+    "city": "Valencia",
+    "country": "Spain",
+    "distance": 42.195,
+    "elevationGain": 28,
+    "elevationLoss": 28,
+    "startElevation": 12,
+    "endElevation": 12,
+    "slug": "valencia-marathon",
+    "raceDate": "December 7, 2025",
+    "website": "https://www.valenciaciudaddelrunning.com/en/marathon/",
+    "description": "The Valencia Marathon Trinidad Alfonso is known as the 'World's Fastest City' due to its exceptional flat course, ideal December weather, and fast times. The course passes the futuristic City of Arts and Sciences.",
+    "tips": [
+      "Self-proclaimed 'World's Fastest City' - justifiably so",
+      "December weather is nearly perfect for marathons",
+      "City of Arts and Sciences provides stunning backdrop",
+      "Fast flat course with excellent crowd support"
+    ],
+    "paceStrategy": {
+      "type": "even-pace",
+      "summary": "Valencia's flat course and perfect December weather make it ideal for even pacing and PRs. This is a course built for speed.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Flat (City center)", "advice": "Start controlled. Great atmosphere but don't go out too fast." },
+        { "miles": "6-12", "terrain": "Flat (Northern loop)", "advice": "Through residential areas. Settle into rhythm." },
+        { "miles": "13-18", "terrain": "Flat (Waterfront)", "advice": "Along the old Turia riverbed. Beautiful and fast." },
+        { "miles": "19-23", "terrain": "Flat (City of Arts and Sciences)", "advice": "Stunning modern architecture. Stay focused despite scenery." },
+        { "miles": "24-26", "terrain": "Flat (Finish)", "advice": "Fast finish. If you ran smart, you can PR here." }
+      ]
+    },
+    "fuelingNotes": "Perfect conditions for precise fueling. The predictable flat terrain means consistent energy expenditure. Follow your practiced plan exactly.",
+    "faq": [
+      { "question": "Why is Valencia called the fastest marathon?", "answer": "Valencia has produced numerous national records and personal bests. The combination of flat course (28m gain), ideal December weather (10-15°C), and organized pacers creates perfect PR conditions." },
+      { "question": "How does Valencia compare to Berlin for a PR?", "answer": "Valencia is arguably better for PRs - it's flatter (28m vs 67m), has better weather (December vs September), and has less crowding. Many elite runners choose Valencia for record attempts." },
+      { "question": "What's the weather like in Valencia in December?", "answer": "December offers near-perfect marathon conditions: 8-15°C (46-59°F), low humidity, minimal wind. Rarely hot, occasionally chilly at the start." },
+      { "question": "How hard is it to get into Valencia Marathon?", "answer": "Moderately competitive. Registration opens in spring and sells out within months. Faster than Tokyo/London, slower than Chicago." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 39.4699, "lng": -0.3763, "ele": 12, "dist": 0 },
+      { "lat": 39.4756, "lng": -0.3645, "ele": 12, "dist": 2.4 },
+      { "lat": 39.4823, "lng": -0.3523, "ele": 12, "dist": 5.1 },
+      { "lat": 39.4912, "lng": -0.3412, "ele": 12, "dist": 8.3 },
+      { "lat": 39.4989, "lng": -0.3523, "ele": 12, "dist": 11.2 },
+      { "lat": 39.4934, "lng": -0.3645, "ele": 12, "dist": 14.5 },
+      { "lat": 39.4856, "lng": -0.3767, "ele": 12, "dist": 17.8 },
+      { "lat": 39.4778, "lng": -0.3878, "ele": 12, "dist": 21.1 },
+      { "lat": 39.4689, "lng": -0.3989, "ele": 12, "dist": 24.6 },
+      { "lat": 39.4612, "lng": -0.3867, "ele": 12, "dist": 28.2 },
+      { "lat": 39.4534, "lng": -0.3745, "ele": 12, "dist": 31.5 },
+      { "lat": 39.4589, "lng": -0.3623, "ele": 12, "dist": 35.1 },
+      { "lat": 39.4656, "lng": -0.3712, "ele": 12, "dist": 38.7 },
+      { "lat": 39.4699, "lng": -0.3763, "ele": 12, "dist": 42.195 }
+    ]
+  },
+  "rotterdam": {
+    "id": "11",
+    "name": "Rotterdam Marathon",
+    "city": "Rotterdam",
+    "country": "Netherlands",
+    "distance": 42.195,
+    "elevationGain": 35,
+    "elevationLoss": 35,
+    "startElevation": 0,
+    "endElevation": 0,
+    "slug": "rotterdam-marathon",
+    "raceDate": "April 13, 2025",
+    "website": "https://www.nnmarathonrotterdam.org/",
+    "description": "The NN Marathon Rotterdam is famous for fast times and has hosted multiple world records. The flat course through modern Rotterdam showcases the city's innovative architecture.",
+    "tips": [
+      "Historic fast course - multiple world records set here",
+      "April weather can be variable but often good",
+      "Modern city architecture provides unique scenery",
+      "Strong elite field attracts fast amateur runners"
+    ],
+    "paceStrategy": {
+      "type": "even-pace",
+      "summary": "Rotterdam is one of the original 'fast marathons' - flat and designed for speed. The spring date means variable weather, so adjust if needed.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Flat (City start)", "advice": "Start among Rotterdam's modern skyscrapers. Don't go out too fast." },
+        { "miles": "6-13", "terrain": "Flat (Suburbs)", "advice": "Through quieter areas. Maintain rhythm." },
+        { "miles": "14-20", "terrain": "Flat (River area)", "advice": "Along the Maas River. Potential wind exposure." },
+        { "miles": "21-24", "terrain": "Flat (Return)", "advice": "Heading back toward finish. Dig deep." },
+        { "miles": "25-26", "terrain": "Flat (Coolsingel finish)", "advice": "Iconic finish on Coolsingel boulevard. Give it everything." }
+      ]
+    },
+    "fuelingNotes": "Flat course allows precise fueling. Watch for wind from the river - it can increase energy needs. Dutch aid stations are well-organized.",
+    "faq": [
+      { "question": "Is Rotterdam a fast marathon?", "answer": "Yes! Rotterdam has hosted world records and is one of Europe's fastest marathons. The flat course (35m gain) and strong elite field create fast conditions." },
+      { "question": "How does Rotterdam compare to Amsterdam?", "answer": "Both are extremely flat Dutch marathons. Rotterdam (April) typically has better elite depth; Amsterdam (October) often has better weather. Both produce PRs." },
+      { "question": "What's the weather like for Rotterdam Marathon?", "answer": "April brings variable conditions: typically 8-15°C (46-59°F), but can range from cold rain to warm sun. Check the forecast race week." },
+      { "question": "Why do elites choose Rotterdam?", "answer": "The flat course, strong organization, and history of fast times attract top runners. The prize money and pacemaker setup are excellent." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 51.9225, "lng": 4.4792, "ele": 0, "dist": 0 },
+      { "lat": 51.9178, "lng": 4.4912, "ele": 0, "dist": 2.3 },
+      { "lat": 51.9123, "lng": 4.5034, "ele": 0, "dist": 5.1 },
+      { "lat": 51.9067, "lng": 4.5156, "ele": 0, "dist": 8.2 },
+      { "lat": 51.9012, "lng": 4.5278, "ele": 0, "dist": 11.5 },
+      { "lat": 51.8956, "lng": 4.5156, "ele": 0, "dist": 15.1 },
+      { "lat": 51.9012, "lng": 4.5034, "ele": 0, "dist": 18.7 },
+      { "lat": 51.9089, "lng": 4.4912, "ele": 0, "dist": 22.3 },
+      { "lat": 51.9156, "lng": 4.4789, "ele": 0, "dist": 26.1 },
+      { "lat": 51.9234, "lng": 4.4667, "ele": 0, "dist": 30.2 },
+      { "lat": 51.9289, "lng": 4.4789, "ele": 0, "dist": 34.5 },
+      { "lat": 51.9256, "lng": 4.4834, "ele": 0, "dist": 38.1 },
+      { "lat": 51.9225, "lng": 4.4792, "ele": 0, "dist": 42.195 }
+    ]
+  },
+  "marine-corps": {
+    "id": "12",
+    "name": "Marine Corps Marathon",
+    "city": "Washington",
+    "country": "DC, USA",
+    "distance": 42.195,
+    "elevationGain": 245,
+    "elevationLoss": 245,
+    "startElevation": 15,
+    "endElevation": 25,
+    "slug": "marine-corps-marathon",
+    "raceDate": "October 26, 2025",
+    "website": "https://www.marinemarathon.com/",
+    "description": "Known as 'The People's Marathon,' the Marine Corps Marathon is one of the largest marathons in the US with no prize money. The course passes iconic DC monuments including the Pentagon, National Mall, and finishes at the Iwo Jima Memorial.",
+    "tips": [
+      "No prize money - truly 'The People's Marathon'",
+      "Marines hand out medals at the finish line",
+      "Course passes all major DC monuments",
+      "Beat the Bridge cutoff at mile 17 (Bridge closes at 1:55 pm)"
+    ],
+    "paceStrategy": {
+      "type": "conservative-start",
+      "summary": "MCM has several notable hills, including climbs on the National Mall. Start conservative and save energy for the hills in miles 20-24.",
+      "segments": [
+        { "miles": "1-4", "terrain": "Rolling (Pentagon start)", "advice": "Start at the Pentagon. Don't go out too fast on the rolling terrain." },
+        { "miles": "5-10", "terrain": "Rolling (Rosslyn/Georgetown)", "advice": "Through Arlington and into Georgetown. Some early hills." },
+        { "miles": "11-14", "terrain": "Flat (Hains Point)", "advice": "Out and back on the peninsula. Can be windy and mentally challenging." },
+        { "miles": "15-18", "terrain": "Flat to rolling (National Mall)", "advice": "Past the monuments. Beat the Bridge cutoff at mile 17." },
+        { "miles": "19-23", "terrain": "Hilly (Crystal City/Pentagon)", "advice": "Several climbs. This is where the race gets hard." },
+        { "miles": "24-26", "terrain": "Rolling to finish", "advice": "Final push to Iwo Jima Memorial. Marines are waiting." }
+      ]
+    },
+    "fuelingNotes": "The hills in the second half increase energy needs. Take an extra gel before mile 18. Marines at aid stations are exceptionally encouraging.",
+    "faq": [
+      { "question": "Why is MCM called the People's Marathon?", "answer": "MCM has no prize money - elite and amateur runners compete on equal footing. It's run by the Marine Corps for runners of all abilities." },
+      { "question": "How hilly is the Marine Corps Marathon?", "answer": "MCM has 245m (804ft) of elevation gain - hillier than NYC. Notable climbs in the first half and challenging hills miles 20-24." },
+      { "question": "What is Beat the Bridge?", "answer": "Runners must cross the 14th Street Bridge by mile 17 before the 1:55 PM cutoff (about 4:15 pace from gun time). Slower runners should start early in their corral." },
+      { "question": "Who hands out medals at MCM?", "answer": "Marines personally place finisher medals around each runner's neck - a unique and emotional experience that makes MCM special." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 38.8719, "lng": -77.0563, "ele": 15, "dist": 0 },
+      { "lat": 38.8834, "lng": -77.0678, "ele": 25, "dist": 2.8 },
+      { "lat": 38.8945, "lng": -77.0789, "ele": 35, "dist": 5.6 },
+      { "lat": 38.9023, "lng": -77.0656, "ele": 45, "dist": 8.3 },
+      { "lat": 38.8912, "lng": -77.0512, "ele": 35, "dist": 11.2 },
+      { "lat": 38.8789, "lng": -77.0389, "ele": 10, "dist": 14.5 },
+      { "lat": 38.8656, "lng": -77.0278, "ele": 8, "dist": 17.8 },
+      { "lat": 38.8789, "lng": -77.0167, "ele": 12, "dist": 21.1 },
+      { "lat": 38.8912, "lng": -77.0289, "ele": 18, "dist": 24.3 },
+      { "lat": 38.8856, "lng": -77.0423, "ele": 28, "dist": 27.6 },
+      { "lat": 38.8789, "lng": -77.0534, "ele": 38, "dist": 30.8 },
+      { "lat": 38.8723, "lng": -77.0645, "ele": 32, "dist": 34.1 },
+      { "lat": 38.8789, "lng": -77.0712, "ele": 28, "dist": 37.5 },
+      { "lat": 38.8901, "lng": -77.0656, "ele": 25, "dist": 42.195 }
+    ]
+  },
+  "big-sur": {
+    "id": "13",
+    "name": "Big Sur Marathon",
+    "city": "Big Sur",
+    "country": "California, USA",
+    "distance": 42.195,
+    "elevationGain": 610,
+    "elevationLoss": 457,
+    "startElevation": 305,
+    "endElevation": 10,
+    "slug": "big-sur-marathon",
+    "raceDate": "April 26, 2026",
+    "website": "https://www.bigsurmarathon.org/",
+    "description": "Often called 'The Outdoor Beautiful' the Big Sur International Marathon runs along the stunning Pacific Coast Highway. Known for incredible scenery, challenging hills including Hurricane Point, and the famous pianist on Bixby Bridge.",
+    "tips": [
+      "Not a PR course - run for the experience",
+      "Hurricane Point (miles 10-12) is brutal but beautiful",
+      "A pianist plays on Bixby Bridge - don't miss it",
+      "Point-to-point with bus to start - dress warm for early morning"
+    ],
+    "paceStrategy": {
+      "type": "effort-based",
+      "summary": "Big Sur is about the experience, not the time. Run by effort, not pace. Hurricane Point will humble you, but the scenery makes it worth it.",
+      "segments": [
+        { "miles": "1-4", "terrain": "Rolling downhill start", "advice": "Start in Big Sur. Don't bank time - save legs for the climbs." },
+        { "miles": "5-9", "terrain": "Rolling coast", "advice": "Pacific Ocean views. Enjoy the scenery. Stay conservative." },
+        { "miles": "10-12", "terrain": "Hurricane Point climb", "advice": "The big one: 520ft climb over 2 miles. Walk if needed. This is the race." },
+        { "miles": "13-16", "terrain": "Bixby Bridge descent", "advice": "Listen for the piano. Incredible views. Control your descent." },
+        { "miles": "17-22", "terrain": "Rolling coast", "advice": "Smaller hills remain. Legs are tired. Keep moving." },
+        { "miles": "23-26", "terrain": "Final descent to Carmel", "advice": "Downhill finish to the beach. Celebrate completing one of the world's most beautiful marathons." }
+      ]
+    },
+    "fuelingNotes": "The hills increase energy needs significantly. Bring extra fuel. Aid stations are well-stocked but spread out. The ocean air and wind can be dehydrating.",
+    "faq": [
+      { "question": "Is Big Sur Marathon good for a PR?", "answer": "No. With 610m (2,000ft) of elevation gain including Hurricane Point, Big Sur is one of the hardest major marathons. Run it for the experience, not the time." },
+      { "question": "What is Hurricane Point?", "answer": "Hurricane Point is a brutal climb from miles 10-12, gaining 520ft (158m) over 2 miles. It's the defining challenge of Big Sur and offers incredible Pacific views." },
+      { "question": "Why is there a pianist on the bridge?", "answer": "Since 1987, a grand piano has been placed on Bixby Bridge at mile 13. A tuxedo-clad pianist plays as runners cross - it's become an iconic Big Sur tradition." },
+      { "question": "How do I get to the start?", "answer": "Big Sur is point-to-point. Buses transport runners from the finish area to the start in Big Sur. It's an early morning (4 AM) cold bus ride - bring throw-away warm clothes." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 36.2704, "lng": -121.8078, "ele": 305, "dist": 0 },
+      { "lat": 36.2823, "lng": -121.8156, "ele": 280, "dist": 2.8 },
+      { "lat": 36.2945, "lng": -121.8234, "ele": 255, "dist": 5.9 },
+      { "lat": 36.3067, "lng": -121.8312, "ele": 230, "dist": 9.1 },
+      { "lat": 36.3189, "lng": -121.8389, "ele": 350, "dist": 12.4 },
+      { "lat": 36.3312, "lng": -121.8467, "ele": 460, "dist": 15.8 },
+      { "lat": 36.3434, "lng": -121.8545, "ele": 380, "dist": 19.1 },
+      { "lat": 36.3556, "lng": -121.8623, "ele": 250, "dist": 22.5 },
+      { "lat": 36.3678, "lng": -121.8701, "ele": 180, "dist": 25.8 },
+      { "lat": 36.3801, "lng": -121.8778, "ele": 120, "dist": 29.2 },
+      { "lat": 36.3923, "lng": -121.8856, "ele": 80, "dist": 32.6 },
+      { "lat": 36.4045, "lng": -121.8934, "ele": 50, "dist": 35.9 },
+      { "lat": 36.4167, "lng": -121.9012, "ele": 25, "dist": 39.3 },
+      { "lat": 36.5550, "lng": -121.9230, "ele": 10, "dist": 42.195 }
+    ]
+  },
+  "california-international": {
+    "id": "14",
+    "name": "California International Marathon",
+    "city": "Sacramento",
+    "country": "California, USA",
+    "distance": 42.195,
+    "elevationGain": 45,
+    "elevationLoss": 107,
+    "startElevation": 115,
+    "endElevation": 8,
+    "slug": "california-international-marathon",
+    "raceDate": "December 7, 2025",
+    "website": "https://runsra.org/california-international-marathon/",
+    "description": "CIM is known as one of the fastest courses in America, featuring a net downhill profile from Folsom to Sacramento. Popular for Boston qualifying attempts and PRs.",
+    "tips": [
+      "Net downhill course - excellent for BQ attempts and PRs",
+      "December weather is usually cool and ideal",
+      "Point-to-point: don't let the downhill start fool you",
+      "Large pace groups for Boston qualifying times"
+    ],
+    "paceStrategy": {
+      "type": "controlled-downhill",
+      "summary": "CIM's net downhill is a gift, but you must respect it. Don't go out too fast in the first half - the quads-destroying downhill can catch up to you.",
+      "segments": [
+        { "miles": "1-5", "terrain": "Gradual downhill", "advice": "Rolling start in Folsom. Resist going fast. Save your quads." },
+        { "miles": "6-12", "terrain": "Gradual downhill", "advice": "Steady descent. This is where people blow up by going too fast." },
+        { "miles": "13-18", "terrain": "Flattening", "advice": "Course flattens as you approach Sacramento. Assess your legs." },
+        { "miles": "19-23", "terrain": "Mostly flat", "advice": "Through Sacramento neighborhoods. The downhill advantage is over." },
+        { "miles": "24-26", "terrain": "Flat finish", "advice": "Finish at the State Capitol. If you ran smart, you'll PR here." }
+      ]
+    },
+    "fuelingNotes": "The downhill profile changes muscle recruitment - quads take a beating. Standard fueling works but your legs may tire differently than a flat course.",
+    "faq": [
+      { "question": "Is CIM good for Boston qualifying?", "answer": "Yes! CIM is one of the most popular BQ courses. The net downhill (107m drop), December weather, and large pace groups make it ideal for qualifying attempts." },
+      { "question": "How much downhill is CIM?", "answer": "CIM has a net elevation drop of 107m (340ft) from Folsom to Sacramento. It's gradual enough to not destroy your quads if you run smart." },
+      { "question": "Is CIM harder than it looks?", "answer": "Yes. Many runners go out too fast on the downhill start and pay for it in the second half. Run even effort, not even pace, especially in miles 1-12." },
+      { "question": "What's the weather like at CIM?", "answer": "December in Sacramento is usually cool: 4-12°C (40-54°F). Can be foggy at the start. Generally excellent marathon conditions." }
+    ],
+    "thumbnailPoints": [
+      { "lat": 38.6780, "lng": -121.1650, "ele": 115, "dist": 0 },
+      { "lat": 38.6689, "lng": -121.1878, "ele": 105, "dist": 3.2 },
+      { "lat": 38.6578, "lng": -121.2156, "ele": 95, "dist": 6.8 },
+      { "lat": 38.6456, "lng": -121.2434, "ele": 85, "dist": 10.5 },
+      { "lat": 38.6334, "lng": -121.2712, "ele": 70, "dist": 14.2 },
+      { "lat": 38.6212, "lng": -121.2989, "ele": 55, "dist": 17.9 },
+      { "lat": 38.6089, "lng": -121.3267, "ele": 45, "dist": 21.6 },
+      { "lat": 38.5967, "lng": -121.3545, "ele": 35, "dist": 25.3 },
+      { "lat": 38.5845, "lng": -121.3823, "ele": 25, "dist": 28.9 },
+      { "lat": 38.5723, "lng": -121.4101, "ele": 18, "dist": 32.6 },
+      { "lat": 38.5689, "lng": -121.4378, "ele": 12, "dist": 36.3 },
+      { "lat": 38.5756, "lng": -121.4656, "ele": 10, "dist": 39.9 },
+      { "lat": 38.5767, "lng": -121.4934, "ele": 8, "dist": 42.195 }
+    ]
   }
 }
