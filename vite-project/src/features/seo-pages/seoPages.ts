@@ -514,7 +514,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
       'Pacing strategy and fueling tips',
     ],
     cta: { href: '/calculator', label: 'Calculate Sub-3 Training Paces' },
-    initialInputs: { distance: '42.195', hours: '2', minutes: '59', seconds: '59' },
+    initialInputs: { distance: '42.195' },
     faq: [
       {
         question: 'What pace do I need to run sub-3?',
