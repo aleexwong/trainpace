@@ -149,8 +149,8 @@ export default function CalculatorSeoLanding() {
           <PaceCalculatorV2
             seoMode="none"
             initialInputs={
-              page.initialPaceDistanceKm
-                ? { distance: String(page.initialPaceDistanceKm), units: "km" }
+              page.initialInputs?.distance
+                ? { distance: String(page.initialInputs.distance), units: "km" }
                 : undefined
             }
           />

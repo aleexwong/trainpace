@@ -130,3 +130,164 @@ VITE_MAPBOX_TOKEN
 
 ### Adding a shadcn/ui component
 Components are already set up. Copy new components from shadcn/ui docs into `src/components/ui/`.
+
+## Programmatic SEO Architecture
+
+The codebase includes a scalable SEO system designed for 100,000+ programmatic pages.
+
+### SEO Module Structure (`src/lib/seo/`)
+
+```
+lib/seo/
+├── index.ts              # Central exports
+├── types.ts              # Type definitions (SeoPageConfig, schemas, etc.)
+├── schema-generators.ts  # JSON-LD schema generation
+├── meta-generators.ts    # Meta tag generation (title, OG, Twitter)
+├── internal-linking.ts   # Hub-spoke linking engine
+├── content-generators.ts # Content variation system
+├── build-utils.ts        # Sitemap, chunking, caching
+└── validation.ts         # Quality checks and CI integration
+```
+
+### Key Types
+
+```typescript
+import type { SeoPageConfig, SeoToolType } from '@/lib/seo';
+
+// SeoPageConfig includes: id, slug, path, tool, title, description,
+// h1, intro, bullets, cta, faq, howTo, initialInputs, relatedPageIds, etc.
+
+// SeoToolType: 'pace' | 'fuel' | 'elevation' | 'race' | 'blog'
+```
+
+### SEO Page Templates (`src/components/seo/`)
+
+```tsx
+import { SeoPageTemplate } from '@/components/seo';
+import { RacePageTemplate } from '@/components/seo';
+
+// SeoPageTemplate - Base template for all SEO landing pages
+// RacePageTemplate - Specialized template for race prep pages
+```
+
+### Adding New SEO Pages
+
+1. **Add page config** in `src/features/seo-pages/seoPages.ts`:
+```typescript
+{
+  id: generatePageId('pace', 'my-new-page'),
+  slug: 'my-new-page',
+  tool: 'pace',
+  path: '/calculator/my-new-page',
+  title: 'Page Title | TrainPace',
+  description: 'Meta description...',
+  h1: 'Page Heading',
+  intro: 'Introduction paragraph...',
+  bullets: ['Bullet 1', 'Bullet 2'],
+  cta: { href: '/calculator', label: 'Open Calculator' },
+  faq: [{ question: '...', answer: '...' }],
+  howTo: { name: '...', description: '...', steps: [...] },
+}
+```
+
+2. **Route is automatic** - SEO pages use dynamic routes (`/calculator/:seoSlug`)
+
+3. **Prerendering** - Pages are auto-added via `getAllSeoPaths()` in vite.config.ts
+
+### Generating Content at Scale
+
+```typescript
+import { generateDistancePageConfig, generateRacePageConfig } from '@/lib/seo';
+
+// Generate pace calculator pages for distances
+const page = generateDistancePageConfig(
+  { name: '5K', slug: '5k', km: 5, displayDistance: '5 km' },
+  'pace'
+);
+
+// Generate race pages
+const racePage = generateRacePageConfig({
+  name: 'Boston Marathon',
+  slug: 'boston-marathon',
+  city: 'Boston',
+  country: 'USA',
+  previewRouteKey: 'boston',
+});
+```
+
+### Schema Generation
+
+```typescript
+import { generateSchemaGraph, generateMetaTags } from '@/lib/seo';
+
+// Generate JSON-LD schema for a page
+const schema = generateSchemaGraph(page, {
+  raceData: { name: '...', city: '...', ... }, // For race pages
+  includeSoftwareApplication: true,
+});
+
+// Generate meta tags
+const meta = generateMetaTags(page);
+```
+
+### Internal Linking
+
+```typescript
+import { findRelatedPages, generateBreadcrumbs, HUB_CONFIG } from '@/lib/seo';
+
+// Find related pages
+const related = findRelatedPages(page, allPages, { limit: 5 });
+
+// Generate breadcrumbs
+const breadcrumbs = generateBreadcrumbs(page);
+
+// Hub pages for each tool
+const paceHub = HUB_CONFIG.pace; // /calculator
+```
+
+### SEO Validation
+
+```typescript
+import { validatePage, validateAllPages, runPrePublishChecks } from '@/lib/seo';
+
+// Validate single page
+const result = validatePage(page);
+// { isValid: boolean, score: number, errors: [], warnings: [] }
+
+// Validate all pages
+const batchResult = validateAllPages(allPages);
+
+// Pre-publish checks
+const checks = runPrePublishChecks(allPages);
+// { canPublish: boolean, blockers: [], warnings: [] }
+```
+
+### Build Utilities
+
+```typescript
+import { generateSitemaps, chunkPages, calculateBuildStats } from '@/lib/seo';
+
+// Generate sitemaps (handles 50k URL limit per file)
+const sitemaps = generateSitemaps(allPages);
+
+// Chunk pages for memory-efficient builds
+const chunks = chunkPages(allPages, { maxPagesPerChunk: 5000 });
+
+// Get build statistics
+const stats = calculateBuildStats(allPages);
+```
+
+### SEO Data Files
+
+- `src/features/seo-pages/seoPages.ts` - All SEO page configurations
+- `src/data/marathon-data.json` - Race course data (elevation, tips, FAQs)
+- `src/data/blog-posts.json` - Blog content
+
+### SEO Best Practices
+
+- Every page needs unique `title`, `description`, and `h1`
+- Add `faq` items for rich snippet eligibility
+- Add `howTo` for featured snippet eligibility
+- Use `generatePageId()` for consistent page IDs
+- Run `validateAllPages()` before deploying to catch issues
+- Keep titles under 60 chars, descriptions under 160 chars
