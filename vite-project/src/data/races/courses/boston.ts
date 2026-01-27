@@ -19,6 +19,7 @@ export const bostonMetadata: RaceMetadata = {
   country: "Massachusetts, USA",
   region: "north-america",
   tier: "world-major",
+  raceType: "marathon",
   distance: 42.195,
   elevationGain: 156,
   elevationLoss: 245,

@@ -35,6 +35,7 @@ import oldMarathonData from "../marathon-data.json";
 import { registerRace } from "./registry";
 import { inferRegion, inferTier } from "./helpers";
 import type { RaceMetadata, RaceData, RaceRouteData } from "./types";
+import { inferRaceType } from "./types";
 
 // ============================================================================
 // Auto-register all races from legacy data
@@ -59,6 +60,7 @@ function initializeFromLegacy() {
       country: data.country,
       region: inferRegion(data.country),
       tier: inferTier(data.name, data.elevationGain),
+      raceType: inferRaceType(data.distance),
       distance: data.distance,
       elevationGain: data.elevationGain,
       elevationLoss: data.elevationLoss,
@@ -112,6 +114,7 @@ export const marathonData: Record<string, RaceData> = Object.fromEntries(
       country: data.country,
       region: inferRegion(data.country),
       tier: inferTier(data.name, data.elevationGain),
+      raceType: inferRaceType(data.distance),
       distance: data.distance,
       elevationGain: data.elevationGain,
       elevationLoss: data.elevationLoss,

@@ -107,6 +107,7 @@ export function getRaceSummaries(): RaceSummary[] {
     country: entry.metadata.country,
     region: entry.metadata.region,
     tier: entry.metadata.tier,
+    raceType: entry.metadata.raceType,
     distance: entry.metadata.distance,
     elevationGain: entry.metadata.elevationGain,
     raceDate: entry.metadata.raceDate,
@@ -221,12 +222,28 @@ export function filterRaces(filters: RaceFilters): RaceMetadata[] {
     results = results.filter((r) => tiers.includes(r.tier));
   }
 
+  // Filter by race type
+  if (filters.raceType) {
+    const types = Array.isArray(filters.raceType)
+      ? filters.raceType
+      : [filters.raceType];
+    results = results.filter((r) => types.includes(r.raceType));
+  }
+
   // Filter by elevation
   if (filters.maxElevationGain !== undefined) {
     results = results.filter((r) => r.elevationGain <= filters.maxElevationGain!);
   }
   if (filters.minElevationGain !== undefined) {
     results = results.filter((r) => r.elevationGain >= filters.minElevationGain!);
+  }
+
+  // Filter by distance
+  if (filters.minDistance !== undefined) {
+    results = results.filter((r) => r.distance >= filters.minDistance!);
+  }
+  if (filters.maxDistance !== undefined) {
+    results = results.filter((r) => r.distance <= filters.maxDistance!);
   }
 
   // Filter by search term
@@ -355,4 +372,50 @@ export function findRaceBySlug(slug: string): RaceMetadata | undefined {
  */
 export function searchRaces(query: string): RaceMetadata[] {
   return filterRaces({ search: query });
+}
+
+// ============================================================================
+// Race Type Helpers
+// ============================================================================
+
+/**
+ * Get all marathons.
+ */
+export function getMarathons(): RaceMetadata[] {
+  return filterRaces({ raceType: "marathon" });
+}
+
+/**
+ * Get all half marathons.
+ */
+export function getHalfMarathons(): RaceMetadata[] {
+  return filterRaces({ raceType: "half-marathon" });
+}
+
+/**
+ * Get all 10K races.
+ */
+export function get10Ks(): RaceMetadata[] {
+  return filterRaces({ raceType: "10k" });
+}
+
+/**
+ * Get all 5K races.
+ */
+export function get5Ks(): RaceMetadata[] {
+  return filterRaces({ raceType: "5k" });
+}
+
+/**
+ * Get all ultra marathons.
+ */
+export function getUltras(): RaceMetadata[] {
+  return filterRaces({ raceType: "ultra" });
+}
+
+/**
+ * Get races by type.
+ */
+export function getRacesByType(type: string): RaceMetadata[] {
+  return filterRaces({ raceType: type as any });
 }

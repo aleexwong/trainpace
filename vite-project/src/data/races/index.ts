@@ -49,9 +49,10 @@ export type {
   FAQItem,
   PaceSegment,
   PaceStrategy,
-  // Region/tier
+  // Region/tier/type
   RaceRegion,
   RaceTier,
+  RaceType,
   // Data types
   RaceMetadata,
   RaceRouteData,
@@ -66,6 +67,9 @@ export type {
   RaceSortField,
   RaceSortOptions,
 } from "./types";
+
+// Export race type constants and helpers
+export { RACE_DISTANCES, inferRaceType } from "./types";
 
 // ============================================================================
 // Registry Exports (Core API)
@@ -98,6 +102,13 @@ export {
   getHillyRaces,
   findRaceBySlug,
   searchRaces,
+  // Race type queries
+  getMarathons,
+  getHalfMarathons,
+  get10Ks,
+  get5Ks,
+  getUltras,
+  getRacesByType,
 } from "./registry";
 
 // ============================================================================

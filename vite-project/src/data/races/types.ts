@@ -67,6 +67,35 @@ export type RaceTier =
   | "silver" // Regional destination races (Big Sur)
   | "bronze"; // Local/smaller races
 
+/** Race distance type */
+export type RaceType =
+  | "marathon" // 42.195 km / 26.2 miles
+  | "half-marathon" // 21.0975 km / 13.1 miles
+  | "10k" // 10 km / 6.2 miles
+  | "5k" // 5 km / 3.1 miles
+  | "ultra" // Anything longer than marathon
+  | "other"; // Non-standard distances
+
+/** Standard race distances in kilometers */
+export const RACE_DISTANCES: Record<RaceType, number> = {
+  "5k": 5,
+  "10k": 10,
+  "half-marathon": 21.0975,
+  marathon: 42.195,
+  ultra: 50, // Minimum ultra distance (varies)
+  other: 0, // Custom distance
+};
+
+/** Helper to infer race type from distance */
+export function inferRaceType(distanceKm: number): RaceType {
+  if (distanceKm <= 5.5) return "5k";
+  if (distanceKm <= 11) return "10k";
+  if (distanceKm <= 22) return "half-marathon";
+  if (distanceKm <= 43) return "marathon";
+  if (distanceKm > 43) return "ultra";
+  return "other";
+}
+
 // ============================================================================
 // Race Metadata (Light - for static imports)
 // ============================================================================
@@ -98,6 +127,9 @@ export interface RaceMetadata {
 
   /** Race tier for categorization */
   tier: RaceTier;
+
+  /** Race type (marathon, half-marathon, 10k, 5k, etc.) */
+  raceType: RaceType;
 
   /** Race distance in kilometers (42.195 for marathon) */
   distance: number;
@@ -219,6 +251,7 @@ export type RaceSummary = Pick<
   | "country"
   | "region"
   | "tier"
+  | "raceType"
   | "distance"
   | "elevationGain"
   | "raceDate"
@@ -229,8 +262,11 @@ export type RaceSummary = Pick<
 export interface RaceFilters {
   region?: RaceRegion | RaceRegion[];
   tier?: RaceTier | RaceTier[];
+  raceType?: RaceType | RaceType[];
   maxElevationGain?: number;
   minElevationGain?: number;
+  minDistance?: number;
+  maxDistance?: number;
   search?: string;
 }
 

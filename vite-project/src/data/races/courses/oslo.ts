@@ -19,6 +19,7 @@ export const osloMetadata: RaceMetadata = {
   country: "Norway",
   region: "europe",
   tier: "gold",
+  raceType: "marathon",
   distance: 42.195,
   elevationGain: 220,
   elevationLoss: 220,
