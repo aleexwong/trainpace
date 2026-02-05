@@ -23,6 +23,7 @@ export interface FuelStop {
   distanceKm: number;
   carbsNeeded: number;
   suggestion: string;
+  sodiumNeeded?: number; // mg of sodium for this stop
 }
 
 export interface FuelPlanResult {
@@ -31,6 +32,8 @@ export interface FuelPlanResult {
   totalCalories: number;
   gelsNeeded: number;
   fuelStops: FuelStop[];
+  sodiumPerHour: number; // mg per hour
+  totalSodium: number; // total mg for race
 }
 
 export interface FuelPlanInputs {
@@ -131,3 +134,7 @@ export const LBS_TO_KG = 0.453592; // Conversion factor
 // Fuel stop timing constants
 export const FUEL_INTERVAL_MINUTES = 20; // Take fuel every 20 minutes
 export const MIN_RACE_TIME_FOR_FUELING = 60; // Only generate stops for races > 1 hour
+
+// Electrolyte constants (sodium in mg)
+export const SODIUM_PER_HOUR_BASE = 500; // Base sodium per hour (mg)
+export const SODIUM_PER_HOUR_HOT = 800; // Sodium per hour in hot conditions (mg)

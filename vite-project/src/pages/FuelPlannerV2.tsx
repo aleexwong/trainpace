@@ -113,6 +113,8 @@ const FuelPlannerV2 = () => {
     totalCarbs: number;
     totalCalories: number;
     gelsNeeded: number;
+    sodiumPerHour: number;
+    totalSodium: number;
   }>(null);
   const [aiAdvice, setAiAdvice] = useState<
     Array<{ headline: string; detail: string }>
@@ -235,7 +237,11 @@ const FuelPlannerV2 = () => {
       gelsNeeded = Math.min(gelsNeeded, 7);
     }
 
-    setResult({ carbsPerHour, totalCarbs, totalCalories, gelsNeeded });
+    // Calculate electrolyte needs (sodium in mg)
+    const sodiumPerHour = 500; // Base 500mg/hour
+    const totalSodium = Math.round(durationHours * sodiumPerHour);
+
+    setResult({ carbsPerHour, totalCarbs, totalCalories, gelsNeeded, sodiumPerHour, totalSodium });
 
     ReactGA.event({
       category: "Fuel Planner",
@@ -268,6 +274,8 @@ const FuelPlannerV2 = () => {
       totalCarbs: result.totalCarbs,
       totalCalories: result.totalCalories,
       gelsNeeded: result.gelsNeeded,
+      sodiumPerHour: result.sodiumPerHour,
+      totalSodium: result.totalSodium,
     };
 
     try {
@@ -1283,6 +1291,8 @@ const FuelPlannerV2 = () => {
                         totalCarbs: result.totalCarbs,
                         totalCalories: result.totalCalories,
                         gelsNeeded: result.gelsNeeded,
+                        sodiumPerHour: result.sodiumPerHour,
+                        totalSodium: result.totalSodium,
                       },
                       userContext || "[Your situation will be inserted here]"
                     );
@@ -1316,6 +1326,8 @@ const FuelPlannerV2 = () => {
                         totalCarbs: result.totalCarbs,
                         totalCalories: result.totalCalories,
                         gelsNeeded: result.gelsNeeded,
+                        sodiumPerHour: result.sodiumPerHour,
+                        totalSodium: result.totalSodium,
                       },
                       userContext || "[Your situation will be inserted here]"
                     );
@@ -1373,6 +1385,8 @@ const FuelPlannerV2 = () => {
                       totalCarbs: result.totalCarbs,
                       totalCalories: result.totalCalories,
                       gelsNeeded: result.gelsNeeded,
+                      sodiumPerHour: result.sodiumPerHour,
+                      totalSodium: result.totalSodium,
                     },
                     userContext || "[Your situation will be inserted here]"
                   )}

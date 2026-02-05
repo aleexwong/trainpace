@@ -17,6 +17,7 @@ import {
   MIN_10K_TIME_FOR_GEL,
   MIN_RACE_TIME_FOR_FUELING,
   FUEL_PRODUCTS,
+  SODIUM_PER_HOUR_BASE,
 } from "../types";
 
 interface UseFuelCalculationParams {
@@ -67,7 +68,8 @@ function getFuelSuggestion(carbsNeeded: number): string {
 function generateFuelStops(
   finishTimeMin: number,
   distanceKm: number,
-  carbsPerHour: number
+  carbsPerHour: number,
+  sodiumPerHour: number
 ): FuelStop[] {
   // Don't generate stops for races under 1 hour
   if (finishTimeMin < MIN_RACE_TIME_FOR_FUELING) {
@@ -113,26 +115,36 @@ function generateFuelStops(
   // Calculate carbs per stop to hit target carbs/hour
   // Distribute total carbs across stops
   const totalRaceCarbs = (finishTimeMin / 60) * carbsPerHour;
-  const carbsPerStop = fuelingSchedule.length > 0 
-    ? totalRaceCarbs / fuelingSchedule.length 
+  const carbsPerStop = fuelingSchedule.length > 0
+    ? totalRaceCarbs / fuelingSchedule.length
     : 0;
-  
+
+  // Calculate sodium per stop
+  const totalRaceSodium = (finishTimeMin / 60) * sodiumPerHour;
+  const sodiumPerStop = fuelingSchedule.length > 0
+    ? totalRaceSodium / fuelingSchedule.length
+    : 0;
+
   // Generate fuel stops with realistic carb amounts
   fuelingSchedule.forEach((timeMin, index) => {
     const currentDistanceKm = timeMin / paceMinPerKm;
     const isEarlyStop = index < Math.ceil(fuelingSchedule.length * 0.4);
-    
+
     // Front-load slightly more carbs early (easier to digest)
-    const adjustedCarbs = isEarlyStop 
-      ? Math.round(carbsPerStop * 1.1) 
+    const adjustedCarbs = isEarlyStop
+      ? Math.round(carbsPerStop * 1.1)
       : Math.round(carbsPerStop * 0.95);
-    
+
+    // Distribute sodium evenly
+    const adjustedSodium = Math.round(sodiumPerStop);
+
     stops.push({
       time: formatTime(timeMin),
       distance: `${currentDistanceKm.toFixed(1)}km`,
       distanceKm: currentDistanceKm,
       carbsNeeded: adjustedCarbs,
       suggestion: getFuelSuggestion(adjustedCarbs),
+      sodiumNeeded: adjustedSodium,
     });
   });
 
@@ -214,9 +226,13 @@ export function useFuelCalculation({
       gelsNeeded = Math.min(gelsNeeded, MAX_GELS);
     }
 
+    // Calculate electrolyte needs (sodium in mg)
+    const sodiumPerHour = SODIUM_PER_HOUR_BASE; // Base 500mg/hour
+    const totalSodium = Math.round(durationHours * sodiumPerHour);
+
     // Generate fuel stops timeline
     const distanceKm = RACE_DISTANCES[raceType];
-    const fuelStops = generateFuelStops(finishTimeMin, distanceKm, carbsPerHour);
+    const fuelStops = generateFuelStops(finishTimeMin, distanceKm, carbsPerHour, sodiumPerHour);
 
     return {
       result: {
@@ -225,6 +241,8 @@ export function useFuelCalculation({
         totalCalories,
         gelsNeeded,
         fuelStops,
+        sodiumPerHour,
+        totalSodium,
       },
       error: null,
       isValid: true,

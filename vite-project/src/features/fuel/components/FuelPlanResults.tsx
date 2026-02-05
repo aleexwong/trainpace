@@ -4,7 +4,7 @@
  */
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Copy, Download, Clock, Utensils } from "lucide-react";
+import { Copy, Download, Clock, Utensils, Droplets } from "lucide-react";
 import type { FuelPlanResult, AIRecommendation, RaceType } from "../types";
 
 interface FuelPlanResultsProps {
@@ -62,7 +62,7 @@ export function FuelPlanResults({
         )}
 
         {/* Grid of metrics */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
           <div className="p-4 bg-blue-50 rounded-xl text-center">
             <div className="text-2xl font-bold text-blue-700">
               {result.carbsPerHour}g
@@ -92,6 +92,20 @@ export function FuelPlanResults({
               {result.gelsNeeded === 0 ? "Gels (optional)" : "Gels"}
             </div>
           </div>
+
+          <div className="p-4 bg-orange-50 rounded-xl text-center">
+            <div className="text-2xl font-bold text-orange-700">
+              {result.sodiumPerHour}mg
+            </div>
+            <div className="text-xs text-gray-600 mt-1">Sodium/hour</div>
+          </div>
+
+          <div className="p-4 bg-orange-50 rounded-xl text-center">
+            <div className="text-2xl font-bold text-orange-700">
+              {result.totalSodium}mg
+            </div>
+            <div className="text-xs text-gray-600 mt-1">Total sodium</div>
+          </div>
         </div>
 
         {/* Fueling Timeline */}
@@ -119,6 +133,12 @@ export function FuelPlanResults({
                       <Utensils className="h-3.5 w-3.5" />
                       {stop.carbsNeeded}g — {stop.suggestion}
                     </div>
+                    {stop.sodiumNeeded && (
+                      <div className="text-sm text-orange-600 mt-1 flex items-center gap-1">
+                        <Droplets className="h-3.5 w-3.5" />
+                        {stop.sodiumNeeded}mg sodium
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -134,11 +154,19 @@ export function FuelPlanResults({
         )}
 
         {/* Baseline disclaimer */}
-        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-xs text-blue-800">
-            💡 <strong>Baseline estimate:</strong> You may need additional fuel
-            sources (sports drinks, chews, etc.) to meet your total carb needs.
-          </p>
+        <div className="mt-4 space-y-2">
+          <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <p className="text-xs text-blue-800">
+              💡 <strong>Baseline estimate:</strong> You may need additional fuel
+              sources (sports drinks, chews, etc.) to meet your total carb needs.
+            </p>
+          </div>
+          <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
+            <p className="text-xs text-orange-800">
+              🧂 <strong>Electrolyte sources:</strong> Sports drinks (140-200mg/serving),
+              salt tablets (200-300mg), or electrolyte gels. Mix with plain gels/water to reach your sodium target.
+            </p>
+          </div>
         </div>
       </CardContent>
     </Card>

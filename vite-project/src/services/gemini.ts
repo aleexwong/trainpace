@@ -17,6 +17,8 @@ export interface FuelPlanContext {
   totalCarbs: number;
   totalCalories: number;
   gelsNeeded: number;
+  sodiumPerHour: number;
+  totalSodium: number;
 }
 
 export interface GeminiResponse {
@@ -40,6 +42,7 @@ export function getFuelPlanPrompt(
 - Time: ${basePlan.time} min
 ${basePlan.weight ? `- Weight: ${basePlan.weight}kg` : ""}
 - Target carbs/hour: ${basePlan.carbsPerHour}g
+- Target sodium/hour: ${basePlan.sodiumPerHour}mg
 - Standard approach: ${basePlan.gelsNeeded} gels
 
 **CRITICAL: Runner's Constraints (THESE OVERRIDE THE BASE PLAN):**
@@ -54,20 +57,21 @@ ${userContext}
 **Your Task:**
 Provide 3-5 specific fueling options that strictly adhere to the user's constraints and hit the **${
     basePlan.carbsPerHour
-  }g/hour** target.
+  }g/hour** carb target and **${basePlan.sodiumPerHour}mg/hour** sodium target.
 
 **Requirements for "Better Details":**
 1. **The Math Must Match:** You must calculate the carb count of the food to match the target. (e.g., if target is 60g, do not suggest just 1 banana which is only 27g).
-2. **Logistics:** Explain *how* to carry it (e.g., "in a ziplock," "crushed in a flask").
-3. **Variety:** Do not rely on a single food source unless necessary.
+2. **Electrolytes Matter:** Include specific sodium sources (sports drinks at 140-200mg/serving, salt tabs at 200-300mg, electrolyte gels, or salted pretzels). Explain how to mix them with carb sources.
+3. **Logistics:** Explain *how* to carry it (e.g., "in a ziplock," "crushed in a flask").
+4. **Variety:** Do not rely on a single food source unless necessary.
 
 **Output Format:**
 Use exactly this structure. No intro, no outro.
 
 HEADLINE: [Actionable Instruction with specific food]
-DETAIL: [Logistics & Math] -> Explain specific portion sizes (grams/pieces), the timing strategy, and the total carbs provided per hour to prove it hits the ${
+DETAIL: [Logistics & Math] -> Explain specific portion sizes (grams/pieces), the timing strategy, and the total carbs and sodium provided per hour to prove it hits the ${
     basePlan.carbsPerHour
-  }g target.
+  }g carb and ${basePlan.sodiumPerHour}mg sodium targets.
 
 HEADLINE: [Alternative Actionable Instruction]
 DETAIL: [Logistics & Math] -> ...

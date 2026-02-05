@@ -89,6 +89,8 @@ export function FuelPlannerV2({ seoMode = "default" }: FuelPlannerV2Props) {
         totalCarbs: result.totalCarbs,
         totalCalories: result.totalCalories,
         gelsNeeded: result.gelsNeeded,
+        sodiumPerHour: result.sodiumPerHour,
+        totalSodium: result.totalSodium,
       }
     : null;
 
