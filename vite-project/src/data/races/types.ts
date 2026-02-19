@@ -88,12 +88,13 @@ export const RACE_DISTANCES: Record<RaceType, number> = {
 
 /** Helper to infer race type from distance */
 export function inferRaceType(distanceKm: number): RaceType {
+  // Handle non-finite values explicitly to keep "other" as the fallback
+  if (!Number.isFinite(distanceKm)) return "other";
   if (distanceKm <= 5.5) return "5k";
   if (distanceKm <= 11) return "10k";
   if (distanceKm <= 22) return "half-marathon";
   if (distanceKm <= 43) return "marathon";
-  if (distanceKm > 43) return "ultra";
-  return "other";
+  return "ultra";
 }
 
 // ============================================================================
