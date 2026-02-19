@@ -165,8 +165,8 @@ export function inferTier(name: string, elevationGain: number): RaceTier {
     return "silver";
   }
 
-  // Default to gold for established races
-  return "gold";
+  // Use a conservative default tier for unrecognized races
+  return "bronze";
 }
 
 // ============================================================================
