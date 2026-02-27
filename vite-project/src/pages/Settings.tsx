@@ -92,29 +92,33 @@ const Settings: React.FC = () => {
 
   // Delete all user data from Firestore before account deletion
   const deleteUserData = async (userId: string) => {
-    const collections = [
+    const hardDeleteCollections = [
       "user_pace_plans",
       "user_fuel_plans",
       "user_bookmarks",
     ];
 
-    for (const col of collections) {
-      const q = query(collection(db, col), where("userId", "==", userId));
-      const snapshot = await getDocs(q);
-      await Promise.all(snapshot.docs.map((d) => deleteDoc(d.ref)));
-    }
-
-    // Soft-delete GPX uploads
-    const gpxQuery = query(
-      collection(db, "gpx_uploads"),
-      where("userId", "==", userId)
-    );
-    const gpxSnapshot = await getDocs(gpxQuery);
-    await Promise.all(
-      gpxSnapshot.docs.map((d) =>
-        updateDoc(d.ref, { deleted: true, deletedAt: Date.now() })
-      )
-    );
+    await Promise.all([
+      // Hard-delete collections in parallel
+      ...hardDeleteCollections.map(async (col) => {
+        const q = query(collection(db, col), where("userId", "==", userId));
+        const snapshot = await getDocs(q);
+        await Promise.all(snapshot.docs.map((d) => deleteDoc(d.ref)));
+      }),
+      // Soft-delete GPX uploads in parallel with the above
+      (async () => {
+        const gpxQuery = query(
+          collection(db, "gpx_uploads"),
+          where("userId", "==", userId)
+        );
+        const gpxSnapshot = await getDocs(gpxQuery);
+        await Promise.all(
+          gpxSnapshot.docs.map((d) =>
+            updateDoc(d.ref, { deleted: true, deletedAt: Date.now() })
+          )
+        );
+      })(),
+    ]);
   };
 
   const handleDeleteAccount = async () => {

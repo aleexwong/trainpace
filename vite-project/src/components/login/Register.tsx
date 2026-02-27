@@ -9,6 +9,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { LoginButton } from "@/features/auth/LoginButton";
 import { usePendingFuelPlan } from "@/hooks/usePendingFuelPlan";
+import { isValidRedirect } from "@/lib/utils";
 
 import {
   Form,
@@ -84,8 +85,6 @@ export default function Register() {
       // Handle redirect after registration (validate to prevent open redirects)
       const returnTo = searchParams.get("returnTo");
       const savePlan = searchParams.get("savePlan");
-      const isValidRedirect = (path: string) =>
-        path && path.startsWith("/") && !path.startsWith("//");
 
       setTimeout(() => {
         if (returnTo && isValidRedirect(returnTo) && savePlan) {

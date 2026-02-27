@@ -3,12 +3,7 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
-// Validate redirect path to prevent open redirect attacks
-function isValidRedirect(path: string): boolean {
-  if (!path || path.startsWith("http") || path.startsWith("//")) return false;
-  return path.startsWith("/");
-}
+import { isValidRedirect } from "@/lib/utils";
 
 export function LoginButton() {
   const [isLoading, setIsLoading] = useState(false);

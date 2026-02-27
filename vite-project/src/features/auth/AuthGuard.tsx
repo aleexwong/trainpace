@@ -21,7 +21,8 @@ export default function AuthGuard({ children, fallback }: AuthGuardProps) {
 
   if (!user) {
     if (fallback) return <>{fallback}</>;
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    const returnTo = location.pathname + location.search;
+    return <Navigate to={`/login?returnTo=${encodeURIComponent(returnTo)}`} replace />;
   }
 
   return <>{children}</>;

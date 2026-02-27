@@ -134,19 +134,15 @@ export async function refineFuelPlan(
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-
-      // Handle rate limiting specifically
+      // Handle rate limiting specifically with a user-friendly message
       if (response.status === 429) {
         throw new Error(
-          errorData.message ||
-            "Too many requests. Please wait a minute and try again."
+          "Too many requests. Please wait a minute and try again."
         );
       }
 
-      throw new Error(
-        errorData.error || "Something went wrong. Please try again."
-      );
+      // Use generic message for all other errors to avoid leaking backend details
+      throw new Error("Something went wrong. Please try again.");
     }
 
     const data = await response.json();
