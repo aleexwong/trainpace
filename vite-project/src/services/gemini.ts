@@ -145,7 +145,7 @@ export async function refineFuelPlan(
       }
 
       throw new Error(
-        errorData.error || errorData.details || "API request failed"
+        errorData.error || "Something went wrong. Please try again."
       );
     }
 

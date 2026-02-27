@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import { useAuth } from "./AuthContext"; // adjust to your auth hook
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -7,10 +8,20 @@ interface AuthGuardProps {
 }
 
 export default function AuthGuard({ children, fallback }: AuthGuardProps) {
-  const { user } = useAuth(); // your hook returning user object
+  const { user, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="text-gray-500">Loading...</div>
+      </div>
+    );
+  }
 
   if (!user) {
-    return fallback || null;
+    if (fallback) return <>{fallback}</>;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return <>{children}</>;

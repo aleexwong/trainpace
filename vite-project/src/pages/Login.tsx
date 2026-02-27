@@ -31,7 +31,7 @@ const getLoginErrorMessage = (code: string): string => {
 };
 
 export default function Login() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -74,7 +74,7 @@ export default function Login() {
   };
 
   // Show loading state while auth is being determined
-  if (user === undefined) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 

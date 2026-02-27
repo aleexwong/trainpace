@@ -24,7 +24,7 @@ import { Button } from "@/components/ui/button";
 const registerSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
 // Helper to get friendly error messages
@@ -81,14 +81,16 @@ export default function Register() {
         variant: "default",
       });
 
-      // Handle redirect after registration
+      // Handle redirect after registration (validate to prevent open redirects)
       const returnTo = searchParams.get("returnTo");
       const savePlan = searchParams.get("savePlan");
+      const isValidRedirect = (path: string) =>
+        path && path.startsWith("/") && !path.startsWith("//");
 
       setTimeout(() => {
-        if (returnTo && savePlan) {
+        if (returnTo && isValidRedirect(returnTo) && savePlan) {
           navigate(`${returnTo}?savePlan=true`);
-        } else if (returnTo) {
+        } else if (returnTo && isValidRedirect(returnTo)) {
           navigate(returnTo);
         } else {
           navigate("/");

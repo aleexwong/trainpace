@@ -46,6 +46,7 @@ const loadMapbox = (): Promise<void> => {
 
     const script = document.createElement("script");
     script.src = "https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js";
+    script.crossOrigin = "anonymous";
     script.onload = () => {
       mapboxLoaded = true;
       resolve();
@@ -55,6 +56,7 @@ const loadMapbox = (): Promise<void> => {
     const link = document.createElement("link");
     link.href = "https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css";
     link.rel = "stylesheet";
+    link.crossOrigin = "anonymous";
 
     document.head.appendChild(link);
     document.head.appendChild(script);
