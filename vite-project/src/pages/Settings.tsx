@@ -17,7 +17,6 @@ import {
   getDocs,
   deleteDoc,
   updateDoc,
-  doc,
 } from "firebase/firestore";
 import { useAuth } from "@/features/auth/AuthContext";
 import { Button } from "@/components/ui/button";
