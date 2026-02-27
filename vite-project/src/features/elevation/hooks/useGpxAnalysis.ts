@@ -151,6 +151,7 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
           cacheKey,
           analysisResults,
           settings,
+          createdBy: auth.user?.uid || "",
           createdAt: new Date().toISOString(),
           expiresAt: new Date(
             Date.now() + CACHE_SETTINGS.EXPIRY_YEARS * 365 * 24 * 60 * 60 * 1000

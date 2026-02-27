@@ -3,8 +3,9 @@ import { useAuth } from "@/features/auth/AuthContext";
 import { LoginButton } from "@/features/auth/LoginButton";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { isValidRedirect } from "@/lib/utils";
 
 // Security-conscious error messages that don't reveal account existence
 const getLoginErrorMessage = (code: string): string => {
@@ -31,20 +32,26 @@ const getLoginErrorMessage = (code: string): string => {
 };
 
 export default function Login() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   // Redirect authenticated users away from login page
   useEffect(() => {
     if (user) {
-      navigate("/dashboard");
+      const returnTo = searchParams.get("returnTo");
+      if (returnTo && isValidRedirect(returnTo)) {
+        navigate(returnTo, { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
     }
-  }, [user, navigate]);
+  }, [user, navigate, searchParams]);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +81,7 @@ export default function Login() {
   };
 
   // Show loading state while auth is being determined
-  if (user === undefined) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 

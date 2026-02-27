@@ -60,6 +60,12 @@ export default defineConfig({
   ssr: {
     noExternal: ["leaflet"],
   },
+  build: {
+    minify: "esbuild",
+  },
+  esbuild: {
+    drop: process.env.NODE_ENV === "production" ? ["console", "debugger"] : [],
+  },
   define: {
     global: "globalThis",
   },

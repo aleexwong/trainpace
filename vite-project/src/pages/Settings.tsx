@@ -9,7 +9,15 @@ import {
   reauthenticateWithPopup,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useAuth } from "@/features/auth/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -82,6 +90,37 @@ const Settings: React.FC = () => {
     }
   };
 
+  // Delete all user data from Firestore before account deletion
+  const deleteUserData = async (userId: string) => {
+    const hardDeleteCollections = [
+      "user_pace_plans",
+      "user_fuel_plans",
+      "user_bookmarks",
+    ];
+
+    await Promise.all([
+      // Hard-delete collections in parallel
+      ...hardDeleteCollections.map(async (col) => {
+        const q = query(collection(db, col), where("userId", "==", userId));
+        const snapshot = await getDocs(q);
+        await Promise.all(snapshot.docs.map((d) => deleteDoc(d.ref)));
+      }),
+      // Soft-delete GPX uploads in parallel with the above
+      (async () => {
+        const gpxQuery = query(
+          collection(db, "gpx_uploads"),
+          where("userId", "==", userId)
+        );
+        const gpxSnapshot = await getDocs(gpxQuery);
+        await Promise.all(
+          gpxSnapshot.docs.map((d) =>
+            updateDoc(d.ref, { deleted: true, deletedAt: Date.now() })
+          )
+        );
+      })(),
+    ]);
+  };
+
   const handleDeleteAccount = async () => {
     if (!user) return;
 
@@ -104,6 +143,8 @@ const Settings: React.FC = () => {
         await reauthenticateWithCredential(user, credential);
       }
 
+      // Clean up all user data before deleting the auth account
+      await deleteUserData(user.uid);
       await deleteUser(user);
       navigate("/");
     } catch (error: any) {

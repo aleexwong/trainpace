@@ -189,6 +189,11 @@ export default function GpxUploader({
         return false;
       }
 
+      // Reject files with disallowed elements (script injection, embeds)
+      if (doc.querySelector("script, object, embed, iframe, link, style")) {
+        return false;
+      }
+
       // Check for required GPX structure
       const hasTrack = doc.querySelector("trk");
       const hasRoute = doc.querySelector("rte");

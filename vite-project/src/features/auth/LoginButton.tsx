@@ -3,6 +3,7 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { isValidRedirect } from "@/lib/utils";
 
 export function LoginButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,17 +15,17 @@ export function LoginButton() {
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      console.log("User signed in");
-      
+
       // Handle redirect after login
       const returnTo = searchParams.get("returnTo");
       const savePlan = searchParams.get("savePlan");
-      
-      if (returnTo && savePlan) {
-        // Preserve savePlan flag when redirecting
-        navigate(`${returnTo}?savePlan=true`);
-      } else if (returnTo) {
-        navigate(returnTo);
+
+      if (returnTo && isValidRedirect(returnTo)) {
+        if (savePlan) {
+          navigate(`${returnTo}?savePlan=true`);
+        } else {
+          navigate(returnTo);
+        }
       }
       // Otherwise stay on current page
     } catch (error) {

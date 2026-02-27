@@ -30,6 +30,7 @@ import Terms from "./pages/Terms";
 import About from "./pages/About";
 import DashboardV2 from "./pages/DashboardV2";
 import { BlogList, BlogPost } from "./features/blog";
+import AuthGuard from "./features/auth/AuthGuard";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -65,14 +66,14 @@ function App() {
             element={<ElevationGuidesSeoLanding />}
           />
           <Route path="/elevationfinder" element={<ElevationPage />} />
-          <Route path="/dashboard" element={<DashboardV2 />} />
+          <Route path="/dashboard" element={<AuthGuard><DashboardV2 /></AuthGuard>} />
             <Route path="/ethos" element={<About />} />
             <Route path="login" element={<Login />} />
             <Route path="logout" element={<Logout />} />
             <Route path="register" element={<Register />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/reset-confirmed" element={<ResetConfirmed />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings" element={<AuthGuard><Settings /></AuthGuard>} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
