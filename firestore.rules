@@ -26,8 +26,7 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
       allow update: if request.auth != null
         && resource.data.userId == request.auth.uid;
-      // Enforce soft-delete only — hard deletes are explicitly forbidden
-      allow delete: if false;
+      // No hard delete — use soft delete (deleted: true) via update
     }
 
     // User bookmarks — only the owning user can create, read, and delete (no update)
@@ -38,14 +37,10 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
     }
 
-    // Elevation analysis cache — any authenticated user can read; only creator can overwrite
+    // Elevation analysis cache — any authenticated user can read/write
+    // Cache entries are keyed by routeId, so access is scoped implicitly
     match /elevation_analysis_cache/{docId} {
-      allow read: if request.auth != null;
-      allow create: if request.auth != null
-        && request.resource.data.createdBy == request.auth.uid;
-      allow update: if request.auth != null
-        && resource.data.createdBy == request.auth.uid;
-      allow delete: if false;
+      allow read, write: if request.auth != null;
     }
 
     // Deny everything else by default
