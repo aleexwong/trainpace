@@ -167,7 +167,7 @@ import "./compat";
 // ============================================================================
 
 import { getAllRaceMetadata } from "./registry";
-import type { RaceData } from "./types";
+import type { RaceData, RaceMetadata, RaceRouteData } from "./types";
 
 /**
  * @deprecated Use `getAllRaceMetadata()` or `getRaceData(id)` instead.
@@ -209,15 +209,17 @@ export async function migrateFromLegacyData(
 ): Promise<void> {
   const { registerRace } = await import("./registry");
   const { inferRegion, inferTier } = await import("./helpers");
+  const { inferRaceType } = await import("./types");
 
   for (const [id, data] of Object.entries(legacyData)) {
-    const metadata = {
+    const metadata: RaceMetadata = {
       id,
       name: data.name,
       city: data.city,
       country: data.country,
       region: inferRegion(data.country),
       tier: inferTier(data.name, data.elevationGain),
+      raceType: inferRaceType(data.distance),
       distance: data.distance,
       elevationGain: data.elevationGain,
       elevationLoss: data.elevationLoss,
@@ -237,11 +239,11 @@ export async function migrateFromLegacyData(
       faq: data.faq || [],
     };
 
-    const routeData = {
+    const routeData: RaceRouteData = {
       raceId: id,
       thumbnailPoints: data.thumbnailPoints || [],
     };
 
-    registerRace(metadata as any, async () => routeData);
+    registerRace(metadata, async () => routeData);
   }
 }

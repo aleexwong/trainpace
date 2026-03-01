@@ -40,6 +40,15 @@ export function registerRace(
   metadata: RaceMetadata,
   routeLoader: () => Promise<RaceRouteData>
 ): void {
+  if (
+    typeof import.meta !== "undefined" &&
+    import.meta.env?.DEV &&
+    registry.has(metadata.id)
+  ) {
+    console.debug(
+      `[races] Overwriting existing registration for "${metadata.id}"`
+    );
+  }
   registry.set(metadata.id, {
     metadata,
     loadRoute: routeLoader,
