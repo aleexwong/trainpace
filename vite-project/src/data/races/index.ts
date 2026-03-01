@@ -133,6 +133,27 @@ export {
 } from "./helpers";
 
 // ============================================================================
+// Route Fingerprinting (GPX Route Identification)
+// ============================================================================
+
+export {
+  identifyUploadedRoute,
+  addFingerprint,
+  removeFingerprint,
+  getAllFingerprints,
+  getFingerprintCount,
+  getFingerprint,
+  generateFingerprint,
+} from "./fingerprint-registry";
+
+export type {
+  RouteFingerprint,
+  RouteMatchResult,
+  MatchScores,
+  MatchConfig,
+} from "./fingerprint-registry";
+
+// ============================================================================
 // Initialize from Legacy Data (Compatibility Layer)
 // ============================================================================
 

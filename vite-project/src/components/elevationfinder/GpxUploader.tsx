@@ -6,6 +6,7 @@ import {
   AlertCircle,
   CheckCircle,
   FileX,
+  Trophy,
 } from "lucide-react";
 import { toast } from "../../hooks/use-toast";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -22,6 +23,10 @@ import {
 import { storage, db } from "../../lib/firebase";
 import { useAuth } from "../../features/auth/AuthContext";
 import { processGPXUpload } from "../../lib/gpxMetaData";
+import {
+  identifyUploadedRoute,
+  type RouteMatchResult,
+} from "../../data/races/fingerprint-registry";
 
 interface GpxUploaderProps {
   onFileParsed: (
@@ -30,7 +35,8 @@ interface GpxUploaderProps {
     fileUrl: string,
     docId: string | null,
     displayPoints?: Array<{ lat: number; lng: number; ele?: number }>,
-    displayUrl?: string // Optional: URL for displaying the GPX file
+    displayUrl?: string, // Optional: URL for displaying the GPX file
+    matchedRace?: RouteMatchResult | null // Route identification result
   ) => void;
   maxFileSize?: number; // in MB
   maxUploadsPerDay?: number;
@@ -208,11 +214,12 @@ export default function GpxUploader({
     return `${user?.uid}_${timestamp}_${randomString}_${sanitized}`;
   };
 
-  // 🚀 UPDATED: Upload file to Firebase Storage with optimized caching setup
+  // Upload file to Firebase Storage with optimized caching setup + route identification
   const uploadToFirebase = async (
     file: File,
     content: string,
-    fileHash: string
+    fileHash: string,
+    matchResult: RouteMatchResult | null
   ): Promise<{
     fileUrl: string;
     displayPoints: Array<{ lat: number; lng: number; ele?: number }>;
@@ -259,10 +266,20 @@ export default function GpxUploader({
         docId,
         displayUrl,
 
-        // 🚀 NEW: Prepare for optimized caching (will be populated by API)
+        // Prepare for optimized caching (will be populated by API)
         staticRouteData: null, // Will be filled by first API call
         staticDataCached: null,
         staticDataSize: 0,
+
+        // Route identification: auto-matched known race course
+        matchedRace: matchResult?.raceId
+          ? {
+              raceId: matchResult.raceId,
+              raceName: matchResult.raceName,
+              confidence: matchResult.confidence,
+              direction: matchResult.direction,
+            }
+          : null,
       };
 
       if (shouldStoreContent) {
@@ -444,13 +461,33 @@ export default function GpxUploader({
         return;
       }
 
-      setUploadProgress(60);
+      setUploadProgress(55);
 
-      // Upload to Firebase
+      // Route identification: match against known race courses
+      const processed = processGPXUpload(content, file.name);
+      let matchResult: RouteMatchResult | null = null;
+      try {
+        matchResult = identifyUploadedRoute(
+          processed.displayPoints,
+          processed.metadata.totalDistance
+        );
+        if (matchResult.raceId) {
+          console.log(
+            `Route identified: ${matchResult.raceName} (${Math.round(matchResult.confidence * 100)}% confidence)`
+          );
+        }
+      } catch (err) {
+        console.warn("Route identification failed:", err);
+      }
+
+      setUploadProgress(65);
+
+      // Upload to Firebase (with match result)
       const { fileUrl, displayPoints, docId } = await uploadToFirebase(
         file,
         content,
-        fileHash
+        fileHash,
+        matchResult
       );
       setUploadProgress(85);
 
@@ -458,15 +495,24 @@ export default function GpxUploader({
       await checkRateLimits();
       setUploadProgress(100);
 
-      // 🚀 NEW: Pass docId to enable immediate caching
-      onFileParsed(content, file.name, fileUrl, docId, displayPoints);
+      // Pass docId and match result to parent
+      onFileParsed(content, file.name, fileUrl, docId, displayPoints, undefined, matchResult);
 
-      toast({
-        title: "Upload Successful",
-        description:
-          "Your GPX file has been uploaded and is ready for analysis.",
-        variant: "default",
-      });
+      // Show appropriate toast
+      if (matchResult?.raceId) {
+        toast({
+          title: `${matchResult.raceName} Detected`,
+          description: `Route matched with ${Math.round(matchResult.confidence * 100)}% confidence. Race-specific insights unlocked.`,
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Upload Successful",
+          description:
+            "Your GPX file has been uploaded and is ready for analysis.",
+          variant: "default",
+        });
+      }
     } catch (error) {
       console.error("Upload error:", error);
       toast({
@@ -646,8 +692,8 @@ export default function GpxUploader({
               <span>Track Analysis</span>
             </div>
             <div className="flex items-center space-x-1">
-              <Activity className="w-4 h-4 text-blue-500" />
-              <span>Smart Caching</span>
+              <Trophy className="w-4 h-4 text-amber-500" />
+              <span>Race Detection</span>
             </div>
             <div className="flex items-center space-x-1">
               <CheckCircle className="w-4 h-4 text-green-500" />
