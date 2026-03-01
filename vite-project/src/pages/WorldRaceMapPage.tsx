@@ -6,9 +6,7 @@ export default function WorldRaceMapPage() {
   return (
     <>
       <Helmet>
-        <title>
-          World Race Map - Explore {worldRaceCount}+ Running Races | TrainPace
-        </title>
+        <title>{`World Race Map - Explore ${worldRaceCount}+ Running Races | TrainPace`}</title>
         <meta
           name="description"
           content={`Explore ${worldRaceCount}+ running races worldwide on an interactive map. Find marathons, half marathons, and more across 6 continents. Filter by region, tier, and distance.`}
