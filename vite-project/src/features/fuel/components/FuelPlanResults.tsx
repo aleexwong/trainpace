@@ -23,7 +23,7 @@ export function FuelPlanResults({
   onDownload,
 }: FuelPlanResultsProps) {
   return (
-    <Card className="bg-white shadow-lg h-full">
+    <Card data-testid="fuel-results" className="bg-white shadow-lg h-full">
       <CardContent className="p-6 md:p-8">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl md:text-2xl font-semibold text-gray-900">

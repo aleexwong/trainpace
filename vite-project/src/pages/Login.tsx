@@ -86,7 +86,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-[70vh] text-center w-full px-4">
+    <div data-testid="login-page" className="flex flex-col items-center justify-center h-[70vh] text-center w-full px-4">
       <h1 className="text-2xl font-bold mb-4">Welcome back</h1>
       <p className="text-gray-600 mb-6">
         Sign in with Google or email to get started.
@@ -106,6 +106,7 @@ export default function Login() {
           <input
             type="email"
             placeholder="Email"
+            data-testid="login-email"
             className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -115,15 +116,17 @@ export default function Login() {
           <input
             type="password"
             placeholder="Password"
+            data-testid="login-password"
             className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             disabled={isLoading}
           />
-          {error && <p className="text-red-500 text-sm text-left">{error}</p>}
+          {error && <p data-testid="login-error" className="text-red-500 text-sm text-left">{error}</p>}
           <button
             type="submit"
+            data-testid="login-submit"
             className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:opacity-50 transition-colors"
             disabled={isLoading}
           >

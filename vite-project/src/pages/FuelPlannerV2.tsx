@@ -657,7 +657,7 @@ const FuelPlannerV2 = () => {
           <div className="max-w-4xl mx-auto space-y-8">
             {/* 1. Race Details Input OR Your Plan (mutually exclusive) */}
             {!result ? (
-              <Card className="bg-white shadow-lg">
+              <Card data-testid="fuel-form" className="bg-white shadow-lg">
                 <CardContent className="p-8 space-y-6">
                   <h2 className="text-2xl font-semibold text-gray-900 mb-4">
                     Race Details
@@ -676,6 +676,7 @@ const FuelPlannerV2 = () => {
                       ).map((type) => (
                         <button
                           key={type}
+                          data-testid={`fuel-race-${type.toLowerCase()}`}
                           onClick={() => setRaceType(type)}
                           className={`py-4 px-2 text-sm sm:text-base font-semibold rounded-xl transition-all ${
                             raceType === type
@@ -753,6 +754,7 @@ const FuelPlannerV2 = () => {
 
                   <button
                     onClick={handleCalculate}
+                    data-testid="fuel-calculate"
                     className="w-full py-4 text-lg font-semibold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors shadow-md"
                   >
                     Calculate Fuel Plan
@@ -760,7 +762,7 @@ const FuelPlannerV2 = () => {
                 </CardContent>
               </Card>
             ) : (
-              <Card className="bg-white shadow-lg">
+              <Card data-testid="fuel-results" className="bg-white shadow-lg">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-between mb-6">
                     <h2 className="text-2xl font-semibold text-gray-900">

@@ -111,7 +111,7 @@ export default function Register() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[70vh] px-4">
+    <div data-testid="register-page" className="flex flex-col items-center justify-center h-[70vh] px-4">
       <h1 className="text-2xl font-bold mb-4">Create an Account</h1>
       <p className="text-gray-600 mb-6">
         Sign up to save your fuel plans and track your routes.
@@ -183,7 +183,7 @@ export default function Register() {
             )}
           />
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" data-testid="register-submit" className="w-full">
             Register
           </Button>
         </form>
