@@ -6,7 +6,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Info, ChevronDown, ChevronUp, Printer, Copy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ReactGA from "react-ga4";
@@ -438,12 +437,12 @@ export function SplitCalculator() {
                   </div>
 
                   {/* Calculate Button */}
-                  <Button
+                  <button
                     onClick={handleCalculate}
-                    className="w-full py-6 text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl"
+                    className="w-full py-4 text-lg font-semibold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors shadow-md"
                   >
                     Calculate Splits
-                  </Button>
+                  </button>
                 </CardContent>
               </Card>
             ) : (
@@ -456,22 +455,18 @@ export function SplitCalculator() {
                         Your Race Splits
                       </h2>
                       <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
+                        <button
                           onClick={handleCopy}
-                          className="gap-2"
+                          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                         >
                           <Copy className="h-4 w-4" /> Copy
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
+                        </button>
+                        <button
                           onClick={handlePrint}
-                          className="gap-2"
+                          className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                         >
                           <Printer className="h-4 w-4" /> Pace Band
-                        </Button>
+                        </button>
                       </div>
                     </div>
 
@@ -507,13 +502,12 @@ export function SplitCalculator() {
                 </Card>
 
                 <div className="flex justify-center">
-                  <Button
-                    variant="outline"
+                  <button
                     onClick={handleEdit}
-                    className="px-8"
+                    className="px-6 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                   >
                     ← Change Settings
-                  </Button>
+                  </button>
                 </div>
               </div>
             )}
