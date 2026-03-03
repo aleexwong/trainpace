@@ -3,7 +3,7 @@
  * Generates per-km or per-mile race splits for race day
  */
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -49,11 +49,14 @@ export function SplitCalculator() {
   const [showInfo, setShowInfo] = useState(false);
   const [showTips, setShowTips] = useState(false);
 
-  ReactGA.event({
-    category: "Split Calculator",
-    action: "Page View",
-    label: "User opened the Split Calculator",
-  });
+  // Track page view once on mount
+  useEffect(() => {
+    ReactGA.event({
+      category: "Split Calculator",
+      action: "Page View",
+      label: "User opened the Split Calculator",
+    });
+  }, []);
 
   const handleInputChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
