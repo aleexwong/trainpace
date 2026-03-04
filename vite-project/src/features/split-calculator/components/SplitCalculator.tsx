@@ -23,6 +23,7 @@ import {
   timeToSeconds,
   validateSplitInputs,
   calculateSplits,
+  convertDistance,
 } from "../utils";
 import { SplitTable } from "./SplitTable";
 
@@ -80,7 +81,20 @@ export function SplitCalculator() {
   };
 
   const handleUnitToggle = (unit: DistanceUnit) => {
-    setInputs((prev) => ({ ...prev, units: unit }));
+    if (unit === inputs.units) return;
+
+    // Convert existing distance if there is one
+    if (inputs.distance && !isNaN(parseFloat(inputs.distance))) {
+      const currentDistance = parseFloat(inputs.distance);
+      const convertedDistance = convertDistance(currentDistance, inputs.units, unit);
+      setInputs((prev) => ({
+        ...prev,
+        units: unit,
+        distance: convertedDistance.toString(),
+      }));
+    } else {
+      setInputs((prev) => ({ ...prev, units: unit }));
+    }
     setResults(null);
   };
 
@@ -309,27 +323,31 @@ export function SplitCalculator() {
                           errors.distance ? "border-red-400" : "border-gray-300"
                         }`}
                       />
-                      <div className="flex bg-gray-100 rounded-xl overflow-hidden">
-                        <button
-                          onClick={() => handleUnitToggle("km")}
-                          className={`px-4 py-3 text-sm font-medium transition-all ${
-                            inputs.units === "km"
-                              ? "bg-blue-600 text-white"
-                              : "text-gray-600 hover:bg-gray-200"
+                      <div
+                        className="relative w-32 h-10 bg-blue-100 rounded-full cursor-pointer overflow-hidden"
+                        onClick={() => handleUnitToggle(inputs.units === "km" ? "miles" : "km")}
+                      >
+                        <div
+                          className={`absolute top-1 left-1 w-[calc(50%-0.25rem)] h-8 bg-blue-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
+                            inputs.units === "miles" ? "translate-x-full" : "translate-x-0"
                           }`}
-                        >
-                          km
-                        </button>
-                        <button
-                          onClick={() => handleUnitToggle("miles")}
-                          className={`px-4 py-3 text-sm font-medium transition-all ${
-                            inputs.units === "miles"
-                              ? "bg-blue-600 text-white"
-                              : "text-gray-600 hover:bg-gray-200"
-                          }`}
-                        >
-                          mi
-                        </button>
+                        />
+                        <div className="absolute inset-0 flex items-center">
+                          <div
+                            className={`w-1/2 text-center text-sm font-medium transition-colors ${
+                              inputs.units === "km" ? "text-white" : "text-blue-700"
+                            }`}
+                          >
+                            KM
+                          </div>
+                          <div
+                            className={`w-1/2 text-center text-sm font-medium transition-colors ${
+                              inputs.units === "miles" ? "text-white" : "text-blue-700"
+                            }`}
+                          >
+                            MI
+                          </div>
+                        </div>
                       </div>
                     </div>
                     {errors.distance && (

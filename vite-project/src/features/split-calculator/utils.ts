@@ -11,6 +11,41 @@ import type {
 } from "./types";
 
 /**
+ * Common race distances in both units for smart snapping
+ */
+const COMMON_RACES = {
+  km: [0.8, 1, 5, 10, 21.1, 42.2],
+  miles: [0.5, 1, 3.1, 6.2, 13.1, 26.2],
+};
+
+/**
+ * Convert distance between km and miles with smart snapping.
+ * Snaps to nearest common race distance if close, otherwise rounds to 1 decimal.
+ */
+export function convertDistance(
+  distance: number,
+  fromUnit: DistanceUnit,
+  toUnit: DistanceUnit
+): number {
+  if (fromUnit === toUnit) return distance;
+
+  const conversionFactor = fromUnit === "km" ? 0.621371 : 1.60934;
+  const converted = distance * conversionFactor;
+
+  // Snap to common race distance if within 2%
+  const commonRaces = toUnit === "km" ? COMMON_RACES.km : COMMON_RACES.miles;
+  for (const raceDistance of commonRaces) {
+    const percentDiff =
+      (Math.abs(converted - raceDistance) / raceDistance) * 100;
+    if (percentDiff < 2) {
+      return raceDistance;
+    }
+  }
+
+  return Math.round(converted * 10) / 10;
+}
+
+/**
  * Convert time inputs to total seconds
  */
 export function timeToSeconds(h: string, m: string, s: string): number {

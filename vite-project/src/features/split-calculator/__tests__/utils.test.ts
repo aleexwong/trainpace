@@ -4,6 +4,7 @@ import {
   secondsToTimeString,
   validateSplitInputs,
   calculateSplits,
+  convertDistance,
 } from "../utils";
 
 describe("timeToSeconds", () => {
@@ -127,5 +128,35 @@ describe("calculateSplits", () => {
     expect(calculateSplits(3000, 10, "km", "even").strategy).toBe("even");
     expect(calculateSplits(3000, 10, "km", "negative").strategy).toBe("negative");
     expect(calculateSplits(3000, 10, "km", "positive").strategy).toBe("positive");
+  });
+});
+
+describe("convertDistance", () => {
+  it("returns same distance when units match", () => {
+    expect(convertDistance(10, "km", "km")).toBe(10);
+    expect(convertDistance(6.2, "miles", "miles")).toBe(6.2);
+  });
+
+  it("converts km to miles with smart snapping", () => {
+    // 10 km → ~6.21 mi, snaps to common 6.2
+    expect(convertDistance(10, "km", "miles")).toBe(6.2);
+    // 42.195 km → ~26.22 mi, snaps to common 26.2
+    expect(convertDistance(42.195, "km", "miles")).toBe(26.2);
+    // 21.0975 km → ~13.11 mi, snaps to common 13.1
+    expect(convertDistance(21.0975, "km", "miles")).toBe(13.1);
+  });
+
+  it("converts miles to km with smart snapping", () => {
+    // 6.2 mi → ~9.98 km, snaps to common 10
+    expect(convertDistance(6.2, "miles", "km")).toBe(10);
+    // 26.2 mi → ~42.16 km, snaps to common 42.2
+    expect(convertDistance(26.2, "miles", "km")).toBe(42.2);
+    // 13.1 mi → ~21.08 km, snaps to common 21.1
+    expect(convertDistance(13.1, "miles", "km")).toBe(21.1);
+  });
+
+  it("rounds to 1 decimal for non-common distances", () => {
+    // 15 km → ~9.32 mi, no common race near this
+    expect(convertDistance(15, "km", "miles")).toBe(9.3);
   });
 });
