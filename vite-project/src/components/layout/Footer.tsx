@@ -66,6 +66,14 @@ const Footer = () => {
                   ElevationFinder
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/calculator"
+                  className="text-slate-600 hover:text-emerald-600 transition-colors text-sm"
+                >
+                  Splits
+                </Link>
+              </li>
             </ul>
           </div>
 
