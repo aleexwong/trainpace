@@ -82,6 +82,7 @@ export function RaceDetailsForm({
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
+                      data-testid={`preset-${preset.name.toLowerCase().replace(/\s+/g, '-')}`}
                       onClick={() => onPresetClick(preset.distance)}
                       className={`py-4 px-2 text-sm sm:text-base font-semibold rounded-xl transition-all hover:scale-105 ${
                         inputs.distance === preset.distance.toString()
@@ -113,6 +114,7 @@ export function RaceDetailsForm({
                 inputMode="decimal"
                 placeholder="Distance"
                 name="distance"
+                data-testid="pace-distance"
                 min="0"
                 max="250"
                 step="0.1"
@@ -165,6 +167,7 @@ export function RaceDetailsForm({
                 inputMode="tel"
                 placeholder="HH"
                 name="hours"
+                data-testid="pace-hours"
                 min="0"
                 max="99"
                 value={inputs.hours}
@@ -179,6 +182,7 @@ export function RaceDetailsForm({
                 inputMode="tel"
                 placeholder="MM"
                 name="minutes"
+                data-testid="pace-minutes"
                 min="0"
                 max="59"
                 value={inputs.minutes}
@@ -193,6 +197,7 @@ export function RaceDetailsForm({
                 inputMode="tel"
                 placeholder="SS"
                 name="seconds"
+                data-testid="pace-seconds"
                 min="0"
                 max="59"
                 value={inputs.seconds}
@@ -279,6 +284,7 @@ export function RaceDetailsForm({
         <button
           onClick={onCalculate}
           disabled={isCalculating}
+          data-testid="pace-calculate"
           className="w-full py-4 text-lg font-semibold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isCalculating ? "Calculating..." : "Calculate Training Paces"}

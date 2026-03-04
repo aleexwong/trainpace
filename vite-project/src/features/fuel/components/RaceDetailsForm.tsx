@@ -94,7 +94,7 @@ export function RaceDetailsForm({
   };
   return (
     <Card className="bg-white shadow-lg h-full">
-      <CardContent className="p-6 md:p-8 space-y-5">
+      <CardContent data-testid="fuel-form" className="p-6 md:p-8 space-y-5">
         <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">
           Race Details
         </h2>
@@ -108,6 +108,7 @@ export function RaceDetailsForm({
             {(Object.keys(RACE_SETTINGS) as RaceType[]).map((type) => (
               <button
                 key={type}
+                data-testid={`fuel-race-${type.toLowerCase()}`}
                 onClick={() => setRaceType(type)}
                 className={`py-3 md:py-4 px-2 text-sm sm:text-base font-semibold rounded-xl transition-all ${
                   raceType === type
@@ -135,6 +136,7 @@ export function RaceDetailsForm({
               <div>
                 <input
                   type="number"
+                  data-testid="fuel-time-minutes"
                   placeholder="Minutes (e.g. 45)"
                   value={timeMinutes}
                   onChange={(e) => setTimeMinutes(e.target.value)}
@@ -148,6 +150,7 @@ export function RaceDetailsForm({
                 <div>
                   <input
                     type="number"
+                    data-testid="fuel-time-hours"
                     placeholder="HH"
                     value={timeHours}
                     onChange={(e) => setTimeHours(e.target.value)}
@@ -160,6 +163,7 @@ export function RaceDetailsForm({
                 <div>
                   <input
                     type="number"
+                    data-testid="fuel-time-minutes"
                     placeholder="MM"
                     value={timeMinutes}
                     onChange={(e) => setTimeMinutes(e.target.value)}
@@ -246,6 +250,7 @@ export function RaceDetailsForm({
 
         <button
           onClick={onCalculate}
+          data-testid="fuel-calculate"
           className="w-full py-4 text-lg font-semibold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors shadow-md mt-2"
         >
           Generate Fuel Plan

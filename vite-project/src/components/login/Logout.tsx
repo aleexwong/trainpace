@@ -14,7 +14,7 @@ export default function Logout() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-[70vh] text-center">
+    <div data-testid="logout-page" className="flex flex-col items-center justify-center h-[70vh] text-center">
       <h1 className="text-xl">Signing you out...</h1>
     </div>
   );

@@ -167,7 +167,7 @@ export default function MainLayout() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-4">
+        <nav data-testid="desktop-nav" className="hidden md:flex items-center space-x-4">
           {location.pathname === "/" && (
             <a href="#features" className="text-gray-700 hover:text-blue-600">
               Features
