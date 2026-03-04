@@ -453,6 +453,37 @@ const FeatureSection = ({
                     </div>
                   </div>
                 )}
+                {badge === "Race Splits" && (
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+                      <span className="text-xs text-slate-500">Half Marathon · 1:45:00 Goal</span>
+                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-medium">Even</span>
+                    </div>
+                    <div className="space-y-1.5 text-sm">
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-600">Mile 1</span>
+                        <span className="font-mono text-slate-400 text-xs">8:01</span>
+                        <span className="font-mono font-semibold text-blue-700 text-xs">0:08:01</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-600">Mile 2</span>
+                        <span className="font-mono text-slate-400 text-xs">8:01</span>
+                        <span className="font-mono font-semibold text-blue-700 text-xs">0:16:02</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-600">Mile 3</span>
+                        <span className="font-mono text-slate-400 text-xs">8:01</span>
+                        <span className="font-mono font-semibold text-blue-700 text-xs">0:24:03</span>
+                      </div>
+                      <div className="text-center text-slate-400 text-xs">···</div>
+                      <div className="flex justify-between items-center bg-emerald-50 rounded px-1 py-0.5">
+                        <span className="text-emerald-700 font-medium">Finish</span>
+                        <span className="font-mono text-emerald-400 text-xs">0.1 mi</span>
+                        <span className="font-mono font-bold text-emerald-700 text-xs">1:45:00</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -701,6 +732,18 @@ const Comparison = () => {
               </tr>
               <tr>
                 <td className="p-4 font-medium text-slate-900">
+                  Race Splits
+                </td>
+                <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
+                  <span className="flex items-center">
+                    <Check className="w-4 h-4 text-emerald-500 mr-2" />{" "}
+                    Printable Pace Band
+                  </span>
+                </td>
+                <td className="p-4 text-slate-500">Manual calculation</td>
+              </tr>
+              <tr>
+                <td className="p-4 font-medium text-slate-900">
                   Account Required?
                 </td>
                 <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
@@ -857,6 +900,22 @@ export default function LandingPage() {
         cta="Plan My Fueling"
         ctaRoute="/fuel"
         imageSide="right"
+      />
+
+      <FeatureSection
+        badge="Race Splits"
+        title="Know Your Target at Every Mile Marker"
+        subtitle="Enter your goal finish time and get split-by-split pacing for race day. Print a pace band for your wrist."
+        icon={Activity}
+        features={[
+          "Per-mile or per-km split targets",
+          "Even, negative, or positive pacing strategies",
+          "Printable pace band for race day",
+          "Cumulative elapsed time at each split",
+        ]}
+        cta="Build My Pace Band"
+        ctaRoute="/splits"
+        imageSide="left"
       />
 
       <FounderStory />

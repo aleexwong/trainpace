@@ -30,6 +30,7 @@ import Terms from "./pages/Terms";
 import About from "./pages/About";
 import DashboardV2 from "./pages/DashboardV2";
 import { BlogList, BlogPost } from "./features/blog";
+import SplitCalculatorPage from "./pages/SplitCalculator";
 import AuthGuard from "./features/auth/AuthGuard";
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
           />
           <Route path="/fuel" element={<FuelPlannerV2 />} />
           <Route path="/fuel/:seoSlug" element={<FuelSeoLanding />} />
+          <Route path="/splits" element={<SplitCalculatorPage />} />
           <Route path="/race" element={<RaceIndex />} />
           <Route path="/race/:raceSlug" element={<RaceSeoLanding />} />
           <Route path="/elevation-finder" element={<ElevationPage />} />
