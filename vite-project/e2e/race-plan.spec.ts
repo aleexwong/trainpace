@@ -13,6 +13,7 @@ test.describe("Race Plan (Pace Calculator)", () => {
     await expect(calculator.minutesInput).toBeVisible();
     await expect(calculator.secondsInput).toBeVisible();
     await expect(calculator.calculateButton).toBeVisible();
+    await expect(calculator.calculateButton).toBeEnabled();
   });
 
   test("should show preset distance buttons", async ({ page }) => {
@@ -42,12 +43,9 @@ test.describe("Race Plan (Pace Calculator)", () => {
 
     await calculator.selectPreset("10K");
     await calculator.fillTime("0", "50", "0");
-    await calculator.calculate();
+    await calculator.calculateAndWaitForResults();
 
-    // After calculation, results should appear (training paces heading)
-    await expect(
-      page.getByRole("heading", { name: /Training Paces/i })
-    ).toBeVisible({ timeout: 10000 });
+    await expect(calculator.resultsHeading).toBeVisible();
   });
 
   test("should calculate paces for a marathon", async ({ page }) => {
@@ -56,11 +54,9 @@ test.describe("Race Plan (Pace Calculator)", () => {
 
     await calculator.selectPreset("Marathon");
     await calculator.fillTime("3", "45", "0");
-    await calculator.calculate();
+    await calculator.calculateAndWaitForResults();
 
-    await expect(
-      page.getByRole("heading", { name: /Training Paces/i })
-    ).toBeVisible({ timeout: 10000 });
+    await expect(calculator.resultsHeading).toBeVisible();
   });
 
   test("should allow manual distance entry", async ({ page }) => {
@@ -69,19 +65,20 @@ test.describe("Race Plan (Pace Calculator)", () => {
 
     await calculator.distanceInput.fill("15");
     await calculator.fillTime("1", "15", "0");
-    await calculator.calculate();
+    await calculator.calculateAndWaitForResults();
 
-    await expect(
-      page.getByRole("heading", { name: /Training Paces/i })
-    ).toBeVisible({ timeout: 10000 });
+    await expect(calculator.resultsHeading).toBeVisible();
   });
 
   test("should navigate to calculator from nav", async ({ page }) => {
     const nav = new NavigationHelper(page);
     await page.goto("/");
+    await page.waitForLoadState("networkidle");
 
     await nav.goToCalculator();
 
     await expect(page).toHaveURL(/\/calculator/);
+    const calculator = new CalculatorPage(page);
+    await expect(calculator.heading).toBeVisible();
   });
 });

@@ -23,6 +23,7 @@ export class RegisterPage {
 
   async goto() {
     await this.page.goto("/register");
+    await this.page.waitForLoadState("networkidle");
   }
 
   async register(name: string, email: string, password: string) {

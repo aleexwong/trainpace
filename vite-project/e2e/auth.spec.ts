@@ -12,6 +12,7 @@ test.describe("Sign Up", () => {
     await expect(registerPage.emailInput).toBeVisible();
     await expect(registerPage.passwordInput).toBeVisible();
     await expect(registerPage.submitButton).toBeVisible();
+    await expect(registerPage.submitButton).toBeEnabled();
   });
 
   test("should show the Google sign-up option", async ({ page }) => {
@@ -19,6 +20,7 @@ test.describe("Sign Up", () => {
     await registerPage.goto();
 
     await expect(registerPage.googleButton).toBeVisible();
+    await expect(registerPage.googleButton).toBeEnabled();
   });
 
   test("should validate required fields on submit", async ({ page }) => {
@@ -41,12 +43,9 @@ test.describe("Sign Up", () => {
     await registerPage.passwordInput.fill("password123");
     await registerPage.submitButton.click();
 
-    // Either Zod validation message or browser-native validation fires
-    const zodError = page.getByText("Invalid email address");
-    const formStillVisible = registerPage.submitButton;
-
     // The form should not navigate away - either shows error or stays on page
-    await expect(formStillVisible).toBeVisible();
+    await expect(registerPage.submitButton).toBeVisible();
+    await expect(page).toHaveURL(/\/register/);
   });
 
   test("should validate password minimum length", async ({ page }) => {
@@ -58,6 +57,7 @@ test.describe("Sign Up", () => {
     await expect(
       page.getByText("Password must be at least 8 characters")
     ).toBeVisible();
+    await expect(page).toHaveURL(/\/register/);
   });
 
   test("should navigate to login page from register link", async ({
@@ -70,6 +70,9 @@ test.describe("Sign Up", () => {
     await loginPage.registerLink.click();
 
     await expect(page).toHaveURL(/\/register/);
+    await expect(
+      page.getByRole("heading", { name: "Create an Account" })
+    ).toBeVisible();
   });
 });
 
@@ -82,6 +85,8 @@ test.describe("Log In", () => {
     await expect(loginPage.emailInput).toBeVisible();
     await expect(loginPage.passwordInput).toBeVisible();
     await expect(loginPage.submitButton).toBeVisible();
+    await expect(loginPage.submitButton).toBeEnabled();
+    await expect(loginPage.submitButton).toHaveText("Sign in with Email");
   });
 
   test("should show Google login option", async ({ page }) => {
@@ -89,6 +94,7 @@ test.describe("Log In", () => {
     await loginPage.goto();
 
     await expect(loginPage.googleButton).toBeVisible();
+    await expect(loginPage.googleButton).toBeEnabled();
   });
 
   test("should show error on invalid credentials", async ({ page }) => {
@@ -99,6 +105,7 @@ test.describe("Log In", () => {
 
     // Firebase returns an error; the UI shows a generic message
     await expect(loginPage.errorMessage).toBeVisible({ timeout: 10000 });
+    await expect(page).toHaveURL(/\/login/);
   });
 
   test("should have a forgot password link", async ({ page }) => {
@@ -116,6 +123,7 @@ test.describe("Log In", () => {
     await loginPage.goto();
 
     await expect(loginPage.registerLink).toBeVisible();
+    await expect(loginPage.registerLink).toHaveAttribute("href", "/register");
   });
 });
 
@@ -136,5 +144,6 @@ test.describe("Log Out", () => {
     await expect(
       page.getByRole("heading", { name: "Welcome back" })
     ).toBeVisible();
+    await expect(page.getByTestId("login-submit")).toBeVisible();
   });
 });

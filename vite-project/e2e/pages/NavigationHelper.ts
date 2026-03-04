@@ -17,14 +17,17 @@ export class NavigationHelper {
 
   async goToCalculator() {
     await this.navLink("Calculator").click();
+    await this.page.waitForURL(/\/calculator/);
   }
 
   async goToFuelPlanner() {
     await this.navLink("Fuel Planner").click();
+    await this.page.waitForURL(/\/fuel/);
   }
 
   async goToLogin() {
     await this.navLink("Login").click();
+    await this.page.waitForURL(/\/login/);
   }
 
   async goHome() {

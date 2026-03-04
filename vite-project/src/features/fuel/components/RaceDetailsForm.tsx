@@ -136,6 +136,7 @@ export function RaceDetailsForm({
               <div>
                 <input
                   type="number"
+                  data-testid="fuel-time-minutes"
                   placeholder="Minutes (e.g. 45)"
                   value={timeMinutes}
                   onChange={(e) => setTimeMinutes(e.target.value)}
@@ -149,6 +150,7 @@ export function RaceDetailsForm({
                 <div>
                   <input
                     type="number"
+                    data-testid="fuel-time-hours"
                     placeholder="HH"
                     value={timeHours}
                     onChange={(e) => setTimeHours(e.target.value)}
@@ -161,6 +163,7 @@ export function RaceDetailsForm({
                 <div>
                   <input
                     type="number"
+                    data-testid="fuel-time-minutes"
                     placeholder="MM"
                     value={timeMinutes}
                     onChange={(e) => setTimeMinutes(e.target.value)}

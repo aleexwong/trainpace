@@ -8,6 +8,7 @@ export class CalculatorPage {
   readonly minutesInput: Locator;
   readonly secondsInput: Locator;
   readonly calculateButton: Locator;
+  readonly resultsHeading: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -17,10 +18,14 @@ export class CalculatorPage {
     this.minutesInput = page.getByTestId("pace-minutes");
     this.secondsInput = page.getByTestId("pace-seconds");
     this.calculateButton = page.getByTestId("pace-calculate");
+    this.resultsHeading = page.getByRole("heading", {
+      name: /Training Paces/i,
+    });
   }
 
   async goto() {
     await this.page.goto("/calculator");
+    await this.page.waitForLoadState("networkidle");
   }
 
   presetButton(name: string) {
@@ -41,5 +46,10 @@ export class CalculatorPage {
 
   async calculate() {
     await this.calculateButton.click();
+  }
+
+  async calculateAndWaitForResults() {
+    await this.calculateButton.click();
+    await this.resultsHeading.waitFor({ state: "visible", timeout: 10000 });
   }
 }
