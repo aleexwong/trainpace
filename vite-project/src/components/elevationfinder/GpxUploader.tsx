@@ -45,6 +45,7 @@ interface DuplicateFile {
   content?: string; // Optional: content stored in Firestore
   storageRef?: string; // Storage reference path
   docId?: string; // Firestore document ID
+  displayPoints?: Array<{ lat: number; lng: number; ele?: number }>; // Cached display points for map preview
 }
 
 export default function GpxUploader({
@@ -108,6 +109,7 @@ export default function GpxUploader({
           content: data.content, // Include content if stored
           storageRef: data.storageRef,
           docId: duplicateDoc.id, // Include document ID for reference
+          displayPoints: data.displayPoints, // Include cached display points for map preview
         };
       }
 
@@ -320,7 +322,8 @@ export default function GpxUploader({
           duplicateFound.content,
           filename,
           fileUrl,
-          duplicateFound.docId || null
+          duplicateFound.docId || null,
+          duplicateFound.displayPoints
         );
         return;
       }
@@ -337,7 +340,13 @@ export default function GpxUploader({
         }
 
         const content = await response.text();
-        onFileParsed(content, filename, freshUrl, duplicateFound.docId || null);
+        onFileParsed(
+          content,
+          filename,
+          freshUrl,
+          duplicateFound.docId || null,
+          duplicateFound.displayPoints || processGPXUpload(content).displayPoints
+        );
         return;
       }
 
