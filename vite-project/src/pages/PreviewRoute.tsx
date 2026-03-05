@@ -113,14 +113,76 @@ export default function PreviewRoute() {
   }>({});
   const [openFAQIndex, setOpenFAQIndex] = useState<number | null>(0);
 
-  if (!slug) {
-    return <Navigate to="/" replace />;
-  }
-
   // Get the preview data
-  const route = marathonRoutesData[slug];
+  const route = slug ? marathonRoutesData[slug] : undefined;
 
-  if (!route) {
+  // Load display/thumbnail points and dynamic stats from ElevationFinder doc
+  useEffect(() => {
+    if (!route) return;
+    let cancelled = false;
+    const load = async () => {
+      try {
+        setLoadingPoints(true);
+        setLoadError(null);
+        const resolvedId = getCurrentDocumentId(route.slug);
+        const ref = doc(db, "gpx_uploads", resolvedId);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) return;
+        const data: any = snap.data();
+        const pts: Array<{ lat: number; lng: number; ele?: number }> =
+          data?.thumbnailPoints || data?.displayPoints || [];
+        if (!cancelled && pts?.length) setFirebaseThumbPoints(pts);
+
+        const nextStats: typeof routeStats = {};
+        const staticData = data?.staticRouteData;
+        const meta = data?.metadata;
+        if (staticData) {
+          if (typeof staticData.totalDistance === "number")
+            nextStats.distanceKm = staticData.totalDistance;
+          if (typeof staticData.totalElevationGain === "number")
+            nextStats.elevationGain = staticData.totalElevationGain;
+          if (typeof staticData.totalElevationLoss === "number")
+            nextStats.elevationLoss = staticData.totalElevationLoss;
+          const profile: Array<{ distanceKm: number; elevation: number }> =
+            staticData.elevationProfile || [];
+          if (profile.length > 0) {
+            nextStats.startElevation = Math.round(profile[0].elevation);
+            nextStats.endElevation = Math.round(
+              profile[profile.length - 1].elevation
+            );
+          }
+        } else if (meta) {
+          if (typeof meta.totalDistance === "number")
+            nextStats.distanceKm = meta.totalDistance;
+          if (typeof meta.elevationGain === "number")
+            nextStats.elevationGain = meta.elevationGain;
+          const elevateFrom = (
+            pts?.length ? pts : route.thumbnailPoints
+          ) as Array<{ lat: number; lng: number; ele?: number }>;
+          if (elevateFrom.length) {
+            const firstEle = elevateFrom[0]?.ele;
+            const lastEle = elevateFrom[elevateFrom.length - 1]?.ele;
+            if (typeof firstEle === "number")
+              nextStats.startElevation = Math.round(firstEle);
+            if (typeof lastEle === "number")
+              nextStats.endElevation = Math.round(lastEle);
+          }
+        }
+        if (!cancelled) setRouteStats(nextStats);
+      } catch (e: any) {
+        if (!cancelled)
+          setLoadError(e?.message ?? "Failed to load route points");
+      } finally {
+        if (!cancelled) setLoadingPoints(false);
+      }
+    };
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [route]);
+
+  if (!slug || !route) {
     return <Navigate to="/" replace />;
   }
 
@@ -186,71 +248,6 @@ export default function PreviewRoute() {
       },
     ],
   };
-
-  // Load display/thumbnail points and dynamic stats from ElevationFinder doc
-  useEffect(() => {
-    let cancelled = false;
-    const load = async () => {
-      try {
-        setLoadingPoints(true);
-        setLoadError(null);
-        const resolvedId = getCurrentDocumentId(route.slug);
-        const ref = doc(db, "gpx_uploads", resolvedId);
-        const snap = await getDoc(ref);
-        if (!snap.exists()) return;
-        const data: any = snap.data();
-        const pts: Array<{ lat: number; lng: number; ele?: number }> =
-          data?.thumbnailPoints || data?.displayPoints || [];
-        if (!cancelled && pts?.length) setFirebaseThumbPoints(pts);
-
-        const nextStats: typeof routeStats = {};
-        const staticData = data?.staticRouteData;
-        const meta = data?.metadata;
-        if (staticData) {
-          if (typeof staticData.totalDistance === "number")
-            nextStats.distanceKm = staticData.totalDistance;
-          if (typeof staticData.totalElevationGain === "number")
-            nextStats.elevationGain = staticData.totalElevationGain;
-          if (typeof staticData.totalElevationLoss === "number")
-            nextStats.elevationLoss = staticData.totalElevationLoss;
-          const profile: Array<{ distanceKm: number; elevation: number }> =
-            staticData.elevationProfile || [];
-          if (profile.length > 0) {
-            nextStats.startElevation = Math.round(profile[0].elevation);
-            nextStats.endElevation = Math.round(
-              profile[profile.length - 1].elevation
-            );
-          }
-        } else if (meta) {
-          if (typeof meta.totalDistance === "number")
-            nextStats.distanceKm = meta.totalDistance;
-          if (typeof meta.elevationGain === "number")
-            nextStats.elevationGain = meta.elevationGain;
-          const elevateFrom = (
-            pts?.length ? pts : route.thumbnailPoints
-          ) as Array<{ lat: number; lng: number; ele?: number }>;
-          if (elevateFrom.length) {
-            const firstEle = elevateFrom[0]?.ele;
-            const lastEle = elevateFrom[elevateFrom.length - 1]?.ele;
-            if (typeof firstEle === "number")
-              nextStats.startElevation = Math.round(firstEle);
-            if (typeof lastEle === "number")
-              nextStats.endElevation = Math.round(lastEle);
-          }
-        }
-        if (!cancelled) setRouteStats(nextStats);
-      } catch (e: any) {
-        if (!cancelled)
-          setLoadError(e?.message ?? "Failed to load route points");
-      } finally {
-        if (!cancelled) setLoadingPoints(false);
-      }
-    };
-    load();
-    return () => {
-      cancelled = true;
-    };
-  }, [route.slug]);
 
   // Generate SEO-optimized description
   const seoDescription = `${
