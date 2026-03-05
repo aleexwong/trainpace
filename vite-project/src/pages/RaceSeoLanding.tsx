@@ -63,13 +63,13 @@ export default function RaceSeoLanding() {
     useState<Partial<MarathonPreviewRoute> | null>(null);
 
   const page = raceSlug ? raceSeoPageMap.get(raceSlug) : undefined;
-  if (!page) return <Navigate to="/" replace />;
 
-  const basePreviewRoute = page.previewRouteKey
+  const basePreviewRoute = page?.previewRouteKey
     ? marathonRoutesData[page.previewRouteKey]
     : undefined;
 
   useEffect(() => {
+    if (!page) return;
     let cancelled = false;
 
     const loadFromFirestore = async () => {
@@ -84,6 +84,7 @@ export default function RaceSeoLanding() {
         const snap = await getDoc(ref);
         if (!snap.exists()) return;
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const data: any = snap.data();
         const staticData = data?.staticRouteData;
         const meta = data?.metadata;
@@ -132,7 +133,7 @@ export default function RaceSeoLanding() {
     return () => {
       cancelled = true;
     };
-  }, [page.previewRouteKey, basePreviewRoute?.slug]);
+  }, [page?.previewRouteKey, basePreviewRoute?.slug]);
 
   const previewRoute = useMemo(() => {
     if (!basePreviewRoute) return undefined;
@@ -140,6 +141,7 @@ export default function RaceSeoLanding() {
   }, [basePreviewRoute, routeOverrides]);
 
   const jsonLd = useMemo(() => {
+    if (!page) return null;
     const graph: unknown[] = [
       {
         "@context": "https://schema.org",
@@ -225,6 +227,8 @@ export default function RaceSeoLanding() {
       "@graph": graph,
     };
   }, [page, previewRoute]);
+
+  if (!page) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-orange-50">

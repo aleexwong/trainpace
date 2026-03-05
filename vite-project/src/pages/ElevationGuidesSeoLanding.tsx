@@ -44,9 +44,9 @@ export default function ElevationGuidesSeoLanding() {
   const { seoSlug } = useParams();
 
   const page = seoSlug ? elevationGuideSeoPageMap.get(seoSlug) : undefined;
-  if (!page) return <Navigate to="/elevationfinder" replace />;
 
   const jsonLd = useMemo(() => {
+    if (!page) return null;
     const graph: unknown[] = [
       {
         "@context": "https://schema.org",
@@ -103,6 +103,8 @@ export default function ElevationGuidesSeoLanding() {
       "@graph": graph,
     };
   }, [page]);
+
+  if (!page) return <Navigate to="/elevationfinder" replace />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-sky-50">

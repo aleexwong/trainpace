@@ -301,7 +301,7 @@ export function sortRaces(
         aVal = a.elevationGain;
         bVal = b.elevationGain;
         break;
-      case "tier":
+      case "tier": {
         // Custom tier ordering
         const tierOrder = {
           "world-major": 0,
@@ -313,6 +313,7 @@ export function sortRaces(
         aVal = tierOrder[a.tier];
         bVal = tierOrder[b.tier];
         break;
+      }
       default:
         return 0;
     }

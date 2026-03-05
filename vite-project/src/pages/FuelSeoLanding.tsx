@@ -36,9 +36,9 @@ export default function FuelSeoLanding() {
   const { seoSlug } = useParams();
 
   const page = seoSlug ? fuelSeoPageMap.get(seoSlug) : undefined;
-  if (!page) return <Navigate to="/fuel" replace />;
 
   const jsonLd = useMemo(() => {
+    if (!page) return null;
     const graph: unknown[] = [
       {
         "@context": "https://schema.org",
@@ -95,6 +95,8 @@ export default function FuelSeoLanding() {
       "@graph": graph,
     };
   }, [page]);
+
+  if (!page) return <Navigate to="/fuel" replace />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-rose-50">
