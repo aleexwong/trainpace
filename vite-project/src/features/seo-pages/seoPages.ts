@@ -17,8 +17,8 @@
 import type { SeoPageConfig } from '../../lib/seo';
 import { generatePageId, BASE_URL } from '../../lib/seo';
 
-// Re-export the old types for backward compatibility
-export type { SeoPageConfig } from './types';
+// Re-export from the canonical type source
+export type { SeoPageConfig } from '../../lib/seo';
 
 // =============================================================================
 // Helper Functions
