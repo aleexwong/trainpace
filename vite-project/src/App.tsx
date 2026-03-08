@@ -31,6 +31,8 @@ import About from "./pages/About";
 import DashboardV2 from "./pages/DashboardV2";
 import { BlogList, BlogPost } from "./features/blog";
 import AuthGuard from "./features/auth/AuthGuard";
+import TrainingPlans from "./pages/TrainingPlans";
+import TrainingPlanDetail from "./pages/TrainingPlanDetail";
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);
@@ -79,6 +81,9 @@ function App() {
             <Route path="/terms" element={<Terms />} />
             <Route path="/about" element={<About />} />
             <Route path="/preview-route/:slug" element={<PreviewRoute />} />
+            {/* Training Plans */}
+            <Route path="/training-plans" element={<TrainingPlans />} />
+            <Route path="/training-plans/:planId" element={<TrainingPlanDetail />} />
             {/* Blog routes */}
             <Route path="/blog" element={<BlogList />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
