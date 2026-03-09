@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   ArrowLeft,
   Clock,
@@ -9,15 +10,143 @@ import {
   Tag,
   Share2,
   ChevronRight,
+  ChevronDown,
+  List,
 } from "lucide-react";
 import { categoryLabels, categoryColors } from "../types";
 import { getPostBySlug, formatDate, getRelatedPosts } from "../utils";
 import BlogCard from "./BlogCard";
 import { Button } from "@/components/ui/button";
 
+interface TocItem {
+  id: string;
+  text: string;
+  level: number;
+}
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .trim();
+}
+
+function extractHeadings(markdown: string): TocItem[] {
+  const headings: TocItem[] = [];
+  const lines = markdown.split("\n");
+  for (const line of lines) {
+    const match = line.match(/^(#{2,3})\s+(.+)$/);
+    if (match) {
+      const level = match[1].length;
+      const text = match[2].replace(/\*\*/g, "").replace(/\*/g, "").trim();
+      headings.push({ id: slugify(text), text, level });
+    }
+  }
+  return headings;
+}
+
+function TableOfContents({
+  headings,
+  activeId,
+}: {
+  headings: TocItem[];
+  activeId: string;
+}) {
+  return (
+    <nav aria-label="Table of contents">
+      <ul className="space-y-1">
+        {headings.map((h) => (
+          <li key={h.id}>
+            <a
+              href={`#${h.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById(h.id)?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className={`
+                block text-sm leading-snug py-1 transition-colors
+                ${h.level === 3 ? "pl-4" : "pl-0"}
+                ${
+                  activeId === h.id
+                    ? "text-blue-600 font-medium"
+                    : "text-gray-500 hover:text-gray-900"
+                }
+              `}
+            >
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+function MobileToc({
+  headings,
+  activeId,
+}: {
+  headings: TocItem[];
+  activeId: string;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="lg:hidden mb-8 border border-gray-200 rounded-lg bg-gray-50">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700"
+      >
+        <span className="flex items-center gap-2">
+          <List className="w-4 h-4" />
+          Table of Contents
+        </span>
+        <ChevronDown
+          className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <div className="px-4 pb-3 border-t border-gray-200 pt-2">
+          <TableOfContents headings={headings} activeId={activeId} />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const post = getPostBySlug(slug || "");
+  const [activeId, setActiveId] = useState("");
+
+  const headings = useMemo(
+    () => (post ? extractHeadings(post.content) : []),
+    [post]
+  );
+
+  const handleScroll = useCallback(() => {
+    if (!headings.length) return;
+    const offset = 100;
+    let current = "";
+    for (const h of headings) {
+      const el = document.getElementById(h.id);
+      if (el) {
+        const top = el.getBoundingClientRect().top;
+        if (top <= offset) {
+          current = h.id;
+        }
+      }
+    }
+    setActiveId(current);
+  }, [headings]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   if (!post) {
     return (
@@ -43,7 +172,6 @@ export default function BlogPost() {
 
   const relatedPosts = getRelatedPosts(post.slug, 3);
 
-  // Schema for blog post
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -68,7 +196,6 @@ export default function BlogPost() {
     keywords: post.tags.join(", "),
   };
 
-  // Breadcrumb schema
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -107,7 +234,6 @@ export default function BlogPost() {
         // User cancelled or share failed
       }
     } else {
-      // Fallback: copy to clipboard
       navigator.clipboard.writeText(url);
       alert("Link copied to clipboard!");
     }
@@ -145,7 +271,7 @@ export default function BlogPost() {
 
       {/* Breadcrumb */}
       <nav className="bg-gray-50 border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-6 py-3">
+        <div className="max-w-7xl mx-auto px-6 py-3">
           <ol className="flex items-center gap-2 text-sm">
             <li>
               <Link to="/" className="text-gray-500 hover:text-blue-600">
@@ -169,7 +295,6 @@ export default function BlogPost() {
       {/* Article Header */}
       <header className="py-12 px-6 bg-gradient-to-br from-blue-50 to-indigo-50">
         <div className="max-w-4xl mx-auto">
-          {/* Category */}
           <div className="mb-4">
             <Link
               to={`/blog?category=${post.category}`}
@@ -182,12 +307,10 @@ export default function BlogPost() {
             </Link>
           </div>
 
-          {/* Title */}
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6">
             {post.title}
           </h1>
 
-          {/* Meta */}
           <div className="flex flex-wrap items-center gap-4 text-gray-600">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
@@ -216,108 +339,144 @@ export default function BlogPost() {
         </div>
       </header>
 
-      {/* Article Content */}
+      {/* Article Content with TOC */}
       <article className="py-12 px-6">
-        <div className="max-w-4xl mx-auto">
-          {/* Markdown content */}
-          <div className="prose prose-lg prose-blue max-w-none text-left">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                // Custom link handling for internal links
-                a: ({ href, children }) => {
-                  const isInternal = href?.startsWith("/");
-                  if (isInternal) {
-                    return (
-                      <Link
-                        to={href || "/"}
-                        className="text-blue-600 hover:text-blue-800"
-                      >
-                        {children}
-                      </Link>
-                    );
-                  }
-                  return (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800"
-                    >
-                      {children}
-                    </a>
-                  );
-                },
-                // Styled tables
-                table: ({ children }) => (
-                  <div className="overflow-x-auto my-6">
-                    <table className="min-w-full border border-gray-200 rounded-lg overflow-hidden">
-                      {children}
-                    </table>
-                  </div>
-                ),
-                thead: ({ children }) => (
-                  <thead className="bg-gray-50">{children}</thead>
-                ),
-                th: ({ children }) => (
-                  <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 border-b">
-                    {children}
-                  </th>
-                ),
-                td: ({ children }) => (
-                  <td className="px-4 py-3 text-sm text-gray-700 border-b border-gray-100">
-                    {children}
-                  </td>
-                ),
-                // Styled code blocks
-                code: ({ className, children }) => {
-                  const isInline = !className;
-                  if (isInline) {
-                    return (
-                      <code className="px-1.5 py-0.5 bg-gray-100 rounded text-sm text-gray-800">
-                        {children}
-                      </code>
-                    );
-                  }
-                  return <code className={className}>{children}</code>;
-                },
-                // Styled blockquotes
-                blockquote: ({ children }) => (
-                  <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-700 my-6">
-                    {children}
-                  </blockquote>
-                ),
-              }}
-            >
-              {post.content}
-            </ReactMarkdown>
-          </div>
+        <div className="max-w-7xl mx-auto">
+          <div className="lg:grid lg:grid-cols-[1fr_240px] lg:gap-12">
+            {/* Main content */}
+            <div className="max-w-4xl">
+              {/* Mobile TOC */}
+              {headings.length > 0 && (
+                <MobileToc headings={headings} activeId={activeId} />
+              )}
 
-          {/* Tags */}
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <div className="flex items-center gap-2 flex-wrap">
-              <Tag className="w-5 h-5 text-gray-400" />
-              {post.tags.map((tag) => (
-                <Link
-                  key={tag}
-                  to={`/blog?search=${tag}`}
-                  className="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200 transition-colors"
+              {/* Markdown content */}
+              <div className="prose prose-lg prose-blue max-w-none text-left">
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    h2: ({ children }) => {
+                      const text = String(children).replace(/\*\*/g, "").replace(/\*/g, "");
+                      const id = slugify(text);
+                      return (
+                        <h2 id={id} className="scroll-mt-24">
+                          {children}
+                        </h2>
+                      );
+                    },
+                    h3: ({ children }) => {
+                      const text = String(children).replace(/\*\*/g, "").replace(/\*/g, "");
+                      const id = slugify(text);
+                      return (
+                        <h3 id={id} className="scroll-mt-24">
+                          {children}
+                        </h3>
+                      );
+                    },
+                    a: ({ href, children }) => {
+                      const isInternal = href?.startsWith("/");
+                      if (isInternal) {
+                        return (
+                          <Link
+                            to={href || "/"}
+                            className="text-blue-600 hover:text-blue-800"
+                          >
+                            {children}
+                          </Link>
+                        );
+                      }
+                      return (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          {children}
+                        </a>
+                      );
+                    },
+                    table: ({ children }) => (
+                      <div className="overflow-x-auto my-6">
+                        <table className="min-w-full border border-gray-200 rounded-lg overflow-hidden">
+                          {children}
+                        </table>
+                      </div>
+                    ),
+                    thead: ({ children }) => (
+                      <thead className="bg-gray-50">{children}</thead>
+                    ),
+                    th: ({ children }) => (
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-900 border-b">
+                        {children}
+                      </th>
+                    ),
+                    td: ({ children }) => (
+                      <td className="px-4 py-3 text-sm text-gray-700 border-b border-gray-100">
+                        {children}
+                      </td>
+                    ),
+                    code: ({ className, children }) => {
+                      const isInline = !className;
+                      if (isInline) {
+                        return (
+                          <code className="px-1.5 py-0.5 bg-gray-100 rounded text-sm text-gray-800">
+                            {children}
+                          </code>
+                        );
+                      }
+                      return <code className={className}>{children}</code>;
+                    },
+                    blockquote: ({ children }) => (
+                      <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-700 my-6">
+                        {children}
+                      </blockquote>
+                    ),
+                  }}
                 >
-                  {tag}
-                </Link>
-              ))}
-            </div>
-          </div>
+                  {post.content}
+                </ReactMarkdown>
+              </div>
 
-          {/* Share */}
-          <div className="mt-8 flex items-center gap-4">
-            <span className="text-gray-600 font-medium">
-              Share this article:
-            </span>
-            <Button onClick={handleShare} variant="outline" className="gap-2">
-              <Share2 className="w-5 h-5" />
-              Share
-            </Button>
+              {/* Tags */}
+              <div className="mt-12 pt-8 border-t border-gray-200">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Tag className="w-5 h-5 text-gray-400" />
+                  {post.tags.map((tag) => (
+                    <Link
+                      key={tag}
+                      to={`/blog?search=${tag}`}
+                      className="px-3 py-1 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-gray-200 transition-colors"
+                    >
+                      {tag}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Share */}
+              <div className="mt-8 flex items-center gap-4">
+                <span className="text-gray-600 font-medium">
+                  Share this article:
+                </span>
+                <Button onClick={handleShare} variant="outline" className="gap-2">
+                  <Share2 className="w-5 h-5" />
+                  Share
+                </Button>
+              </div>
+            </div>
+
+            {/* Desktop TOC Sidebar */}
+            {headings.length > 0 && (
+              <aside className="hidden lg:block">
+                <div className="sticky top-24">
+                  <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+                    On this page
+                  </h4>
+                  <TableOfContents headings={headings} activeId={activeId} />
+                </div>
+              </aside>
+            )}
           </div>
         </div>
       </article>

@@ -35,6 +35,11 @@ const prerenderedRoutes = [
   "/blog/half-marathon-pacing-strategy",
   "/blog/strength-training-for-runners",
   "/blog/taper-marathon-guide",
+  "/blog/running-in-the-rain",
+  "/blog/why-you-should-join-a-run-club",
+  "/blog/race-day-mental-game",
+  "/blog/cross-training-for-runners",
+  "/blog/how-to-pick-your-first-race",
 ];
 
 // https://vite.dev/config/
