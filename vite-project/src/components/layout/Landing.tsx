@@ -12,6 +12,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 // --- Components ---
 
@@ -453,6 +454,33 @@ const FeatureSection = ({
                     </div>
                   </div>
                 )}
+                {badge === "VDOT Calculator" && (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                      <span className="text-sm text-slate-500">
+                        Your VDOT
+                      </span>
+                      <span className="text-2xl font-bold text-blue-600">49.8</span>
+                    </div>
+                    <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="absolute inset-y-0 left-0 w-[50%] bg-gradient-to-r from-emerald-400 via-blue-500 to-purple-500 rounded-full" />
+                    </div>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-emerald-700 font-semibold">Easy</span>
+                        <span className="font-mono">5:35 – 6:17 /km</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-yellow-600 font-semibold">Threshold</span>
+                        <span className="font-mono">4:33 – 4:42 /km</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-red-600 font-semibold">Interval</span>
+                        <span className="font-mono">4:06 – 4:15 /km</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -723,11 +751,15 @@ const FAQ = () => {
   const faqs = [
     {
       q: "Is TrainPace really free?",
-      a: "Yes. Core features (pace calculator, elevation analysis, fuel planning) are free forever. No credit card, no trials, no hidden fees.",
+      a: "Yes. Core features (pace calculator, VDOT calculator, elevation analysis, fuel planning) are free forever. No credit card, no trials, no hidden fees.",
     },
     {
       q: "Do I need an account?",
-      a: "No! You can use the Pace Calculator and ElevationFinder without signing up. Create an account (free) only if you want to save plans.",
+      a: "No! You can use the Pace Calculator, VDOT Calculator, and ElevationFinder without signing up. Create an account (free) only if you want to save plans.",
+    },
+    {
+      q: "What is VDOT and how does it work?",
+      a: "VDOT is a running fitness metric from Jack Daniels' Running Formula. Enter any race time and our VDOT Calculator gives you a score plus training paces for Easy, Marathon, Threshold, Interval, and Repetition zones.",
     },
     {
       q: "Where do the pace formulas come from?",
@@ -806,9 +838,44 @@ const CTA = () => {
 
 export default function LandingPage() {
   return (
-    <div className="font-sans text-slate-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
-      <Hero />
-      <ValueProps />
+    <>
+      <Helmet>
+        <title>TrainPace – Free VDOT Running Calculator & Training Tools</title>
+        <meta
+          name="description"
+          content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Get science-based training paces from Jack Daniels' formula. No account needed."
+        />
+        <link rel="canonical" href="https://trainpace.com/" />
+        {/* Open Graph */}
+        <meta property="og:title" content="TrainPace – Free VDOT Running Calculator & Training Tools" />
+        <meta property="og:description" content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Get science-based training paces from Jack Daniels' formula." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://trainpace.com/" />
+        <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
+        <meta property="og:site_name" content="TrainPace" />
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="TrainPace – Free VDOT Running Calculator & Training Tools" />
+        <meta name="twitter:description" content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Science-based training tools for runners." />
+        <meta name="twitter:image" content="https://trainpace.com/landing-page-2025.png" />
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            name: "TrainPace",
+            url: "https://trainpace.com",
+            applicationCategory: "HealthApplication",
+            operatingSystem: "Any",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+            description:
+              "Free running tools including VDOT calculator, pace zones, course elevation analysis, and race-day fueling strategy.",
+          })}
+        </script>
+      </Helmet>
+      <div className="font-sans text-slate-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
+        <Hero />
+        <ValueProps />
       <PainPoints />
 
       <FeatureSection
@@ -825,6 +892,22 @@ export default function LandingPage() {
         cta="Calculate My Paces"
         ctaRoute="/calculator"
         imageSide="right"
+      />
+
+      <FeatureSection
+        badge="VDOT Calculator"
+        title="Know Your VDOT Score & Race Predictions"
+        subtitle="Use the proven Daniels Running Formula to calculate your VDOT fitness score. Get equivalent race predictions from 800m to the marathon and training paces for all 5 Daniels zones."
+        icon={Activity}
+        features={[
+          "VDOT score with fitness level rating",
+          "Race time predictions across 9 distances",
+          "Easy, Marathon, Threshold, Interval & Repetition paces",
+          "Based on Jack Daniels' Running Formula",
+        ]}
+        cta="Calculate My VDOT"
+        ctaRoute="/vdot"
+        imageSide="left"
       />
 
       <FeatureSection
@@ -903,5 +986,6 @@ export default function LandingPage() {
       <FAQ />
       <CTA />
     </div>
+    </>
   );
 }

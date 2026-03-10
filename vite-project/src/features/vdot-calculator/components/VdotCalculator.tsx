@@ -4,9 +4,10 @@
  */
 
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent } from "@/components/ui/card";
-import { Info, ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -69,7 +70,6 @@ export function VdotCalculator() {
   const [result, setResult] = useState<VdotResult | null>(null);
   const [errors, setErrors] = useState<VdotFormErrors>({});
   const [paceUnit, setPaceUnit] = useState<PaceDisplayUnit>("km");
-  const [showInfo, setShowInfo] = useState(false);
   const [showScience, setShowScience] = useState(false);
 
   // Memoized input state
@@ -223,22 +223,108 @@ export function VdotCalculator() {
   return (
     <>
       <Helmet>
-        <title>VDOT Calculator – Jack Daniels Running Formula | TrainPace</title>
+        <title>VDOT Running Calculator – Jack Daniels Formula | TrainPace</title>
         <meta
           name="description"
-          content="Free VDOT running calculator using Jack Daniels' formula. Get your VDOT score, race equivalency predictions, and science-based training paces for Easy, Marathon, Threshold, Interval, and Repetition zones."
+          content="Free VDOT running calculator based on Jack Daniels' formula. Enter any race time to get your VDOT score, equivalent race predictions for 800m to marathon, and training paces for Easy, Marathon, Threshold, Interval, and Repetition zones."
         />
         <link rel="canonical" href="https://trainpace.com/vdot" />
+        {/* Open Graph */}
+        <meta property="og:title" content="VDOT Running Calculator – Jack Daniels Formula | TrainPace" />
+        <meta property="og:description" content="Free VDOT running calculator based on Jack Daniels' formula. Get your VDOT score, race predictions, and science-based training paces." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://trainpace.com/vdot" />
+        <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
+        <meta property="og:site_name" content="TrainPace" />
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="VDOT Running Calculator – Jack Daniels Formula | TrainPace" />
+        <meta name="twitter:description" content="Free VDOT running calculator based on Jack Daniels' formula. Get your VDOT score, race predictions, and science-based training paces." />
+        <meta name="twitter:image" content="https://trainpace.com/landing-page-2025.png" />
+        {/* Structured Data */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "WebApplication",
-            name: "VDOT Running Calculator",
-            applicationCategory: "HealthApplication",
-            operatingSystem: "Any",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-            description:
-              "Calculate your VDOT score from any race result. Get predicted race times and science-based training paces using the Daniels Running Formula.",
+            "@graph": [
+              {
+                "@type": "WebApplication",
+                name: "VDOT Running Calculator",
+                url: "https://trainpace.com/vdot",
+                applicationCategory: "HealthApplication",
+                operatingSystem: "Any",
+                offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+                description:
+                  "Calculate your VDOT score from any race result. Get predicted race times and science-based training paces using the Daniels Running Formula.",
+              },
+              {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Home",
+                    item: "https://trainpace.com/",
+                  },
+                  {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "Pace Calculator",
+                    item: "https://trainpace.com/calculator",
+                  },
+                  {
+                    "@type": "ListItem",
+                    position: 3,
+                    name: "VDOT Calculator",
+                    item: "https://trainpace.com/vdot",
+                  },
+                ],
+              },
+              {
+                "@type": "FAQPage",
+                mainEntity: [
+                  {
+                    "@type": "Question",
+                    name: "What is VDOT in running?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "VDOT is a measure of running fitness developed by coach Jack Daniels. It represents your effective VO₂max based on race performance. A higher VDOT means you can run faster at the same effort level.",
+                    },
+                  },
+                  {
+                    "@type": "Question",
+                    name: "How do I calculate my VDOT?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "Enter a recent race distance (e.g., 5K, 10K, half marathon) and your finish time into the calculator. It uses the Daniels & Gilbert formulas to compute your VDOT score and corresponding training paces.",
+                    },
+                  },
+                  {
+                    "@type": "Question",
+                    name: "What are the VDOT training zones?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "Jack Daniels defines five training zones: Easy (59–74% VO₂max) for base building, Marathon (75–84%) for race-specific endurance, Threshold (83–88%) for lactate clearance, Interval (95–100%) for VO₂max development, and Repetition (105%+) for speed and economy.",
+                    },
+                  },
+                  {
+                    "@type": "Question",
+                    name: "Can I predict race times from my VDOT?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "Yes. Once your VDOT is calculated from one race distance, the calculator predicts equivalent finish times for distances from 800m to the marathon using the same aerobic fitness model.",
+                    },
+                  },
+                  {
+                    "@type": "Question",
+                    name: "What is a good VDOT score?",
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: "VDOT scores range from about 20 (beginner) to 85+ (elite world class). A recreational runner typically scores 30–40, competitive club runners 45–55, and advanced/sub-elite runners 60–70.",
+                    },
+                  },
+                ],
+              },
+            ],
           })}
         </script>
       </Helmet>
@@ -246,47 +332,51 @@ export function VdotCalculator() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="mb-6">
+            <nav className="text-sm text-gray-500 mb-4" aria-label="Breadcrumb">
+              <ol className="flex items-center space-x-1">
+                <li><Link to="/" className="hover:text-blue-600 transition-colors">Home</Link></li>
+                <li><span className="mx-1">/</span></li>
+                <li><Link to="/calculator" className="hover:text-blue-600 transition-colors">Pace Calculator</Link></li>
+                <li><span className="mx-1">/</span></li>
+                <li className="text-gray-900 font-medium">VDOT Calculator</li>
+              </ol>
+            </nav>
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
-              🧮 VDOT Calculator
+              VDOT Running Calculator
             </h1>
-            <button
-              onClick={() => setShowInfo(!showInfo)}
-              className="p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all"
-              aria-label={showInfo ? "Hide information" : "Show information"}
-            >
-              <Info className="h-6 w-6 text-blue-600" />
-            </button>
+            <p className="mt-3 text-lg text-gray-600 max-w-2xl">
+              Calculate your VDOT score from any race result using Jack Daniels&apos; proven formula. Get personalized training paces and race predictions across all distances.
+            </p>
           </div>
 
-          {showInfo && (
-            <Card className="mb-8 bg-white">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-3">
-                  What is VDOT? ⚡
-                </h3>
-                <p className="text-gray-700 mb-3">
-                  VDOT is a measure of your current running ability, developed
-                  by legendary coach Jack Daniels. It represents your effective
-                  VO₂max — the oxygen your body can use while running.
-                </p>
-                <ul className="list-disc list-inside text-gray-600 space-y-1">
-                  <li>
-                    Enter any recent race result to calculate your VDOT score
-                  </li>
-                  <li>
-                    Get equivalent race predictions across all standard distances
-                  </li>
-                  <li>
-                    Receive science-based training paces for 5 intensity zones
-                  </li>
-                  <li>
-                    Easy, Marathon, Threshold, Interval, and Repetition paces
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          )}
+          {/* Always-visible intro — crawlable by search engines */}
+          <Card className="mb-8 bg-white">
+            <CardContent className="p-6">
+              <h2 className="text-xl font-semibold mb-3">
+                What is VDOT?
+              </h2>
+              <p className="text-gray-700 mb-3">
+                VDOT is a measure of your current running fitness developed by legendary coach
+                Jack Daniels. It represents your effective VO₂max — how much oxygen your body
+                can use while running. A single race result is enough to calculate it.
+              </p>
+              <ul className="list-disc list-inside text-gray-600 space-y-1">
+                <li>
+                  Enter any recent race result to get your VDOT score
+                </li>
+                <li>
+                  Get equivalent race time predictions from 800m to the marathon
+                </li>
+                <li>
+                  Receive science-based paces for 5 Daniels training zones
+                </li>
+                <li>
+                  Easy, Marathon, Threshold, Interval, and Repetition paces
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
 
           <div className="max-w-4xl mx-auto space-y-8">
             {/* Input Form */}
@@ -709,82 +799,196 @@ export function VdotCalculator() {
             )}
           </div>
 
-          {/* Science Section */}
-          <div className="mt-12 max-w-4xl mx-auto">
-            <button
-              onClick={() => setShowScience(!showScience)}
-              className="w-full flex items-center justify-between p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all"
-            >
-              <span className="text-lg font-semibold text-gray-900">
-                The Science Behind VDOT
-              </span>
-              {showScience ? (
-                <ChevronUp className="h-5 w-5 text-gray-600" />
-              ) : (
-                <ChevronDown className="h-5 w-5 text-gray-600" />
-              )}
-            </button>
+          {/* FAQ Section — always visible for SEO */}
+          <div className="mt-12 max-w-4xl mx-auto space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Frequently Asked Questions
+            </h2>
 
-            {showScience && (
-              <Card className="mt-2 bg-gray-50">
-                <CardContent className="p-6 text-gray-700 space-y-4 text-left">
-                  <p>
-                    VDOT was developed by exercise physiologist and running coach{" "}
-                    <strong>Jack Daniels</strong>. It stands for &ldquo;V-dot-O₂max&rdquo; —
-                    the rate of oxygen consumption — and represents your current
-                    running fitness level.
-                  </p>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    How It Works
-                  </h3>
-                  <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>
-                      <strong>VO₂ cost equation:</strong> Calculates the oxygen
-                      cost of running at a given velocity using the formula:
-                      VO₂ = -4.6 + 0.182258v + 0.000104v²
-                    </li>
-                    <li>
-                      <strong>%VO₂max equation:</strong> Estimates what fraction
-                      of your VO₂max you can sustain for a given race duration
-                    </li>
-                    <li>
-                      <strong>VDOT = VO₂ / %VO₂max:</strong> Dividing the
-                      oxygen cost by the sustainable fraction gives your
-                      effective VO₂max
-                    </li>
+            <div className="space-y-4">
+              <details className="group bg-white rounded-lg shadow-sm border border-gray-200 p-5 cursor-pointer" open>
+                <summary className="flex justify-between items-center font-medium text-gray-900 list-none">
+                  <span>What is VDOT in running?</span>
+                  <ChevronDown className="h-5 w-5 text-gray-400 transition-transform group-open:rotate-180" />
+                </summary>
+                <p className="mt-3 text-gray-600 leading-relaxed">
+                  VDOT is a performance-based fitness metric developed by exercise physiologist and coach
+                  Jack Daniels. It stands for &ldquo;V-dot-O₂max&rdquo; and represents the rate of oxygen
+                  consumption your body can sustain. Unlike a lab VO₂max test, VDOT is estimated from
+                  your race results, making it practical for every runner.
+                </p>
+              </details>
+
+              <details className="group bg-white rounded-lg shadow-sm border border-gray-200 p-5 cursor-pointer">
+                <summary className="flex justify-between items-center font-medium text-gray-900 list-none">
+                  <span>How do I calculate my VDOT?</span>
+                  <ChevronDown className="h-5 w-5 text-gray-400 transition-transform group-open:rotate-180" />
+                </summary>
+                <p className="mt-3 text-gray-600 leading-relaxed">
+                  Select a race distance (800m to Marathon), enter your finish time, and press
+                  &ldquo;Calculate VDOT.&rdquo; The calculator uses the Daniels &amp; Gilbert oxygen-cost and
+                  time-limit equations to compute your VDOT score and all corresponding training paces.
+                </p>
+              </details>
+
+              <details className="group bg-white rounded-lg shadow-sm border border-gray-200 p-5 cursor-pointer">
+                <summary className="flex justify-between items-center font-medium text-gray-900 list-none">
+                  <span>What are the 5 VDOT training zones?</span>
+                  <ChevronDown className="h-5 w-5 text-gray-400 transition-transform group-open:rotate-180" />
+                </summary>
+                <div className="mt-3 text-gray-600 leading-relaxed space-y-2">
+                  <p>Jack Daniels defines five training intensities:</p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    <li><strong>Easy (E):</strong> 59–74% VO₂max — Builds aerobic base and promotes recovery</li>
+                    <li><strong>Marathon (M):</strong> 75–84% VO₂max — Marathon-specific endurance</li>
+                    <li><strong>Threshold (T):</strong> 83–88% VO₂max — Improves lactate clearance at tempo pace</li>
+                    <li><strong>Interval (I):</strong> 95–100% VO₂max — Maximizes aerobic capacity</li>
+                    <li><strong>Repetition (R):</strong> 105%+ VO₂max — Develops speed and running economy</li>
                   </ul>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    The 5 Training Zones
-                  </h3>
-                  <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>
-                      <strong>Easy (E):</strong> 59–74% VO₂max — Builds aerobic
-                      base, promotes recovery
-                    </li>
-                    <li>
-                      <strong>Marathon (M):</strong> 75–84% VO₂max —
-                      Marathon-specific endurance
-                    </li>
-                    <li>
-                      <strong>Threshold (T):</strong> 83–88% VO₂max — Improves
-                      lactate clearance at tempo pace
-                    </li>
-                    <li>
-                      <strong>Interval (I):</strong> 95–100% VO₂max — Maximizes
-                      aerobic capacity
-                    </li>
-                    <li>
-                      <strong>Repetition (R):</strong> 105%+ VO₂max — Develops
-                      speed and running economy
-                    </li>
-                  </ul>
-                  <p className="text-sm italic">
-                    Based on the Daniels &amp; Gilbert oxygen cost and time-limit
-                    equations from &ldquo;Daniels&rsquo; Running Formula&rdquo; (4th Edition).
-                  </p>
-                </CardContent>
-              </Card>
-            )}
+                </div>
+              </details>
+
+              <details className="group bg-white rounded-lg shadow-sm border border-gray-200 p-5 cursor-pointer">
+                <summary className="flex justify-between items-center font-medium text-gray-900 list-none">
+                  <span>Can I predict race times from my VDOT?</span>
+                  <ChevronDown className="h-5 w-5 text-gray-400 transition-transform group-open:rotate-180" />
+                </summary>
+                <p className="mt-3 text-gray-600 leading-relaxed">
+                  Yes. Once your VDOT is calculated from one race distance, the calculator predicts
+                  equivalent finish times for all standard distances from 800m to the marathon.
+                  These predictions assume equal training across all energy systems.
+                </p>
+              </details>
+
+              <details className="group bg-white rounded-lg shadow-sm border border-gray-200 p-5 cursor-pointer">
+                <summary className="flex justify-between items-center font-medium text-gray-900 list-none">
+                  <span>What is a good VDOT score?</span>
+                  <ChevronDown className="h-5 w-5 text-gray-400 transition-transform group-open:rotate-180" />
+                </summary>
+                <p className="mt-3 text-gray-600 leading-relaxed">
+                  VDOT scores typically range from 20 to 85+. Beginner runners often score 20–30,
+                  recreational runners 30–40, competitive club runners 45–55, advanced runners 60–70,
+                  and elite athletes 70–85+. A 20:00 5K corresponds to roughly VDOT 50.
+                </p>
+              </details>
+
+              <details className="group bg-white rounded-lg shadow-sm border border-gray-200 p-5 cursor-pointer">
+                <summary className="flex justify-between items-center font-medium text-gray-900 list-none">
+                  <span>How is VDOT different from VO₂max?</span>
+                  <ChevronDown className="h-5 w-5 text-gray-400 transition-transform group-open:rotate-180" />
+                </summary>
+                <p className="mt-3 text-gray-600 leading-relaxed">
+                  VO₂max is measured in a lab and reflects your maximum oxygen uptake. VDOT is a
+                  &ldquo;pseudo VO₂max&rdquo; estimated from race performance — it captures not just your
+                  aerobic ceiling but also your running economy and lactate tolerance. Two runners
+                  with the same lab VO₂max can have different VDOT scores.
+                </p>
+              </details>
+            </div>
+
+            {/* The Science Behind VDOT — collapsible for interested readers */}
+            <div className="mt-8">
+              <button
+                onClick={() => setShowScience(!showScience)}
+                className="w-full flex items-center justify-between p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all"
+              >
+                <span className="text-lg font-semibold text-gray-900">
+                  The Science Behind VDOT
+                </span>
+                {showScience ? (
+                  <ChevronUp className="h-5 w-5 text-gray-600" />
+                ) : (
+                  <ChevronDown className="h-5 w-5 text-gray-600" />
+                )}
+              </button>
+
+              {showScience && (
+                <Card className="mt-2 bg-gray-50">
+                  <CardContent className="p-6 text-gray-700 space-y-4 text-left">
+                    <p>
+                      VDOT was developed by exercise physiologist and running coach{" "}
+                      <strong>Jack Daniels</strong>. It stands for &ldquo;V-dot-O₂max&rdquo; —
+                      the rate of oxygen consumption — and represents your current
+                      running fitness level.
+                    </p>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      How It Works
+                    </h3>
+                    <ul className="list-disc list-inside space-y-2 ml-4">
+                      <li>
+                        <strong>VO₂ cost equation:</strong> Calculates the oxygen
+                        cost of running at a given velocity using the formula:
+                        VO₂ = -4.6 + 0.182258v + 0.000104v²
+                      </li>
+                      <li>
+                        <strong>%VO₂max equation:</strong> Estimates what fraction
+                        of your VO₂max you can sustain for a given race duration
+                      </li>
+                      <li>
+                        <strong>VDOT = VO₂ / %VO₂max:</strong> Dividing the
+                        oxygen cost by the sustainable fraction gives your
+                        effective VO₂max
+                      </li>
+                    </ul>
+                    <p className="text-sm italic">
+                      Based on the Daniels &amp; Gilbert oxygen cost and time-limit
+                      equations from &ldquo;Daniels&rsquo; Running Formula&rdquo; (4th Edition).
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+
+            {/* Internal links for SEO */}
+            <Card className="bg-white">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                  Related Tools
+                </h3>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <Link
+                    to="/calculator"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 border border-blue-100 hover:border-blue-300 transition-colors"
+                  >
+                    <span className="text-2xl">⏱️</span>
+                    <div>
+                      <p className="font-medium text-gray-900">Pace Calculator</p>
+                      <p className="text-sm text-gray-600">Training paces from any race time</p>
+                    </div>
+                  </Link>
+                  <Link
+                    to="/fuel"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-emerald-50 border border-emerald-100 hover:border-emerald-300 transition-colors"
+                  >
+                    <span className="text-2xl">⚡</span>
+                    <div>
+                      <p className="font-medium text-gray-900">Fuel Planner</p>
+                      <p className="text-sm text-gray-600">Race-day nutrition strategy</p>
+                    </div>
+                  </Link>
+                  <Link
+                    to="/elevation-finder"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-orange-50 border border-orange-100 hover:border-orange-300 transition-colors"
+                  >
+                    <span className="text-2xl">⛰️</span>
+                    <div>
+                      <p className="font-medium text-gray-900">Elevation Finder</p>
+                      <p className="text-sm text-gray-600">Course elevation analysis</p>
+                    </div>
+                  </Link>
+                  <Link
+                    to="/race"
+                    className="flex items-center gap-3 p-3 rounded-lg bg-purple-50 border border-purple-100 hover:border-purple-300 transition-colors"
+                  >
+                    <span className="text-2xl">🏅</span>
+                    <div>
+                      <p className="font-medium text-gray-900">Race Guides</p>
+                      <p className="text-sm text-gray-600">Marathon course previews &amp; tips</p>
+                    </div>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

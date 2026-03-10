@@ -10,6 +10,7 @@ import { getAllSeoPaths } from "./src/features/seo-pages/seoPages";
 const prerenderedRoutes = [
   "/",
   "/calculator",
+  "/vdot",
   "/fuel",
   "/elevationfinder",
   "/race",
