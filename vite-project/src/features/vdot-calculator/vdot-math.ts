@@ -131,7 +131,7 @@ export function trainingVelocity(
  */
 export function velocityToPacePerKm(velocity: number): number {
   if (velocity <= 0) return 0;
-  return 1000 / velocity * 60; // seconds per km
+  return (1000 / velocity) * 60; // seconds per km
 }
 
 /**
@@ -141,7 +141,7 @@ export function velocityToPacePerKm(velocity: number): number {
  */
 export function velocityToPacePerMile(velocity: number): number {
   if (velocity <= 0) return 0;
-  return 1609.34 / velocity * 60; // seconds per mile
+  return (1609.34 / velocity) * 60; // seconds per mile
 }
 
 /**

@@ -780,7 +780,7 @@ export function VdotCalculator() {
                   </ul>
                   <p className="text-sm italic">
                     Based on the Daniels &amp; Gilbert oxygen cost and time-limit
-                    equations from &ldquo;Daniels&apos; Running Formula&rdquo; (4th Edition).
+                    equations from &ldquo;Daniels&rsquo; Running Formula&rdquo; (4th Edition).
                   </p>
                 </CardContent>
               </Card>
