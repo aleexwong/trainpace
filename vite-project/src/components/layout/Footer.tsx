@@ -66,6 +66,14 @@ const Footer = () => {
                   ElevationFinder
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/vdot"
+                  className="text-slate-600 hover:text-emerald-600 transition-colors text-sm"
+                >
+                  VDOT Calculator
+                </Link>
+              </li>
             </ul>
           </div>
 
