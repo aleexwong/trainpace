@@ -92,6 +92,7 @@ export default function MainLayout() {
     const publicLinks: NavLink[] = [
       { href: "#", label: "Preview Routes", isDropdown: true },
       { href: "/calculator", label: "Calculator" },
+      { href: "/vdot", label: "VDOT" },
       { href: "/fuel", label: "Fuel Planner" },
     ];
 
