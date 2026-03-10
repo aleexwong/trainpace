@@ -11,6 +11,11 @@ import { useToast } from "@/hooks/use-toast";
 import { usePendingFuelPlan } from "@/hooks/usePendingFuelPlan";
 import ReactGA from "react-ga4";
 import { type FuelPlanContext } from "@/services/gemini";
+import {
+  generateHelmetProps,
+  generateSoftwareApplicationSchema,
+  generateToolMetaTags,
+} from "@/lib/seo";
 
 // Feature imports
 import { type RaceType, type FuelPlanResult, RACE_SETTINGS } from "../types";
@@ -29,6 +34,9 @@ import { AIPersonalization } from "./AIPersonalization";
 export interface FuelPlannerV2Props {
   seoMode?: "default" | "none";
 }
+
+const fuelHelmetProps = generateHelmetProps(generateToolMetaTags("fuel"));
+const fuelSoftwareApplicationSchema = generateSoftwareApplicationSchema("fuel");
 
 export function FuelPlannerV2({ seoMode = "default" }: FuelPlannerV2Props) {
   const { toast } = useToast();
@@ -255,12 +263,14 @@ export function FuelPlannerV2({ seoMode = "default" }: FuelPlannerV2Props) {
   return (
     <>
       {seoMode !== "none" && (
-        <Helmet>
-          <title>Fuel Planner by TrainPace</title>
-          <meta
-            name="description"
-            content="Optimize your running fuel strategy with AI-powered personalized recommendations."
-          />
+        <Helmet
+          title={fuelHelmetProps.title}
+          meta={fuelHelmetProps.meta}
+          link={fuelHelmetProps.link}
+        >
+          <script type="application/ld+json">
+            {JSON.stringify(fuelSoftwareApplicationSchema)}
+          </script>
         </Helmet>
       )}
 

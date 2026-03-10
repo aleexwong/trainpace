@@ -11,7 +11,20 @@ import {
   ShieldCheck,
   ArrowRight,
 } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
+import {
+  generateHelmetProps,
+  generateHomepageMetaTags,
+  generateOrganizationSchema,
+  generateWebSiteSchema,
+} from "@/lib/seo";
+
+const homepageHelmetProps = generateHelmetProps(generateHomepageMetaTags());
+const homepageSchemaGraph = {
+  "@context": "https://schema.org",
+  "@graph": [generateOrganizationSchema(), generateWebSiteSchema()],
+};
 
 // --- Components ---
 
@@ -806,10 +819,21 @@ const CTA = () => {
 
 export default function LandingPage() {
   return (
-    <div className="font-sans text-slate-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
-      <Hero />
-      <ValueProps />
-      <PainPoints />
+    <>
+      <Helmet
+        title={homepageHelmetProps.title}
+        meta={homepageHelmetProps.meta}
+        link={homepageHelmetProps.link}
+      >
+        <script type="application/ld+json">
+          {JSON.stringify(homepageSchemaGraph)}
+        </script>
+      </Helmet>
+
+      <div className="font-sans text-slate-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
+        <Hero />
+        <ValueProps />
+        <PainPoints />
 
       <FeatureSection
         badge="Pace Calculator"
@@ -859,8 +883,8 @@ export default function LandingPage() {
         imageSide="right"
       />
 
-      <FounderStory />
-      <Comparison />
+        <FounderStory />
+        <Comparison />
 
       {/* Use Cases Grid */}
       <section className="py-20 bg-slate-50">
@@ -900,8 +924,9 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <FAQ />
-      <CTA />
-    </div>
+        <FAQ />
+        <CTA />
+      </div>
+    </>
   );
 }

@@ -13,6 +13,11 @@ import { ShareButton } from "@/components/ui/ShareButton";
 import MapboxRoutePreview from "@/components/utils/MapboxRoutePreview";
 import { PosterButton } from "@/features/poster";
 import ElevationInsights from "@/components/elevationfinder/ElevationInsights";
+import {
+  generateHelmetProps,
+  generateSoftwareApplicationSchema,
+  generateToolMetaTags,
+} from "@/lib/seo";
 
 // Feature imports
 import {
@@ -25,6 +30,12 @@ import {
   GpxUploader,
   RouteResults,
 } from "@/features/elevation";
+
+const elevationHelmetProps = generateHelmetProps(
+  generateToolMetaTags("elevation")
+);
+const elevationSoftwareApplicationSchema =
+  generateSoftwareApplicationSchema("elevation");
 
 export default function ElevationPage() {
   const { docId: urlDocId } = useParams();
@@ -178,14 +189,19 @@ export default function ElevationPage() {
   return (
     <>
       <Helmet>
-        <title>
-          GPX Elevation Profile Viewer – Free Route Analysis | TrainPace
-        </title>
-        <meta
-          name="description"
-          content="Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty. Analyze marathon courses and training routes."
-        />
-        <link rel="canonical" href="https://trainpace.com/elevationfinder" />
+        <title>{elevationHelmetProps.title}</title>
+        {elevationHelmetProps.meta.map((tag) => (
+          <meta
+            key={`${tag.name ?? tag.property}-${tag.content}`}
+            {...tag}
+          />
+        ))}
+        {elevationHelmetProps.link.map((tag) => (
+          <link key={`${tag.rel}-${tag.href}`} {...tag} />
+        ))}
+        <script type="application/ld+json">
+          {JSON.stringify(elevationSoftwareApplicationSchema)}
+        </script>
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
