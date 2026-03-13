@@ -40,6 +40,11 @@ const prerenderedRoutes = [
   "/blog/race-day-mental-game",
   "/blog/cross-training-for-runners",
   "/blog/how-to-pick-your-first-race",
+  "/blog/tracking-your-running-progress",
+  "/blog/running-with-music-or-without",
+  "/blog/running-in-the-heat",
+  "/blog/interval-training-for-runners",
+  "/blog/post-race-blues",
 ];
 
 // https://vite.dev/config/
