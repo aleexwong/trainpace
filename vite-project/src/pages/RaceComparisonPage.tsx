@@ -6,6 +6,7 @@ import {
   getSeoUrl,
   raceCompareSeoPageMap,
   raceCompareMetaMap,
+  difficultyLabel,
 } from "@/features/seo-pages/seoPages";
 import marathonData from "@/data/marathon-data.json";
 
@@ -23,14 +24,6 @@ type MarathonRoute = {
 };
 
 const marathonRoutesData = marathonData as Record<string, MarathonRoute>;
-
-function difficultyLabel(gain: number): string {
-  if (gain < 50) return "Very Flat";
-  if (gain < 150) return "Mostly Flat";
-  if (gain < 300) return "Rolling";
-  if (gain < 500) return "Hilly";
-  return "Very Hilly";
-}
 
 function difficultyColor(gain: number): string {
   if (gain < 50) return "text-emerald-700 bg-emerald-50 border-emerald-200";
@@ -141,11 +134,11 @@ export default function RaceComparisonPage() {
         <div className="max-w-5xl mx-auto">
           <div className="grid gap-4 sm:grid-cols-2">
             {[
-              { raceData: race1, raceMeta: { name: meta.race1Name, slug: meta.race1Slug } },
-              { raceData: race2, raceMeta: { name: meta.race2Name, slug: meta.race2Slug } },
-            ].map(({ raceData, raceMeta }) => (
+              { raceData: race1, raceMeta: { name: meta.race1Name, slug: meta.race1Slug }, side: 1 },
+              { raceData: race2, raceMeta: { name: meta.race2Name, slug: meta.race2Slug }, side: 2 },
+            ].map(({ raceData, raceMeta, side }) => (
               <div
-                key={raceMeta.slug}
+                key={side}
                 className="rounded-3xl border border-orange-100 bg-white/70 p-6 sm:p-8"
               >
                 <div className="flex items-start justify-between gap-4">

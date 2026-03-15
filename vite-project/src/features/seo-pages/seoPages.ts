@@ -16,6 +16,7 @@
 
 import type { SeoPageConfig } from '../../lib/seo';
 import { generatePageId, BASE_URL } from '../../lib/seo';
+import marathonDataRaw from '../../data/marathon-data.json';
 
 // Re-export the old types for backward compatibility
 export type { SeoPageConfig } from './types';
@@ -2787,353 +2788,151 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
 // Race Comparison Pages
 // =============================================================================
 
+type RaceRow = {
+  name: string;
+  city: string;
+  country: string;
+  elevationGain: number;
+  elevationLoss: number;
+  distance: number;
+  raceDate: string;
+  tips?: string[];
+};
+
+const marathonRows = marathonDataRaw as Record<string, RaceRow>;
+
+// Exported so RaceComparisonPage can import instead of redefining
+export function difficultyLabel(gain: number): string {
+  if (gain < 50) return 'Very Flat';
+  if (gain < 150) return 'Mostly Flat';
+  if (gain < 300) return 'Rolling';
+  if (gain < 500) return 'Hilly';
+  return 'Very Hilly';
+}
+
 export interface RaceCompareMeta {
-  race1Key: string;  // key in marathon-data.json
+  race1Key: string;
   race2Key: string;
-  race1Slug: string; // slug for /race/:slug internal link
+  race1Slug: string;
   race2Slug: string;
   race1Name: string;
   race2Name: string;
 }
 
-export const raceCompareMetaMap = new Map<string, RaceCompareMeta>();
+// To add a new comparison, add one entry here — no FAQ writing required.
+// Keys must match top-level keys in src/data/marathon-data.json.
+const COMPARE_PAIRS: [string, string][] = [
+  ['boston', 'nyc'],
+  ['chicago', 'berlin'],
+  ['boston', 'chicago'],
+  ['boston', 'berlin'],
+  ['london', 'paris'],
+  ['nyc', 'chicago'],
+  ['berlin', 'london'],
+  ['tokyo', 'boston'],
+  ['amsterdam', 'berlin'],
+  ['valencia', 'berlin'],
+  ['chicago', 'london'],
+  ['nyc', 'berlin'],
+];
 
-function makeRaceComparePage(
-  compareSlug: string,
-  race1: { name: string; slug: string; key: string },
-  race2: { name: string; slug: string; key: string },
-  descriptor: string, // e.g. 'flat vs hilly', 'two fast majors'
-  faq: Array<{ question: string; answer: string }>
-): SeoPageConfig {
-  raceCompareMetaMap.set(compareSlug, {
-    race1Key: race1.key,
-    race2Key: race2.key,
-    race1Slug: race1.slug,
-    race2Slug: race2.slug,
-    race1Name: race1.name,
-    race2Name: race2.name,
-  });
+function generateComparisonFaq(
+  key1: string,
+  key2: string,
+): Array<{ question: string; answer: string }> {
+  const r1 = marathonRows[key1];
+  const r2 = marathonRows[key2];
+  const gain1 = Math.round(r1.elevationGain);
+  const gain2 = Math.round(r2.elevationGain);
+  const gainDiff = Math.abs(gain1 - gain2);
+  const faster = gain1 <= gain2 ? r1 : r2;
+  const harder = gain1 >= gain2 ? r1 : r2;
+
+  return [
+    {
+      question: `Is ${r1.name} or ${r2.name} harder?`,
+      answer:
+        gainDiff < 40
+          ? `${r1.name} (${gain1}m elevation gain) and ${r2.name} (${gain2}m) have similar difficulty — both rate as "${difficultyLabel(r1.elevationGain)}" courses.`
+          : `${harder.name} is harder with ${Math.round(harder.elevationGain)}m of elevation gain versus ${Math.round(faster.elevationGain)}m for ${faster.name}. ${faster.name} rates "${difficultyLabel(faster.elevationGain)}" while ${harder.name} is "${difficultyLabel(harder.elevationGain)}".`,
+    },
+    {
+      question: `Which is better for a PR — ${r1.name} or ${r2.name}?`,
+      answer:
+        gainDiff < 40
+          ? `Both are similar courses for a PR. Your choice depends more on entry logistics and travel preference than course difficulty.`
+          : `${faster.name} is better for a PR with only ${Math.round(faster.elevationGain)}m of elevation gain — a ${difficultyLabel(faster.elevationGain).toLowerCase()} course. ${harder.name}'s ${Math.round(harder.elevationGain)}m of gain makes it ${difficultyLabel(harder.elevationGain).toLowerCase()} and typically costs several extra minutes.`,
+    },
+    {
+      question: `Where are ${r1.name} and ${r2.name} held?`,
+      answer: `${r1.name} takes place in ${r1.city}, ${r1.country}. ${r2.name} is in ${r2.city}, ${r2.country}. Check each race's official site for current registration dates and course details.`,
+    },
+    {
+      question: `How do the ${r1.city} and ${r2.city} courses compare?`,
+      answer: `${r1.name} is ${difficultyLabel(r1.elevationGain).toLowerCase()} with ${gain1}m of gain. ${r2.name} is ${difficultyLabel(r2.elevationGain).toLowerCase()} with ${gain2}m. Upload either course's GPX to the TrainPace elevation finder for a full profile and grade breakdown.`,
+    },
+  ];
+}
+
+export const raceCompareSeoPages: SeoPageConfig[] = COMPARE_PAIRS.map(([key1, key2]) => {
+  const r1 = marathonRows[key1];
+  const r2 = marathonRows[key2];
+
+  if (!r1 || !r2) throw new Error(`[seoPages] Unknown race key in COMPARE_PAIRS: "${key1}" or "${key2}"`);
+
+  const compareSlug = `${key1}-vs-${key2}-marathon`;
 
   return {
     id: generatePageId('race', compareSlug),
     slug: compareSlug,
-    tool: 'race',
+    tool: 'race' as const,
     path: `/race/compare/${compareSlug}`,
-    title: `${race1.name} vs ${race2.name}: Course Comparison | TrainPace`,
-    description: `${race1.name} vs ${race2.name} side-by-side: elevation, difficulty, course profile, and which race suits your goals. ${descriptor}.`,
-    h1: `${race1.name} vs ${race2.name}`,
-    intro: `Compare the ${race1.name} and ${race2.name} side by side — elevation profiles, course difficulty, and which race fits your goals.`,
+    title: `${r1.name} vs ${r2.name}: Course Comparison | TrainPace`,
+    description: `${r1.name} vs ${r2.name}: ${difficultyLabel(r1.elevationGain)} (${Math.round(r1.elevationGain)}m gain) vs ${difficultyLabel(r2.elevationGain)} (${Math.round(r2.elevationGain)}m). Elevation, difficulty, and which race suits your goals.`,
+    h1: `${r1.name} vs ${r2.name}`,
+    intro: `Compare the ${r1.name} and ${r2.name} side by side — elevation profiles, course difficulty, and which race fits your goals.`,
     bullets: [
-      `Side-by-side elevation and difficulty comparison`,
-      `Course profiles from real GPX data`,
-      `Which race is better for a PR, first marathon, or bucket list`,
+      'Side-by-side elevation and difficulty comparison',
+      'Course profiles from real GPX data',
+      'Which race is better for a PR, first marathon, or bucket list',
     ],
     cta: { href: '/calculator', label: 'Set Training Paces for Your Race' },
-    faq,
+    faq: generateComparisonFaq(key1, key2),
     howTo: {
-      name: `How to choose between ${race1.name} and ${race2.name}`,
+      name: `How to choose between ${r1.name} and ${r2.name}`,
       description: `Use TrainPace to plan your race prep for either event.`,
       steps: [
-        { name: 'Compare course difficulty', text: `Review elevation gain and key terrain differences between ${race1.name} and ${race2.name}.` },
+        {
+          name: 'Compare course difficulty',
+          text: `${r1.name} has ${Math.round(r1.elevationGain)}m of elevation gain (${difficultyLabel(r1.elevationGain)}); ${r2.name} has ${Math.round(r2.elevationGain)}m (${difficultyLabel(r2.elevationGain)}).`,
+        },
         { name: 'Pick your goal race', text: 'Choose based on your target time, experience, and travel preference.' },
         { name: 'Set training paces', text: 'Enter your goal time in the TrainPace calculator to get personalised training zones.' },
         { name: 'Build a fuel plan', text: 'Use the fuel planner to estimate carbs and gel timing for your chosen course.' },
       ],
     },
   };
-}
+});
 
-export const raceCompareSeoPages: SeoPageConfig[] = [
-  makeRaceComparePage(
-    'boston-vs-nyc-marathon',
-    { name: 'Boston Marathon', slug: 'boston-marathon', key: 'boston' },
-    { name: 'New York City Marathon', slug: 'nyc-marathon', key: 'nyc' },
-    'Two iconic World Marathon Majors with very different course profiles',
-    [
+// Derived from COMPARE_PAIRS — no factory side effects
+export const raceCompareMetaMap = new Map<string, RaceCompareMeta>(
+  COMPARE_PAIRS.map(([key1, key2]) => {
+    const r1 = marathonRows[key1];
+    const r2 = marathonRows[key2];
+    const slug = `${key1}-vs-${key2}-marathon`;
+    return [
+      slug,
       {
-        question: 'Is Boston or NYC harder?',
-        answer: 'Boston is generally considered harder due to the Newton Hills and Heartbreak Hill in the final third. NYC has rolling hills from bridge crossings (five bridges total) but the challenge is spread more evenly across the course.',
+        race1Key: key1,
+        race2Key: key2,
+        race1Slug: `${key1}-marathon`,
+        race2Slug: `${key2}-marathon`,
+        race1Name: r1.name,
+        race2Name: r2.name,
       },
-      {
-        question: 'Which is better for a PR — Boston or NYC?',
-        answer: 'NYC is better for a PR for most runners because it lacks the brutal late-race climbs of Boston. However, neither course is flat — both are slower than Berlin or Chicago for time chasers.',
-      },
-      {
-        question: 'How do Boston and NYC qualification work?',
-        answer: 'Boston requires a qualifying time from a certified marathon (BQ standards vary by age group). NYC entry is primarily through a lottery, charity spots, or running 9 New York Road Runners races in a year.',
-      },
-      {
-        question: 'Which race has a better atmosphere?',
-        answer: 'Both are legendary. Boston has a unique point-to-point energy with massive crowd support through Wellesley College and the Newton hills. NYC runs through all five boroughs with over one million spectators lining the streets.',
-      },
-    ]
-  ),
-  makeRaceComparePage(
-    'chicago-vs-berlin-marathon',
-    { name: 'Chicago Marathon', slug: 'chicago-marathon', key: 'chicago' },
-    { name: 'Berlin Marathon', slug: 'berlin-marathon', key: 'berlin' },
-    'The two flattest World Marathon Majors — where world records are made',
-    [
-      {
-        question: 'Is Chicago or Berlin faster?',
-        answer: 'Both are among the fastest marathon courses in the world. Berlin has hosted more world records and is often called the world\'s fastest marathon. Chicago is comparable and is also used for time goals and world record attempts.',
-      },
-      {
-        question: 'Which is better for a PR — Chicago or Berlin?',
-        answer: 'Either is an excellent PR course. Berlin has slightly more consistent flat terrain. Chicago has a few minor hills in the final miles. Both are far faster than Boston or NYC.',
-      },
-      {
-        question: 'When are Chicago and Berlin marathons held?',
-        answer: 'Berlin is held in late September and Chicago in early October — both in ideal autumn conditions. This means you cannot run both in the same year without an extremely short turnaround.',
-      },
-      {
-        question: 'How do I enter Chicago vs Berlin?',
-        answer: 'Both use a lottery system. Chicago (Bank of America Chicago Marathon) opens its lottery in the spring. Berlin (BMW Berlin Marathon) opens its lottery after the previous year\'s race. Both sell out quickly.',
-      },
-    ]
-  ),
-  makeRaceComparePage(
-    'boston-vs-chicago-marathon',
-    { name: 'Boston Marathon', slug: 'boston-marathon', key: 'boston' },
-    { name: 'Chicago Marathon', slug: 'chicago-marathon', key: 'chicago' },
-    'Hilly qualifier vs flat PR machine — two World Marathon Majors',
-    [
-      {
-        question: 'Is Boston or Chicago a better PR course?',
-        answer: 'Chicago is significantly better for a PR. It is mostly flat with only minor elevation change. Boston is net downhill but has significant hills in miles 16-21 that slow most runners substantially.',
-      },
-      {
-        question: 'Can I use a Chicago marathon time to qualify for Boston?',
-        answer: 'Yes — Chicago is a certified Boston Qualifier course. Running a qualifying time at Chicago is a common path to Boston because the flat course makes it easier to hit target paces.',
-      },
-      {
-        question: 'How does the course difficulty compare?',
-        answer: 'Chicago has roughly 30m of elevation gain across 42.2 km — essentially flat. Boston has over 400m of elevation gain with Heartbreak Hill at mile 20 being the defining challenge of the race.',
-      },
-      {
-        question: 'Which marathon is harder to enter?',
-        answer: 'Both are difficult. Boston requires a qualifying time. Chicago uses a lottery with over 100,000 applicants for roughly 45,000 spots. Boston is arguably the more selective entry.',
-      },
-    ]
-  ),
-  makeRaceComparePage(
-    'boston-vs-berlin-marathon',
-    { name: 'Boston Marathon', slug: 'boston-marathon', key: 'boston' },
-    { name: 'Berlin Marathon', slug: 'berlin-marathon', key: 'berlin' },
-    'The most demanding qualifier vs the world\'s fastest course',
-    [
-      {
-        question: 'Is Boston or Berlin harder?',
-        answer: 'Boston is much harder. Berlin is flat with minimal elevation change — ideal for fast times. Boston has over 400m of gain, a net downhill that trashes quads, and Heartbreak Hill late in the race.',
-      },
-      {
-        question: 'Which should I run first — Boston or Berlin?',
-        answer: 'Berlin is a great first major for runners chasing a time goal. Boston is best run when you can appreciate the history and are prepared for a challenging course rather than a PR attempt.',
-      },
-      {
-        question: 'Can a Berlin time qualify me for Boston?',
-        answer: 'Yes — Berlin is a certified Boston Qualifier. Many runners deliberately target a BQ at Berlin because the flat course makes it the best chance to hit their qualifying standard.',
-      },
-      {
-        question: 'What is the elevation difference between Boston and Berlin?',
-        answer: 'Berlin has approximately 35m of elevation gain over the full course. Boston has over 400m of gain, though it also descends significantly — the net drop of ~140m is why it is not eligible for world record attempts.',
-      },
-    ]
-  ),
-  makeRaceComparePage(
-    'london-vs-paris-marathon',
-    { name: 'London Marathon', slug: 'london-marathon', key: 'london' },
-    { name: 'Paris Marathon', slug: 'paris-marathon', key: 'paris' },
-    'Two iconic spring European marathons with very different course profiles',
-    [
-      {
-        question: 'Is London or Paris a faster course?',
-        answer: 'London is faster. It has around 100m of elevation gain and a mostly flat profile through central London. Paris has closer to 250m of gain with some rolling sections and is considered a moderately challenging course.',
-      },
-      {
-        question: 'When are the London and Paris marathons held?',
-        answer: 'Both are held in April within one week of each other. The Paris Marathon typically falls on the first Sunday of April and London on the following Sunday, making it impossible to run both.',
-      },
-      {
-        question: 'Which is harder to get into — London or Paris?',
-        answer: 'London is harder. The London Marathon ballot is notoriously competitive with acceptance rates around 3-5%. Paris is easier to enter through standard registration which usually opens and sells out in autumn.',
-      },
-      {
-        question: 'Which race has a better course atmosphere?',
-        answer: 'Both are stunning. London runs past Tower Bridge and Canary Wharf with enormous crowds. Paris runs past Notre-Dame, the Louvre, and through the Bois de Boulogne — one of the most scenic city marathon routes in the world.',
-      },
-    ]
-  ),
-  makeRaceComparePage(
-    'nyc-vs-chicago-marathon',
-    { name: 'New York City Marathon', slug: 'nyc-marathon', key: 'nyc' },
-    { name: 'Chicago Marathon', slug: 'chicago-marathon', key: 'chicago' },
-    'Rolling five-borough classic vs flat downtown PR course',
-    [
-      {
-        question: 'Is NYC or Chicago better for a PR?',
-        answer: 'Chicago is significantly better for a PR. It is nearly flat with minimal elevation change. NYC has rolling hills from five bridge crossings and a significant climb in the final miles to Central Park.',
-      },
-      {
-        question: 'Which marathon has a bigger field — NYC or Chicago?',
-        answer: 'NYC is the world\'s largest marathon with around 50,000 finishers. Chicago is slightly smaller at around 40,000-45,000 finishers, though both are among the biggest races in the world.',
-      },
-      {
-        question: 'How do the entry systems compare?',
-        answer: 'Both use lotteries. NYC also allows entry through guaranteed entry (by running 9 NYRR races in the prior year plus one race in the entry year). Chicago\'s lottery is equally competitive.',
-      },
-      {
-        question: 'Which has worse weather — NYC or Chicago?',
-        answer: 'Chicago in October can have extreme heat or cold. NYC in November tends to be cooler and more consistent, though wind from the Hudson bridges can be a factor. Both can surprise runners with tough conditions.',
-      },
-    ]
-  ),
-  makeRaceComparePage(
-    'berlin-vs-london-marathon',
-    { name: 'Berlin Marathon', slug: 'berlin-marathon', key: 'berlin' },
-    { name: 'London Marathon', slug: 'london-marathon', key: 'london' },
-    'The world\'s fastest course vs Europe\'s most prestigious spring major',
-    [
-      {
-        question: 'Is Berlin or London a faster marathon course?',
-        answer: 'Berlin is faster. It holds more marathon world records than any other course and has minimal elevation change. London is mostly flat but has slightly more variation and is considered a touch slower.',
-      },
-      {
-        question: 'When are Berlin and London marathons held?',
-        answer: 'London is in April and Berlin is in late September — they are six months apart, making it feasible to run both in the same year if your training and recovery allow.',
-      },
-      {
-        question: 'Which is easier to enter — Berlin or London?',
-        answer: 'Both are competitive. London has a 3-5% ballot acceptance rate. Berlin also has a lottery that is heavily oversubscribed. Charity entries are available for both at a fundraising commitment.',
-      },
-      {
-        question: 'Which race is better for a debut marathon?',
-        answer: 'London is often recommended for debut marathons because of the electric atmosphere, iconic route, and strong crowd support throughout. Berlin is better if your primary goal is running a fast time.',
-      },
-    ]
-  ),
-  makeRaceComparePage(
-    'tokyo-vs-boston-marathon',
-    { name: 'Tokyo Marathon', slug: 'tokyo-marathon', key: 'tokyo' },
-    { name: 'Boston Marathon', slug: 'boston-marathon', key: 'boston' },
-    'Prestigious Asian major vs the oldest and most iconic US marathon',
-    [
-      {
-        question: 'Is Tokyo or Boston a harder course?',
-        answer: 'Boston is harder. It has over 400m of elevation gain with Heartbreak Hill as a defining challenge. Tokyo has moderate rolling terrain with around 200m of gain — tough but more manageable than Boston.',
-      },
-      {
-        question: 'Which requires harder entry — Tokyo or Boston?',
-        answer: 'Both are difficult in different ways. Boston requires running a qualifying time. Tokyo entry is via lottery and is one of the most oversubscribed races in the world with acceptance rates under 10% for international runners.',
-      },
-      {
-        question: 'When are Tokyo and Boston marathons held?',
-        answer: 'Tokyo is held in early March and Boston on Patriots\' Day in April. It is theoretically possible to run both in the same spring season though the recovery window is extremely tight.',
-      },
-      {
-        question: 'Which is a better PR course — Tokyo or Boston?',
-        answer: 'Neither is primarily a PR course, though Tokyo is faster than Boston. The flattest World Marathon Majors for PRs are Berlin and Chicago.',
-      },
-    ]
-  ),
-  makeRaceComparePage(
-    'amsterdam-vs-berlin-marathon',
-    { name: 'Amsterdam Marathon', slug: 'amsterdam-marathon', key: 'amsterdam' },
-    { name: 'Berlin Marathon', slug: 'berlin-marathon', key: 'berlin' },
-    'Two of Europe\'s fastest autumn marathon courses',
-    [
-      {
-        question: 'Is Amsterdam or Berlin a faster marathon?',
-        answer: 'Berlin is the faster course overall — it holds the marathon world record and is consistently used for record attempts. Amsterdam is also very flat and fast, often producing excellent times in October conditions.',
-      },
-      {
-        question: 'Can I qualify for Boston at Amsterdam or Berlin?',
-        answer: 'Yes — both are certified Boston Qualifier courses. Many runners choose either race specifically to target a BQ because both courses are flat and conducive to fast times.',
-      },
-      {
-        question: 'When are Amsterdam and Berlin marathons held?',
-        answer: 'Berlin is in late September and Amsterdam is in mid-October — about two to three weeks apart. Running both back-to-back is possible but not recommended.',
-      },
-      {
-        question: 'Which is easier to enter?',
-        answer: 'Amsterdam is generally easier to enter than Berlin. Amsterdam registration opens months in advance and sells out but is not as heavily oversubscribed as the Berlin lottery.',
-      },
-    ]
-  ),
-  makeRaceComparePage(
-    'valencia-vs-berlin-marathon',
-    { name: 'Valencia Marathon', slug: 'valencia-marathon', key: 'valencia' },
-    { name: 'Berlin Marathon', slug: 'berlin-marathon', key: 'berlin' },
-    'Two of the fastest marathon courses in the world',
-    [
-      {
-        question: 'Is Valencia or Berlin a faster marathon?',
-        answer: 'Both are among the fastest in the world with minimal elevation change. Berlin has hosted more world records, but Valencia in December often produces stunning times thanks to cool temperatures and a superb flat course.',
-      },
-      {
-        question: 'What elevation do Valencia and Berlin have?',
-        answer: 'Both have approximately 25-35m of elevation gain across 42.2 km — essentially flat. Valencia runs along the seafront and through the city centre with virtually no meaningful hills.',
-      },
-      {
-        question: 'When is Valencia Marathon held?',
-        answer: 'Valencia Marathon is held in early December, making it one of the last major marathons of the year and a popular final race of the season for time chasers.',
-      },
-      {
-        question: 'Which is better for a world-class time — Valencia or Berlin?',
-        answer: 'Valencia in December has produced some of the fastest times in recent years. The cool December air and perfectly flat course make it competitive with Berlin as the fastest marathon in the world.',
-      },
-    ]
-  ),
-  makeRaceComparePage(
-    'chicago-vs-london-marathon',
-    { name: 'Chicago Marathon', slug: 'chicago-marathon', key: 'chicago' },
-    { name: 'London Marathon', slug: 'london-marathon', key: 'london' },
-    'Flat autumn PR machine vs iconic spring European major',
-    [
-      {
-        question: 'Is Chicago or London a faster course?',
-        answer: 'Chicago is faster. It has minimal elevation change and a flat downtown Chicago route designed for fast times. London has a mostly flat course but slightly more variation and is considered a touch slower.',
-      },
-      {
-        question: 'Which is better for a first World Marathon Major?',
-        answer: 'Both are excellent first majors. London has an unmatched atmosphere and iconic scenery. Chicago is better if your primary goal is running a fast time. The decision often comes down to which lottery you get into.',
-      },
-      {
-        question: 'When are Chicago and London held?',
-        answer: 'London is in April and Chicago is in October — six months apart. It is feasible to run both in the same calendar year with a solid training and recovery plan.',
-      },
-      {
-        question: 'How do the weather conditions compare?',
-        answer: 'London in April is typically cool and ideal for running. Chicago in October can vary from perfect conditions to extreme heat (as happened in 2007). London tends to have more predictable conditions.',
-      },
-    ]
-  ),
-  makeRaceComparePage(
-    'nyc-vs-berlin-marathon',
-    { name: 'New York City Marathon', slug: 'nyc-marathon', key: 'nyc' },
-    { name: 'Berlin Marathon', slug: 'berlin-marathon', key: 'berlin' },
-    'Rolling five-borough classic vs the world\'s fastest marathon',
-    [
-      {
-        question: 'Is NYC or Berlin a faster marathon?',
-        answer: 'Berlin is significantly faster. It is the world record course with minimal elevation change. NYC has rolling hills, five bridge crossings, and a late climb into Central Park — none of which help your time.',
-      },
-      {
-        question: 'Which is better for a PR — NYC or Berlin?',
-        answer: 'Berlin is far better for a PR. If you\'re targeting a specific finish time or Boston qualifier, Berlin gives you the best chance. NYC should be run for the experience and atmosphere, not the clock.',
-      },
-      {
-        question: 'When are NYC and Berlin held?',
-        answer: 'Berlin is in late September and NYC is in early November — about five weeks apart. Many runners choose to run one in the fall season, as five weeks is too short a recovery window for most.',
-      },
-      {
-        question: 'Which race is a better bucket-list experience?',
-        answer: 'Both are bucket-list races but for different reasons. NYC runs through all five boroughs with over one million spectators — arguably the greatest marathon experience in the world. Berlin is the world\'s fastest course and a pilgimage for time chasers.',
-      },
-    ]
-  ),
-];
-
+    ];
+  })
+);
 // =============================================================================
 // Lookup Maps
 // =============================================================================
