@@ -73,3 +73,16 @@ export interface VdotFormErrors {
   distance?: string;
   time?: string;
 }
+
+/** Calculation history entry for localStorage persistence */
+export interface CalculationHistoryEntry {
+  distanceName: string;
+  distanceMeters: number;
+  timeFormatted: string;
+  totalSeconds: number;
+  vdot: number;
+  date: string;
+  hours: string;
+  minutes: string;
+  seconds: string;
+}
