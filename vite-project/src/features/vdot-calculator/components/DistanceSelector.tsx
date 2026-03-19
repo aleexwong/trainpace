@@ -20,6 +20,16 @@ const DISTANCE_GROUPS = [
   },
 ];
 
+const DISTANCE_TOOLTIP: Record<string, string> = {
+  Mile: "1.61km",
+  "3K": "1.86mi",
+  "5K": "3.11mi",
+  "10K": "6.21mi",
+  "15K": "9.32mi",
+  "Half Marathon": "21.1km / 13.1mi",
+  Marathon: "42.2km / 26.2mi",
+};
+
 interface DistanceSelectorProps {
   selectedMeters: number;
   onSelect: (meters: number, name: string) => void;
@@ -46,6 +56,7 @@ export function DistanceSelector({ selectedMeters, onSelect, error }: DistanceSe
                   <button
                     key={d.name}
                     onClick={() => onSelect(d.meters, d.name)}
+                    title={DISTANCE_TOOLTIP[d.name]}
                     className={`relative px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 border-2 ${
                       isSelected
                         ? "border-blue-500 bg-blue-50 text-blue-700 shadow-sm"

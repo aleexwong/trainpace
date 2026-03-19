@@ -25,7 +25,7 @@ export const INPUT_DISTANCES = [
   { name: "5K", meters: 5000, label: "5K" },
   { name: "10K", meters: 10000, label: "10K" },
   { name: "15K", meters: 15000, label: "15K" },
-  { name: "Half Marathon", meters: 21097.5, label: "Half" },
+  { name: "Half Marathon", meters: 21097.5, label: "Half Marathon" },
   { name: "Marathon", meters: 42195, label: "Marathon" },
 ] as const;
 

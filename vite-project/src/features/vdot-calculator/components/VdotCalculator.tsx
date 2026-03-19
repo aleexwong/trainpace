@@ -112,19 +112,21 @@ export function VdotCalculator() {
                     </p>
                   </div>
 
-                  <DistanceSelector
-                    selectedMeters={inputs.distanceMeters}
-                    onSelect={handleDistanceSelect}
-                    error={errors.distance}
-                  />
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <DistanceSelector
+                      selectedMeters={inputs.distanceMeters}
+                      onSelect={handleDistanceSelect}
+                      error={errors.distance}
+                    />
 
-                  <TimeInput
-                    inputs={inputs}
-                    onTimeChange={handleTimeChange}
-                    onCalculate={onCalculate}
-                    vdotPreview={vdotPreview}
-                    error={errors.time}
-                  />
+                    <TimeInput
+                      inputs={inputs}
+                      onTimeChange={handleTimeChange}
+                      onCalculate={onCalculate}
+                      vdotPreview={vdotPreview}
+                      error={errors.time}
+                    />
+                  </div>
                 </CardContent>
               </Card>
 
