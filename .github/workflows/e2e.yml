@@ -27,6 +27,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Cache Vite prebundle
+        uses: actions/cache@v4
+        with:
+          path: vite-project/node_modules/.vite
+          key: vite-prebundle-${{ runner.os }}-${{ hashFiles('vite-project/package-lock.json', 'vite-project/vite.config.ts') }}
+          restore-keys: |
+            vite-prebundle-${{ runner.os }}-
+
       - name: Get Playwright version
         id: playwright-version
         run: echo "version=$(npx playwright --version | grep -oP '\d+\.\d+\.\d+')" >> "$GITHUB_OUTPUT"
