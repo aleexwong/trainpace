@@ -1,5 +1,6 @@
 /**
  * VdotComparison — "What If" explorer: adjust time to see how VDOT changes
+ * Supports compact mode for dashboard grid layout — always open when compact.
  */
 
 import { useState, useMemo } from "react";
@@ -12,6 +13,7 @@ interface VdotComparisonProps {
   distanceMeters: number;
   distanceName: string;
   totalSeconds: number;
+  compact?: boolean;
 }
 
 export function VdotComparison({
@@ -19,13 +21,13 @@ export function VdotComparison({
   distanceMeters,
   distanceName,
   totalSeconds,
+  compact,
 }: VdotComparisonProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(!!compact);
   const [offsetSeconds, setOffsetSeconds] = useState(0);
 
-  // Calculate the max offset range based on race duration
   const maxOffset = useMemo(() => {
-    return Math.min(Math.floor(totalSeconds * 0.2), 600); // 20% of time or 10 min max
+    return Math.min(Math.floor(totalSeconds * 0.2), 600);
   }, [totalSeconds]);
 
   const targetSeconds = totalSeconds + offsetSeconds;
@@ -61,33 +63,32 @@ export function VdotComparison({
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-5 sm:p-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className={`bg-white rounded-2xl shadow-lg h-full ${compact ? "p-4" : "p-5 sm:p-8"}`}>
+      <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">What If?</h2>
-          <p className="text-sm text-gray-500 mt-0.5">
-            Adjust your {distanceName} time to see how VDOT changes
+          <h2 className={`font-bold text-gray-900 ${compact ? "text-lg" : "text-xl sm:text-2xl"}`}>What If?</h2>
+          <p className="text-xs text-gray-500 mt-0.5">
+            Adjust your {distanceName} time
           </p>
         </div>
-        <button
-          onClick={() => {
-            setIsOpen(false);
-            setOffsetSeconds(0);
-          }}
-          className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          Close
-        </button>
+        {!compact && (
+          <button
+            onClick={() => { setIsOpen(false); setOffsetSeconds(0); }}
+            className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            Close
+          </button>
+        )}
       </div>
 
       {/* Slider */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
-          <span>Faster ({formatOffset(-maxOffset)})</span>
-          <span className="font-semibold text-gray-700 text-sm">
+      <div className={compact ? "mb-4" : "mb-8"}>
+        <div className="flex items-center justify-between text-[10px] text-gray-400 mb-1.5">
+          <span>Faster</span>
+          <span className="font-semibold text-gray-700 text-xs">
             {offsetSeconds === 0 ? "Your time" : formatOffset(offsetSeconds)}
           </span>
-          <span>Slower ({formatOffset(maxOffset)})</span>
+          <span>Slower</span>
         </div>
         <input
           type="range"
@@ -101,18 +102,16 @@ export function VdotComparison({
       </div>
 
       {/* Comparison cards */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4">
-        {/* Current */}
-        <div className="p-4 rounded-xl bg-gray-50 border border-gray-200 text-center">
-          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Current</p>
-          <p className="text-3xl font-bold text-gray-900">{currentVdot}</p>
-          <p className="text-xs text-gray-500 mt-1 font-mono">{formatTime(totalSeconds)}</p>
-          <p className="text-xs text-gray-400 mt-0.5">{getVdotLevel(currentVdot).label}</p>
+      <div className="grid grid-cols-2 gap-2">
+        <div className={`rounded-xl bg-gray-50 border border-gray-200 text-center ${compact ? "p-3" : "p-4"}`}>
+          <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-0.5">Current</p>
+          <p className={`font-bold text-gray-900 ${compact ? "text-2xl" : "text-3xl"}`}>{currentVdot}</p>
+          <p className="text-[10px] text-gray-500 mt-0.5 font-mono">{formatTime(totalSeconds)}</p>
+          <p className="text-[10px] text-gray-400">{getVdotLevel(currentVdot).label}</p>
         </div>
 
-        {/* Target */}
         <div
-          className={`p-4 rounded-xl border text-center ${
+          className={`rounded-xl border text-center ${compact ? "p-3" : "p-4"} ${
             vdotDelta > 0
               ? "bg-emerald-50 border-emerald-200"
               : vdotDelta < 0
@@ -120,23 +119,23 @@ export function VdotComparison({
               : "bg-blue-50 border-blue-200"
           }`}
         >
-          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Target</p>
+          <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-0.5">Target</p>
           <p
-            className={`text-3xl font-bold ${
+            className={`font-bold ${compact ? "text-2xl" : "text-3xl"} ${
               vdotDelta > 0 ? "text-emerald-700" : vdotDelta < 0 ? "text-red-700" : "text-blue-700"
             }`}
           >
             {targetVdot}
           </p>
-          <p className="text-xs text-gray-500 mt-1 font-mono">{formatTime(targetSeconds)}</p>
-          <p className="text-xs text-gray-400 mt-0.5">{targetLevel.label}</p>
+          <p className="text-[10px] text-gray-500 mt-0.5 font-mono">{formatTime(targetSeconds)}</p>
+          <p className="text-[10px] text-gray-400">{targetLevel.label}</p>
         </div>
       </div>
 
       {/* Delta summary */}
       {offsetSeconds !== 0 && (
         <div
-          className={`mt-4 flex items-center justify-center gap-2 p-3 rounded-lg text-sm font-medium ${
+          className={`mt-3 flex items-center justify-center gap-1.5 p-2 rounded-lg text-xs font-medium ${
             vdotDelta > 0
               ? "bg-emerald-50 text-emerald-700"
               : vdotDelta < 0
@@ -145,17 +144,14 @@ export function VdotComparison({
           }`}
         >
           {vdotDelta > 0 ? (
-            <TrendingUp className="w-4 h-4" />
+            <TrendingUp className="w-3.5 h-3.5" />
           ) : vdotDelta < 0 ? (
-            <TrendingDown className="w-4 h-4" />
+            <TrendingDown className="w-3.5 h-3.5" />
           ) : (
-            <Minus className="w-4 h-4" />
+            <Minus className="w-3.5 h-3.5" />
           )}
           <span>
-            {offsetSeconds < 0 ? "Improving" : "Slowing"} by {formatOffset(offsetSeconds).replace(/[+-]/, "")}
-            {" = "}
-            {vdotDelta > 0 ? "+" : ""}
-            {vdotDelta} VDOT points
+            {vdotDelta > 0 ? "+" : ""}{vdotDelta} VDOT
           </span>
         </div>
       )}

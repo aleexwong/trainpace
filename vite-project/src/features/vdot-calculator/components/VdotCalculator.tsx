@@ -1,11 +1,11 @@
 /**
  * VdotCalculator — Main orchestrator component
- * Composes all sub-components into the complete VDOT calculator experience.
+ * Dashboard-style grid layout: everything visible at a glance, minimal scrolling.
  */
 
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { Clock } from "lucide-react";
+import { Clock, ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 import { useVdotCalculator } from "../hooks/useVdotCalculator";
@@ -42,7 +42,6 @@ export function VdotCalculator() {
 
   const onCalculate = () => {
     handleCalculate();
-    // Scroll to results after a short delay for state to update
     setTimeout(() => {
       resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
@@ -52,10 +51,51 @@ export function VdotCalculator() {
     <>
       <VdotSeoHead />
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 p-4 md:p-8">
-        <div className="max-w-4xl mx-auto">
-          {/* Hero */}
-          <VdotHero />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 p-4 md:p-6">
+        {/* Wider container for dashboard layout */}
+        <div className={result ? "max-w-7xl mx-auto" : "max-w-4xl mx-auto"}>
+          {/* Hero — compact when showing results */}
+          {!result ? (
+            <VdotHero />
+          ) : (
+            /* Compact header bar in results mode */
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={handleReset}
+                  className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 transition-colors bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  New Calculation
+                </button>
+                <div>
+                  <h1 className="text-lg font-bold text-gray-900">VDOT Dashboard</h1>
+                  <p className="text-xs text-gray-500">
+                    {inputs.distanceName} &middot; {(() => { const h = parseInt(inputs.hours || "0"); const m = parseInt(inputs.minutes || "0"); const s = parseInt(inputs.seconds || "0"); const parts = []; if (h > 0) parts.push(`${h}h`); if (m > 0) parts.push(`${m}m`); if (s > 0) parts.push(`${s}s`); return parts.join(" "); })()}
+                  </p>
+                </div>
+              </div>
+              <div
+                className="relative w-32 h-8 bg-indigo-100 rounded-full cursor-pointer overflow-hidden select-none"
+                onClick={handlePaceUnitToggle}
+                title="Toggle pace display unit"
+              >
+                <div
+                  className={`absolute top-0.5 left-0.5 w-[calc(50%-0.25rem)] h-7 bg-indigo-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
+                    paceUnit === "mi" ? "translate-x-full" : "translate-x-0"
+                  }`}
+                />
+                <div className="absolute inset-0 flex items-center">
+                  <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "km" ? "text-white" : "text-indigo-700"}`}>
+                    min/km
+                  </div>
+                  <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "mi" ? "text-white" : "text-indigo-700"}`}>
+                    min/mi
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Main content */}
           {!result ? (
@@ -110,13 +150,9 @@ export function VdotCalculator() {
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs hover:border-blue-300 hover:bg-blue-50 transition-all shadow-sm"
                       >
                         <Clock className="w-3 h-3 text-gray-400" />
-                        <span className="font-medium text-gray-700">
-                          {entry.distanceName}
-                        </span>
+                        <span className="font-medium text-gray-700">{entry.distanceName}</span>
                         <span className="text-gray-400">{entry.timeFormatted}</span>
-                        <span className="font-bold text-blue-600">
-                          {entry.vdot}
-                        </span>
+                        <span className="font-bold text-blue-600">{entry.vdot}</span>
                       </button>
                     ))}
                   </div>
@@ -124,43 +160,75 @@ export function VdotCalculator() {
               )}
             </div>
           ) : (
-            /* ─── RESULTS STATE ─── */
-            <div ref={resultsRef} className="space-y-6">
-              <VdotScoreDisplay
-                result={result}
-                inputs={inputs}
-                totalSeconds={totalSeconds}
-                onReset={handleReset}
-              />
+            /* ─── RESULTS DASHBOARD ─── */
+            <div ref={resultsRef}>
+              {/*
+                Dashboard grid:
+                ┌──────────────┬───────────────────┐
+                │  VDOT Score   │  Training Zones   │
+                │  (gauge)      │  (5 zones)        │
+                ├──────────────┤                   │
+                │  Workouts     │                   │
+                │  (4 cards)    │                   │
+                ├──────────────┴───────────────────┤
+                │  Race Predictions  │  What If?    │
+                └──────────────┴───────────────────┘
+              */}
 
-              <TrainingZonesDisplay
-                zones={result.trainingZones}
-                paceUnit={paceUnit}
-                vdot={result.vdot}
-                onTogglePaceUnit={handlePaceUnitToggle}
-              />
+              {/* Row 1: Score + Zones (side by side on lg) */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-4">
+                {/* Left: Score + Workouts stacked */}
+                <div className="lg:col-span-5 space-y-4">
+                  <VdotScoreDisplay
+                    result={result}
+                    inputs={inputs}
+                    totalSeconds={totalSeconds}
+                    onReset={handleReset}
+                    compact
+                  />
+                  <SampleWorkouts
+                    zones={result.trainingZones}
+                    paceUnit={paceUnit}
+                    compact
+                  />
+                </div>
 
-              <RacePredictionsTable
-                predictions={result.racePredictions}
-                inputDistanceName={inputs.distanceName}
-              />
+                {/* Right: Training Zones */}
+                <div className="lg:col-span-7">
+                  <TrainingZonesDisplay
+                    zones={result.trainingZones}
+                    paceUnit={paceUnit}
+                    vdot={result.vdot}
+                    onTogglePaceUnit={handlePaceUnitToggle}
+                    compact
+                  />
+                </div>
+              </div>
 
-              <VdotComparison
-                currentVdot={result.vdot}
-                distanceMeters={inputs.distanceMeters}
-                distanceName={inputs.distanceName}
-                totalSeconds={totalSeconds}
-              />
-
-              <SampleWorkouts
-                zones={result.trainingZones}
-                paceUnit={paceUnit}
-              />
+              {/* Row 2: Race Predictions + What If (side by side on lg) */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                <div className="lg:col-span-7">
+                  <RacePredictionsTable
+                    predictions={result.racePredictions}
+                    inputDistanceName={inputs.distanceName}
+                    compact
+                  />
+                </div>
+                <div className="lg:col-span-5">
+                  <VdotComparison
+                    currentVdot={result.vdot}
+                    distanceMeters={inputs.distanceMeters}
+                    distanceName={inputs.distanceName}
+                    totalSeconds={totalSeconds}
+                    compact
+                  />
+                </div>
+              </div>
             </div>
           )}
 
           {/* FAQ — always visible for SEO */}
-          <div className="mt-12 space-y-6">
+          <div className="mt-12 max-w-4xl mx-auto space-y-6">
             <VdotFaq />
 
             {/* Related Tools */}
