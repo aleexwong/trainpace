@@ -5,7 +5,7 @@ import { getAllSeoPaths } from "../src/features/seo-pages/seoPages";
 import { BASE_URL } from "../src/lib/seo";
 
 const staticPaths: Array<{ loc: string; changefreq: string; priority: string }> = [
-  { loc: `${BASE_URL}/`, changefreq: "weekly", priority: "1.0" },
+  { loc: BASE_URL, changefreq: "weekly", priority: "1.0" },
   { loc: `${BASE_URL}/calculator`, changefreq: "monthly", priority: "0.9" },
   { loc: `${BASE_URL}/fuel`, changefreq: "monthly", priority: "0.9" },
   { loc: `${BASE_URL}/elevationfinder`, changefreq: "monthly", priority: "0.8" },
