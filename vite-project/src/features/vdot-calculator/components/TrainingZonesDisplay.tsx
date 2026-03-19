@@ -127,7 +127,7 @@ export function TrainingZonesDisplay({
                 className={`w-full text-left ${compact ? "p-3" : "p-4"}`}
               >
                 {/* Use CSS grid for consistent column widths */}
-                <div className={`grid items-center gap-2 ${compact ? "grid-cols-[2rem_1fr_7rem_1rem]" : "grid-cols-[2.5rem_1fr_8.5rem_1rem]"}`}>
+                <div className={`grid items-center gap-2 ${compact ? "grid-cols-[2rem_1fr_8rem_1rem]" : "grid-cols-[2.5rem_1fr_9rem_1rem]"}`}>
                   {/* Zone badge */}
                   <div
                     className={`${compact ? "w-8 h-8 text-xs" : "w-10 h-10 text-sm"} rounded-full flex items-center justify-center font-bold ${colors.badge}`}
