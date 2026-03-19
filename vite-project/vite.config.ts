@@ -5,11 +5,15 @@ import svgr from "vite-plugin-svgr";
 import { vitePrerenderPlugin } from "vite-prerender-plugin";
 
 import { getAllSeoPaths } from "./src/features/seo-pages/seoPages";
+import blogData from "./src/data/blog-posts.json";
+
+const blogRoutes = blogData.posts.map((post) => `/blog/${post.slug}`);
 
 // Prerendered routes for SEO
 const prerenderedRoutes = [
   "/",
   "/calculator",
+  "/vdot",
   "/fuel",
   "/elevationfinder",
   "/race",
@@ -25,16 +29,7 @@ const prerenderedRoutes = [
   "/preview-route/oslo",
   // Blog routes
   "/blog",
-  "/blog/understanding-vdot-training-paces",
-  "/blog/marathon-fueling-complete-guide",
-  "/blog/elevation-impact-race-strategy",
-  "/blog/beginner-marathon-training-tips",
-  "/blog/recovery-strategies-for-runners",
-  "/blog/tempo-runs-explained",
-  "/blog/running-shoes-guide",
-  "/blog/half-marathon-pacing-strategy",
-  "/blog/strength-training-for-runners",
-  "/blog/taper-marathon-guide",
+  ...blogRoutes,
 ];
 
 // https://vite.dev/config/

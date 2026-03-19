@@ -29,6 +29,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import About from "./pages/About";
 import DashboardV2 from "./pages/DashboardV2";
+import VdotCalculatorPage from "./pages/VdotCalculatorPage";
 import { BlogList, BlogPost } from "./features/blog";
 import AuthGuard from "./features/auth/AuthGuard";
 
@@ -49,6 +50,7 @@ function App() {
           />
           <Route path="/fuel" element={<FuelPlannerV2 />} />
           <Route path="/fuel/:seoSlug" element={<FuelSeoLanding />} />
+          <Route path="/vdot" element={<VdotCalculatorPage />} />
           <Route path="/race" element={<RaceIndex />} />
           <Route path="/race/:raceSlug" element={<RaceSeoLanding />} />
           <Route path="/elevation-finder" element={<ElevationPage />} />
