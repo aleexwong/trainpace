@@ -45,10 +45,10 @@ export function DistanceSelector({ selectedMeters, onSelect, error }: DistanceSe
         Race Distance
       </label>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         {DISTANCE_GROUPS.map((group) => (
           <div key={group.label}>
-            <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+            <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1.5">
               {group.label}
             </p>
             <div className="grid grid-cols-3 gap-2">
@@ -58,7 +58,7 @@ export function DistanceSelector({ selectedMeters, onSelect, error }: DistanceSe
                   <button
                     key={d.name}
                     onClick={() => onSelect(d.meters, d.name)}
-                    className={`relative p-3 rounded-xl text-left transition-all duration-200 border-2 ${
+                    className={`relative p-2 rounded-xl text-left transition-all duration-200 border-2 ${
                       isSelected
                         ? "border-blue-500 bg-blue-50 shadow-md"
                         : "border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm"

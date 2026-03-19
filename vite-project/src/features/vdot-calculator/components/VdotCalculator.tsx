@@ -176,7 +176,7 @@ export function VdotCalculator() {
               */}
 
               {/* Row 1: Score + Zones (side by side on lg) */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-4 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-4">
                 {/* Left: Score + Workouts stacked */}
                 <div className="lg:col-span-5 space-y-4">
                   <VdotScoreDisplay
