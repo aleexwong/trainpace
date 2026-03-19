@@ -5,6 +5,7 @@ export type {
   TrainingZone,
   RacePrediction,
   PaceDisplayUnit,
+  CalculationHistoryEntry,
 } from "./types";
 export {
   calculateVdot,
