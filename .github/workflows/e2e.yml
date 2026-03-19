@@ -27,6 +27,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Restores prior Vite prebundles before tests; new prebundles are saved
+      # automatically at job end after Playwright starts the dev server.
       - name: Cache Vite prebundle
         uses: actions/cache@v4
         with:
