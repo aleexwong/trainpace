@@ -851,38 +851,13 @@ const CTA = () => {
 export default function LandingPage() {
   return (
     <>
-      <Helmet>
-        <title>TrainPace – Free VDOT Running Calculator & Training Tools</title>
-        <meta
-          name="description"
-          content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Get science-based training paces from Jack Daniels' formula. No account needed."
-        />
-        <link rel="canonical" href="https://trainpace.com/" />
-        {/* Open Graph */}
-        <meta property="og:title" content="TrainPace – Free VDOT Running Calculator & Training Tools" />
-        <meta property="og:description" content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Get science-based training paces from Jack Daniels' formula." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://trainpace.com/" />
-        <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
-        <meta property="og:site_name" content="TrainPace" />
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="TrainPace – Free VDOT Running Calculator & Training Tools" />
-        <meta name="twitter:description" content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Science-based training tools for runners." />
-        <meta name="twitter:image" content="https://trainpace.com/landing-page-2025.png" />
-        {/* Structured Data */}
+      <Helmet
+        title={homepageHelmetProps.title}
+        meta={homepageHelmetProps.meta}
+        link={homepageHelmetProps.link}
+      >
         <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            name: "TrainPace",
-            url: "https://trainpace.com",
-            applicationCategory: "HealthApplication",
-            operatingSystem: "Any",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-            description:
-              "Free running tools including VDOT calculator, pace zones, course elevation analysis, and race-day fueling strategy.",
-          })}
+          {JSON.stringify(homepageSchemaGraph)}
         </script>
       </Helmet>
       <div className="font-sans text-slate-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
