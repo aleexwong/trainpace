@@ -175,8 +175,8 @@ export function VdotCalculator() {
                 └──────────────┴───────────────────┘
               */}
 
-              {/* Row 1: Score + Zones (side by side on lg) */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-4">
+              {/* Row 1: Score/Workouts + Zones/WhatIf (side by side on lg) */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-4 items-start">
                 {/* Left: Score + Workouts stacked */}
                 <div className="lg:col-span-5 space-y-4">
                   <VdotScoreDisplay
@@ -193,8 +193,8 @@ export function VdotCalculator() {
                   />
                 </div>
 
-                {/* Right: Training Zones */}
-                <div className="lg:col-span-7">
+                {/* Right: Training Zones + What If stacked */}
+                <div className="lg:col-span-7 space-y-4">
                   <TrainingZonesDisplay
                     zones={result.trainingZones}
                     paceUnit={paceUnit}
@@ -202,19 +202,6 @@ export function VdotCalculator() {
                     onTogglePaceUnit={handlePaceUnitToggle}
                     compact
                   />
-                </div>
-              </div>
-
-              {/* Row 2: Race Predictions + What If (side by side on lg) */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-                <div className="lg:col-span-7">
-                  <RacePredictionsTable
-                    predictions={result.racePredictions}
-                    inputDistanceName={inputs.distanceName}
-                    compact
-                  />
-                </div>
-                <div className="lg:col-span-5">
                   <VdotComparison
                     currentVdot={result.vdot}
                     distanceMeters={inputs.distanceMeters}
@@ -223,6 +210,15 @@ export function VdotCalculator() {
                     compact
                   />
                 </div>
+              </div>
+
+              {/* Row 2: Race Predictions (full width) */}
+              <div>
+                <RacePredictionsTable
+                  predictions={result.racePredictions}
+                  inputDistanceName={inputs.distanceName}
+                  compact
+                />
               </div>
             </div>
           )}
