@@ -1,6 +1,7 @@
 /**
  * TrainingZonesDisplay — Visual training zone cards with spectrum bar and expandable details
  * Supports compact mode for dashboard grid layout.
+ * Uses a table-like structure so pace values align across all zones.
  */
 
 import { useState } from "react";
@@ -87,7 +88,6 @@ export function TrainingZonesDisplay({
             Daniels&apos; 5 zones &middot; VDOT {vdot}
           </p>
         </div>
-        {/* Pace toggle is in the top bar in dashboard mode */}
         {!compact && (
           <div
             className="relative w-36 h-9 bg-indigo-100 rounded-full cursor-pointer overflow-hidden select-none"
@@ -108,7 +108,7 @@ export function TrainingZonesDisplay({
 
       <ZoneSpectrumBar />
 
-      {/* Zone cards */}
+      {/* Zone rows — table-like structure for alignment */}
       <div className={compact ? "space-y-2" : "space-y-3"}>
         {zones.map((zone) => {
           const colors = getZoneColorClasses(zone.color);
@@ -124,45 +124,50 @@ export function TrainingZonesDisplay({
             >
               <button
                 onClick={() => setExpandedZone(isExpanded ? null : zone.shortName)}
-                className={`w-full flex items-center gap-2.5 text-left ${compact ? "p-3" : "p-4"}`}
+                className={`w-full text-left ${compact ? "p-3" : "p-4"}`}
               >
-                {/* Zone badge */}
-                <div
-                  className={`${compact ? "w-8 h-8 text-xs" : "w-10 h-10 text-sm"} rounded-full flex items-center justify-center font-bold shrink-0 ${colors.badge}`}
-                >
-                  {zone.shortName}
-                </div>
-
-                {/* Zone details */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <h3 className={`font-semibold text-gray-900 ${compact ? "text-sm" : ""}`}>{zone.name}</h3>
-                    <span className="text-[10px] text-gray-400">{zone.intensityRange} VO&#8322;max</span>
+                {/* Use CSS grid for consistent column widths */}
+                <div className={`grid items-center gap-2 ${compact ? "grid-cols-[2rem_1fr_7rem_1rem]" : "grid-cols-[2.5rem_1fr_8.5rem_1rem]"}`}>
+                  {/* Zone badge */}
+                  <div
+                    className={`${compact ? "w-8 h-8 text-xs" : "w-10 h-10 text-sm"} rounded-full flex items-center justify-center font-bold ${colors.badge}`}
+                  >
+                    {zone.shortName}
                   </div>
-                  {!compact && (
-                    <p className="text-sm text-gray-500 truncate hidden sm:block">
-                      {zone.description}
+
+                  {/* Zone name + intensity */}
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <h3 className={`font-semibold text-gray-900 ${compact ? "text-sm" : ""}`}>{zone.name}</h3>
+                      <span className="text-[10px] text-gray-400 hidden sm:inline">{zone.intensityRange} VO&#8322;max</span>
+                    </div>
+                    {!compact && (
+                      <p className="text-sm text-gray-500 truncate hidden sm:block">
+                        {zone.description}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Pace — fixed width column for alignment */}
+                  <div className="text-right">
+                    <p className={`font-bold font-mono tabular-nums ${colors.text} ${compact ? "text-sm" : "text-base sm:text-lg"}`}>
+                      {paceUnit === "km" ? zone.pacePerKm : zone.pacePerMile}
                     </p>
-                  )}
-                </div>
+                    <p className="text-[10px] text-gray-400">
+                      {paceUnit === "km" ? "min/km" : "min/mi"}
+                    </p>
+                  </div>
 
-                {/* Pace */}
-                <div className="text-right shrink-0">
-                  <p className={`font-bold font-mono ${colors.text} ${compact ? "text-base" : "text-lg sm:text-xl"}`}>
-                    {paceUnit === "km" ? zone.pacePerKm : zone.pacePerMile}
-                  </p>
-                  <p className="text-[10px] text-gray-400">
-                    {paceUnit === "km" ? "min/km" : "min/mi"}
-                  </p>
+                  {/* Chevron */}
+                  <ChevronDown
+                    className={`w-4 h-4 text-gray-400 justify-self-center transition-transform duration-200 ${
+                      isExpanded ? "rotate-180" : ""
+                    }`}
+                  />
                 </div>
-
-                <ChevronDown
-                  className={`w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200 ${
-                    isExpanded ? "rotate-180" : ""
-                  }`}
-                />
               </button>
 
+              {/* Expanded content */}
               {isExpanded && (
                 <div className={`px-3 pb-3 border-t ${colors.border}`}>
                   <p className="text-sm text-gray-600 mt-2 mb-2">

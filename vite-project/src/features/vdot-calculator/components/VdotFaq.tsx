@@ -54,7 +54,7 @@ export function VdotFaq() {
           <AccordionItem
             key={idx}
             value={`item-${idx}`}
-            className="bg-white rounded-xl shadow-sm border border-gray-200 px-5 py-1 data-[state=open]:shadow-md transition-shadow"
+            className="bg-white rounded-xl shadow-sm border border-gray-200 px-5 py-1 data-[state=open]:shadow-md transition-shadow !border-b-gray-200"
           >
             <AccordionTrigger className="text-left font-medium text-gray-900 hover:no-underline py-4">
               {item.question}
@@ -93,7 +93,7 @@ export function VdotFaq() {
       <Accordion type="single" collapsible>
         <AccordionItem
           value="science"
-          className="bg-white rounded-xl shadow-sm border border-gray-200 px-5 py-1"
+          className="bg-white rounded-xl shadow-sm border border-gray-200 px-5 py-1 !border-b-gray-200"
         >
           <AccordionTrigger className="text-left text-lg font-semibold text-gray-900 hover:no-underline py-4">
             The Science Behind VDOT
