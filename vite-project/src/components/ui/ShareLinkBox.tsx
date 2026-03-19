@@ -2,6 +2,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Copy, Facebook, Twitter } from "lucide-react";
+import { BASE_URL } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 interface ShareLinkBoxProps {
@@ -11,7 +12,7 @@ interface ShareLinkBoxProps {
 
 export function ShareLinkBox({ docId, className }: ShareLinkBoxProps) {
   const { toast } = useToast();
-  const shareUrl = `https://www.trainpace.com/elevationfinder/${docId}`;
+  const shareUrl = `${BASE_URL}/elevationfinder/${docId}`;
 
   // Debug log
   console.log('ShareLinkBox received docId:', docId);
