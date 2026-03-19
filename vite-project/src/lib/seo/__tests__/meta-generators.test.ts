@@ -35,10 +35,11 @@ describe("meta-generators", () => {
     });
 
     it("removes brand suffix when that keeps title within limit", () => {
-      const longWithSuffix = "This title is intentionally long but valid once brand is removed | TrainPace";
-      expect(optimizeTitle(longWithSuffix)).toBe(
-        "This title is intentionally long but valid once brand is removed"
-      );
+      const baseTitle = "This title should fit after removing branding suffix only";
+      const longWithSuffix = `${baseTitle} | TrainPace`;
+      expect(baseTitle.length).toBeLessThanOrEqual(60);
+      expect(longWithSuffix.length).toBeGreaterThan(60);
+      expect(optimizeTitle(longWithSuffix)).toBe(baseTitle);
     });
 
     it("truncates long titles with ellipsis", () => {
@@ -104,62 +105,69 @@ describe("meta-generators", () => {
     });
   });
 
-  it("generates tool and homepage meta tags with expected canonicals", () => {
-    const toolMeta = generateToolMetaTags("pace");
-    const homeMeta = generateHomepageMetaTags();
-
-    expect(toolMeta.canonical).toBe(`${BASE_URL}/calculator`);
-    expect(toolMeta.openGraph.siteName).toBe("TrainPace");
-    expect(homeMeta.canonical).toBe(BASE_URL);
-    expect(homeMeta.openGraph.url).toBe(BASE_URL);
-  });
-
-  it("generates Helmet props including optional meta fields", () => {
-    const page = createPage({ noIndex: true });
-    const meta = generateMetaTags(page, {
-      articleMeta: {
-        publishedTime: "2026-01-01",
-        modifiedTime: "2026-01-02",
-        author: "Author",
-        section: "Section",
-        tags: ["tag-a", "tag-b"],
-      },
+  describe("tool/homepage generators", () => {
+    it("generates tool meta tags with expected canonical", () => {
+      const toolMeta = generateToolMetaTags("pace");
+      expect(toolMeta.canonical).toBe(`${BASE_URL}/calculator`);
+      expect(toolMeta.openGraph.siteName).toBe("TrainPace");
     });
-    const helmet = generateHelmetProps(meta);
 
-    expect(helmet.title).toBe(page.title);
-    expect(helmet.link).toEqual([{ rel: "canonical", href: meta.canonical }]);
-    expect(helmet.meta.some((m) => m.name === "robots" && m.content === "noindex, nofollow")).toBe(
-      true
-    );
-    expect(
-      helmet.meta.some((m) => m.property === "article:published_time" && m.content === "2026-01-01")
-    ).toBe(true);
-    expect(helmet.meta.filter((m) => m.property === "article:tag")).toHaveLength(2);
+    it("generates homepage meta tags with expected canonical", () => {
+      const homeMeta = generateHomepageMetaTags();
+      expect(homeMeta.canonical).toBe(BASE_URL);
+      expect(homeMeta.openGraph.url).toBe(BASE_URL);
+    });
   });
 
-  it("generates prerender elements with canonical and robots", () => {
-    const meta = generateMetaTags(createPage({ noIndex: true }));
-    const elements = Array.from(generatePrerenderMetaElements(meta));
+  describe("helmet/prerender outputs", () => {
+    it("generates Helmet props including optional meta fields", () => {
+      const page = createPage({ noIndex: true });
+      const meta = generateMetaTags(page, {
+        articleMeta: {
+          publishedTime: "2026-01-01",
+          modifiedTime: "2026-01-02",
+          author: "Author",
+          section: "Section",
+          tags: ["tag-a", "tag-b"],
+        },
+      });
+      const helmet = generateHelmetProps(meta);
 
-    expect(
-      elements.some(
-        (e) =>
-          e.type === "meta" &&
-          e.props.name === "viewport" &&
-          e.props.content === "width=device-width, initial-scale=1"
-      )
-    ).toBe(true);
-    expect(
-      elements.some(
-        (e) => e.type === "meta" && e.props.name === "robots" && e.props.content === "noindex, nofollow"
-      )
-    ).toBe(true);
-    expect(
-      elements.some(
-        (e) => e.type === "link" && e.props.rel === "canonical" && e.props.href === meta.canonical
-      )
-    ).toBe(true);
+      expect(helmet.title).toBe(page.title);
+      expect(helmet.link).toEqual([{ rel: "canonical", href: meta.canonical }]);
+      expect(helmet.meta.some((m) => m.name === "robots" && m.content === "noindex, nofollow")).toBe(
+        true
+      );
+      expect(
+        helmet.meta.some((m) => m.property === "article:published_time" && m.content === "2026-01-01")
+      ).toBe(true);
+      expect(helmet.meta.filter((m) => m.property === "article:tag")).toHaveLength(2);
+    });
+
+    it("generates prerender elements with canonical and robots", () => {
+      const meta = generateMetaTags(createPage({ noIndex: true }));
+      const elements = Array.from(generatePrerenderMetaElements(meta));
+
+      expect(
+        elements.some(
+          (e) =>
+            e.type === "meta" &&
+            e.props.name === "viewport" &&
+            e.props.content === "width=device-width, initial-scale=1"
+        )
+      ).toBe(true);
+      expect(
+        elements.some(
+          (e) =>
+            e.type === "meta" && e.props.name === "robots" && e.props.content === "noindex, nofollow"
+        )
+      ).toBe(true);
+      expect(
+        elements.some(
+          (e) => e.type === "link" && e.props.rel === "canonical" && e.props.href === meta.canonical
+        )
+      ).toBe(true);
+    });
   });
 
   describe("validateMetaTags", () => {

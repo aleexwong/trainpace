@@ -78,8 +78,8 @@ describe("build-utils", () => {
   });
 
   it("generates sitemap URLs with escaped XML and defaults", () => {
-    const now = "2026-03-19";
-    vi.spyOn(Date.prototype, "toISOString").mockReturnValue(`${now}T10:00:00.000Z`);
+    const mockDate = new Date("2026-03-19T10:00:00.000Z");
+    vi.spyOn(Date.prototype, "toISOString").mockReturnValue(mockDate.toISOString());
     const pages = [
       createPage(1, {
         path: "/calculator/a&b",
