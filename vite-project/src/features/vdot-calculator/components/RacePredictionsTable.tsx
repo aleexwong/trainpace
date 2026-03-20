@@ -16,19 +16,26 @@ export function RacePredictionsTable({ predictions, inputDistanceName, compact }
 
   return (
     <div className={`bg-white rounded-2xl shadow-lg h-full ${compact ? "p-4" : "p-5 sm:p-8"}`}>
-      <h2 className={`font-bold text-gray-900 ${compact ? "text-lg mb-0.5" : "text-xl sm:text-2xl mb-1"}`}>
+      <h2 className={`font-bold text-gray-900 text-center ${compact ? "text-lg mb-0.5" : "text-xl sm:text-2xl mb-1"}`}>
         Race Equivalency
       </h2>
-      <p className={`text-gray-500 ${compact ? "text-xs mb-3" : "text-sm mb-6"}`}>
+      <p className={`text-gray-500 text-center ${compact ? "text-xs mb-3" : "text-sm mb-6"}`}>
         Predicted finish times across all distances
       </p>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className={`w-full text-sm ${compact ? "table-fixed" : ""}`}>
+          {compact && (
+            <colgroup>
+              <col className="w-1/3" />
+              <col className="w-1/3" />
+              <col className="w-1/3" />
+            </colgroup>
+          )}
           <thead>
             <tr className="border-b-2 border-gray-200">
               <th className={`text-left font-semibold text-gray-700 ${compact ? "py-2 px-2 text-xs" : "py-3 px-4"}`}>Distance</th>
-              <th className={`text-left font-semibold text-gray-700 ${compact ? "py-2 px-2 text-xs" : "py-3 px-4"}`}>Time</th>
+              <th className={`text-center font-semibold text-gray-700 ${compact ? "py-2 px-2 text-xs" : "py-3 px-4"}`}>Time</th>
               <th className={`text-right font-semibold text-gray-700 ${compact ? "py-2 px-2 text-xs" : "py-3 px-4"}`}>Pace</th>
             </tr>
           </thead>
@@ -59,9 +66,9 @@ export function RacePredictionsTable({ predictions, inputDistanceName, compact }
                       )}
                     </div>
                   </td>
-                  <td className={compact ? "py-1.5 px-2" : "py-3 px-4"}>
-                    <div className="flex items-center gap-2">
-                      <span className={`font-mono font-semibold ${compact ? "text-xs min-w-[60px]" : "text-sm min-w-[80px]"} ${isInput ? "text-blue-700" : "text-gray-900"}`}>
+                  <td className={`${compact ? "py-1.5 px-2 text-center" : "py-3 px-4"}`}>
+                    <div className={`flex items-center gap-2 ${compact ? "justify-center" : ""}`}>
+                      <span className={`font-mono font-semibold ${compact ? "text-xs" : "text-sm min-w-[80px]"} ${isInput ? "text-blue-700" : "text-gray-900"}`}>
                         {prediction.time}
                       </span>
                       {!compact && (
