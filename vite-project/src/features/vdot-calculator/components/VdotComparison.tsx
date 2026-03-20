@@ -64,10 +64,10 @@ export function VdotComparison({
 
   return (
     <div className={`bg-white rounded-2xl shadow-lg h-full ${compact ? "p-4" : "p-5 sm:p-8"}`}>
-      <div className="flex items-center justify-between mb-4">
+      <div className={`flex items-center justify-between ${compact ? "mb-3" : "mb-4"}`}>
         <div>
-          <h2 className={`font-bold text-gray-900 ${compact ? "text-lg" : "text-xl sm:text-2xl"}`}>What If?</h2>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <h2 className={`font-bold text-gray-900 ${compact ? "text-lg mb-0.5" : "text-xl sm:text-2xl"}`}>What If?</h2>
+          <p className="text-xs text-gray-500">
             Adjust your {distanceName} time
           </p>
         </div>

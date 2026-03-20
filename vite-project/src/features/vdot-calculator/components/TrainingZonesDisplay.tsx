@@ -48,9 +48,9 @@ export function TrainingZonesDisplay({
   return (
     <div className={`bg-white rounded-2xl shadow-lg h-full ${compact ? "p-4" : "p-5 sm:p-8"}`}>
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 mb-4">
+      <div className={`flex items-center justify-between gap-3 ${compact ? "mb-3" : "mb-4"}`}>
         <div>
-          <h2 className={`font-bold text-gray-900 ${compact ? "text-lg" : "text-xl sm:text-2xl"}`}>
+          <h2 className={`font-bold text-gray-900 ${compact ? "text-lg mb-0.5" : "text-xl sm:text-2xl"}`}>
             Training Paces
           </h2>
           <p className="text-xs text-gray-500">
