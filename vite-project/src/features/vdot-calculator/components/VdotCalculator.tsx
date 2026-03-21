@@ -14,6 +14,7 @@ import { VdotHero } from "./VdotHero";
 import { DistanceSelector } from "./DistanceSelector";
 import { TimeInput } from "./TimeInput";
 import { VdotScoreDisplay } from "./VdotScoreDisplay";
+import { VdotScoreWithExplorer } from "./VdotScoreWithExplorer";
 import { TrainingZonesDisplay } from "./TrainingZonesDisplay";
 import { RacePredictionsTable } from "./RacePredictionsTable";
 import { VdotComparison } from "./VdotComparison";
@@ -177,15 +178,14 @@ export function VdotCalculator() {
                 └──────────────┴───────────────────┘
               */}
 
-              {/* Row 1: Score/Workouts + Zones/WhatIf (side by side on lg) */}
+              {/* Row 1: Combined Score+Explorer + Zones (side by side on lg) */}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-4 items-start">
-                {/* Left: Score + Workouts stacked */}
+                {/* Left: Combined Score + What-If + Workouts stacked */}
                 <div className="lg:col-span-5 space-y-4">
-                  <VdotScoreDisplay
+                  <VdotScoreWithExplorer
                     result={result}
                     inputs={inputs}
                     totalSeconds={totalSeconds}
-                    onReset={handleReset}
                     compact
                   />
                   <SampleWorkouts
@@ -195,20 +195,13 @@ export function VdotCalculator() {
                   />
                 </div>
 
-                {/* Right: Training Zones + What If stacked */}
+                {/* Right: Training Zones */}
                 <div className="lg:col-span-7 space-y-4">
                   <TrainingZonesDisplay
                     zones={result.trainingZones}
                     paceUnit={paceUnit}
                     vdot={result.vdot}
                     onTogglePaceUnit={handlePaceUnitToggle}
-                    compact
-                  />
-                  <VdotComparison
-                    currentVdot={result.vdot}
-                    distanceMeters={inputs.distanceMeters}
-                    distanceName={inputs.distanceName}
-                    totalSeconds={totalSeconds}
                     compact
                   />
                 </div>
