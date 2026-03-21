@@ -176,24 +176,26 @@ export function VdotCalculator() {
               */}
 
               {/* Score/Workouts + Zones/Race Predictions (side by side on lg) */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
                 {/* Left: Combined Score + What-If + Workouts stacked */}
-                <div className="lg:col-span-5 space-y-4">
+                <div className="lg:col-span-5 flex flex-col gap-4">
                   <VdotScoreWithExplorer
                     result={result}
                     inputs={inputs}
                     totalSeconds={totalSeconds}
                     compact
                   />
-                  <SampleWorkouts
-                    zones={result.trainingZones}
-                    paceUnit={paceUnit}
-                    compact
-                  />
+                  <div className="flex-1">
+                    <SampleWorkouts
+                      zones={result.trainingZones}
+                      paceUnit={paceUnit}
+                      compact
+                    />
+                  </div>
                 </div>
 
                 {/* Right: Training Zones + Race Predictions stacked */}
-                <div className="lg:col-span-7 space-y-4">
+                <div className="lg:col-span-7 flex flex-col gap-4">
                   <TrainingZonesDisplay
                     zones={result.trainingZones}
                     paceUnit={paceUnit}
@@ -201,11 +203,13 @@ export function VdotCalculator() {
                     onTogglePaceUnit={handlePaceUnitToggle}
                     compact
                   />
-                  <RacePredictionsTable
-                    predictions={result.racePredictions}
-                    inputDistanceName={inputs.distanceName}
-                    compact
-                  />
+                  <div className="flex-1">
+                    <RacePredictionsTable
+                      predictions={result.racePredictions}
+                      inputDistanceName={inputs.distanceName}
+                      compact
+                    />
+                  </div>
                 </div>
               </div>
             </div>
