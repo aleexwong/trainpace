@@ -13,11 +13,9 @@ import { VdotSeoHead } from "./VdotSeoHead";
 import { VdotHero } from "./VdotHero";
 import { DistanceSelector } from "./DistanceSelector";
 import { TimeInput } from "./TimeInput";
-import { VdotScoreDisplay } from "./VdotScoreDisplay";
 import { VdotScoreWithExplorer } from "./VdotScoreWithExplorer";
 import { TrainingZonesDisplay } from "./TrainingZonesDisplay";
 import { RacePredictionsTable } from "./RacePredictionsTable";
-import { VdotComparison } from "./VdotComparison";
 import { SampleWorkouts } from "./SampleWorkouts";
 import { VdotFaq } from "./VdotFaq";
 
