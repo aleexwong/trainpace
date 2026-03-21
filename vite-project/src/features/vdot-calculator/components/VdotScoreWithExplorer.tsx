@@ -194,7 +194,7 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact }:
               </span>
             </div>
             <p className="text-blue-200 text-[10px] mt-1.5">
-              {inputs.distanceName} in {formatTime(totalSeconds)}
+              {inputs.distanceName} in {formatTime(isAdjusted ? targetSeconds : totalSeconds)}
             </p>
           </div>
         </div>
@@ -207,7 +207,7 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact }:
           {isAdjusted && (
             <button
               onClick={() => setOffsetSeconds(0)}
-              className="text-[10px] text-indigo-500 hover:text-indigo-700 font-medium transition-colors"
+              className="text-[10px] text-gray-400 hover:text-indigo-600 font-medium border border-gray-200 rounded-full px-2.5 py-0.5 hover:border-indigo-300 transition-colors bg-white"
             >
               Reset
             </button>
