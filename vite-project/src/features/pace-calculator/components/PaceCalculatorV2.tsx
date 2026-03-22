@@ -235,7 +235,7 @@ export function PaceCalculatorV2({
   const handleSaveConfirm = async (
     planName?: string,
     notes?: string,
-    raceDate?: string
+    raceDate?: string,
   ) => {
     if (!results) return;
 
@@ -262,7 +262,9 @@ export function PaceCalculatorV2({
     <>
       {seoMode !== "none" && (
         <Helmet>
-          <title>Running Pace Calculator – VDOT Training Zones | TrainPace</title>
+          <title>
+            Running Pace Calculator – VDOT Training Zones | TrainPace
+          </title>
           <meta
             name="description"
             content="Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s and race predictor."
@@ -304,6 +306,26 @@ export function PaceCalculatorV2({
                   position: 4,
                   name: "Save your plan (optional)",
                   text: "Save your training paces to your dashboard for easy reference during workouts.",
+                },
+              ],
+            })}
+          </script>
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://trainpace.com/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Pace Calculator",
+                  item: "https://trainpace.com/calculator",
                 },
               ],
             })}
@@ -430,6 +452,32 @@ export function PaceCalculatorV2({
                 </CardContent>
               </Card>
             )}
+
+            <Card className="mt-8 bg-white">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Build Your Full Race Plan
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  After setting your training paces, analyze your route profile
+                  and create a race-day fueling plan.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href="/elevationfinder"
+                    className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+                  >
+                    Analyze Course Elevation
+                  </a>
+                  <a
+                    href="/fuel"
+                    className="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-black transition-colors"
+                  >
+                    Plan Your Fuel Strategy
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
 

@@ -34,12 +34,12 @@ export default function ElevationPage() {
 
   // Settings state
   const [analysisSettings, setAnalysisSettings] = useState<AnalysisSettings>(
-    DEFAULT_ANALYSIS_SETTINGS
+    DEFAULT_ANALYSIS_SETTINGS,
   );
 
   // Current document ID (synced with URL)
   const [currentDocId, setCurrentDocId] = useState<string | null>(
-    urlDocId || null
+    urlDocId || null,
   );
 
   // Initialize hooks
@@ -100,7 +100,7 @@ export default function ElevationPage() {
 
     if (currentValidDocId !== urlDocId) {
       console.log(
-        `🔄 Redirecting outdated document ID: ${urlDocId} → ${currentValidDocId}`
+        `🔄 Redirecting outdated document ID: ${urlDocId} → ${currentValidDocId}`,
       );
       const newPath = `/elevationfinder/${currentValidDocId}${location.search}`;
       navigate(newPath, { replace: true });
@@ -111,7 +111,7 @@ export default function ElevationPage() {
   // Sync currentDocId with URL changes
   useEffect(() => {
     console.log(
-      `🔄 URL changed: urlDocId="${urlDocId}", updating currentDocId`
+      `🔄 URL changed: urlDocId="${urlDocId}", updating currentDocId`,
     );
     setCurrentDocId(urlDocId || null);
   }, [urlDocId]);
@@ -128,7 +128,7 @@ export default function ElevationPage() {
         currentDocId,
         routeMetadata,
         originalGpxText,
-        filename
+        filename,
       );
 
     if (newAnalysisData) {
@@ -232,6 +232,26 @@ export default function ElevationPage() {
             ],
           })}
         </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://trainpace.com/",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "ElevationFinder",
+                item: "https://trainpace.com/elevationfinder",
+              },
+            ],
+          })}
+        </script>
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6">
@@ -281,25 +301,25 @@ export default function ElevationPage() {
                         ...(
                           routeMetadata?.displayPoints ||
                           uploadState.uploadedRoutePoints
-                        ).map((p) => p.lat)
+                        ).map((p) => p.lat),
                       ),
                       maxLat: Math.max(
                         ...(
                           routeMetadata?.displayPoints ||
                           uploadState.uploadedRoutePoints
-                        ).map((p) => p.lat)
+                        ).map((p) => p.lat),
                       ),
                       minLng: Math.min(
                         ...(
                           routeMetadata?.displayPoints ||
                           uploadState.uploadedRoutePoints
-                        ).map((p) => p.lng)
+                        ).map((p) => p.lng),
                       ),
                       maxLng: Math.max(
                         ...(
                           routeMetadata?.displayPoints ||
                           uploadState.uploadedRoutePoints
-                        ).map((p) => p.lng)
+                        ).map((p) => p.lng),
                       ),
                     },
                     hasElevationData:
@@ -371,6 +391,32 @@ export default function ElevationPage() {
           }
           onSettingsChange={onSettingsChange}
         />
+
+        <div className="max-w-4xl mx-auto">
+          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Plan The Rest Of Your Race
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Use your route difficulty to fine-tune pacing and build a fueling
+              strategy for race day.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="/calculator"
+                className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+              >
+                Calculate Training Paces
+              </a>
+              <a
+                href="/fuel"
+                className="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-black transition-colors"
+              >
+                Build Fuel Plan
+              </a>
+            </div>
+          </div>
+        </div>
 
         {/* Development Cache Debug Info */}
         {import.meta.env.MODE === "development" &&

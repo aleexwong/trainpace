@@ -12,19 +12,43 @@ export function VdotSeoHead() {
         name="description"
         content="Free VDOT running calculator based on Jack Daniels' formula. Enter any race time to get your VDOT score, equivalent race predictions for 800m to marathon, and training paces for Easy, Marathon, Threshold, Interval, and Repetition zones."
       />
-      <link rel="canonical" href="https://www.trainpace.com/calculator/vdot-calculator" />
+      <link
+        rel="canonical"
+        href="https://www.trainpace.com/calculator/vdot-calculator"
+      />
       {/* Open Graph */}
-      <meta property="og:title" content="VDOT Running Calculator – Jack Daniels Formula | TrainPace" />
-      <meta property="og:description" content="Free VDOT running calculator based on Jack Daniels' formula. Get your VDOT score, race predictions, and science-based training paces." />
+      <meta
+        property="og:title"
+        content="VDOT Running Calculator – Jack Daniels Formula | TrainPace"
+      />
+      <meta
+        property="og:description"
+        content="Free VDOT running calculator based on Jack Daniels' formula. Get your VDOT score, race predictions, and science-based training paces."
+      />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://www.trainpace.com/calculator/vdot-calculator" />
-      <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
+      <meta
+        property="og:url"
+        content="https://www.trainpace.com/calculator/vdot-calculator"
+      />
+      <meta
+        property="og:image"
+        content="https://trainpace.com/landing-page-2025.png"
+      />
       <meta property="og:site_name" content="TrainPace" />
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content="VDOT Running Calculator – Jack Daniels Formula | TrainPace" />
-      <meta name="twitter:description" content="Free VDOT running calculator based on Jack Daniels' formula. Get your VDOT score, race predictions, and science-based training paces." />
-      <meta name="twitter:image" content="https://trainpace.com/landing-page-2025.png" />
+      <meta
+        name="twitter:title"
+        content="VDOT Running Calculator – Jack Daniels Formula | TrainPace"
+      />
+      <meta
+        name="twitter:description"
+        content="Free VDOT running calculator based on Jack Daniels' formula. Get your VDOT score, race predictions, and science-based training paces."
+      />
+      <meta
+        name="twitter:image"
+        content="https://trainpace.com/landing-page-2025.png"
+      />
       {/* Structured Data */}
       <script type="application/ld+json">
         {JSON.stringify({
@@ -43,9 +67,24 @@ export function VdotSeoHead() {
             {
               "@type": "BreadcrumbList",
               itemListElement: [
-                { "@type": "ListItem", position: 1, name: "Home", item: "https://trainpace.com/" },
-                { "@type": "ListItem", position: 2, name: "Pace Calculator", item: "https://trainpace.com/calculator" },
-                { "@type": "ListItem", position: 3, name: "VDOT Calculator", item: "https://www.trainpace.com/calculator/vdot-calculator" },
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://trainpace.com/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Pace Calculator",
+                  item: "https://trainpace.com/calculator",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: "VDOT Calculator",
+                  item: "https://www.trainpace.com/calculator/vdot-calculator",
+                },
               ],
             },
             {
@@ -90,6 +129,43 @@ export function VdotSeoHead() {
                     "@type": "Answer",
                     text: "VDOT scores range from about 20 (beginner) to 85+ (elite world class). A recreational runner typically scores 30\u201340, competitive club runners 45\u201355, and advanced/sub-elite runners 60\u201370.",
                   },
+                },
+              ],
+            },
+            {
+              "@type": "HowTo",
+              name: "How to Calculate Your VDOT Score",
+              description:
+                "Use a recent race result to calculate your VDOT and view equivalent race predictions and training pace zones.",
+              totalTime: "PT2M",
+              tool: {
+                "@type": "HowToTool",
+                name: "TrainPace VDOT Running Calculator",
+              },
+              step: [
+                {
+                  "@type": "HowToStep",
+                  position: 1,
+                  name: "Select a recent race distance",
+                  text: "Choose the distance that best represents your current fitness, such as 5K, 10K, half marathon, or marathon.",
+                },
+                {
+                  "@type": "HowToStep",
+                  position: 2,
+                  name: "Enter your finish time",
+                  text: "Input your race time in hours, minutes, and seconds.",
+                },
+                {
+                  "@type": "HowToStep",
+                  position: 3,
+                  name: "Review your VDOT and zones",
+                  text: "Calculate to see your VDOT score with Easy, Marathon, Threshold, Interval, and Repetition pace ranges.",
+                },
+                {
+                  "@type": "HowToStep",
+                  position: 4,
+                  name: "Explore equivalent race predictions",
+                  text: "Use the race predictions table to estimate equivalent performances across other distances.",
                 },
               ],
             },
