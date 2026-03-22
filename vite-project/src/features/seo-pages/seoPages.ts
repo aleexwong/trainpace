@@ -1846,6 +1846,166 @@ export const fuelSeoPages: SeoPageConfig[] = [
     ],
     cta: { href: '/fuel', label: 'Check Your Gel Schedule' },
   },
+  {
+    id: generatePageId('fuel', 'half-marathon-fueling-calculator'),
+    slug: 'half-marathon-fueling-calculator',
+    tool: 'fuel',
+    path: '/fuel/half-marathon-fueling-calculator',
+    title: 'Half Marathon Fueling Calculator | TrainPace',
+    description:
+      'Half marathon fueling calculator. Enter your goal time to calculate carbs per hour, total carbs, and exactly how many gels you need on race day.',
+    h1: 'Half Marathon Fueling Calculator',
+    intro:
+      'Enter your half marathon goal time and get your exact fueling numbers — carbs per hour, total carbs, and gel count. No guesswork, just the math.',
+    bullets: [
+      'Personalized carbs/hour from your goal time',
+      'Exact gel count for your half marathon',
+      'Works for any finish time from 75 min to 3+ hours',
+    ],
+    cta: { href: '/fuel', label: 'Calculate Your Fuel Needs' },
+    faq: [
+      {
+        question: 'How accurate is a half marathon fueling calculator?',
+        answer:
+          'It gives you a solid starting point based on proven 60-90g/hr guidelines. Fine-tune by practicing in training — every gut is different.',
+      },
+      {
+        question: 'Do faster half marathons need different fueling?',
+        answer:
+          'Faster efforts burn through glycogen quicker, but the window is shorter. A 75-minute half needs fewer total carbs than a 2.5-hour half, even if the rate is similar.',
+      },
+    ],
+    howTo: {
+      name: 'How to calculate half marathon fueling',
+      description:
+        'Use your goal finish time to get personalized carb and gel numbers for race day.',
+      steps: [
+        { name: 'Enter your goal time', text: 'Input your half marathon target finish time.' },
+        { name: 'Review your numbers', text: 'Get carbs/hour, total carbs, and gel count instantly.' },
+        { name: 'Build your schedule', text: 'Turn the numbers into a simple timing plan you can execute.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('fuel', 'marathon-fueling-calculator'),
+    slug: 'marathon-fueling-calculator',
+    tool: 'fuel',
+    path: '/fuel/marathon-fueling-calculator',
+    title: 'Marathon Fueling Calculator - Carbs & Gels | TrainPace',
+    description:
+      'Marathon fuel calculator. Enter your finish time to calculate carbs per hour, total carbs needed, and how many gels to carry on race day.',
+    h1: 'Marathon Fueling Calculator',
+    intro:
+      'Calculate your marathon fuel needs in seconds. Enter your finish time to get carbs per hour, total carbs, and gel count — personalized to your race.',
+    bullets: [
+      'Personalized carbs/hour calculation',
+      'Total gel count based on your finish time',
+      'Works for any marathon goal from 2:30 to 6+ hours',
+    ],
+    cta: { href: '/fuel', label: 'Calculate Marathon Fuel' },
+    faq: [
+      {
+        question: 'What is the difference between a fuel plan and a fuel calculator?',
+        answer:
+          'A calculator gives you the numbers (carbs/hour, gel count). A plan adds timing and scheduling on top. This tool does both — start with the math, then build your schedule.',
+      },
+      {
+        question: 'How many carbs do I need for a 4-hour marathon?',
+        answer:
+          'At 60g/hour, that is 240g total (about 8-10 standard gels). At 90g/hour, that is 360g total. Most runners land somewhere in between based on gut training.',
+      },
+    ],
+    howTo: {
+      name: 'How to calculate marathon fuel needs',
+      description:
+        'Enter your marathon finish time and get personalized carb and gel numbers.',
+      steps: [
+        { name: 'Enter finish time', text: 'Use your realistic marathon goal time or a recent race result.' },
+        { name: 'Get your numbers', text: 'See carbs/hour, total carbs, and gel count calculated instantly.' },
+        { name: 'Plan your carry strategy', text: 'Decide how many gels to carry vs pick up at aid stations.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('fuel', 'maurten-fuel-planner'),
+    slug: 'maurten-fuel-planner',
+    tool: 'fuel',
+    path: '/fuel/maurten-fuel-planner',
+    title: 'Maurten Fuel Planner - Gel 100 & 160 Calculator | TrainPace',
+    description:
+      'Maurten race fuel planner. Calculate how many Gel 100 or Gel 160 packs you need for your marathon or half marathon based on your finish time.',
+    h1: 'Maurten Fuel Planner',
+    intro:
+      'Plan your race fueling with Maurten products. Calculate how many Gel 100s (25g carbs) or Gel 160s (40g carbs) you need based on your finish time and carb target.',
+    bullets: [
+      'Gel 100 (25g) vs Gel 160 (40g) count',
+      'Pairs with Maurten Drink Mix 160 or 320',
+      'Carry strategy for marathon race day',
+    ],
+    cta: { href: '/fuel', label: 'Plan Your Maurten Fueling' },
+    faq: [
+      {
+        question: 'How many Maurten gels do I need for a marathon?',
+        answer:
+          'It depends on your carb target and which gel you use. At 60g/hour over 4 hours: about 10 Gel 100s or 6 Gel 160s. Mix and match with Drink Mix to reduce what you carry.',
+      },
+      {
+        question: 'Should I use Maurten Gel 100 or Gel 160?',
+        answer:
+          'Gel 160 delivers more carbs per packet (40g vs 25g), so you carry fewer. Gel 100 is easier to dose in smaller amounts. Many runners use Gel 160 for simplicity.',
+      },
+    ],
+    howTo: {
+      name: 'How to plan race fueling with Maurten',
+      description:
+        'Calculate your Maurten gel count based on race distance and carb target.',
+      steps: [
+        { name: 'Enter your race details', text: 'Choose your distance and enter your goal finish time.' },
+        { name: 'Set your carb target', text: 'Pick a carbs/hour target (60-90g recommended).' },
+        { name: 'Choose your Maurten products', text: 'Convert total carbs into Gel 100, Gel 160, or a mix with Drink Mix.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('fuel', 'carbs-per-hour-running-calculator'),
+    slug: 'carbs-per-hour-running-calculator',
+    tool: 'fuel',
+    path: '/fuel/carbs-per-hour-running-calculator',
+    title: 'Carbs Per Hour Running Calculator | TrainPace',
+    description:
+      'Carbs per hour running calculator. Enter your race distance and finish time to get a personalized carb target and convert it into gels and timing.',
+    h1: 'Carbs Per Hour Running Calculator',
+    intro:
+      'Enter your race distance and goal time to calculate your ideal carbs-per-hour target. Get a specific number you can train with and execute on race day.',
+    bullets: [
+      'Personalized carbs/hour from your race data',
+      'Works for half marathon through ultra distances',
+      'Converts your target into gels and a schedule',
+    ],
+    cta: { href: '/fuel', label: 'Calculate Your Carbs/Hour' },
+    faq: [
+      {
+        question: 'How do I calculate carbs per hour for running?',
+        answer:
+          'Divide your total carb target by race duration in hours. For example, 240g over 4 hours = 60g/hour. This calculator does the math for you from your finish time.',
+      },
+      {
+        question: 'Is 60g per hour enough for a marathon?',
+        answer:
+          '60g/hour is a good starting point and works well for many runners. Some benefit from pushing toward 80-90g/hour with gut training and the right products.',
+      },
+    ],
+    howTo: {
+      name: 'How to calculate your carbs per hour for running',
+      description:
+        'Get a personalized carbs-per-hour number based on your race distance and goal time.',
+      steps: [
+        { name: 'Choose your distance', text: 'Select your race distance (half marathon, marathon, or custom).' },
+        { name: 'Enter your goal time', text: 'Input the finish time you are training for.' },
+        { name: 'Get your number', text: 'See your carbs/hour target, total carbs, and how many gels that translates to.' },
+      ],
+    },
+  },
 ];
 
 // =============================================================================
