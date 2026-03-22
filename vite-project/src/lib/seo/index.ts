@@ -94,9 +94,6 @@ export {
   generateArticleSchema,
   generateSoftwareApplicationSchema,
 
-  // Breadcrumb generation
-  generateBreadcrumbsForPage,
-
   // Complete graph generation
   generateSchemaGraph,
 

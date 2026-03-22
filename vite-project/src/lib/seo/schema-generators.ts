@@ -24,6 +24,7 @@ import type {
   SeoToolType,
 } from './types';
 import { BASE_URL, withBaseUrl } from './types';
+import { generateBreadcrumbs } from './internal-linking';
 
 // =============================================================================
 // Organization & Website Schemas (Site-wide)
@@ -305,53 +306,6 @@ export function generateSoftwareApplicationSchema(
 }
 
 // =============================================================================
-// Breadcrumb Generators by Tool Type
-// =============================================================================
-
-const TOOL_BREADCRUMB_CONFIG: Record<
-  SeoToolType,
-  { name: string; path: string }
-> = {
-  pace: { name: 'Pace Calculator', path: '/calculator' },
-  fuel: { name: 'Fuel Planner', path: '/fuel' },
-  elevation: { name: 'Elevation Finder', path: '/elevationfinder' },
-  race: { name: 'Race Prep', path: '/race' },
-  blog: { name: 'Blog', path: '/blog' },
-};
-
-export function generateBreadcrumbsForPage(
-  page: SeoPageConfig
-): BreadcrumbItem[] {
-  const breadcrumbs: BreadcrumbItem[] = [
-    { name: 'TrainPace', url: '/' },
-  ];
-
-  const toolConfig = TOOL_BREADCRUMB_CONFIG[page.tool];
-  if (toolConfig) {
-    breadcrumbs.push({
-      name: toolConfig.name,
-      url: toolConfig.path,
-    });
-  }
-
-  // Add intermediate breadcrumb for guides
-  if (page.path.includes('/guides/')) {
-    breadcrumbs.push({
-      name: 'Guides',
-      url: `${toolConfig.path}/guides`,
-    });
-  }
-
-  // Add current page
-  breadcrumbs.push({
-    name: page.h1,
-    url: page.path,
-  });
-
-  return breadcrumbs;
-}
-
-// =============================================================================
 // Complete Schema Graph Generator
 // =============================================================================
 
@@ -380,7 +334,7 @@ export function generateSchemaGraph(
   }
 
   // Generate breadcrumbs
-  const breadcrumbs = generateBreadcrumbsForPage(page);
+  const breadcrumbs = generateBreadcrumbs(page);
   schemas.push(generateBreadcrumbSchema(breadcrumbs));
 
   // Add WebPage schema
