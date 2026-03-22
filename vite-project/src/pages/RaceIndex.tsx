@@ -7,6 +7,7 @@ import { raceSeoPages } from "@/features/seo-pages/seoPages";
 import marathonData from "@/data/marathon-data.json";
 import { db } from "@/lib/firebase";
 import { getCurrentDocumentId } from "@/config/routes";
+import { buildFeaturedRoutes, getDisplayedRacesForQuery } from "./raceIndexUtils";
 
 type MarathonPreviewRoute = {
   name: string;
@@ -32,7 +33,6 @@ const marathonRoutesData = marathonData as Record<string, MarathonPreviewRoute>;
 type FeaturedRouteLink = {
   previewKey: string;
   path: string;
-  order: number;
 };
 
 type FeaturedRaceDoc = {
@@ -63,16 +63,6 @@ type FeaturedRaceDoc = {
   website?: string;
 };
 
-const defaultFeaturedRoutes: FeaturedRouteLink[] = [
-  { previewKey: "boston", path: "/race/boston-marathon", order: 1 },
-  { previewKey: "nyc", path: "/race/nyc-marathon", order: 2 },
-  { previewKey: "chicago", path: "/race/chicago-marathon", order: 3 },
-  { previewKey: "berlin", path: "/race/berlin-marathon", order: 4 },
-  { previewKey: "london", path: "/race/london-marathon", order: 5 },
-  { previewKey: "tokyo", path: "/race/tokyo-marathon", order: 6 },
-  { previewKey: "sydney", path: "/race/sydney-marathon", order: 7 },
-];
-
 export default function RaceIndex() {
   const [searchQuery, setSearchQuery] = useState("");
   const [featuredSource, setFeaturedSource] = useState<"fallback" | "firebase">(
@@ -91,6 +81,10 @@ export default function RaceIndex() {
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const isSearching = normalizedQuery.length > 0;
+  const featuredRoutes = useMemo<FeaturedRouteLink[]>(
+    () => buildFeaturedRoutes(raceSeoPages, marathonRoutesData),
+    []
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -99,7 +93,7 @@ export default function RaceIndex() {
       try {
         setFeaturedError(null);
         const results = await Promise.all(
-          defaultFeaturedRoutes.map(async ({ previewKey }) => {
+          featuredRoutes.map(async ({ previewKey }) => {
             const baseRoute = marathonRoutesData[previewKey];
             if (!baseRoute?.slug) return null;
 
@@ -164,17 +158,10 @@ export default function RaceIndex() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [featuredRoutes]);
 
   const displayedRaces = useMemo(() => {
-    if (!normalizedQuery) {
-      return raceSeoPages.slice(0, 36);
-    }
-
-    return raceSeoPages.filter((page) => {
-      const haystacks = [page.h1, page.slug, page.description];
-      return haystacks.some((value) => value.toLowerCase().includes(normalizedQuery));
-    });
+    return getDisplayedRacesForQuery(raceSeoPages, normalizedQuery);
   }, [normalizedQuery]);
 
   return (
@@ -236,7 +223,7 @@ export default function RaceIndex() {
             </p>
 
             <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {defaultFeaturedRoutes.map(({ previewKey, path }) => {
+              {featuredRoutes.map(({ previewKey, path }) => {
                 const baseRoute = marathonRoutesData[previewKey];
                 if (!baseRoute) return null;
                 const route = featuredOverrides[previewKey]
