@@ -108,4 +108,3 @@ describe("getDisplayedRacesForQuery", () => {
     expect(getDisplayedRacesForQuery(pages, "prep for boston")).toEqual([pages[0]]);
   });
 });
-

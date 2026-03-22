@@ -83,7 +83,7 @@ export default function RaceIndex() {
   const isSearching = normalizedQuery.length > 0;
   const featuredRoutes = useMemo<FeaturedRouteLink[]>(
     () => buildFeaturedRoutes(raceSeoPages, marathonRoutesData),
-    []
+    [raceSeoPages, marathonRoutesData]
   );
 
   useEffect(() => {
@@ -158,11 +158,11 @@ export default function RaceIndex() {
     return () => {
       cancelled = true;
     };
-  }, [featuredRoutes]);
+  }, [featuredRoutes, marathonRoutesData]);
 
   const displayedRaces = useMemo(() => {
     return getDisplayedRacesForQuery(raceSeoPages, normalizedQuery);
-  }, [normalizedQuery]);
+  }, [normalizedQuery, raceSeoPages]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-orange-50 px-4 sm:px-6 py-10">

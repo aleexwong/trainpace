@@ -12,7 +12,9 @@ type FeaturedRouteLink = {
   path: string;
 };
 
-function hasPreviewRouteKey(page: RacePageLike): page is RacePageLike & { previewRouteKey: string } {
+function hasNonEmptyPreviewRouteKey(
+  page: RacePageLike
+): page is RacePageLike & { previewRouteKey: string } {
   return typeof page.previewRouteKey === "string" && page.previewRouteKey.length > 0;
 }
 
@@ -24,7 +26,7 @@ export function buildFeaturedRoutes(
 
   return pages
     .filter((page) => page.tool === "race")
-    .filter(hasPreviewRouteKey)
+    .filter(hasNonEmptyPreviewRouteKey)
     .map((page) => ({
       previewKey: page.previewRouteKey,
       path: page.path,
@@ -39,13 +41,10 @@ export function buildFeaturedRoutes(
 }
 
 export function getDisplayedRacesForQuery(pages: RacePageLike[], normalizedQuery: string) {
-  if (!normalizedQuery) {
-    return pages.filter((page) => page.tool === "race");
-  }
-
   return pages.filter((page) => {
+    if (page.tool !== "race") return false;
+    if (!normalizedQuery) return true;
     const haystacks = [page.h1, page.slug, page.description];
     return haystacks.some((value) => value.toLowerCase().includes(normalizedQuery));
   });
 }
-
