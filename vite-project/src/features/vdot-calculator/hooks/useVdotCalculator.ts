@@ -57,7 +57,7 @@ function validateInputs(inputs: VdotInputs): {
   return { isValid: Object.keys(errors).length === 0, errors };
 }
 
-function buildRacePredictions(vdot: number, unit: PaceDisplayUnit) {
+export function buildRacePredictions(vdot: number, unit: PaceDisplayUnit) {
   return RACE_DISTANCES.map((race) => {
     const timeSeconds = predictRaceTime(vdot, race.meters);
     const pacePerKm = (timeSeconds / race.meters) * 1000;
@@ -75,7 +75,7 @@ function buildRacePredictions(vdot: number, unit: PaceDisplayUnit) {
   });
 }
 
-function buildTrainingZones(vdot: number) {
+export function buildTrainingZones(vdot: number) {
   return calculateTrainingZones(vdot).map((zone) => ({
     name: zone.name,
     shortName: zone.shortName,

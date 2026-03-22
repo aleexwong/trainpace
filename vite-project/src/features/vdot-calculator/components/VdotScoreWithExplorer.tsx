@@ -14,6 +14,8 @@ interface Props {
   inputs: VdotInputs;
   totalSeconds: number;
   compact?: boolean;
+  offsetSeconds: number;
+  onOffsetChange: (value: number) => void;
 }
 
 function useCountUp(target: number, duration = 1000) {
@@ -129,13 +131,12 @@ function InteractiveGauge({ vdot, targetVdot }: { vdot: number; targetVdot?: num
   );
 }
 
-export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact }: Props) {
+export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, offsetSeconds, onOffsetChange }: Props) {
   const animatedVdot = useCountUp(result.vdot, 1200);
   const level = getVdotLevel(result.vdot);
   const percentile = getVdotPercentile(result.vdot);
 
-  // What-If state
-  const [offsetSeconds, setOffsetSeconds] = useState(0);
+  // What-If state (lifted to parent, received via props)
   const maxOffset = useMemo(() => Math.min(Math.floor(totalSeconds * 0.2), 600), [totalSeconds]);
 
   const targetSeconds = totalSeconds + offsetSeconds;
@@ -206,7 +207,7 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact }:
           <p className="text-xs font-semibold text-gray-700">What If?</p>
           {isAdjusted && (
             <button
-              onClick={() => setOffsetSeconds(0)}
+              onClick={() => onOffsetChange(0)}
               className="text-[10px] text-gray-400 hover:text-indigo-600 font-medium border border-gray-200 rounded-full px-2.5 py-0.5 hover:border-indigo-300 transition-colors bg-white"
             >
               Reset
@@ -226,7 +227,7 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact }:
           max={maxOffset}
           step={totalSeconds > 600 ? 10 : 5}
           value={offsetSeconds}
-          onChange={(e) => setOffsetSeconds(parseInt(e.target.value))}
+          onChange={(e) => onOffsetChange(parseInt(e.target.value))}
           className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-indigo-600 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-indigo-600 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md"
         />
 
