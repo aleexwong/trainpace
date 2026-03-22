@@ -12,12 +12,12 @@ export function VdotSeoHead() {
         name="description"
         content="Free VDOT running calculator based on Jack Daniels' formula. Enter any race time to get your VDOT score, equivalent race predictions for 800m to marathon, and training paces for Easy, Marathon, Threshold, Interval, and Repetition zones."
       />
-      <link rel="canonical" href="https://trainpace.com/vdot" />
+      <link rel="canonical" href="https://www.trainpace.com/calculator/vdot-calculator" />
       {/* Open Graph */}
       <meta property="og:title" content="VDOT Running Calculator – Jack Daniels Formula | TrainPace" />
       <meta property="og:description" content="Free VDOT running calculator based on Jack Daniels' formula. Get your VDOT score, race predictions, and science-based training paces." />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://trainpace.com/vdot" />
+      <meta property="og:url" content="https://www.trainpace.com/calculator/vdot-calculator" />
       <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
       <meta property="og:site_name" content="TrainPace" />
       {/* Twitter */}
@@ -33,7 +33,7 @@ export function VdotSeoHead() {
             {
               "@type": "WebApplication",
               name: "VDOT Running Calculator",
-              url: "https://trainpace.com/vdot",
+              url: "https://www.trainpace.com/calculator/vdot-calculator",
               applicationCategory: "HealthApplication",
               operatingSystem: "Any",
               offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -45,7 +45,7 @@ export function VdotSeoHead() {
               itemListElement: [
                 { "@type": "ListItem", position: 1, name: "Home", item: "https://trainpace.com/" },
                 { "@type": "ListItem", position: 2, name: "Pace Calculator", item: "https://trainpace.com/calculator" },
-                { "@type": "ListItem", position: 3, name: "VDOT Calculator", item: "https://trainpace.com/vdot" },
+                { "@type": "ListItem", position: 3, name: "VDOT Calculator", item: "https://www.trainpace.com/calculator/vdot-calculator" },
               ],
             },
             {
