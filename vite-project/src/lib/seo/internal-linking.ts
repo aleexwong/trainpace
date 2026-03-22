@@ -16,7 +16,6 @@ import type {
   LinkingContext,
   SeoHubConfig,
 } from './types';
-import { withBaseUrl } from './types';
 
 // =============================================================================
 // Hub Configuration
@@ -173,14 +172,14 @@ export const HUB_CONFIG: Record<SeoToolType, SeoHubConfig> = {
  */
 export function generateBreadcrumbs(page: SeoPageConfig): BreadcrumbItem[] {
   const breadcrumbs: BreadcrumbItem[] = [
-    { name: 'TrainPace', url: withBaseUrl('/') },
+    { name: 'TrainPace', url: '/' },
   ];
 
   const hub = HUB_CONFIG[page.tool];
   if (hub) {
     breadcrumbs.push({
       name: hub.title,
-      url: withBaseUrl(hub.path),
+      url: hub.path,
     });
   }
 
@@ -191,7 +190,7 @@ export function generateBreadcrumbs(page: SeoPageConfig): BreadcrumbItem[] {
     if (pathParts.includes('guides')) {
       breadcrumbs.push({
         name: 'Guides',
-        url: withBaseUrl(`/${pathParts[0]}/guides`),
+        url: `/${pathParts[0]}/guides`,
       });
     }
   }
@@ -200,7 +199,7 @@ export function generateBreadcrumbs(page: SeoPageConfig): BreadcrumbItem[] {
   if (page.path !== hub?.path) {
     breadcrumbs.push({
       name: page.h1,
-      url: withBaseUrl(page.path),
+      url: page.path,
     });
   }
 

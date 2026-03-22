@@ -18,7 +18,8 @@ import {
   generateSchemaGraph,
   generateBreadcrumbs,
   type RaceEventData,
-} from '../../lib/seo';
+} from '@/lib/seo';
+import { BreadcrumbNav } from './SeoPageTemplate';
 import LeafletRoutePreview from '../utils/LeafletRoutePreview';
 
 // =============================================================================
@@ -175,22 +176,7 @@ export function RacePageTemplate({
       </Helmet>
 
       {/* Breadcrumb Navigation */}
-      <nav className="px-4 sm:px-6 pt-4" aria-label="Breadcrumb">
-        <ol className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
-          {breadcrumbs.map((item, index) => (
-            <li key={item.url} className="flex items-center gap-2">
-              {index > 0 && <span className="text-gray-400">/</span>}
-              {index === breadcrumbs.length - 1 ? (
-                <span className="text-gray-900 font-medium">{item.name}</span>
-              ) : (
-                <a href={item.url} className="hover:text-gray-900 hover:underline">
-                  {item.name}
-                </a>
-              )}
-            </li>
-          ))}
-        </ol>
-      </nav>
+      <BreadcrumbNav items={breadcrumbs} />
 
       {/* Hero Section */}
       <section className="px-4 sm:px-6 pt-10 pb-8">
