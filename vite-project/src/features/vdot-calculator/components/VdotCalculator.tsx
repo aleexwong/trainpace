@@ -3,12 +3,13 @@
  * Dashboard-style grid layout: everything visible at a glance, minimal scrolling.
  */
 
-import { useRef } from "react";
+import { useRef, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Clock, ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
-import { useVdotCalculator } from "../hooks/useVdotCalculator";
+import { useVdotCalculator, buildTrainingZones, buildRacePredictions } from "../hooks/useVdotCalculator";
+import { calculateVdot } from "../vdot-math";
 import { VdotSeoHead } from "./VdotSeoHead";
 import { VdotHero } from "./VdotHero";
 import { DistanceSelector } from "./DistanceSelector";
@@ -39,8 +40,27 @@ export function VdotCalculator() {
 
   const resultsRef = useRef<HTMLDivElement>(null);
 
+  // What-If slider state (lifted from VdotScoreWithExplorer so all sections react)
+  const [offsetSeconds, setOffsetSeconds] = useState(0);
+
+  const targetVdot = useMemo(() => {
+    if (offsetSeconds === 0 || !result) return null;
+    const targetSeconds = totalSeconds + offsetSeconds;
+    if (targetSeconds <= 0) return null;
+    return Math.round(calculateVdot(inputs.distanceMeters, targetSeconds) * 10) / 10;
+  }, [offsetSeconds, totalSeconds, inputs.distanceMeters, result]);
+
+  const targetZones = useMemo(() =>
+    targetVdot ? buildTrainingZones(targetVdot) : null,
+  [targetVdot]);
+
+  const targetPredictions = useMemo(() =>
+    targetVdot ? buildRacePredictions(targetVdot, paceUnit) : null,
+  [targetVdot, paceUnit]);
+
   const onCalculate = () => {
     handleCalculate();
+    setOffsetSeconds(0);
     setTimeout(() => {
       resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
@@ -183,11 +203,13 @@ export function VdotCalculator() {
                     result={result}
                     inputs={inputs}
                     totalSeconds={totalSeconds}
+                    offsetSeconds={offsetSeconds}
+                    onOffsetChange={setOffsetSeconds}
                     compact
                   />
                   <div className="flex-1">
                     <SampleWorkouts
-                      zones={result.trainingZones}
+                      zones={targetZones || result.trainingZones}
                       paceUnit={paceUnit}
                       compact
                     />
@@ -197,15 +219,15 @@ export function VdotCalculator() {
                 {/* Right: Training Zones + Race Predictions stacked */}
                 <div className="lg:col-span-7 flex flex-col gap-4">
                   <TrainingZonesDisplay
-                    zones={result.trainingZones}
+                    zones={targetZones || result.trainingZones}
                     paceUnit={paceUnit}
-                    vdot={result.vdot}
+                    vdot={targetVdot || result.vdot}
                     onTogglePaceUnit={handlePaceUnitToggle}
                     compact
                   />
                   <div className="flex-1">
                     <RacePredictionsTable
-                      predictions={result.racePredictions}
+                      predictions={targetPredictions || result.racePredictions}
                       inputDistanceName={inputs.distanceName}
                       compact
                     />
