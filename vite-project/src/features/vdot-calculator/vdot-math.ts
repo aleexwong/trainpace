@@ -150,9 +150,10 @@ export function velocityToPacePerMile(velocity: number): number {
  * @returns Formatted string (HH:MM:SS or MM:SS or M:SS)
  */
 export function formatTime(totalSeconds: number): string {
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = Math.round(totalSeconds % 60);
+  const rounded = Math.round(totalSeconds);
+  const hours = Math.floor(rounded / 3600);
+  const minutes = Math.floor((rounded % 3600) / 60);
+  const seconds = rounded % 60;
 
   if (hours > 0) {
     return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds
@@ -168,8 +169,9 @@ export function formatTime(totalSeconds: number): string {
  * @returns Formatted pace string
  */
 export function formatPace(paceSeconds: number): string {
-  const minutes = Math.floor(paceSeconds / 60);
-  const seconds = Math.round(paceSeconds % 60);
+  const rounded = Math.round(paceSeconds);
+  const minutes = Math.floor(rounded / 60);
+  const seconds = rounded % 60;
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 

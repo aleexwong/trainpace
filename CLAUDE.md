@@ -6,6 +6,7 @@ This file provides guidance for Claude Code when working with the TrainPace code
 
 TrainPace is a React/TypeScript web application for runners that provides:
 - **Training Pace Calculator** - Science-backed pace zones from race times
+- **VDOT Calculator** - Jack Daniels VDOT scoring with What-If explorer
 - **Course Elevation Analysis** - GPX file upload and visualization
 - **Race Fuel Planner** - Personalized nutrition recommendations
 - **Personal Dashboard** - User data management with Firebase
@@ -37,7 +38,7 @@ npm run test-gemini  # Test Gemini API integration
 trainpace/
 ├── vite-project/           # Main application
 │   ├── src/
-│   │   ├── features/       # Feature modules (auth, pace-calculator, elevation, fuel, dashboard)
+│   │   ├── features/       # Feature modules (auth, pace-calculator, vdot-calculator, elevation, fuel, dashboard)
 │   │   ├── components/     # Shared UI components
 │   │   │   ├── ui/         # shadcn/ui primitives
 │   │   │   ├── layout/     # MainLayout, SideNav, Footer
@@ -130,6 +131,40 @@ VITE_MAPBOX_TOKEN
 
 ### Adding a shadcn/ui component
 Components are already set up. Copy new components from shadcn/ui docs into `src/components/ui/`.
+
+## VDOT Calculator (`src/features/vdot-calculator/`)
+
+A Jack Daniels VDOT scoring tool with a dashboard-style results layout.
+
+### Module Structure
+
+```
+features/vdot-calculator/
+├── components/
+│   ├── VdotCalculator.tsx        # Main orchestrator — dashboard grid layout
+│   ├── VdotScoreWithExplorer.tsx  # Score gauge + "What If" time slider
+│   ├── DistanceSelector.tsx       # Race distance picker
+│   ├── TimeInput.tsx              # Hours/minutes/seconds input
+│   ├── TrainingZonesDisplay.tsx   # 5-zone training pace table
+│   ├── RacePredictionsTable.tsx   # Race equivalency predictions
+│   ├── SampleWorkouts.tsx         # Example workouts per zone
+│   ├── VdotHero.tsx               # Landing hero section
+│   ├── VdotFaq.tsx                # FAQ accordion
+│   ├── VdotSeoHead.tsx            # SEO meta tags
+│   ├── VdotComparison.tsx         # VDOT comparison view
+│   └── VdotScoreDisplay.tsx       # Standalone score display
+├── hooks/
+│   └── useVdotCalculator.ts       # Core state & logic hook
+├── vdot-math.ts                   # Pure math functions (calculateVdot, predictRaceTime, formatTime, formatPace)
+├── types.ts                       # VdotInputs, VdotResult, VdotFormErrors, etc.
+└── index.ts                       # Public exports
+```
+
+### Key Architecture Decisions
+
+- **Lifted What-If state**: The time-offset slider state lives in `VdotCalculator` (parent), not `VdotScoreWithExplorer`, so that training zones, race predictions, and sample workouts all react to slider changes.
+- **Exported helpers**: `buildTrainingZones()` and `buildRacePredictions()` are exported from `useVdotCalculator.ts` so the parent can recompute target values from the What-If VDOT.
+- **`vdot-math.ts`**: All VDOT formulas (Daniels' oxygen cost model), race time predictions, training zone calculations, and time/pace formatting. `formatTime` and `formatPace` round the total seconds first to avoid `:60` display bugs.
 
 ## Programmatic SEO Architecture
 
