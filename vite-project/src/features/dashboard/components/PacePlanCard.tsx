@@ -8,6 +8,7 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { PacePlan } from "../types";
+import { formatTimestamp } from "@/lib/format-utils";
 
 interface PacePlanCardProps {
   plan: PacePlan;
@@ -27,15 +28,6 @@ export function PacePlanCard({
     plan.seconds
   ).padStart(2, "0")}`;
   const paceUnit = plan.paceType === "km" ? "min/km" : "min/mi";
-
-  const formatDate = (timestamp: any) => {
-    if (!timestamp) return "Unknown";
-    try {
-      return timestamp.toDate().toLocaleDateString();
-    } catch {
-      return "Unknown";
-    }
-  };
 
   const formatRaceDate = (dateStr?: string) => {
     if (!dateStr) return null;
@@ -62,7 +54,7 @@ export function PacePlanCard({
             {plan.planName || `${plan.distance}${plan.units} Race`}
           </h3>
           <p className="text-sm text-gray-500">
-            {formatDate(plan.createdAt)} • {raceTime}
+            {formatTimestamp(plan.createdAt)} • {raceTime}
           </p>
           {raceDate && (
             <p className="text-xs text-purple-600 mt-1 flex items-center gap-1">

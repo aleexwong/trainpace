@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { RouteMetadata } from "../types";
 import MapboxRoutePreview from "../../../components/utils/MapboxRoutePreview";
+import { formatTimestamp } from "@/lib/format-utils";
 
 interface RouteCardProps {
   route: RouteMetadata;
@@ -23,15 +24,6 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
   const isBookmarked = route.type === "bookmarked";
   const needsMigration =
     isBookmarked && (!route.routeKey || (route.schemaVersion || 1) < 2);
-
-  const formatDate = (timestamp: any) => {
-    if (!timestamp) return "Unknown";
-    try {
-      return timestamp.toDate().toLocaleDateString();
-    } catch {
-      return "Unknown";
-    }
-  };
 
   const getRouteLink = () => {
     if (route.type === "uploaded") {
@@ -79,7 +71,7 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
               </div>
               <p className="text-sm text-gray-500">
                 {isBookmarked ? "Bookmarked" : "Uploaded"} •{" "}
-                {formatDate(route.uploadedAt || route.savedAt)}
+                {formatTimestamp(route.uploadedAt || route.savedAt)}
               </p>
               {isBookmarked && route.previewData && (
                 <p className="text-xs text-gray-400 mt-1">

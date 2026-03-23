@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useAuth } from "../features/auth/AuthContext";
 import { useToast } from "../hooks/use-toast";
-import { EditPlanDialog } from "../components/EditPlanDialog";
+import { PlanDialog } from "../components/PlanDialog";
 import {
   useRoutes,
   useFuelPlans,
@@ -304,7 +304,8 @@ export default function DashboardV2() {
 
       {/* Edit Plan Dialog */}
       {editingPlan && (
-        <EditPlanDialog
+        <PlanDialog
+          mode="edit"
           isOpen={!!editingPlan}
           onClose={() => setEditingPlan(null)}
           onSave={async (planName, notes, raceDate) => {
@@ -316,9 +317,11 @@ export default function DashboardV2() {
             );
             setEditingPlan(null);
           }}
-          currentPlanName={editingPlan.planName}
-          currentNotes={editingPlan.notes}
-          currentRaceDate={editingPlan.raceDate}
+          initialValues={{
+            planName: editingPlan.planName,
+            notes: editingPlan.notes,
+            raceDate: editingPlan.raceDate,
+          }}
           raceDistance={`${editingPlan.distance}${editingPlan.units}`}
           raceTime={`${editingPlan.hours}:${String(
             editingPlan.minutes
