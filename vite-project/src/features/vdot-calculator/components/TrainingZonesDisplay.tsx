@@ -49,7 +49,7 @@ export function TrainingZonesDisplay({
     <div className={`bg-white rounded-2xl shadow-lg h-full ${compact ? "p-4" : "p-5 sm:p-8"}`}>
       {/* Header */}
       <div className={`flex items-center justify-between gap-3 ${compact ? "mb-3" : "mb-4"}`}>
-        <div className={compact ? "w-full text-center" : ""}>
+        <div>
           <h2 className={`font-bold text-gray-900 ${compact ? "text-lg mb-0.5" : "text-xl sm:text-2xl"}`}>
             Training Paces
           </h2>
@@ -57,22 +57,20 @@ export function TrainingZonesDisplay({
             Daniels&apos; 5 zones &middot; VDOT {vdot}
           </p>
         </div>
-        {!compact && (
+        <div
+          className={`relative ${compact ? "w-32 h-8" : "w-36 h-9"} bg-indigo-100 rounded-full cursor-pointer overflow-hidden select-none`}
+          onClick={onTogglePaceUnit}
+        >
           <div
-            className="relative w-36 h-9 bg-indigo-100 rounded-full cursor-pointer overflow-hidden select-none"
-            onClick={onTogglePaceUnit}
-          >
-            <div
-              className={`absolute top-0.5 left-0.5 w-[calc(50%-0.25rem)] h-8 bg-indigo-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
-                paceUnit === "mi" ? "translate-x-full" : "translate-x-0"
-              }`}
-            />
-            <div className="absolute inset-0 flex items-center">
-              <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "km" ? "text-white" : "text-indigo-700"}`}>min/km</div>
-              <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "mi" ? "text-white" : "text-indigo-700"}`}>min/mi</div>
-            </div>
+            className={`absolute top-0.5 left-0.5 w-[calc(50%-0.25rem)] ${compact ? "h-7" : "h-8"} bg-indigo-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
+              paceUnit === "mi" ? "translate-x-full" : "translate-x-0"
+            }`}
+          />
+          <div className="absolute inset-0 flex items-center">
+            <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "km" ? "text-white" : "text-indigo-700"}`}>min/km</div>
+            <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "mi" ? "text-white" : "text-indigo-700"}`}>min/mi</div>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Zone cards grid */}

@@ -78,41 +78,14 @@ export function VdotCalculator() {
             <VdotHero />
           ) : (
             /* Compact header bar in results mode */
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={handleReset}
-                  className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 transition-colors bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  New Calculation
-                </button>
-                <div>
-                  <h1 className="text-lg font-bold text-gray-900">VDOT Dashboard</h1>
-                  <p className="text-xs text-gray-500">
-                    {inputs.distanceName} &middot; {(() => { const h = parseInt(inputs.hours || "0"); const m = parseInt(inputs.minutes || "0"); const s = parseInt(inputs.seconds || "0"); const parts = []; if (h > 0) parts.push(`${h}h`); if (m > 0) parts.push(`${m}m`); if (s > 0) parts.push(`${s}s`); return parts.join(" "); })()}
-                  </p>
-                </div>
-              </div>
-              <div
-                className="relative w-32 h-8 bg-indigo-100 rounded-full cursor-pointer overflow-hidden select-none"
-                onClick={handlePaceUnitToggle}
-                title="Toggle pace display unit"
+            <div className="mb-4">
+              <button
+                onClick={handleReset}
+                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 transition-colors bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200"
               >
-                <div
-                  className={`absolute top-0.5 left-0.5 w-[calc(50%-0.25rem)] h-7 bg-indigo-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
-                    paceUnit === "mi" ? "translate-x-full" : "translate-x-0"
-                  }`}
-                />
-                <div className="absolute inset-0 flex items-center">
-                  <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "km" ? "text-white" : "text-indigo-700"}`}>
-                    min/km
-                  </div>
-                  <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "mi" ? "text-white" : "text-indigo-700"}`}>
-                    min/mi
-                  </div>
-                </div>
-              </div>
+                <ArrowLeft className="w-4 h-4" />
+                New Calculation
+              </button>
             </div>
           )}
 
@@ -199,6 +172,12 @@ export function VdotCalculator() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
                 {/* Left: Combined Score + What-If + Workouts stacked */}
                 <div className="lg:col-span-5 flex flex-col gap-4">
+                  <div>
+                    <h1 className="text-lg font-bold text-gray-900">VDOT Dashboard</h1>
+                    <p className="text-xs text-gray-500">
+                      {inputs.distanceName} &middot; {(() => { const h = parseInt(inputs.hours || "0"); const m = parseInt(inputs.minutes || "0"); const s = parseInt(inputs.seconds || "0"); const parts = []; if (h > 0) parts.push(`${h}h`); if (m > 0) parts.push(`${m}m`); if (s > 0) parts.push(`${s}s`); return parts.join(" "); })()}
+                    </p>
+                  </div>
                   <VdotScoreWithExplorer
                     result={result}
                     inputs={inputs}
