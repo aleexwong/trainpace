@@ -18,6 +18,7 @@ import { usePacePlanPersistence } from "../hooks/usePacePlanPersistence";
 import { RaceDetailsForm } from "./RaceDetailsForm";
 import { PaceResultsDisplay } from "./PaceResultsDisplay";
 import { PlanDialog } from "@/components/PlanDialog";
+import { generateBreadcrumbSchema } from "@/lib/seo";
 
 const initialFormState: PaceInputs = {
   distance: "",
@@ -291,24 +292,12 @@ export function PaceCalculatorV2({
             })}
           </script>
           <script type="application/ld+json">
-            {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                {
-                  "@type": "ListItem",
-                  position: 1,
-                  name: "Home",
-                  item: "https://trainpace.com/",
-                },
-                {
-                  "@type": "ListItem",
-                  position: 2,
-                  name: "Pace Calculator",
-                  item: "https://trainpace.com/calculator",
-                },
-              ],
-            })}
+            {JSON.stringify(
+              generateBreadcrumbSchema([
+                { name: "Home", url: "/" },
+                { name: "Pace Calculator", url: "/calculator" },
+              ])
+            )}
           </script>
         </Helmet>
       )}

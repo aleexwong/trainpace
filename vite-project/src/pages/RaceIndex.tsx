@@ -7,6 +7,7 @@ import { raceSeoPages } from "@/features/seo-pages/seoPages";
 import marathonData from "@/data/marathon-data.json";
 import { db } from "@/lib/firebase";
 import { getCurrentDocumentId } from "@/config/routes";
+import { generateBreadcrumbSchema } from "@/lib/seo";
 
 type MarathonPreviewRoute = {
   name: string;
@@ -200,24 +201,12 @@ export default function RaceIndex() {
         />
         <link rel="canonical" href="https://trainpace.com/race" />
         <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: "https://trainpace.com/",
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "Race Prep",
-                item: "https://trainpace.com/race",
-              },
-            ],
-          })}
+          {JSON.stringify(
+            generateBreadcrumbSchema([
+              { name: "Home", url: "/" },
+              { name: "Race Prep", url: "/race" },
+            ])
+          )}
         </script>
       </Helmet>
 

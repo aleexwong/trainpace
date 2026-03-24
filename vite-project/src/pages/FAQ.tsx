@@ -3,6 +3,7 @@ import { Hash, ChevronDown } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import FAQAccordion from "@/components/faq/FAQAccordion";
 import faqData from "@/data/faq-data.json";
+import { generateBreadcrumbSchema } from "@/lib/seo";
 
 interface FAQItem {
   id: string;
@@ -92,24 +93,10 @@ export default function FAQ() {
     ),
   };
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://trainpace.com/",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "FAQ",
-        item: "https://trainpace.com/faq",
-      },
-    ],
-  };
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "FAQ", url: "/faq" },
+  ]);
 
   return (
     <div className="bg-white text-gray-900 min-h-screen">

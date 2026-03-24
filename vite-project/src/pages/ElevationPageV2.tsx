@@ -13,6 +13,7 @@ import { ShareButton } from "@/components/ui/ShareButton";
 import MapboxRoutePreview from "@/components/utils/MapboxRoutePreview";
 import { PosterButton } from "@/features/poster";
 import ElevationInsights from "@/components/elevationfinder/ElevationInsights";
+import { generateBreadcrumbSchema } from "@/lib/seo";
 
 // Feature imports
 import {
@@ -233,24 +234,12 @@ export default function ElevationPage() {
           })}
         </script>
         <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: "https://trainpace.com/",
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "ElevationFinder",
-                item: "https://trainpace.com/elevationfinder",
-              },
-            ],
-          })}
+          {JSON.stringify(
+            generateBreadcrumbSchema([
+              { name: "Home", url: "/" },
+              { name: "ElevationFinder", url: "/elevationfinder" },
+            ])
+          )}
         </script>
       </Helmet>
 

@@ -28,6 +28,7 @@ import {
   getFuelPlanPrompt,
   type FuelPlanContext,
 } from "@/services/gemini";
+import { generateBreadcrumbSchema } from "@/lib/seo";
 
 const raceSettings = {
   "10K": 30,
@@ -619,24 +620,12 @@ const FuelPlannerV2 = () => {
           })}
         </script>
         <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              {
-                "@type": "ListItem",
-                position: 1,
-                name: "Home",
-                item: "https://trainpace.com/",
-              },
-              {
-                "@type": "ListItem",
-                position: 2,
-                name: "Fuel Planner",
-                item: "https://trainpace.com/fuel",
-              },
-            ],
-          })}
+          {JSON.stringify(
+            generateBreadcrumbSchema([
+              { name: "Home", url: "/" },
+              { name: "Fuel Planner", url: "/fuel" },
+            ])
+          )}
         </script>
       </Helmet>
 
