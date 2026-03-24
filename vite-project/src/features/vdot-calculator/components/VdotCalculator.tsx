@@ -74,20 +74,7 @@ export function VdotCalculator() {
         {/* Wider container for dashboard layout */}
         <div className={result ? "max-w-7xl mx-auto" : "max-w-4xl mx-auto"}>
           {/* Hero — compact when showing results */}
-          {!result ? (
-            <VdotHero />
-          ) : (
-            /* Compact header bar in results mode */
-            <div className="mb-4">
-              <button
-                onClick={handleReset}
-                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 transition-colors bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                New Calculation
-              </button>
-            </div>
-          )}
+          {!result && <VdotHero />}
 
           {/* Main content */}
           {!result ? (
@@ -172,11 +159,20 @@ export function VdotCalculator() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
                 {/* Left: Combined Score + What-If + Workouts stacked */}
                 <div className="lg:col-span-5 flex flex-col gap-4">
-                  <div>
-                    <h1 className="text-lg font-bold text-gray-900">VDOT Dashboard</h1>
-                    <p className="text-xs text-gray-500">
-                      {inputs.distanceName} &middot; {(() => { const h = parseInt(inputs.hours || "0"); const m = parseInt(inputs.minutes || "0"); const s = parseInt(inputs.seconds || "0"); const parts = []; if (h > 0) parts.push(`${h}h`); if (m > 0) parts.push(`${m}m`); if (s > 0) parts.push(`${s}s`); return parts.join(" "); })()}
-                    </p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h1 className="text-lg font-bold text-gray-900">VDOT Dashboard</h1>
+                      <p className="text-xs text-gray-500">
+                        {inputs.distanceName} &middot; {(() => { const h = parseInt(inputs.hours || "0"); const m = parseInt(inputs.minutes || "0"); const s = parseInt(inputs.seconds || "0"); const parts = []; if (h > 0) parts.push(`${h}h`); if (m > 0) parts.push(`${m}m`); if (s > 0) parts.push(`${s}s`); return parts.join(" "); })()}
+                      </p>
+                    </div>
+                    <button
+                      onClick={handleReset}
+                      className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 transition-colors bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      New Calculation
+                    </button>
                   </div>
                   <VdotScoreWithExplorer
                     result={result}
