@@ -60,7 +60,12 @@ export function usePlanPersistence<T>(
         label: config.buildGaLabel(params),
       });
 
-      navigate(`/register?returnTo=${config.returnToPath}&savePlan=true`);
+      const searchParams = new URLSearchParams({
+        returnTo: config.returnToPath,
+        savePlan: "true",
+      });
+
+      navigate(`/register?${searchParams.toString()}`);
     },
     [navigate, config]
   );
