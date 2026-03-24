@@ -41,6 +41,17 @@ interface UsePlanPersistenceReturn<T> {
 export function usePlanPersistence<T>(
   config: PlanPersistenceConfig<T>
 ): UsePlanPersistenceReturn<T> {
+  const {
+    collectionName,
+    sessionStorageKey,
+    returnToPath,
+    gaCategory,
+    buildSessionData,
+    buildFirestoreDoc,
+    buildGaLabel,
+    successDescription,
+  } = config;
+
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -50,24 +61,24 @@ export function usePlanPersistence<T>(
   const saveForGuestRedirect = useCallback(
     (params: T) => {
       sessionStorage.setItem(
-        config.sessionStorageKey,
-        JSON.stringify(config.buildSessionData(params))
+        sessionStorageKey,
+        JSON.stringify(buildSessionData(params))
       );
 
       ReactGA.event({
-        category: config.gaCategory,
+        category: gaCategory,
         action: "Guest Save Redirect",
-        label: config.buildGaLabel(params),
+        label: buildGaLabel(params),
       });
 
       const searchParams = new URLSearchParams({
-        returnTo: config.returnToPath,
+        returnTo: returnToPath,
         savePlan: "true",
       });
 
       navigate(`/register?${searchParams.toString()}`);
     },
-    [navigate, config]
+    [navigate, sessionStorageKey, buildSessionData, gaCategory, buildGaLabel, returnToPath]
   );
 
   const saveToDashboard = useCallback(
@@ -80,9 +91,9 @@ export function usePlanPersistence<T>(
       setIsSaving(true);
 
       try {
-        await addDoc(collection(db, config.collectionName), {
+        await addDoc(collection(db, collectionName), {
           userId: user.uid,
-          ...config.buildFirestoreDoc(params),
+          ...buildFirestoreDoc(params),
           createdAt: serverTimestamp(),
         });
 
@@ -91,17 +102,17 @@ export function usePlanPersistence<T>(
         toast({
           title: "Saved to Dashboard! 🎉",
           description:
-            config.successDescription ||
+            successDescription ||
             "Your plan is now in your dashboard.",
         });
 
         ReactGA.event({
-          category: config.gaCategory,
+          category: gaCategory,
           action: "Saved Plan to Dashboard",
-          label: config.buildGaLabel(params),
+          label: buildGaLabel(params),
         });
       } catch (error) {
-        console.error(`Failed to save to ${config.collectionName}:`, error);
+        console.error(`Failed to save to ${collectionName}:`, error);
         toast({
           title: "Failed to save",
           description: "Something went wrong. Please try again.",
@@ -111,7 +122,7 @@ export function usePlanPersistence<T>(
         setIsSaving(false);
       }
     },
-    [user, saveForGuestRedirect, toast, config]
+    [user, saveForGuestRedirect, toast, collectionName, buildFirestoreDoc, gaCategory, buildGaLabel, successDescription]
   );
 
   const resetSaveState = useCallback(() => {
