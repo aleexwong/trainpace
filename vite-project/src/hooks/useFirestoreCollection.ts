@@ -59,6 +59,7 @@ export function useFirestoreCollection<T extends { id: string }>(
       }
 
       setItems(results);
+      setError(null);
     } catch (err) {
       console.error(`Error loading ${collectionName}:`, err);
       setError(`Failed to load ${collectionName}`);
