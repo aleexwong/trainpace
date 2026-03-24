@@ -3,11 +3,18 @@ import { Helmet } from "react-helmet-async";
 import { Navigate, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 
-import { getSeoUrl, raceSeoPageMap } from "@/features/seo-pages/seoPages";
+import { raceSeoPageMap } from "@/features/seo-pages/seoPages";
 import marathonData from "@/data/marathon-data.json";
 import LeafletRoutePreview from "@/components/utils/LeafletRoutePreview";
 import { db } from "@/lib/firebase";
 import { getCurrentDocumentId } from "@/config/routes";
+import {
+  generateMetaTags,
+  generateSchemaGraph,
+  generateBreadcrumbs,
+  generateFAQSchema,
+} from "@/lib/seo";
+import { BreadcrumbNav } from "@/components/seo";
 
 type MarathonPreviewRoute = {
   name: string;
@@ -29,33 +36,6 @@ type MarathonPreviewRoute = {
 };
 
 const marathonRoutesData = marathonData as Record<string, MarathonPreviewRoute>;
-
-function buildBreadcrumbJsonLd(path: string, label: string) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "TrainPace",
-        item: "https://trainpace.com/",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Race Prep",
-        item: "https://trainpace.com/race",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: label,
-        item: getSeoUrl(path),
-      },
-    ],
-  };
-}
 
 export default function RaceSeoLanding() {
   const { raceSlug } = useParams();
@@ -139,110 +119,58 @@ export default function RaceSeoLanding() {
     return routeOverrides ? { ...basePreviewRoute, ...routeOverrides } : basePreviewRoute;
   }, [basePreviewRoute, routeOverrides]);
 
-  const jsonLd = useMemo(() => {
-    const graph: unknown[] = [
-      {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        name: page.title,
-        description: page.description,
-        url: getSeoUrl(page.path),
-        isPartOf: {
-          "@type": "WebSite",
-          name: "TrainPace",
-          url: "https://trainpace.com/",
-        },
-      },
-      buildBreadcrumbJsonLd(page.path, page.h1),
-    ];
+  const metaTags = useMemo(() => generateMetaTags(page), [page]);
+  const breadcrumbs = useMemo(() => generateBreadcrumbs(page), [page]);
 
-    if (previewRoute) {
-      graph.push({
-        "@context": "https://schema.org",
-        "@type": "SportsEvent",
-        name: previewRoute.name,
-        description: previewRoute.description,
-        url: previewRoute.website,
-        startDate: previewRoute.raceDate,
-        sport: "Running",
-        location: {
-          "@type": "Place",
-          name: `${previewRoute.city}, ${previewRoute.country}`,
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: previewRoute.city,
-            addressCountry: previewRoute.country,
-          },
-        },
-        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-      });
+  const schema = useMemo(() => {
+    const raceData = previewRoute
+      ? {
+          name: previewRoute.name,
+          description: previewRoute.description,
+          city: previewRoute.city,
+          country: previewRoute.country,
+          raceDate: previewRoute.raceDate,
+          website: previewRoute.website,
+        }
+      : undefined;
+
+    const graph = generateSchemaGraph(page, { raceData });
+
+    // If page has no FAQ but the route does, append route FAQ schema
+    if (!page.faq?.length && previewRoute?.faq?.length) {
+      graph["@graph"].push(generateFAQSchema(previewRoute.faq));
     }
 
-    if (page.howTo) {
-      graph.push({
-        "@context": "https://schema.org",
-        "@type": "HowTo",
-        name: page.howTo.name,
-        description: page.howTo.description,
-        totalTime: "PT5M",
-        tool: {
-          "@type": "HowToTool",
-          name: "TrainPace",
-        },
-        step: page.howTo.steps.map((s: { name: string; text: string }, idx: number) => ({
-          "@type": "HowToStep",
-          position: idx + 1,
-          name: s.name,
-          text: s.text,
-        })),
-      });
-    }
-
-    const faqItems =
-      page.faq?.length
-        ? page.faq
-        : previewRoute?.faq?.length
-          ? previewRoute.faq
-          : undefined;
-
-    if (faqItems?.length) {
-      graph.push({
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: faqItems.map((q: { question: string; answer: string }) => ({
-          "@type": "Question",
-          name: q.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: q.answer,
-          },
-        })),
-      });
-    }
-
-    return {
-      "@context": "https://schema.org",
-      "@graph": graph,
-    };
+    return graph;
   }, [page, previewRoute]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-orange-50">
       <Helmet>
-        <title>{page.title}</title>
-        <meta name="description" content={page.description} />
-        <link rel="canonical" href={getSeoUrl(page.path)} />
-        <meta property="og:title" content={page.title} />
-        <meta property="og:description" content={page.description} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={getSeoUrl(page.path)} />
-        <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={page.title} />
-        <meta name="twitter:description" content={page.description} />
-        <meta name="twitter:image" content="https://trainpace.com/landing-page-2025.png" />
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <title>{metaTags.title}</title>
+        <meta name="description" content={metaTags.description} />
+        <link rel="canonical" href={metaTags.canonical} />
+
+        {/* Open Graph */}
+        <meta property="og:title" content={metaTags.openGraph.title} />
+        <meta property="og:description" content={metaTags.openGraph.description} />
+        <meta property="og:type" content={metaTags.openGraph.type} />
+        <meta property="og:url" content={metaTags.openGraph.url} />
+        <meta property="og:image" content={metaTags.openGraph.image} />
+        <meta property="og:site_name" content={metaTags.openGraph.siteName} />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content={metaTags.twitter.card} />
+        <meta name="twitter:title" content={metaTags.twitter.title} />
+        <meta name="twitter:description" content={metaTags.twitter.description} />
+        <meta name="twitter:image" content={metaTags.twitter.image} />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
+
+      {/* Breadcrumb Navigation */}
+      <BreadcrumbNav items={breadcrumbs} />
 
       <section className="px-4 sm:px-6 pt-10 pb-8">
         <div className="max-w-5xl mx-auto">

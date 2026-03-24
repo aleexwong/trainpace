@@ -54,8 +54,18 @@ type FeaturedRaceDoc = {
     elevationGain?: number;
     elevationLoss?: number;
   };
-  thumbnailPoints?: Array<{ lat: number; lng: number; ele?: number; dist?: number }>;
-  displayPoints?: Array<{ lat: number; lng: number; ele?: number; dist?: number }>;
+  thumbnailPoints?: Array<{
+    lat: number;
+    lng: number;
+    ele?: number;
+    dist?: number;
+  }>;
+  displayPoints?: Array<{
+    lat: number;
+    lng: number;
+    ele?: number;
+    dist?: number;
+  }>;
   raceDate?: string;
   city?: string;
   country?: string;
@@ -76,7 +86,7 @@ const defaultFeaturedRoutes: FeaturedRouteLink[] = [
 export default function RaceIndex() {
   const [searchQuery, setSearchQuery] = useState("");
   const [featuredSource, setFeaturedSource] = useState<"fallback" | "firebase">(
-    "fallback"
+    "fallback",
   );
   const [featuredError, setFeaturedError] = useState<string | null>(null);
   const [featuredOverrides, setFeaturedOverrides] = useState<
@@ -121,16 +131,15 @@ export default function RaceIndex() {
               raceDate: data.raceDate ?? staticData?.raceDate,
               description: data.description ?? staticData?.description,
               website: data.website ?? staticData?.website,
-              thumbnailPoints:
-                data.thumbnailPoints?.length
-                  ? data.thumbnailPoints
-                  : data.displayPoints?.length
-                    ? data.displayPoints
-                    : undefined,
+              thumbnailPoints: data.thumbnailPoints?.length
+                ? data.thumbnailPoints
+                : data.displayPoints?.length
+                  ? data.displayPoints
+                  : undefined,
             };
 
             return { previewKey, overrides };
-          })
+          }),
         );
 
         if (cancelled) return;
@@ -154,7 +163,9 @@ export default function RaceIndex() {
         console.error("Failed to load featured races from Firestore:", err);
         if (!cancelled) {
           setFeaturedSource("fallback");
-          setFeaturedError(err instanceof Error ? err.message : "Unknown error");
+          setFeaturedError(
+            err instanceof Error ? err.message : "Unknown error",
+          );
         }
       }
     };
@@ -173,7 +184,9 @@ export default function RaceIndex() {
 
     return raceSeoPages.filter((page) => {
       const haystacks = [page.h1, page.slug, page.description];
-      return haystacks.some((value) => value.toLowerCase().includes(normalizedQuery));
+      return haystacks.some((value) =>
+        value.toLowerCase().includes(normalizedQuery),
+      );
     });
   }, [normalizedQuery]);
 
@@ -186,6 +199,26 @@ export default function RaceIndex() {
           content="Race prep pages for popular running events. Get pacing targets, fueling basics, and course elevation strategy using TrainPace free tools."
         />
         <link rel="canonical" href="https://trainpace.com/race" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://trainpace.com/",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Race Prep",
+                item: "https://trainpace.com/race",
+              },
+            ],
+          })}
+        </script>
       </Helmet>
 
       <div className="max-w-6xl mx-auto">
@@ -193,7 +226,8 @@ export default function RaceIndex() {
           Race Prep Pages
         </h1>
         <p className="mt-4 text-lg text-gray-700">
-          Pick a race to get a simple plan: pacing, fueling, and course strategy.
+          Pick a race to get a simple plan: pacing, fueling, and course
+          strategy.
         </p>
 
         {/* Search */}
@@ -217,7 +251,8 @@ export default function RaceIndex() {
           </div>
           {isSearching && (
             <p className="mt-2 text-xs text-gray-600">
-              {displayedRaces.length} result{displayedRaces.length === 1 ? "" : "s"}
+              {displayedRaces.length} result
+              {displayedRaces.length === 1 ? "" : "s"}
             </p>
           )}
         </div>
@@ -228,10 +263,12 @@ export default function RaceIndex() {
               Featured Course Data
             </h2>
             <p className="mt-2 text-gray-700">
-              These races include real course coordinates, elevation stats, and pacing/fueling notes.
+              These races include real course coordinates, elevation stats, and
+              pacing/fueling notes.
             </p>
             <p className="mt-2 text-xs text-gray-500">
-              Featured source: {featuredSource === "firebase" ? "Firebase" : "Local fallback"}
+              Featured source:{" "}
+              {featuredSource === "firebase" ? "Firebase" : "Local fallback"}
               {featuredError ? " (Firebase read failed)" : ""}
             </p>
 
@@ -249,26 +286,36 @@ export default function RaceIndex() {
                     href={path}
                     className="rounded-2xl border border-orange-100 bg-white p-5 hover:bg-orange-50 transition-colors"
                   >
-                    <div className="text-sm font-semibold text-orange-800">Course-backed</div>
-                    <div className="mt-1 text-lg font-bold text-gray-900">{route.name}</div>
+                    <div className="text-sm font-semibold text-orange-800">
+                      Course-backed
+                    </div>
+                    <div className="mt-1 text-lg font-bold text-gray-900">
+                      {route.name}
+                    </div>
                     <div className="mt-2 text-sm text-gray-700">
                       {route.city}, {route.country}
                     </div>
                     <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
                       <div className="rounded-lg bg-orange-50 border border-orange-100 px-3 py-2">
-                        <div className="text-xs font-semibold text-gray-500">Km</div>
+                        <div className="text-xs font-semibold text-gray-500">
+                          Km
+                        </div>
                         <div className="font-bold text-gray-900">
                           {formatWholeNumber(route.distance)}
                         </div>
                       </div>
                       <div className="rounded-lg bg-orange-50 border border-orange-100 px-3 py-2">
-                        <div className="text-xs font-semibold text-gray-500">Gain</div>
+                        <div className="text-xs font-semibold text-gray-500">
+                          Gain
+                        </div>
                         <div className="font-bold text-gray-900">
                           {formatWholeNumber(route.elevationGain)}m
                         </div>
                       </div>
                       <div className="rounded-lg bg-orange-50 border border-orange-100 px-3 py-2">
-                        <div className="text-xs font-semibold text-gray-500">Loss</div>
+                        <div className="text-xs font-semibold text-gray-500">
+                          Loss
+                        </div>
                         <div className="font-bold text-gray-900">
                           {formatWholeNumber(route.elevationLoss)}m
                         </div>
@@ -298,8 +345,12 @@ export default function RaceIndex() {
                 href={p.path}
                 className="rounded-2xl border border-orange-100 bg-white/70 p-5 hover:bg-white transition-colors"
               >
-                <div className="text-sm font-semibold text-orange-800">Race Prep</div>
-                <div className="mt-1 text-lg font-bold text-gray-900">{p.h1}</div>
+                <div className="text-sm font-semibold text-orange-800">
+                  Race Prep
+                </div>
+                <div className="mt-1 text-lg font-bold text-gray-900">
+                  {p.h1}
+                </div>
                 <div className="mt-2 text-sm text-gray-700 line-clamp-2">
                   {p.description}
                 </div>
@@ -308,7 +359,9 @@ export default function RaceIndex() {
           </div>
         ) : (
           <div className="mt-4 rounded-2xl border border-orange-100 bg-white/80 p-6 text-center">
-            <div className="text-lg font-semibold text-gray-900">No races found</div>
+            <div className="text-lg font-semibold text-gray-900">
+              No races found
+            </div>
             <p className="mt-1 text-sm text-gray-600">
               Try a city name, distance, or a major marathon.
             </p>
@@ -316,7 +369,9 @@ export default function RaceIndex() {
         )}
 
         <div className="mt-10 rounded-2xl border border-orange-100 bg-white/70 p-6">
-          <h2 className="text-xl font-bold text-gray-900">Want a specific race?</h2>
+          <h2 className="text-xl font-bold text-gray-900">
+            Want a specific race?
+          </h2>
           <p className="mt-2 text-gray-700">
             If you don't see it here, try the core tools and upload a GPX for
             course analysis.

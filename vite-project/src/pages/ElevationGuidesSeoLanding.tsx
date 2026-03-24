@@ -4,41 +4,13 @@ import { Navigate, useParams } from "react-router-dom";
 
 import {
   elevationGuideSeoPageMap,
-  getSeoUrl,
 } from "@/features/seo-pages/seoPages";
-
-function buildBreadcrumbJsonLd(path: string, label: string) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "TrainPace",
-        item: "https://trainpace.com/",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "ElevationFinder",
-        item: "https://trainpace.com/elevationfinder",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: "Guides",
-        item: "https://trainpace.com/elevationfinder/guides",
-      },
-      {
-        "@type": "ListItem",
-        position: 4,
-        name: label,
-        item: getSeoUrl(path),
-      },
-    ],
-  };
-}
+import {
+  generateMetaTags,
+  generateSchemaGraph,
+  generateBreadcrumbs,
+} from "@/lib/seo";
+import { BreadcrumbNav } from "@/components/seo";
 
 export default function ElevationGuidesSeoLanding() {
   const { seoSlug } = useParams();
@@ -46,81 +18,37 @@ export default function ElevationGuidesSeoLanding() {
   const page = seoSlug ? elevationGuideSeoPageMap.get(seoSlug) : undefined;
   if (!page) return <Navigate to="/elevationfinder" replace />;
 
-  const jsonLd = useMemo(() => {
-    const graph: unknown[] = [
-      {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        name: page.title,
-        description: page.description,
-        url: getSeoUrl(page.path),
-        isPartOf: {
-          "@type": "WebSite",
-          name: "TrainPace",
-          url: "https://trainpace.com/",
-        },
-      },
-      buildBreadcrumbJsonLd(page.path, page.h1),
-    ];
-
-    if (page.howTo) {
-      graph.push({
-        "@context": "https://schema.org",
-        "@type": "HowTo",
-        name: page.howTo.name,
-        description: page.howTo.description,
-        totalTime: "PT1M",
-        tool: {
-          "@type": "HowToTool",
-          name: "TrainPace ElevationFinder",
-        },
-        step: page.howTo.steps.map((s, idx) => ({
-          "@type": "HowToStep",
-          position: idx + 1,
-          name: s.name,
-          text: s.text,
-        })),
-      });
-    }
-
-    if (page.faq?.length) {
-      graph.push({
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: page.faq.map((q) => ({
-          "@type": "Question",
-          name: q.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: q.answer,
-          },
-        })),
-      });
-    }
-
-    return {
-      "@context": "https://schema.org",
-      "@graph": graph,
-    };
-  }, [page]);
+  const meta = useMemo(() => generateMetaTags(page), [page]);
+  const schema = useMemo(() => generateSchemaGraph(page), [page]);
+  const breadcrumbs = useMemo(() => generateBreadcrumbs(page), [page]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-sky-50">
       <Helmet>
-        <title>{page.title}</title>
-        <meta name="description" content={page.description} />
-        <link rel="canonical" href={getSeoUrl(page.path)} />
-        <meta property="og:title" content={page.title} />
-        <meta property="og:description" content={page.description} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={getSeoUrl(page.path)} />
-        <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={page.title} />
-        <meta name="twitter:description" content={page.description} />
-        <meta name="twitter:image" content="https://trainpace.com/landing-page-2025.png" />
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+        <title>{meta.title}</title>
+        <meta name="description" content={meta.description} />
+        <link rel="canonical" href={meta.canonical} />
+
+        {/* Open Graph */}
+        <meta property="og:title" content={meta.openGraph.title} />
+        <meta property="og:description" content={meta.openGraph.description} />
+        <meta property="og:type" content={meta.openGraph.type} />
+        <meta property="og:url" content={meta.openGraph.url} />
+        <meta property="og:image" content={meta.openGraph.image} />
+        <meta property="og:site_name" content={meta.openGraph.siteName} />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content={meta.twitter.card} />
+        <meta name="twitter:title" content={meta.twitter.title} />
+        <meta name="twitter:description" content={meta.twitter.description} />
+        <meta name="twitter:image" content={meta.twitter.image} />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">{JSON.stringify(schema)}</script>
       </Helmet>
+
+      {/* Breadcrumb Navigation */}
+      <BreadcrumbNav items={breadcrumbs} />
 
       <section className="px-4 sm:px-6 pt-10 pb-16">
         <div className="max-w-4xl mx-auto">

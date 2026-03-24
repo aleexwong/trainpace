@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Trash2, Copy, Flame, ChevronDown, ChevronUp } from "lucide-react";
 import { FuelPlan } from "../types";
+import { formatTimestamp, formatDuration } from "@/lib/format-utils";
 
 interface FuelPlanCardProps {
   plan: FuelPlan;
@@ -10,24 +11,6 @@ interface FuelPlanCardProps {
 
 export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
   const [expanded, setExpanded] = useState(false);
-
-  const formatDate = (timestamp: any) => {
-    if (!timestamp) return "Unknown";
-    try {
-      return timestamp.toDate().toLocaleDateString();
-    } catch {
-      return "Unknown";
-    }
-  };
-
-  const formatTime = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = Math.round(minutes % 60);
-    if (hours > 0) {
-      return `${hours}h ${mins}m`;
-    }
-    return `${mins}m`;
-  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
@@ -46,7 +29,7 @@ export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
             )}
           </div>
           <p className="text-sm text-gray-500">
-            {formatDate(plan.createdAt)} • {formatTime(plan.finishTime)}
+            {formatTimestamp(plan.createdAt)} • {formatDuration(plan.finishTime)}
           </p>
         </div>
         <button

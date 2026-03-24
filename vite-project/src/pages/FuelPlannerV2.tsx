@@ -93,7 +93,7 @@ const FUEL_CONTEXT_PRESETS = [
 const FuelPlannerV2 = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  
+
   // Handle auto-save of pending plan after signup
   usePendingFuelPlan();
 
@@ -122,7 +122,7 @@ const FuelPlannerV2 = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [showPhilosophy, setShowPhilosophy] = useState(false);
   const [selectedPresets, setSelectedPresets] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
   const [cooldownSeconds, setCooldownSeconds] = useState(0);
   const [showPromptModal, setShowPromptModal] = useState(false);
@@ -142,7 +142,7 @@ const FuelPlannerV2 = () => {
   }, [cooldownSeconds]);
 
   const parseExpandableRecommendations = (
-    text: string
+    text: string,
   ): Array<{ headline: string; detail: string }> => {
     const recommendations: Array<{ headline: string; detail: string }> = [];
 
@@ -275,7 +275,7 @@ const FuelPlannerV2 = () => {
 
       if (response.success && response.refinedAdvice) {
         const recommendations = parseExpandableRecommendations(
-          response.refinedAdvice
+          response.refinedAdvice,
         );
 
         if (recommendations.length > 0) {
@@ -494,7 +494,7 @@ const FuelPlannerV2 = () => {
       selectedPresets: Array.from(selectedPresets),
     };
 
-    sessionStorage.setItem('pending_fuel_plan', JSON.stringify(planData));
+    sessionStorage.setItem("pending_fuel_plan", JSON.stringify(planData));
 
     ReactGA.event({
       category: "Fuel Planner",
@@ -503,7 +503,7 @@ const FuelPlannerV2 = () => {
     });
 
     // Redirect to signup with return params
-    navigate('/register?returnTo=/fuel&savePlan=true');
+    navigate("/register?returnTo=/fuel&savePlan=true");
   };
 
   const handleSaveToDashboard = async () => {
@@ -533,8 +533,7 @@ const FuelPlannerV2 = () => {
         gelsNeeded: result.gelsNeeded,
         userContext: userContext || null,
         selectedPresets: Array.from(selectedPresets),
-        aiRecommendations:
-          aiAdvice.length > 0 ? aiAdvice : null,
+        aiRecommendations: aiAdvice.length > 0 ? aiAdvice : null,
         createdAt: serverTimestamp(),
       });
 
@@ -565,7 +564,9 @@ const FuelPlannerV2 = () => {
   return (
     <>
       <Helmet>
-        <title>Marathon Fuel Calculator – How Many Gels Do You Need? | TrainPace</title>
+        <title>
+          Marathon Fuel Calculator – How Many Gels Do You Need? | TrainPace
+        </title>
         <meta
           name="description"
           content="Calculate exactly how many gels you need for your marathon or half marathon. Get a personalized fueling schedule with carb targets and timing recommendations."
@@ -613,6 +614,26 @@ const FuelPlannerV2 = () => {
                 position: 5,
                 name: "Get AI recommendations (optional)",
                 text: "Add context about your situation (GI issues, hot weather, etc.) and get personalized AI advice.",
+              },
+            ],
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://trainpace.com/",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Fuel Planner",
+                item: "https://trainpace.com/fuel",
               },
             ],
           })}
@@ -687,8 +708,8 @@ const FuelPlannerV2 = () => {
                           {type === "10K"
                             ? "10K"
                             : type === "Half"
-                            ? "Half Marathon"
-                            : "Full Marathon"}
+                              ? "Half Marathon"
+                              : "Full Marathon"}
                         </button>
                       ))}
                     </div>
@@ -905,8 +926,8 @@ const FuelPlannerV2 = () => {
                                   .map(
                                     (id) =>
                                       FUEL_CONTEXT_PRESETS.find(
-                                        (p) => p.id === id
-                                      )?.value
+                                        (p) => p.id === id,
+                                      )?.value,
                                   )
                                   .filter(Boolean)
                                   .join(" ");
@@ -1248,6 +1269,32 @@ const FuelPlannerV2 = () => {
                 </CardContent>
               </Card>
             )}
+
+            <Card className="mt-8 bg-white">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Complete Your Race-Day Execution
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Pair your fuel plan with a realistic pace strategy and course
+                  elevation analysis.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href="/calculator"
+                    className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+                  >
+                    Calculate Training Paces
+                  </a>
+                  <a
+                    href="/elevationfinder"
+                    className="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-black transition-colors"
+                  >
+                    Analyze Course Elevation
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
@@ -1286,7 +1333,7 @@ const FuelPlannerV2 = () => {
                         totalCalories: result.totalCalories,
                         gelsNeeded: result.gelsNeeded,
                       },
-                      userContext || "[Your situation will be inserted here]"
+                      userContext || "[Your situation will be inserted here]",
                     );
                     try {
                       await navigator.clipboard.writeText(promptText);
@@ -1319,7 +1366,7 @@ const FuelPlannerV2 = () => {
                         totalCalories: result.totalCalories,
                         gelsNeeded: result.gelsNeeded,
                       },
-                      userContext || "[Your situation will be inserted here]"
+                      userContext || "[Your situation will be inserted here]",
                     );
                     const blob = new Blob([promptText], { type: "text/plain" });
                     const url = URL.createObjectURL(blob);
@@ -1376,7 +1423,7 @@ const FuelPlannerV2 = () => {
                       totalCalories: result.totalCalories,
                       gelsNeeded: result.gelsNeeded,
                     },
-                    userContext || "[Your situation will be inserted here]"
+                    userContext || "[Your situation will be inserted here]",
                   )}
                 </pre>
               </div>

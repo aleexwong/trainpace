@@ -57,7 +57,7 @@ export default function FAQ() {
           }
         });
       },
-      { rootMargin: "-20% 0px -70% 0px" }
+      { rootMargin: "-20% 0px -70% 0px" },
     );
 
     faqData.sections.forEach((section) => {
@@ -71,7 +71,7 @@ export default function FAQ() {
   // Get current section title for dropdown display
   const getActiveSectionTitle = () => {
     const section = faqData.sections.find(
-      (s) => getSectionId(s.title) === activeSection
+      (s) => getSectionId(s.title) === activeSection,
     );
     return section?.title || "Select a section";
   };
@@ -88,20 +88,45 @@ export default function FAQ() {
           "@type": "Answer",
           text: q.answer,
         },
-      }))
+      })),
     ),
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://trainpace.com/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "FAQ",
+        item: "https://trainpace.com/faq",
+      },
+    ],
   };
 
   return (
     <div className="bg-white text-gray-900 min-h-screen">
       <Helmet>
-        <title>FAQ - Running Pace Calculator, GPX Analysis & Fuel Planning | TrainPace</title>
+        <title>
+          FAQ - Running Pace Calculator, GPX Analysis & Fuel Planning |
+          TrainPace
+        </title>
         <meta
           name="description"
           content="Answers to common questions about TrainPace: VDOT pace calculator, GPX elevation analysis, marathon fuel planning, training zones, and more. Free tools for self-coached runners."
         />
         <link rel="canonical" href="https://trainpace.com/faq" />
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbSchema)}
+        </script>
       </Helmet>
 
       {/* Header */}
@@ -254,6 +279,20 @@ export default function FAQ() {
             >
               <span className="mr-2">🧮</span>
               Try the Calculator
+            </a>
+            <a
+              href="/elevationfinder"
+              className="inline-flex items-center px-6 py-3 border-2 border-emerald-600 text-emerald-700 rounded-lg hover:bg-emerald-600 hover:text-white transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
+            >
+              <span className="mr-2">🗻</span>
+              Analyze Elevation
+            </a>
+            <a
+              href="/fuel"
+              className="inline-flex items-center px-6 py-3 border-2 border-amber-600 text-amber-700 rounded-lg hover:bg-amber-600 hover:text-white transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
+            >
+              <span className="mr-2">⚡</span>
+              Build Fuel Plan
             </a>
           </div>
         </div>

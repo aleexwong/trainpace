@@ -87,6 +87,13 @@ features/[feature-name]/
 - **Type-Safe Forms**: Zod schemas + React Hook Form for validation
 - **Custom Hooks**: Business logic separated from UI components
 
+### Shared Utilities & Hooks
+- `src/lib/format-utils.ts` - `formatTimestamp()` (Firestore timestamp → date string), `formatDuration()` (minutes → "Xh Ym")
+- `src/hooks/usePlanPersistence.ts` - Generic hook for saving plans to Firebase and handling guest redirects. Used by `usePacePlanPersistence` and `useFuelPlanPersistence`.
+- `src/hooks/useFirestoreCollection.ts` - Generic hook for loading Firestore collections by userId with optional client-side sorting. Used by `usePacePlans` and `useFuelPlans`.
+- `src/hooks/useClipboardAndDownload.ts` - `useCopyToClipboard()` and `useDownloadAsFile()` hooks with toast feedback and GA tracking.
+- `src/components/PlanDialog.tsx` - Unified save/edit plan dialog with `mode: "save" | "edit"` prop.
+
 ## Key Files
 
 - `src/App.tsx` - Root component with route configuration
@@ -128,6 +135,10 @@ VITE_MAPBOX_TOKEN
 1. Create feature folder in `src/features/[feature-name]/`
 2. Add components, hooks, types as needed
 3. Export public API from `index.ts`
+4. For plan saving: wrap `usePlanPersistence` from `src/hooks/` with feature-specific config
+5. For dashboard loading: wrap `useFirestoreCollection` from `src/hooks/` with feature-specific types
+6. For clipboard/download: use `useCopyToClipboard` / `useDownloadAsFile` from `src/hooks/`
+7. For Firestore timestamps: use `formatTimestamp` from `src/lib/format-utils.ts`
 
 ### Adding a shadcn/ui component
 Components are already set up. Copy new components from shadcn/ui docs into `src/components/ui/`.

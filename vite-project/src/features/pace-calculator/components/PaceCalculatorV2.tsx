@@ -12,11 +12,12 @@ import { usePendingPacePlan } from "@/hooks/usePendingPacePlan";
 import ReactGA from "react-ga4";
 
 import type { PaceInputs, PaceResults, FormErrors, PaceUnit } from "../types";
+import { useCopyToClipboard, useDownloadAsFile } from "@/hooks/useClipboardAndDownload";
 import { usePaceCalculation } from "../hooks/usePaceCalculation";
 import { usePacePlanPersistence } from "../hooks/usePacePlanPersistence";
 import { RaceDetailsForm } from "./RaceDetailsForm";
 import { PaceResultsDisplay } from "./PaceResultsDisplay";
-import { SavePlanDialog } from "./SavePlanDialog";
+import { PlanDialog } from "@/components/PlanDialog";
 
 const initialFormState: PaceInputs = {
   distance: "",
@@ -61,6 +62,10 @@ export function PaceCalculatorV2({
   // Persistence hook for saving plans
   const { isSaving, isSaved, saveToDashboard, resetSaveState } =
     usePacePlanPersistence();
+
+  // Clipboard/download hooks
+  const { copyToClipboard } = useCopyToClipboard();
+  const { downloadAsFile } = useDownloadAsFile();
 
   // Auto-update results when pace type changes
   useEffect(() => {
@@ -172,59 +177,34 @@ export function PaceCalculatorV2({
     });
   };
 
-  const handleCopy = async () => {
-    if (!results) return;
-
+  const buildPlanText = () => {
+    if (!results) return "";
     const raceInfo = `${inputs.distance}${inputs.units} in ${inputs.hours}:${inputs.minutes}:${inputs.seconds}`;
     let text = `Training Paces for ${raceInfo}\n\n`;
-
     Object.entries(results).forEach(([key, value]) => {
       const displayName = key === "xlong" ? "Long Run" : key;
       text += `${
         displayName.charAt(0).toUpperCase() + displayName.slice(1)
       }: ${value}\n`;
     });
+    return text;
+  };
 
-    try {
-      await navigator.clipboard.writeText(text);
-      toast({ title: "Copied to clipboard! 📋" });
-
-      ReactGA.event({
-        category: "Pace Calculator",
-        action: "Copied Plan",
-      });
-    } catch {
-      toast({ title: "Failed to copy", variant: "destructive" });
-    }
+  const handleCopy = async () => {
+    if (!results) return;
+    await copyToClipboard(buildPlanText(), {
+      category: "Pace Calculator",
+      action: "Copied Plan",
+    });
   };
 
   const handleDownload = () => {
     if (!results) return;
-
-    const raceInfo = `${inputs.distance}${inputs.units} in ${inputs.hours}:${inputs.minutes}:${inputs.seconds}`;
-    let text = `Training Paces for ${raceInfo}\n\n`;
-
-    Object.entries(results).forEach(([key, value]) => {
-      const displayName = key === "xlong" ? "Long Run" : key;
-      text += `${
-        displayName.charAt(0).toUpperCase() + displayName.slice(1)
-      }: ${value}\n`;
-    });
-
-    const blob = new Blob([text], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `training-paces-${inputs.distance}${inputs.units}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-
-    toast({ title: "Download started! 💾" });
-
-    ReactGA.event({
-      category: "Pace Calculator",
-      action: "Downloaded Plan",
-    });
+    downloadAsFile(
+      buildPlanText(),
+      `training-paces-${inputs.distance}${inputs.units}.txt`,
+      { category: "Pace Calculator", action: "Downloaded Plan" }
+    );
   };
 
   const handleSave = async () => {
@@ -235,7 +215,7 @@ export function PaceCalculatorV2({
   const handleSaveConfirm = async (
     planName?: string,
     notes?: string,
-    raceDate?: string
+    raceDate?: string,
   ) => {
     if (!results) return;
 
@@ -262,7 +242,9 @@ export function PaceCalculatorV2({
     <>
       {seoMode !== "none" && (
         <Helmet>
-          <title>Running Pace Calculator – VDOT Training Zones | TrainPace</title>
+          <title>
+            Running Pace Calculator – VDOT Training Zones | TrainPace
+          </title>
           <meta
             name="description"
             content="Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s and race predictor."
@@ -304,6 +286,26 @@ export function PaceCalculatorV2({
                   position: 4,
                   name: "Save your plan (optional)",
                   text: "Save your training paces to your dashboard for easy reference during workouts.",
+                },
+              ],
+            })}
+          </script>
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: "https://trainpace.com/",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Pace Calculator",
+                  item: "https://trainpace.com/calculator",
                 },
               ],
             })}
@@ -430,11 +432,38 @@ export function PaceCalculatorV2({
                 </CardContent>
               </Card>
             )}
+
+            <Card className="mt-8 bg-white">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Build Your Full Race Plan
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  After setting your training paces, analyze your route profile
+                  and create a race-day fueling plan.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href="/elevationfinder"
+                    className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+                  >
+                    Analyze Course Elevation
+                  </a>
+                  <a
+                    href="/fuel"
+                    className="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-black transition-colors"
+                  >
+                    Plan Your Fuel Strategy
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
 
         {/* Save Plan Dialog */}
-        <SavePlanDialog
+        <PlanDialog
+          mode="save"
           isOpen={showSaveDialog}
           onClose={() => setShowSaveDialog(false)}
           onSave={handleSaveConfirm}

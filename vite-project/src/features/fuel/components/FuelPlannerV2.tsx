@@ -20,6 +20,7 @@ import {
 } from "../hooks/useFuelCalculation";
 import { useAIRecommendations } from "../hooks/useAIRecommendations";
 import { useFuelPlanPersistence } from "../hooks/useFuelPlanPersistence";
+import { useCopyToClipboard, useDownloadAsFile } from "@/hooks/useClipboardAndDownload";
 import { RaceDetailsForm } from "./RaceDetailsForm";
 import { FuelPlanResults } from "./FuelPlanResults";
 import { FuelPlanPlaceholder } from "./FuelPlanPlaceholder";
@@ -103,6 +104,10 @@ export function FuelPlannerV2({ seoMode = "default" }: FuelPlannerV2Props) {
   const { isSaving, isSaved, saveToDashboard, resetSaveState } =
     useFuelPlanPersistence();
 
+  // Clipboard/download hooks
+  const { copyToClipboard } = useCopyToClipboard();
+  const { downloadAsFile } = useDownloadAsFile();
+
   // Handlers
   const handleCalculate = () => {
     if (calculationError) {
@@ -135,18 +140,15 @@ export function FuelPlannerV2({ seoMode = "default" }: FuelPlannerV2Props) {
     setFeedbackGiven(false);
   };
 
-  const handleCopy = async () => {
-    if (!result) return;
-
+  const buildFuelPlanText = () => {
+    if (!result) return "";
     let text = `Fuel Plan for ${raceType}\n\nCarbs/hr: ${result.carbsPerHour}g\nTotal Carbs: ${result.totalCarbs}g\nCalories: ${result.totalCalories} kcal\nGels: ${result.gelsNeeded}`;
-
     if (result.fuelStops.length > 0) {
       text += `\n\n--- Fueling Timeline ---\n`;
       result.fuelStops.forEach((stop, idx) => {
         text += `\n${idx + 1}. ${stop.time} (${stop.distance}) - ${stop.carbsNeeded}g: ${stop.suggestion}`;
       });
     }
-
     if (recommendations.length > 0) {
       text += `\n\n--- AI Recommendations ---\n`;
       recommendations.forEach((rec, idx) => {
@@ -156,58 +158,25 @@ export function FuelPlannerV2({ seoMode = "default" }: FuelPlannerV2Props) {
         }
       });
     }
+    return text;
+  };
 
-    try {
-      await navigator.clipboard.writeText(text);
-      toast({ title: "Copied to clipboard!" });
-
-      ReactGA.event({
-        category: "Fuel Planner",
-        action: "Copied Plan",
-        label: raceType,
-      });
-    } catch {
-      toast({ title: "Failed to copy", variant: "destructive" });
-    }
+  const handleCopy = async () => {
+    if (!result) return;
+    await copyToClipboard(buildFuelPlanText(), {
+      category: "Fuel Planner",
+      action: "Copied Plan",
+      label: raceType,
+    });
   };
 
   const handleDownload = () => {
     if (!result) return;
-
-    let text = `Fuel Plan for ${raceType}\n\nCarbs/hr: ${result.carbsPerHour}g\nTotal Carbs: ${result.totalCarbs}g\nCalories: ${result.totalCalories} kcal\nGels: ${result.gelsNeeded}`;
-
-    if (result.fuelStops.length > 0) {
-      text += `\n\n--- Fueling Timeline ---\n`;
-      result.fuelStops.forEach((stop, idx) => {
-        text += `\n${idx + 1}. ${stop.time} (${stop.distance}) - ${stop.carbsNeeded}g: ${stop.suggestion}`;
-      });
-    }
-
-    if (recommendations.length > 0) {
-      text += `\n\n--- AI Recommendations ---\n`;
-      recommendations.forEach((rec, idx) => {
-        text += `\n${idx + 1}. ${rec.headline}`;
-        if (rec.detail) {
-          text += `\n   ${rec.detail}`;
-        }
-      });
-    }
-
-    const blob = new Blob([text], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `fuel-plan-${raceType.toLowerCase()}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-
-    toast({ title: "Download started!" });
-
-    ReactGA.event({
-      category: "Fuel Planner",
-      action: "Downloaded Plan",
-      label: raceType,
-    });
+    downloadAsFile(
+      buildFuelPlanText(),
+      `fuel-plan-${raceType.toLowerCase()}.txt`,
+      { category: "Fuel Planner", action: "Downloaded Plan", label: raceType }
+    );
   };
 
   const handleFeedback = (helpful: boolean) => {
