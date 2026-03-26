@@ -50,8 +50,8 @@ function validateInputs(inputs: VdotInputs): {
     errors.time = "Please enter a valid finish time";
   }
 
-  if (m >= 60 || s >= 60) {
-    errors.time = "Invalid time format";
+  if (s >= 60) {
+    errors.time = "Seconds must be less than 60";
   }
 
   return { isValid: Object.keys(errors).length === 0, errors };
@@ -197,9 +197,8 @@ export function useVdotCalculator() {
     if (!inputs.distanceMeters || inputs.distanceMeters <= 0 || totalSeconds <= 0) {
       return null;
     }
-    const m = parseInt(inputs.minutes || "0");
     const s = parseInt(inputs.seconds || "0");
-    if (m >= 60 || s >= 60) return null;
+    if (s >= 60) return null;
 
     const vdot = calculateVdot(inputs.distanceMeters, totalSeconds);
     if (!isFinite(vdot) || vdot < 1 || vdot > 120) return null;
@@ -212,7 +211,8 @@ export function useVdotCalculator() {
   }, []);
 
   const handleTimeChange = useCallback((field: "hours" | "minutes" | "seconds", value: string) => {
-    const numValue = value.replace(/\D/g, "").slice(0, 2);
+    const maxDigits = field === "minutes" ? 3 : 2;
+    const numValue = value.replace(/\D/g, "").slice(0, maxDigits);
     setInputs((prev) => ({ ...prev, [field]: numValue }));
     setErrors((prev) => ({ ...prev, time: undefined }));
   }, []);

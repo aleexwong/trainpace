@@ -43,16 +43,14 @@ export function TimeInput({
     (field: "hours" | "minutes" | "seconds", value: string) => {
       onTimeChange(field, value);
 
-      // Auto-advance: when 2 digits typed, move to next field
-      const cleaned = value.replace(/\D/g, "").slice(0, 2);
-      if (cleaned.length === 2) {
-        if (field === "hours") {
-          minutesRef.current?.focus();
-          minutesRef.current?.select();
-        } else if (field === "minutes") {
-          secondsRef.current?.focus();
-          secondsRef.current?.select();
-        }
+      // Auto-advance: hours at 2 digits, minutes at 3 digits, seconds stays
+      const cleaned = value.replace(/\D/g, "");
+      if (field === "hours" && cleaned.length === 2) {
+        minutesRef.current?.focus();
+        minutesRef.current?.select();
+      } else if (field === "minutes" && cleaned.length === 3) {
+        secondsRef.current?.focus();
+        secondsRef.current?.select();
       }
     },
     [onTimeChange]
@@ -89,7 +87,7 @@ export function TimeInput({
         <span className="text-3xl font-bold text-gray-300 pb-5">:</span>
 
         {/* Minutes */}
-        <div className="w-20 sm:w-24">
+        <div className="w-24 sm:w-28">
           <input
             ref={minutesRef}
             type="text"
