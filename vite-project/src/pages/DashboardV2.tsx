@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { useSearchParams } from "react-router-dom";
 import { useAuth } from "../features/auth/AuthContext";
 import { useToast } from "../hooks/use-toast";
 import { EditPlanDialog } from "../components/EditPlanDialog";
@@ -22,13 +23,31 @@ import {
   PacePlan,
   FuelPlan,
 } from "../features/dashboard";
+import {
+  StravaConnectButton,
+  StravaActivitiesSection,
+  useStravaAuth,
+  useStravaActivities,
+} from "../features/strava";
 
 export default function DashboardV2() {
-  const [activeTab, setActiveTab] = useState<DashboardTab>("routes");
+  const [searchParams] = useSearchParams();
+  const initialTab = (searchParams.get("tab") as DashboardTab) ?? "routes";
+  const [activeTab, setActiveTab] = useState<DashboardTab>(initialTab);
   const [editingPlan, setEditingPlan] = useState<PacePlan | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const { user } = useAuth();
   const { toast } = useToast();
+
+  // Sync tab from URL on mount (e.g. redirect from /strava/callback)
+  useEffect(() => {
+    const tab = searchParams.get("tab") as DashboardTab | null;
+    if (tab) setActiveTab(tab);
+  }, [searchParams]);
+
+  // Strava integration
+  const stravaAuth = useStravaAuth();
+  const stravaActivitiesState = useStravaActivities(stravaAuth);
 
   // Load data using custom hooks
   const {
@@ -264,6 +283,21 @@ export default function DashboardV2() {
           >
             Fuel Plans ({hasActiveSearch ? filteredFuelPlans.length : fuelPlans.length})
           </button>
+          <button
+            onClick={() => setActiveTab("strava")}
+            className={`px-4 py-2 rounded-md font-medium transition-all ${
+              activeTab === "strava"
+                ? "text-black"
+                : "bg-white shadow-sm"
+            }`}
+            style={
+              activeTab === "strava"
+                ? { backgroundColor: "#FC4C02", color: "white" }
+                : { color: "#FC4C02" }
+            }
+          >
+            Strava
+          </button>
         </div>
       </div>
 
@@ -300,6 +334,35 @@ export default function DashboardV2() {
           onDeletePlan={handleDeleteFuelPlan}
           onCopyPlan={handleCopyFuelPlan}
         />
+      )}
+
+      {activeTab === "strava" && (
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-800">Strava</h2>
+              <p className="text-sm text-gray-500">
+                Import activities, sync VDOT, and pull routes from Strava.
+              </p>
+            </div>
+            <StravaConnectButton stravaAuth={stravaAuth} />
+          </div>
+
+          {stravaAuth.isConnected && (
+            <StravaActivitiesSection
+              rawActivities={stravaActivitiesState.rawActivities}
+              activitiesState={stravaActivitiesState}
+            />
+          )}
+
+          {!stravaAuth.isConnected && !stravaAuth.loading && (
+            <div className="rounded-lg border-2 border-dashed border-gray-200 py-12 text-center">
+              <p className="text-gray-500 text-sm">
+                Connect your Strava account to see your activities here.
+              </p>
+            </div>
+          )}
+        </div>
       )}
 
       {/* Edit Plan Dialog */}

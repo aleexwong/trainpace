@@ -30,6 +30,7 @@ import Terms from "./pages/Terms";
 import About from "./pages/About";
 import DashboardV2 from "./pages/DashboardV2";
 import VdotCalculatorPage from "./pages/VdotCalculatorPage";
+import StravaCallback from "./pages/StravaCallback";
 import { BlogList, BlogPost } from "./features/blog";
 import AuthGuard from "./features/auth/AuthGuard";
 
@@ -76,6 +77,7 @@ function App() {
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/reset-confirmed" element={<ResetConfirmed />} />
             <Route path="/settings" element={<AuthGuard><Settings /></AuthGuard>} />
+            <Route path="/strava/callback" element={<AuthGuard><StravaCallback /></AuthGuard>} />
             <Route path="/faq" element={<FAQ />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
