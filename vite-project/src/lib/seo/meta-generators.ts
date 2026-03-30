@@ -170,27 +170,27 @@ export function generateMetaTags(
 export function generateToolMetaTags(tool: SeoToolType): MetaTags {
   const toolMeta: Record<SeoToolType, { title: string; description: string; path: string }> = {
     pace: {
-      title: 'Running Pace Calculator - VDOT Training Zones | TrainPace',
+      title: 'Running Pace Calculator – VDOT Training Zones, Easy to Tempo Pace | TrainPace',
       description:
-        'Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes race predictor and pace charts.',
+        'Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s, race predictor for 5K to marathon, and printable pace charts.',
       path: '/calculator',
     },
     fuel: {
-      title: 'Marathon Fuel Calculator - Gels & Carbs/Hour | TrainPace',
+      title: 'Marathon Fuel Calculator – How Many Gels & When to Take Them | TrainPace',
       description:
-        'Calculate how many gels you need for your marathon or half marathon. Get a personalized fueling schedule with carb targets and timing recommendations.',
+        'Calculate exactly how many gels you need for your marathon or half marathon. Get a personalized fueling schedule with 60-90g/hr carb targets, timing recommendations, and avoid hitting the wall.',
       path: '/fuel',
     },
     elevation: {
-      title: 'GPX Elevation Profile Viewer - Free Route Analysis | TrainPace',
+      title: 'GPX Elevation Profile Viewer – Free Route Analysis & Climb Stats | TrainPace',
       description:
-        'Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty on an interactive map.',
+        'Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty on an interactive map. Analyze marathon courses before race day.',
       path: '/elevationfinder',
     },
     race: {
-      title: 'Race Prep Pages - Pacing, Fueling & Strategy | TrainPace',
+      title: 'Race Prep Pages – Pacing, Fueling, Elevation Strategy | TrainPace',
       description:
-        'Race prep pages for popular running events. Plan pacing, fueling, and course strategy with free calculators and GPX elevation analysis.',
+        'Race prep pages for popular running events. Use TrainPace to plan pacing, fueling, and course strategy with free calculators and GPX elevation analysis.',
       path: '/race',
     },
     blog: {
@@ -231,7 +231,7 @@ export function generateToolMetaTags(tool: SeoToolType): MetaTags {
  * Generate meta tags for homepage
  */
 export function generateHomepageMetaTags(): MetaTags {
-  const title = 'TrainPace - Free Running Pace Calculator & Race Day Tools';
+  const title = 'TrainPace – Free Running Pace Calculator & Race Day Tools';
   const description =
     'Free running calculator for training paces, race fueling, and GPX elevation analysis. Get VDOT-based pace zones, plan how many gels to carry, and preview marathon course profiles.';
   const url = BASE_URL;

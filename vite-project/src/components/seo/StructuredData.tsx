@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { BASE_URL } from "@/lib/seo";
 
 interface StructuredDataProps {
   type: "Organization" | "WebSite" | "WebPage" | "SoftwareApplication";
@@ -17,7 +18,7 @@ interface StructuredDataProps {
 }
 
 export default function StructuredData(props: StructuredDataProps) {
-  const baseUrl = "https://www.trainpace.com";
+  const baseUrl = BASE_URL;
 
   const getStructuredData = () => {
     switch (props.type) {

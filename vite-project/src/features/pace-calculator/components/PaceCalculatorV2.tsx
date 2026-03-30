@@ -10,6 +10,11 @@ import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { usePendingPacePlan } from "@/hooks/usePendingPacePlan";
 import ReactGA from "react-ga4";
+import {
+  generateHelmetProps,
+  generateSoftwareApplicationSchema,
+  generateToolMetaTags,
+} from "@/lib/seo";
 
 import type { PaceInputs, PaceResults, FormErrors, PaceUnit } from "../types";
 import { usePaceCalculation } from "../hooks/usePaceCalculation";
@@ -33,6 +38,9 @@ export interface PaceCalculatorV2Props {
   seoMode?: "default" | "none";
   initialInputs?: Partial<PaceInputs>;
 }
+
+const paceHelmetProps = generateHelmetProps(generateToolMetaTags("pace"));
+const paceSoftwareApplicationSchema = generateSoftwareApplicationSchema("pace");
 
 export function PaceCalculatorV2({
   seoMode = "default",
@@ -261,13 +269,14 @@ export function PaceCalculatorV2({
   return (
     <>
       {seoMode !== "none" && (
-        <Helmet>
-          <title>Running Pace Calculator – VDOT Training Zones | TrainPace</title>
-          <meta
-            name="description"
-            content="Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s and race predictor."
-          />
-          <link rel="canonical" href="https://trainpace.com/calculator" />
+        <Helmet
+          title={paceHelmetProps.title}
+          meta={paceHelmetProps.meta}
+          link={paceHelmetProps.link}
+        >
+          <script type="application/ld+json">
+            {JSON.stringify(paceSoftwareApplicationSchema)}
+          </script>
           <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",
