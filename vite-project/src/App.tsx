@@ -24,6 +24,7 @@ import CalculatorSeoLanding from "./pages/CalculatorSeoLanding";
 import FuelSeoLanding from "./pages/FuelSeoLanding";
 import ElevationGuidesSeoLanding from "./pages/ElevationGuidesSeoLanding";
 import RaceSeoLanding from "./pages/RaceSeoLanding";
+import RaceComparisonPage from "./pages/RaceComparisonPage";
 import RaceIndex from "./pages/RaceIndex";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -52,6 +53,7 @@ function App() {
           <Route path="/fuel/:seoSlug" element={<FuelSeoLanding />} />
           <Route path="/vdot" element={<VdotCalculatorPage />} />
           <Route path="/race" element={<RaceIndex />} />
+          <Route path="/race/compare/:compareSlug" element={<RaceComparisonPage />} />
           <Route path="/race/:raceSlug" element={<RaceSeoLanding />} />
           <Route path="/elevation-finder" element={<ElevationPage />} />
           <Route
