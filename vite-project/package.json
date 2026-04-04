@@ -14,9 +14,11 @@
     "generate-pwa-assets": "pwa-assets-generator",
     "host": "vite --host",
     "seed-boston": "vite-node scripts/seedBostonMarathon.ts",
-    "test-gemini": "vite-node scripts/testGemini.ts"
+    "test-gemini": "vite-node scripts/testGemini.ts",
+    "generate-blog": "vite-node scripts/generateBlogPost.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.82.0",
     "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-dialog": "^1.1.2",
