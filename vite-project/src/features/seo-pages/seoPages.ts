@@ -2254,6 +2254,15 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
 ];
 
 // =============================================================================
+// Blog SEO Pages
+// Auto-generated entries are appended here by scripts/generateBlogPost.ts
+// =============================================================================
+
+export const blogSeoPages: SeoPageConfig[] = [
+  // Generated blog PSEO entries will be inserted above this comment
+];
+
+// =============================================================================
 // Lookup Maps
 // =============================================================================
 
@@ -2265,6 +2274,7 @@ export const elevationGuideSeoPageMap = new Map(
   elevationGuideSeoPages.map((p) => [p.slug, p])
 );
 export const raceSeoPageMap = new Map(raceSeoPages.map((p) => [p.slug, p]));
+export const blogSeoPageMap = new Map(blogSeoPages.map((p) => [p.slug, p]));
 
 // =============================================================================
 // Combined Exports
@@ -2279,6 +2289,7 @@ export function getAllSeoPaths(): string[] {
     ...fuelSeoPages.map((p) => p.path),
     ...elevationGuideSeoPages.map((p) => p.path),
     ...raceSeoPages.map((p) => p.path),
+    ...blogSeoPages.map((p) => p.path),
   ];
 }
 
@@ -2291,6 +2302,7 @@ export function getAllSeoPages(): SeoPageConfig[] {
     ...fuelSeoPages,
     ...elevationGuideSeoPages,
     ...raceSeoPages,
+    ...blogSeoPages,
   ];
 }
 
