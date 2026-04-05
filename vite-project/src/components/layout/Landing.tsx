@@ -618,7 +618,7 @@ const FounderStory = () => {
           <div className="relative lg:h-full flex items-center justify-center lg:justify-end mt-12 lg:mt-0">
             {/* 1. The Runner Image (Anchors the design) */}
             <div className="relative w-full max-w-md rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl rotate-2 hover:rotate-0 transition-all duration-500 group">
-              <div className="absolute inset-0 bg-slate-900 z-10 opacity-45" />
+              <div className="absolute inset-0 bg-slate-900 z-10 opacity-60" />
               <img
                 src="https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?q=80&w=1000&auto=format&fit=crop"
                 alt="Alex running"
