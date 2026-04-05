@@ -363,7 +363,7 @@ const FeatureSection = ({
           <div className="flex-1 w-full">
             <div className="bg-slate-100 rounded-2xl p-8 aspect-[4/3] flex items-center justify-center relative overflow-hidden shadow-inner">
               {/* Placeholder for Feature Visuals - In a real app these would be generic interactive components or screenshots */}
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-100 to-slate-200 opacity-50"></div>
+              <div className="absolute inset-0 bg-slate-200 opacity-50"></div>
               <div className="relative bg-white rounded-xl shadow-lg p-6 w-full max-w-sm border border-slate-200">
                 {badge === "Pace Calculator" && (
                   <div className="space-y-4">
@@ -463,7 +463,7 @@ const FeatureSection = ({
                       <span className="text-2xl font-bold text-blue-600">49.8</span>
                     </div>
                     <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
-                      <div className="absolute inset-y-0 left-0 w-[50%] bg-gradient-to-r from-emerald-400 via-blue-500 to-purple-500 rounded-full" />
+                      <div className="absolute inset-y-0 left-0 w-[50%] bg-blue-500 rounded-full" />
                     </div>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
@@ -618,7 +618,7 @@ const FounderStory = () => {
           <div className="relative lg:h-full flex items-center justify-center lg:justify-end mt-12 lg:mt-0">
             {/* 1. The Runner Image (Anchors the design) */}
             <div className="relative w-full max-w-md rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl rotate-2 hover:rotate-0 transition-all duration-500 group">
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10 opacity-60" />
+              <div className="absolute inset-0 bg-slate-900 z-10 opacity-45" />
               <img
                 src="https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?q=80&w=1000&auto=format&fit=crop"
                 alt="Alex running"
