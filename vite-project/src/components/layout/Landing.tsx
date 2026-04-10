@@ -124,7 +124,9 @@ const Hero = () => {
             <div
               className="relative rounded-2xl bg-white shadow-2xl border border-slate-200 overflow-hidden cursor-pointer hover:shadow-emerald-200 hover:border-emerald-300 transition-all duration-200 group"
               onClick={() => navigate("/race")}
+              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && navigate("/race")}
               role="link"
+              tabIndex={0}
               aria-label="Browse race courses"
             >
               <div className="bg-slate-50 px-4 py-3 border-b border-slate-200 flex items-center space-x-2">
