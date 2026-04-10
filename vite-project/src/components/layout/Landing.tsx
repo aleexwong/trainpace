@@ -100,7 +100,7 @@ const Hero = () => {
                 icon={ArrowRight}
                 onClick={() => navigate("/calculator")}
               >
-                Get Started Free
+                Get Started
               </Button>
               <Button variant="secondary" size="lg" onClick={scrollToFeatures}>
                 See How It Works
@@ -814,7 +814,7 @@ const CTA = () => {
             className="bg-white text-emerald-700 font-bold py-4 px-8 rounded-full hover:bg-emerald-50 transition shadow-xl"
             onClick={() => navigate("/calculator")}
           >
-            Get Started Free
+            Get Started
           </button>
           <button
             className="bg-emerald-700 text-white font-semibold py-4 px-8 rounded-full hover:bg-emerald-800 transition border border-emerald-500"
