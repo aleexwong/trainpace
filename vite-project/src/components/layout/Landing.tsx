@@ -146,7 +146,6 @@ const Hero = () => {
                     </div>
                     <div className="text-2xl font-bold text-slate-900">
                       Boston Marathon{" "}
-                      <span className="text-orange-500">Rolling Hills</span>
                     </div>
                   </div>
                   <div className="h-10 w-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
@@ -157,7 +156,7 @@ const Hero = () => {
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm font-medium">
                     <span className="text-slate-600">
-                      Boston Marathon Course
+                      Race Course Elevation
                     </span>
                     <span className="text-orange-500">Rolling Hills</span>
                   </div>
