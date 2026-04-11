@@ -80,7 +80,7 @@ const Hero = () => {
             <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-1.5 shadow-sm border border-emerald-100 mb-6">
               <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
               <span className="text-sm font-semibold text-emerald-800 tracking-wide uppercase">
-                Free forever for the basics
+                Made for runners by a runner
               </span>
             </div>
             <h1 className="text-4xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
@@ -121,29 +121,36 @@ const Hero = () => {
 
           {/* Visual / Dashboard Mockup */}
           <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
-            <div className="relative rounded-2xl bg-white shadow-2xl border border-slate-200 overflow-hidden">
+            <div
+              className="relative rounded-2xl bg-white shadow-2xl border border-slate-200 overflow-hidden cursor-pointer hover:shadow-emerald-200 hover:border-emerald-300 transition-all duration-200 group"
+              onClick={() => navigate("/race")}
+              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && navigate("/race")}
+              role="link"
+              tabIndex={0}
+              aria-label="Browse race courses"
+            >
               <div className="bg-slate-50 px-4 py-3 border-b border-slate-200 flex items-center space-x-2">
                 <div className="w-3 h-3 rounded-full bg-red-400"></div>
                 <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                 <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                <div className="ml-4 text-xs text-slate-400 font-mono">
-                  trainpace.com/dashboard
+                <div className="ml-4 text-xs text-slate-400 font-mono group-hover:text-emerald-600 transition-colors">
+                  trainpace.com/race
                 </div>
               </div>
               <div className="p-6 grid gap-6">
-                {/* Mock UI Elements */}
+                {/* Mock UI Elements - Race page preview */}
                 <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                   <div>
                     <div className="text-sm text-slate-500 font-medium uppercase">
-                      Next Long Run
+                      Race Courses
                     </div>
                     <div className="text-2xl font-bold text-slate-900">
-                      18 Miles{" "}
-                      <span className="text-emerald-600">@ 8:45/mi</span>
+                      Boston Marathon{" "}
+                      <span className="text-orange-500">Rolling Hills</span>
                     </div>
                   </div>
                   <div className="h-10 w-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
-                    <Activity size={20} />
+                    <Map size={20} />
                   </div>
                 </div>
 
@@ -259,8 +266,8 @@ const PainPoints = () => {
       solution: "Personalized gel timing and carb calculations.",
     },
     {
-      problem: "Coaches are expensive ($150+/mo).",
-      solution: "TrainPace is 100% free, forever.",
+      problem: "I want to know what pace I should be going per km.",
+      solution: "Get your exact per-km pace zones from any recent race time.",
     },
   ];
 
