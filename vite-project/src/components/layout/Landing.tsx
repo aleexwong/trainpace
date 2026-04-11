@@ -149,8 +149,8 @@ const Hero = () => {
 
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm font-medium">
-                    <span className="text-slate-600">Next Long Run</span>
-                    <span className="text-emerald-600">18 Miles @ 8:45/mi</span>
+                    <span className="text-slate-600">Boston Marathon</span>
+                    <span className="text-orange-500">Rolling Hills</span>
                   </div>
                   <div className="h-24 w-full bg-slate-50 rounded-lg border border-slate-100 relative flex items-end px-2 pb-2 gap-1 overflow-hidden">
                     {/* Fake elevation bars */}
