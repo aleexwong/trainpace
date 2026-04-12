@@ -11,7 +11,8 @@
  */
 
 import { useRef } from "react";
-import { Zap } from "lucide-react";
+import { Zap, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Tooltip,
@@ -313,12 +314,17 @@ export function RaceDetailsForm({
           </div>
         )}
 
-        {/* ── 5. Live VDOT badge ── */}
+        {/* ── 5. Live VDOT badge — links to full VDOT analysis ── */}
         {liveVdot != null && vdotLevel != null && (
-          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold ${vdotLevel.bg} ${vdotLevel.color}`}>
+          <Link
+            to="/vdot"
+            title="Open full VDOT analysis"
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold transition-opacity hover:opacity-80 ${vdotLevel.bg} ${vdotLevel.color}`}
+          >
             <Zap className="w-4 h-4" />
             VDOT {liveVdot} · {vdotLevel.label}
-          </div>
+            <ArrowRight className="w-3.5 h-3.5 ml-0.5 opacity-60" />
+          </Link>
         )}
 
         {/* ── 6. Optional adjustments ── */}
