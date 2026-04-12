@@ -235,6 +235,15 @@ Wrap the page component with `<AuthGuard>` in `src/App.tsx`.
 - `usePacePlanPersistence.ts` — localStorage + Firestore persistence
 - Types: `PaceInputs`, `PaceResults`, `DistanceUnit` (`'km' | 'miles'`), `PaceUnit`
 
+**UX features added April 2026 (Runna/Strava-style redesign):**
+- `SUGGESTED_TIMES` — contextual goal-time chips per preset distance (e.g. "Sub 3h", "3:30", "4:00" for Marathon). Tapping a chip fills HH:MM:SS and **auto-calculates** without a button press.
+- `SLIDER_RANGES` — per-distance min/max/step config; a fine-tune slider appears once a preset distance is selected and a valid time exists. Dragging rewrites the HH:MM:SS fields live.
+- **Live VDOT badge** — `⚡ VDOT 45.2 · Intermediate` updates in real time using `calculateVdot` imported from `@/features/vdot-calculator/vdot-math`.
+- **Auto-advance focus** HH → MM → SS after 2 digits typed.
+- `onPresetClick` now takes `(distance: number, presetName: string)` — the preset name drives which suggested times and slider range are shown.
+
+**Saving is unchanged** — `handleSave` → `SavePlanDialog` → `saveToDashboard` → Firestore path is identical. Guest-redirect flow via sessionStorage also unchanged.
+
 ### VDOT Calculator (`src/features/vdot-calculator/`)
 Jack Daniels VDOT scoring tool. Refactored March 2026 from 998-line monolith into 12 focused components with dashboard layout.
 
