@@ -98,7 +98,9 @@ export function RaceDetailsForm({
 
   // Derived totals
   const currentTimeSeconds = timeToSeconds(inputs.hours, inputs.minutes, inputs.seconds);
-  const hasValidTime = currentTimeSeconds > 0;
+  const minutes = parseInt(inputs.minutes || "0", 10);
+  const seconds = parseInt(inputs.seconds || "0", 10);
+  const hasValidTime = currentTimeSeconds > 0 && minutes < 60 && seconds < 60;
 
   // Which suggested chip (if any) matches current time
   const activeChipLabel = hasValidTime
@@ -179,7 +181,8 @@ export function RaceDetailsForm({
                 errors.distance ? "border-red-500" : "border-gray-300"
               }`}
             />
-            <div
+            <button
+              type="button"
               className="relative w-32 h-10 bg-blue-100 rounded-full cursor-pointer overflow-hidden flex-shrink-0"
               onClick={handleUnitToggle}
             >
@@ -192,7 +195,7 @@ export function RaceDetailsForm({
                 <div className={`w-1/2 text-center text-sm font-medium transition-colors ${isKm ? "text-white" : "text-blue-700"}`}>KM</div>
                 <div className={`w-1/2 text-center text-sm font-medium transition-colors ${!isKm ? "text-white" : "text-blue-700"}`}>MI</div>
               </div>
-            </div>
+            </button>
           </div>
           {errors.distance && <p className="text-red-500 text-sm">{errors.distance}</p>}
         </div>
@@ -284,7 +287,7 @@ export function RaceDetailsForm({
         </div>
 
         {/* ── 4. Fine-tune slider (preset distances only, after time is entered) ── */}
-        {sliderRange && hasValidTime && (
+        {sliderRange && hasValidTime && !errors.time && (
           <div className="bg-gray-50 rounded-2xl p-4 space-y-3 border border-gray-100">
             <div className="flex items-center justify-between text-xs text-gray-500">
               <span>Faster</span>

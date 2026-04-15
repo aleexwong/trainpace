@@ -72,15 +72,22 @@ export function PaceCalculatorV2({
 
   // Live VDOT – updates as user types
   const liveVdot = useMemo(() => {
+    if (errors.time) return null;
+
     const dist = parseFloat(inputs.distance);
     if (!dist || dist <= 0) return null;
+
+    const minutes = parseInt(inputs.minutes || "0", 10);
+    const seconds = parseInt(inputs.seconds || "0", 10);
+    if (minutes >= 60 || seconds >= 60) return null;
+
     const totalSecs = timeToSeconds(inputs.hours, inputs.minutes, inputs.seconds);
     if (totalSecs <= 0) return null;
     const distMeters = inputs.units === "km" ? dist * 1000 : dist * 1609.34;
     const vdot = calculateVdot(distMeters, totalSecs);
     if (!isFinite(vdot) || vdot < 10 || vdot > 100) return null;
     return Math.round(vdot * 10) / 10;
-  }, [inputs.distance, inputs.units, inputs.hours, inputs.minutes, inputs.seconds]);
+  }, [inputs.distance, inputs.units, inputs.hours, inputs.minutes, inputs.seconds, errors.time]);
 
   // Auto-calculate when a suggested-time chip is tapped
   useEffect(() => {
@@ -123,6 +130,10 @@ export function PaceCalculatorV2({
       const numValue = value.replace(/\D/g, "");
       setInputs((prev) => ({ ...prev, [name]: numValue.slice(0, 2) }));
       return;
+    }
+
+    if (name === "distance") {
+      setSelectedPresetName(null);
     }
 
     setInputs((prev) => ({ ...prev, [name]: value }));
