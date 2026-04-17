@@ -103,6 +103,23 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
+    },
+
+    {
+      "source": "/tiles/:path*.pmtiles",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Headers", "value": "Range" },
+        { "key": "Access-Control-Expose-Headers", "value": "Content-Length, Content-Range, Accept-Ranges" }
+      ]
+    },
+    {
+      "source": "/map-styles/:path*.json",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=86400" },
+        { "key": "Content-Type", "value": "application/json" }
+      ]
     }
   ]
 }

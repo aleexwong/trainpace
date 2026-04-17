@@ -24,13 +24,13 @@ interface MaplibreRoutePreviewProps {
   pmtilesUrl?: string;
 }
 
-// PMTiles archive served from Vercel Blob / R2 / any static host.
-// Drop your own tiles here — no access token, no rate limit, no Mapbox bill.
+// PMTiles archive served from Vercel as a static asset.
+// Drop the file at vite-project/public/tiles/world.pmtiles — no token, no Mapbox bill.
+// Vercel serves it with HTTP Range support, which PMTiles needs.
 const DEFAULT_PMTILES =
-  import.meta.env.VITE_PMTILES_URL ||
-  "https://assets.trainpace.com/tiles/world.pmtiles";
+  import.meta.env.VITE_PMTILES_URL || "/tiles/world.pmtiles";
 
-// Protomaps "light" style JSON — ships with the app, so style is fully offline-capable.
+// Protomaps style JSON shipped from /public so it works offline (PWA-friendly).
 const DEFAULT_STYLE_URL =
   import.meta.env.VITE_MAP_STYLE_URL || "/map-styles/protomaps-light.json";
 
