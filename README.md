@@ -18,6 +18,8 @@ TrainPace is a modern, type-safe web application designed to help runners optimi
 - [Technology Stack](#-technology-stack)
 - [Project Structure](#-project-structure)
 - [Development](#-development)
+- [Testing](#-testing)
+- [Programmatic SEO](#-programmatic-seo)
 - [Deployment](#-deployment)
 - [Design Philosophy](#-design-philosophy)
 
@@ -35,6 +37,19 @@ Calculate science-backed training paces from any race result:
 - **Race Predictor**: Project performance across different distances
 - **One-Click Presets**: Quick access to common race distances (5K, 10K, Half, Marathon)
 - **Plan Persistence**: Save and manage multiple training plans in your dashboard
+
+### 🎯 VDOT Calculator
+
+Jack Daniels' VDOT scoring with an interactive dashboard layout:
+
+- **Animated Score Gauge**: Visual SVG gauge with percentile feedback
+- **"What If" Explorer**: Drag a slider to see how a faster (or slower) time changes your VDOT, training paces, and predicted race times in real time
+- **Smart Time Input**: Hours/minutes/seconds fields with auto-advance as you type
+- **Card-Based Distance Picker**: Switch between common race distances with one click
+- **Training Zones Spectrum**: Five color-coded pace zones (Easy, Marathon, Threshold, Interval, Repetition) with visual range bars
+- **Race Predictions Table**: Project times across every standard distance, with a mobile-friendly card layout
+- **Sample Workouts**: Zone-specific example sessions tied to your current VDOT
+- **History**: Recent calculations persisted in localStorage so you can track improvements
 
 ### 🗺️ Course Elevation Analysis
 
@@ -64,7 +79,35 @@ Track and manage your training data:
 - **Training Plans**: Manage saved pace calculations
 - **Fuel Plans**: Access saved nutrition strategies
 - **Interactive Previews**: Thumbnail maps and stats for each route
+- **Unified Search**: Filter across routes, fuel plans, and pace plans from a single bar
 - **Firebase Sync**: Seamless cross-device data access
+
+### 🎨 Race Poster Generator
+
+Premium feature for turning a route into a frame-worthy print:
+
+- **Mapbox-Powered Renders**: Stylized route artwork generated with Mapbox GL
+- **Custom Layouts**: Title, distance, elevation, and date metadata baked into the design
+- **Canvas Export**: Download high-resolution PNGs ready for printing
+- **GPX-Driven**: Build a poster from any uploaded route in your dashboard
+
+### 🏁 World Major Race Previews
+
+Hand-curated previews for iconic races:
+
+- **8 Marathons**: Boston, NYC, Chicago, Berlin, London, Tokyo, Sydney, and Oslo
+- **Course Insights**: Elevation profile, terrain commentary, and tactical tips
+- **Interactive Maps**: 3D route exploration with elevation context
+- **Race FAQs**: Answers to the questions runners actually ask before race day
+
+### 📝 Running Blog
+
+A growing library of long-form running content:
+
+- **10+ Articles**: Training, nutrition, race strategy, gear, recovery, and beginner/advanced topics
+- **Markdown-Powered**: Posts authored in markdown with cover images and reading-time estimates
+- **Featured Posts**: Curated picks surfaced on the blog landing page
+- **Category Filtering**: Browse by topic across seven categories
 
 ---
 
@@ -236,6 +279,11 @@ trainpace/
 │   │   │   │   ├── hooks/
 │   │   │   │   ├── types.ts
 │   │   │   │   └── index.ts
+│   │   │   ├── vdot-calculator/ # Jack Daniels VDOT scoring + What-If
+│   │   │   │   ├── components/  # 12 focused components incl. gauge & explorer
+│   │   │   │   ├── hooks/       # useVdotCalculator + history persistence
+│   │   │   │   ├── vdot-math.ts # Pure VDOT math (oxygen cost model)
+│   │   │   │   └── types.ts
 │   │   │   ├── elevation/       # GPX analysis & maps
 │   │   │   │   ├── components/
 │   │   │   │   ├── hooks/
@@ -244,6 +292,14 @@ trainpace/
 │   │   │   │   ├── components/
 │   │   │   │   ├── hooks/
 │   │   │   │   └── utils.ts
+│   │   │   ├── poster/         # Premium race poster generator
+│   │   │   │   ├── components/
+│   │   │   │   ├── hooks/      # Mapbox + canvas export hooks
+│   │   │   │   └── utils/
+│   │   │   ├── blog/           # Markdown-driven blog
+│   │   │   │   ├── components/ # BlogList, BlogPost, BlogCard
+│   │   │   │   └── types.ts
+│   │   │   ├── seo-pages/      # Programmatic SEO page configs (80+ pages)
 │   │   │   └── dashboard/       # User data management
 │   │   │       ├── components/
 │   │   │       ├── hooks/
@@ -263,11 +319,14 @@ trainpace/
 │   │   │       ├── MapboxRoutePreview.tsx
 │   │   │       └── LeafletRoutePreview.tsx
 │   │   │
-│   │   ├── pages/              # Route-level components
+│   │   ├── pages/              # Route-level components (18 pages)
 │   │   │   ├── TrainingPaceCalculator.tsx
+│   │   │   ├── VdotCalculatorPage.tsx
 │   │   │   ├── ElevationPageV2.tsx
 │   │   │   ├── FuelPlannerV2.tsx
 │   │   │   ├── DashboardV2.tsx
+│   │   │   ├── BlogList.tsx + BlogPost.tsx
+│   │   │   ├── PreviewRoute.tsx     # World major race previews
 │   │   │   └── Landing.tsx
 │   │   │
 │   │   ├── hooks/              # Global custom hooks
@@ -276,6 +335,7 @@ trainpace/
 │   │   │   └── usePending*.ts
 │   │   │
 │   │   ├── lib/                # Core utilities & config
+│   │   │   ├── seo/            # Scalable SEO system (4,000+ lines)
 │   │   │   ├── firebase.ts     # Firebase initialization
 │   │   │   ├── utils.ts        # Helper functions
 │   │   │   ├── gpxMetaData.ts  # GPX parsing
@@ -289,6 +349,7 @@ trainpace/
 │   │   ├── config/             # App configuration
 │   │   │   └── routes.ts
 │   │   ├── data/               # Static data & content
+│   │   │   ├── blog-posts.json # Long-form blog content
 │   │   │   ├── marathon-data.json
 │   │   │   └── faq-data.json
 │   │   │
@@ -296,8 +357,11 @@ trainpace/
 │   │   ├── main.tsx            # Entry point
 │   │   └── vite-env.d.ts       # Vite type declarations
 │   │
+│   ├── e2e/                     # Playwright E2E tests
+│   │   └── pages/              # Page object models
 │   ├── public/                  # Static assets
 │   │   ├── pwa-icons/          # PWA app icons
+│   │   ├── sitemap.xml         # Auto-generated SEO sitemap
 │   │   └── manifest.json       # Web app manifest
 │   │
 │   ├── index.html              # HTML entry point
@@ -377,6 +441,8 @@ npm run preview          # Preview production build locally
 npm run lint             # Run ESLint checks
 npm run host             # Expose dev server on local network
 npm run generate-pwa-assets  # Generate PWA icons
+npm run generate-sitemap # Regenerate sitemap.xml from SEO page configs
+npm run test:e2e         # Run Playwright end-to-end test suite
 npm run seed-boston      # Seed Boston Marathon route data
 npm run test-gemini      # Test Gemini API integration
 ```
@@ -396,6 +462,34 @@ npm run test-gemini      # Test Gemini API integration
 - **ESLint**: Enforces consistent code style and catches common errors
 - **Prettier**: Code formatting (configure in your editor)
 - **Zod**: Runtime validation for forms and external data
+
+---
+
+## 🧪 Testing
+
+End-to-end coverage is provided by **Playwright**, with page object models living in `vite-project/e2e/pages/`.
+
+```bash
+cd vite-project
+npm run test:e2e     # Run the full Playwright suite locally
+```
+
+CI runs the same suite on every push to `main` and on pull requests via `.github/workflows/e2e.yml`. The workflow caches npm dependencies, the Vite prebundle directory, and the matching Playwright browser version, then publishes a 30-day-retention HTML report as a build artifact.
+
+---
+
+## 🔎 Programmatic SEO
+
+TrainPace ships with a scalable SEO system designed to support 100,000+ programmatic landing pages:
+
+- **80+ Live SEO Pages**: Distance-, race-, and tool-specific landing pages auto-generated from a typed config
+- **Static Prerendering**: Routes are baked to HTML at build time via `vite-plugin-prerender` for fast first paint and crawlability
+- **JSON-LD Schemas**: `SoftwareApplication`, `FAQPage`, `HowTo`, and `BreadcrumbList` schemas generated per page
+- **Internal Linking Engine**: Hub-and-spoke linking with related-page discovery
+- **Automated Sitemaps**: `npm run generate-sitemap` produces a chunked sitemap that respects the 50k-URL-per-file limit
+- **Validation & Pre-Publish Checks**: Every page is graded for title/description length, duplicate content, and schema completeness before shipping
+
+Page configs live in `src/features/seo-pages/seoPages.ts` and the supporting library is split across `src/lib/seo/` (`schema-generators`, `meta-generators`, `internal-linking`, `content-generators`, `build-utils`, `validation`).
 
 ---
 
@@ -474,4 +568,4 @@ Built with [shadcn/ui](https://ui.shadcn.com/), [Mapbox](https://www.mapbox.com/
 
 **Made with ❤️ for runners who take their training seriously.**
 
-*Last Updated: Nov 2025*
+*Last Updated: Apr 2026*

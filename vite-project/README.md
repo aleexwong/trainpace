@@ -20,6 +20,19 @@ Calculate science-backed training paces from any race result:
 - **Yasso 800s**: Automatically calculate interval training paces
 - **Race Predictor**: Project performance across different distances
 - **One-Click Presets**: Quick access to common race distances (5K, 10K, Half, Marathon)
+- **Plan Persistence**: Save and manage multiple training plans in your dashboard
+
+### 🎯 VDOT Calculator
+
+Jack Daniels' VDOT scoring with an interactive dashboard layout:
+
+- **Animated Score Gauge**: SVG gauge with percentile feedback
+- **"What If" Explorer**: Drag a slider to see how a faster (or slower) time changes your VDOT, training paces, and predicted race times in real time
+- **Smart Time Input**: H/M/S fields auto-advance as you type
+- **Training Zones Spectrum**: Five color-coded pace zones with visual range bars
+- **Race Predictions**: Project times across every standard distance, with a mobile-friendly card layout
+- **Sample Workouts**: Zone-specific example sessions tied to your current VDOT
+- **History**: Recent calculations persisted in localStorage
 
 ### 🗺️ Course Elevation Analysis
 
@@ -36,6 +49,7 @@ Upload and analyze any GPX route file:
 Science-based nutrition calculator for race day:
 
 - **Personalized Recommendations**: Carb and calorie targets based on your pace and weight
+- **AI-Powered Suggestions**: Google Gemini integration for contextual nutrition advice
 - **Hourly Breakdown**: Know exactly when to fuel during your race
 - **Multiple Fuel Sources**: Track gels, chews, drinks, and solid foods
 - **Export Support**: Take your nutrition plan anywhere
@@ -45,9 +59,31 @@ Science-based nutrition calculator for race day:
 Track and manage your training data:
 
 - **Route Library**: All your uploaded GPX files in one place
+- **Training & Fuel Plans**: Manage saved pace calculations and nutrition strategies
 - **Bookmarked Courses**: Quick access to saved marathon routes
 - **Interactive Previews**: Thumbnail maps and stats for each route
+- **Unified Search**: Filter across routes, fuel plans, and pace plans from a single bar
 - **Firebase Sync**: Access your data across devices
+
+### 🎨 Race Poster Generator (Premium)
+
+Turn any uploaded route into a frame-worthy print:
+
+- **Mapbox-Powered Renders**: Stylized route artwork generated with Mapbox GL
+- **Custom Layouts**: Title, distance, elevation, and date metadata baked into the design
+- **Canvas Export**: Download high-resolution PNGs ready for printing
+
+### 🏁 World Major Race Previews
+
+Hand-curated previews for 8 iconic marathons — Boston, NYC, Chicago, Berlin, London, Tokyo, Sydney, and Oslo — with elevation profiles, tactical tips, interactive 3D maps, and race-specific FAQs.
+
+### 📝 Running Blog
+
+A growing library of long-form running content:
+
+- **10+ Articles**: Training, nutrition, race strategy, gear, recovery, and beginner/advanced topics
+- **Markdown-Powered**: Posts authored in markdown with cover images and reading-time estimates
+- **Featured Posts & Categories**: Curated picks plus filtering across seven categories
 
 ---
 
@@ -65,12 +101,14 @@ Track and manage your training data:
 
 - **Chart.js** - Elevation profile visualizations
 - **Leaflet + Mapbox GL** - Interactive map rendering
-- **GPX Parsing** - Server-side route file processing, returning elevation data + training insights
+- **GPX Parsing** - Route file processing, returning elevation data + training insights
 
 ### Backend & Auth
 
-- **Firebase Auth** - Secure Google OAuth authentication
+- **Firebase Auth** - Google OAuth authentication
 - **Firestore** - Real-time database for user data and routes
+- **Firebase Storage** - GPX file uploads
+- **Google Gemini** - AI-powered nutrition recommendations
 - **Vercel Hosting** - Global CDN with automatic deployments
 
 ### Progressive Web App
@@ -78,6 +116,13 @@ Track and manage your training data:
 - **Vite PWA Plugin** - Installable app with offline support
 - **Service Worker** - Background sync and caching strategies
 - **Web Manifest** - Native app-like experience on mobile
+
+### SEO & Testing
+
+- **Programmatic SEO**: 80+ generated landing pages with JSON-LD schemas, internal linking, and validation (`src/lib/seo/`)
+- **Static Prerendering**: Routes baked to HTML at build time via `vite-plugin-prerender`
+- **Sitemaps**: Chunked sitemap generation with `npm run generate-sitemap`
+- **Playwright E2E**: End-to-end coverage with page object models, run locally and on every PR via GitHub Actions
 
 ---
 
@@ -133,21 +178,38 @@ Track and manage your training data:
 vite-project/
 ├── src/
 │   ├── components/        # Reusable UI components
-│   │   ├── calculator/   # Pace calculator components
-│   │   ├── ui/           # shadcn/ui components
+│   │   ├── ui/           # shadcn/ui primitives
+│   │   ├── layout/       # MainLayout, SideNav, Footer, Landing
+│   │   ├── seo/          # SEO templates and structured data
 │   │   └── utils/        # Map, charts, utilities
 │   ├── features/         # Feature-specific modules
-│   │   └── auth/         # Authentication context & logic
-│   ├── pages/            # Route-level page components
+│   │   ├── auth/                 # Authentication context & guards
+│   │   ├── pace-calculator/      # Training pace zones
+│   │   ├── vdot-calculator/      # VDOT scoring + What-If explorer
+│   │   ├── elevation/            # GPX analysis + maps
+│   │   ├── fuel/                 # Race nutrition planner
+│   │   ├── dashboard/            # User data management
+│   │   ├── poster/               # Race poster generator (premium)
+│   │   ├── blog/                 # Blog list + post components
+│   │   └── seo-pages/            # Programmatic SEO page configs
+│   ├── pages/            # Route-level page components (18 pages)
 │   │   ├── TrainingPaceCalculator.tsx
-│   │   ├── ElevationPage.tsx
-│   │   ├── FuelPlanner.tsx
-│   │   └── Dashboard.tsx
-│   ├── hooks/            # Custom React hooks
+│   │   ├── VdotCalculatorPage.tsx
+│   │   ├── ElevationPageV2.tsx
+│   │   ├── FuelPlannerV2.tsx
+│   │   ├── DashboardV2.tsx
+│   │   ├── BlogList.tsx, BlogPost.tsx
+│   │   └── PreviewRoute.tsx      # World major race previews
+│   ├── hooks/            # Global custom hooks
 │   ├── lib/              # Firebase config, utilities
+│   │   └── seo/          # Scalable SEO system (4,000+ lines)
+│   ├── services/         # Gemini AI integration
+│   ├── data/             # Static content (blog posts, marathon data, FAQs)
 │   └── types/            # TypeScript definitions
-├── public/               # Static assets, PWA icons
-└── vercel.json          # Deployment config
+├── e2e/                  # Playwright E2E tests + page object models
+├── scripts/              # generateSitemap, seedBostonMarathon, testGemini
+├── public/               # Static assets, PWA icons, sitemap.xml
+└── vercel.json           # Deployment config
 ```
 
 ---
@@ -180,12 +242,20 @@ npm run dev
 ### Available Scripts
 
 ```bash
-npm run dev          # Start Vite dev server
-npm run build        # Production build with TypeScript check
-npm run preview      # Preview production build locally
-npm run lint         # Run ESLint
-npm run host         # Expose dev server on local network
+npm run dev               # Start Vite dev server
+npm run build             # Production build with TypeScript check
+npm run preview           # Preview production build locally
+npm run lint              # Run ESLint
+npm run host              # Expose dev server on local network
+npm run generate-sitemap  # Regenerate sitemap.xml from SEO page configs
+npm run test:e2e          # Run Playwright end-to-end test suite
+npm run seed-boston       # Seed Boston Marathon route data
+npm run test-gemini       # Test Gemini API integration
 ```
+
+### Testing
+
+Playwright drives the E2E suite (config in `playwright.config.ts`, page object models in `e2e/pages/`). The same suite runs in CI on every push to `main` and on PRs via `.github/workflows/e2e.yml`, which caches npm deps, the Vite prebundle directory, and the matching Playwright browser version.
 
 ---
 
