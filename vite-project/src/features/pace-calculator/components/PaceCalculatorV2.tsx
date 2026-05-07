@@ -3,17 +3,19 @@
  * Modern UI similar to fuel planner
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent } from "@/components/ui/card";
 import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { usePendingPacePlan } from "@/hooks/usePendingPacePlan";
 import ReactGA from "react-ga4";
+import { calculateVdot } from "@/features/vdot-calculator/vdot-math";
 
 import type { PaceInputs, PaceResults, FormErrors, PaceUnit } from "../types";
 import { usePaceCalculation } from "../hooks/usePaceCalculation";
 import { usePacePlanPersistence } from "../hooks/usePacePlanPersistence";
+import { timeToSeconds } from "../utils";
 import { RaceDetailsForm } from "./RaceDetailsForm";
 import { PaceResultsDisplay } from "./PaceResultsDisplay";
 import { SavePlanDialog } from "./SavePlanDialog";
@@ -50,6 +52,12 @@ export function PaceCalculatorV2({
   const [errors, setErrors] = useState<FormErrors>({});
   const [isCalculating, setIsCalculating] = useState(false);
 
+  // Track which preset button was last clicked so we can show contextual chips
+  const [selectedPresetName, setSelectedPresetName] = useState<string | null>(null);
+
+  // When true the next valid calculation result is auto-committed (e.g. chip click)
+  const [autoCalc, setAutoCalc] = useState(false);
+
   // UI state
   const [showInfo, setShowInfo] = useState(false);
   const [showPhilosophy, setShowPhilosophy] = useState(false);
@@ -62,7 +70,44 @@ export function PaceCalculatorV2({
   const { isSaving, isSaved, saveToDashboard, resetSaveState } =
     usePacePlanPersistence();
 
-  // Auto-update results when pace type changes
+  // Live VDOT – updates as user types
+  const liveVdot = useMemo(() => {
+    if (errors.time) return null;
+
+    const dist = parseFloat(inputs.distance);
+    if (!dist || dist <= 0) return null;
+
+    const minutes = parseInt(inputs.minutes || "0", 10);
+    const seconds = parseInt(inputs.seconds || "0", 10);
+    if (minutes >= 60 || seconds >= 60) return null;
+
+    const totalSecs = timeToSeconds(inputs.hours, inputs.minutes, inputs.seconds);
+    if (totalSecs <= 0) return null;
+    const distMeters = inputs.units === "km" ? dist * 1000 : dist * 1609.34;
+    const vdot = calculateVdot(distMeters, totalSecs);
+    if (!isFinite(vdot) || vdot < 10 || vdot > 100) return null;
+    return Math.round(vdot * 10) / 10;
+  }, [inputs.distance, inputs.units, inputs.hours, inputs.minutes, inputs.seconds, errors.time]);
+
+  // Auto-calculate when a suggested-time chip is tapped
+  useEffect(() => {
+    if (autoCalc && calculation.isValid && calculation.result) {
+      setResults(calculation.result);
+      setAutoCalc(false);
+      toast({
+        title: "Calculation Complete! ✨",
+        description: "Your training paces have been calculated.",
+        duration: 3000,
+      });
+      ReactGA.event({
+        category: "Pace Calculator",
+        action: "Calculated Paces",
+        label: `${inputs.distance}${inputs.units} (suggested time)`,
+      });
+    }
+  }, [autoCalc, calculation.isValid, calculation.result, inputs.distance, inputs.units]);
+
+  // Auto-update results when pace type changes (user is already on results screen)
   useEffect(() => {
     if (results && calculation.isValid && calculation.result) {
       setResults(calculation.result);
@@ -76,47 +121,63 @@ export function PaceCalculatorV2({
     label: "User opened the Pace Calculator",
   });
 
-  // Handlers
-  const handleInputChange = (e: {
-    target: { name: string; value: string };
-  }) => {
+  // ── Handlers ────────────────────────────────────────────────────────────────
+
+  const handleInputChange = (e: { target: { name: string; value: string } }) => {
     const { name, value } = e.target;
 
-    // Time input validation
     if (["hours", "minutes", "seconds"].includes(name)) {
       const numValue = value.replace(/\D/g, "");
-      setInputs((prev) => ({
-        ...prev,
-        [name]: numValue.slice(0, 2),
-      }));
+      setInputs((prev) => ({ ...prev, [name]: numValue.slice(0, 2) }));
       return;
     }
 
-    setInputs((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === "distance") {
+      setSelectedPresetName(null);
+    }
 
-    // Clear errors for this field
+    setInputs((prev) => ({ ...prev, [name]: value }));
+
     if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: undefined,
-      }));
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
-  const handlePreset = (distance: number) => {
+  /** Called by distance preset buttons – now also tracks the preset name */
+  const handlePreset = (distance: number, presetName: string) => {
+    setInputs((prev) => ({ ...prev, distance: distance.toString() }));
+    setSelectedPresetName(presetName);
+    setErrors({});
+  };
+
+  /** Tapping a suggested-time chip fills HH/MM/SS and auto-calculates */
+  const handleSuggestedTimeClick = (h: string, m: string, s: string) => {
     setInputs((prev) => ({
       ...prev,
-      distance: distance.toString(),
+      hours:   h === "0" ? "" : h,
+      minutes: m,
+      seconds: s,
     }));
     setErrors({});
+    setAutoCalc(true);
+  };
+
+  /** Slider drag – decompose total seconds into HH/MM/SS fields */
+  const handleSliderChange = (totalSeconds: number) => {
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
+    setInputs((prev) => ({
+      ...prev,
+      hours:   h > 0 ? h.toString() : "",
+      minutes: m.toString(),
+      seconds: s.toString(),
+    }));
   };
 
   const handleCalculate = () => {
     if (!calculation.isValid) {
-      setErrors(calculation.errors);
+      setErrors(calculation.errors as FormErrors);
       toast({
         title: "Validation Error",
         description: "Please check the form for errors.",
@@ -159,12 +220,7 @@ export function PaceCalculatorV2({
   };
 
   const handlePaceTypeChange = (newPaceType: PaceUnit) => {
-    // Update the input state
-    setInputs((prev) => ({
-      ...prev,
-      paceType: newPaceType,
-    }));
-
+    setInputs((prev) => ({ ...prev, paceType: newPaceType }));
     ReactGA.event({
       category: "Pace Calculator",
       action: "Changed Pace Type",
@@ -180,19 +236,13 @@ export function PaceCalculatorV2({
 
     Object.entries(results).forEach(([key, value]) => {
       const displayName = key === "xlong" ? "Long Run" : key;
-      text += `${
-        displayName.charAt(0).toUpperCase() + displayName.slice(1)
-      }: ${value}\n`;
+      text += `${displayName.charAt(0).toUpperCase() + displayName.slice(1)}: ${value}\n`;
     });
 
     try {
       await navigator.clipboard.writeText(text);
       toast({ title: "Copied to clipboard! 📋" });
-
-      ReactGA.event({
-        category: "Pace Calculator",
-        action: "Copied Plan",
-      });
+      ReactGA.event({ category: "Pace Calculator", action: "Copied Plan" });
     } catch {
       toast({ title: "Failed to copy", variant: "destructive" });
     }
@@ -206,9 +256,7 @@ export function PaceCalculatorV2({
 
     Object.entries(results).forEach(([key, value]) => {
       const displayName = key === "xlong" ? "Long Run" : key;
-      text += `${
-        displayName.charAt(0).toUpperCase() + displayName.slice(1)
-      }: ${value}\n`;
+      text += `${displayName.charAt(0).toUpperCase() + displayName.slice(1)}: ${value}\n`;
     });
 
     const blob = new Blob([text], { type: "text/plain" });
@@ -220,11 +268,7 @@ export function PaceCalculatorV2({
     URL.revokeObjectURL(url);
 
     toast({ title: "Download started! 💾" });
-
-    ReactGA.event({
-      category: "Pace Calculator",
-      action: "Downloaded Plan",
-    });
+    ReactGA.event({ category: "Pace Calculator", action: "Downloaded Plan" });
   };
 
   const handleSave = async () => {
@@ -238,25 +282,19 @@ export function PaceCalculatorV2({
     raceDate?: string
   ) => {
     if (!results) return;
-
-    await saveToDashboard({
-      inputs,
-      results,
-      planName,
-      notes,
-      raceDate,
-    });
-
+    await saveToDashboard({ inputs, results, planName, notes, raceDate });
     setShowSaveDialog(false);
   };
 
   const getRaceTime = () => {
     const parts = [];
-    if (inputs.hours) parts.push(`${inputs.hours}h`);
+    if (inputs.hours)   parts.push(`${inputs.hours}h`);
     if (inputs.minutes) parts.push(`${inputs.minutes}m`);
     if (inputs.seconds) parts.push(`${inputs.seconds}s`);
     return parts.join(" ");
   };
+
+  // ── Render ──────────────────────────────────────────────────────────────────
 
   return (
     <>
@@ -276,10 +314,7 @@ export function PaceCalculatorV2({
               description:
                 "Use your recent race time to calculate personalized training paces for Easy, Tempo, Threshold, and Interval runs using VDOT methodology.",
               totalTime: "PT1M",
-              tool: {
-                "@type": "HowToTool",
-                name: "TrainPace Calculator",
-              },
+              tool: { "@type": "HowToTool", name: "TrainPace Calculator" },
               step: [
                 {
                   "@type": "HowToStep",
@@ -315,9 +350,7 @@ export function PaceCalculatorV2({
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-4xl font-bold text-gray-900">
-              ⏱️ Pace Calculator
-            </h1>
+            <h1 className="text-4xl font-bold text-gray-900">⏱️ Pace Calculator</h1>
             <button
               onClick={() => setShowInfo(!showInfo)}
               className="p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all"
@@ -347,7 +380,6 @@ export function PaceCalculatorV2({
 
           {/* Main Content */}
           <div className="max-w-4xl mx-auto space-y-8">
-            {/* Race Details OR Results */}
             {!results ? (
               <RaceDetailsForm
                 inputs={inputs}
@@ -356,6 +388,10 @@ export function PaceCalculatorV2({
                 onPresetClick={handlePreset}
                 onCalculate={handleCalculate}
                 isCalculating={isCalculating}
+                selectedPresetName={selectedPresetName}
+                liveVdot={liveVdot}
+                onSuggestedTimeClick={handleSuggestedTimeClick}
+                onSliderChange={handleSliderChange}
               />
             ) : (
               <PaceResultsDisplay
@@ -380,9 +416,7 @@ export function PaceCalculatorV2({
               onClick={() => setShowPhilosophy(!showPhilosophy)}
               className="w-full flex items-center justify-between p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all"
             >
-              <span className="text-lg font-semibold text-gray-900">
-                Training Philosophy
-              </span>
+              <span className="text-lg font-semibold text-gray-900">Training Philosophy</span>
               {showPhilosophy ? (
                 <ChevronUp className="h-5 w-5 text-gray-600" />
               ) : (
