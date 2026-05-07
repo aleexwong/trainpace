@@ -4,11 +4,14 @@ import { BlogPost, BlogCategory } from "./types";
 // Type assertion for imported JSON data
 const posts = blogData.posts as BlogPost[];
 
+// Sorted once at module load — posts data is static and never mutated.
+const sortedPosts: BlogPost[] = [...posts].sort(
+  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+);
+
 // Get all blog posts, sorted by date (newest first)
 export function getAllPosts(): BlogPost[] {
-  return [...posts].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  return sortedPosts;
 }
 
 // Get a single post by slug

@@ -133,6 +133,7 @@ export default function About() {
             <img
               src={bmoResults}
               alt="BMO Vancouver Half Marathon 2025 official race results"
+              loading="lazy"
               className="w-full md:w-1/2 rounded-lg shadow-lg"
             />
             <div className="md:w-1/2">

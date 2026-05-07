@@ -57,6 +57,20 @@ export default defineConfig({
   },
   build: {
     minify: "esbuild",
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-firebase": [
+            "firebase/app",
+            "firebase/auth",
+            "firebase/firestore",
+            "firebase/storage",
+          ],
+          "vendor-charts": ["chart.js", "react-chartjs-2"],
+          "vendor-markdown": ["react-markdown", "remark-gfm"],
+        },
+      },
+    },
   },
   esbuild: {
     drop: process.env.NODE_ENV === "production" ? ["console", "debugger"] : [],

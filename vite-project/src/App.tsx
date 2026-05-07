@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, lazy } from "react";
 import "./App.css";
 import { HelmetProvider } from "react-helmet-async";
 import { Routes, Route } from "react-router-dom";
@@ -6,32 +6,41 @@ import { Button } from "./components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import ScrollToTop from "./lib/ScrollToTop";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
-import TrainingPaceCalculator from "./pages/TrainingPaceCalculator";
 import RacePredictorOverlay from "./pages/RacePredictorOverlay";
 import Landing from "./components/layout/Landing";
 import MainLayout from "./components/layout/MainLayout";
-import Login from "./pages/Login";
-import Logout from "./components/login/Logout";
-import Register from "./components/login/Register";
-import ResetPassword from "./components/login/ResetPassword";
-import ResetConfirmed from "./components/login/ResetConfirmed";
-import ElevationPage from "./pages/ElevationPageV2";
-import FAQ from "./pages/FAQ";
-import Settings from "./pages/Settings";
-import PreviewRoute from "./pages/PreviewRoute";
-import { FuelPlannerV2 } from "./features/fuel";
-import CalculatorSeoLanding from "./pages/CalculatorSeoLanding";
-import FuelSeoLanding from "./pages/FuelSeoLanding";
-import ElevationGuidesSeoLanding from "./pages/ElevationGuidesSeoLanding";
-import RaceSeoLanding from "./pages/RaceSeoLanding";
-import RaceIndex from "./pages/RaceIndex";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import About from "./pages/About";
-import DashboardV2 from "./pages/DashboardV2";
-import VdotCalculatorPage from "./pages/VdotCalculatorPage";
-import { BlogList, BlogPost } from "./features/blog";
 import AuthGuard from "./features/auth/AuthGuard";
+
+// Lazy-loaded route pages — render inside MainLayout's <Suspense> boundary.
+const TrainingPaceCalculator = lazy(() => import("./pages/TrainingPaceCalculator"));
+const ElevationPage = lazy(() => import("./pages/ElevationPageV2"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const Settings = lazy(() => import("./pages/Settings"));
+const PreviewRoute = lazy(() => import("./pages/PreviewRoute"));
+const CalculatorSeoLanding = lazy(() => import("./pages/CalculatorSeoLanding"));
+const FuelSeoLanding = lazy(() => import("./pages/FuelSeoLanding"));
+const ElevationGuidesSeoLanding = lazy(() => import("./pages/ElevationGuidesSeoLanding"));
+const RaceSeoLanding = lazy(() => import("./pages/RaceSeoLanding"));
+const RaceIndex = lazy(() => import("./pages/RaceIndex"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const About = lazy(() => import("./pages/About"));
+const DashboardV2 = lazy(() => import("./pages/DashboardV2"));
+const VdotCalculatorPage = lazy(() => import("./pages/VdotCalculatorPage"));
+const Login = lazy(() => import("./pages/Login"));
+const Logout = lazy(() => import("./components/login/Logout"));
+const Register = lazy(() => import("./components/login/Register"));
+const ResetPassword = lazy(() => import("./components/login/ResetPassword"));
+const ResetConfirmed = lazy(() => import("./components/login/ResetConfirmed"));
+const FuelPlannerV2 = lazy(() =>
+  import("./features/fuel").then((m) => ({ default: m.FuelPlannerV2 }))
+);
+const BlogList = lazy(() =>
+  import("./features/blog").then((m) => ({ default: m.BlogList }))
+);
+const BlogPost = lazy(() =>
+  import("./features/blog").then((m) => ({ default: m.BlogPost }))
+);
 
 function App() {
   const [showPredictor, setShowPredictor] = useState(false);

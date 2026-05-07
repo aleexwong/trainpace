@@ -1,10 +1,10 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { useState, useEffect, useMemo, useRef, Suspense } from "react";
+import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import type { User } from "firebase/auth";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import { useAuth } from "@/features/auth/AuthContext";
 import PreviewRoutesDropdown from "./PreviewRoutesDropdown";
 import Footer from "./Footer";
 
@@ -18,24 +18,15 @@ interface NavLink {
 export default function MainLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
+  const { user, loading } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
   const [navVisible, setNavVisible] = useState(true);
   const [mobilePreviewOpen, setMobilePreviewOpen] = useState(false);
 
   // Navigation behavior configuration
   const navBehavior: NavBehavior = "auto-hide" as NavBehavior;
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
 
   // Handle scroll behavior for sticky/auto-hide nav
   useEffect(() => {
@@ -47,7 +38,7 @@ export default function MainLayout() {
 
       // Auto-hide behavior
       if (navBehavior === "auto-hide") {
-        if (currentScrollY < lastScrollY || currentScrollY < 100) {
+        if (currentScrollY < lastScrollYRef.current || currentScrollY < 100) {
           setNavVisible(true);
         } else {
           setNavVisible(false);
@@ -55,14 +46,14 @@ export default function MainLayout() {
         }
       }
 
-      setLastScrollY(currentScrollY);
+      lastScrollYRef.current = currentScrollY;
     };
 
     if (navBehavior === "sticky" || navBehavior === "auto-hide") {
       window.addEventListener("scroll", handleScroll, { passive: true });
       return () => window.removeEventListener("scroll", handleScroll);
     }
-  }, [lastScrollY, navBehavior]);
+  }, [navBehavior]);
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -88,7 +79,7 @@ export default function MainLayout() {
     };
   }, [mobileMenuOpen]);
 
-  const getNavigationLinks = (): NavLink[] => {
+  const links = useMemo<NavLink[]>(() => {
     const publicLinks: NavLink[] = [
       { href: "#", label: "Preview Routes", isDropdown: true },
       { href: "/calculator", label: "Calculator" },
@@ -105,7 +96,7 @@ export default function MainLayout() {
       : [{ href: "/login", label: "Login" }];
 
     return [...publicLinks, ...authLinks];
-  };
+  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -116,8 +107,6 @@ export default function MainLayout() {
       console.error("Error signing out:", error);
     }
   };
-
-  const links = getNavigationLinks();
 
   // Dynamic header classes based on behavior
   const getHeaderClasses = () => {
@@ -384,7 +373,15 @@ export default function MainLayout() {
       </div>
 
       <main className={`${getMainClasses()} flex-grow`}>
-        <Outlet />
+        <Suspense
+          fallback={
+            <div className="min-h-[50vh] flex items-center justify-center">
+              <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+            </div>
+          }
+        >
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
     </div>
