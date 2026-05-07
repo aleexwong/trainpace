@@ -79,7 +79,7 @@ export default function MainLayout() {
     };
   }, [mobileMenuOpen]);
 
-  const getNavigationLinks = (): NavLink[] => {
+  const links = useMemo((): NavLink[] => {
     const publicLinks: NavLink[] = [
       { href: "#", label: "Preview Routes", isDropdown: true },
       { href: "/calculator", label: "Calculator" },
@@ -96,7 +96,7 @@ export default function MainLayout() {
       : [{ href: "/login", label: "Login" }];
 
     return [...publicLinks, ...authLinks];
-  };
+  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -107,8 +107,6 @@ export default function MainLayout() {
       console.error("Error signing out:", error);
     }
   };
-
-  const links = useMemo(() => getNavigationLinks(), [user]);
 
   // Dynamic header classes based on behavior
   const getHeaderClasses = () => {
