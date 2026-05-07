@@ -165,6 +165,7 @@ export function RaceDetailsForm({
           </div>
 
           {/* Custom distance + unit toggle */}
+          <p className="text-xs text-gray-400">or enter a custom distance</p>
           <div className="flex items-center gap-2">
             <input
               type="number"
@@ -206,7 +207,7 @@ export function RaceDetailsForm({
             <label className="block text-sm font-medium text-gray-700">
               Common finishing times
             </label>
-            <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-none">
+            <div className="flex flex-wrap gap-2">
               {suggestedTimes.map((s) => {
                 const isActive = activeChipLabel === s.label;
                 return (
@@ -322,7 +323,7 @@ export function RaceDetailsForm({
           <Link
             to="/vdot"
             title="Open full VDOT analysis"
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold transition-opacity hover:opacity-80 ${vdotLevel.bg} ${vdotLevel.color}`}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-semibold cursor-pointer transition-all hover:shadow-md hover:scale-[1.02] ${vdotLevel.bg} ${vdotLevel.color}`}
           >
             <Zap className="w-4 h-4" />
             VDOT {liveVdot} · {vdotLevel.label}
