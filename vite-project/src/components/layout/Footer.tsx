@@ -212,6 +212,7 @@ const Footer = () => {
                 <img
                   src="https://tinylaunch.com/tinylaunch_badge_featured_on.svg"
                   alt="TinyLaunch Badge"
+                  loading="lazy"
                   style={{
                     width: 202,
                     height: "auto",

@@ -628,6 +628,7 @@ const FounderStory = () => {
               <img
                 src="https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?q=80&w=1000&auto=format&fit=crop"
                 alt="Alex running"
+                loading="lazy"
                 className="w-full h-[450px] object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
               />
             </div>

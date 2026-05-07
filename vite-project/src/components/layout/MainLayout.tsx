@@ -1,12 +1,12 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import type { User } from "firebase/auth";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import PreviewRoutesDropdown from "./PreviewRoutesDropdown";
 import Footer from "./Footer";
+import { useAuth } from "@/features/auth/AuthContext";
 
 type NavBehavior = "static" | "sticky" | "fixed" | "auto-hide";
 interface NavLink {
@@ -18,24 +18,15 @@ interface NavLink {
 export default function MainLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
+  const { user, loading } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
   const [navVisible, setNavVisible] = useState(true);
   const [mobilePreviewOpen, setMobilePreviewOpen] = useState(false);
 
   // Navigation behavior configuration
   const navBehavior: NavBehavior = "auto-hide" as NavBehavior;
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
 
   // Handle scroll behavior for sticky/auto-hide nav
   useEffect(() => {
@@ -47,7 +38,7 @@ export default function MainLayout() {
 
       // Auto-hide behavior
       if (navBehavior === "auto-hide") {
-        if (currentScrollY < lastScrollY || currentScrollY < 100) {
+        if (currentScrollY < lastScrollYRef.current || currentScrollY < 100) {
           setNavVisible(true);
         } else {
           setNavVisible(false);
@@ -55,14 +46,14 @@ export default function MainLayout() {
         }
       }
 
-      setLastScrollY(currentScrollY);
+      lastScrollYRef.current = currentScrollY;
     };
 
     if (navBehavior === "sticky" || navBehavior === "auto-hide") {
       window.addEventListener("scroll", handleScroll, { passive: true });
       return () => window.removeEventListener("scroll", handleScroll);
     }
-  }, [lastScrollY, navBehavior]);
+  }, [navBehavior]);
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -117,7 +108,7 @@ export default function MainLayout() {
     }
   };
 
-  const links = getNavigationLinks();
+  const links = useMemo(() => getNavigationLinks(), [user]);
 
   // Dynamic header classes based on behavior
   const getHeaderClasses = () => {

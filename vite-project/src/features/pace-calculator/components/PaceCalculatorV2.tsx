@@ -70,11 +70,13 @@ export function PaceCalculatorV2({
   }, [inputs.paceType, calculation.isValid, calculation.result, results]);
 
   // Track page view
-  ReactGA.event({
-    category: "Pace Calculator",
-    action: "Page View",
-    label: "User opened the Pace Calculator",
-  });
+  useEffect(() => {
+    ReactGA.event({
+      category: "Pace Calculator",
+      action: "Page View",
+      label: "User opened the Pace Calculator",
+    });
+  }, []);
 
   // Handlers
   const handleInputChange = (e: {

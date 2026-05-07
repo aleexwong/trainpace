@@ -3,7 +3,7 @@
  * 2-panel layout: side-by-side on desktop, stacked/conditional on mobile
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent } from "@/components/ui/card";
 import { Info, ChevronDown, ChevronUp } from "lucide-react";
@@ -37,11 +37,13 @@ export function FuelPlannerV2({ seoMode = "default" }: FuelPlannerV2Props) {
   usePendingFuelPlan();
 
   // Track page view
-  ReactGA.event({
-    category: "Fuel Planner",
-    action: "Page View",
-    label: "User opened the Fuel Planner V2",
-  });
+  useEffect(() => {
+    ReactGA.event({
+      category: "Fuel Planner",
+      action: "Page View",
+      label: "User opened the Fuel Planner V2",
+    });
+  }, []);
 
   // Form state
   const [raceType, setRaceType] = useState<RaceType>("Half");
@@ -58,7 +60,6 @@ export function FuelPlannerV2({ seoMode = "default" }: FuelPlannerV2Props) {
 
   // Update race type and reset custom carbs override
   const handleRaceTypeChange = (type: RaceType) => {
-    console.log(`[FuelPlannerV2] Race type changed to: ${type}, resetting custom carbs`);
     setRaceType(type);
     setCustomCarbsPerHour(undefined); // Reset to auto-calculate
   };
@@ -77,9 +78,6 @@ export function FuelPlannerV2({ seoMode = "default" }: FuelPlannerV2Props) {
   // Priority: custom override > weight-based > race baseline
   const displayedCarbsPerHour = customCarbsPerHour ?? calculationResult?.carbsPerHour ?? RACE_SETTINGS[raceType];
   
-  // Debug logging
-  console.log(`[FuelPlannerV2] displayedCarbsPerHour: ${displayedCarbsPerHour}, custom: ${customCarbsPerHour}, calculated: ${calculationResult?.carbsPerHour}, baseline: ${RACE_SETTINGS[raceType]}`);
-
   const planContext: FuelPlanContext | null = result
     ? {
         raceType,
