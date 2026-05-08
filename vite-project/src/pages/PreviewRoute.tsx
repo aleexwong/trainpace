@@ -113,23 +113,15 @@ export default function PreviewRoute() {
   }>({});
   const [openFAQIndex, setOpenFAQIndex] = useState<number | null>(0);
 
-  if (!slug) {
-    return <Navigate to="/" replace />;
-  }
-
   // Get the preview data
-  const route = marathonRoutesData[slug];
-
-  if (!route) {
-    return <Navigate to="/" replace />;
-  }
+  const route = slug ? marathonRoutesData[slug] : undefined;
 
   // Generate FAQ Schema JSON-LD
-  const faqSchema = route.faq
+  const faqSchema = route?.faq
     ? {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        mainEntity: route.faq.map((item) => ({
+        mainEntity: (route?.faq ?? []).map((item) => ({
           "@type": "Question",
           name: item.question,
           acceptedAnswer: {
@@ -144,19 +136,19 @@ export default function PreviewRoute() {
   const courseSchema = {
     "@context": "https://schema.org",
     "@type": "SportsEvent",
-    name: route.name,
-    description: route.description,
+    name: route?.name ?? "",
+    description: route?.description ?? "",
     location: {
       "@type": "Place",
-      name: `${route.city}, ${route.country}`,
+      name: `${route?.city ?? ""}, ${route?.country ?? ""}`,
       address: {
         "@type": "PostalAddress",
-        addressLocality: route.city,
-        addressCountry: route.country,
+        addressLocality: route?.city ?? "",
+        addressCountry: route?.country ?? "",
       },
     },
-    url: route.website,
-    startDate: route.raceDate,
+    url: route?.website ?? "",
+    startDate: route?.raceDate ?? "",
     sport: "Running",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
   };
@@ -181,7 +173,7 @@ export default function PreviewRoute() {
       {
         "@type": "ListItem",
         position: 3,
-        name: route.name,
+        name: route?.name ?? "",
         item: `https://trainpace.com/preview-route/${slug}`,
       },
     ],
@@ -194,6 +186,8 @@ export default function PreviewRoute() {
       try {
         setLoadingPoints(true);
         setLoadError(null);
+        if (!route) return;
+
         const resolvedId = getCurrentDocumentId(route.slug);
         const ref = doc(db, "gpx_uploads", resolvedId);
         const snap = await getDoc(ref);
@@ -246,11 +240,17 @@ export default function PreviewRoute() {
         if (!cancelled) setLoadingPoints(false);
       }
     };
-    load();
+    if (route) {
+      load();
+    }
     return () => {
       cancelled = true;
     };
-  }, [route.slug]);
+  }, [route?.slug]);
+
+  if (!slug || !route) {
+    return <Navigate to="/" replace />;
+  }
 
   // Generate SEO-optimized description
   const seoDescription = `${

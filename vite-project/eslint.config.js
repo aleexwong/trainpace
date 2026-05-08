@@ -31,6 +31,8 @@ export default tseslint.config(
           caughtErrorsIgnorePattern: '^_',
         },
       ],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-empty-object-type': 'warn',
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },

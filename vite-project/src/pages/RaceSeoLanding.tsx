@@ -63,9 +63,8 @@ export default function RaceSeoLanding() {
     useState<Partial<MarathonPreviewRoute> | null>(null);
 
   const page = raceSlug ? raceSeoPageMap.get(raceSlug) : undefined;
-  if (!page) return <Navigate to="/" replace />;
 
-  const basePreviewRoute = page.previewRouteKey
+  const basePreviewRoute = page?.previewRouteKey
     ? marathonRoutesData[page.previewRouteKey]
     : undefined;
 
@@ -73,7 +72,7 @@ export default function RaceSeoLanding() {
     let cancelled = false;
 
     const loadFromFirestore = async () => {
-      if (!page.previewRouteKey || !basePreviewRoute?.slug) {
+      if (!page?.previewRouteKey || !basePreviewRoute?.slug) {
         setRouteOverrides(null);
         return;
       }
@@ -132,7 +131,7 @@ export default function RaceSeoLanding() {
     return () => {
       cancelled = true;
     };
-  }, [page.previewRouteKey, basePreviewRoute?.slug]);
+  }, [page?.previewRouteKey, basePreviewRoute?.slug]);
 
   const previewRoute = useMemo(() => {
     if (!basePreviewRoute) return undefined;
@@ -140,6 +139,8 @@ export default function RaceSeoLanding() {
   }, [basePreviewRoute, routeOverrides]);
 
   const jsonLd = useMemo(() => {
+    if (!page) return null;
+
     const graph: unknown[] = [
       {
         "@context": "https://schema.org",
@@ -225,6 +226,8 @@ export default function RaceSeoLanding() {
       "@graph": graph,
     };
   }, [page, previewRoute]);
+
+  if (!page) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-orange-50">
