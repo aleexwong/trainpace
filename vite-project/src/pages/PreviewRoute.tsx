@@ -121,7 +121,7 @@ export default function PreviewRoute() {
     ? {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        mainEntity: (route?.faq ?? []).map((item) => ({
+        mainEntity: route.faq.map((item) => ({
           "@type": "Question",
           name: item.question,
           acceptedAnswer: {

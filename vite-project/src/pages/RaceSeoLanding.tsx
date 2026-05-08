@@ -65,7 +65,7 @@ export default function RaceSeoLanding() {
   const page = raceSlug ? raceSeoPageMap.get(raceSlug) : undefined;
 
   const basePreviewRoute = page?.previewRouteKey
-    ? marathonRoutesData[page.previewRouteKey]
+    ? marathonRoutesData[page?.previewRouteKey]
     : undefined;
 
   useEffect(() => {
