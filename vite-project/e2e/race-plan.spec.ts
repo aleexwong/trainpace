@@ -81,4 +81,47 @@ test.describe("Race Plan (Pace Calculator)", () => {
     const calculator = new CalculatorPage(page);
     await expect(calculator.heading).toBeVisible();
   });
+
+  test("should block calculation when distance and time are zero", async ({
+    page,
+  }) => {
+    const calculator = new CalculatorPage(page);
+    await calculator.goto();
+
+    await calculator.distanceInput.fill("0");
+    await calculator.fillTime("0", "0", "0");
+    await calculator.calculate();
+
+    await expect(page.getByText("Please enter a valid distance")).toBeVisible();
+    await expect(page.getByText("Please enter a valid time")).toBeVisible();
+    await expect(calculator.resultsHeading).not.toBeVisible();
+  });
+
+  test("should reject invalid time format when minutes overflow", async ({
+    page,
+  }) => {
+    const calculator = new CalculatorPage(page);
+    await calculator.goto();
+
+    await calculator.selectPreset("10K");
+    await calculator.fillTime("0", "60", "0");
+    await calculator.calculate();
+
+    await expect(page.getByText("Invalid time format")).toBeVisible();
+    await expect(calculator.resultsHeading).not.toBeVisible();
+  });
+
+  test("should use the latest suggested-time click during auto-calculate", async ({
+    page,
+  }) => {
+    const calculator = new CalculatorPage(page);
+    await calculator.goto();
+
+    await calculator.selectPreset("Marathon");
+    await page.getByRole("button", { name: "3:15" }).click();
+    await page.getByRole("button", { name: "4:00" }).click();
+
+    await expect(calculator.resultsHeading).toBeVisible();
+    await expect(page.getByText(/42.2 km in 4h 00m 00s/i)).toBeVisible();
+  });
 });
