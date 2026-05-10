@@ -14,7 +14,8 @@
     "generate-pwa-assets": "pwa-assets-generator",
     "host": "vite --host",
     "seed-boston": "vite-node scripts/seedBostonMarathon.ts",
-    "test-gemini": "vite-node scripts/testGemini.ts"
+    "test-gemini": "vite-node scripts/testGemini.ts",
+    "generate-telemetry": "vite-node scripts/generateSyntheticTelemetry.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
