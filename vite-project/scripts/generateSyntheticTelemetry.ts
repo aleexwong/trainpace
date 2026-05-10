@@ -60,6 +60,7 @@ interface AnomalyCounts {
 }
 
 interface DatasetMetadata {
+  /** ISO-8601 wall-clock time when the script was executed (not the simulated race start). */
   generated: string;
   description: string;
   totalEntries: number;
