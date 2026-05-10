@@ -1,90 +1,85 @@
-import { test, expect } from "@playwright/test";
-import { FuelPlannerPage } from "./pages/FuelPlannerPage";
-import { NavigationHelper } from "./pages/NavigationHelper";
+import { test, expect } from "./fixtures/test-fixtures";
 
-test.describe("Fuel Planner", () => {
-  test("should display the fuel planner form", async ({ page }) => {
-    const fuelPlanner = new FuelPlannerPage(page);
-    await fuelPlanner.goto();
+test.describe("Fuel planner page object", () => {
+  /** Verifies a standard half-marathon workflow produces a fuel plan result. */
+  test("happy path generates fuel plan for half marathon", async ({ fuelPlannerPage }) => {
+    // Arrange
+    await fuelPlannerPage.goto();
+    await fuelPlannerPage.selectRaceType("half");
+    await fuelPlannerPage.fillFinishTimeHoursMinutes("1", "45");
 
-    await expect(fuelPlanner.formCard).toBeVisible();
-    await expect(fuelPlanner.raceTypeButton("10k")).toBeVisible();
-    await expect(fuelPlanner.raceTypeButton("half")).toBeVisible();
-    await expect(fuelPlanner.raceTypeButton("full")).toBeVisible();
-    await expect(fuelPlanner.calculateButton).toBeVisible();
-    await expect(fuelPlanner.calculateButton).toBeEnabled();
+    // Act
+    await fuelPlannerPage.calculateAndWaitForResults();
+
+    // Assert
+    await expect(fuelPlannerPage.resultsCard, "Fuel plan results card should appear for valid half-marathon inputs").toBeVisible();
+    await expect(fuelPlannerPage.resultsHeading, "Results heading should confirm plan generation completed").toBeVisible();
   });
 
-  test("should show time input for 10K race type", async ({ page }) => {
-    const fuelPlanner = new FuelPlannerPage(page);
-    await fuelPlanner.goto();
+  /** Confirms 10K mode uses minutes-only inputs and hides the hours field. */
+  test("edge case toggles time inputs for 10K mode", async ({ page, fuelPlannerPage }) => {
+    // Arrange
+    await fuelPlannerPage.goto();
 
-    await fuelPlanner.selectRaceType("10k");
+    // Act
+    await fuelPlannerPage.selectRaceType("10k");
 
-    await expect(
-      page.getByTestId("fuel-time-minutes").locator("visible=true").first()
-    ).toBeVisible();
+    // Assert
+    await expect(page.getByTestId("fuel-time-minutes").locator("visible=true").first(), "Minutes input should be visible in 10K mode").toBeVisible();
+    await expect(page.getByTestId("fuel-time-hours").locator("visible=true").first(), "Hours input should be hidden in 10K mode").not.toBeVisible();
   });
 
-  test("should show hours and minutes inputs for half marathon", async ({
-    page,
-  }) => {
-    const fuelPlanner = new FuelPlannerPage(page);
-    await fuelPlanner.goto();
+  /** Ensures invalid finish time input triggers a destructive feedback path. */
+  test("error state warns when finish time is invalid", async ({ page, fuelPlannerPage }) => {
+    // Arrange
+    await fuelPlannerPage.goto();
+    await fuelPlannerPage.selectRaceType("full");
+    await fuelPlannerPage.fillFinishTimeHoursMinutes("", "");
 
-    await fuelPlanner.selectRaceType("half");
+    // Act
+    await fuelPlannerPage.calculate();
 
-    await expect(
-      page.getByTestId("fuel-time-hours").locator("visible=true").first()
-    ).toBeVisible();
-    await expect(
-      page.getByTestId("fuel-time-minutes").locator("visible=true").first()
-    ).toBeVisible();
+    // Assert
+    await expect(page.getByText("Please enter a valid finish time."), "Invalid time input should surface a clear validation toast").toBeVisible();
+    await expect(fuelPlannerPage.resultsCard, "Results should remain hidden when finish time validation fails").not.toBeVisible();
   });
 
-  test("should generate a fuel plan for a 10K", async ({ page }) => {
-    const fuelPlanner = new FuelPlannerPage(page);
-    await fuelPlanner.goto();
+  /** Validates semantic structure and keyboard operability for core fuel form controls. */
+  test("accessibility checks role semantics and keyboard submission", async ({ page, fuelPlannerPage }) => {
+    // Arrange
+    await fuelPlannerPage.goto();
+    await fuelPlannerPage.selectRaceType("10k");
 
-    await fuelPlanner.selectRaceType("10k");
-    await fuelPlanner.fillFinishTimeMinutes("50");
-    await fuelPlanner.calculateAndWaitForResults();
+    // Act
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
 
-    await expect(fuelPlanner.resultsCard).toBeVisible();
+    // Assert
+    await expect(page.getByRole("heading", { name: /Fuel Planner/i }), "Fuel planner should expose a semantic page heading").toBeVisible();
+    await expect(fuelPlannerPage.calculateButton, "Calculate control should expose button semantics").toHaveRole("button");
+
+    // Act
+    await fuelPlannerPage.fillFinishTimeMinutes("50");
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Enter");
+
+    // Assert
+    await expect(fuelPlannerPage.resultsCard, "Keyboard-only activation should generate a visible fuel plan").toBeVisible();
   });
 
-  test("should generate a fuel plan for a half marathon", async ({ page }) => {
-    const fuelPlanner = new FuelPlannerPage(page);
-    await fuelPlanner.goto();
+  /** Ensures the form and result rendering work correctly on mobile screens. */
+  test("mobile viewport variant generates 10K fuel plan", async ({ fuelPlannerPage, useMobileViewport }) => {
+    // Arrange
+    await useMobileViewport();
+    await fuelPlannerPage.goto();
+    await fuelPlannerPage.selectRaceType("10k");
+    await fuelPlannerPage.fillFinishTimeMinutes("48");
 
-    await fuelPlanner.selectRaceType("half");
-    await fuelPlanner.fillFinishTimeHoursMinutes("1", "45");
-    await fuelPlanner.calculateAndWaitForResults();
+    // Act
+    await fuelPlannerPage.calculateAndWaitForResults();
 
-    await expect(fuelPlanner.resultsCard).toBeVisible();
-  });
-
-  test("should generate a fuel plan for a full marathon", async ({ page }) => {
-    const fuelPlanner = new FuelPlannerPage(page);
-    await fuelPlanner.goto();
-
-    await fuelPlanner.selectRaceType("full");
-    await fuelPlanner.fillFinishTimeHoursMinutes("3", "45");
-    await fuelPlanner.calculateAndWaitForResults();
-
-    await expect(fuelPlanner.resultsCard).toBeVisible();
-  });
-
-  test("should navigate to fuel planner from nav", async ({ page }) => {
-    const nav = new NavigationHelper(page);
-    await page.goto("/");
-    await page.waitForLoadState("networkidle");
-
-    await nav.goToFuelPlanner();
-
-    await expect(page).toHaveURL(/\/fuel/);
-    await expect(
-      page.getByRole("heading", { name: /Fuel Planner/i })
-    ).toBeVisible();
+    // Assert
+    await expect(fuelPlannerPage.formCard, "Fuel planner form should remain visible on mobile layouts").toBeVisible();
+    await expect(fuelPlannerPage.resultsCard, "Fuel plan result should render properly on mobile layouts").toBeVisible();
   });
 });

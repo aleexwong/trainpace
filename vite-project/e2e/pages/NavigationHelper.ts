@@ -15,6 +15,18 @@ export class NavigationHelper {
     return this.desktopNav.getByRole("link", { name: label });
   }
 
+  mobileNavLink(label: string) {
+    return this.page.locator("div.fixed.top-0.right-0").getByRole("link", { name: label });
+  }
+
+  async openMobileMenu() {
+    await this.page.locator("header").getByRole("button").first().click();
+  }
+
+  async closeMobileMenu() {
+    await this.page.locator("div.fixed.top-0.right-0").getByRole("button").first().click();
+  }
+
   async goToCalculator() {
     await this.navLink("Calculator").click();
     await this.page.waitForURL(/\/calculator/);
