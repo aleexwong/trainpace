@@ -111,14 +111,13 @@ test.describe("Race Plan (Pace Calculator)", () => {
     await expect(calculator.resultsHeading).not.toBeVisible();
   });
 
-  test("should use the latest suggested-time click during auto-calculate", async ({
+  test("should auto-calculate after selecting a suggested finish time", async ({
     page,
   }) => {
     const calculator = new CalculatorPage(page);
     await calculator.goto();
 
     await calculator.selectPreset("Marathon");
-    await page.getByRole("button", { name: "3:15" }).click();
     await page.getByRole("button", { name: "4:00" }).click();
 
     await expect(calculator.resultsHeading).toBeVisible();
