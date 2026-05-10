@@ -3,6 +3,9 @@
  */
 
 import { Helmet } from "react-helmet-async";
+import { withBaseUrl } from "@/lib/seo";
+
+const VDOT_URL = withBaseUrl("/calculator/vdot-calculator");
 
 export function VdotSeoHead() {
   return (
@@ -14,7 +17,7 @@ export function VdotSeoHead() {
       />
       <link
         rel="canonical"
-        href="https://www.trainpace.com/calculator/vdot-calculator"
+        href={VDOT_URL}
       />
       {/* Open Graph */}
       <meta
@@ -28,7 +31,7 @@ export function VdotSeoHead() {
       <meta property="og:type" content="website" />
       <meta
         property="og:url"
-        content="https://www.trainpace.com/calculator/vdot-calculator"
+        content={VDOT_URL}
       />
       <meta
         property="og:image"
@@ -57,7 +60,7 @@ export function VdotSeoHead() {
             {
               "@type": "WebApplication",
               name: "VDOT Running Calculator",
-              url: "https://www.trainpace.com/calculator/vdot-calculator",
+              url: VDOT_URL,
               applicationCategory: "HealthApplication",
               operatingSystem: "Any",
               offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -83,7 +86,7 @@ export function VdotSeoHead() {
                   "@type": "ListItem",
                   position: 3,
                   name: "VDOT Calculator",
-                  item: "https://www.trainpace.com/calculator/vdot-calculator",
+                  item: VDOT_URL,
                 },
               ],
             },
