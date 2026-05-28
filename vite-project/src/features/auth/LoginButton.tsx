@@ -4,11 +4,13 @@ import { auth } from "@/lib/firebase";
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { isValidRedirect } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 
 export function LoginButton() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { toast } = useToast();
 
   const handleLogin = async () => {
     setIsLoading(true);
@@ -30,6 +32,25 @@ export function LoginButton() {
       // Otherwise stay on current page
     } catch (error) {
       console.error("Google sign in failed:", error);
+      const code = (error as { code?: string })?.code;
+      if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") {
+        toast({
+          title: "Sign-in cancelled",
+          description: "The Google sign-in window was closed before completing.",
+        });
+      } else if (code === "auth/popup-blocked") {
+        toast({
+          title: "Popup blocked",
+          description: "Allow popups for this site to sign in with Google.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Sign-in failed",
+          description: "Something went wrong signing in. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsLoading(false);
     }

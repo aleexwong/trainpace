@@ -219,7 +219,7 @@ const FuelPlannerV2 = () => {
 
     let carbsPerHour = raceSettings[raceType];
     if (!isNaN(weightKg) && weightKg > 0) {
-      carbsPerHour = Math.round(weightKg * 0.7);
+      carbsPerHour = Math.max(Math.round(weightKg * 0.7), carbsPerHour);
     }
 
     const durationHours = finishTimeMin / 60;
