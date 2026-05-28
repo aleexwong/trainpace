@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrainPace – Train Smarter. Race Faster.</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: oklch(0.72 0.19 155);
+  --green-light: oklch(0.92 0.08 155);
+  --green-dark: oklch(0.45 0.14 155);
+  --slate-950: oklch(0.15 0.01 260);
+  --slate-800: oklch(0.30 0.01 260);
+  --slate-600: oklch(0.45 0.01 260);
+  --slate-400: oklch(0.65 0.01 260);
+  --slate-200: oklch(0.88 0.005 260);
+  --slate-100: oklch(0.94 0.003 260);
+  --slate-50: oklch(0.97 0.002 260);
+  --white: #fff;
+  --orange: oklch(0.72 0.16 55);
+  --blue: oklch(0.62 0.16 255);
+  --red: oklch(0.62 0.18 25);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--slate-950);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+.nav.scrolled {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 1px 0 var(--slate-200);
+}
+.nav-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 1.35rem;
+  color: var(--slate-950); text-decoration: none;
+  letter-spacing: -0.02em;
+}
+.nav-logo span { color: var(--green); }
+.nav-links { display: flex; gap: 2rem; align-items: center; }
+.nav-links a {
+  text-decoration: none; color: var(--slate-600);
+  font-size: 0.9rem; font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--green-dark); }
+.nav-cta {
+  background: var(--slate-950); color: var(--white) !important;
+  padding: 0.55rem 1.4rem; border-radius: 99px;
+  font-weight: 600 !important; font-size: 0.85rem !important;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: var(--green-dark) !important; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 8rem 4rem 4rem;
+  gap: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute;
+  top: -30%; right: -10%; width: 70vw; height: 70vw;
+  background: radial-gradient(circle, oklch(0.92 0.1 155 / 0.5), transparent 70%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--green-light); color: var(--green-dark);
+  padding: 0.4rem 1rem; border-radius: 99px;
+  font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.hero-badge::before {
+  content: ''; width: 6px; height: 6px;
+  background: var(--green); border-radius: 50%;
+}
+.hero h1 {
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  font-weight: 700; line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--green), var(--green-dark));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub {
+  font-size: 1.15rem; color: var(--slate-600);
+  line-height: 1.7; max-width: 480px;
+  margin-bottom: 2.5rem;
+  text-wrap: pretty;
+}
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--green); color: var(--white);
+  padding: 0.85rem 2rem; border-radius: 99px;
+  font-weight: 600; font-size: 1rem;
+  border: none; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  text-decoration: none;
+}
+.btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+.btn-primary svg { width: 18px; height: 18px; }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: transparent; color: var(--slate-950);
+  padding: 0.85rem 2rem; border-radius: 99px;
+  font-weight: 600; font-size: 1rem;
+  border: 1.5px solid var(--slate-200); cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  text-decoration: none;
+}
+.btn-secondary:hover { border-color: var(--green); background: var(--green-light); }
+.hero-proof {
+  display: flex; gap: 2rem; margin-top: 2rem;
+  font-size: 0.85rem; color: var(--slate-400);
+}
+.hero-proof span { display: flex; align-items: center; gap: 0.4rem; }
+.hero-proof svg { width: 15px; height: 15px; color: var(--green); }
+
+/* Hero visual */
+.hero-visual {
+  position: relative;
+  perspective: 800px;
+}
+.hero-card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: 20px;
+  box-shadow: 0 24px 80px -12px oklch(0.2 0.01 260 / 0.15);
+  overflow: hidden;
+  transform: rotateY(-4deg) rotateX(2deg);
+  transition: transform 0.5s;
+}
+.hero-card:hover { transform: rotateY(0) rotateX(0); }
+.hero-card-bar {
+  padding: 0.75rem 1rem;
+  background: var(--slate-50);
+  border-bottom: 1px solid var(--slate-200);
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.hero-card-bar .dot { width: 10px; height: 10px; border-radius: 50%; }
+.hero-card-bar .dot:nth-child(1) { background: #f87171; }
+.hero-card-bar .dot:nth-child(2) { background: #fbbf24; }
+.hero-card-bar .dot:nth-child(3) { background: #34d399; }
+.hero-card-bar .url {
+  margin-left: 0.75rem; font-size: 0.75rem;
+  color: var(--slate-400); font-family: 'DM Sans', monospace;
+}
+.hero-card-body { padding: 1.5rem; }
+.hero-card-body .stat-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 1rem; margin-bottom: 1rem;
+  border-bottom: 1px solid var(--slate-100);
+}
+.stat-label { font-size: 0.75rem; color: var(--slate-400); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+.stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 700; }
+.stat-value .accent { color: var(--green); }
+.elevation-bars {
+  display: flex; align-items: flex-end; gap: 3px;
+  height: 80px; padding: 0.5rem 0;
+}
+.elevation-bars .bar {
+  flex: 1; background: var(--green-light); border-radius: 3px 3px 0 0;
+  transition: height 0.4s;
+}
+.elevation-bars .bar:hover { background: var(--green); }
+.fuel-tip {
+  background: oklch(0.95 0.06 255);
+  border: 1px solid oklch(0.88 0.08 255);
+  border-radius: 12px; padding: 1rem;
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  margin-top: 1rem;
+}
+.fuel-tip .icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: oklch(0.88 0.1 255);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.fuel-tip .icon svg { width: 16px; height: 16px; color: var(--blue); }
+.fuel-tip h4 { font-size: 0.8rem; font-weight: 700; color: oklch(0.3 0.08 255); }
+.fuel-tip p { font-size: 0.75rem; color: oklch(0.45 0.05 255); margin-top: 0.15rem; }
+
+/* Floating founder card */
+.founder-float {
+  position: absolute; bottom: -1rem; left: -2rem;
+  background: var(--white); border: 1px solid var(--slate-200);
+  border-radius: 14px; padding: 0.8rem 1.1rem;
+  box-shadow: 0 12px 40px oklch(0.2 0.01 260 / 0.12);
+  display: flex; align-items: center; gap: 0.75rem;
+  animation: float 4s ease-in-out infinite;
+}
+.founder-float .avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--slate-950); color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Grotesk'; font-weight: 700; font-size: 0.8rem;
+}
+.founder-float .meta { font-size: 0.7rem; color: var(--slate-400); }
+.founder-float .result { font-size: 0.85rem; font-weight: 700; }
+.founder-float .result span { color: var(--green); }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ── VALUE STRIP ── */
+.value-strip {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--slate-200);
+}
+.value-strip-item {
+  padding: 3rem 2.5rem;
+  display: flex; flex-direction: column; gap: 0.75rem;
+  border-right: 1px solid var(--slate-200);
+  transition: background 0.3s;
+}
+.value-strip-item:last-child { border-right: none; }
+.value-strip-item:hover { background: var(--slate-50); }
+.value-strip-item .icon-wrap {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.value-strip-item:nth-child(1) .icon-wrap { background: var(--green-light); color: var(--green-dark); }
+.value-strip-item:nth-child(2) .icon-wrap { background: oklch(0.92 0.08 55); color: var(--orange); }
+.value-strip-item:nth-child(3) .icon-wrap { background: oklch(0.92 0.08 255); color: var(--blue); }
+.value-strip-item .icon-wrap svg { width: 22px; height: 22px; }
+.value-strip-item h3 { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
+.value-strip-item p { font-size: 0.9rem; color: var(--slate-600); line-height: 1.6; }
+
+/* ── FEATURES ── */
+.features-section { padding: 6rem 4rem; }
+.features-section .section-label {
+  font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--green); margin-bottom: 0.75rem;
+}
+.features-section h2 {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 700; letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.features-section .section-sub {
+  font-size: 1.1rem; color: var(--slate-600);
+  max-width: 520px; line-height: 1.7;
+  margin-bottom: 3.5rem;
+}
+.feature-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+.feature-card {
+  border: 1px solid var(--slate-200);
+  border-radius: 20px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  cursor: default;
+}
+.feature-card:hover {
+  border-color: var(--green);
+  box-shadow: 0 8px 40px oklch(0.72 0.19 155 / 0.08);
+}
+.feature-card .card-number {
+  font-family: 'Space Grotesk'; font-size: 4rem; font-weight: 700;
+  color: var(--slate-100); position: absolute; top: -0.3rem; right: 1.5rem;
+  line-height: 1;
+}
+.feature-card h3 {
+  font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+.feature-card p { color: var(--slate-600); line-height: 1.65; font-size: 0.95rem; }
+.feature-card .tag {
+  display: inline-block; margin-top: 1.25rem;
+  font-size: 0.75rem; font-weight: 600;
+  padding: 0.3rem 0.8rem; border-radius: 99px;
+}
+.feature-card:nth-child(1) .tag { background: var(--green-light); color: var(--green-dark); }
+.feature-card:nth-child(2) .tag { background: oklch(0.92 0.08 55); color: oklch(0.45 0.14 55); }
+.feature-card:nth-child(3) .tag { background: oklch(0.92 0.08 255); color: oklch(0.4 0.14 255); }
+.feature-card:nth-child(4) .tag { background: oklch(0.92 0.08 25); color: oklch(0.45 0.14 25); }
+
+/* ── PAIN POINTS ── */
+.pain-section {
+  padding: 6rem 4rem;
+  background: var(--slate-50);
+}
+.pain-section h2 {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 700; letter-spacing: -0.02em;
+  text-align: center; margin-bottom: 0.75rem;
+}
+.pain-section .sub { text-align: center; color: var(--slate-600); font-size: 1.1rem; margin-bottom: 3rem; }
+.pain-grid {
+  max-width: 800px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.pain-row {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; gap: 1.5rem;
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.pain-row:hover { transform: translateY(-2px); box-shadow: 0 8px 30px oklch(0.2 0.01 260 / 0.08); }
+.pain-problem {
+  font-size: 0.9rem; color: var(--slate-400);
+  text-decoration: line-through;
+  text-decoration-color: oklch(0.7 0.15 25 / 0.5);
+}
+.pain-arrow {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--green-light);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.pain-arrow svg { width: 16px; height: 16px; color: var(--green-dark); }
+.pain-solution { font-weight: 600; font-size: 0.95rem; }
+
+/* ── FOUNDER ── */
+.founder-section {
+  padding: 6rem 4rem;
+  background: var(--slate-950);
+  color: var(--white);
+  position: relative; overflow: hidden;
+}
+.founder-section::before {
+  content: ''; position: absolute;
+  top: 0; right: 0; width: 50vw; height: 100%;
+  background: radial-gradient(circle at top right, oklch(0.72 0.19 155 / 0.08), transparent 60%);
+}
+.founder-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center;
+  position: relative;
+}
+.founder-section h2 {
+  font-size: clamp(2rem, 3.5vw, 2.6rem);
+  font-weight: 700; letter-spacing: -0.02em;
+  margin-bottom: 1.5rem; line-height: 1.15;
+}
+.founder-section h2 span { color: var(--green); }
+.founder-text { color: oklch(0.75 0.005 260); font-size: 1rem; line-height: 1.8; }
+.founder-text p { margin-bottom: 1rem; }
+.founder-text strong { color: var(--white); }
+.founder-highlight {
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  border-left: 3px solid var(--green);
+  background: oklch(0.72 0.19 155 / 0.06);
+  border-radius: 0 12px 12px 0;
+}
+.founder-highlight .big { font-family: 'Space Grotesk'; font-size: 1.5rem; font-weight: 700; color: var(--green); }
+.founder-highlight .small { font-size: 0.8rem; color: oklch(0.6 0.08 155); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.25rem; }
+.founder-quote {
+  font-style: italic; color: oklch(0.6 0.005 260);
+  padding-left: 1rem; margin-top: 1.5rem;
+}
+
+/* Founder stats card */
+.stats-card {
+  background: oklch(0.18 0.01 260);
+  border: 1px solid oklch(0.25 0.01 260);
+  border-radius: 20px; padding: 2.5rem;
+}
+.stats-card .before-after {
+  display: flex; flex-direction: column; gap: 1.5rem;
+}
+.stats-card .stat-block { }
+.stats-card .stat-block .label {
+  font-size: 0.7rem; text-transform: uppercase;
+  letter-spacing: 0.08em; font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.stats-card .stat-block:first-child .label { color: oklch(0.6 0.005 260); }
+.stats-card .stat-block:first-child .time {
+  font-family: 'Space Grotesk'; font-size: 3rem; font-weight: 700;
+  color: oklch(0.5 0.005 260);
+  text-decoration: line-through;
+  text-decoration-color: oklch(0.62 0.18 25 / 0.4);
+  text-decoration-thickness: 3px;
+}
+.stats-card .stat-block:first-child .note {
+  display: inline-block; margin-left: 1rem;
+  font-size: 0.7rem; font-weight: 700;
+  background: oklch(0.62 0.18 25 / 0.1);
+  color: oklch(0.7 0.15 25);
+  padding: 0.25rem 0.6rem; border-radius: 99px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.stats-card .divider {
+  height: 1px; background: oklch(0.25 0.01 260);
+}
+.stats-card .stat-block:last-child .label { color: var(--green); }
+.stats-card .stat-block:last-child .time {
+  font-family: 'Space Grotesk'; font-size: 3.5rem; font-weight: 700;
+  color: var(--white);
+}
+.stats-card .improvement {
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-top: 1rem;
+  color: var(--green); font-weight: 700; font-size: 1rem;
+}
+.stats-card .improvement svg { width: 20px; height: 20px; }
+
+/* ── COMPARISON ── */
+.compare-section { padding: 6rem 4rem; }
+.compare-section h2 {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 700; letter-spacing: -0.02em;
+  text-align: center; margin-bottom: 3rem;
+}
+.compare-table {
+  max-width: 800px; margin: 0 auto;
+  border: 1px solid var(--slate-200);
+  border-radius: 16px; overflow: hidden;
+}
+.compare-table table { width: 100%; border-collapse: collapse; }
+.compare-table th, .compare-table td { padding: 1rem 1.5rem; text-align: left; }
+.compare-table thead {
+  background: var(--slate-50);
+  font-size: 0.75rem; text-transform: uppercase;
+  letter-spacing: 0.06em; font-weight: 700;
+}
+.compare-table thead th:nth-child(2) {
+  background: var(--green-light); color: var(--green-dark);
+}
+.compare-table tbody tr { border-top: 1px solid var(--slate-100); }
+.compare-table tbody td:first-child { font-weight: 600; }
+.compare-table tbody td:nth-child(2) {
+  background: oklch(0.97 0.03 155);
+  color: var(--green-dark); font-weight: 600;
+}
+.compare-table tbody td:nth-child(3) { color: var(--slate-400); }
+.check-icon { color: var(--green); margin-right: 0.3rem; vertical-align: middle; }
+
+/* ── TESTIMONIALS ── */
+.testimonials-section {
+  padding: 6rem 4rem;
+  background: var(--slate-50);
+}
+.testimonials-section h2 {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 700; letter-spacing: -0.02em;
+  text-align: center; margin-bottom: 3rem;
+}
+.testimonial-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; max-width: 1000px; margin: 0 auto;
+}
+.testimonial-card {
+  padding: 2rem;
+  border-radius: 16px; border: 1px solid var(--slate-200);
+  background: var(--white);
+}
+.testimonial-card .role {
+  font-family: 'Space Grotesk'; font-weight: 700;
+  font-size: 1rem; margin-bottom: 0.75rem;
+}
+.testimonial-card .quote {
+  font-style: italic; color: var(--slate-600);
+  font-size: 0.9rem; line-height: 1.65;
+}
+
+/* ── FAQ ── */
+.faq-section { padding: 6rem 4rem; }
+.faq-section h2 {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 700; letter-spacing: -0.02em;
+  text-align: center; margin-bottom: 3rem;
+}
+.faq-list { max-width: 700px; margin: 0 auto; }
+.faq-item {
+  border-bottom: 1px solid var(--slate-200);
+}
+.faq-item summary {
+  padding: 1.25rem 0;
+  font-weight: 600; font-size: 1rem;
+  cursor: pointer; list-style: none;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.faq-item summary::after {
+  content: '+'; font-family: 'Space Grotesk'; font-size: 1.3rem;
+  color: var(--slate-400); transition: transform 0.2s;
+}
+.faq-item[open] summary::after { content: '−'; }
+.faq-item p {
+  padding-bottom: 1.25rem;
+  color: var(--slate-600); line-height: 1.7; font-size: 0.95rem;
+}
+
+/* ── CTA ── */
+.cta-section {
+  padding: 6rem 4rem;
+  background: var(--slate-950);
+  text-align: center; color: var(--white);
+  position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: ''; position: absolute;
+  top: 50%; left: 50%; width: 60vw; height: 60vw;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, oklch(0.72 0.19 155 / 0.1), transparent 60%);
+}
+.cta-section h2 {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 700; letter-spacing: -0.02em;
+  margin-bottom: 1rem; position: relative;
+}
+.cta-section p {
+  color: oklch(0.7 0.005 260); font-size: 1.1rem;
+  max-width: 500px; margin: 0 auto 2.5rem;
+  position: relative;
+}
+.cta-section .actions { display: flex; gap: 1rem; justify-content: center; position: relative; }
+.cta-section .privacy-note {
+  margin-top: 2rem; font-size: 0.8rem;
+  color: oklch(0.5 0.005 260);
+  display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  position: relative;
+}
+.cta-section .privacy-note svg { width: 14px; height: 14px; }
+.btn-cta-white {
+  background: var(--white); color: var(--green-dark);
+  padding: 0.9rem 2.2rem; border-radius: 99px;
+  font-weight: 700; font-size: 1rem;
+  border: none; cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s;
+  text-decoration: none;
+}
+.btn-cta-white:hover { transform: translateY(-1px); box-shadow: 0 8px 30px oklch(1 0 0 / 0.15); }
+.btn-cta-ghost {
+  background: transparent; color: var(--white);
+  padding: 0.9rem 2.2rem; border-radius: 99px;
+  font-weight: 600; font-size: 1rem;
+  border: 1.5px solid oklch(0.35 0.005 260);
+  cursor: pointer; transition: border-color 0.2s, background 0.2s;
+  text-decoration: none;
+}
+.btn-cta-ghost:hover { border-color: var(--green); background: oklch(0.72 0.19 155 / 0.08); }
+
+/* ── FOOTER ── */
+.footer {
+  padding: 4rem;
+  border-top: 1px solid var(--slate-200);
+}
+.footer-top {
+  display: flex; justify-content: space-between;
+  margin-bottom: 3rem; flex-wrap: wrap; gap: 2rem;
+}
+.footer-stats {
+  display: flex; gap: 3rem;
+}
+.footer-stats .fs-item { text-align: center; }
+.footer-stats .fs-value {
+  font-family: 'Space Grotesk'; font-weight: 700;
+  font-size: 1.5rem; color: var(--green);
+}
+.footer-stats .fs-label { font-size: 0.8rem; color: var(--slate-400); margin-top: 0.25rem; }
+.footer-columns {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 2rem; margin-bottom: 3rem;
+}
+.footer-columns h4 {
+  font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;
+  letter-spacing: 0.02em;
+}
+.footer-columns ul { list-style: none; }
+.footer-columns li { margin-bottom: 0.6rem; }
+.footer-columns a {
+  text-decoration: none; color: var(--slate-600);
+  font-size: 0.85rem; transition: color 0.2s;
+}
+.footer-columns a:hover { color: var(--green); }
+.footer-bottom {
+  padding-top: 2rem; border-top: 1px solid var(--slate-200);
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 1rem;
+}
+.footer-bottom p { font-size: 0.8rem; color: var(--slate-400); }
+.footer-bottom a { color: var(--slate-600); font-weight: 500; text-decoration: none; }
+.footer-bottom a:hover { color: var(--green); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
+  .hero-visual { max-width: 500px; margin: 0 auto; }
+  .founder-float { display: none; }
+  .value-strip { grid-template-columns: 1fr; }
+  .value-strip-item { border-right: none; border-bottom: 1px solid var(--slate-200); }
+  .value-strip-item:last-child { border-bottom: none; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .features-section, .pain-section, .founder-section, .compare-section, .testimonials-section, .faq-section, .cta-section, .footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .founder-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .testimonial-grid { grid-template-columns: 1fr; }
+  .footer-columns { grid-template-columns: repeat(2, 1fr); }
+  .footer-top { flex-direction: column; }
+  .pain-row { grid-template-columns: 1fr; gap: 0.75rem; text-align: center; }
+  .pain-arrow { margin: 0 auto; }
+  .nav-links { display: none; }
+  .compare-table { font-size: 0.85rem; }
+  .compare-table th, .compare-table td { padding: 0.75rem 1rem; }
+}
+
+/* ── ANIMATIONS ── */
+.fade-up {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.stagger-1 { transition-delay: 0.05s; }
+.stagger-2 { transition-delay: 0.1s; }
+.stagger-3 { transition-delay: 0.15s; }
+.stagger-4 { transition-delay: 0.2s; }
+
+/* Tweaks panel */
+.tweaks-panel {
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
+  background: var(--white); border: 1px solid var(--slate-200);
+  border-radius: 16px; padding: 1.25rem;
+  box-shadow: 0 12px 40px oklch(0.2 0.01 260 / 0.15);
+  z-index: 200; width: 260px;
+  display: none;
+  font-size: 0.85rem;
+}
+.tweaks-panel.open { display: block; }
+.tweaks-panel h4 {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--slate-400);
+  margin-bottom: 1rem;
+}
+.tweak-row { margin-bottom: 1rem; }
+.tweak-row label { display: block; font-weight: 600; margin-bottom: 0.35rem; font-size: 0.8rem; }
+.tweak-row select, .tweak-row input[type="color"] {
+  width: 100%; padding: 0.4rem; border: 1px solid var(--slate-200);
+  border-radius: 8px; font-size: 0.8rem; font-family: inherit;
+}
+.tweak-row input[type="color"] { height: 32px; padding: 2px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <a href="#" class="nav-logo">Train<span>Pace</span></a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#story">Our Story</a>
+    <a href="#faq">FAQ</a>
+    <a href="#" class="nav-cta">Get Started Free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-badge">Free forever</div>
+    <h1>Train Smarter.<br><em>Race Faster.</em></h1>
+    <p class="hero-sub">Science-backed pace zones, real-world course analysis, and personalized race fueling. Used by runners who want results without expensive coaching.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Get Started Free <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="#features" class="btn-secondary">See How It Works</a>
+    </div>
+    <div class="hero-proof">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> No credit card</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> No account needed</span>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="hero-card-bar">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <span class="url">trainpace.com/dashboard</span>
+      </div>
+      <div class="hero-card-body">
+        <div class="stat-row">
+          <div>
+            <div class="stat-label">Next Long Run</div>
+            <div class="stat-value">18 mi <span class="accent">@ 8:45/mi</span></div>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:600; margin-bottom:0.5rem;">
+            <span>Boston Marathon Course</span>
+            <span style="color:var(--orange)">Rolling Hills</span>
+          </div>
+          <div class="elevation-bars" id="elevBars"></div>
+        </div>
+        <div class="fuel-tip">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div>
+            <h4>Fueling Strategy</h4>
+            <p>Take 1 gel every 40 mins. Target 50g carbs/hr.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="founder-float">
+      <div class="avatar">AW</div>
+      <div>
+        <div class="meta">Founder's PB</div>
+        <div class="result">3:01 → <span>2:06 (HM)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE STRIP -->
+<section class="value-strip">
+  <div class="value-strip-item">
+    <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+    <h3>Science-Backed Zones</h3>
+    <p>Personalized Easy, Tempo, Speed, and Long Run paces from any race result. Stop guessing.</p>
+  </div>
+  <div class="value-strip-item">
+    <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></div>
+    <h3>Analyze Any Course</h3>
+    <p>Upload GPX files to visualize elevation and terrain difficulty. Intel for marathons & trails.</p>
+  </div>
+  <div class="value-strip-item">
+    <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+    <h3>Never Bonk Again</h3>
+    <p>Calculate exactly how many gels and carbs you need based on race duration and weight.</p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="section-label">Tools</div>
+  <h2>Everything You Need to Race Ready</h2>
+  <p class="section-sub">Four powerful, free tools that replace a $150/month coach.</p>
+  <div class="feature-grid">
+    <div class="feature-card fade-up">
+      <div class="card-number">01</div>
+      <h3>Pace Calculator</h3>
+      <p>Enter any race time (5K to Marathon) and instantly get science-backed training zones for Easy, Tempo, VO2 Max, and more.</p>
+      <span class="tag">30-second setup</span>
+    </div>
+    <div class="feature-card fade-up stagger-1">
+      <div class="card-number">02</div>
+      <h3>Elevation Finder</h3>
+      <p>Upload GPX files to visualize elevation profiles, terrain difficulty, and total gain/loss. Know every hill before race day.</p>
+      <span class="tag">Unlimited GPX uploads</span>
+    </div>
+    <div class="feature-card fade-up stagger-2">
+      <div class="card-number">03</div>
+      <h3>Fuel Planner</h3>
+      <p>Personalized gel timing and carb calculations based on your distance, goal time, and body weight. Never hit the wall again.</p>
+      <span class="tag">AI-powered</span>
+    </div>
+    <div class="feature-card fade-up stagger-3">
+      <div class="card-number">04</div>
+      <h3>VDOT Calculator</h3>
+      <p>Calculate your VDOT fitness score from Jack Daniels' Running Formula. Get race predictions across 9 distances and all 5 training zones.</p>
+      <span class="tag">Daniels formula</span>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN POINTS -->
+<section class="pain-section">
+  <h2>Self-Coached ≠ Going It Alone</h2>
+  <p class="sub">You bring the grit. We provide the data.</p>
+  <div class="pain-grid">
+    <div class="pain-row fade-up">
+      <div class="pain-problem">I train too hard on easy days and crash on hard days</div>
+      <div class="pain-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      <div class="pain-solution">Precision pace zones based on proven formulas</div>
+    </div>
+    <div class="pain-row fade-up stagger-1">
+      <div class="pain-problem">I don't know if my race course is hilly</div>
+      <div class="pain-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      <div class="pain-solution">Upload any GPX file, see elevation in seconds</div>
+    </div>
+    <div class="pain-row fade-up stagger-2">
+      <div class="pain-problem">I hit the wall at mile 18 from bad fueling</div>
+      <div class="pain-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      <div class="pain-solution">Personalized gel timing and carb calculations</div>
+    </div>
+    <div class="pain-row fade-up stagger-3">
+      <div class="pain-problem">Coaches are expensive ($150+/month)</div>
+      <div class="pain-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      <div class="pain-solution">TrainPace is 100% free, forever</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="founder-section" id="story">
+  <div class="founder-grid">
+    <div>
+      <h2>Built By a Runner Who<br><span>Knows Your Struggle</span></h2>
+      <div class="founder-text">
+        <p>Meet <strong>Alex Wong</strong>, TrainPace founder. In 2024, Alex ran his first half marathon in <strong>3:01:00</strong>—undertrained, overpacing, and hitting the wall hard.</p>
+        <p>Determined to improve, he built TrainPace to apply proper training zones, analyze courses, and nail his fueling.</p>
+        <div class="founder-highlight">
+          <div class="big">24 weeks later: 2:06:00</div>
+          <div class="small">A 55-minute improvement</div>
+        </div>
+        <p class="founder-quote">"I built TrainPace because every runner deserves access to the tools that elite athletes use. No paywalls. No BS. Just science-backed training that works."</p>
+      </div>
+    </div>
+    <div>
+      <div class="stats-card">
+        <div class="before-after">
+          <div class="stat-block">
+            <div class="label">First Race</div>
+            <div class="time">3:01:00 <span class="note">Bonked</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="stat-block">
+            <div class="label">After TrainPace</div>
+            <div class="time">2:06:00</div>
+          </div>
+          <div class="improvement">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            55 minutes faster
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="compare-section">
+  <h2>Why Runners Choose TrainPace</h2>
+  <div class="compare-table">
+    <table>
+      <thead>
+        <tr><th>Feature</th><th>TrainPace</th><th>Typical Apps</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Price</td><td><strong>Free Forever</strong></td><td>$10–20/month</td></tr>
+        <tr><td>Pace Zones</td><td><span class="check-icon">✓</span> Science-backed</td><td>Generic / Basic</td></tr>
+        <tr><td>Course Analysis</td><td><span class="check-icon">✓</span> Unlimited GPX</td><td>Premium Only</td></tr>
+        <tr><td>Fuel Planning</td><td><span class="check-icon">✓</span> AI-Powered</td><td>Rarely included</td></tr>
+        <tr><td>Account Required?</td><td>No, use instantly</td><td>Yes, mandatory</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section">
+  <h2>Built for Every Runner</h2>
+  <div class="testimonial-grid">
+    <div class="testimonial-card fade-up">
+      <div class="role">First-Time Marathoner</div>
+      <p class="quote">"I analyzed the Boston course elevation and calculated my fueling needs. I finished strong without hitting the wall."</p>
+    </div>
+    <div class="testimonial-card fade-up stagger-1">
+      <div class="role">Comeback Runner</div>
+      <p class="quote">"After 2 years off, I didn't know where to start. I plugged in my old 10K time, got my Easy pace, and built a base safely."</p>
+    </div>
+    <div class="testimonial-card fade-up stagger-2">
+      <div class="role">Trail Runner</div>
+      <p class="quote">"I analyze trail GPX files before races—seeing grade percentages helps me plan walk breaks. The terrain difficulty score is spot-on."</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <h2>Common Questions</h2>
+  <div class="faq-list">
+    <details class="faq-item"><summary>Is TrainPace really free?</summary><p>Yes. Core features — pace calculator, VDOT calculator, elevation analysis, fuel planning — are free forever. No credit card, no trials, no hidden fees.</p></details>
+    <details class="faq-item"><summary>Do I need an account?</summary><p>No! You can use the Pace Calculator, VDOT Calculator, and ElevationFinder without signing up. Create a free account only if you want to save plans.</p></details>
+    <details class="faq-item"><summary>What is VDOT and how does it work?</summary><p>VDOT is a running fitness metric from Jack Daniels' Running Formula. Enter any race time and get a score plus training paces for Easy, Marathon, Threshold, Interval, and Repetition zones.</p></details>
+    <details class="faq-item"><summary>Where do the pace formulas come from?</summary><p>We use proven exercise science formulas (Jack Daniels' VDOT and Riegel's formula) used by elite coaches worldwide.</p></details>
+    <details class="faq-item"><summary>How accurate is the fuel planning?</summary><p>It's based on sports nutrition research recommending 30–60g carbs/hour, tailored to your body weight and goal time.</p></details>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to Train Smarter?</h2>
+  <p>Join thousands of runners using TrainPace to achieve their goals—no credit card, no commitment.</p>
+  <div class="actions">
+    <a href="#" class="btn-cta-white">Get Started Free</a>
+    <a href="#" class="btn-cta-ghost">Analyze a Route</a>
+  </div>
+  <div class="privacy-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    Your data is private. We never sell your info.
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <a href="#" class="nav-logo" style="font-size:1.5rem">Train<span style="color:var(--green)">Pace</span></a>
+    <div class="footer-stats">
+      <div class="fs-item"><div class="fs-value">Always Free</div><div class="fs-label">Core Tools</div></div>
+      <div class="fs-item"><div class="fs-value">No Ads</div><div class="fs-label">Clean Experience</div></div>
+      <div class="fs-item"><div class="fs-value">Open Source</div><div class="fs-label">Built for Runners</div></div>
+    </div>
+  </div>
+  <div class="footer-columns">
+    <div>
+      <h4>Free Tools</h4>
+      <ul>
+        <li><a href="#">Pace Calculator</a></li>
+        <li><a href="#">Fuel Planner</a></li>
+        <li><a href="#">ElevationFinder</a></li>
+        <li><a href="#">VDOT Calculator</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Races</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Our Story</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Support</a></li>
+        <li><a href="#">Feedback</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>Built by a <a href="#">runner</a> for runners. © 2026 TrainPace. All rights reserved.</p>
+    <p>Questions? <a href="mailto:alex@trainpace.com" style="color:var(--green)">Get in touch</a></p>
+  </div>
+</footer>
+
+<!-- Tweaks panel -->
+<div class="tweaks-panel" id="tweaksPanel">
+  <h4>Tweaks</h4>
+  <div class="tweak-row">
+    <label>Accent Color</label>
+    <input type="color" id="tweakColor" value="#1ca85b">
+  </div>
+  <div class="tweak-row">
+    <label>Hero Style</label>
+    <select id="tweakHero">
+      <option value="split">Split (default)</option>
+      <option value="centered">Centered</option>
+    </select>
+  </div>
+  <div class="tweak-row">
+    <label>Card Corners</label>
+    <select id="tweakRadius">
+      <option value="20px">Rounded (default)</option>
+      <option value="8px">Subtle</option>
+      <option value="0px">Sharp</option>
+    </select>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentColor": "#2db96c",
+  "heroStyle": "split",
+  "cardRadius": "20px"
+}/*EDITMODE-END*/;
+
+// Elevation bars
+const bars = [4,6,3,8,12,5,3,7,9,12,8,5,3,4,6,8,10,14,8,6,4,2,4,6];
+const elevContainer = document.getElementById('elevBars');
+bars.forEach(h => {
+  const d = document.createElement('div');
+  d.className = 'bar';
+  d.style.height = (h * 6) + '%';
+  elevContainer.appendChild(d);
+});
+
+// Nav scroll
+const nav = document.getElementById('mainNav');
+let lastY = 0;
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 10);
+  if (y > 100 && y > lastY) {
+    nav.style.transform = 'translateY(-100%)';
+  } else {
+    nav.style.transform = 'translateY(0)';
+  }
+  lastY = y;
+}, { passive: true });
+
+// Intersection observer for fade-up
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); }});
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+
+// Tweaks
+const tweaksPanel = document.getElementById('tweaksPanel');
+const tweakColor = document.getElementById('tweakColor');
+const tweakHero = document.getElementById('tweakHero');
+const tweakRadius = document.getElementById('tweakRadius');
+
+function applyTweaks(cfg) {
+  // Convert hex to oklch-ish by setting CSS var
+  document.documentElement.style.setProperty('--green', cfg.accentColor);
+  document.documentElement.style.setProperty('--green-light', cfg.accentColor + '18');
+  document.documentElement.style.setProperty('--green-dark', cfg.accentColor);
+
+  // Hero style
+  const hero = document.querySelector('.hero');
+  if (cfg.heroStyle === 'centered') {
+    hero.style.gridTemplateColumns = '1fr';
+    hero.style.textAlign = 'center';
+    hero.querySelector('.hero-sub').style.maxWidth = '600px';
+    hero.querySelector('.hero-sub').style.margin = '0 auto 2.5rem';
+    hero.querySelector('.hero-actions').style.justifyContent = 'center';
+    hero.querySelector('.hero-proof').style.justifyContent = 'center';
+    document.querySelector('.hero-visual').style.display = 'none';
+  } else {
+    hero.style.gridTemplateColumns = '1fr 1fr';
+    hero.style.textAlign = 'left';
+    hero.querySelector('.hero-sub').style.maxWidth = '480px';
+    hero.querySelector('.hero-sub').style.margin = '0 0 2.5rem';
+    hero.querySelector('.hero-actions').style.justifyContent = 'flex-start';
+    hero.querySelector('.hero-proof').style.justifyContent = 'flex-start';
+    document.querySelector('.hero-visual').style.display = 'block';
+  }
+
+  // Radius
+  document.querySelectorAll('.feature-card, .pain-row, .hero-card, .stats-card, .testimonial-card, .compare-table').forEach(el => {
+    el.style.borderRadius = cfg.cardRadius;
+  });
+}
+
+tweakColor.value = TWEAK_DEFAULTS.accentColor;
+tweakHero.value = TWEAK_DEFAULTS.heroStyle;
+tweakRadius.value = TWEAK_DEFAULTS.cardRadius;
+applyTweaks(TWEAK_DEFAULTS);
+
+tweakColor.addEventListener('input', () => { TWEAK_DEFAULTS.accentColor = tweakColor.value; applyTweaks(TWEAK_DEFAULTS); postTweaks(); });
+tweakHero.addEventListener('change', () => { TWEAK_DEFAULTS.heroStyle = tweakHero.value; applyTweaks(TWEAK_DEFAULTS); postTweaks(); });
+tweakRadius.addEventListener('change', () => { TWEAK_DEFAULTS.cardRadius = tweakRadius.value; applyTweaks(TWEAK_DEFAULTS); postTweaks(); });
+
+function postTweaks() {
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: TWEAK_DEFAULTS }, '*');
+}
+
+// Edit mode protocol
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode') tweaksPanel.classList.add('open');
+  if (e.data?.type === '__deactivate_edit_mode') tweaksPanel.classList.remove('open');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+</script>
+</body>
+</html>
