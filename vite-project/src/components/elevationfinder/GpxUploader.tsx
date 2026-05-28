@@ -189,8 +189,11 @@ export default function GpxUploader({
         return false;
       }
 
-      // Reject files with disallowed elements (script injection, embeds)
-      if (doc.querySelector("script, object, embed, iframe, link, style")) {
+      // Reject files with disallowed elements (script injection, embeds).
+      // Note: <link> and <style> are valid GPX 1.1 elements (AllTrails, Garmin,
+      // Strava all emit <link>), and this content is parsed as XML data, never
+      // rendered as HTML — so only the genuinely executable tags are blocked.
+      if (doc.querySelector("script, object, embed, iframe")) {
         return false;
       }
 
