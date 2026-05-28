@@ -11,9 +11,10 @@ import {
   ChartOptions,
   Filler,
 } from "chart.js";
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, memo } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { downsampleProfile } from "@/features/elevation/utils";
 
 Chart.register(
   CategoryScale,
@@ -24,6 +25,12 @@ Chart.register(
   Legend,
   Filler
 );
+
+// Cap how many points Chart.js actually draws. Dense routes (6000+ points)
+// otherwise make hover hit-testing/redraw run over every point each mousemove,
+// which lags the UI. ~1000 keeps the profile visually faithful (see
+// downsampleProfile / LTTB) while staying well within frame budget.
+const MAX_CHART_POINTS = 1000;
 
 interface ElevationChartProps {
   points: ProfilePoint[];
@@ -127,45 +134,59 @@ export function ElevationChart({
     }
   };
 
+  // Downsample dense routes so Chart.js draws/hit-tests a bounded number of
+  // points. grades + data are derived from this same array so the per-segment
+  // colors and tooltip grade stay index-aligned.
+  const chartPoints = useMemo(
+    () => downsampleProfile(points, MAX_CHART_POINTS),
+    [points]
+  );
+
   // Calculate grades for all segments
   const grades = useMemo(() => {
     const result: number[] = [];
-    for (let i = 0; i < points.length - 1; i++) {
-      result.push(calculateGrade(points[i], points[i + 1]));
+    for (let i = 0; i < chartPoints.length - 1; i++) {
+      result.push(calculateGrade(chartPoints[i], chartPoints[i + 1]));
     }
     // Add last grade (same as second to last) for consistent length
     result.push(result[result.length - 1] || 0);
     return result;
-  }, [points]);
+  }, [chartPoints]);
 
-  const data = {
-    datasets: [
-      {
-        label: filename ? filename.replace(".gpx", "") : "Elevation Profile",
-        data: points.map((p) => ({ x: p.distanceKm, y: p.elevation })),
-        segment: {
-          borderColor: (ctx: any) => {
-            // ctx.p0DataIndex is the starting point of the segment
-            const idx = ctx.p0DataIndex;
-            return getGradeColor(grades[idx]);
+  const data = useMemo(
+    () => ({
+      datasets: [
+        {
+          label: filename ? filename.replace(".gpx", "") : "Elevation Profile",
+          data: chartPoints.map((p) => ({ x: p.distanceKm, y: p.elevation })),
+          segment: {
+            borderColor: (ctx: { p0DataIndex: number }) => {
+              // ctx.p0DataIndex is the starting point of the segment
+              const idx = ctx.p0DataIndex;
+              return getGradeColor(grades[idx]);
+            },
           },
+          backgroundColor: "rgba(25, 170, 56, 0.15)",
+          fill: true,
+          tension: 0.4,
+          pointRadius: 0,
+          pointHoverRadius: 6,
+          pointHoverBackgroundColor: "rgba(59, 130, 246, 1)",
+          pointHoverBorderColor: "rgba(255, 255, 255, 1)",
+          pointHoverBorderWidth: 2,
+          borderWidth: 3,
         },
-        backgroundColor: "rgba(25, 170, 56, 0.15)",
-        fill: true,
-        tension: 0.4,
-        pointRadius: 0,
-        pointHoverRadius: 6,
-        pointHoverBackgroundColor: "rgba(59, 130, 246, 1)",
-        pointHoverBorderColor: "rgba(255, 255, 255, 1)",
-        pointHoverBorderWidth: 2,
-        borderWidth: 3,
-      },
-    ],
-  };
+      ],
+    }),
+    [chartPoints, grades, filename]
+  );
 
-  const options: ChartOptions<"line"> = {
+  const options: ChartOptions<"line"> = useMemo(
+    () => ({
     responsive: true,
     maintainAspectRatio: false,
+    // Avoid re-animating the line on every hover frame.
+    animation: { duration: 0 },
     interaction: {
       intersect: false,
       mode: "index",
@@ -261,7 +282,9 @@ export function ElevationChart({
         },
       },
     },
-  };
+    }),
+    [grades]
+  );
 
   return (
     <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200">
@@ -363,4 +386,4 @@ function PencilIcon({ className }: { className?: string }) {
   );
 }
 
-export default ElevationChart;
+export default memo(ElevationChart);

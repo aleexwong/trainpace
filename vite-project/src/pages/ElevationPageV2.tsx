@@ -3,7 +3,7 @@
  * Thin orchestrator that composes the elevation feature
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/features/auth/AuthContext";
@@ -80,9 +80,11 @@ export default function ElevationPage() {
   const analysisData = isSharedRoute
     ? sharedAnalysisData
     : uploadState.analysisData;
-  const points: ProfilePoint[] = isSharedRoute
-    ? sharedAnalysisData?.profile || []
-    : uploadState.points;
+  const points: ProfilePoint[] = useMemo(
+    () =>
+      isSharedRoute ? sharedAnalysisData?.profile || [] : uploadState.points,
+    [isSharedRoute, sharedAnalysisData?.profile, uploadState.points]
+  );
   const filename = isSharedRoute
     ? routeMetadata?.filename || null
     : uploadState.filename;
