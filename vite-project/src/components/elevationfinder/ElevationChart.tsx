@@ -39,6 +39,9 @@ interface ElevationChartProps {
   docId?: string;
   isOwner?: boolean;
   onFilenameUpdate?: (newFilename: string) => void;
+  // Fires the hovered point's distance (km) for chart↔map linking, or null
+  // when the cursor leaves the plot. Throttled to fire only on index change.
+  onHoverDistance?: (distanceKm: number | null) => void;
 }
 
 // Calculate grade percentage between two points
@@ -80,11 +83,14 @@ export function ElevationChart({
   docId,
   isOwner,
   onFilenameUpdate,
+  onHoverDistance,
 }: ElevationChartProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editFilename, setEditFilename] = useState(filename || "");
   const [isUpdating, setIsUpdating] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  // Last reported hover index, so we only fire the callback when it changes.
+  const lastHoverIndex = useRef<number | null>(null);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -191,6 +197,15 @@ export function ElevationChart({
       intersect: false,
       mode: "index",
     },
+    onHover: (_event, activeElements) => {
+      if (!onHoverDistance) return;
+      const index = activeElements.length ? activeElements[0].index : null;
+      // Only emit when the active point actually changes — onHover fires on
+      // every mousemove and we don't want to re-render the map each frame.
+      if (index === lastHoverIndex.current) return;
+      lastHoverIndex.current = index;
+      onHoverDistance(index === null ? null : chartPoints[index]?.distanceKm ?? null);
+    },
     plugins: {
       legend: {
         display: true,
@@ -283,7 +298,7 @@ export function ElevationChart({
       },
     },
     }),
-    [grades]
+    [grades, chartPoints, onHoverDistance]
   );
 
   return (
@@ -327,7 +342,15 @@ export function ElevationChart({
       </div>
 
       {/* Chart container */}
-      <div className="w-full h-80 p-4">
+      <div
+        className="w-full h-80 p-4"
+        onMouseLeave={() => {
+          if (onHoverDistance && lastHoverIndex.current !== null) {
+            lastHoverIndex.current = null;
+            onHoverDistance(null);
+          }
+        }}
+      >
         <Line data={data} options={options} />
       </div>
 

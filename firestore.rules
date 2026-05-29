@@ -38,6 +38,14 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
     }
 
+    // User training goals — onboarding profile (doc id === userId), owner only
+    match /user_training_goals/{docId} {
+      allow read, update, delete: if request.auth != null
+        && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid;
+    }
+
     // Elevation analysis cache — any authenticated user can read; only creator can overwrite
     match /elevation_analysis_cache/{docId} {
       allow read: if request.auth != null;

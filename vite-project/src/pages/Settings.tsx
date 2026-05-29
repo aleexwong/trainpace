@@ -21,6 +21,7 @@ import {
 import { useAuth } from "@/features/auth/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { GoalsSettingsCard } from "@/features/goals";
 
 const Settings: React.FC = () => {
   const { user } = useAuth();
@@ -96,6 +97,7 @@ const Settings: React.FC = () => {
       "user_pace_plans",
       "user_fuel_plans",
       "user_bookmarks",
+      "user_training_goals",
     ];
 
     await Promise.all([
@@ -277,6 +279,9 @@ const Settings: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Training Goals */}
+        <GoalsSettingsCard />
 
         {/* Security Actions */}
         <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">

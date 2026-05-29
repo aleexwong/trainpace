@@ -70,3 +70,23 @@ export function downsampleProfile<T extends ProfileLike>(
   sampled.push(data[n - 1]); // always keep the last point
   return sampled;
 }
+
+/**
+ * Build a cumulative elevation-*gain* profile from an elevation profile.
+ * Each output point carries the running sum of only the positive elevation
+ * deltas up to that distance, i.e. total climbing so far (descents don't
+ * subtract). This is the "how much have I climbed by km X" curve runners use
+ * to gauge effort accumulation, distinct from the raw elevation profile.
+ */
+export function computeCumulativeGain<T extends ProfileLike>(
+  data: T[]
+): { distanceKm: number; gain: number }[] {
+  let running = 0;
+  return data.map((p, i) => {
+    if (i > 0) {
+      const delta = p.elevation - data[i - 1].elevation;
+      if (delta > 0) running += delta;
+    }
+    return { distanceKm: p.distanceKm, gain: running };
+  });
+}

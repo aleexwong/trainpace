@@ -23,6 +23,9 @@ interface InteractiveMapboxPreviewProps {
   doubleClickZoom?: boolean;
   boxZoom?: boolean;
   touchZoomRotate?: boolean;
+  // A point to highlight on the route (e.g. driven by elevation-chart hover).
+  // Rendered as a single marker that moves as it changes, removed when null.
+  highlightPoint?: RoutePoint | null;
 }
 
 const MAPBOX_TOKEN =
@@ -82,9 +85,11 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
   doubleClickZoom = true,
   boxZoom = true,
   touchZoomRotate = true,
+  highlightPoint = null,
 }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<any>(null);
+  const highlightMarker = useRef<any>(null);
 
   useEffect(() => {
     if (!mapContainer.current || !routePoints?.length) return;
@@ -173,6 +178,10 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
     initializeMap();
 
     return () => {
+      if (highlightMarker.current) {
+        highlightMarker.current.remove();
+        highlightMarker.current = null;
+      }
       if (map.current) {
         map.current.remove();
         map.current = null;
@@ -187,6 +196,29 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
     padding,
     interactive,
   ]);
+
+  // Move/show/hide the highlight marker without reinitializing the map.
+  useEffect(() => {
+    const mapboxgl = (window as any).mapboxgl;
+    if (!map.current || !mapboxgl) return;
+
+    if (!highlightPoint) {
+      if (highlightMarker.current) {
+        highlightMarker.current.remove();
+        highlightMarker.current = null;
+      }
+      return;
+    }
+
+    const lngLat = [highlightPoint.lng, highlightPoint.lat];
+    if (highlightMarker.current) {
+      highlightMarker.current.setLngLat(lngLat);
+    } else {
+      highlightMarker.current = new mapboxgl.Marker({ color: "#3b82f6" })
+        .setLngLat(lngLat)
+        .addTo(map.current);
+    }
+  }, [highlightPoint]);
 
   if (!routePoints?.length) {
     return (
