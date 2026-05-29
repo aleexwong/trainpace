@@ -411,7 +411,7 @@ export function UnifiedDifficultyView({
               key={group.rating}
               id={`difficulty-group-${group.rating}`}
               className={`rounded-lg border ${group.color.bg} transition-all ${
-                isExpanded ? "shadow-lg ring-2 ring-blue-400" : "shadow-sm"
+                isExpanded ? "shadow-lg ring-2 ring-emerald-400" : "shadow-sm"
               }`}
             >
               <button

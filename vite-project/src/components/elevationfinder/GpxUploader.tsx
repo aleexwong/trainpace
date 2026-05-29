@@ -527,12 +527,12 @@ export default function GpxUploader({
               <h3 className="text-lg font-semibold">Duplicate File Detected</h3>
             </div>
 
-            <p className="text-gray-600 mb-4">
+            <p className="text-slate-600 mb-4">
               You've already uploaded this file:{" "}
               <strong>{duplicateFound.filename}</strong>
             </p>
 
-            <div className="text-sm text-gray-500 mb-6">
+            <div className="text-sm text-slate-500 mb-6">
               Previously uploaded:{" "}
               {duplicateFound.uploadedAt?.toDate?.()?.toLocaleDateString() ||
                 "Recently"}
@@ -541,7 +541,7 @@ export default function GpxUploader({
             <div className="flex space-x-3">
               <button
                 onClick={() => handleDuplicateAction("use")}
-                className="flex-1 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                className="flex-1 bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors"
               >
                 Use Existing File
               </button>
@@ -590,8 +590,8 @@ export default function GpxUploader({
           relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300
           ${
             isDragging && !isDisabled
-              ? "border-blue-400 bg-blue-50 scale-105"
-              : "border-gray-300 hover:border-blue-300 hover:bg-blue-25"
+              ? "border-emerald-400 bg-emerald-50 scale-105"
+              : "border-slate-300 hover:border-emerald-300 hover:bg-emerald-50/30"
           }
           ${
             isDisabled
@@ -610,8 +610,8 @@ export default function GpxUploader({
             relative p-4 rounded-full transition-all duration-300
             ${
               isDragging && !isDisabled
-                ? "bg-blue-500 text-white"
-                : "bg-gradient-to-br from-blue-400 to-cyan-500 text-white"
+                ? "bg-emerald-600 text-white"
+                : "bg-gradient-to-br from-emerald-500 to-emerald-600 text-white"
             }
             ${isUploading ? "animate-pulse" : ""}
           `}
@@ -629,7 +629,7 @@ export default function GpxUploader({
           {isUploading && (
             <div className="w-full max-w-xs bg-gray-200 rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-emerald-600 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${uploadProgress}%` }}
               />
             </div>
@@ -637,10 +637,10 @@ export default function GpxUploader({
 
           {/* Text content */}
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 className="text-lg font-semibold text-slate-800">
               {isUploading ? "Processing GPX..." : "Upload Your Route"}
             </h3>
-            <p className="text-gray-600 text-sm">
+            <p className="text-slate-600 text-sm">
               {isUploading
                 ? "Checking for duplicates and validating data..."
                 : "Drop your GPX file here or click to browse"}
@@ -648,13 +648,13 @@ export default function GpxUploader({
           </div>
 
           {/* Features */}
-          <div className="flex items-center space-x-6 text-xs text-gray-500">
+          <div className="flex items-center space-x-6 text-xs text-slate-500">
             <div className="flex items-center space-x-1">
-              <MapPin className="w-4 h-4 text-blue-500" />
+              <MapPin className="w-4 h-4 text-emerald-500" />
               <span>Track Analysis</span>
             </div>
             <div className="flex items-center space-x-1">
-              <Activity className="w-4 h-4 text-blue-500" />
+              <Activity className="w-4 h-4 text-emerald-500" />
               <span>Smart Caching</span>
             </div>
             <div className="flex items-center space-x-1">
@@ -664,12 +664,12 @@ export default function GpxUploader({
           </div>
 
           {/* Limits info */}
-          <div className="flex flex-col items-center space-y-1 text-xs text-gray-400">
+          <div className="flex flex-col items-center space-y-1 text-xs text-slate-400">
             <div className="bg-gray-50 px-3 py-1 rounded-full">
               Max {maxFileSize}MB • {allowedFileTypes.join(", ")} files
             </div>
             {user && (
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-slate-500">
                 Today: {uploadsToday}/{maxUploadsPerDay} • This hour:{" "}
                 {uploadsThisHour}/{maxUploadsPerHour}
               </div>

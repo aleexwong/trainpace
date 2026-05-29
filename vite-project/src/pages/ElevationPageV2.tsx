@@ -238,16 +238,14 @@ export default function ElevationPage() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         {/* Header */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-700 text-center">
-          <a
-            href="/elevationfinder"
-            aria-label="ElevationFinder - Analyze Your GPX Files"
-            title="ElevationFinder - Analyze Your GPX Files"
-            className="no-underline text-blue-700 font-bold hover:text-blue-800 transition-colors"
-          >
-            ElevationFinder
-          </a>
-        </h1>
+        <div className="text-center">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900">
+            Elevation Finder
+          </h1>
+          <p className="mt-2 text-slate-500 text-base sm:text-lg">
+            Upload a GPX file to visualize elevation, grade, and terrain difficulty
+          </p>
+        </div>
 
         {/* Upload Section (only show if no current route) */}
         {!currentDocId && <GpxUploader onFileParsed={handleFileParsed} />}

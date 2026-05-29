@@ -8,7 +8,6 @@ import {
   List,
   PieChart as PieChartIcon,
 } from "lucide-react";
-import AuthGuard from "@/features/auth/AuthGuard";
 import { UnifiedDifficultyView } from "./UnifiedDifficultyView";
 
 export interface ElevationInsightsProps {
@@ -104,7 +103,7 @@ export function ElevationInsights({
         <div className="bg-white rounded-lg shadow-sm border p-8 text-center">
           <div className="animate-pulse">
             <Clock className="w-8 h-8 text-blue-500 mx-auto mb-4" />
-            <p className="text-gray-600">Analyzing elevation profile...</p>
+            <p className="text-slate-600">Analyzing elevation profile...</p>
           </div>
         </div>
       </div>
@@ -127,7 +126,7 @@ export function ElevationInsights({
 
   if (!elevationInsights) {
     return (
-      <div className="text-gray-500 text-center py-8">
+      <div className="text-slate-500 text-center py-8">
         Upload a GPX file to see elevation insights
       </div>
     );
@@ -137,113 +136,108 @@ export function ElevationInsights({
 
   return (
     <div className="w-full space-y-6">
-      {/* Controls - Fixed slider events */}
-      <AuthGuard
-        fallback={
-          <div className="bg-white rounded-lg shadow-sm border p-4 text-center text-sm text-gray-500">
-            Log in to customize pace and grade settings.
+      {/* Controls */}
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+        <h3 className="font-semibold text-slate-800 mb-4">Analysis Settings</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <label className="text-sm font-medium text-slate-700">Base Pace</label>
+              <span className="text-sm font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
+                {formatPace(1, localBasePace)}
+              </span>
+            </div>
+            <input
+              type="range"
+              min="3"
+              max="8"
+              step="0.1"
+              value={localBasePace}
+              onChange={(e) => setLocalBasePace(Number(e.target.value))}
+              onMouseUp={handleSliderRelease}
+              onTouchEnd={handleSliderRelease}
+              className="w-full accent-emerald-600 cursor-pointer"
+            />
           </div>
-        }
-      >
-        <div className="bg-white rounded-lg shadow-sm border p-4">
-          <h3 className="font-semibold text-gray-800 mb-3">Settings</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Base Pace: {formatPace(1, localBasePace)}
-              </label>
-              <input
-                type="range"
-                min="3"
-                max="8"
-                step="0.1"
-                value={localBasePace}
-                onChange={(e) => setLocalBasePace(Number(e.target.value))}
-                onMouseUp={handleSliderRelease}
-                onTouchEnd={handleSliderRelease}
-                className="w-full"
-              />
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <label className="text-sm font-medium text-slate-700">Grade Threshold</label>
+              <span className="text-sm font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
+                {localGradeThreshold}%
+              </span>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Grade Threshold: {localGradeThreshold}%
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="5"
-                step="0.5"
-                value={localGradeThreshold}
-                onChange={(e) => setLocalGradeThreshold(Number(e.target.value))}
-                onMouseUp={handleSliderRelease}
-                onTouchEnd={handleSliderRelease}
-                className="w-full"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                For segment difficulty classification
-              </p>
+            <input
+              type="range"
+              min="0"
+              max="5"
+              step="0.5"
+              value={localGradeThreshold}
+              onChange={(e) => setLocalGradeThreshold(Number(e.target.value))}
+              onMouseUp={handleSliderRelease}
+              onTouchEnd={handleSliderRelease}
+              className="w-full accent-emerald-600 cursor-pointer"
+            />
+            <p className="text-xs text-slate-400 mt-1">For segment difficulty classification</p>
+          </div>
+          <div>
+            <div className="flex justify-between items-center mb-2">
+              <label className="text-sm font-medium text-slate-700">Cluster Tightness</label>
+              <span className="text-sm font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
+                {(4 - localClusterThreshold).toFixed(1)}
+              </span>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cluster Tightness: {(4 - localClusterThreshold).toFixed(1)}
-              </label>
-              <input
-                type="range"
-                min="0.5"
-                max="3"
-                step="0.1"
-                value={localClusterThreshold}
-                onChange={(e) =>
-                  setLocalClusterThreshold(Number(e.target.value))
-                }
-                className="w-full"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                {localClusterThreshold <= 1 && "Very tight (precise)"}
-                {localClusterThreshold > 1 &&
-                  localClusterThreshold <= 1.75 &&
-                  "Moderate (balanced)"}
-                {localClusterThreshold > 1.75 && "Loose (grouped)"}
-              </p>
-            </div>
+            <input
+              type="range"
+              min="0.5"
+              max="3"
+              step="0.1"
+              value={localClusterThreshold}
+              onChange={(e) => setLocalClusterThreshold(Number(e.target.value))}
+              className="w-full accent-emerald-600 cursor-pointer"
+            />
+            <p className="text-xs text-slate-400 mt-1">
+              {localClusterThreshold <= 1 && "Very tight (precise)"}
+              {localClusterThreshold > 1 && localClusterThreshold <= 1.75 && "Moderate (balanced)"}
+              {localClusterThreshold > 1.75 && "Loose (grouped)"}
+            </p>
           </div>
         </div>
-      </AuthGuard>
+      </div>
 
       {/* Overall Insights */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
           <div className="flex items-center mb-2">
-            <MapPin className="w-5 h-5 text-blue-500 mr-2" />
-            <h3 className="font-semibold text-gray-800">Route Overview</h3>
+            <MapPin className="w-5 h-5 text-emerald-500 mr-2" />
+            <h3 className="font-semibold text-slate-800">Route Overview</h3>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-slate-600">
             Distance: {insights.totalDistance.toFixed(1)} km
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-slate-600">
             Elevation Gain: {insights.totalElevationGain.toFixed(0)} m
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-slate-600">
             Elevation Loss: {insights.totalElevationLoss.toFixed(0)} m
           </p>
-          <p className="text-sm font-medium text-blue-600">
+          <p className="text-sm font-medium text-emerald-600">
             Difficulty: {insights.difficultyRating}
           </p>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
           <div className="flex items-center mb-2">
             <Activity className="w-5 h-5 text-green-500 mr-2" />
-            <h3 className="font-semibold text-gray-800">Terrain Mix</h3>
+            <h3 className="font-semibold text-slate-800">Terrain Mix</h3>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-slate-600">
             Uphill: {insights.uphillDistance.toFixed(1)} km (
             {((insights.uphillDistance / insights.totalDistance) * 100).toFixed(
               0
             )}
             %)
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-slate-600">
             Downhill: {insights.downhillDistance.toFixed(1)} km (
             {(
               (insights.downhillDistance / insights.totalDistance) *
@@ -251,7 +245,7 @@ export function ElevationInsights({
             ).toFixed(0)}
             %)
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-slate-600">
             Flat: {insights.flatDistance.toFixed(1)} km (
             {((insights.flatDistance / insights.totalDistance) * 100).toFixed(
               0
@@ -260,18 +254,18 @@ export function ElevationInsights({
           </p>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
           <div className="flex items-center mb-2">
             <TrendingUp className="w-5 h-5 text-red-500 mr-2" />
-            <h3 className="font-semibold text-gray-800">Most Challenging</h3>
+            <h3 className="font-semibold text-slate-800">Most Challenging</h3>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-slate-600">
             Grade: {insights.steepestUphill.grade?.toFixed(1)}%
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-slate-600">
             At: KM {insights.steepestUphill.startDistance?.toFixed(0)}
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-slate-600">
             Length: {insights.steepestUphill.length?.toFixed(1)} km
           </p>
           <p className="text-sm text-red-600 font-medium">
@@ -279,18 +273,18 @@ export function ElevationInsights({
           </p>
         </div>
 
-        <div className="bg-white p-4 rounded-lg shadow-sm border">
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
           <div className="flex items-center mb-2">
-            <Clock className="w-5 h-5 text-purple-500 mr-2" />
-            <h3 className="font-semibold text-gray-800">Time Estimate</h3>
+            <Clock className="w-5 h-5 text-emerald-500 mr-2" />
+            <h3 className="font-semibold text-slate-800">Time Estimate</h3>
           </div>
-          <p className="text-lg font-bold text-purple-600">
+          <p className="text-lg font-bold text-emerald-600">
             {formatTime(insights.estimatedTotalTime)}
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-slate-600">
             Based on {localBasePace} min/km base
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-slate-600">
             Avg pace:{" "}
             {formatPace(
               insights.estimatedTotalTime /
@@ -308,8 +302,8 @@ export function ElevationInsights({
           onClick={() => setViewMode("unified")}
           className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors ${
             viewMode === "unified"
-              ? "bg-blue-600 text-white"
-              : "bg-white text-gray-700 border hover:bg-gray-50"
+              ? "bg-emerald-600 text-white"
+              : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50"
           }`}
         >
           <PieChartIcon className="w-4 h-4" />
@@ -319,8 +313,8 @@ export function ElevationInsights({
           onClick={() => setViewMode("chronological")}
           className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors ${
             viewMode === "chronological"
-              ? "bg-blue-600 text-white"
-              : "bg-white text-gray-700 border hover:bg-gray-50"
+              ? "bg-emerald-600 text-white"
+              : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50"
           }`}
         >
           <List className="w-4 h-4" />
@@ -329,9 +323,9 @@ export function ElevationInsights({
       </div>
 
       {/* Pacing Strategy */}
-      <div className="bg-white rounded-lg shadow-sm border">
-        <h3 className="font-semibold text-gray-800 p-4 border-b flex items-center">
-          <Clock className="w-5 h-5 mr-2 text-blue-500" />
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200">
+        <h3 className="font-semibold text-slate-800 p-4 border-b border-slate-200 flex items-center">
+          <Clock className="w-5 h-5 mr-2 text-emerald-500" />
           Kilometer-by-Kilometer Pacing Strategy
         </h3>
 
@@ -349,7 +343,7 @@ export function ElevationInsights({
                 key={index}
                 className={`p-4 border-b hover:bg-gray-50 cursor-pointer transition-colors ${
                   selectedSegment === segment
-                    ? "bg-blue-50 border-l-4 border-blue-500"
+                    ? "bg-emerald-50 border-l-4 border-emerald-500"
                     : ""
                 }`}
                 onClick={() =>
@@ -360,24 +354,24 @@ export function ElevationInsights({
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-800 text-sm sm:text-base">
+                    <p className="font-medium text-slate-800 text-sm sm:text-base">
                       KM {segment.startDistance.toFixed(0)} −{" "}
                       {segment.endDistance.toFixed(0)} ({segment.type})
                     </p>
-                    <p className="text-xs sm:text-sm text-gray-600 break-words">
+                    <p className="text-xs sm:text-sm text-slate-600 break-words">
                       Grade: {segment.grade.toFixed(1)}% • Elevation:{" "}
                       {segment.startElevation.toFixed(0)}m →{" "}
                       {segment.endElevation.toFixed(0)}m
                     </p>
                   </div>
                   <div className="text-left sm:text-right shrink-0">
-                    <p className="font-bold text-gray-800">
+                    <p className="font-bold text-slate-800">
                       {formatPace(
                         segment.estimatedTimeMultiplier,
                         localBasePace
                       )}
                     </p>
-                    <p className="text-xs text-gray-600">
+                    <p className="text-xs text-slate-600">
                       {formatTime(
                         segment.length *
                           localBasePace *
@@ -389,11 +383,11 @@ export function ElevationInsights({
 
                 {selectedSegment === segment && (
                   <div className="mt-3 pt-3 border-t">
-                    <div className="p-3 bg-gray-50 rounded">
-                      <p className="text-sm text-gray-700 font-medium mb-1">
+                    <div className="p-3 bg-slate-50 rounded">
+                      <p className="text-sm text-slate-700 font-medium mb-1">
                         💡 Pacing Strategy
                       </p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-slate-600">
                         {segment.pacingAdvice}
                       </p>
                     </div>

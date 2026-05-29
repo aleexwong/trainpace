@@ -171,7 +171,7 @@ export function ElevationChart({
           tension: 0.4,
           pointRadius: 0,
           pointHoverRadius: 6,
-          pointHoverBackgroundColor: "rgba(59, 130, 246, 1)",
+          pointHoverBackgroundColor: "rgba(16, 185, 129, 1)",
           pointHoverBorderColor: "rgba(255, 255, 255, 1)",
           pointHoverBorderWidth: 2,
           borderWidth: 3,
@@ -211,7 +211,7 @@ export function ElevationChart({
         backgroundColor: "rgba(17, 24, 39, 0.95)", // Gray-900 with transparency
         titleColor: "rgba(255, 255, 255, 1)",
         bodyColor: "rgba(255, 255, 255, 1)",
-        borderColor: "rgba(59, 130, 246, 1)",
+        borderColor: "rgba(16, 185, 129, 1)",
         borderWidth: 1,
         cornerRadius: 8,
         displayColors: false,
@@ -287,7 +287,7 @@ export function ElevationChart({
   );
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="w-full bg-white rounded-xl shadow-sm border border-slate-200">
       {/* Editable filename header */}
       <div className="px-4 py-3 border-b border-gray-200">
         {isEditing ? (
@@ -300,12 +300,12 @@ export function ElevationChart({
               onBlur={handleSave}
               onKeyDown={handleKeyPress}
               disabled={isUpdating}
-              className="flex-1 px-2 py-1 text-lg font-semibold border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="flex-1 px-2 py-1 text-lg font-semibold border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
               maxLength={100}
               placeholder="Enter filename..."
             />
             {isUpdating && (
-              <div className="w-4 h-4 animate-spin border-2 border-blue-500 border-t-transparent rounded-full" />
+              <div className="w-4 h-4 animate-spin border-2 border-emerald-500 border-t-transparent rounded-full" />
             )}
           </div>
         ) : (
