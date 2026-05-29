@@ -85,7 +85,7 @@ export function PaceCalculatorV2({
     if (totalSecs <= 0) return null;
     const distMeters = inputs.units === "km" ? dist * 1000 : dist * 1609.34;
     const vdot = calculateVdot(distMeters, totalSecs);
-    if (!isFinite(vdot) || vdot < 10 || vdot > 100) return null;
+    if (!isFinite(vdot) || vdot < 1 || vdot > 120) return null;
     return Math.round(vdot * 10) / 10;
   }, [inputs.distance, inputs.units, inputs.hours, inputs.minutes, inputs.seconds, errors.time]);
 
