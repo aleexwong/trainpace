@@ -42,8 +42,8 @@ export function convertPace(
   if (fromUnit === targetUnit) return paceInSeconds;
 
   return fromUnit === "miles"
-    ? paceInSeconds * 0.621371 // km to mile
-    : paceInSeconds / 0.621371; // mile to km
+    ? paceInSeconds * 0.621371 // sec per mile -> sec per km
+    : paceInSeconds / 0.621371; // sec per km -> sec per mile
 }
 
 /**

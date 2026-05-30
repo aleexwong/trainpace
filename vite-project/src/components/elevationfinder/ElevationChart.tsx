@@ -189,114 +189,116 @@ export function ElevationChart({
 
   const options: ChartOptions<"line"> = useMemo(
     () => ({
-    responsive: true,
-    maintainAspectRatio: false,
-    // Avoid re-animating the line on every hover frame.
-    animation: { duration: 0 },
-    interaction: {
-      intersect: false,
-      mode: "index",
-    },
-    onHover: (_event, activeElements) => {
-      if (!onHoverDistance) return;
-      const index = activeElements.length ? activeElements[0].index : null;
-      // Only emit when the active point actually changes — onHover fires on
-      // every mousemove and we don't want to re-render the map each frame.
-      if (index === lastHoverIndex.current) return;
-      lastHoverIndex.current = index;
-      onHoverDistance(index === null ? null : chartPoints[index]?.distanceKm ?? null);
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: "top",
-        align: "start",
-        labels: {
-          usePointStyle: true,
-          pointStyle: "circle",
-          padding: 20,
-          font: {
-            size: 12,
-            weight: "bold",
-          },
-          color: "rgba(55, 65, 81, 1)", // Gray-700
-        },
+      responsive: true,
+      maintainAspectRatio: false,
+      // Avoid re-animating the line on every hover frame.
+      animation: { duration: 0 },
+      interaction: {
+        intersect: false,
+        mode: "index",
       },
-      tooltip: {
-        backgroundColor: "rgba(17, 24, 39, 0.95)", // Gray-900 with transparency
-        titleColor: "rgba(255, 255, 255, 1)",
-        bodyColor: "rgba(255, 255, 255, 1)",
-        borderColor: "rgba(59, 130, 246, 1)",
-        borderWidth: 1,
-        cornerRadius: 8,
-        displayColors: false,
-        callbacks: {
-          title: (tooltipItems) => {
-            return `Distance: ${tooltipItems[0].parsed.x.toFixed(1)} km`;
-          },
-          label: (context) => {
-            const idx = context.dataIndex;
-            const grade = grades[idx];
-            return [
-              `Elevation: ${context.parsed.y.toFixed(0)} m`,
-              `Grade: ${grade.toFixed(1)}%`,
-            ];
-          },
-        },
+      onHover: (_event, activeElements) => {
+        if (!onHoverDistance) return;
+        const index = activeElements.length ? activeElements[0].index : null;
+        // Only emit when the active point actually changes — onHover fires on
+        // every mousemove and we don't want to re-render the map each frame.
+        if (index === lastHoverIndex.current) return;
+        lastHoverIndex.current = index;
+        onHoverDistance(
+          index === null ? null : chartPoints[index]?.distanceKm ?? null
+        );
       },
-    },
-    scales: {
-      x: {
-        type: "linear",
-        title: {
+      plugins: {
+        legend: {
           display: true,
-          text: "Distance (km)",
-          color: "rgba(75, 85, 99, 1)", // Gray-600
-          font: {
-            size: 14,
-            weight: "bold",
+          position: "top",
+          align: "start",
+          labels: {
+            usePointStyle: true,
+            pointStyle: "circle",
+            padding: 20,
+            font: {
+              size: 12,
+              weight: "bold",
+            },
+            color: "rgba(55, 65, 81, 1)", // Gray-700
           },
         },
-        ticks: {
-          stepSize: 1.0,
-          color: "rgba(107, 114, 128, 1)", // Gray-500
-          font: {
-            size: 11,
+        tooltip: {
+          backgroundColor: "rgba(17, 24, 39, 0.95)", // Gray-900 with transparency
+          titleColor: "rgba(255, 255, 255, 1)",
+          bodyColor: "rgba(255, 255, 255, 1)",
+          borderColor: "rgba(59, 130, 246, 1)",
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: false,
+          callbacks: {
+            title: (tooltipItems) => {
+              return `Distance: ${tooltipItems[0].parsed.x.toFixed(1)} km`;
+            },
+            label: (context) => {
+              const idx = context.dataIndex;
+              const grade = grades[idx];
+              return [
+                `Elevation: ${context.parsed.y.toFixed(0)} m`,
+                `Grade: ${grade.toFixed(1)}%`,
+              ];
+            },
           },
-        },
-        grid: {
-          color: "rgba(229, 231, 235, 1)", // Gray-200
-          lineWidth: 1,
-        },
-        border: {
-          color: "rgba(209, 213, 219, 1)", // Gray-300
         },
       },
-      y: {
-        title: {
-          display: true,
-          text: "Elevation (m)",
-          color: "rgba(75, 85, 99, 1)", // Gray-600
-          font: {
-            size: 14,
-            weight: "bold",
+      scales: {
+        x: {
+          type: "linear",
+          title: {
+            display: true,
+            text: "Distance (km)",
+            color: "rgba(75, 85, 99, 1)", // Gray-600
+            font: {
+              size: 14,
+              weight: "bold",
+            },
+          },
+          ticks: {
+            stepSize: 1.0,
+            color: "rgba(107, 114, 128, 1)", // Gray-500
+            font: {
+              size: 11,
+            },
+          },
+          grid: {
+            color: "rgba(229, 231, 235, 1)", // Gray-200
+            lineWidth: 1,
+          },
+          border: {
+            color: "rgba(209, 213, 219, 1)", // Gray-300
           },
         },
-        ticks: {
-          color: "rgba(107, 114, 128, 1)", // Gray-500
-          font: {
-            size: 11,
+        y: {
+          title: {
+            display: true,
+            text: "Elevation (m)",
+            color: "rgba(75, 85, 99, 1)", // Gray-600
+            font: {
+              size: 14,
+              weight: "bold",
+            },
           },
-        },
-        grid: {
-          color: "rgba(229, 231, 235, 1)", // Gray-200
-          lineWidth: 1,
-        },
-        border: {
-          color: "rgba(209, 213, 219, 1)", // Gray-300
+          ticks: {
+            color: "rgba(107, 114, 128, 1)", // Gray-500
+            font: {
+              size: 11,
+            },
+          },
+          grid: {
+            color: "rgba(229, 231, 235, 1)", // Gray-200
+            lineWidth: 1,
+          },
+          border: {
+            color: "rgba(209, 213, 219, 1)", // Gray-300
+          },
         },
       },
-    },
     }),
     [grades, chartPoints, onHoverDistance]
   );

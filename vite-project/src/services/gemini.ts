@@ -124,14 +124,23 @@ export async function refineFuelPlan(
       headers["Authorization"] = `Bearer ${authToken}`;
     }
 
-    const response = await fetch(`${API_BASE_URL}/api/refine-fuel-plan`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        basePlan,
-        userContext,
-      }),
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
+
+    let response: Response;
+    try {
+      response = await fetch(`${API_BASE_URL}/api/refine-fuel-plan`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          basePlan,
+          userContext,
+        }),
+        signal: controller.signal,
+      });
+    } finally {
+      clearTimeout(timeoutId);
+    }
 
     if (!response.ok) {
       // Handle rate limiting specifically with a user-friendly message
@@ -155,6 +164,14 @@ export async function refineFuelPlan(
     };
   } catch (error) {
     console.error("Fuel plan refinement error:", error);
+
+    if (error instanceof DOMException && error.name === "AbortError") {
+      return {
+        success: false,
+        refinedAdvice: "",
+        error: "Request timed out. Please try again.",
+      };
+    }
 
     return {
       success: false,

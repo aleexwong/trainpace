@@ -70,7 +70,6 @@ export function downsampleProfile<T extends ProfileLike>(
   sampled.push(data[n - 1]); // always keep the last point
   return sampled;
 }
-
 /**
  * Build a cumulative elevation-*gain* profile from an elevation profile.
  * Each output point carries the running sum of only the positive elevation
