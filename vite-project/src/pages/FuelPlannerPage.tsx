@@ -22,7 +22,7 @@ export default function FuelPlannerPage() {
   }
 
   const initialInputs =
-    goals && goals.enabledIntegrations.includes("fuel")
+    goals?.enabledIntegrations?.includes("fuel")
       ? goalToFuelInputs(goals.goalRace)
       : undefined;
 

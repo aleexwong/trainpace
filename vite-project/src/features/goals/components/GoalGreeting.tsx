@@ -41,9 +41,11 @@ export function GoalGreeting() {
   }
 
   // Profile exists but the dashboard integration is switched off.
-  if (!goals.enabledIntegrations.includes("dashboard")) return null;
+  // Default to [] in case a legacy/partial doc is missing the field.
+  const integrations = goals.enabledIntegrations ?? [];
+  if (!integrations.includes("dashboard")) return null;
 
-  const links = goals.enabledIntegrations
+  const links = integrations
     .map((k) => TOOL_LINKS[k])
     .filter((l): l is { to: string; label: string } => Boolean(l));
 

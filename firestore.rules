@@ -38,11 +38,19 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
     }
 
-    // User training goals — onboarding profile (doc id === userId), owner only
+    // User training goals — onboarding profile (doc id === userId), owner only.
+    // docId must equal the uid so a user can only ever own a single goals doc,
+    // and userId is pinned on write so it can't be reassigned to another user.
     match /user_training_goals/{docId} {
-      allow read, update, delete: if request.auth != null
+      allow read, delete: if request.auth != null
+        && docId == request.auth.uid
         && resource.data.userId == request.auth.uid;
       allow create: if request.auth != null
+        && docId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+      allow update: if request.auth != null
+        && docId == request.auth.uid
+        && resource.data.userId == request.auth.uid
         && request.resource.data.userId == request.auth.uid;
     }
 

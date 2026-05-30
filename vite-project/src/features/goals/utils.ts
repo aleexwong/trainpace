@@ -28,15 +28,24 @@ export function secondsToFields(totalSeconds: number): {
   };
 }
 
-/** Convert a saved race into Pace Calculator inputs (kilometers). */
+const KM_PER_MILE = 0.621371;
+
+/**
+ * Convert a saved race into Pace Calculator inputs. `units` is kept consistent
+ * with the distance value (and with the user's pace preference): a miles user
+ * gets the distance in miles + units "miles", so any consumer that derives
+ * meters from `distance`/`units` reads a coherent pair.
+ */
 export function goalToPaceInputs(
   entry: RaceEntry,
   paceUnit: PaceUnit
 ): Partial<PaceInputs> {
   const { hours, minutes, seconds } = secondsToFields(entry.totalSeconds);
+  const distanceKm = entry.distanceMeters / 1000;
+  const useMiles = paceUnit === "Miles";
   return {
-    distance: (entry.distanceMeters / 1000).toString(),
-    units: "km",
+    distance: (useMiles ? distanceKm * KM_PER_MILE : distanceKm).toString(),
+    units: useMiles ? "miles" : "km",
     hours,
     minutes,
     seconds,

@@ -22,7 +22,7 @@ const TrainingPaceCalculator = () => {
   }
 
   const initialInputs =
-    goals && goals.enabledIntegrations.includes("pace")
+    goals?.enabledIntegrations?.includes("pace")
       ? goalToPaceInputs(goals.recentRace, goals.paceUnit)
       : undefined;
 

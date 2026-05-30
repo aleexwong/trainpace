@@ -32,10 +32,19 @@ Chart.register(
 const MAX_CHART_POINTS = 1000;
 
 export function CumulativeGainChart({ points }: { points: ProfilePoint[] }) {
-  const series = useMemo(
-    () => computeCumulativeGain(downsampleProfile(points, MAX_CHART_POINTS)),
-    [points]
-  );
+  const series = useMemo(() => {
+    // Accumulate gain at full resolution first — downsampling before summing
+    // would drop intermediate climbs and under-report the total (the final
+    // value must match the route's true elevation gain). The cumulative curve
+    // is monotonic, so downsampling it for display preserves shape and the
+    // last point. LTTB operates on `elevation`, so map gain↔elevation around it.
+    const full = computeCumulativeGain(points);
+    const reduced = downsampleProfile(
+      full.map((p) => ({ distanceKm: p.distanceKm, elevation: p.gain })),
+      MAX_CHART_POINTS
+    );
+    return reduced.map((p) => ({ distanceKm: p.distanceKm, gain: p.elevation }));
+  }, [points]);
 
   const data = useMemo(
     () => ({

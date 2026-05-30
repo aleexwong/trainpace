@@ -16,7 +16,7 @@ export default function VdotCalculatorPage() {
   }
 
   const initialInputs =
-    goals && goals.enabledIntegrations.includes("vdot")
+    goals?.enabledIntegrations?.includes("vdot")
       ? goalToVdotInputs(goals.recentRace)
       : undefined;
 

@@ -48,9 +48,9 @@ export function GoalsSettingsCard() {
           <div className="flex items-start justify-between py-2">
             <span className="font-medium text-gray-700">Used in</span>
             <span className="text-right text-gray-900">
-              {goals.enabledIntegrations.length > 0
-                ? goals.enabledIntegrations
-                    .map((k) => INTEGRATION_LABELS[k].label)
+              {(goals.enabledIntegrations ?? []).length > 0
+                ? (goals.enabledIntegrations ?? [])
+                    .map((k) => INTEGRATION_LABELS[k]?.label ?? k)
                     .join(", ")
                 : "Nowhere (all disabled)"}
             </span>
