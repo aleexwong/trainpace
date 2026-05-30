@@ -19,7 +19,7 @@ import ElevationPage from "./pages/ElevationPageV2";
 import FAQ from "./pages/FAQ";
 import Settings from "./pages/Settings";
 import PreviewRoute from "./pages/PreviewRoute";
-import { FuelPlannerV2 } from "./features/fuel";
+import FuelPlannerPage from "./pages/FuelPlannerPage";
 import CalculatorSeoLanding from "./pages/CalculatorSeoLanding";
 import FuelSeoLanding from "./pages/FuelSeoLanding";
 import ElevationGuidesSeoLanding from "./pages/ElevationGuidesSeoLanding";
@@ -30,6 +30,7 @@ import Terms from "./pages/Terms";
 import About from "./pages/About";
 import DashboardV2 from "./pages/DashboardV2";
 import VdotCalculatorPage from "./pages/VdotCalculatorPage";
+import Onboarding from "./pages/Onboarding";
 import { BlogList, BlogPost } from "./features/blog";
 import AuthGuard from "./features/auth/AuthGuard";
 
@@ -48,7 +49,7 @@ function App() {
             path="/calculator/:seoSlug"
             element={<CalculatorSeoLanding />}
           />
-          <Route path="/fuel" element={<FuelPlannerV2 />} />
+          <Route path="/fuel" element={<FuelPlannerPage />} />
           <Route path="/fuel/:seoSlug" element={<FuelSeoLanding />} />
           <Route path="/vdot" element={<VdotCalculatorPage />} />
           <Route path="/race" element={<RaceIndex />} />
@@ -69,6 +70,7 @@ function App() {
           />
           <Route path="/elevationfinder" element={<ElevationPage />} />
           <Route path="/dashboard" element={<AuthGuard><DashboardV2 /></AuthGuard>} />
+          <Route path="/onboarding" element={<AuthGuard><Onboarding /></AuthGuard>} />
             <Route path="/ethos" element={<About />} />
             <Route path="login" element={<Login />} />
             <Route path="logout" element={<Logout />} />

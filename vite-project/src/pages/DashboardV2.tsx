@@ -22,6 +22,7 @@ import {
   PacePlan,
   FuelPlan,
 } from "../features/dashboard";
+import { GoalGreeting } from "../features/goals";
 
 export default function DashboardV2() {
   const [activeTab, setActiveTab] = useState<DashboardTab>("routes");
@@ -219,6 +220,9 @@ export default function DashboardV2() {
         <h1 className="text-3xl font-bold text-gray-800 mb-2">My Dashboard</h1>
         <p className="text-gray-600">Manage your routes and fuel plans</p>
       </div>
+
+      {/* Goal greeting / onboarding prompt */}
+      <GoalGreeting />
 
       {/* Search Bar */}
       <div className="mb-6">

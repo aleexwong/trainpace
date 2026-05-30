@@ -190,8 +190,12 @@ function simplifyToMaxPoints(
     simplified = simplified.slice(0, maxPoints);
 
     // Force the route's true endpoints (the slice above can otherwise omit the last point)
-    simplified[0] = points[0];
-    simplified[simplified.length - 1] = points[points.length - 1];
+    if (simplified.length >= 2) {
+      simplified[0] = points[0];
+      simplified[simplified.length - 1] = points[points.length - 1];
+    } else if (simplified.length === 1) {
+      simplified[0] = points[0];
+    }
   }
 
   return simplified;

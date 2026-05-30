@@ -10,9 +10,7 @@ import { useAuth } from "@/features/auth/AuthContext";
 import { getCurrentDocumentId, needsMigration } from "../config/routes";
 import { Button } from "@/components/ui/button";
 import { ShareButton } from "@/components/ui/ShareButton";
-import MapboxRoutePreview from "@/components/utils/MapboxRoutePreview";
 import { PosterButton } from "@/features/poster";
-import ElevationInsights from "@/components/elevationfinder/ElevationInsights";
 
 // Feature imports
 import {
@@ -23,7 +21,7 @@ import {
   useGpxAnalysis,
   useFileUpload,
   GpxUploader,
-  RouteResults,
+  RouteDashboard,
 } from "@/features/elevation";
 
 export default function ElevationPage() {
@@ -315,11 +313,27 @@ export default function ElevationPage() {
           </div>
         )}
 
-        {/* Map Preview */}
-        {(routeMetadata?.displayPoints ||
-          uploadState.uploadedRoutePoints.length > 0) && (
-          <MapboxRoutePreview
-            routePoints={
+        {/* Error Display */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p className="text-red-700 font-medium">Error: {error}</p>
+          </div>
+        )}
+
+        {/* Loading a shared route */}
+        {loading && !analysisData && (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+            <p className="text-gray-600 mt-4">Analyzing elevation profile…</p>
+          </div>
+        )}
+
+        {/* Route Dashboard */}
+        {analysisData && points.length > 0 && (
+          <RouteDashboard
+            analysisData={analysisData}
+            points={points}
+            displayPoints={
               routeMetadata?.displayPoints || uploadState.uploadedRoutePoints
             }
             routeName={
@@ -328,29 +342,6 @@ export default function ElevationPage() {
               filename ||
               "Your Route"
             }
-            height="400px"
-            width="100%"
-            showStartEnd={true}
-            className="border border-gray-200"
-            lineColor="#3b82f6"
-            lineWidth={3}
-            mapStyle="mapbox://styles/mapbox/outdoors-v11"
-            maxZoom={16}
-          />
-        )}
-
-        {/* Error Display */}
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-red-700 font-medium">Error: {error}</p>
-          </div>
-        )}
-
-        {/* Route Results */}
-        {analysisData && points.length > 0 && (
-          <RouteResults
-            analysisData={analysisData}
-            points={points}
             filename={filename}
             docId={currentDocId}
             isOwner={
@@ -358,21 +349,15 @@ export default function ElevationPage() {
                 ? routeMetadata.userId === auth.user.uid
                 : false
             }
+            basePaceMinPerKm={
+              analysisData?.metadata?.analysisParameters?.basePaceMinPerKm ||
+              analysisSettings.basePaceMinPerKm
+            }
+            loading={loading}
             onFilenameUpdate={handleFilenameUpdate}
+            onSettingsChange={onSettingsChange}
           />
         )}
-
-        {/* Elevation Insights */}
-        <ElevationInsights
-          elevationInsights={analysisData?.elevationInsights || null}
-          loading={loading}
-          error={error ? error : undefined}
-          basePaceMinPerKm={
-            analysisData?.metadata?.analysisParameters?.basePaceMinPerKm ||
-            analysisSettings.basePaceMinPerKm
-          }
-          onSettingsChange={onSettingsChange}
-        />
 
         {/* Development Cache Debug Info */}
         {import.meta.env.MODE === "development" &&

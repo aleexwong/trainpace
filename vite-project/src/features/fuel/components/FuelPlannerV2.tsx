@@ -28,9 +28,17 @@ import { AIPersonalization } from "./AIPersonalization";
 
 export interface FuelPlannerV2Props {
   seoMode?: "default" | "none";
+  initialInputs?: {
+    raceType?: RaceType;
+    timeHours?: string;
+    timeMinutes?: string;
+  };
 }
 
-export function FuelPlannerV2({ seoMode = "default" }: FuelPlannerV2Props) {
+export function FuelPlannerV2({
+  seoMode = "default",
+  initialInputs,
+}: FuelPlannerV2Props) {
   const { toast } = useToast();
 
   // Handle auto-save of pending plan after signup
@@ -44,10 +52,14 @@ export function FuelPlannerV2({ seoMode = "default" }: FuelPlannerV2Props) {
   });
 
   // Form state
-  const [raceType, setRaceType] = useState<RaceType>("Half");
+  const [raceType, setRaceType] = useState<RaceType>(
+    initialInputs?.raceType ?? "Half"
+  );
   const [weight, setWeight] = useState("");
-  const [timeHours, setTimeHours] = useState("");
-  const [timeMinutes, setTimeMinutes] = useState("");
+  const [timeHours, setTimeHours] = useState(initialInputs?.timeHours ?? "");
+  const [timeMinutes, setTimeMinutes] = useState(
+    initialInputs?.timeMinutes ?? ""
+  );
   const [customCarbsPerHour, setCustomCarbsPerHour] = useState<number | undefined>(undefined);
   const [result, setResult] = useState<FuelPlanResult | null>(null);
 

@@ -178,8 +178,11 @@ export function getZoneColorClasses(color: string): ZoneColorClasses {
   return colors[color] || colors.blue;
 }
 
-export function useVdotCalculator() {
-  const [inputs, setInputs] = useState<VdotInputs>(initialFormState);
+export function useVdotCalculator(initialInputs?: Partial<VdotInputs>) {
+  const [inputs, setInputs] = useState<VdotInputs>(() => ({
+    ...initialFormState,
+    ...initialInputs,
+  }));
   const [result, setResult] = useState<VdotResult | null>(null);
   const [errors, setErrors] = useState<VdotFormErrors>({});
   const [paceUnit, setPaceUnit] = useState<PaceDisplayUnit>("km");

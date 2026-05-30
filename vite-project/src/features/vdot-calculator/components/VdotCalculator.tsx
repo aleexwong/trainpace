@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { Clock, ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
+import type { VdotInputs } from "../types";
 import { useVdotCalculator, buildTrainingZones, buildRacePredictions } from "../hooks/useVdotCalculator";
 import { calculateVdot } from "../vdot-math";
 import { VdotSeoHead } from "./VdotSeoHead";
@@ -20,7 +21,11 @@ import { RacePredictionsTable } from "./RacePredictionsTable";
 import { SampleWorkouts } from "./SampleWorkouts";
 import { VdotFaq } from "./VdotFaq";
 
-export function VdotCalculator() {
+export interface VdotCalculatorProps {
+  initialInputs?: Partial<VdotInputs>;
+}
+
+export function VdotCalculator({ initialInputs }: VdotCalculatorProps = {}) {
   const {
     inputs,
     result,
@@ -36,7 +41,7 @@ export function VdotCalculator() {
     handlePaceUnitToggle,
     loadFromHistory,
     clearHistory,
-  } = useVdotCalculator();
+  } = useVdotCalculator(initialInputs);
 
   const resultsRef = useRef<HTMLDivElement>(null);
 

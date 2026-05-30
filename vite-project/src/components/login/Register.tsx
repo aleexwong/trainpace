@@ -92,7 +92,8 @@ export default function Register() {
         } else if (returnTo && isValidRedirect(returnTo)) {
           navigate(returnTo);
         } else {
-          navigate("/");
+          // First-run: send new accounts to goal onboarding
+          navigate("/onboarding");
         }
       }, 1500);
     } catch (err: any) {
