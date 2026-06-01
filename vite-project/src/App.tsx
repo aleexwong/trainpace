@@ -1,13 +1,13 @@
-import { useState } from "react";
 import "./App.css";
 import { HelmetProvider } from "react-helmet-async";
 import { Routes, Route } from "react-router-dom";
-import { Button } from "./components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import ScrollToTop from "./lib/ScrollToTop";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
 import TrainingPaceCalculator from "./pages/TrainingPaceCalculator";
-import RacePredictorOverlay from "./pages/RacePredictorOverlay";
+// NOTE: RacePredictorOverlay (Riegel-formula race-time predictor) is parked for now.
+// The component still lives at ./pages/RacePredictorOverlay but is intentionally not
+// rendered — revisit during the TrainPace rewrite (e.g. fold into the VDOT calculator).
 import Landing from "./components/layout/Landing";
 import MainLayout from "./components/layout/MainLayout";
 import Login from "./pages/Login";
@@ -35,7 +35,6 @@ import { BlogList, BlogPost } from "./features/blog";
 import AuthGuard from "./features/auth/AuthGuard";
 
 function App() {
-  const [showPredictor, setShowPredictor] = useState(false);
   return (
     <>
       <ScrollToTop />
@@ -92,17 +91,6 @@ function App() {
         </Routes>
         <GoogleAnalytics />
       </HelmetProvider>
-      <Button
-        onClick={() => setShowPredictor(true)}
-        className="fixed bottom-4 right-4 rounded-full p-3 bg-blue-600 text-white shadow-md z-50"
-        aria-label="Open race predictor"
-      >
-        🔮
-      </Button>
-      <RacePredictorOverlay
-        isOpen={showPredictor}
-        onClose={() => setShowPredictor(false)}
-      />
       <Toaster />
     </>
   );
