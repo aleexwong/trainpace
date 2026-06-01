@@ -17,6 +17,7 @@ import {
   getDocs,
   deleteDoc,
   updateDoc,
+  doc,
 } from "firebase/firestore";
 import { useAuth } from "@/features/auth/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -97,7 +98,6 @@ const Settings: React.FC = () => {
       "user_pace_plans",
       "user_fuel_plans",
       "user_bookmarks",
-      "user_training_goals",
     ];
 
     await Promise.all([
@@ -107,6 +107,9 @@ const Settings: React.FC = () => {
         const snapshot = await getDocs(q);
         await Promise.all(snapshot.docs.map((d) => deleteDoc(d.ref)));
       }),
+      // Training goals doc id === userId, so delete it directly (no query —
+      // the rule is keyed on the doc id, not a userId-field list query)
+      deleteDoc(doc(db, "user_training_goals", userId)),
       // Soft-delete GPX uploads in parallel with the above
       (async () => {
         const gpxQuery = query(

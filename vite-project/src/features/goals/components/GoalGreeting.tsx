@@ -50,12 +50,14 @@ export function GoalGreeting() {
     .filter((l): l is { to: string; label: string } => Boolean(l));
 
   return (
-    <div className="mb-6 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-purple-50 p-4">
-      <p className="text-sm text-gray-600">Your goal</p>
-      <p className="text-lg font-bold text-gray-900">
-        🎯 {formatRaceLabel(goals.goalRace)}
-      </p>
-      <div className="mt-3 flex flex-wrap items-center gap-2">
+    <div className="mb-6 flex flex-col gap-3 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-purple-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p className="text-sm text-gray-600">Your goal</p>
+        <p className="text-lg font-bold text-gray-900">
+          🎯 {formatRaceLabel(goals.goalRace)}
+        </p>
+      </div>
+      <div className="flex flex-wrap items-center gap-2 sm:justify-end">
         {links.map((l) => (
           <Link key={l.to} to={l.to}>
             <Button variant="outline" size="sm" className="hover:text-blue-600">
