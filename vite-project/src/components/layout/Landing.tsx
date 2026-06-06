@@ -13,6 +13,20 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import {
+  PaceLadderShot,
+  VdotDialShot,
+  ElevationShot,
+  FuelStationsShot,
+} from "@/components/feature-shots";
+
+// Animated, interactive product shots keyed by the FeatureSection badge.
+const FEATURE_SHOTS: Record<string, () => JSX.Element> = {
+  "Pace Calculator": PaceLadderShot,
+  "VDOT Calculator": VdotDialShot,
+  "Elevation Finder": ElevationShot,
+  "Fuel Planner": FuelStationsShot,
+};
 
 // --- Components ---
 
@@ -366,129 +380,11 @@ const FeatureSection = ({
             </Button>
           </div>
 
-          <div className="flex-1 w-full">
-            <div className="bg-slate-100 rounded-2xl p-8 aspect-[4/3] flex items-center justify-center relative overflow-hidden shadow-inner">
-              {/* Placeholder for Feature Visuals - In a real app these would be generic interactive components or screenshots */}
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-100 to-slate-200 opacity-50"></div>
-              <div className="relative bg-white rounded-xl shadow-lg p-6 w-full max-w-sm border border-slate-200">
-                {badge === "Pace Calculator" && (
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-100">
-                      <span className="text-sm text-slate-500">
-                        Recent 5K Time
-                      </span>
-                      <span className="font-mono font-bold">22:30</span>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-emerald-700 font-semibold">
-                          Easy Run
-                        </span>{" "}
-                        <span className="font-mono">8:45 - 9:15 /mi</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-yellow-600 font-semibold">
-                          Tempo
-                        </span>{" "}
-                        <span className="font-mono">7:15 - 7:30 /mi</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-red-600 font-semibold">
-                          VO2 Max
-                        </span>{" "}
-                        <span className="font-mono">6:45 - 6:55 /mi</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {badge === "Elevation Finder" && (
-                  <div className="space-y-4">
-                    <div className="h-32 bg-slate-50 rounded border border-slate-200 relative flex items-end justify-between px-1 pb-1">
-                      {/* Hills Visual */}
-                      <div className="w-1/5 h-10 bg-emerald-300 rounded-t"></div>
-                      <div className="w-1/5 h-16 bg-emerald-400 rounded-t"></div>
-                      <div className="w-1/5 h-24 bg-emerald-500 rounded-t"></div>
-                      <div className="w-1/5 h-12 bg-emerald-400 rounded-t"></div>
-                      <div className="w-1/5 h-8 bg-emerald-300 rounded-t"></div>
-                    </div>
-                    <div className="flex justify-between text-xs text-slate-500 font-mono">
-                      <span>Start</span>
-                      <span>13.1 mi</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded font-medium">
-                        Rolling Hills
-                      </span>
-                      <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded font-medium">
-                        950ft Gain
-                      </span>
-                    </div>
-                  </div>
-                )}
-                {badge === "Fuel Planner" && (
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="bg-blue-100 p-2 rounded-full">
-                        <Zap size={16} className="text-blue-600" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-slate-500">Rec. Intake</p>
-                        <p className="font-bold text-slate-900">
-                          45g Carbs / hr
-                        </p>
-                      </div>
-                    </div>
-                    <div className="space-y-2 text-sm">
-                      <div className="p-2 bg-slate-50 rounded border border-slate-100 flex justify-between items-center">
-                        <span>Start Line</span>
-                        <span className="text-xs bg-white px-2 py-0.5 border rounded shadow-sm">
-                          1 Gel
-                        </span>
-                      </div>
-                      <div className="p-2 bg-slate-50 rounded border border-slate-100 flex justify-between items-center">
-                        <span>Minute 45</span>
-                        <span className="text-xs bg-white px-2 py-0.5 border rounded shadow-sm">
-                          1 Gel
-                        </span>
-                      </div>
-                      <div className="p-2 bg-slate-50 rounded border border-slate-100 flex justify-between items-center">
-                        <span>Minute 90</span>
-                        <span className="text-xs bg-white px-2 py-0.5 border rounded shadow-sm">
-                          1 Gel
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                {badge === "VDOT Calculator" && (
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-                      <span className="text-sm text-slate-500">
-                        Your VDOT
-                      </span>
-                      <span className="text-2xl font-bold text-blue-600">49.8</span>
-                    </div>
-                    <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden">
-                      <div className="absolute inset-y-0 left-0 w-[50%] bg-gradient-to-r from-emerald-400 via-blue-500 to-purple-500 rounded-full" />
-                    </div>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-emerald-700 font-semibold">Easy</span>
-                        <span className="font-mono">5:35 – 6:17 /km</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-yellow-600 font-semibold">Threshold</span>
-                        <span className="font-mono">4:33 – 4:42 /km</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-red-600 font-semibold">Interval</span>
-                        <span className="font-mono">4:06 – 4:15 /km</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+          <div className="flex-1 w-full min-w-0">
+            {(() => {
+              const Shot = FEATURE_SHOTS[badge];
+              return Shot ? <Shot /> : null;
+            })()}
           </div>
         </div>
       </div>
