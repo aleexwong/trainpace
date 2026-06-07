@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import type { User } from "firebase/auth";
@@ -384,7 +384,19 @@ export default function MainLayout() {
       </div>
 
       <main className={`${getMainClasses()} flex-grow`}>
-        <Outlet />
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center py-32">
+              <div
+                className="h-8 w-8 animate-spin rounded-full border-2 border-gray-200 border-t-emerald-600"
+                role="status"
+                aria-label="Loading"
+              />
+            </div>
+          }
+        >
+          <Outlet />
+        </Suspense>
       </main>
       <Footer />
     </div>
