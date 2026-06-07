@@ -100,7 +100,7 @@ export default function CalculatorSeoLanding() {
   }, [page]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50">
       <Helmet>
         <title>{page.title}</title>
         <meta name="description" content={page.description} />
@@ -127,7 +127,7 @@ export default function CalculatorSeoLanding() {
             {page.bullets.map((b) => (
               <div
                 key={b}
-                className="rounded-lg bg-white/70 border border-blue-100 px-4 py-3 text-gray-800"
+                className="rounded-lg bg-white/70 border border-emerald-100 px-4 py-3 text-gray-800"
               >
                 {b}
               </div>
@@ -136,7 +136,7 @@ export default function CalculatorSeoLanding() {
           <div className="mt-6">
             <a
               href={page.cta.href}
-              className="inline-flex items-center rounded-lg bg-blue-700 px-5 py-3 text-white font-semibold shadow hover:bg-blue-800 transition-colors"
+              className="inline-flex items-center rounded-lg bg-emerald-700 px-5 py-3 text-white font-semibold shadow hover:bg-emerald-800 transition-colors"
             >
               {page.cta.label}
             </a>

@@ -168,7 +168,7 @@ export default function ElevationPage() {
     return (
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto"></div>
           <p className="text-gray-600 mt-4">Redirecting...</p>
         </div>
       </div>
@@ -236,12 +236,12 @@ export default function ElevationPage() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         {/* Header */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-700 text-center">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-emerald-700 text-center">
           <a
             href="/elevationfinder"
             aria-label="ElevationFinder - Analyze Your GPX Files"
             title="ElevationFinder - Analyze Your GPX Files"
-            className="no-underline text-blue-700 font-bold hover:text-blue-800 transition-colors"
+            className="no-underline text-emerald-700 font-bold hover:text-emerald-800 transition-colors"
           >
             ElevationFinder
           </a>
@@ -323,7 +323,7 @@ export default function ElevationPage() {
         {/* Loading a shared route */}
         {loading && !analysisData && (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto"></div>
             <p className="text-gray-600 mt-4">Analyzing elevation profile…</p>
           </div>
         )}

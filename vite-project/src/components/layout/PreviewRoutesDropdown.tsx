@@ -70,8 +70,8 @@ export default function PreviewRoutesDropdown() {
         onClick={toggleDropdown}
         className={`flex items-center space-x-1 transition-colors focus:outline-none bg-transparent border-none p-0 ${
           isPreviewRouteActive
-            ? "text-blue-600 font-medium"
-            : "text-gray-700 hover:text-blue-600"
+            ? "text-emerald-600 font-medium"
+            : "text-gray-700 hover:text-emerald-600"
         }`}
         aria-expanded={isOpen}
         aria-haspopup="true"
@@ -109,7 +109,7 @@ export default function PreviewRoutesDropdown() {
                 to={`/preview-route/${route.slug}`}
                 className={`block px-4 py-3 transition-colors border-b border-gray-50 last:border-b-0 ${
                   location.pathname === `/preview-route/${route.slug}`
-                    ? "bg-blue-50 border-blue-100"
+                    ? "bg-emerald-50 border-emerald-100"
                     : "hover:bg-gray-50"
                 }`}
                 onClick={() => setIsOpen(false)}
@@ -119,7 +119,7 @@ export default function PreviewRoutesDropdown() {
                     <h4
                       className={`font-medium text-sm truncate ${
                         location.pathname === `/preview-route/${route.slug}`
-                          ? "text-blue-700"
+                          ? "text-emerald-700"
                           : "text-gray-900"
                       }`}
                     >
@@ -128,7 +128,7 @@ export default function PreviewRoutesDropdown() {
                     <p
                       className={`text-xs truncate mt-0.5 ${
                         location.pathname === `/preview-route/${route.slug}`
-                          ? "text-blue-600"
+                          ? "text-emerald-600"
                           : "text-gray-500"
                       }`}
                     >

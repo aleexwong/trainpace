@@ -84,7 +84,7 @@ export default function BlogList() {
       </Helmet>
 
       {/* Header */}
-      <section className="py-12 px-6 text-center bg-gradient-to-br from-blue-50 to-indigo-50">
+      <section className="py-12 px-6 text-center bg-gradient-to-br from-emerald-50 to-emerald-50">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
             TrainPace Blog
@@ -107,7 +107,7 @@ export default function BlogList() {
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
               />
             </div>
 
@@ -245,7 +245,7 @@ export default function BlogList() {
                 <Button
                   key={tag}
                   onClick={() => setSearchQuery(tag)}
-                  className="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:border-blue-300 hover:text-blue-600 transition-all"
+                  className="px-4 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-700 hover:border-emerald-300 hover:text-emerald-600 transition-all"
                 >
                   {tag}
                 </Button>
@@ -256,17 +256,17 @@ export default function BlogList() {
       )}
 
       {/* CTA Section */}
-      <section className="py-16 text-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+      <section className="py-16 text-center bg-gradient-to-r from-emerald-600 to-emerald-600 text-white">
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-3xl font-bold mb-4">Ready to Train Smarter?</h2>
-          <p className="text-blue-100 mb-8 text-lg">
+          <p className="text-emerald-100 mb-8 text-lg">
             Use our free tools to calculate your paces, plan your nutrition, and
             analyze your race courses.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/calculator"
-              className="inline-flex items-center justify-center px-6 py-3 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+              className="inline-flex items-center justify-center px-6 py-3 bg-white text-emerald-600 rounded-lg font-medium hover:bg-emerald-50 transition-colors"
             >
               Pace Calculator
             </a>

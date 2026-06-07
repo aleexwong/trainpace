@@ -205,7 +205,7 @@ const Settings: React.FC = () => {
                     type="text"
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
-                    className="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                     placeholder="Enter your name"
                     maxLength={50}
                   />
@@ -239,7 +239,7 @@ const Settings: React.FC = () => {
                     variant="outline"
                     onClick={() => setEditingName(true)}
                     size="sm"
-                    className="text-xs hover:text-blue-600"
+                    className="text-xs hover:text-emerald-600"
                   >
                     Edit
                   </Button>
@@ -303,7 +303,7 @@ const Settings: React.FC = () => {
                   variant="outline"
                   onClick={handlePasswordReset}
                   disabled={isLoading}
-                  className="hover:text-blue-600"
+                  className="hover:text-emerald-600"
                 >
                   {isLoading ? "Sending..." : "Reset Password"}
                 </Button>

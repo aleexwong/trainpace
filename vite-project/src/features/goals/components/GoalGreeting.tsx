@@ -26,7 +26,7 @@ export function GoalGreeting() {
   // No profile yet → prompt to onboard.
   if (!goals) {
     return (
-      <div className="mb-6 flex flex-col gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-6 flex flex-col gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="font-semibold text-gray-900">Set a goal race 🎯</p>
           <p className="text-sm text-gray-600">
@@ -50,7 +50,7 @@ export function GoalGreeting() {
     .filter((l): l is { to: string; label: string } => Boolean(l));
 
   return (
-    <div className="mb-6 flex flex-col gap-3 rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-purple-50 p-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mb-6 flex flex-col gap-3 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-purple-50 p-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <p className="text-sm text-gray-600">Your goal</p>
         <p className="text-lg font-bold text-gray-900">
@@ -60,13 +60,13 @@ export function GoalGreeting() {
       <div className="flex flex-wrap items-center gap-2 sm:justify-end">
         {links.map((l) => (
           <Link key={l.to} to={l.to}>
-            <Button variant="outline" size="sm" className="hover:text-blue-600">
+            <Button variant="outline" size="sm" className="hover:text-emerald-600">
               {l.label}
             </Button>
           </Link>
         ))}
         <Link to="/onboarding">
-          <Button variant="outline" size="sm" className="hover:text-blue-600">
+          <Button variant="outline" size="sm" className="hover:text-emerald-600">
             Edit goal
           </Button>
         </Link>

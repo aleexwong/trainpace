@@ -373,7 +373,7 @@ export default function Terms() {
                 Contacting us at{" "}
                 <a
                   href="mailto:alex@trainpace.com"
-                  className="text-blue-600 hover:underline"
+                  className="text-emerald-600 hover:underline"
                 >
                   alex@trainpace.com
                 </a>
@@ -382,7 +382,7 @@ export default function Terms() {
             <p className="text-gray-700 leading-normal">
               Upon termination, your right to access the Service ceases
               immediately. We will delete your data in accordance with our{" "}
-              <Link to="/privacy" className="text-blue-600 hover:underline">
+              <Link to="/privacy" className="text-emerald-600 hover:underline">
                 Privacy Policy
               </Link>
               .
@@ -450,7 +450,7 @@ export default function Terms() {
             <h2 className="text-xl font-semibold mb-3">Entire Agreement</h2>
             <p className="text-gray-700 leading-normal">
               These Terms, together with our{" "}
-              <Link to="/privacy" className="text-blue-600 hover:underline">
+              <Link to="/privacy" className="text-emerald-600 hover:underline">
                 Privacy Policy
               </Link>
               , constitute the entire agreement between you and TrainPace
@@ -469,7 +469,7 @@ export default function Terms() {
                 <strong>Email:</strong>{" "}
                 <a
                   href="mailto:alex@trainpace.com"
-                  className="text-blue-600 hover:underline"
+                  className="text-emerald-600 hover:underline"
                 >
                   alex@trainpace.com
                 </a>
@@ -478,7 +478,7 @@ export default function Terms() {
                 <strong>Website:</strong>{" "}
                 <a
                   href="https://www.trainpace.com"
-                  className="text-blue-600 hover:underline"
+                  className="text-emerald-600 hover:underline"
                 >
                   www.trainpace.com
                 </a>
@@ -486,7 +486,7 @@ export default function Terms() {
             </div>
           </section>
 
-          <section className="mb-6 bg-blue-50 p-4 rounded-lg">
+          <section className="mb-6 bg-emerald-50 p-4 rounded-lg">
             <h2 className="text-xl font-semibold mb-2">Our Mission</h2>
             <p className="text-gray-700 leading-normal">
               TrainPace was built by a runner for runners. Our goal is to
@@ -496,7 +496,7 @@ export default function Terms() {
               love to hear from you at{" "}
               <a
                 href="mailto:alex@trainpace.com"
-                className="text-blue-600 hover:underline"
+                className="text-emerald-600 hover:underline"
               >
                 alex@trainpace.com
               </a>
@@ -505,7 +505,7 @@ export default function Terms() {
           </section>
 
           <div className="mt-8 pt-6 border-t border-gray-200">
-            <Link to="/" className="text-blue-600 hover:underline font-medium">
+            <Link to="/" className="text-emerald-600 hover:underline font-medium">
               ← Back to TrainPace Home
             </Link>
           </div>

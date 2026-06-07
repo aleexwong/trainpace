@@ -344,7 +344,7 @@ export default function RaceIndex() {
           <div className="mt-4 flex flex-col sm:flex-row gap-3">
             <a
               href="/calculator"
-              className="inline-flex justify-center rounded-lg bg-blue-700 px-5 py-3 text-white font-semibold hover:bg-blue-800 transition-colors"
+              className="inline-flex justify-center rounded-lg bg-emerald-700 px-5 py-3 text-white font-semibold hover:bg-emerald-800 transition-colors"
             >
               Pace Calculator
             </a>

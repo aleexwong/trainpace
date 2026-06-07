@@ -33,7 +33,7 @@ export default function MiniFAQ() {
         <div className="text-center mt-8">
           <Link
             to="/faq"
-            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md hover:shadow-lg"
+            className="inline-flex items-center px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors duration-200 shadow-md hover:shadow-lg"
           >
             View All FAQs
             <span className="ml-2">→</span>

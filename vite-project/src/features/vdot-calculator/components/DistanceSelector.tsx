@@ -59,7 +59,7 @@ export function DistanceSelector({ selectedMeters, onSelect, error }: DistanceSe
                     title={DISTANCE_TOOLTIP[d.name]}
                     className={`relative px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 border-2 ${
                       isSelected
-                        ? "border-blue-500 bg-blue-50 text-blue-700 shadow-sm"
+                        ? "border-emerald-500 bg-emerald-50 text-emerald-700 shadow-sm"
                         : "border-gray-100 bg-white text-gray-700 hover:border-gray-200 hover:shadow-sm"
                     }`}
                   >

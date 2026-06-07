@@ -103,7 +103,7 @@ export function ElevationInsights({
       <div className="w-full space-y-6">
         <div className="bg-white rounded-lg shadow-sm border p-8 text-center">
           <div className="animate-pulse">
-            <Clock className="w-8 h-8 text-blue-500 mx-auto mb-4" />
+            <Clock className="w-8 h-8 text-emerald-500 mx-auto mb-4" />
             <p className="text-gray-600">Analyzing elevation profile...</p>
           </div>
         </div>
@@ -214,7 +214,7 @@ export function ElevationInsights({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center mb-2">
-            <MapPin className="w-5 h-5 text-blue-500 mr-2" />
+            <MapPin className="w-5 h-5 text-emerald-500 mr-2" />
             <h3 className="font-semibold text-gray-800">Route Overview</h3>
           </div>
           <p className="text-sm text-gray-600">
@@ -226,7 +226,7 @@ export function ElevationInsights({
           <p className="text-sm text-gray-600">
             Elevation Loss: {insights.totalElevationLoss.toFixed(0)} m
           </p>
-          <p className="text-sm font-medium text-blue-600">
+          <p className="text-sm font-medium text-emerald-600">
             Difficulty: {insights.difficultyRating}
           </p>
         </div>
@@ -308,7 +308,7 @@ export function ElevationInsights({
           onClick={() => setViewMode("unified")}
           className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors ${
             viewMode === "unified"
-              ? "bg-blue-600 text-white"
+              ? "bg-emerald-600 text-white"
               : "bg-white text-gray-700 border hover:bg-gray-50"
           }`}
         >
@@ -319,7 +319,7 @@ export function ElevationInsights({
           onClick={() => setViewMode("chronological")}
           className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors ${
             viewMode === "chronological"
-              ? "bg-blue-600 text-white"
+              ? "bg-emerald-600 text-white"
               : "bg-white text-gray-700 border hover:bg-gray-50"
           }`}
         >
@@ -331,7 +331,7 @@ export function ElevationInsights({
       {/* Pacing Strategy */}
       <div className="bg-white rounded-lg shadow-sm border">
         <h3 className="font-semibold text-gray-800 p-4 border-b flex items-center">
-          <Clock className="w-5 h-5 mr-2 text-blue-500" />
+          <Clock className="w-5 h-5 mr-2 text-emerald-500" />
           Kilometer-by-Kilometer Pacing Strategy
         </h3>
 
@@ -349,7 +349,7 @@ export function ElevationInsights({
                 key={index}
                 className={`p-4 border-b hover:bg-gray-50 cursor-pointer transition-colors ${
                   selectedSegment === segment
-                    ? "bg-blue-50 border-l-4 border-blue-500"
+                    ? "bg-emerald-50 border-l-4 border-emerald-500"
                     : ""
                 }`}
                 onClick={() =>

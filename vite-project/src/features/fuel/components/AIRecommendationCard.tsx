@@ -28,7 +28,7 @@ export function AIRecommendationCard({
   onDownload,
 }: AIRecommendationCardProps) {
   return (
-    <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl p-8 text-white relative overflow-hidden">
+    <div className="bg-gradient-to-br from-purple-600 to-emerald-600 rounded-xl p-8 text-white relative overflow-hidden">
       {/* Decorative circles */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
       <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>

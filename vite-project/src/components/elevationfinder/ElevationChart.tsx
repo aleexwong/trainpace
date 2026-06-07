@@ -317,12 +317,12 @@ export function ElevationChart({
               onBlur={handleSave}
               onKeyDown={handleKeyPress}
               disabled={isUpdating}
-              className="flex-1 px-2 py-1 text-lg font-semibold border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="flex-1 px-2 py-1 text-lg font-semibold border rounded focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
               maxLength={100}
               placeholder="Enter filename..."
             />
             {isUpdating && (
-              <div className="w-4 h-4 animate-spin border-2 border-blue-500 border-t-transparent rounded-full" />
+              <div className="w-4 h-4 animate-spin border-2 border-emerald-500 border-t-transparent rounded-full" />
             )}
           </div>
         ) : (

@@ -46,7 +46,7 @@ export function VdotFaq() {
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
           {[
             { letter: "E", name: "Easy", range: "59–74%", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-            { letter: "M", name: "Marathon", range: "75–84%", color: "bg-blue-50 text-blue-700 border-blue-200" },
+            { letter: "M", name: "Marathon", range: "75–84%", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
             { letter: "T", name: "Threshold", range: "83–88%", color: "bg-yellow-50 text-yellow-700 border-yellow-200" },
             { letter: "I", name: "Interval", range: "95–100%", color: "bg-orange-50 text-orange-700 border-orange-200" },
             { letter: "R", name: "Repetition", range: "105%+", color: "bg-red-50 text-red-700 border-red-200" },
@@ -123,12 +123,12 @@ export function VdotFaq() {
             <Link
               key={post.slug}
               to={`/blog/${post.slug}`}
-              className="group flex items-center gap-2 rounded-lg border border-gray-100 px-3 py-2.5 hover:border-indigo-200 hover:bg-indigo-50/50 transition-colors"
+              className="group flex items-center gap-2 rounded-lg border border-gray-100 px-3 py-2.5 hover:border-emerald-200 hover:bg-emerald-50/50 transition-colors"
             >
-              <span className="text-sm text-gray-700 group-hover:text-indigo-700 flex-1">
+              <span className="text-sm text-gray-700 group-hover:text-emerald-700 flex-1">
                 {post.title}
               </span>
-              <ArrowRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-indigo-500 transition-colors shrink-0" />
+              <ArrowRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-emerald-500 transition-colors shrink-0" />
             </Link>
           ))}
         </div>

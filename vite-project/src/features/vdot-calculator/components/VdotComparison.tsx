@@ -54,7 +54,7 @@ export function VdotComparison({
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-white rounded-2xl shadow-lg border-2 border-dashed border-gray-200 text-gray-500 hover:border-indigo-300 hover:text-indigo-600 transition-all"
+        className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-white rounded-2xl shadow-lg border-2 border-dashed border-gray-200 text-gray-500 hover:border-emerald-300 hover:text-emerald-600 transition-all"
       >
         <Sliders className="w-4 h-4" />
         <span className="font-medium text-sm">Explore &quot;What If&quot; Scenarios</span>
@@ -97,7 +97,7 @@ export function VdotComparison({
           step={totalSeconds > 600 ? 10 : 5}
           value={offsetSeconds}
           onChange={(e) => setOffsetSeconds(parseInt(e.target.value))}
-          className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-indigo-600 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-indigo-600 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md"
+          className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-emerald-600 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-emerald-600 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md"
         />
       </div>
 
@@ -116,7 +116,7 @@ export function VdotComparison({
               ? "bg-emerald-50 border-emerald-200"
               : vdotDelta < 0
               ? "bg-red-50 border-red-200"
-              : "bg-blue-50 border-blue-200"
+              : "bg-emerald-50 border-emerald-200"
           }`}
         >
           <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-0.5">Target</p>

@@ -24,7 +24,7 @@ const RunningTips = () => {
             Running Tips
           </AccordionTrigger>
           <AccordionContent className="w-full max-w-full mx-auto">
-            <div className="bg-blue-50">
+            <div className="bg-emerald-50">
               <div className="space-y-2 text-left pt-1 px-4">
                 <div>
                   <h3 className="font-bold mt-4">What is my training pace?</h3>

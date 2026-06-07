@@ -31,14 +31,14 @@ const features = [
 
 export default function SocialProofMarquee() {
   return (
-    <section className="py-8 bg-gradient-to-r from-blue-50 via-white to-blue-50 border-y border-gray-100 overflow-hidden">
+    <section className="py-8 bg-gradient-to-r from-emerald-50 via-white to-emerald-50 border-y border-gray-100 overflow-hidden">
       <div className="relative">
         {/* Top marquee - Features */}
         <Marquee pauseOnHover speed="slow" className="[--duration:40s]">
           {features.map((item, idx) => (
             <MarqueeItem key={idx}>
-              <div className="mx-4 flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-sm border border-blue-200 hover:shadow-md transition-shadow">
-                <item.icon className="w-4 h-4 text-blue-600 flex-shrink-0" />
+              <div className="mx-4 flex items-center gap-2 px-6 py-3 bg-white rounded-full shadow-sm border border-emerald-200 hover:shadow-md transition-shadow">
+                <item.icon className="w-4 h-4 text-emerald-600 flex-shrink-0" />
                 <span className="text-sm font-medium text-gray-700">
                   {item.text}
                 </span>

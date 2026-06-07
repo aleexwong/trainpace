@@ -541,7 +541,7 @@ export default function GpxUploader({
             <div className="flex space-x-3">
               <button
                 onClick={() => handleDuplicateAction("use")}
-                className="flex-1 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                className="flex-1 bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-colors"
               >
                 Use Existing File
               </button>
@@ -590,8 +590,8 @@ export default function GpxUploader({
           relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300
           ${
             isDragging && !isDisabled
-              ? "border-blue-400 bg-blue-50 scale-105"
-              : "border-gray-300 hover:border-blue-300 hover:bg-blue-25"
+              ? "border-emerald-400 bg-emerald-50 scale-105"
+              : "border-gray-300 hover:border-emerald-300 hover:bg-emerald-25"
           }
           ${
             isDisabled
@@ -610,8 +610,8 @@ export default function GpxUploader({
             relative p-4 rounded-full transition-all duration-300
             ${
               isDragging && !isDisabled
-                ? "bg-blue-500 text-white"
-                : "bg-gradient-to-br from-blue-400 to-cyan-500 text-white"
+                ? "bg-emerald-500 text-white"
+                : "bg-gradient-to-br from-emerald-400 to-cyan-500 text-white"
             }
             ${isUploading ? "animate-pulse" : ""}
           `}
@@ -629,7 +629,7 @@ export default function GpxUploader({
           {isUploading && (
             <div className="w-full max-w-xs bg-gray-200 rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-emerald-600 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${uploadProgress}%` }}
               />
             </div>
@@ -650,11 +650,11 @@ export default function GpxUploader({
           {/* Features */}
           <div className="flex items-center space-x-6 text-xs text-gray-500">
             <div className="flex items-center space-x-1">
-              <MapPin className="w-4 h-4 text-blue-500" />
+              <MapPin className="w-4 h-4 text-emerald-500" />
               <span>Track Analysis</span>
             </div>
             <div className="flex items-center space-x-1">
-              <Activity className="w-4 h-4 text-blue-500" />
+              <Activity className="w-4 h-4 text-emerald-500" />
               <span>Smart Caching</span>
             </div>
             <div className="flex items-center space-x-1">

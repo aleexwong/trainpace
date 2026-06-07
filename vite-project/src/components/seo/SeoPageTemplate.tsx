@@ -67,7 +67,7 @@ export interface SeoPageTemplateProps {
 // =============================================================================
 
 const GRADIENT_VARIANTS: Record<string, string> = {
-  blue: 'from-blue-50 via-white to-indigo-50',
+  blue: 'from-emerald-50 via-white to-emerald-50',
   orange: 'from-stone-50 via-white to-orange-50',
   green: 'from-emerald-50 via-white to-teal-50',
   purple: 'from-purple-50 via-white to-pink-50',
@@ -83,7 +83,7 @@ const TOOL_VARIANTS: Record<SeoToolType, string> = {
 };
 
 const TOOL_COLORS: Record<SeoToolType, { border: string; bg: string; text: string }> = {
-  pace: { border: 'border-blue-100', bg: 'bg-blue-700', text: 'text-blue-700' },
+  pace: { border: 'border-emerald-100', bg: 'bg-emerald-700', text: 'text-emerald-700' },
   fuel: { border: 'border-orange-100', bg: 'bg-amber-700', text: 'text-orange-800' },
   elevation: { border: 'border-emerald-100', bg: 'bg-emerald-700', text: 'text-emerald-700' },
   race: { border: 'border-orange-100', bg: 'bg-gray-900', text: 'text-orange-800' },
@@ -216,7 +216,7 @@ function CrossToolLinksSection({ currentTool }: CrossToolLinksSectionProps) {
       title: 'Pacing',
       subtitle: 'Get your training paces',
       description: 'Convert any race time into Easy, Tempo, Threshold, and Interval zones.',
-      colors: { border: 'border-blue-100', text: 'text-blue-700' },
+      colors: { border: 'border-emerald-100', text: 'text-emerald-700' },
     },
     {
       tool: 'fuel' as const,

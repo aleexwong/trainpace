@@ -389,9 +389,9 @@ export default function RaceSeoLanding() {
         <div className="max-w-5xl mx-auto grid gap-4 sm:grid-cols-3">
           <a
             href="/calculator"
-            className="rounded-2xl border border-blue-100 bg-white/70 p-6 hover:bg-white transition-colors"
+            className="rounded-2xl border border-emerald-100 bg-white/70 p-6 hover:bg-white transition-colors"
           >
-            <div className="text-sm font-semibold text-blue-700">Pacing</div>
+            <div className="text-sm font-semibold text-emerald-700">Pacing</div>
             <div className="mt-2 text-lg font-bold text-gray-900">
               Get your training paces
             </div>

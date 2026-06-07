@@ -40,7 +40,7 @@ export function RaceDetailsForm({
             <MapPin className="w-3 h-3" />
             City
             {isGeocodingCity && (
-              <span className="text-xs text-blue-600">...</span>
+              <span className="text-xs text-emerald-600">...</span>
             )}
           </Label>
           <Input

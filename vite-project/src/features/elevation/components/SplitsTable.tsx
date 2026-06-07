@@ -147,7 +147,7 @@ export function SplitsTable({ segments, basePaceMinPerKm }: SplitsTableProps) {
                     </td>
                   </tr>
                   {isOpen && seg.pacingAdvice && (
-                    <tr className="bg-blue-50/50">
+                    <tr className="bg-emerald-50/50">
                       <td colSpan={9} className="px-4 py-3 text-sm text-gray-700">
                         <span className="font-medium">💡 Strategy: </span>
                         {seg.pacingAdvice}
@@ -200,7 +200,7 @@ export function SplitsTable({ segments, basePaceMinPerKm }: SplitsTableProps) {
                 </span>
               </div>
               {isOpen && seg.pacingAdvice && (
-                <div className="mt-3 p-3 bg-blue-50 rounded text-sm text-gray-700">
+                <div className="mt-3 p-3 bg-emerald-50 rounded text-sm text-gray-700">
                   <span className="font-medium">💡 Strategy: </span>
                   {seg.pacingAdvice}
                 </div>

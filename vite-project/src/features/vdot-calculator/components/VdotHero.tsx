@@ -10,14 +10,14 @@ export function VdotHero() {
   const [showInfo, setShowInfo] = useState(false);
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 p-6 sm:p-10 mb-8">
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 via-emerald-600 to-purple-700 p-6 sm:p-10 mb-8">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" />
       <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/4" />
 
       <div className="relative z-10">
         {/* Breadcrumb */}
-        <nav className="text-sm text-blue-200 mb-4" aria-label="Breadcrumb">
+        <nav className="text-sm text-emerald-200 mb-4" aria-label="Breadcrumb">
           <ol className="flex items-center space-x-1">
             <li>
               <Link to="/" className="hover:text-white transition-colors">
@@ -45,7 +45,7 @@ export function VdotHero() {
           </h1>
         </div>
 
-        <p className="text-blue-100 text-base sm:text-lg max-w-2xl mb-4">
+        <p className="text-emerald-100 text-base sm:text-lg max-w-2xl mb-4">
           Calculate your VDOT score from any race result using Jack Daniels&apos; proven formula.
           Get personalized training paces and race predictions across all distances.
         </p>
@@ -70,19 +70,19 @@ export function VdotHero() {
             </p>
             <ul className="space-y-1.5">
               <li className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 bg-blue-300 rounded-full mt-1.5 shrink-0" />
+                <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full mt-1.5 shrink-0" />
                 Enter any recent race result to get your VDOT score
               </li>
               <li className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 bg-blue-300 rounded-full mt-1.5 shrink-0" />
+                <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full mt-1.5 shrink-0" />
                 Get equivalent race time predictions from 800m to the marathon
               </li>
               <li className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 bg-blue-300 rounded-full mt-1.5 shrink-0" />
+                <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full mt-1.5 shrink-0" />
                 Receive science-based paces for 5 Daniels training zones
               </li>
               <li className="flex items-start gap-2">
-                <span className="w-1.5 h-1.5 bg-blue-300 rounded-full mt-1.5 shrink-0" />
+                <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full mt-1.5 shrink-0" />
                 Easy, Marathon, Threshold, Interval, and Repetition paces
               </li>
             </ul>

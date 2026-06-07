@@ -161,7 +161,7 @@ export default function MainLayout() {
       <header className={getHeaderClasses()}>
         <Link
           to="/"
-          className="text-xl font-bold text-gray-900 z-30 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="text-xl font-bold text-gray-900 z-30 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
           aria-label="Go to homepage"
         >
           TrainPace
@@ -170,15 +170,15 @@ export default function MainLayout() {
         {/* Desktop Navigation */}
         <nav data-testid="desktop-nav" className="hidden md:flex items-center space-x-4">
           {location.pathname === "/" && (
-            <a href="#features" className="text-gray-700 hover:text-blue-600">
+            <a href="#features" className="text-gray-700 hover:text-emerald-600">
               Features
             </a>
           )}
 
           <Link
             to="/about"
-            className={`text-gray-700 hover:text-blue-600 transition-colors ${
-              location.pathname === "/about" ? "text-blue-600 font-medium" : ""
+            className={`text-gray-700 hover:text-emerald-600 transition-colors ${
+              location.pathname === "/about" ? "text-emerald-600 font-medium" : ""
             }`}
           >
             About
@@ -195,9 +195,9 @@ export default function MainLayout() {
               <Link
                 key={link.href}
                 to={link.href}
-                className={`text-gray-700 hover:text-blue-600 transition-colors ${
+                className={`text-gray-700 hover:text-emerald-600 transition-colors ${
                   location.pathname === link.href
-                    ? "text-blue-600 font-medium"
+                    ? "text-emerald-600 font-medium"
                     : ""
                 }`}
               >
@@ -275,7 +275,7 @@ export default function MainLayout() {
             <Button
               variant="outline"
               onClick={() => setMobilePreviewOpen(!mobilePreviewOpen)}
-              className="flex items-center justify-between w-full px-4 py-3 text-lg font-medium bg-white text-gray-900 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors"
+              className="flex items-center justify-between w-full px-4 py-3 text-lg font-medium bg-white text-gray-900 hover:bg-gray-100 hover:text-emerald-600 rounded-lg transition-colors"
             >
               <span>Preview Routes</span>
               <ChevronDown
@@ -298,9 +298,9 @@ export default function MainLayout() {
                   <Link
                     key={route.slug}
                     to={`/preview-route/${route.slug}`}
-                    className={`block py-2 px-6 text-base text-gray-700 hover:bg-gray-100 hover:text-blue-600 rounded-lg transition-colors ${
+                    className={`block py-2 px-6 text-base text-gray-700 hover:bg-gray-100 hover:text-emerald-600 rounded-lg transition-colors ${
                       location.pathname === `/preview-route/${route.slug}`
-                        ? "bg-blue-50 text-blue-600 font-medium"
+                        ? "bg-emerald-50 text-emerald-600 font-medium"
                         : "bg-white"
                     }`}
                     onClick={() => {
@@ -323,7 +323,7 @@ export default function MainLayout() {
             {location.pathname !== "/" && (
               <Link
                 to="/"
-                className="block py-3 px-4 text-lg font-medium rounded-lg text-gray-900 hover:bg-gray-100 hover:text-blue-600"
+                className="block py-3 px-4 text-lg font-medium rounded-lg text-gray-900 hover:bg-gray-100 hover:text-emerald-600"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
@@ -332,7 +332,7 @@ export default function MainLayout() {
             {location.pathname === "/" && (
               <a
                 href="#features"
-                className="block py-3 px-4 text-lg font-medium rounded-lg text-gray-900 hover:bg-gray-100 hover:text-blue-600"
+                className="block py-3 px-4 text-lg font-medium rounded-lg text-gray-900 hover:bg-gray-100 hover:text-emerald-600"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Features
@@ -342,8 +342,8 @@ export default function MainLayout() {
               to="/about"
               className={`block py-3 px-4 text-lg font-medium rounded-lg transition-colors ${
                 location.pathname === "/about"
-                  ? "bg-blue-50 text-blue-600"
-                  : "text-gray-900 hover:bg-gray-100 hover:text-blue-600"
+                  ? "bg-emerald-50 text-emerald-600"
+                  : "text-gray-900 hover:bg-gray-100 hover:text-emerald-600"
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -360,8 +360,8 @@ export default function MainLayout() {
                   to={link.href}
                   className={`block py-3 px-4 text-lg font-medium rounded-lg transition-colors ${
                     location.pathname === link.href
-                      ? "bg-blue-50 text-blue-600"
-                      : "text-gray-900 hover:bg-gray-100 hover:text-blue-600"
+                      ? "bg-emerald-50 text-emerald-600"
+                      : "text-gray-900 hover:bg-gray-100 hover:text-emerald-600"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >

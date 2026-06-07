@@ -346,7 +346,7 @@ export function PaceCalculatorV2({
         </Helmet>
       )}
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-purple-50 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
@@ -356,7 +356,7 @@ export function PaceCalculatorV2({
               className="p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all"
               aria-label={showInfo ? "Hide information" : "Show information"}
             >
-              <Info className="h-6 w-6 text-blue-600" />
+              <Info className="h-6 w-6 text-emerald-600" />
             </button>
           </div>
 
