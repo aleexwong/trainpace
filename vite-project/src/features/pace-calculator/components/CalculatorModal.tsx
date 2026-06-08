@@ -19,12 +19,12 @@ const CalculatorModal = () => {
         <Button
           variant="outline"
           size="icon"
-          className="ml-2 text-blue-600 hover:bg-blue-50"
+          className="ml-2 text-emerald-600 hover:bg-emerald-50"
         >
           <Info className="h-5 w-5" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md bg-blue-50">
+      <DialogContent className="sm:max-w-md bg-emerald-50">
         <DialogHeader>
           <DialogTitle className="text-left">
             How does the Calculator Work? 🏃

@@ -80,7 +80,7 @@ export function TimeInput({
             value={inputs.hours}
             onChange={(e) => handleFieldChange("hours", e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full px-2 sm:px-3 py-3.5 text-center text-xl sm:text-2xl font-mono font-bold border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-gray-50 focus:bg-white"
+            className="w-full px-2 sm:px-3 py-3.5 text-center text-xl sm:text-2xl font-mono font-bold border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all bg-gray-50 focus:bg-white"
             aria-label="Hours"
           />
           <p className="text-xs text-gray-400 text-center mt-1 font-medium">Hours</p>
@@ -98,7 +98,7 @@ export function TimeInput({
             value={inputs.minutes}
             onChange={(e) => handleFieldChange("minutes", e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full px-2 sm:px-3 py-3.5 text-center text-xl sm:text-2xl font-mono font-bold border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-gray-50 focus:bg-white"
+            className="w-full px-2 sm:px-3 py-3.5 text-center text-xl sm:text-2xl font-mono font-bold border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all bg-gray-50 focus:bg-white"
             aria-label="Minutes"
           />
           <p className="text-xs text-gray-400 text-center mt-1 font-medium">Min</p>
@@ -116,7 +116,7 @@ export function TimeInput({
             value={inputs.seconds}
             onChange={(e) => handleFieldChange("seconds", e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full px-2 sm:px-3 py-3.5 text-center text-xl sm:text-2xl font-mono font-bold border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-gray-50 focus:bg-white"
+            className="w-full px-2 sm:px-3 py-3.5 text-center text-xl sm:text-2xl font-mono font-bold border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all bg-gray-50 focus:bg-white"
             aria-label="Seconds"
           />
           <p className="text-xs text-gray-400 text-center mt-1 font-medium">Sec</p>
@@ -130,10 +130,10 @@ export function TimeInput({
       {/* Live VDOT Preview */}
       {vdotPreview !== null && !error && (
         <div className="mt-3 flex justify-center">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-100 rounded-full text-sm">
-            <Zap className="w-3.5 h-3.5 text-blue-500" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-100 rounded-full text-sm">
+            <Zap className="w-3.5 h-3.5 text-emerald-500" />
             <span className="text-gray-500">Est. VDOT:</span>
-            <span className="font-bold text-blue-600">{vdotPreview}</span>
+            <span className="font-bold text-emerald-600">{vdotPreview}</span>
           </div>
         </div>
       )}
@@ -141,7 +141,7 @@ export function TimeInput({
       {/* Calculate Button */}
       <button
         onClick={onCalculate}
-        className="w-full mt-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg hover:shadow-xl active:scale-[0.98] transform"
+        className="w-full mt-6 py-4 bg-gradient-to-r from-emerald-600 to-emerald-600 text-white text-lg font-semibold rounded-xl hover:from-emerald-700 hover:to-emerald-700 transition-all shadow-lg hover:shadow-xl active:scale-[0.98] transform"
       >
         Calculate VDOT
       </button>

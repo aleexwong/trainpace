@@ -107,7 +107,7 @@ export default function Login() {
             type="email"
             placeholder="Email"
             data-testid="login-email"
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -117,7 +117,7 @@ export default function Login() {
             type="password"
             placeholder="Password"
             data-testid="login-password"
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -127,7 +127,7 @@ export default function Login() {
           <button
             type="submit"
             data-testid="login-submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:opacity-50 transition-colors"
+            className="w-full bg-emerald-500 text-white py-2 rounded hover:bg-emerald-600 disabled:opacity-50 transition-colors"
             disabled={isLoading}
           >
             {isLoading ? "Signing in..." : "Sign in with Email"}
@@ -136,12 +136,12 @@ export default function Login() {
 
         <Link
           to="/reset-password"
-          className="text-sm text-blue-500 hover:underline"
+          className="text-sm text-emerald-500 hover:underline"
         >
           Forgot password?
         </Link>
 
-        <Link to="/register" className="text-blue-500 hover:underline">
+        <Link to="/register" className="text-emerald-500 hover:underline">
           Register here
         </Link>
       </div>

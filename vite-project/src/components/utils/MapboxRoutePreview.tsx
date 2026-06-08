@@ -214,7 +214,7 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
     if (highlightMarker.current) {
       highlightMarker.current.setLngLat(lngLat);
     } else {
-      highlightMarker.current = new mapboxgl.Marker({ color: "#3b82f6" })
+      highlightMarker.current = new mapboxgl.Marker({ color: "#059669" })
         .setLngLat(lngLat)
         .addTo(map.current);
     }

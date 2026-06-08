@@ -8,7 +8,7 @@ export default function ResetConfirmed() {
       <p className="text-green-600 mb-6">
         ✅ Your password has been reset successfully.
       </p>
-      <Link to="/login" className="text-blue-500 hover:underline">
+      <Link to="/login" className="text-emerald-500 hover:underline">
         Back to Login
       </Link>
     </div>

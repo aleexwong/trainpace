@@ -120,7 +120,7 @@ export function AIPersonalization({
 
   return (
     <>
-      <Card className="bg-gradient-to-br from-purple-100 to-blue-100 border-purple-200 shadow-lg">
+      <Card className="bg-gradient-to-br from-purple-100 to-emerald-100 border-purple-200 shadow-lg">
         <CardContent className="p-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
@@ -139,8 +139,8 @@ export function AIPersonalization({
           </div>
 
           {/* Beta Disclaimer */}
-          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-xs text-blue-800">
+          <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+            <p className="text-xs text-emerald-800">
               <strong>Using Google Gemini (Free):</strong> We use Google's free
               AI to personalize your plan. Google may use your input to improve
               their models, so avoid sharing medical info or personal details.
@@ -174,7 +174,7 @@ export function AIPersonalization({
                   <div className="w-full border-t border-purple-200"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-gradient-to-br from-purple-100 to-blue-100 text-gray-500">
+                  <span className="px-2 bg-gradient-to-br from-purple-100 to-emerald-100 text-gray-500">
                     or write your own
                   </span>
                 </div>

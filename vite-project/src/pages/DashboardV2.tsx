@@ -242,8 +242,8 @@ export default function DashboardV2() {
             onClick={() => setActiveTab("routes")}
             className={`px-4 py-2 rounded-md font-medium transition-all ${
               activeTab === "routes"
-                ? "bg-blue-600 text-black hover:text-blue-600 hover:bg-blue-50"
-                : "bg-white text-blue-600 shadow-sm hover:bg-white hover:text-blue-600"
+                ? "bg-emerald-600 text-black hover:text-emerald-600 hover:bg-emerald-50"
+                : "bg-white text-emerald-600 shadow-sm hover:bg-white hover:text-emerald-600"
             }`}
           >
             Routes ({hasActiveSearch ? filteredRoutes.length : routes.length})

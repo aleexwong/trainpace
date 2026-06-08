@@ -309,7 +309,7 @@ export default function PreviewRoute() {
       <nav className="text-sm mb-4" aria-label="Breadcrumb">
         <ol className="flex items-center space-x-2 text-gray-500">
           <li>
-            <Link to="/" className="hover:text-blue-600">
+            <Link to="/" className="hover:text-emerald-600">
               Home
             </Link>
           </li>
@@ -331,7 +331,7 @@ export default function PreviewRoute() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-white rounded-lg border border-gray-200 p-4">
             <div className="flex items-center space-x-2 mb-1">
-              <MapPin className="w-4 h-4 text-blue-500" />
+              <MapPin className="w-4 h-4 text-emerald-500" />
               <span className="text-sm text-gray-500">Distance</span>
             </div>
             <p className="text-2xl font-bold text-gray-900">
@@ -382,7 +382,7 @@ export default function PreviewRoute() {
                 : route.thumbnailPoints
             }
             routeName={route.name}
-            lineColor="#3b82f6"
+            lineColor="#059669"
             height="400px"
             showStartEnd={true}
             className=""
@@ -412,7 +412,7 @@ export default function PreviewRoute() {
               href={route.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-colors"
+              className="inline-flex items-center space-x-2 text-emerald-600 hover:text-emerald-700 transition-colors"
             >
               <span>Official Race Website</span>
               <svg
@@ -439,7 +439,7 @@ export default function PreviewRoute() {
           <ul className="space-y-3">
             {route.tips.map((tip, index) => (
               <li key={index} className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
                 <span className="text-gray-700">{tip}</span>
               </li>
             ))}
@@ -451,9 +451,9 @@ export default function PreviewRoute() {
       {route.paceStrategy && (
         <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
           <div className="flex items-center space-x-3 mb-4">
-            <TrendingUp className="w-6 h-6 text-blue-600" />
+            <TrendingUp className="w-6 h-6 text-emerald-600" />
             <h3 className="text-xl font-bold text-gray-900">Pace Strategy</h3>
-            <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full capitalize">
+            <span className="px-3 py-1 bg-emerald-100 text-emerald-800 text-sm font-medium rounded-full capitalize">
               {route.paceStrategy.type.replace("-", " ")}
             </span>
           </div>
@@ -473,7 +473,7 @@ export default function PreviewRoute() {
                   className="flex flex-col sm:flex-row sm:items-start gap-2 p-4 bg-gray-50 rounded-lg"
                 >
                   <div className="flex items-center gap-2 sm:w-32 flex-shrink-0">
-                    <span className="font-bold text-blue-600">
+                    <span className="font-bold text-emerald-600">
                       Miles {segment.miles}
                     </span>
                   </div>
@@ -491,7 +491,7 @@ export default function PreviewRoute() {
           <div className="mt-6 pt-6 border-t border-gray-200">
             <Link
               to="/calculator"
-              className="inline-flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-medium"
+              className="inline-flex items-center space-x-2 text-emerald-600 hover:text-emerald-700 font-medium"
             >
               <Zap className="w-4 h-4" />
               <span>Calculate your personalized training paces →</span>
@@ -536,7 +536,7 @@ export default function PreviewRoute() {
             <p className="text-sm text-gray-500 mt-1">Start Elevation</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold text-blue-600">
+            <p className="text-3xl font-bold text-emerald-600">
               {Math.round(routeStats.endElevation ?? route.endElevation)}m
             </p>
             <p className="text-sm text-gray-500 mt-1">Finish Elevation</p>
@@ -580,7 +580,7 @@ export default function PreviewRoute() {
       )}
 
       {/* Call to Action */}
-      <div className="bg-blue-50 rounded-lg border border-blue-200 p-6 text-center">
+      <div className="bg-emerald-50 rounded-lg border border-emerald-200 p-6 text-center">
         <h3 className="text-xl font-bold text-gray-900 mb-2">
           Ready to Train for {route.name}?
         </h3>
@@ -621,13 +621,13 @@ export default function PreviewRoute() {
           </Link>
           <Link
             to="/calculator"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition-colors"
           >
             Pace Calculator
           </Link>
           <Link
             to="/fuel"
-            className="bg-white text-blue-600 px-6 py-3 rounded-lg border border-blue-600 hover:bg-blue-50 transition-colors"
+            className="bg-white text-emerald-600 px-6 py-3 rounded-lg border border-emerald-600 hover:bg-emerald-50 transition-colors"
           >
             Fuel Planner
           </Link>

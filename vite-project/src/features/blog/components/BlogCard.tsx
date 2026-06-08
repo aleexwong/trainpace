@@ -13,13 +13,13 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
     <article
       className={`
         group bg-white rounded-xl border border-gray-200 overflow-hidden
-        hover:border-blue-300 hover:shadow-lg transition-all duration-300
+        hover:border-emerald-300 hover:shadow-lg transition-all duration-300
         ${featured ? "md:col-span-2 md:grid md:grid-cols-2" : ""}
       `}
     >
       {/* Image placeholder - can be enabled if coverImage is provided */}
       {post.coverImage && (
-        <div className="aspect-video bg-gradient-to-br from-blue-100 to-indigo-100 overflow-hidden">
+        <div className="aspect-video bg-gradient-to-br from-emerald-100 to-emerald-100 overflow-hidden">
           <img
             src={post.coverImage}
             alt={post.title}
@@ -51,7 +51,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
         <Link to={`/blog/${post.slug}`}>
           <h3
             className={`
-              font-bold text-gray-900 group-hover:text-blue-600 transition-colors
+              font-bold text-gray-900 group-hover:text-emerald-600 transition-colors
               ${featured ? "text-2xl md:text-3xl mb-3" : "text-xl mb-2"}
             `}
           >
@@ -84,7 +84,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
         {/* Read more link */}
         <Link
           to={`/blog/${post.slug}`}
-          className="inline-flex items-center mt-4 text-blue-600 font-medium hover:text-blue-800 transition-colors"
+          className="inline-flex items-center mt-4 text-emerald-600 font-medium hover:text-emerald-800 transition-colors"
         >
           Read more
           <svg

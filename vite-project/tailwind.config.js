@@ -4,6 +4,10 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["DM Sans", "system-ui", "sans-serif"],
+        display: ["Space Grotesk", "system-ui", "sans-serif"],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -21,12 +25,12 @@ module.exports = {
           foreground: "hsl(var(--popover-foreground))",
         },
         primary: {
-          DEFAULT: "#2563eb", // blue-600
+          DEFAULT: "#059669", // emerald-600 (landing accent)
           foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "#dbeafe", // blue-100
-          foreground: "#1e40af", // blue-800
+          DEFAULT: "#f1f5f9", // slate-100
+          foreground: "#0f172a", // slate-900
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",

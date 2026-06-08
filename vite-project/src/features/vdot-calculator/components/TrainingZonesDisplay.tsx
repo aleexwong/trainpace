@@ -59,17 +59,17 @@ export function TrainingZonesDisplay({
         </div>
         {!compact && (
           <div
-            className="relative w-36 h-9 bg-indigo-100 rounded-full cursor-pointer overflow-hidden select-none"
+            className="relative w-36 h-9 bg-emerald-100 rounded-full cursor-pointer overflow-hidden select-none"
             onClick={onTogglePaceUnit}
           >
             <div
-              className={`absolute top-0.5 left-0.5 w-[calc(50%-0.25rem)] h-8 bg-indigo-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
+              className={`absolute top-0.5 left-0.5 w-[calc(50%-0.25rem)] h-8 bg-emerald-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
                 paceUnit === "mi" ? "translate-x-full" : "translate-x-0"
               }`}
             />
             <div className="absolute inset-0 flex items-center">
-              <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "km" ? "text-white" : "text-indigo-700"}`}>min/km</div>
-              <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "mi" ? "text-white" : "text-indigo-700"}`}>min/mi</div>
+              <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "km" ? "text-white" : "text-emerald-700"}`}>min/km</div>
+              <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "mi" ? "text-white" : "text-emerald-700"}`}>min/mi</div>
             </div>
           </div>
         )}

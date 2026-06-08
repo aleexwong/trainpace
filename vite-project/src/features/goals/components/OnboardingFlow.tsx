@@ -131,7 +131,7 @@ export function OnboardingFlow() {
   const skip = () => navigate("/dashboard");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-purple-50 p-4 md:p-8">
       <Helmet>
         <title>Set Your Goals | TrainPace</title>
         <meta name="robots" content="noindex" />
@@ -154,7 +154,7 @@ export function OnboardingFlow() {
             <div
               key={n}
               className={`h-2 w-10 rounded-full ${
-                step >= n ? "bg-blue-600" : "bg-gray-200"
+                step >= n ? "bg-emerald-600" : "bg-gray-200"
               }`}
             />
           ))}
@@ -207,7 +207,7 @@ export function OnboardingFlow() {
                   idPrefix="goal"
                 />
                 {feasibility && (
-                  <p className="rounded-md bg-blue-50 px-3 py-2 text-sm text-blue-700">
+                  <p className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
                     Your current fitness predicts about{" "}
                     <strong>{feasibility}</strong> for {goal.distanceName}.
                   </p>
@@ -244,7 +244,7 @@ export function OnboardingFlow() {
                         type="checkbox"
                         checked={enabled.includes(key)}
                         onChange={() => toggleIntegration(key)}
-                        className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                       />
                       <span>
                         <span className="block font-medium text-gray-900">

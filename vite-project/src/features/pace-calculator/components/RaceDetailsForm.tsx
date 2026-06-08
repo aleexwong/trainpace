@@ -154,7 +154,7 @@ export function RaceDetailsForm({
                   onClick={() => onPresetClick(preset.distance, preset.name)}
                   className={`py-3 px-2 text-sm font-semibold rounded-xl transition-all hover:scale-105 ${
                     isSelected
-                      ? "bg-blue-600 text-white shadow-md"
+                      ? "bg-emerald-600 text-white shadow-md"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -178,23 +178,23 @@ export function RaceDetailsForm({
               step="0.1"
               value={inputs.distance}
               onChange={onInputChange}
-              className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+              className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${
                 errors.distance ? "border-red-500" : "border-gray-300"
               }`}
             />
             <button
               type="button"
-              className="relative w-32 h-10 bg-blue-100 rounded-full cursor-pointer overflow-hidden flex-shrink-0"
+              className="relative w-32 h-10 bg-emerald-100 rounded-full cursor-pointer overflow-hidden flex-shrink-0"
               onClick={handleUnitToggle}
             >
               <div
-                className={`absolute top-1 left-1 w-[calc(50%-0.25rem)] h-8 bg-blue-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
+                className={`absolute top-1 left-1 w-[calc(50%-0.25rem)] h-8 bg-emerald-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
                   !isKm ? "translate-x-full" : "translate-x-0"
                 }`}
               />
               <div className="absolute inset-0 flex items-center">
-                <div className={`w-1/2 text-center text-sm font-medium transition-colors ${isKm ? "text-white" : "text-blue-700"}`}>KM</div>
-                <div className={`w-1/2 text-center text-sm font-medium transition-colors ${!isKm ? "text-white" : "text-blue-700"}`}>MI</div>
+                <div className={`w-1/2 text-center text-sm font-medium transition-colors ${isKm ? "text-white" : "text-emerald-700"}`}>KM</div>
+                <div className={`w-1/2 text-center text-sm font-medium transition-colors ${!isKm ? "text-white" : "text-emerald-700"}`}>MI</div>
               </div>
             </button>
           </div>
@@ -216,8 +216,8 @@ export function RaceDetailsForm({
                     onClick={() => onSuggestedTimeClick?.(s.hours, s.minutes, s.seconds)}
                     className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium border transition-all ${
                       isActive
-                        ? "bg-blue-600 text-white border-blue-600 shadow"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600"
+                        ? "bg-emerald-600 text-white border-emerald-600 shadow"
+                        : "bg-white text-gray-700 border-gray-200 hover:border-emerald-400 hover:text-emerald-600"
                     }`}
                   >
                     {s.label}
@@ -246,7 +246,7 @@ export function RaceDetailsForm({
               value={inputs.hours}
               onChange={onInputChange}
               onKeyUp={(e) => handleTimeKeyUp(e, "hours")}
-              className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-center ${
+              className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
                 errors.time ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -263,7 +263,7 @@ export function RaceDetailsForm({
               value={inputs.minutes}
               onChange={onInputChange}
               onKeyUp={(e) => handleTimeKeyUp(e, "minutes")}
-              className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-center ${
+              className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
                 errors.time ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -279,7 +279,7 @@ export function RaceDetailsForm({
               max="59"
               value={inputs.seconds}
               onChange={onInputChange}
-              className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-center ${
+              className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
                 errors.time ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -305,9 +305,9 @@ export function RaceDetailsForm({
               step={sliderRange.step}
               value={sliderValue}
               onChange={(e) => onSliderChange?.(parseInt(e.target.value, 10))}
-              className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-blue-600
+              className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-emerald-600
                 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5
-                [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-600
+                [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-emerald-600
                 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md"
             />
 
@@ -362,7 +362,7 @@ export function RaceDetailsForm({
                 max="100"
                 value={inputs.age}
                 onChange={onInputChange}
-                className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
               />
             </div>
 
@@ -389,7 +389,7 @@ export function RaceDetailsForm({
                 max="130"
                 value={inputs.temperature}
                 onChange={onInputChange}
-                className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
               />
             </div>
           </div>
@@ -400,7 +400,7 @@ export function RaceDetailsForm({
           onClick={onCalculate}
           disabled={isCalculating}
           data-testid="pace-calculate"
-          className="w-full py-4 text-lg font-semibold text-white bg-blue-600 rounded-xl hover:bg-blue-700 active:bg-blue-800 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-4 text-lg font-semibold text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 active:bg-emerald-800 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isCalculating ? "Calculating…" : "Calculate Training Paces"}
         </button>

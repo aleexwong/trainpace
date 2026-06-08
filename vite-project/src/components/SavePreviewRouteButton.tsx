@@ -161,7 +161,7 @@ export function SavePreviewRouteButton({
         ${loading ? "opacity-75 cursor-not-allowed" : ""}
         ${
           isSaved
-            ? "bg-blue-100 text-blue-700 border border-blue-200 hover:bg-blue-200"
+            ? "bg-emerald-100 text-emerald-700 border border-emerald-200 hover:bg-emerald-200"
             : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
         }
         ${className}`}

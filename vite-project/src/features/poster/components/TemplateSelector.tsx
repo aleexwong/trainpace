@@ -31,7 +31,7 @@ export function TemplateSelector({
               relative h-16 rounded-lg border-2 transition-all
               ${
                 selectedTemplate === actualIndex
-                  ? "border-blue-500 ring-2 ring-blue-200 scale-105"
+                  ? "border-emerald-500 ring-2 ring-emerald-200 scale-105"
                   : "border-gray-200 hover:border-gray-300"
               }
             `}

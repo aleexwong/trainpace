@@ -48,19 +48,19 @@ export function RacePredictionsTable({ predictions, inputDistanceName, compact }
                 <tr
                   key={prediction.name}
                   className={`border-b border-gray-50 transition-colors hover:bg-gray-50 ${
-                    isInput ? "bg-blue-50/70" : ""
+                    isInput ? "bg-emerald-50/70" : ""
                   }`}
                 >
                   <td className={compact ? "py-1.5 px-2" : "py-3 px-4"}>
                     <div className="flex items-center gap-1.5">
                       {isInput && (
-                        <span className="w-1 h-5 bg-blue-500 rounded-full shrink-0" />
+                        <span className="w-1 h-5 bg-emerald-500 rounded-full shrink-0" />
                       )}
-                      <span className={`font-medium ${compact ? "text-xs" : "text-sm"} ${isInput ? "text-blue-700" : "text-gray-900"}`}>
+                      <span className={`font-medium ${compact ? "text-xs" : "text-sm"} ${isInput ? "text-emerald-700" : "text-gray-900"}`}>
                         {prediction.name}
                       </span>
                       {isInput && !compact && (
-                        <span className="text-[10px] font-semibold text-blue-500 bg-blue-100 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-semibold text-emerald-500 bg-emerald-100 px-1.5 py-0.5 rounded">
                           YOUR RACE
                         </span>
                       )}
@@ -68,7 +68,7 @@ export function RacePredictionsTable({ predictions, inputDistanceName, compact }
                   </td>
                   <td className={`${compact ? "py-1.5 px-2 text-center" : "py-3 px-4"}`}>
                     <div className={`flex items-center gap-2 ${compact ? "justify-center" : ""}`}>
-                      <span className={`font-mono font-semibold ${compact ? "text-xs" : "text-sm min-w-[80px]"} ${isInput ? "text-blue-700" : "text-gray-900"}`}>
+                      <span className={`font-mono font-semibold ${compact ? "text-xs" : "text-sm min-w-[80px]"} ${isInput ? "text-emerald-700" : "text-gray-900"}`}>
                         {prediction.time}
                       </span>
                       {!compact && (
@@ -76,7 +76,7 @@ export function RacePredictionsTable({ predictions, inputDistanceName, compact }
                           <div
                             className={`h-full rounded-full transition-all duration-500 ${
                               isInput
-                                ? "bg-gradient-to-r from-blue-400 to-blue-500"
+                                ? "bg-gradient-to-r from-emerald-400 to-emerald-500"
                                 : "bg-gradient-to-r from-gray-200 to-gray-300"
                             }`}
                             style={{ width: `${barWidth}%` }}

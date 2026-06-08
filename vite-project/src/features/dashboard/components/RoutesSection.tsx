@@ -21,7 +21,7 @@ export function RoutesSection({
   if (loading) {
     return (
       <div className="text-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto"></div>
         <p className="text-gray-600 mt-4">Loading routes...</p>
       </div>
     );
@@ -40,7 +40,7 @@ export function RoutesSection({
         </p>
         <a
           href="/elevationfinder"
-          className="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors"
+          className="inline-block bg-emerald-500 text-white px-6 py-3 rounded-lg hover:bg-emerald-600 transition-colors"
         >
           Upload GPX File
         </a>
@@ -86,7 +86,7 @@ export function RoutesSection({
         </div>
         <a
           href="/elevationfinder"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors text-sm"
+          className="bg-emerald-500 text-white px-4 py-2 rounded-md hover:bg-emerald-600 transition-colors text-sm"
         >
           Upload New Route
         </a>
@@ -146,7 +146,7 @@ export function RoutesSection({
                   onClick={() => goToPage(page)}
                   className={`w-10 h-10 rounded-md transition-colors flex items-center justify-center ${
                     page === currentPage
-                      ? "bg-blue-500 text-white"
+                      ? "bg-emerald-500 text-white"
                       : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
                   }`}
                   aria-label={`Go to page ${page}`}

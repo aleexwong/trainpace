@@ -123,7 +123,7 @@ export function PosterPreview({
         <p className="font-medium">
           🖱️ Drag to pan • 🔍 Scroll to zoom • Frame your route
         </p>
-        <p className="text-blue-600 font-medium">
+        <p className="text-emerald-600 font-medium">
           This exact poster will be downloaded at 300 DPI
         </p>
       </div>

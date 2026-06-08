@@ -75,7 +75,7 @@ export function VdotCalculator({ initialInputs }: VdotCalculatorProps = {}) {
     <>
       <VdotSeoHead />
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 p-4 md:p-6">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 p-4 md:p-6">
         {/* Wider container for dashboard layout */}
         <div className={result ? "max-w-7xl mx-auto" : "max-w-4xl mx-auto"}>
           {/* Hero — compact when showing results */}
@@ -87,7 +87,7 @@ export function VdotCalculator({ initialInputs }: VdotCalculatorProps = {}) {
               <div className="flex items-center gap-3">
                 <button
                   onClick={handleReset}
-                  className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 transition-colors bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200"
+                  className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-emerald-600 transition-colors bg-white rounded-lg px-3 py-2 shadow-sm border border-gray-200"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   New Calculation
@@ -100,20 +100,20 @@ export function VdotCalculator({ initialInputs }: VdotCalculatorProps = {}) {
                 </div>
               </div>
               <div
-                className="relative w-32 h-8 bg-indigo-100 rounded-full cursor-pointer overflow-hidden select-none"
+                className="relative w-32 h-8 bg-emerald-100 rounded-full cursor-pointer overflow-hidden select-none"
                 onClick={handlePaceUnitToggle}
                 title="Toggle pace display unit"
               >
                 <div
-                  className={`absolute top-0.5 left-0.5 w-[calc(50%-0.25rem)] h-7 bg-indigo-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
+                  className={`absolute top-0.5 left-0.5 w-[calc(50%-0.25rem)] h-7 bg-emerald-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
                     paceUnit === "mi" ? "translate-x-full" : "translate-x-0"
                   }`}
                 />
                 <div className="absolute inset-0 flex items-center">
-                  <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "km" ? "text-white" : "text-indigo-700"}`}>
+                  <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "km" ? "text-white" : "text-emerald-700"}`}>
                     min/km
                   </div>
-                  <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "mi" ? "text-white" : "text-indigo-700"}`}>
+                  <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "mi" ? "text-white" : "text-emerald-700"}`}>
                     min/mi
                   </div>
                 </div>
@@ -173,12 +173,12 @@ export function VdotCalculator({ initialInputs }: VdotCalculatorProps = {}) {
                       <button
                         key={idx}
                         onClick={() => loadFromHistory(entry)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs hover:border-blue-300 hover:bg-blue-50 transition-all shadow-sm"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs hover:border-emerald-300 hover:bg-emerald-50 transition-all shadow-sm"
                       >
                         <Clock className="w-3 h-3 text-gray-400" />
                         <span className="font-medium text-gray-700">{entry.distanceName}</span>
                         <span className="text-gray-400">{entry.timeFormatted}</span>
-                        <span className="font-bold text-blue-600">{entry.vdot}</span>
+                        <span className="font-bold text-emerald-600">{entry.vdot}</span>
                       </button>
                     ))}
                   </div>
@@ -255,7 +255,7 @@ export function VdotCalculator({ initialInputs }: VdotCalculatorProps = {}) {
                 <div className="grid sm:grid-cols-2 gap-3">
                   <Link
                     to="/calculator"
-                    className="flex items-center gap-3 p-3 rounded-xl bg-blue-50 border border-blue-100 hover:border-blue-300 hover:shadow-sm transition-all"
+                    className="flex items-center gap-3 p-3 rounded-xl bg-emerald-50 border border-emerald-100 hover:border-emerald-300 hover:shadow-sm transition-all"
                   >
                     <span className="text-2xl">&#9201;&#65039;</span>
                     <div>

@@ -74,7 +74,7 @@ export function PacePlanCard({
         <div className="flex gap-1">
           <button
             onClick={() => onEdit(plan)}
-            className="text-gray-400 hover:text-blue-500 transition-colors bg-transparent rounded-full p-1 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="text-gray-400 hover:text-emerald-500 transition-colors bg-transparent rounded-full p-1 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             title="Edit plan"
             aria-label="Edit pace plan"
           >
@@ -93,37 +93,37 @@ export function PacePlanCard({
 
       {/* Pace Unit Badge */}
       <div className="mb-3">
-        <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+        <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded">
           Paces in {paceUnit}
         </span>
       </div>
 
       {/* Paces Grid */}
-      <div className="space-y-2 mb-3 bg-blue-50 p-3 rounded-lg">
+      <div className="space-y-2 mb-3 bg-emerald-50 p-3 rounded-lg">
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div>
             <div className="text-xs text-gray-600 mb-0.5">Race Pace</div>
-            <div className="font-bold text-blue-600">{plan.paces.race}</div>
+            <div className="font-bold text-emerald-600">{plan.paces.race}</div>
           </div>
           <div>
             <div className="text-xs text-gray-600 mb-0.5">Easy</div>
-            <div className="font-bold text-blue-600">{plan.paces.easy}</div>
+            <div className="font-bold text-emerald-600">{plan.paces.easy}</div>
           </div>
           <div>
             <div className="text-xs text-gray-600 mb-0.5">Tempo</div>
-            <div className="font-bold text-blue-600">{plan.paces.tempo}</div>
+            <div className="font-bold text-emerald-600">{plan.paces.tempo}</div>
           </div>
           <div>
             <div className="text-xs text-gray-600 mb-0.5">Interval</div>
-            <div className="font-bold text-blue-600">{plan.paces.interval}</div>
+            <div className="font-bold text-emerald-600">{plan.paces.interval}</div>
           </div>
           <div>
             <div className="text-xs text-gray-600 mb-0.5">Long Run</div>
-            <div className="font-bold text-blue-600">{plan.paces.xlong}</div>
+            <div className="font-bold text-emerald-600">{plan.paces.xlong}</div>
           </div>
           <div>
             <div className="text-xs text-gray-600 mb-0.5">Yasso 800s</div>
-            <div className="font-bold text-blue-600">{plan.paces.yasso}</div>
+            <div className="font-bold text-emerald-600">{plan.paces.yasso}</div>
           </div>
         </div>
       </div>
@@ -156,7 +156,7 @@ export function PacePlanCard({
       {/* Action Button */}
       <button
         onClick={() => onCopy(plan)}
-        className="w-full bg-blue-500 text-white py-2 px-3 rounded-md text-sm hover:bg-blue-600 transition-colors flex items-center justify-center gap-1"
+        className="w-full bg-emerald-500 text-white py-2 px-3 rounded-md text-sm hover:bg-emerald-600 transition-colors flex items-center justify-center gap-1"
       >
         <Copy className="w-4 h-4" />
         Copy Paces

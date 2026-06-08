@@ -31,7 +31,7 @@ export default function BlogPost() {
           </p>
           <Link
             to="/blog"
-            className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Back to Blog
@@ -148,13 +148,13 @@ export default function BlogPost() {
         <div className="max-w-4xl mx-auto px-6 py-3">
           <ol className="flex items-center gap-2 text-sm">
             <li>
-              <Link to="/" className="text-gray-500 hover:text-blue-600">
+              <Link to="/" className="text-gray-500 hover:text-emerald-600">
                 Home
               </Link>
             </li>
             <ChevronRight className="w-4 h-4 text-gray-400" />
             <li>
-              <Link to="/blog" className="text-gray-500 hover:text-blue-600">
+              <Link to="/blog" className="text-gray-500 hover:text-emerald-600">
                 Blog
               </Link>
             </li>
@@ -167,7 +167,7 @@ export default function BlogPost() {
       </nav>
 
       {/* Article Header */}
-      <header className="py-12 px-6 bg-gradient-to-br from-blue-50 to-indigo-50">
+      <header className="py-12 px-6 bg-gradient-to-br from-emerald-50 to-emerald-50">
         <div className="max-w-4xl mx-auto">
           {/* Category */}
           <div className="mb-4">
@@ -190,7 +190,7 @@ export default function BlogPost() {
           {/* Meta */}
           <div className="flex flex-wrap items-center gap-4 text-gray-600">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+              <div className="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold">
                 {post.author.name.charAt(0)}
               </div>
               <div>
@@ -231,7 +231,7 @@ export default function BlogPost() {
                     return (
                       <Link
                         to={href || "/"}
-                        className="text-blue-600 hover:text-blue-800"
+                        className="text-emerald-600 hover:text-emerald-800"
                       >
                         {children}
                       </Link>
@@ -242,7 +242,7 @@ export default function BlogPost() {
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800"
+                      className="text-emerald-600 hover:text-emerald-800"
                     >
                       {children}
                     </a>
@@ -283,7 +283,7 @@ export default function BlogPost() {
                 },
                 // Styled blockquotes
                 blockquote: ({ children }) => (
-                  <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-700 my-6">
+                  <blockquote className="border-l-4 border-emerald-500 pl-4 italic text-gray-700 my-6">
                     {children}
                   </blockquote>
                 ),
@@ -337,16 +337,16 @@ export default function BlogPost() {
       )}
 
       {/* CTA Section */}
-      <section className="py-16 text-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+      <section className="py-16 text-center bg-gradient-to-r from-emerald-600 to-emerald-600 text-white">
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-3xl font-bold mb-4">Put This Knowledge to Use</h2>
-          <p className="text-blue-100 mb-8 text-lg">
+          <p className="text-emerald-100 mb-8 text-lg">
             Try our free tools to apply what you've learned.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/calculator"
-              className="inline-flex items-center justify-center px-6 py-3 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+              className="inline-flex items-center justify-center px-6 py-3 bg-white text-emerald-600 rounded-lg font-medium hover:bg-emerald-50 transition-colors"
             >
               Pace Calculator
             </Link>

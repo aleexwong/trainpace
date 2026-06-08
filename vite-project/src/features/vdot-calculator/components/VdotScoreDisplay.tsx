@@ -119,12 +119,12 @@ export function VdotScoreDisplay({ result, inputs, totalSeconds, compact }: Vdot
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-full">
       {/* Score header */}
-      <div className={`bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 ${compact ? "p-4" : "p-6 sm:p-8"}`}>
+      <div className={`bg-gradient-to-r from-emerald-600 via-emerald-600 to-purple-600 ${compact ? "p-4" : "p-6 sm:p-8"}`}>
         <div className="flex flex-col items-center text-center">
           <VdotGauge vdot={result.vdot} size={compact ? "small" : "normal"} />
 
           <div className={compact ? "mt-1" : "mt-2"}>
-            <p className="text-blue-200 text-xs font-medium mb-0.5">Your VDOT Score</p>
+            <p className="text-emerald-200 text-xs font-medium mb-0.5">Your VDOT Score</p>
             <span className={`font-bold text-white tabular-nums ${compact ? "text-4xl" : "text-5xl sm:text-6xl"}`}>
               {animatedVdot.toFixed(1)}
             </span>
@@ -134,12 +134,12 @@ export function VdotScoreDisplay({ result, inputs, totalSeconds, compact }: Vdot
             <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs font-semibold">
               {level.label}
             </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-blue-200 text-xs">
+            <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-emerald-200 text-xs">
               {percentile}
             </span>
           </div>
 
-          <p className="text-blue-200 text-xs mt-2">
+          <p className="text-emerald-200 text-xs mt-2">
             {inputs.distanceName} in {formatTime(totalSeconds)}
           </p>
         </div>
@@ -149,7 +149,7 @@ export function VdotScoreDisplay({ result, inputs, totalSeconds, compact }: Vdot
       <div className="grid grid-cols-3 divide-x divide-gray-100">
         <div className={`text-center ${compact ? "p-2.5" : "p-4"}`}>
           <div className="flex justify-center mb-0.5">
-            <TrendingUp className="w-3.5 h-3.5 text-blue-500" />
+            <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
           </div>
           <p className={`font-bold text-gray-900 ${compact ? "text-base" : "text-lg sm:text-xl"}`}>{result.vo2max}</p>
           <p className="text-[10px] text-gray-500">VO&#8322;max</p>

@@ -112,7 +112,7 @@ export function RaceDetailsForm({
                 onClick={() => setRaceType(type)}
                 className={`py-3 md:py-4 px-2 text-sm sm:text-base font-semibold rounded-xl transition-all ${
                   raceType === type
-                    ? "bg-blue-600 text-white shadow-md"
+                    ? "bg-emerald-600 text-white shadow-md"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
@@ -140,7 +140,7 @@ export function RaceDetailsForm({
                   placeholder="Minutes (e.g. 45)"
                   value={timeMinutes}
                   onChange={(e) => setTimeMinutes(e.target.value)}
-                  className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                   min={1}
                 />
                 <span className="text-xs text-gray-500 mt-1 block">Minutes</span>
@@ -154,7 +154,7 @@ export function RaceDetailsForm({
                     placeholder="HH"
                     value={timeHours}
                     onChange={(e) => setTimeHours(e.target.value)}
-                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                     min={0}
                     max={12}
                   />
@@ -167,7 +167,7 @@ export function RaceDetailsForm({
                     placeholder="MM"
                     value={timeMinutes}
                     onChange={(e) => setTimeMinutes(e.target.value)}
-                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                     min={0}
                     max={59}
                   />
@@ -190,7 +190,7 @@ export function RaceDetailsForm({
                 placeholder={weightUnit === "kg" ? "e.g. 68.5" : "e.g. 150"}
                 value={displayValue}
                 onChange={(e) => handleWeightChange(e.target.value)}
-                className="w-full px-4 py-3 pr-20 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-3 pr-20 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1">
                 <button
@@ -198,7 +198,7 @@ export function RaceDetailsForm({
                   onClick={() => handleUnitChange("kg")}
                   className={`px-3 py-1 text-sm font-medium rounded-lg transition-all ${
                     weightUnit === "kg"
-                      ? "bg-blue-600 text-white shadow-md"
+                      ? "bg-emerald-600 text-white shadow-md"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -209,7 +209,7 @@ export function RaceDetailsForm({
                   onClick={() => handleUnitChange("lbs")}
                   className={`px-3 py-1 text-sm font-medium rounded-lg transition-all ${
                     weightUnit === "lbs"
-                      ? "bg-blue-600 text-white shadow-md"
+                      ? "bg-emerald-600 text-white shadow-md"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -229,7 +229,7 @@ export function RaceDetailsForm({
             <label className="block text-sm font-medium text-gray-700">
               Carbs per Hour
             </label>
-            <span className="text-sm font-semibold text-blue-600">
+            <span className="text-sm font-semibold text-emerald-600">
               {carbsPerHour}g
             </span>
           </div>
@@ -251,7 +251,7 @@ export function RaceDetailsForm({
         <button
           onClick={onCalculate}
           data-testid="fuel-calculate"
-          className="w-full py-4 text-lg font-semibold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors shadow-md mt-2"
+          className="w-full py-4 text-lg font-semibold text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 transition-colors shadow-md mt-2"
         >
           Generate Fuel Plan
         </button>

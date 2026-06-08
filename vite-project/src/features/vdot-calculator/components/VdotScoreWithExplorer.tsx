@@ -162,7 +162,7 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, o
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-full">
       {/* Top section: gauge left, score right */}
-      <div className={`bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 ${compact ? "p-4" : "p-6 sm:p-8"}`}>
+      <div className={`bg-gradient-to-r from-emerald-600 via-emerald-600 to-purple-600 ${compact ? "p-4" : "p-6 sm:p-8"}`}>
         <div className="flex items-center gap-4">
           {/* Gauge — top left */}
           <div className="shrink-0">
@@ -171,7 +171,7 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, o
 
           {/* Score + level — right of gauge */}
           <div className="flex-1 min-w-0">
-            <p className="text-blue-200 text-[10px] font-medium mb-0.5">Your VDOT Score</p>
+            <p className="text-emerald-200 text-[10px] font-medium mb-0.5">Your VDOT Score</p>
             <div className="flex items-baseline gap-2">
               <span className={`font-bold text-white tabular-nums ${compact ? "text-4xl" : "text-5xl"}`}>
                 {animatedVdot.toFixed(1)}
@@ -190,11 +190,11 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, o
               <span className="px-2 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-semibold">
                 {level.label}
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-white/10 text-blue-200 text-[10px]">
+              <span className="px-2 py-0.5 rounded-full bg-white/10 text-emerald-200 text-[10px]">
                 {percentile}
               </span>
             </div>
-            <p className="text-blue-200 text-[10px] mt-1.5">
+            <p className="text-emerald-200 text-[10px] mt-1.5">
               {inputs.distanceName} in {formatTime(isAdjusted ? targetSeconds : totalSeconds)}
             </p>
           </div>
@@ -208,7 +208,7 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, o
           {isAdjusted && (
             <button
               onClick={() => onOffsetChange(0)}
-              className="text-[10px] text-gray-400 hover:text-indigo-600 font-medium border border-gray-200 rounded-full px-2.5 py-0.5 hover:border-indigo-300 transition-colors bg-white"
+              className="text-[10px] text-gray-400 hover:text-emerald-600 font-medium border border-gray-200 rounded-full px-2.5 py-0.5 hover:border-emerald-300 transition-colors bg-white"
             >
               Reset
             </button>
@@ -228,7 +228,7 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, o
           step={totalSeconds > 600 ? 10 : 5}
           value={offsetSeconds}
           onChange={(e) => onOffsetChange(parseInt(e.target.value))}
-          className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-indigo-600 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-indigo-600 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md"
+          className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-emerald-600 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-emerald-600 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md"
         />
 
         {/* Delta display when adjusted */}
@@ -246,7 +246,7 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, o
                   ? "bg-emerald-50 border-emerald-200"
                   : vdotDelta < 0
                   ? "bg-red-50 border-red-200"
-                  : "bg-blue-50 border-blue-200"
+                  : "bg-emerald-50 border-emerald-200"
               }`}
             >
               <p className="text-[9px] font-medium text-gray-400 uppercase tracking-wider">Target</p>

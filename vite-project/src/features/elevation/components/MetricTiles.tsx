@@ -70,7 +70,7 @@ export function MetricTiles({
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
       <Tile
-        icon={<MapPin className="w-4 h-4 text-blue-500" />}
+        icon={<MapPin className="w-4 h-4 text-emerald-500" />}
         label="Distance"
         value={formatDistance(insights.totalDistance)}
       />
@@ -82,7 +82,7 @@ export function MetricTiles({
         accent="text-purple-600"
       />
       <Tile
-        icon={<Gauge className="w-4 h-4 text-indigo-500" />}
+        icon={<Gauge className="w-4 h-4 text-emerald-500" />}
         label="Avg Pace"
         value={formatPace(avgPaceMultiplier, basePaceMinPerKm)}
       />

@@ -139,17 +139,17 @@ export function PaceResultsDisplay({
             </button>
             <button
               onClick={onCopy}
-              className="p-1.5 sm:p-2 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors"
+              className="p-1.5 sm:p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition-colors"
               title="Copy Plan"
             >
-              <Copy className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+              <Copy className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
             </button>
             <button
               onClick={onDownload}
-              className="p-1.5 sm:p-2 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors"
+              className="p-1.5 sm:p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition-colors"
               title="Download Plan"
             >
-              <Download className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+              <Download className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
             </button>
             {onSave && (
               <button
@@ -160,7 +160,7 @@ export function PaceResultsDisplay({
                     ? "bg-green-100 text-green-700 cursor-not-allowed"
                     : isSaving
                     ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 shadow-md hover:shadow-lg"
+                    : "bg-gradient-to-r from-purple-600 to-emerald-600 text-white hover:from-purple-700 hover:to-emerald-700 shadow-md hover:shadow-lg"
                 }`}
                 title={isSaved ? "Saved!" : "Save to Dashboard"}
               >
@@ -174,8 +174,8 @@ export function PaceResultsDisplay({
         </div>
 
         {/* Race Summary */}
-        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-blue-50 rounded-xl">
-          <p className="text-xs sm:text-sm text-blue-800">
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-emerald-50 rounded-xl">
+          <p className="text-xs sm:text-sm text-emerald-800">
             <strong>Race:</strong> {raceDistance} in {raceTime}
             {terrainMode === "hilly" && (
               <span className="ml-2 px-2 py-0.5 bg-orange-200 text-orange-800 rounded text-xs font-semibold">
@@ -199,7 +199,7 @@ export function PaceResultsDisplay({
                   className={`flex md:block items-center justify-between p-3 md:p-5 rounded-lg md:rounded-xl border transition-all ${
                     terrainMode === "hilly"
                       ? "bg-gradient-to-r md:bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-100 hover:border-orange-200 md:hover:shadow-md"
-                      : "bg-gradient-to-r md:bg-gradient-to-br from-blue-50 to-purple-50 border-blue-100 hover:border-blue-200 md:hover:shadow-md"
+                      : "bg-gradient-to-r md:bg-gradient-to-br from-emerald-50 to-purple-50 border-emerald-100 hover:border-emerald-200 md:hover:shadow-md"
                   }`}
                 >
                   <div className="flex-1 md:flex-none min-w-0 md:min-w-full">
@@ -211,7 +211,7 @@ export function PaceResultsDisplay({
                     </p>
                   </div>
                   <div className={`text-base sm:text-lg md:text-2xl font-bold ml-3 md:ml-0 whitespace-nowrap ${
-                    terrainMode === "hilly" ? "text-orange-700" : "text-blue-700"
+                    terrainMode === "hilly" ? "text-orange-700" : "text-emerald-700"
                   }`}>
                     {adjustedValue}
                   </div>

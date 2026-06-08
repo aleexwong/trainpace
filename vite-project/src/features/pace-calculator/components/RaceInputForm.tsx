@@ -51,7 +51,7 @@ export function RaceInputForm({
 
   return (
     <Card className="shadow-lg w-full mx-auto pb-12">
-      <div className="bg-gradient-to-r from-blue-300 to-blue-800 p-4">
+      <div className="bg-gradient-to-r from-emerald-300 to-emerald-800 p-4">
         <h2 className="text-3xl font-extrabold text-white text-center flex items-center justify-center">
           <span className="text-4xl mr-2">⏱️</span>
           TrainPace
@@ -112,12 +112,12 @@ export function RaceInputForm({
                   className={`w-4/5 ${errors.distance ? "border-red-500" : ""}`}
                 />
                 <div
-                  className="relative w-40 h-10 bg-blue-100 rounded-full cursor-pointer overflow-hidden"
+                  className="relative w-40 h-10 bg-emerald-100 rounded-full cursor-pointer overflow-hidden"
                   onClick={handleUnitToggle}
                 >
                   {/* Sliding Indicator */}
                   <div
-                    className={`absolute top-1 left-1 w-[calc(50%-0.25rem)] h-8 bg-blue-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
+                    className={`absolute top-1 left-1 w-[calc(50%-0.25rem)] h-8 bg-emerald-600 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
                       !isKm ? "translate-x-full" : "translate-x-0"
                     }`}
                   />
@@ -125,14 +125,14 @@ export function RaceInputForm({
                   <div className="absolute inset-0 flex items-center">
                     <div
                       className={`w-1/2 text-center font-medium transition-colors ${
-                        isKm ? "text-white" : "text-blue-700"
+                        isKm ? "text-white" : "text-emerald-700"
                       }`}
                     >
                       KM
                     </div>
                     <div
                       className={`w-1/2 text-center font-medium transition-colors ${
-                        !isKm ? "text-white" : "text-blue-700"
+                        !isKm ? "text-white" : "text-emerald-700"
                       }`}
                     >
                       MI

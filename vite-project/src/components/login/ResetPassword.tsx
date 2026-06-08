@@ -64,7 +64,7 @@ export default function ResetPassword() {
             <input
               type="email"
               placeholder="Email"
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -74,7 +74,7 @@ export default function ResetPassword() {
             )}
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors"
+              className="w-full bg-emerald-500 text-white py-2 rounded hover:bg-emerald-600 transition-colors"
             >
               Send Reset Email
             </button>

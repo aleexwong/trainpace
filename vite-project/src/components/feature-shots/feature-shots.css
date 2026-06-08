@@ -1,0 +1,753 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   TrainPace — Animated Feature Shots (v3, light · interactive)
+   Ported from the Claude Design handoff "Animated Feature Shots v3.html".
+   Everything is scoped under `.tpfs` so it never leaks into the rest of the
+   app. Each shot is a self-contained block: pace ladder, VDOT dial,
+   elevation profile, fuel stations.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.tpfs {
+  /* refined light, low-hue, single emerald accent + tonal intensity ramp */
+  --panel: #ffffff;
+  --ink: oklch(0.24 0.012 260);
+  --ink-2: oklch(0.45 0.011 260);
+  --ink-3: oklch(0.6 0.009 260);
+  --ink-4: oklch(0.72 0.007 260);
+  --line: oklch(0.915 0.004 260);
+  --line-2: oklch(0.95 0.003 260);
+  --fog: oklch(0.967 0.003 260);
+
+  --accent: oklch(0.6 0.085 165);
+  --accent-deep: oklch(0.45 0.075 165);
+  --accent-bright: oklch(0.67 0.1 165);
+  --accent-soft: oklch(0.955 0.022 165);
+  --clay: oklch(0.62 0.07 48);
+  --clay-soft: oklch(0.955 0.02 48);
+
+  /* pace intensity ramp — single hue, lightness steps */
+  --z1: oklch(0.8 0.045 165);
+  --z2: oklch(0.71 0.07 165);
+  --z3: oklch(0.62 0.088 165);
+  --z4: oklch(0.53 0.088 165);
+  --z5: oklch(0.45 0.082 165);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --spring: cubic-bezier(0.34, 1.4, 0.5, 1);
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+  --sh-sm: 0 1px 2px color-mix(in oklch, var(--ink) 6%, transparent);
+  --sh-md: 0 1px 2px color-mix(in oklch, var(--ink) 5%, transparent),
+    0 16px 34px -20px color-mix(in oklch, var(--ink) 30%, transparent);
+
+  color: var(--ink);
+  font-family: "DM Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.tpfs h1,
+.tpfs h2,
+.tpfs h3 {
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: -0.025em;
+}
+
+/* ── shot scaffold ───────────────────────────────────────── */
+.tpfs .stage {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--sh-md);
+  container-type: inline-size;
+  container-name: stage;
+}
+.tpfs .pad {
+  position: relative;
+  padding: 30px;
+}
+@container stage (min-width: 640px) {
+  .tpfs .pad {
+    padding: 38px;
+  }
+}
+@container stage (min-width: 920px) {
+  .tpfs .pad {
+    padding: 46px 52px;
+  }
+}
+
+/* reveal primitive */
+.tpfs .shot .reveal {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transition-delay: calc(var(--i, 0) * 80ms + var(--base, 0ms));
+}
+.tpfs .shot.in .reveal {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tpfs .shot .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+.tpfs .kicker {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+}
+.tpfs .mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.tpfs .numeral {
+  font-family: "Space Grotesk";
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   01 · PACE LADDER  (interactive: hover-expand)
+   ═══════════════════════════════════════════════════════════ */
+.tpfs .pl-grid {
+  display: grid;
+  gap: 26px;
+}
+@container stage (min-width: 760px) {
+  .tpfs .pl-grid {
+    grid-template-columns: 230px 1fr;
+    gap: 44px;
+    align-items: center;
+  }
+}
+.tpfs .pl-input .kicker {
+  margin-bottom: 10px;
+}
+.tpfs .pl-readout {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+}
+.tpfs .pl-readout .t {
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 0.95;
+}
+/* keep the whole input column visually centered (label, time, caption) */
+.tpfs .pl-input {
+  text-align: center;
+}
+.tpfs .pl-cap {
+  font-size: 0.84rem;
+  color: var(--ink-2);
+  margin-top: 10px;
+  line-height: 1.55;
+}
+.tpfs .pl-cap b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.tpfs .pl-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tpfs .pl-lane {
+  position: relative;
+  padding: 8px 10px;
+  border-radius: 12px;
+  cursor: default;
+  transition: background 0.25s var(--ease), opacity 0.25s var(--ease),
+    transform 0.25s var(--ease);
+}
+.tpfs .pl-lanes:hover .pl-lane {
+  opacity: 0.5;
+}
+.tpfs .pl-lane:hover,
+.tpfs .pl-lane:focus-visible {
+  opacity: 1;
+  background: var(--fog);
+  outline: none;
+}
+.tpfs .pl-lanes:not(:hover) .pl-lane {
+  opacity: 1;
+}
+.tpfs .pl-lane-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.tpfs .pl-zone {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.tpfs .pl-zone .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  transition: transform 0.25s var(--spring);
+}
+.tpfs .pl-lane:hover .pl-zone .dot {
+  transform: scale(1.3);
+}
+.tpfs .pl-pace {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 0.94rem;
+  color: var(--ink);
+}
+.tpfs .pl-pace .u {
+  font-size: 0.68rem;
+  color: var(--ink-4);
+  margin-left: 2px;
+}
+.tpfs .pl-track {
+  height: 9px;
+  border-radius: 999px;
+  background: var(--fog);
+  overflow: hidden;
+}
+.tpfs .pl-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  transition: width 1s var(--ease);
+  transition-delay: calc(var(--d, 0) * 110ms + 0.2s);
+}
+.tpfs .shot.in .pl-fill {
+  width: var(--w);
+}
+.tpfs .pl-desc {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s var(--ease), opacity 0.3s var(--ease),
+    margin-top 0.3s var(--ease);
+  font-size: 0.8rem;
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+.tpfs .pl-lane:hover .pl-desc,
+.tpfs .pl-lane:focus-visible .pl-desc {
+  max-height: 40px;
+  opacity: 1;
+  margin-top: 8px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   02 · VDOT DIAL  (interactive: prediction rows)
+   ═══════════════════════════════════════════════════════════ */
+.tpfs .vd-grid {
+  display: grid;
+  gap: 30px;
+  justify-items: center;
+}
+@container stage (min-width: 680px) {
+  .tpfs .vd-grid {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 48px;
+    justify-items: start;
+  }
+}
+.tpfs .vd-dial {
+  position: relative;
+  width: 198px;
+  height: 198px;
+  transition: transform 0.4s var(--spring);
+}
+.tpfs .vd-dial:hover {
+  transform: scale(1.03);
+}
+@container stage (min-width: 920px) {
+  .tpfs .vd-dial {
+    width: 232px;
+    height: 232px;
+  }
+}
+.tpfs .vd-dial svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.tpfs .vd-ring-bg {
+  fill: none;
+  stroke: var(--fog);
+  stroke-width: 11;
+}
+.tpfs .vd-ring {
+  fill: none;
+  stroke: url(#vdGrad);
+  stroke-width: 11;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.5s var(--ease);
+  transition-delay: 0.3s;
+}
+.tpfs .vd-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.tpfs .vd-center .score {
+  font-family: "Space Grotesk";
+  font-weight: 700;
+  font-size: 3.4rem;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+}
+.tpfs .vd-center .lbl {
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-top: 6px;
+}
+.tpfs .vd-side {
+  width: 100%;
+}
+.tpfs .vd-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+  font-size: 0.84rem;
+  color: var(--accent-deep);
+  margin-bottom: 6px;
+}
+.tpfs .vd-rating .pip {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.tpfs .vd-title {
+  font-family: "Space Grotesk";
+  font-weight: 600;
+  font-size: 1.02rem;
+  margin-bottom: 8px;
+}
+.tpfs .vd-preds {
+  display: flex;
+  flex-direction: column;
+}
+.tpfs .vd-pred {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 12px;
+  border-radius: 10px;
+  cursor: default;
+  border-top: 1px solid var(--line-2);
+  transition: background 0.2s var(--ease);
+}
+.tpfs .vd-pred:first-child {
+  border-top: none;
+}
+.tpfs .vd-pred::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 3px;
+  height: 60%;
+  border-radius: 2px;
+  background: var(--accent);
+  transition: transform 0.25s var(--spring);
+}
+.tpfs .vd-pred:hover {
+  background: var(--fog);
+}
+.tpfs .vd-pred:hover::before {
+  transform: translateY(-50%) scaleY(1);
+}
+.tpfs .vd-pred .d {
+  color: var(--ink-2);
+  font-weight: 600;
+  font-size: 0.86rem;
+  white-space: nowrap;
+}
+.tpfs .vd-pred .t {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.tpfs .vd-foot {
+  font-size: 0.72rem;
+  color: var(--ink-4);
+  margin-top: 12px;
+  padding-left: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   03 · ELEVATION  (interactive: scrub)
+   ═══════════════════════════════════════════════════════════ */
+.tpfs .el-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.tpfs .el-name {
+  font-family: "Space Grotesk";
+  font-weight: 600;
+  font-size: 1.02rem;
+}
+.tpfs .el-name .sub {
+  color: var(--ink-4);
+  font-weight: 500;
+  font-size: 0.84rem;
+  margin-left: 8px;
+}
+.tpfs .el-terrain {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--clay);
+  background: var(--clay-soft);
+  padding: 4px 11px;
+  border-radius: 999px;
+}
+.tpfs .el-chartwrap {
+  position: relative;
+  cursor: crosshair;
+  touch-action: none;
+}
+.tpfs .el-chart {
+  width: 100%;
+  height: 150px;
+  display: block;
+  overflow: visible;
+}
+@container stage (min-width: 680px) {
+  .tpfs .el-chart {
+    height: 188px;
+  }
+}
+@container stage (min-width: 920px) {
+  .tpfs .el-chart {
+    height: 216px;
+  }
+}
+.tpfs .el-grid line {
+  stroke: var(--line-2);
+  stroke-width: 1;
+}
+.tpfs .el-area {
+  opacity: 0;
+  transition: opacity 1s var(--ease);
+  transition-delay: 0.9s;
+}
+.tpfs .shot.in .el-area {
+  opacity: 1;
+}
+.tpfs .el-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tpfs .el-flag {
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  transition-delay: 1.25s;
+}
+.tpfs .shot.in .el-flag {
+  opacity: 1;
+  transform: none;
+}
+/* scrub overlay */
+.tpfs .el-guide {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  background: var(--ink-4);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+  pointer-events: none;
+}
+.tpfs .el-cursor {
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--panel);
+  border: 2.5px solid var(--accent);
+  box-shadow: 0 2px 8px color-mix(in oklch, var(--accent) 40%, transparent);
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  transition: transform 0.25s var(--spring);
+}
+.tpfs .el-cursor.show {
+  transform: translate(-50%, -50%) scale(1);
+}
+.tpfs .el-tip {
+  position: absolute;
+  transform: translate(-50%, -130%);
+  pointer-events: none;
+  opacity: 0;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 9px;
+  padding: 7px 10px;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  box-shadow: 0 8px 20px -8px color-mix(in oklch, var(--ink) 50%, transparent);
+  transition: opacity 0.18s var(--ease);
+}
+.tpfs .el-tip.show {
+  opacity: 1;
+}
+.tpfs .el-tip .mi {
+  font-family: var(--mono);
+  font-weight: 600;
+}
+.tpfs .el-tip .row {
+  display: flex;
+  gap: 10px;
+  margin-top: 2px;
+  color: color-mix(in oklch, #fff 72%, transparent);
+}
+.tpfs .el-tip .row b {
+  color: #fff;
+  font-weight: 600;
+}
+.tpfs .el-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+  margin-top: 20px;
+}
+.tpfs .el-stat {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  padding: 13px 15px;
+  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.tpfs .el-stat:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.tpfs .el-stat .k {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.tpfs .el-stat .v {
+  font-family: "Space Grotesk";
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+.tpfs .el-stat .v .u {
+  font-size: 0.66rem;
+  color: var(--ink-4);
+  font-weight: 600;
+  margin-left: 2px;
+}
+.tpfs .el-stat.gain .v {
+  color: var(--accent-deep);
+}
+.tpfs .el-stat.loss .v {
+  color: var(--ink-2);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   04 · FUEL STATIONS  (interactive: 2-way highlight)
+   ═══════════════════════════════════════════════════════════ */
+.tpfs .fp-grid {
+  display: grid;
+  gap: 28px;
+}
+@container stage (min-width: 720px) {
+  .tpfs .fp-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 44px;
+    align-items: center;
+  }
+}
+.tpfs .fp-target .kicker {
+  margin-bottom: 10px;
+}
+.tpfs .fp-num {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.tpfs .fp-num .n {
+  font-family: "Space Grotesk";
+  font-weight: 700;
+  font-size: 3.2rem;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.tpfs .fp-num .u {
+  font-size: 0.92rem;
+  color: var(--ink-4);
+  font-weight: 600;
+}
+.tpfs .fp-sub {
+  color: var(--accent-deep);
+  font-weight: 600;
+  font-size: 0.86rem;
+  margin-top: 8px;
+}
+.tpfs .fp-meta {
+  font-size: 0.82rem;
+  color: var(--ink-2);
+  margin-top: 14px;
+  line-height: 1.55;
+}
+.tpfs .fp-meta b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.tpfs .fp-track {
+  position: relative;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--fog);
+  margin: 14px 16px 0;
+}
+.tpfs .fp-prog {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--z2), var(--accent));
+  transition: width 1.7s var(--ease);
+  transition-delay: 0.3s;
+}
+.tpfs .shot.in .fp-prog {
+  width: 100%;
+}
+.tpfs .fp-stn {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--panel);
+  border: 2px solid var(--accent);
+  color: var(--accent-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--sh-sm);
+  transition: transform 0.45s var(--spring), box-shadow 0.25s var(--ease),
+    border-color 0.2s var(--ease);
+}
+.tpfs .fp-stn svg {
+  width: 14px;
+  height: 14px;
+}
+.tpfs .shot.in .fp-stn {
+  transform: translate(-50%, -50%) scale(1);
+}
+.tpfs .fp-stn.hl,
+.tpfs .fp-stn:hover {
+  transform: translate(-50%, -50%) scale(1.18);
+  box-shadow: 0 6px 16px -4px color-mix(in oklch, var(--accent) 50%, transparent);
+  background: var(--accent);
+  color: #fff;
+}
+.tpfs .fp-labels {
+  display: flex;
+  justify-content: space-between;
+  margin: 16px 10px 0;
+}
+.tpfs .fp-labels span {
+  font-size: 0.64rem;
+  color: var(--ink-4);
+  font-weight: 600;
+}
+.tpfs .fp-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 22px;
+}
+@container stage (min-width: 720px) {
+  .tpfs .fp-rows {
+    margin-top: 0;
+  }
+}
+.tpfs .fp-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--panel);
+  cursor: pointer;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 11px 13px;
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease),
+    transform 0.2s var(--ease);
+}
+.tpfs .fp-row.hl {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateX(3px);
+}
+.tpfs .fp-row .ic {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+.tpfs .fp-row.hl .ic {
+  background: var(--accent);
+  color: #fff;
+}
+.tpfs .fp-row .ic svg {
+  width: 13px;
+  height: 13px;
+}
+.tpfs .fp-row .when {
+  font-weight: 600;
+  font-size: 0.84rem;
+}
+.tpfs .fp-row .what {
+  font-size: 0.72rem;
+  color: var(--ink-4);
+  margin-top: 1px;
+}

@@ -155,7 +155,7 @@ export function RouteDashboard({
             width="100%"
             showStartEnd
             className="border border-gray-200 min-h-[20rem]"
-            lineColor="#3b82f6"
+            lineColor="#059669"
             lineWidth={3}
             mapStyle="mapbox://styles/mapbox/outdoors-v11"
             maxZoom={16}

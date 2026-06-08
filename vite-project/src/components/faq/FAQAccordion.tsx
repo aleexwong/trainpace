@@ -54,15 +54,15 @@ export default function FAQAccordion({
                 <span className="text-2xl" role="img" aria-label="emoji">
                   {item.emoji}
                 </span>
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-emerald-600 transition-colors duration-200">
                   {item.question}
                 </h3>
               </div>
               <div className="flex-shrink-0 ml-4">
                 {isOpen ? (
-                  <ChevronUp className="w-5 h-5 text-blue-600" />
+                  <ChevronUp className="w-5 h-5 text-emerald-600" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors duration-200" />
+                  <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-emerald-600 transition-colors duration-200" />
                 )}
               </div>
             </button>
@@ -72,7 +72,7 @@ export default function FAQAccordion({
                 id={answerId}
                 role="region"
                 aria-labelledby={`faq-question-${item.id}`}
-                className="px-6 pb-5 bg-gradient-to-r from-blue-50 to-white"
+                className="px-6 pb-5 bg-gradient-to-r from-emerald-50 to-white"
               >
                 <div className="pl-11">
                   <p className="text-left text-gray-700 leading-relaxed">

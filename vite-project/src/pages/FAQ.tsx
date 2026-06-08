@@ -105,7 +105,7 @@ export default function FAQ() {
       </Helmet>
 
       {/* Header */}
-      <section className="py-12 px-6 text-center bg-blue-50">
+      <section className="py-12 px-6 text-center bg-emerald-50">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
             Frequently Asked Questions
@@ -120,7 +120,7 @@ export default function FAQ() {
       <section className="sticky top-[71px] z-40 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center gap-2 mb-3">
-            <Hash className="w-5 h-5 text-blue-600" />
+            <Hash className="w-5 h-5 text-emerald-600" />
             <span className="text-sm font-semibold text-gray-700">
               Jump to:
             </span>
@@ -140,7 +140,7 @@ export default function FAQ() {
                     px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
                     ${
                       isActive
-                        ? "bg-blue-600 text-white shadow-md"
+                        ? "bg-emerald-600 text-white shadow-md"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow"
                     }
                   `}
@@ -155,7 +155,7 @@ export default function FAQ() {
           <div className="md:hidden relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg flex items-center justify-between hover:border-blue-300 transition-colors"
+              className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg flex items-center justify-between hover:border-emerald-300 transition-colors"
             >
               <span className="text-sm font-medium text-gray-700">
                 {getActiveSectionTitle()}
@@ -189,7 +189,7 @@ export default function FAQ() {
                           w-full px-4 py-3 text-left text-sm font-medium transition-colors
                           ${
                             isActive
-                              ? "bg-blue-50 text-blue-700 border-l-4 border-blue-600"
+                              ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600"
                               : "bg-white text-gray-700 hover:bg-gray-50 border-l-4 border-transparent"
                           }
                         `}
@@ -231,7 +231,7 @@ export default function FAQ() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 text-center bg-gradient-to-r from-blue-50 to-indigo-50">
+      <section className="py-20 text-center bg-gradient-to-r from-emerald-50 to-emerald-50">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-4xl mb-4">❓</div>
           <h2 className="text-3xl font-bold mb-4">Still have questions?</h2>
@@ -243,14 +243,14 @@ export default function FAQ() {
               href="https://instagram.com/trainpace"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-lg hover:from-emerald-700 hover:to-emerald-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               <span className="mr-2">📱</span>
               Contact on Instagram
             </a>
             <a
               href="/calculator"
-              className="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
+              className="inline-flex items-center px-6 py-3 border-2 border-emerald-600 text-emerald-600 rounded-lg hover:bg-emerald-600 hover:text-white transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
             >
               <span className="mr-2">🧮</span>
               Try the Calculator

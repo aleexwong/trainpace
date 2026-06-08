@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Search } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
@@ -82,6 +82,23 @@ export default function RaceIndex() {
   const [featuredOverrides, setFeaturedOverrides] = useState<
     Record<string, Partial<MarathonPreviewRoute>>
   >({});
+  const widgetContainerRef = useRef<HTMLDivElement>(null);
+
+  // Inject the Sally widget script on mount, clean it up on unmount.
+  useEffect(() => {
+    const container = widgetContainerRef.current;
+    if (!container) return;
+
+    const script = document.createElement("script");
+    script.src = "https://sally.monster/widget.js";
+    script.async = true;
+    script.setAttribute("data-org-key", "pk_cb7f48d4fd7c42c69b58399870891c08");
+    container.appendChild(script);
+
+    return () => {
+      container.removeChild(script);
+    };
+  }, []);
 
   const formatWholeNumber = (value: unknown) => {
     const num = Number(value);
@@ -195,6 +212,9 @@ export default function RaceIndex() {
         <p className="mt-4 text-lg text-gray-700">
           Pick a race to get a simple plan: pacing, fueling, and course strategy.
         </p>
+
+        {/* Sally widget embed */}
+        <div ref={widgetContainerRef} className="mt-8" />
 
         {/* Search */}
         <div className="mt-8 rounded-2xl border border-orange-100 bg-white/80 p-4 sm:p-5">
@@ -324,7 +344,7 @@ export default function RaceIndex() {
           <div className="mt-4 flex flex-col sm:flex-row gap-3">
             <a
               href="/calculator"
-              className="inline-flex justify-center rounded-lg bg-blue-700 px-5 py-3 text-white font-semibold hover:bg-blue-800 transition-colors"
+              className="inline-flex justify-center rounded-lg bg-emerald-700 px-5 py-3 text-white font-semibold hover:bg-emerald-800 transition-colors"
             >
               Pace Calculator
             </a>

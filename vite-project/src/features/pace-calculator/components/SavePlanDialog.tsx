@@ -63,8 +63,8 @@ export function SavePlanDialog({
         {/* Content */}
         <div className="p-6 space-y-4">
           {/* Race Info */}
-          <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
-            <p className="text-sm text-blue-900">
+          <div className="bg-emerald-50 p-3 rounded-lg border border-emerald-100">
+            <p className="text-sm text-emerald-900">
               <strong>Race:</strong> {raceDistance} in {raceTime}
             </p>
           </div>
@@ -140,7 +140,7 @@ export function SavePlanDialog({
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-md hover:from-purple-700 hover:to-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-4 py-2 bg-gradient-to-r from-purple-600 to-emerald-600 text-white rounded-md hover:from-purple-700 hover:to-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSaving ? "Saving..." : "Save Plan"}
           </button>

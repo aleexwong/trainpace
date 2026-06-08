@@ -89,8 +89,8 @@ export function EditPlanDialog({
         {/* Content */}
         <div className="p-6 space-y-4">
           {/* Race Info */}
-          <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
-            <p className="text-sm text-blue-900">
+          <div className="bg-emerald-50 p-3 rounded-lg border border-emerald-100">
+            <p className="text-sm text-emerald-900">
               <strong>Race:</strong> {raceDistance} in {raceTime}
             </p>
           </div>
@@ -166,7 +166,7 @@ export function EditPlanDialog({
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="flex-1 px-4 py-2 bg-purple-500 text-white rounded-md hover:from-purple-800 hover:to-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex-1 px-4 py-2 bg-purple-500 text-white rounded-md hover:from-purple-800 hover:to-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <Save className="w-4 h-4" />
             {isSaving ? "Saving..." : "Save Changes"}

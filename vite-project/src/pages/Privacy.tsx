@@ -258,7 +258,7 @@ export default function Privacy() {
               To exercise any of these rights, please contact us at{" "}
               <a
                 href="mailto:alex@trainpace.com"
-                className="text-blue-600 hover:underline"
+                className="text-emerald-600 hover:underline"
               >
                 alex@trainpace.com
               </a>
@@ -303,7 +303,7 @@ export default function Privacy() {
               collected information from a child, please contact us at{" "}
               <a
                 href="mailto:alex@trainpace.com"
-                className="text-blue-600 hover:underline"
+                className="text-emerald-600 hover:underline"
               >
                 alex@trainpace.com
               </a>
@@ -352,7 +352,7 @@ export default function Privacy() {
                 <strong>Email:</strong>{" "}
                 <a
                   href="mailto:alex@trainpace.com"
-                  className="text-blue-600 hover:underline"
+                  className="text-emerald-600 hover:underline"
                 >
                   alex@trainpace.com
                 </a>
@@ -361,7 +361,7 @@ export default function Privacy() {
                 <strong>Website:</strong>{" "}
                 <a
                   href="https://www.trainpace.com"
-                  className="text-blue-600 hover:underline"
+                  className="text-emerald-600 hover:underline"
                 >
                   www.trainpace.com
                 </a>
@@ -369,7 +369,7 @@ export default function Privacy() {
             </div>
           </section>
 
-          <section className="mb-6 bg-blue-50 p-4 rounded-lg">
+          <section className="mb-6 bg-emerald-50 p-4 rounded-lg">
             <h2 className="text-xl font-semibold mb-2">
               Our Commitment to Privacy
             </h2>
@@ -383,7 +383,7 @@ export default function Privacy() {
           </section>
 
           <div className="mt-8 pt-6 border-t border-gray-200">
-            <Link to="/" className="text-blue-600 hover:underline font-medium">
+            <Link to="/" className="text-emerald-600 hover:underline font-medium">
               ← Back to TrainPace Home
             </Link>
           </div>

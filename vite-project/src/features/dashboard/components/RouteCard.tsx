@@ -104,7 +104,7 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
             <MapboxRoutePreview
               routePoints={route.thumbnailPoints}
               routeName={route.metadata?.routeName}
-              lineColor={isBookmarked ? "#8b5cf6" : "#3b82f6"}
+              lineColor={isBookmarked ? "#8b5cf6" : "#059669"}
               height="225px"
               showStartEnd={true}
               className="border border-gray-200"
@@ -123,7 +123,7 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
                 {route.thumbnailPoints?.length > 0 && (
                   <button
                     onClick={() => setShowPreview(true)}
-                    className="text-blue-500 text-xs mt-1 hover:underline"
+                    className="text-emerald-500 text-xs mt-1 hover:underline"
                   >
                     Try loading preview
                   </button>
@@ -137,7 +137,7 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
         <div className="px-4 pb-3">
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="flex items-center space-x-2">
-              <MapPin className="w-4 h-4 text-blue-500 flex-shrink-0" />
+              <MapPin className="w-4 h-4 text-emerald-500 flex-shrink-0" />
               <span className="text-gray-600 truncate">
                 {route.metadata?.totalDistance?.toFixed(1) || "0"} km
               </span>
@@ -164,7 +164,7 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
               to={getRouteLink()}
               className={`flex-1 text-white text-sm py-2 px-3 rounded-md transition-colors flex items-center justify-center space-x-1 ${
                 route.type === "uploaded"
-                  ? "bg-blue-500 hover:bg-blue-600"
+                  ? "bg-emerald-500 hover:bg-emerald-600"
                   : "bg-purple-500 hover:bg-purple-600"
               }`}
             >

@@ -42,7 +42,7 @@ export function ShareLinkBox({ docId, className }: ShareLinkBoxProps) {
         "Check out this elevation profile on TrainPace!"
       )}`,
       icon: Twitter,
-      className: "hover:bg-blue-50 hover:text-blue-600",
+      className: "hover:bg-emerald-50 hover:text-emerald-600",
     },
     {
       name: "Facebook",
@@ -50,7 +50,7 @@ export function ShareLinkBox({ docId, className }: ShareLinkBoxProps) {
         shareUrl
       )}`,
       icon: Facebook,
-      className: "hover:bg-blue-50 hover:text-blue-600",
+      className: "hover:bg-emerald-50 hover:text-emerald-600",
     },
   ];
 
