@@ -99,6 +99,7 @@ const Settings: React.FC = () => {
       "user_fuel_plans",
       "user_bookmarks",
       "user_training_goals",
+      "user_training_plans",
     ];
 
     await Promise.all([
