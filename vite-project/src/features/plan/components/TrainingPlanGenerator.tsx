@@ -5,6 +5,8 @@ import { PlanInputForm } from "./PlanInputForm";
 import { PlanOverview } from "./PlanOverview";
 import { PlanCalendar } from "./PlanCalendar";
 
+import type { GoalRace } from "../types";
+
 interface Props {
   prefillPaces?: {
     easy: string;
@@ -14,9 +16,10 @@ interface Props {
   };
   prefillGoalTime?: string;
   prefillSource?: "calculator" | "vdot";
+  prefillGoal?: { goalRace: GoalRace; goalTime: string };
 }
 
-export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSource }: Props) {
+export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSource, prefillGoal }: Props) {
   const { user } = useAuth();
   const { plan, error, generate, reset } = usePlanGenerator();
   const { save, saving, savedId, error: saveError } = useSavePlan();
@@ -54,7 +57,8 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
           <PlanInputForm
             onGenerate={generate}
             prefillPaces={prefillPaces}
-            prefillGoalTime={prefillGoalTime}
+            prefillGoalTime={prefillGoalTime ?? prefillGoal?.goalTime}
+            prefillGoalRace={prefillGoal?.goalRace}
             prefillSource={prefillSource}
           />
         </div>

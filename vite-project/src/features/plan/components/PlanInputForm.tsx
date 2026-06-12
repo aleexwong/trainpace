@@ -19,11 +19,12 @@ interface Props {
     race: string;
   };
   prefillGoalTime?: string;
+  prefillGoalRace?: GoalRace;
   prefillSource?: "calculator" | "vdot";
 }
 
-export function PlanInputForm({ onGenerate, loading, prefillPaces, prefillGoalTime, prefillSource }: Props) {
-  const [goalRace, setGoalRace] = useState<GoalRace>("Half Marathon");
+export function PlanInputForm({ onGenerate, loading, prefillPaces, prefillGoalTime, prefillGoalRace, prefillSource }: Props) {
+  const [goalRace, setGoalRace] = useState<GoalRace>(prefillGoalRace ?? "Half Marathon");
   const [raceDate, setRaceDate] = useState("");
   const [fitness, setFitness] = useState<FitnessLevel>("intermediate");
   const [days, setDays] = useState<RunDay[]>(["Tue", "Thu", "Sat", "Sun"]);

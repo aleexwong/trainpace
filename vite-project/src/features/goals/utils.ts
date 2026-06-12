@@ -8,6 +8,7 @@
 import type { PaceInputs, PaceUnit } from "@/features/pace-calculator/types";
 import type { VdotInputs } from "@/features/vdot-calculator/types";
 import type { RaceType } from "@/features/fuel/types";
+import type { GoalRace } from "@/features/plan/types";
 import { secondsToTimeString } from "@/features/pace-calculator/utils";
 import type { RaceEntry } from "./types";
 
@@ -95,4 +96,23 @@ export function goalToFuelInputs(entry: RaceEntry): {
 /** Short display label, e.g. "Marathon · 3:30:00". */
 export function formatRaceLabel(entry: RaceEntry): string {
   return `${entry.distanceName} · ${secondsToTimeString(entry.totalSeconds)}`;
+}
+
+/** Map an arbitrary race distance to the Training Plan's GoalRace enum. */
+export function mapDistanceToGoalRace(distanceMeters: number): GoalRace {
+  if (distanceMeters <= 6000) return "5K";
+  if (distanceMeters <= 12000) return "10K";
+  if (distanceMeters <= 25000) return "Half Marathon";
+  return "Marathon";
+}
+
+/** Convert a saved goal race into Training Plan prefill inputs. */
+export function goalToPlanInputs(entry: RaceEntry): { goalRace: GoalRace; goalTime: string } {
+  const { hours, minutes, seconds } = secondsToFields(entry.totalSeconds);
+  const goalRace = mapDistanceToGoalRace(entry.distanceMeters);
+  const h = parseInt(hours || "0");
+  const m = parseInt(minutes || "0");
+  const s = parseInt(seconds || "0");
+  const goalTime = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+  return { goalRace, goalTime };
 }

@@ -10,7 +10,9 @@ export {
   goalToPaceInputs,
   goalToVdotInputs,
   goalToFuelInputs,
+  goalToPlanInputs,
   mapDistanceToFuelType,
+  mapDistanceToGoalRace,
   formatRaceLabel,
   secondsToFields,
 } from "./utils";

@@ -1,9 +1,13 @@
 import { Helmet } from "react-helmet-async";
 import { useSearchParams } from "react-router-dom";
 import { TrainingPlanGenerator } from "@/features/plan";
+import { useAuth } from "@/features/auth/AuthContext";
+import { useTrainingGoals, goalToPlanInputs } from "@/features/goals";
 
 export default function TrainingPlanPage() {
   const [searchParams] = useSearchParams();
+  const { user } = useAuth();
+  const { goals } = useTrainingGoals(user?.uid);
 
   const easy = searchParams.get("easy") ?? undefined;
   const tempo = searchParams.get("tempo") ?? undefined;
@@ -16,6 +20,12 @@ export default function TrainingPlanPage() {
       ? { easy, tempo, interval, race }
       : undefined;
 
+  // Pre-fill goal race/time from the user's saved goal profile if no URL params
+  const prefillGoal =
+    !prefillPaces && goals?.goalRace
+      ? goalToPlanInputs(goals.goalRace)
+      : undefined;
+
   return (
     <>
       <Helmet>
@@ -26,7 +36,11 @@ export default function TrainingPlanPage() {
         />
         <link rel="canonical" href="https://www.trainpace.com/plan" />
       </Helmet>
-      <TrainingPlanGenerator prefillPaces={prefillPaces} prefillSource={source} />
+      <TrainingPlanGenerator
+        prefillPaces={prefillPaces}
+        prefillSource={source}
+        prefillGoal={prefillGoal}
+      />
     </>
   );
 }
