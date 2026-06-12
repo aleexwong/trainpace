@@ -15,7 +15,7 @@ describe("clusterSegments", () => {
     estimatedTimeMultiplier: 1,
     pacingAdvice: "",
     energyRating: "low",
-    racePosition: "mid" as any,
+    racePosition: "mid",
     ...Object.fromEntries(
       Object.entries(overrides).filter(([_, value]) => value !== undefined)
     ),
@@ -211,7 +211,7 @@ describe("buildCluster", () => {
     estimatedTimeMultiplier: 1,
     pacingAdvice: "",
     energyRating: "low",
-    racePosition: "mid" as any,
+    racePosition: "mid",
     ...Object.fromEntries(
       Object.entries(overrides).filter(([_, value]) => value !== undefined)
     ),

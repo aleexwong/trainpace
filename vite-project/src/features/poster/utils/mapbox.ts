@@ -2,6 +2,13 @@
  * Poster Feature - Mapbox Utilities
  */
 
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mapboxgl: any;
+  }
+}
+
 // Load Mapbox GL JS dynamically
 let mapboxLoaded = false;
 let mapboxLoadPromise: Promise<void> | null = null;
@@ -11,7 +18,7 @@ export const loadMapbox = (): Promise<void> => {
   if (mapboxLoadPromise) return mapboxLoadPromise;
 
   mapboxLoadPromise = new Promise((resolve, reject) => {
-    if ((window as any).mapboxgl) {
+    if (window.mapboxgl) {
       mapboxLoaded = true;
       resolve();
       return;

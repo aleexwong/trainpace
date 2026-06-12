@@ -123,10 +123,10 @@ export function SavePreviewRouteButton({
           description: `${routeName} bookmarked to your dashboard.`,
         });
       }
-    } catch (e: any) {
+    } catch (e) {
       toast({
         title: "Error",
-        description: e?.message ?? "Failed to update bookmark.",
+        description: (e as Error)?.message ?? "Failed to update bookmark.",
         variant: "destructive",
       });
     } finally {

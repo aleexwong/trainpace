@@ -1,6 +1,7 @@
 /**
  * Elevation Feature - Core Types & Constants
  */
+import type { Timestamp } from "firebase/firestore";
 
 export interface ProfilePoint {
   distanceKm: number;
@@ -15,7 +16,7 @@ export interface OptimizedRouteMetadata {
   fileUrl: string;
   storageRef?: string;
   fileHash?: string;
-  uploadedAt: any;
+  uploadedAt: Timestamp | null;
   contentValidated?: boolean;
   deleted?: boolean;
   metadata: RouteMetadata;
@@ -51,7 +52,7 @@ export interface StaticRouteData {
   totalElevationLoss: number;
   difficultyRating: string;
   elevationProfile: ProfilePoint[];
-  rawSegments: any[];
+  rawSegments: Array<Record<string, unknown>>;
 }
 
 export interface GPXAnalysisResponse {
@@ -69,7 +70,7 @@ export interface GPXAnalysisResponse {
   };
   cacheOptimization?: {
     staticRouteData: StaticRouteData;
-    analysisResults: any;
+    analysisResults: Record<string, unknown>;
     settings: AnalysisSettings;
   };
 }

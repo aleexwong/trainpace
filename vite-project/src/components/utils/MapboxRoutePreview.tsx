@@ -1,5 +1,12 @@
 import React, { useEffect, useRef } from "react";
 
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mapboxgl: any;
+  }
+}
+
 interface RoutePoint {
   lat: number;
   lng: number;
@@ -41,7 +48,7 @@ const loadMapbox = (): Promise<void> => {
 
   mapboxLoadPromise = new Promise((resolve, reject) => {
     // Check if already loaded
-    if ((window as any).mapboxgl) {
+    if (window.mapboxgl) {
       mapboxLoaded = true;
       resolve();
       return;
@@ -88,7 +95,9 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
   highlightPoint = null,
 }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const highlightMarker = useRef<any>(null);
 
   useEffect(() => {
@@ -100,7 +109,7 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
 
         if (map.current) return; // Map already initialized
 
-        const mapboxgl = (window as any).mapboxgl;
+        const mapboxgl = window.mapboxgl;
         mapboxgl.accessToken = MAPBOX_TOKEN;
 
         // Calculate bounds
@@ -199,7 +208,7 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
 
   // Move/show/hide the highlight marker without reinitializing the map.
   useEffect(() => {
-    const mapboxgl = (window as any).mapboxgl;
+    const mapboxgl = window.mapboxgl;
     if (!map.current || !mapboxgl) return;
 
     if (!highlightPoint) {

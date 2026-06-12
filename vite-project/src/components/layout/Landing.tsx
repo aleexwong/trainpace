@@ -11,6 +11,8 @@ import {
   ShieldCheck,
   ArrowRight,
 } from "lucide-react";
+import { type ButtonHTMLAttributes, type ReactNode } from "react";
+import type { LucideIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
@@ -30,13 +32,21 @@ const FEATURE_SHOTS: Record<string, () => JSX.Element> = {
 
 // --- Components ---
 
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "secondary" | "outline" | "ghost";
+  className?: string;
+  icon?: LucideIcon;
+  size?: "sm" | "md" | "lg";
+  children?: ReactNode;
+}
+
 const Button = ({
   children,
   variant = "primary",
   className = "",
   icon: Icon,
   ...props
-}: any) => {
+}: ButtonProps) => {
   const baseStyle =
     "inline-flex items-center justify-center font-semibold transition-all duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
 
@@ -326,6 +336,17 @@ const PainPoints = () => {
   );
 };
 
+interface FeatureSectionProps {
+  title: string;
+  subtitle: string;
+  features: string[];
+  cta: string;
+  ctaRoute: string;
+  icon: LucideIcon;
+  imageSide?: "left" | "right";
+  badge: string;
+}
+
 const FeatureSection = ({
   title,
   subtitle,
@@ -335,7 +356,7 @@ const FeatureSection = ({
   icon: Icon,
   imageSide = "right",
   badge,
-}: any) => {
+}: FeatureSectionProps) => {
   const navigate = useNavigate();
 
   return (
@@ -842,6 +863,22 @@ export default function LandingPage() {
         cta="Plan My Fueling"
         ctaRoute="/fuel"
         imageSide="right"
+      />
+
+      <FeatureSection
+        badge="Training Plan Generator"
+        title="A Full Training Plan in Seconds"
+        subtitle="Choose your goal race, pick your available days, and get a complete periodized training plan with the right paces for every session."
+        icon={TrendingUp}
+        features={[
+          "8–20 week plans for 5K to Marathon",
+          "Base, Development, Sharpening & Taper phases",
+          "Daily workouts with pace zones",
+          "Synced with your Pace Calculator paces",
+        ]}
+        cta="Build My Plan"
+        ctaRoute="/plan"
+        imageSide="left"
       />
 
       <FounderStory />

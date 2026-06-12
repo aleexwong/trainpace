@@ -11,8 +11,8 @@ export interface GPXAnalysisResponse {
   elevationGain: number;
   profile: ProfilePoint[];
   elevationInsights: {
-    segments: Array<any>;
-    insights: any;
+    segments: Array<Record<string, unknown>>;
+    insights: Record<string, unknown>;
   } | null;
   metadata: {
     pointCount: number;
@@ -29,10 +29,10 @@ export interface GPXAnalysisResponse {
       totalElevationGain: number;
       totalElevationLoss: number;
       difficultyRating: string;
-      rawSegments: Array<any>;
+      rawSegments: Array<Record<string, unknown>>;
     };
     analysisResults: {
-      segmentClassifications: Array<any>;
+      segmentClassifications: Array<Record<string, unknown>>;
       distanceBreakdown: {
         uphillDistance: number;
         downhillDistance: number;
@@ -42,8 +42,8 @@ export interface GPXAnalysisResponse {
         estimatedTotalTime: number;
       };
       keySegments: {
-        steepestUphill: any;
-        steepestDownhill: any;
+        steepestUphill: Partial<Segment> | null;
+        steepestDownhill: Partial<Segment> | null;
       };
     };
     settings: {
@@ -63,7 +63,7 @@ export interface OptimizedRouteMetadata {
   id: string;
   filename: string;
   safeFilename: string;
-  uploadedAt: any;
+  uploadedAt: import("firebase/firestore").Timestamp | null;
   userId?: string; // Owner of the route
   metadata: GPXMetadata;
   displayPoints: Array<{
@@ -76,7 +76,7 @@ export interface OptimizedRouteMetadata {
   fileUrl: string;
   fileSize: number;
   // Static route data cached from API
-  staticRouteData?: any;
+  staticRouteData?: Record<string, unknown>;
   content?: string;
   storageRef?: string;
 }

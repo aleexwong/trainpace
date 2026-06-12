@@ -493,7 +493,7 @@ export function runPrePublishChecks(pages: SeoPageConfig[]): PrePublishCheckResu
 
   // Check for invalid URLs in paths
   const invalidPaths = pages.filter((p) => {
-    return !/^\/[a-z0-9\-\/]+$/.test(p.path);
+    return !/^\/[a-z0-9\-/]+$/.test(p.path);
   });
   if (invalidPaths.length > 0) {
     warnings.push(`${invalidPaths.length} pages have potentially invalid URL paths`);

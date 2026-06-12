@@ -40,7 +40,7 @@ interface GpxUploaderProps {
 
 interface DuplicateFile {
   filename: string;
-  uploadedAt: any;
+  uploadedAt: import("firebase/firestore").Timestamp | null;
   fileUrl: string;
   content?: string; // Optional: content stored in Firestore
   storageRef?: string; // Storage reference path
@@ -250,7 +250,7 @@ export default function GpxUploader({
       const docId = docRef.id;
       const displayUrl = `/elevationfinder/${docId}`;
 
-      const docData: any = {
+      const docData = {
         userId: user?.uid,
         filename: file.name,
         safeFilename,
@@ -271,11 +271,8 @@ export default function GpxUploader({
         staticRouteData: null, // Will be filled by first API call
         staticDataCached: null,
         staticDataSize: 0,
+        content: shouldStoreContent ? content : undefined,
       };
-
-      if (shouldStoreContent) {
-        docData.content = content;
-      }
 
       await setDoc(docRef, docData);
 

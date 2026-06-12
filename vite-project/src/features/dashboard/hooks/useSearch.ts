@@ -1,17 +1,20 @@
 import { useMemo } from "react";
 import { PacePlan, FuelPlan, RouteMetadata } from "../types";
+import type { TrainingPlan } from "../../plan/types";
 
 interface UseSearchProps {
   searchQuery: string;
   pacePlans: PacePlan[];
   fuelPlans: FuelPlan[];
   routes: RouteMetadata[];
+  trainingPlans?: TrainingPlan[];
 }
 
 interface UseSearchResult {
   filteredPacePlans: PacePlan[];
   filteredFuelPlans: FuelPlan[];
   filteredRoutes: RouteMetadata[];
+  filteredTrainingPlans: TrainingPlan[];
   hasActiveSearch: boolean;
   totalResults: number;
 }
@@ -25,6 +28,7 @@ export function useSearch({
   pacePlans,
   fuelPlans,
   routes,
+  trainingPlans = [],
 }: UseSearchProps): UseSearchResult {
   const normalizedQuery = searchQuery.toLowerCase().trim();
   const hasActiveSearch = normalizedQuery.length > 0;
@@ -181,13 +185,28 @@ export function useSearch({
     });
   }, [routes, normalizedQuery, hasActiveSearch]);
 
+  const filteredTrainingPlans = useMemo(() => {
+    if (!hasActiveSearch) return trainingPlans;
+    return trainingPlans.filter((plan) => {
+      if (plan.name?.toLowerCase().includes(normalizedQuery)) return true;
+      if (plan.goalRace?.toLowerCase().includes(normalizedQuery)) return true;
+      if (plan.raceDate?.toLowerCase().includes(normalizedQuery)) return true;
+      if (plan.fitnessLevel?.toLowerCase().includes(normalizedQuery)) return true;
+      return false;
+    });
+  }, [trainingPlans, normalizedQuery, hasActiveSearch]);
+
   const totalResults =
-    filteredPacePlans.length + filteredFuelPlans.length + filteredRoutes.length;
+    filteredPacePlans.length +
+    filteredFuelPlans.length +
+    filteredRoutes.length +
+    filteredTrainingPlans.length;
 
   return {
     filteredPacePlans,
     filteredFuelPlans,
     filteredRoutes,
+    filteredTrainingPlans,
     hasActiveSearch,
     totalResults,
   };

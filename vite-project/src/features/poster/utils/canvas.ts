@@ -16,8 +16,8 @@ export const renderStats = (
   posterData: PosterData
 ): void => {
   // Enable text rendering quality hints
-  (ctx as any).textRendering = "optimizeLegibility";
-  (ctx as any).fontKerning = "normal";
+  (ctx as CanvasRenderingContext2D & { textRendering?: string; fontKerning?: string }).textRendering = "optimizeLegibility";
+  (ctx as CanvasRenderingContext2D & { textRendering?: string; fontKerning?: string }).fontKerning = "normal";
 
   const fontSize = Math.max(8, 14 * scale);
   const headerFontSize = Math.max(10, 16 * scale);

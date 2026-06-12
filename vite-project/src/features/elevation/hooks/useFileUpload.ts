@@ -116,8 +116,8 @@ export function useFileUpload({
             displayUrl,
           });
         }
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        setError((err as Error)?.message ?? "Upload failed");
         console.error("GPX Analysis Error:", err);
       } finally {
         setLoading(false);

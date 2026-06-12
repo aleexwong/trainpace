@@ -11,6 +11,7 @@ import type {
   GPXAnalysisResponse,
   AnalysisSettings,
   OptimizedRouteMetadata,
+  StaticRouteData,
 } from "../types";
 import { API_ENDPOINTS, CACHE_SETTINGS } from "../types";
 import { getDownloadURL, ref } from "firebase/storage";
@@ -26,7 +27,7 @@ interface UseGpxAnalysisReturn {
   getCachedAnalysis: (
     routeId: string,
     settings: AnalysisSettings,
-    staticData: any
+    staticData: StaticRouteData
   ) => Promise<GPXAnalysisResponse | null>;
   handleSettingsChange: (
     newSettings: AnalysisSettings,
@@ -55,7 +56,7 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
     async (
       routeId: string,
       settings: AnalysisSettings,
-      staticData: any
+      staticData: StaticRouteData
     ): Promise<GPXAnalysisResponse | null> => {
       try {
         const cacheKey = getCacheKey(settings);
@@ -85,14 +86,14 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
         // Reconstruct full API response from cache + static data
         const reconstructed: GPXAnalysisResponse = {
           message: "Loaded from optimized cache",
-          raceName: staticData.routeName || "Cached Route",
+          raceName: "Cached Route",
           goalPace: settings.basePaceMinPerKm,
           totalDistanceKm: staticData.totalDistance,
           elevationGain: staticData.totalElevationGain,
           profile: staticData.elevationProfile,
           elevationInsights: {
             segments: cached.analysisResults.segmentClassifications.map(
-              (seg: any, index: number) => ({
+              (seg: Record<string, unknown>, index: number) => ({
                 ...staticData.rawSegments[index],
                 ...seg,
                 startDistance: seg.startKm,
@@ -327,8 +328,8 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
           );
 
           return { analysisData: analysis, error: null };
-        } catch (err: any) {
-          return { analysisData: null, error: err.message };
+        } catch (err) {
+          return { analysisData: null, error: (err as Error)?.message ?? 'Analysis failed' };
         }
       } else if (originalGpxText) {
         // For non-shared routes, just re-analyze
@@ -339,8 +340,8 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
             filename || "Route"
           );
           return { analysisData: analysis, error: null };
-        } catch (err: any) {
-          return { analysisData: null, error: err.message };
+        } catch (err) {
+          return { analysisData: null, error: (err as Error)?.message ?? 'Analysis failed' };
         }
       } else {
         return {

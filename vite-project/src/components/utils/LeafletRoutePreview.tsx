@@ -1,5 +1,11 @@
 import React, { useEffect, useRef } from "react";
 
+declare global {
+  interface Window {
+    L: typeof import("leaflet");
+  }
+}
+
 interface RoutePoint {
   lat: number;
   lng: number;
@@ -32,7 +38,7 @@ const loadLeaflet = (): Promise<void> => {
   if (leafletLoadPromise) return leafletLoadPromise;
 
   leafletLoadPromise = new Promise((resolve, reject) => {
-    if ((window as any).L) {
+    if (window.L) {
       leafletLoaded = true;
       resolve();
       return;
@@ -71,8 +77,8 @@ const LeafletRoutePreview: React.FC<LeafletPreviewProps> = ({
   maxZoom = 18,
 }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<any>(null);
-  const layerRef = useRef<any>(null);
+  const mapRef = useRef<ReturnType<typeof window.L.map> | null>(null);
+  const layerRef = useRef<ReturnType<typeof window.L.polyline> | null>(null);
 
   useEffect(() => {
     // Don't run during SSR
@@ -83,7 +89,7 @@ const LeafletRoutePreview: React.FC<LeafletPreviewProps> = ({
     const init = async () => {
       await loadLeaflet();
       if (destroyed || typeof window === 'undefined') return;
-      const L = (window as any).L;
+      const L = window.L;
 
       if (!mapRef.current) {
         mapRef.current = L.map(mapContainer.current!, {
@@ -110,25 +116,25 @@ const LeafletRoutePreview: React.FC<LeafletPreviewProps> = ({
         layerRef.current = null;
       }
 
-      const latlngs = routePoints.map((p) => [p.lat, p.lng]);
-      layerRef.current = (window as any).L.polyline(latlngs, {
+      const latlngs = routePoints.map((p) => [p.lat, p.lng] as [number, number]);
+      layerRef.current = window.L.polyline(latlngs, {
         color: lineColor,
         weight: lineWidth,
       }).addTo(mapRef.current);
 
-      const bounds = (window as any).L.latLngBounds(latlngs);
+      const bounds = window.L.latLngBounds(latlngs);
       mapRef.current.fitBounds(bounds, { padding: [20, 20] });
 
       if (showStartEnd && routePoints.length > 1) {
         const start = routePoints[0];
         const end = routePoints[routePoints.length - 1];
-        (window as any).L.circleMarker([start.lat, start.lng], {
+        window.L.circleMarker([start.lat, start.lng], {
           radius: 6,
           color: "#27ae60",
           fillColor: "#27ae60",
           fillOpacity: 1,
         }).addTo(mapRef.current);
-        (window as any).L.circleMarker([end.lat, end.lng], {
+        window.L.circleMarker([end.lat, end.lng], {
           radius: 6,
           color: "#e74c3c",
           fillColor: "#e74c3c",

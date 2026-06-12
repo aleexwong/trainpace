@@ -7,6 +7,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+import { Timestamp } from "firebase/firestore";
 import { PacePlan } from "../types";
 
 interface PacePlanCardProps {
@@ -28,7 +29,7 @@ export function PacePlanCard({
   ).padStart(2, "0")}`;
   const paceUnit = plan.paceType === "km" ? "min/km" : "min/mi";
 
-  const formatDate = (timestamp: any) => {
+  const formatDate = (timestamp: Timestamp | null | undefined) => {
     if (!timestamp) return "Unknown";
     try {
       return timestamp.toDate().toLocaleDateString();

@@ -9,6 +9,7 @@ import {
   Bookmark,
   AlertTriangle,
 } from "lucide-react";
+import { Timestamp } from "firebase/firestore";
 import { RouteMetadata } from "../types";
 import MapboxRoutePreview from "../../../components/utils/MapboxRoutePreview";
 
@@ -24,7 +25,7 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
   const needsMigration =
     isBookmarked && (!route.routeKey || (route.schemaVersion || 1) < 2);
 
-  const formatDate = (timestamp: any) => {
+  const formatDate = (timestamp: Timestamp | null | undefined) => {
     if (!timestamp) return "Unknown";
     try {
       return timestamp.toDate().toLocaleDateString();
@@ -83,7 +84,7 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
               </p>
               {isBookmarked && route.previewData && (
                 <p className="text-xs text-gray-400 mt-1">
-                  {route.previewData.city}, {route.previewData.country}
+                  {String(route.previewData.city)}, {String(route.previewData.country)}
                 </p>
               )}
             </div>

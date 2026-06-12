@@ -18,6 +18,7 @@ interface UseMapboxProps {
 
 interface UseMapboxReturn {
   mapReady: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mapRef: React.MutableRefObject<any>;
   getMapCanvas: () => HTMLCanvasElement | null;
   waitForMapReady: () => Promise<void>;
@@ -30,7 +31,9 @@ export function useMapbox({
   posterData,
   onMapUpdate,
 }: UseMapboxProps): UseMapboxReturn {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markersRef = useRef<any[]>([]);
   const { toast } = useToast();
 
@@ -63,7 +66,7 @@ export function useMapbox({
           mapRef.current = null;
         }
 
-        const mapboxgl = (window as any).mapboxgl;
+        const mapboxgl = window.mapboxgl;
         mapboxgl.accessToken = MAPBOX_TOKEN;
 
         // Calculate center and proper zoom from bounds

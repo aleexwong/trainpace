@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Trash2, Copy, Flame, ChevronDown, ChevronUp } from "lucide-react";
+import { Timestamp } from "firebase/firestore";
 import { FuelPlan } from "../types";
 
 interface FuelPlanCardProps {
@@ -11,7 +12,7 @@ interface FuelPlanCardProps {
 export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
   const [expanded, setExpanded] = useState(false);
 
-  const formatDate = (timestamp: any) => {
+  const formatDate = (timestamp: Timestamp | null | undefined) => {
     if (!timestamp) return "Unknown";
     try {
       return timestamp.toDate().toLocaleDateString();

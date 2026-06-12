@@ -11,6 +11,7 @@ import type {
   OptimizedRouteMetadata,
   GPXAnalysisResponse,
   AnalysisSettings,
+  StaticRouteData,
 } from "../types";
 
 interface UseRouteLoaderParams {
@@ -19,7 +20,7 @@ interface UseRouteLoaderParams {
   getCachedAnalysis: (
     routeId: string,
     settings: AnalysisSettings,
-    staticData: any
+    staticData: StaticRouteData
   ) => Promise<GPXAnalysisResponse | null>;
   performAnalysis: (
     gpxText: string,
@@ -124,9 +125,9 @@ export function useRouteLoader({
         );
 
         setAnalysisData(analysis);
-      } catch (err: any) {
+      } catch (err) {
         console.error("Load shared route error:", err);
-        setError(err.message || "Failed to load shared route");
+        setError((err as Error)?.message ?? "Failed to load shared route");
       } finally {
         setLoading(false);
       }

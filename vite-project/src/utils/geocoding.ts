@@ -11,6 +11,18 @@ interface GeocodeResult {
   source?: "nominatim" | "mapbox" | "fallback";
 }
 
+interface MapboxContext {
+  id: string;
+  text: string;
+}
+
+interface MapboxFeature {
+  text?: string;
+  place_name?: string;
+  place_type?: string[];
+  context?: MapboxContext[];
+}
+
 // ========== CACHE & THROTTLE ==========
 
 // In-memory cache for geocoding results
@@ -219,21 +231,21 @@ export async function getCityFromRouteMapbox(
     }
 
     const data = await response.json();
-    const features: any[] = data.features || [];
+    const features: MapboxFeature[] = data.features || [];
     if (!features.length) {
       return { city: null, country: null, source: "fallback" };
     }
 
     // --- Helper: pick the best feature (prefer place, then locality) ---
-    const pickBestFeature = (features: any[]): any | null => {
+    const pickBestFeature = (features: MapboxFeature[]): MapboxFeature | null => {
       // First try to find a city-level "place"
-      const placeFeature = features.find((f: any) =>
+      const placeFeature = features.find((f) =>
         f.place_type?.includes("place")
       );
       if (placeFeature) return placeFeature;
 
       // Fallback: take a locality if no place exists
-      const localityFeature = features.find((f: any) =>
+      const localityFeature = features.find((f) =>
         f.place_type?.includes("locality")
       );
       if (localityFeature) return localityFeature;
@@ -243,7 +255,7 @@ export async function getCityFromRouteMapbox(
     };
 
     // --- Helper: extract main city + country from a feature ---
-    const extractMainCityAndCountry = (feature: any): GeocodeResult => {
+    const extractMainCityAndCountry = (feature: MapboxFeature): GeocodeResult => {
       let city: string | null = null;
       let country: string | null = null;
 
@@ -253,7 +265,7 @@ export async function getCityFromRouteMapbox(
       } else if (feature.place_type?.includes("locality")) {
         // Locality (neighborhood / smaller area) – try to climb up to a parent place
         const ctx = feature.context || [];
-        const parentPlace = ctx.find((c: any) => c.id?.startsWith("place"));
+        const parentPlace = ctx.find((c) => c.id?.startsWith("place"));
         if (parentPlace) {
           city = parentPlace.text || null;
         } else {
@@ -267,7 +279,7 @@ export async function getCityFromRouteMapbox(
 
       // Country from context (same as before, but guarded)
       if (feature.context) {
-        const countryContext = feature.context.find((c: any) =>
+        const countryContext = feature.context.find((c) =>
           c.id?.startsWith("country")
         );
         country = countryContext?.text || null;

@@ -153,10 +153,11 @@ const Settings: React.FC = () => {
       await deleteUserData(user.uid);
       await deleteUser(user);
       navigate("/");
-    } catch (error: any) {
-      if (error.code === "auth/wrong-password") {
+    } catch (error) {
+      const code = (error as { code?: string })?.code;
+      if (code === "auth/wrong-password") {
         showMessage("Incorrect password", "error");
-      } else if (error.code === "auth/popup-closed-by-user") {
+      } else if (code === "auth/popup-closed-by-user") {
         showMessage("Authentication cancelled", "error");
       } else {
         showMessage("Error deleting account. Please try again.", "error");

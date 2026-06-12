@@ -96,11 +96,12 @@ export default function Register() {
           navigate("/onboarding");
         }
       }, 1500);
-    } catch (err: any) {
+    } catch (err) {
       console.error("Registration error:", err);
       
-      const errorMessage = err.code 
-        ? getAuthErrorMessage(err.code)
+      const errCode = (err as { code?: string })?.code;
+      const errorMessage = errCode 
+        ? getAuthErrorMessage(errCode)
         : "Something went wrong. Please try again.";
 
       toast({

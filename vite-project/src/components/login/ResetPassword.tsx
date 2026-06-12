@@ -30,11 +30,12 @@ export default function ResetPassword() {
     try {
       await sendPasswordResetEmail(auth, email);
       setSent(true);
-    } catch (err: any) {
+    } catch (err) {
       console.error("Password reset error:", err);
       
-      const errorMessage = err.code 
-        ? getResetErrorMessage(err.code)
+      const errCode = (err as { code?: string })?.code;
+      const errorMessage = errCode 
+        ? getResetErrorMessage(errCode)
         : "Something went wrong. Please try again.";
       
       setError(errorMessage);

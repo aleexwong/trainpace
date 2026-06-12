@@ -304,12 +304,12 @@ export function UnifiedDifficultyView({
           bodyFont: { size: 13 },
           bodySpacing: 6,
           callbacks: {
-            title: (ctx: any) => {
-              const idx = ctx[0]?.dataIndex;
+            title: (ctx: { dataIndex?: number }[]) => {
+              const idx = ctx[0]?.dataIndex ?? 0;
               return chartData[idx]?.name || "";
             },
-            label: (ctx: any) => {
-              const idx = ctx?.dataIndex;
+            label: (ctx: { dataIndex?: number }) => {
+              const idx = ctx?.dataIndex ?? 0;
               const data = chartData[idx];
               return [
                 `${data?.segmentCount} section${

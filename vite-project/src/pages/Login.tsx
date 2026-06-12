@@ -67,11 +67,12 @@ export default function Login() {
         }!`,
       });
       // Don't manually navigate here - let the useEffect handle it
-    } catch (err: any) {
-      console.error("Login error:", err.code || err);
-      
-      const errorMessage = err.code 
-        ? getLoginErrorMessage(err.code)
+    } catch (err) {
+      const errCode = (err as { code?: string })?.code;
+      console.error("Login error:", errCode || err);
+
+      const errorMessage = errCode
+        ? getLoginErrorMessage(errCode)
         : "Unable to sign in. Please try again.";
       
       setError(errorMessage);
