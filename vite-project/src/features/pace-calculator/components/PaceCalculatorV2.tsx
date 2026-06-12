@@ -34,11 +34,13 @@ const initialFormState: PaceInputs = {
 export interface PaceCalculatorV2Props {
   seoMode?: "default" | "none";
   initialInputs?: Partial<PaceInputs>;
+  autoCalculate?: boolean;
 }
 
 export function PaceCalculatorV2({
   seoMode = "default",
   initialInputs,
+  autoCalculate: autoCalculateProp = false,
 }: PaceCalculatorV2Props) {
   // Handle auto-save of pending plan after signup
   usePendingPacePlan();
@@ -62,6 +64,7 @@ export function PaceCalculatorV2({
   const [showInfo, setShowInfo] = useState(false);
   const [showPhilosophy, setShowPhilosophy] = useState(false);
   const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const [shareCopied, setShareCopied] = useState(false);
 
   // Calculate paces using hook
   const calculation = usePaceCalculation(inputs);
@@ -113,6 +116,15 @@ export function PaceCalculatorV2({
       setResults(calculation.result);
     }
   }, [inputs.paceType, calculation.isValid, calculation.result, results]);
+
+  // Auto-calculate on mount when arriving from a share link
+  useEffect(() => {
+    if (autoCalculateProp && calculation.isValid && calculation.result) {
+      setResults(calculation.result);
+    }
+    // Run once on mount only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Track page view
   ReactGA.event({
@@ -286,6 +298,22 @@ export function PaceCalculatorV2({
     setShowSaveDialog(false);
   };
 
+  const handleShare = async () => {
+    const distKm = inputs.units === "km"
+      ? parseFloat(inputs.distance)
+      : parseFloat(inputs.distance) * 1.60934;
+    const totalSecs = timeToSeconds(inputs.hours, inputs.minutes, inputs.seconds);
+    if (!isFinite(distKm) || distKm <= 0 || totalSecs <= 0) return;
+    const url = `${window.location.origin}/calculator?d=${distKm.toFixed(4)}&t=${totalSecs}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 2500);
+    } catch {
+      toast({ title: "Could not copy link", variant: "destructive" });
+    }
+  };
+
   const getRaceTime = () => {
     const parts = [];
     if (inputs.hours)   parts.push(`${inputs.hours}h`);
@@ -404,6 +432,8 @@ export function PaceCalculatorV2({
                 onDownload={handleDownload}
                 onPaceTypeChange={handlePaceTypeChange}
                 onSave={handleSave}
+                onShare={handleShare}
+                shareCopied={shareCopied}
                 isSaving={isSaving}
                 isSaved={isSaved}
               />

@@ -25,8 +25,10 @@ interface PaceResultsDisplayProps {
   onDownload: () => void;
   onPaceTypeChange: (paceType: PaceUnit) => void;
   onSave?: () => void;
+  onShare?: () => void;
   isSaving?: boolean;
   isSaved?: boolean;
+  shareCopied?: boolean;
 }
 
 const PACE_DESCRIPTIONS: Record<string, string> = {
@@ -50,8 +52,10 @@ export function PaceResultsDisplay({
   onDownload,
   onPaceTypeChange,
   onSave,
+  onShare,
   isSaving = false,
   isSaved = false,
+  shareCopied = false,
 }: PaceResultsDisplayProps) {
   const isPaceKm = paceType === "km";
   const [terrainMode, setTerrainMode] = useState<"flat" | "hilly">("flat");
@@ -151,6 +155,15 @@ export function PaceResultsDisplay({
             >
               <Download className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
             </button>
+            {onShare && (
+              <button
+                onClick={onShare}
+                className="px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition-colors"
+                title="Copy share link"
+              >
+                {shareCopied ? "✓ Copied!" : "Share"}
+              </button>
+            )}
             {onSave && (
               <button
                 onClick={onSave}
