@@ -228,10 +228,18 @@ function CrossToolLinksSection({ currentTool }: CrossToolLinksSectionProps) {
     },
     {
       tool: 'elevation' as const,
-      href: '/elevationfinder',
+      href: '/elevation-finder',
       title: 'Elevation',
       subtitle: 'Analyze hills & grades',
       description: 'Upload a GPX to see elevation gain, grades, and key climbs.',
+      colors: { border: 'border-emerald-100', text: 'text-emerald-700' },
+    },
+    {
+      tool: 'blog' as const,
+      href: '/plan',
+      title: 'Training Plan',
+      subtitle: 'Build a training plan',
+      description: '8–20 week periodized plans for 5K to Marathon with daily workouts.',
       colors: { border: 'border-emerald-100', text: 'text-emerald-700' },
     },
   ];
@@ -240,7 +248,7 @@ function CrossToolLinksSection({ currentTool }: CrossToolLinksSectionProps) {
 
   return (
     <section className="px-4 sm:px-6 pb-16">
-      <div className="max-w-5xl mx-auto grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="max-w-5xl mx-auto grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {visibleTools.map((tool) => (
           <a
             key={tool.tool}
