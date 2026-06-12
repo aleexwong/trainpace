@@ -339,17 +339,30 @@ export function RacePageTemplate({
 
       {/* Cross-Tool Links */}
       <section className="px-4 sm:px-6 pb-16">
-        <div className="max-w-5xl mx-auto grid gap-4 sm:grid-cols-3">
+        <div className="max-w-5xl mx-auto grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <a
             href="/calculator"
             className="rounded-2xl border border-emerald-100 bg-white/70 p-6 hover:bg-white transition-colors"
           >
             <div className="text-sm font-semibold text-emerald-700">Pacing</div>
             <div className="mt-2 text-lg font-bold text-gray-900">
-              Get your training paces
+              Training paces
             </div>
-            <p className="mt-2 text-gray-700">
-              Convert any race time into Easy, Tempo, Threshold, and Interval zones.
+            <p className="mt-2 text-gray-700 text-sm">
+              Convert any race time into Easy, Tempo, and Interval zones.
+            </p>
+          </a>
+
+          <a
+            href="/plan"
+            className="rounded-2xl border border-emerald-100 bg-white/70 p-6 hover:bg-white transition-colors"
+          >
+            <div className="text-sm font-semibold text-emerald-700">Training</div>
+            <div className="mt-2 text-lg font-bold text-gray-900">
+              Training plan
+            </div>
+            <p className="mt-2 text-gray-700 text-sm">
+              8–20 week periodized plan with daily workouts and pace zones.
             </p>
           </a>
 
@@ -359,22 +372,22 @@ export function RacePageTemplate({
           >
             <div className="text-sm font-semibold text-amber-700">Fueling</div>
             <div className="mt-2 text-lg font-bold text-gray-900">
-              Build a gel schedule
+              Gel schedule
             </div>
-            <p className="mt-2 text-gray-700">
+            <p className="mt-2 text-gray-700 text-sm">
               Estimate carbs/hour, total carbs, and how many gels to carry.
             </p>
           </a>
 
           <a
-            href="/elevationfinder"
+            href="/elevation-finder"
             className="rounded-2xl border border-emerald-100 bg-white/70 p-6 hover:bg-white transition-colors"
           >
             <div className="text-sm font-semibold text-emerald-700">Course</div>
             <div className="mt-2 text-lg font-bold text-gray-900">
-              Analyze elevation + hills
+              Elevation analysis
             </div>
-            <p className="mt-2 text-gray-700">
+            <p className="mt-2 text-gray-700 text-sm">
               Upload a GPX to see elevation gain, grades, and key climbs.
             </p>
           </a>
