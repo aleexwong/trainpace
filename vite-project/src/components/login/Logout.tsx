@@ -11,7 +11,7 @@ export default function Logout() {
     signOut(auth).then(() => {
       navigate("/login");
     });
-  }, []);
+  }, [navigate]);
 
   return (
     <div data-testid="logout-page" className="flex flex-col items-center justify-center h-[70vh] text-center">

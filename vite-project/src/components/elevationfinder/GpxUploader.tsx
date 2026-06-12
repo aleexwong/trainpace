@@ -71,6 +71,8 @@ export default function GpxUploader({
     if (user) {
       checkRateLimits();
     }
+    // checkRateLimits is defined inside the component but only reads `user` which is already in deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   // Generate SHA-256 hash of file content

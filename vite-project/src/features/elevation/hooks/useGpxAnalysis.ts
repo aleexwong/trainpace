@@ -242,6 +242,8 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
 
       return analysis;
     },
+    // cacheStaticData and cacheAnalysisResults are stable (defined with useCallback with no deps)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [auth.user]
   );
 

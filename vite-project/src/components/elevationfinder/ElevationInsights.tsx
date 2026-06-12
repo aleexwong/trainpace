@@ -92,9 +92,9 @@ export function ElevationInsights({
 
   useEffect(() => {
     return () => {
-      if (debounceTimer.current) {
-        clearTimeout(debounceTimer.current);
-      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      const timer = debounceTimer.current;
+      if (timer) clearTimeout(timer);
     };
   }, []);
 

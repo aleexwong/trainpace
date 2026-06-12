@@ -196,15 +196,8 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
         map.current = null;
       }
     };
-  }, [
-    routePoints,
-    showStartEnd,
-    lineColor,
-    lineWidth,
-    mapStyle,
-    padding,
-    interactive,
-  ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routePoints, showStartEnd, lineColor, lineWidth, mapStyle, padding, interactive]);
 
   // Move/show/hide the highlight marker without reinitializing the map.
   useEffect(() => {
