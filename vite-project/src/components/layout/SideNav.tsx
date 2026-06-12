@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 export default function SideNav() {
   const [open, setOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
-  let touchStartX = 0;
+  const touchStartX = useRef(0);
 
   const links = [
     { href: "/", label: "Home" },
@@ -22,12 +22,12 @@ export default function SideNav() {
     if (!drawer) return;
 
     const handleTouchStart = (e: TouchEvent) => {
-      touchStartX = e.touches[0].clientX;
+      touchStartX.current = e.touches[0].clientX;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       const touchEndX = e.touches[0].clientX;
-      if (touchEndX - touchStartX > 50) {
+      if (touchEndX - touchStartX.current > 50) {
         setOpen(false);
       }
     };
