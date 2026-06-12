@@ -3,6 +3,7 @@ import { Trash2, ChevronDown, ChevronUp, Calendar, Flag, Download } from "lucide
 import type { TrainingPlan } from "../../plan/types";
 import { phaseColor } from "../../plan/plan-math";
 import { exportPlanAsIcal } from "../../plan/utils/exportIcal";
+import { WeekCard } from "../../plan/components/WeekCard";
 
 interface Props {
   plan: TrainingPlan;
@@ -144,13 +145,26 @@ export function TrainingPlanCard({ plan, onDelete }: Props) {
             </div>
           </div>
 
-          {/* View full plan link */}
-          <a
-            href="/plan"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
-          >
-            Build a new plan →
-          </a>
+          {/* Full weekly schedule */}
+          <div>
+            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
+              Weekly Schedule
+            </div>
+            <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
+              {plan.weeks.map((week) => (
+                <WeekCard key={week.weekNumber} week={week} />
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 pt-1 border-t border-slate-100">
+            <a
+              href="/plan"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+            >
+              Build a new plan →
+            </a>
+          </div>
         </div>
       )}
     </div>
