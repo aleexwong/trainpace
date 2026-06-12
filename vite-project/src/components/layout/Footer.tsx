@@ -60,10 +60,10 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/elevationfinder"
+                  to="/elevation-finder"
                   className="text-slate-600 hover:text-emerald-600 transition-colors text-sm"
                 >
-                  ElevationFinder
+                  Elevation Finder
                 </Link>
               </li>
               <li>
@@ -72,6 +72,14 @@ const Footer = () => {
                   className="text-slate-600 hover:text-emerald-600 transition-colors text-sm"
                 >
                   VDOT Calculator
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/plan"
+                  className="text-slate-600 hover:text-emerald-600 transition-colors text-sm"
+                >
+                  Training Plan Generator
                 </Link>
               </li>
             </ul>
