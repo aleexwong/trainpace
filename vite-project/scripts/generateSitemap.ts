@@ -2,15 +2,20 @@ import fs from "fs";
 import path from "path";
 
 import { getAllSeoPaths } from "../src/features/seo-pages/seoPages";
+import blogPosts from "../src/data/blog-posts.json";
 
 const BASE_URL = "https://www.trainpace.com";
 
 const staticPaths: Array<{ loc: string; changefreq: string; priority: string }> = [
   { loc: `${BASE_URL}/`, changefreq: "weekly", priority: "1.0" },
   { loc: `${BASE_URL}/calculator`, changefreq: "monthly", priority: "0.9" },
+  { loc: `${BASE_URL}/vdot`, changefreq: "monthly", priority: "0.9" },
   { loc: `${BASE_URL}/fuel`, changefreq: "monthly", priority: "0.9" },
+  { loc: `${BASE_URL}/plan`, changefreq: "monthly", priority: "0.9" },
+  { loc: `${BASE_URL}/elevation-finder`, changefreq: "monthly", priority: "0.8" },
   { loc: `${BASE_URL}/elevationfinder`, changefreq: "monthly", priority: "0.8" },
   { loc: `${BASE_URL}/race`, changefreq: "weekly", priority: "0.7" },
+  { loc: `${BASE_URL}/blog`, changefreq: "weekly", priority: "0.8" },
   { loc: `${BASE_URL}/dashboard`, changefreq: "weekly", priority: "0.7" },
   { loc: `${BASE_URL}/about`, changefreq: "yearly", priority: "0.6" },
   { loc: `${BASE_URL}/faq`, changefreq: "monthly", priority: "0.7" },
@@ -25,6 +30,12 @@ const staticPaths: Array<{ loc: string; changefreq: string; priority: string }> 
   { loc: `${BASE_URL}/preview-route/tokyo`, changefreq: "yearly", priority: "0.7" },
   { loc: `${BASE_URL}/preview-route/sydney`, changefreq: "yearly", priority: "0.7" },
   { loc: `${BASE_URL}/preview-route/oslo`, changefreq: "yearly", priority: "0.7" },
+  // Blog posts
+  ...(blogPosts.posts as Array<{ slug: string; date?: string }>).map((p) => ({
+    loc: `${BASE_URL}/blog/${p.slug}`,
+    changefreq: "monthly",
+    priority: "0.7",
+  })),
 ];
 
 const today = new Date().toISOString().slice(0, 10);
