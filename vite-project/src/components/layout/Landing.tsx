@@ -873,8 +873,8 @@ export default function LandingPage() {
         features={[
           "8–20 week plans for 5K to Marathon",
           "Base, Development, Sharpening & Taper phases",
-          "Daily workouts with pace zones",
-          "Synced with your Pace Calculator paces",
+          "Daily workouts with zone-specific paces",
+          "Export to Google Calendar or Apple Calendar",
         ]}
         cta="Build My Plan"
         ctaRoute="/plan"
