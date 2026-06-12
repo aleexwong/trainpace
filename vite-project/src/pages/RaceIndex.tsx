@@ -341,12 +341,18 @@ export default function RaceIndex() {
             If you don't see it here, try the core tools and upload a GPX for
             course analysis.
           </p>
-          <div className="mt-4 flex flex-col sm:flex-row gap-3">
+          <div className="mt-4 flex flex-col sm:flex-row gap-3 flex-wrap">
             <a
               href="/calculator"
               className="inline-flex justify-center rounded-lg bg-emerald-700 px-5 py-3 text-white font-semibold hover:bg-emerald-800 transition-colors"
             >
               Pace Calculator
+            </a>
+            <a
+              href="/plan"
+              className="inline-flex justify-center rounded-lg bg-emerald-600 px-5 py-3 text-white font-semibold hover:bg-emerald-700 transition-colors"
+            >
+              Training Plan
             </a>
             <a
               href="/fuel"
@@ -355,10 +361,10 @@ export default function RaceIndex() {
               Fuel Planner
             </a>
             <a
-              href="/elevationfinder"
+              href="/elevation-finder"
               className="inline-flex justify-center rounded-lg bg-emerald-700 px-5 py-3 text-white font-semibold hover:bg-emerald-800 transition-colors"
             >
-              ElevationFinder
+              Elevation Finder
             </a>
           </div>
         </div>
