@@ -140,6 +140,22 @@ export function FuelPlanResults({
             sources (sports drinks, chews, etc.) to meet your total carb needs.
           </p>
         </div>
+
+        {/* Training Plan CTA */}
+        <div className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between gap-4">
+          <div>
+            <div className="text-sm font-semibold text-emerald-800">Ready to train?</div>
+            <div className="text-xs text-emerald-700 mt-0.5">
+              Build a complete training plan with paces for every session.
+            </div>
+          </div>
+          <a
+            href="/plan"
+            className="flex-shrink-0 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 text-sm transition-colors whitespace-nowrap"
+          >
+            Build plan →
+          </a>
+        </div>
       </CardContent>
     </Card>
   );

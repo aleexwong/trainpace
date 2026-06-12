@@ -58,7 +58,7 @@ export function GoalsSettingsCard() {
         </div>
       ) : (
         <p className="text-sm text-gray-600">
-          Set a goal race to personalize the calculators and fuel planner.
+          Set a goal race to personalize the calculators, fuel planner, and training plan generator.
         </p>
       )}
     </div>
