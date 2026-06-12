@@ -214,6 +214,9 @@ function generateIntro(tool: SeoToolType, variables: ContentVariables): string {
     blog: [
       `Learn more about {{name}} with expert tips and training guidance.`,
     ],
+    plan: [
+      `Build a personalized training plan for {{name}} using science-based periodization.`,
+    ],
   };
 
   const intro = selectVariation(intros[tool], variables.slug);
@@ -275,6 +278,13 @@ function generateBullets(tool: SeoToolType, variables: ContentVariables): string
         'Practical race-day strategies',
       ],
     ],
+    plan: [
+      [
+        '8–20 week periodized training plans',
+        'Exact paces for every session',
+        'Export to Google or Apple Calendar',
+      ],
+    ],
   };
 
   const bulletSet = selectVariation(bullets[tool], variables.slug);
@@ -291,6 +301,7 @@ function generateCta(tool: SeoToolType): SeoCta {
     race: { href: '/calculator', label: 'Start With Pacing' },
     elevation: { href: '/elevationfinder', label: 'Open Elevation Finder' },
     blog: { href: '/blog', label: 'Read More Articles' },
+    plan: { href: '/plan', label: 'Build My Training Plan' },
   };
   return ctas[tool];
 }
@@ -454,6 +465,18 @@ const HOWTO_TEMPLATES: Record<SeoToolType, SeoHowTo> = {
     steps: [
       { name: 'Read the guide', text: 'Understand the main concepts.' },
       { name: 'Apply to training', text: 'Use the tips in your next workout or race.' },
+    ],
+  },
+  plan: {
+    name: 'How to build a training plan',
+    description: 'Generate a personalized periodized training plan for your goal race.',
+    totalTime: 'PT2M',
+    tool: 'TrainPace Training Plan Generator',
+    steps: [
+      { name: 'Choose your race', text: 'Select your goal race distance (5K, 10K, Half, Marathon).' },
+      { name: 'Set your race date', text: 'Enter when your race is to calculate plan length.' },
+      { name: 'Pick training days', text: 'Select which days of the week you can train.' },
+      { name: 'Generate plan', text: 'Get a complete week-by-week training schedule with daily workouts and paces.' },
     ],
   },
 };

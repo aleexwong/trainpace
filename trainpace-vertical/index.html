@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "DM Sans";
+        src: url("fonts/DMSans.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: "Space Grotesk";
+        src: url("fonts/SpaceGrotesk.woff2") format("woff2");
+        font-weight: 300 700;
+        font-style: normal;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #f8fafc;
+      }
+      body {
+        font-family: "DM Sans", system-ui, sans-serif;
+        color: #0f172a;
+      }
+      .num {
+        font-variant-numeric: tabular-nums;
+      }
+      .scene {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background-color: #f8fafc;
+      }
+      #v2, #v3, #v4, #v5 {
+        opacity: 0;
+      }
+
+      .blob {
+        position: absolute;
+        width: 680px;
+        height: 680px;
+        border-radius: 50%;
+        filter: blur(85px);
+      }
+      .ghost {
+        position: absolute;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        color: rgba(5, 150, 105, 0.12);
+        letter-spacing: -0.04em;
+        line-height: 1;
+        white-space: nowrap;
+        user-select: none;
+      }
+      .kicker {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        color: #059669;
+        text-transform: uppercase;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        background-color: #059669;
+        color: #ffffff;
+        border-radius: 999px;
+        padding: 16px 34px;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 600;
+        font-size: 30px;
+      }
+      .card {
+        background-color: #ffffff;
+        border-radius: 32px;
+        border: 2px solid #e2e8f0;
+        box-shadow: 0 30px 70px rgba(15, 23, 42, 0.14);
+      }
+      .rule {
+        height: 6px;
+        background-color: #059669;
+        border-radius: 3px;
+        transform-origin: left center;
+      }
+
+      /* ---------- V1 · Hook ---------- */
+      #v1-blob-a {
+        top: -160px;
+        right: -200px;
+        background-color: rgba(209, 250, 229, 0.9);
+      }
+      #v1-blob-b {
+        bottom: -220px;
+        left: -220px;
+        background-color: rgba(219, 234, 254, 0.9);
+      }
+      #v1-ghost {
+        font-size: 430px;
+        right: -90px;
+        bottom: 130px;
+      }
+      .v1-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        height: 100%;
+        padding: 120px 90px 200px;
+        gap: 44px;
+      }
+      .v1-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        background-color: #ffffff;
+        border: 2px solid #d1fae5;
+        border-radius: 999px;
+        padding: 16px 32px;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      }
+      .v1-badge .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: #10b981;
+      }
+      .v1-badge span {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #065f46;
+      }
+      .v1-word {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 168px;
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+        color: #0f172a;
+        text-transform: uppercase;
+      }
+      .v1-word.green {
+        color: #059669;
+      }
+      .v1-meta {
+        position: absolute;
+        bottom: 110px;
+        left: 90px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        letter-spacing: 0.18em;
+        color: #64748b;
+      }
+      .v1-meta b {
+        color: #059669;
+        font-weight: 700;
+      }
+
+      /* ---------- V2 · Zones ---------- */
+      #v2-ghost {
+        font-size: 340px;
+        top: -50px;
+        right: -60px;
+      }
+      #v2-glow {
+        bottom: -240px;
+        left: -200px;
+        background-color: rgba(209, 250, 229, 0.85);
+      }
+      .v2-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 120px 90px;
+        gap: 56px;
+      }
+      .v-h {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 108px;
+        line-height: 1.04;
+        letter-spacing: -0.035em;
+        color: #0f172a;
+      }
+      .v-h em {
+        font-style: normal;
+        color: #059669;
+      }
+      .v2-card {
+        padding: 56px 54px;
+        display: flex;
+        flex-direction: column;
+        gap: 34px;
+      }
+      .v2-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 26px;
+      }
+      .v2-card-title {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #64748b;
+      }
+      .zone-row {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+      }
+      .zone-label {
+        width: 200px;
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .zone-bar-track {
+        flex: 1;
+        height: 22px;
+        border-radius: 11px;
+        background-color: #f1f5f9;
+        overflow: hidden;
+      }
+      .zone-bar {
+        height: 100%;
+        border-radius: 11px;
+        transform-origin: left center;
+      }
+      .zone-pace {
+        width: 130px;
+        text-align: right;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 34px;
+        color: #0f172a;
+      }
+
+      /* ---------- V3 · Hills ---------- */
+      #v3-ghost {
+        font-size: 360px;
+        top: -60px;
+        left: -50px;
+      }
+      #v3-glow {
+        top: -240px;
+        right: -220px;
+        background-color: rgba(219, 234, 254, 0.85);
+      }
+      .v3-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 120px 90px;
+        gap: 56px;
+      }
+      .v3-card {
+        position: relative;
+        padding: 56px 54px 44px;
+        height: 640px;
+        display: flex;
+        flex-direction: column;
+      }
+      .v3-svg-wrap {
+        position: relative;
+        flex: 1;
+      }
+      .v3-svg-wrap svg {
+        position: absolute;
+        inset: 0;
+      }
+      #v3-grade {
+        position: absolute;
+        top: 16px;
+        left: 52%;
+        background-color: #059669;
+        color: #ffffff;
+        border-radius: 14px;
+        padding: 12px 26px;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 32px;
+      }
+      .v3-ticks {
+        display: flex;
+        justify-content: space-between;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 21px;
+        letter-spacing: 0.1em;
+        color: #64748b;
+        padding-top: 20px;
+        border-top: 2px solid #e2e8f0;
+        margin-top: 16px;
+      }
+      .v3-chips {
+        display: flex;
+        gap: 24px;
+      }
+      .stat-chip {
+        background-color: #ffffff;
+        border: 2px solid #d1fae5;
+        border-radius: 20px;
+        padding: 24px 36px;
+        text-align: center;
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+      }
+      .stat-chip .v {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 46px;
+        color: #059669;
+        line-height: 1.1;
+      }
+      .stat-chip .l {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #475569;
+        margin-top: 8px;
+      }
+
+      /* ---------- V4 · Fuel ---------- */
+      #v4-ghost {
+        font-size: 380px;
+        bottom: -70px;
+        right: -60px;
+      }
+      #v4-glow {
+        bottom: -260px;
+        left: 240px;
+        background-color: rgba(209, 250, 229, 0.9);
+      }
+      .v4-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        height: 100%;
+        padding: 120px 90px;
+        gap: 70px;
+      }
+      .v4-big .n {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 240px;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        color: #059669;
+      }
+      .v4-big .n small {
+        font-size: 84px;
+        font-weight: 500;
+        color: #0f172a;
+        letter-spacing: 0;
+        margin-left: 12px;
+      }
+      .v4-big .l {
+        margin-top: 18px;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #475569;
+      }
+      .v4-row {
+        display: flex;
+        gap: 24px;
+      }
+
+      /* ---------- V5 · CTA ---------- */
+      #v5-halo {
+        position: absolute;
+        top: 620px;
+        left: 240px;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background-color: rgba(209, 250, 229, 0.75);
+        filter: blur(80px);
+      }
+      .v5-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 160px 90px;
+        gap: 40px;
+        text-align: center;
+      }
+      .v5-mark {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 128px;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        color: #0f172a;
+      }
+      .v5-mark em {
+        font-style: normal;
+        color: #059669;
+      }
+      .v5-url {
+        font-size: 42px;
+        font-weight: 700;
+        color: #059669;
+      }
+      .v5-pill {
+        margin-top: 22px;
+        background-color: #059669;
+        color: #ffffff;
+        border-radius: 999px;
+        padding: 30px 72px;
+        font-size: 38px;
+        font-weight: 700;
+        box-shadow: 0 18px 44px rgba(5, 150, 105, 0.35);
+      }
+      .v5-proof {
+        margin-top: 12px;
+        font-size: 29px;
+        color: #475569;
+      }
+      .v5-proof b {
+        color: #059669;
+      }
+      .v5-hr {
+        position: absolute;
+        left: 200px;
+        right: 200px;
+        height: 3px;
+        background-color: #e2e8f0;
+        transform-origin: center;
+      }
+      #v5-hr-top { top: 200px; }
+      #v5-hr-bot { bottom: 200px; }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-qv3y" id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1080" data-height="1920">
+      <audio data-hf-id="hf-muab" id="music" class="clip" data-start="0" data-duration="15" data-track-index="3" src="music.mp3" data-volume="0.6"></audio>
+
+      <!-- ============ V1 · HOOK ============ -->
+      <div data-hf-id="hf-ja31" id="v1" class="scene">
+        <div data-hf-id="hf-fu1x" id="v1-blob-a" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-js5y" id="v1-blob-b" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-6l4h" id="v1-ghost" class="ghost num" data-layout-ignore="">5:32</div>
+        <div data-hf-id="hf-r2zf" class="v1-content">
+          <div data-hf-id="hf-8knm" class="v1-badge" id="v1-badge">
+            <div data-hf-id="hf-lu65" class="dot"></div>
+            <span data-hf-id="hf-h4iq">TrainPace</span>
+          </div>
+          <div data-hf-id="hf-yeow">
+            <div data-hf-id="hf-rcjq" class="v1-word" id="v1-w1">Stop</div>
+            <div data-hf-id="hf-l3nq" class="v1-word" id="v1-w2">Guessing</div>
+            <div data-hf-id="hf-4xqb" class="v1-word green" id="v1-w3">Your Pace.</div>
+          </div>
+          <div data-hf-id="hf-nf0w" class="rule" id="v1-rule" style="width: 260px"></div>
+        </div>
+        <div data-hf-id="hf-encp" class="v1-meta" id="v1-meta"><b data-hf-id="hf-xset">TRAINPACE.COM</b> · FREE</div>
+      </div>
+
+      <!-- ============ V2 · ZONES ============ -->
+      <div data-hf-id="hf-n872" id="v2" class="scene">
+        <div data-hf-id="hf-2t4g" id="v2-glow" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-4h95" id="v2-ghost" class="ghost" data-layout-ignore="">VDOT</div>
+        <div data-hf-id="hf-1e4g" class="v2-content">
+          <div data-hf-id="hf-y7yw">
+            <div data-hf-id="hf-np5i" class="kicker" id="v2-kicker">// Pace Calculator</div>
+            <div data-hf-id="hf-tkn4" class="v-h" style="margin-top: 24px" id="v2-h">One race time. <em data-hf-id="hf-563e">Every zone.</em></div>
+          </div>
+          <div data-hf-id="hf-8hgk" class="v2-card card" id="v2-card">
+            <div data-hf-id="hf-vqii" class="v2-card-head">
+              <div data-hf-id="hf-y2i3" class="v2-card-title">Training Zones · min/km</div>
+              <div data-hf-id="hf-du2o" class="chip" id="v2-chip" style="font-size: 24px; padding: 12px 26px">⚡ VDOT 45.2</div>
+            </div>
+            <div data-hf-id="hf-9bth" class="zone-row">
+              <div data-hf-id="hf-o045" class="zone-label">Easy</div>
+              <div data-hf-id="hf-iacg" class="zone-bar-track"><div data-hf-id="hf-xtpj" class="zone-bar" style="width: 96%; background-color: #a7f3d0"></div></div>
+              <div data-hf-id="hf-63ws" class="zone-pace num">5:58</div>
+            </div>
+            <div data-hf-id="hf-0mdl" class="zone-row">
+              <div data-hf-id="hf-wiyl" class="zone-label">Marathon</div>
+              <div data-hf-id="hf-1jvc" class="zone-bar-track"><div data-hf-id="hf-8v99" class="zone-bar" style="width: 84%; background-color: #6ee7b7"></div></div>
+              <div data-hf-id="hf-hzdy" class="zone-pace num">5:12</div>
+            </div>
+            <div data-hf-id="hf-5v9s" class="zone-row">
+              <div data-hf-id="hf-uzym" class="zone-label">Threshold</div>
+              <div data-hf-id="hf-0cy9" class="zone-bar-track"><div data-hf-id="hf-hwi4" class="zone-bar" style="width: 76%; background-color: #34d399"></div></div>
+              <div data-hf-id="hf-6qxn" class="zone-pace num">4:52</div>
+            </div>
+            <div data-hf-id="hf-5gyr" class="zone-row">
+              <div data-hf-id="hf-kv1m" class="zone-label">Interval</div>
+              <div data-hf-id="hf-0r9a" class="zone-bar-track"><div data-hf-id="hf-g3tu" class="zone-bar" style="width: 66%; background-color: #10b981"></div></div>
+              <div data-hf-id="hf-rwhi" class="zone-pace num">4:28</div>
+            </div>
+            <div data-hf-id="hf-zfgi" class="zone-row">
+              <div data-hf-id="hf-of44" class="zone-label">Repetition</div>
+              <div data-hf-id="hf-zkc7" class="zone-bar-track"><div data-hf-id="hf-5mtn" class="zone-bar" style="width: 58%; background-color: #059669"></div></div>
+              <div data-hf-id="hf-yh5z" class="zone-pace num">4:09</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ V3 · HILLS ============ -->
+      <div data-hf-id="hf-tdwv" id="v3" class="scene">
+        <div data-hf-id="hf-huuf" id="v3-glow" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-jwby" id="v3-ghost" class="ghost" data-layout-ignore="">GPX</div>
+        <div data-hf-id="hf-6z15" class="v3-content">
+          <div data-hf-id="hf-x11t">
+            <div data-hf-id="hf-83bn" class="kicker" id="v3-kicker">// ElevationFinder</div>
+            <div data-hf-id="hf-1ezo" class="v-h" style="margin-top: 24px" id="v3-h">Know <em data-hf-id="hf-y2kg">the hills.</em></div>
+          </div>
+          <div data-hf-id="hf-ht4w" class="v3-card card" id="v3-card">
+            <div data-hf-id="hf-cg9p" class="v3-svg-wrap">
+              <svg data-hf-id="hf-tj4m" viewBox="0 0 900 360" width="100%" height="100%" preserveAspectRatio="none">
+                <path data-hf-id="hf-y0qv" id="v3-area" d="M0,310 C70,300 110,265 165,255 C220,245 255,270 310,258 C365,246 400,185 460,162 C520,139 555,95 610,86 C665,77 705,130 760,165 C815,200 855,255 900,262 L900,360 L0,360 Z" fill="rgba(5, 150, 105, 0.14)" stroke="none" />
+                <path data-hf-id="hf-7q9b" id="v3-path" d="M0,310 C70,300 110,265 165,255 C220,245 255,270 310,258 C365,246 400,185 460,162 C520,139 555,95 610,86 C665,77 705,130 760,165 C815,200 855,255 900,262" fill="none" stroke="#059669" stroke-width="8" stroke-linecap="round" />
+              </svg>
+              <div data-hf-id="hf-yx52" id="v3-grade">+6.2%</div>
+            </div>
+            <div data-hf-id="hf-i06a" class="v3-ticks" id="v3-ticks">
+              <span data-hf-id="hf-vcig">0K</span><span data-hf-id="hf-zklt">10K</span><span data-hf-id="hf-3uk9">21K</span><span data-hf-id="hf-9okb">30K</span><span data-hf-id="hf-kcdg">42K</span>
+            </div>
+          </div>
+          <div data-hf-id="hf-eh4b" class="v3-chips">
+            <div data-hf-id="hf-ei96" class="stat-chip" id="v3-chip1">
+              <div data-hf-id="hf-skyr" class="v num">312 m</div>
+              <div data-hf-id="hf-s079" class="l">Total gain</div>
+            </div>
+            <div data-hf-id="hf-ak55" class="stat-chip" id="v3-chip2">
+              <div data-hf-id="hf-3b09" class="v num">8%</div>
+              <div data-hf-id="hf-0b49" class="l">Max grade</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ V4 · FUEL ============ -->
+      <div data-hf-id="hf-xc0w" id="v4" class="scene">
+        <div data-hf-id="hf-tw0y" id="v4-glow" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-yo4m" id="v4-ghost" class="ghost" data-layout-ignore="">FUEL</div>
+        <div data-hf-id="hf-7cme" class="v4-content">
+          <div data-hf-id="hf-xfcu">
+            <div data-hf-id="hf-ug4z" class="kicker" id="v4-kicker">// Fuel Planner</div>
+            <div data-hf-id="hf-18av" class="v-h" style="margin-top: 24px" id="v4-h">Fuel it <em data-hf-id="hf-y6g7">right.</em></div>
+          </div>
+          <div data-hf-id="hf-pliq" class="v4-big" id="v4-big">
+            <div data-hf-id="hf-ys42" class="n num"><span data-hf-id="hf-02tu" id="vf-carbs">0</span><small data-hf-id="hf-vzno">g/hr</small></div>
+            <div data-hf-id="hf-350m" class="l">Your carb target</div>
+          </div>
+          <div data-hf-id="hf-di8h" class="v4-row">
+            <div data-hf-id="hf-jhp9" class="stat-chip" id="v4-chip1">
+              <div data-hf-id="hf-u4zb" class="v num">7</div>
+              <div data-hf-id="hf-hc8h" class="l">Gels</div>
+            </div>
+            <div data-hf-id="hf-nfta" class="stat-chip" id="v4-chip2">
+              <div data-hf-id="hf-4yr5" class="v num">1,840</div>
+              <div data-hf-id="hf-n73b" class="l">kcal</div>
+            </div>
+          </div>
+          <div data-hf-id="hf-44t7" class="chip" id="v4-ai">✦ AI-personalized to your race</div>
+        </div>
+      </div>
+
+      <!-- ============ V5 · CTA ============ -->
+      <div data-hf-id="hf-y3op" id="v5" class="scene">
+        <div data-hf-id="hf-rkya" id="v5-halo" data-layout-ignore=""></div>
+        <div data-hf-id="hf-4t4g" class="v5-hr" id="v5-hr-top"></div>
+        <div data-hf-id="hf-sq7q" class="v5-hr" id="v5-hr-bot"></div>
+        <div data-hf-id="hf-asg9" class="v5-content" id="v5-inner">
+          <div data-hf-id="hf-0bm2" class="v5-mark" id="v5-mark">Train<em data-hf-id="hf-jtk8">Pace</em></div>
+          <div data-hf-id="hf-ciag" class="v5-url" id="v5-url">trainpace.com</div>
+          <div data-hf-id="hf-cqof" class="v5-pill" id="v5-pill">Get Started →</div>
+          <div data-hf-id="hf-3q15" class="v5-proof" id="v5-proof">Free <b data-hf-id="hf-cufq">·</b> No account needed</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      /* ============ V1 · HOOK (0 – 3.4) ============ */
+      tl.fromTo("#v1-badge", { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 0.15);
+      tl.fromTo("#v1-w1", { x: -120, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3, ease: "power4.out" }, 0.3);
+      tl.fromTo("#v1-w2", { x: 120, opacity: 0 }, { x: 0, opacity: 1, duration: 0.3, ease: "power4.out" }, 0.45);
+      tl.fromTo("#v1-w3", { y: 100, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "back.out(1.3)" }, 0.62);
+      tl.fromTo("#v1-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, 0.9);
+      tl.fromTo("#v1-meta", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 1.1);
+      tl.to("#v1-blob-a", { x: -36, y: 26, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+      tl.to("#v1-ghost", { y: -28, duration: 3.0, ease: "none" }, 0.2);
+
+      /* ---- T1 (3.25): vertical whip pan ---- */
+      tl.to("#v1", { y: -700, filter: "blur(18px)", duration: 0.28, ease: "power3.in" }, 3.25);
+      tl.fromTo("#v2",
+        { y: 700, filter: "blur(18px)", opacity: 1 },
+        { y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, 3.45);
+      tl.set("#v1", { opacity: 0, visibility: "hidden" }, 3.8);
+
+      /* ============ V2 · ZONES (3.45 – 6.65) ============ */
+      tl.fromTo("#v2-kicker", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 3.6);
+      tl.fromTo("#v2-h", { y: 56, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "expo.out" }, 3.7);
+      tl.fromTo("#v2-card", { y: 110, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 3.85);
+      tl.fromTo("#v2 .zone-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.out", stagger: 0.07 }, 4.2);
+      tl.fromTo("#v2 .zone-pace", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out", stagger: 0.07 }, 4.32);
+      tl.fromTo("#v2-chip", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2)" }, 4.8);
+      tl.to("#v2-ghost", { y: 24, duration: 3.0, ease: "none" }, 3.5);
+
+      /* ---- T2 (6.45): vertical whip pan ---- */
+      tl.to("#v2", { y: -700, filter: "blur(18px)", duration: 0.28, ease: "power3.in" }, 6.45);
+      tl.fromTo("#v3",
+        { y: 700, filter: "blur(18px)", opacity: 1 },
+        { y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, 6.65);
+      tl.set("#v2", { opacity: 0, visibility: "hidden" }, 7.0);
+
+      /* ============ V3 · HILLS (6.65 – 9.85) ============ */
+      const vPath = document.getElementById("v3-path");
+      const vLen = vPath.getTotalLength();
+      gsap.set(vPath, { strokeDasharray: vLen });
+
+      tl.fromTo("#v3-kicker", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 6.8);
+      tl.fromTo("#v3-h", { y: 56, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "expo.out" }, 6.9);
+      tl.fromTo("#v3-card", { scale: 0.94, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" }, 7.05);
+      tl.fromTo(vPath, { strokeDashoffset: vLen }, { strokeDashoffset: 0, duration: 1.0, ease: "power1.inOut" }, 7.35);
+      tl.fromTo("#v3-area", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "sine.out" }, 7.9);
+      tl.fromTo("#v3-grade", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" }, 8.25);
+      tl.fromTo("#v3-ticks", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 7.7);
+      tl.fromTo("#v3-chip1", { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 8.4);
+      tl.fromTo("#v3-chip2", { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 8.52);
+      tl.to("#v3-ghost", { y: -24, duration: 3.0, ease: "none" }, 6.7);
+
+      /* ---- T3 (9.65): vertical whip pan ---- */
+      tl.to("#v3", { y: -700, filter: "blur(18px)", duration: 0.28, ease: "power3.in" }, 9.65);
+      tl.fromTo("#v4",
+        { y: 700, filter: "blur(18px)", opacity: 1 },
+        { y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, 9.85);
+      tl.set("#v3", { opacity: 0, visibility: "hidden" }, 10.2);
+
+      /* ============ V4 · FUEL (9.85 – 12.55) ============ */
+      tl.fromTo("#v4-kicker", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 10.0);
+      tl.fromTo("#v4-h", { y: 56, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power4.out" }, 10.1);
+      tl.fromTo("#v4-big", { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" }, 10.3);
+      tl.fromTo("#v4-chip1", { y: 44, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 10.7);
+      tl.fromTo("#v4-chip2", { y: 44, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 10.82);
+      tl.fromTo("#v4-ai", { y: 36, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "sine.out" }, 11.1);
+
+      const vCounters = { carbs: 0 };
+      const vfCarbs = document.getElementById("vf-carbs");
+      tl.fromTo(vCounters, { carbs: 0 }, {
+        carbs: 68, duration: 0.9, ease: "power2.out",
+        onUpdate: () => { vfCarbs.textContent = Math.round(vCounters.carbs); },
+      }, 10.45);
+      tl.to("#v4-glow", { scale: 1.1, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 2 }, 10.0);
+
+      /* ---- T4 (12.35): zoom through into CTA ---- */
+      tl.to("#v4", { scale: 2.4, opacity: 0, filter: "blur(8px)", duration: 0.35, ease: "power3.in" }, 12.35);
+      tl.fromTo("#v5",
+        { scale: 0.55, opacity: 0, filter: "blur(8px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 12.48);
+      tl.set("#v4", { visibility: "hidden" }, 12.9);
+
+      /* ============ V5 · CTA (12.55 – 15) ============ */
+      tl.fromTo("#v5-mark", { scale: 1.12, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: "expo.out" }, 12.7);
+      tl.fromTo("#v5-url", { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "sine.out" }, 13.0);
+      tl.fromTo("#v5-pill", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.6)" }, 13.2);
+      tl.fromTo("#v5-proof", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power1.out" }, 13.5);
+      tl.fromTo("#v5-hr-top", { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: "power2.inOut" }, 12.85);
+      tl.fromTo("#v5-hr-bot", { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: "power2.inOut" }, 12.95);
+      tl.to("#v5-halo", { scale: 1.08, duration: 1.0, ease: "sine.inOut", yoyo: true, repeat: 1 }, 12.7);
+
+      // final-scene fade out
+      tl.to("#v5-inner", { opacity: 0, duration: 0.7, ease: "power1.inOut" }, 14.2);
+      tl.to("#v5-hr-top", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 14.25);
+      tl.to("#v5-hr-bot", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 14.25);
+      tl.to("#v5-halo", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 14.25);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

@@ -30,6 +30,7 @@ const CalculatorSeoLanding = lazy(() => import("./pages/CalculatorSeoLanding"));
 const FuelSeoLanding = lazy(() => import("./pages/FuelSeoLanding"));
 const ElevationGuidesSeoLanding = lazy(() => import("./pages/ElevationGuidesSeoLanding"));
 const RaceSeoLanding = lazy(() => import("./pages/RaceSeoLanding"));
+const PlanSeoLanding = lazy(() => import("./pages/PlanSeoLanding"));
 const RaceIndex = lazy(() => import("./pages/RaceIndex"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
@@ -63,6 +64,7 @@ function App() {
           <Route path="/fuel/:seoSlug" element={<FuelSeoLanding />} />
           <Route path="/vdot" element={<VdotCalculatorPage />} />
           <Route path="/plan" element={<TrainingPlanPage />} />
+          <Route path="/plan/:seoSlug" element={<PlanSeoLanding />} />
           <Route path="/race" element={<RaceIndex />} />
           <Route path="/race/:raceSlug" element={<RaceSeoLanding />} />
           <Route path="/elevation-finder" element={<ElevationPage />} />

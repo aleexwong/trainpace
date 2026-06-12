@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "DM Sans";
+        src: url("fonts/DMSans.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: "Space Grotesk";
+        src: url("fonts/SpaceGrotesk.woff2") format("woff2");
+        font-weight: 300 700;
+        font-style: normal;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f8fafc;
+      }
+      body {
+        font-family: "DM Sans", system-ui, sans-serif;
+        color: #0f172a;
+      }
+      .display {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+      }
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+      .num {
+        font-variant-numeric: tabular-nums;
+      }
+
+      .scene {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background-color: #f8fafc;
+      }
+      #s2, #s3, #s4, #s5 {
+        opacity: 0;
+      }
+
+      /* ---------- shared decoratives ---------- */
+      .blob {
+        position: absolute;
+        width: 760px;
+        height: 760px;
+        border-radius: 50%;
+        filter: blur(90px);
+      }
+      .ghost {
+        position: absolute;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        color: rgba(5, 150, 105, 0.12);
+        letter-spacing: -0.04em;
+        line-height: 1;
+        white-space: nowrap;
+        user-select: none;
+      }
+      .kicker {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        color: #059669;
+        text-transform: uppercase;
+      }
+      .rule {
+        height: 5px;
+        background-color: #059669;
+        border-radius: 3px;
+        transform-origin: left center;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        background-color: #059669;
+        color: #ffffff;
+        border-radius: 999px;
+        padding: 14px 30px;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 600;
+        font-size: 26px;
+      }
+      .card {
+        background-color: #ffffff;
+        border-radius: 28px;
+        border: 2px solid #e2e8f0;
+        box-shadow: 0 30px 70px rgba(15, 23, 42, 0.14);
+      }
+
+      /* ---------- Scene 1 · Hook ---------- */
+      #s1-blob-a {
+        top: -180px;
+        right: -140px;
+        background-color: rgba(209, 250, 229, 0.9);
+      }
+      #s1-blob-b {
+        top: -200px;
+        left: -180px;
+        background-color: rgba(219, 234, 254, 0.9);
+      }
+      #s1-ghost {
+        font-size: 460px;
+        right: -70px;
+        bottom: 60px;
+      }
+      .s1-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        height: 100%;
+        padding: 120px 160px 160px;
+        gap: 30px;
+      }
+      .s1-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        background-color: #ffffff;
+        border: 2px solid #d1fae5;
+        border-radius: 999px;
+        padding: 14px 30px;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      }
+      .s1-badge .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: #10b981;
+      }
+      .s1-badge span {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #065f46;
+      }
+      .s1-line {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 138px;
+        line-height: 1.04;
+        letter-spacing: -0.035em;
+        color: #0f172a;
+      }
+      .s1-line.green {
+        color: #059669;
+      }
+      #s1-rule {
+        width: 240px;
+      }
+      .s1-sub {
+        font-size: 34px;
+        line-height: 1.5;
+        color: #475569;
+        max-width: 860px;
+      }
+      .s1-meta {
+        position: absolute;
+        bottom: 64px;
+        left: 160px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 20px;
+        letter-spacing: 0.18em;
+        color: #64748b;
+      }
+      .s1-meta b {
+        color: #059669;
+        font-weight: 700;
+      }
+
+      /* ---------- Scene 2 · Pace zones ---------- */
+      #s2-ghost {
+        font-size: 380px;
+        top: -60px;
+        right: -50px;
+      }
+      #s2-glow {
+        bottom: -260px;
+        left: -200px;
+        background-color: rgba(209, 250, 229, 0.8);
+      }
+      .s2-grid {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 100px 120px 100px 160px;
+        gap: 90px;
+      }
+      .s2-left {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        width: 720px;
+        flex-shrink: 0;
+      }
+      .s2-h {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 86px;
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+        color: #0f172a;
+      }
+      .s2-h em {
+        font-style: normal;
+        color: #059669;
+      }
+      .s2-body {
+        font-size: 30px;
+        line-height: 1.55;
+        color: #475569;
+        max-width: 640px;
+      }
+      .s2-card {
+        position: relative;
+        flex: 1;
+        padding: 52px 56px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+      .s2-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 24px;
+      }
+      .s2-card-title {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #64748b;
+      }
+      .zone-row {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+      }
+      .zone-label {
+        width: 170px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .zone-bar-track {
+        flex: 1;
+        height: 20px;
+        border-radius: 10px;
+        background-color: #f1f5f9;
+        overflow: hidden;
+      }
+      .zone-bar {
+        height: 100%;
+        border-radius: 10px;
+        transform-origin: left center;
+      }
+      .zone-pace {
+        width: 150px;
+        text-align: right;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 30px;
+        color: #0f172a;
+      }
+
+      /* ---------- Scene 3 · Elevation ---------- */
+      #s3-ghost {
+        font-size: 380px;
+        top: -70px;
+        right: -40px;
+      }
+      #s3-glow {
+        top: -240px;
+        left: -200px;
+        background-color: rgba(219, 234, 254, 0.8);
+      }
+      .s3-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        padding: 96px 160px 90px;
+        gap: 40px;
+      }
+      .s3-top {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 60px;
+      }
+      .s3-head {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+      .s3-h {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 78px;
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+        color: #0f172a;
+        max-width: 980px;
+      }
+      .s3-h em {
+        font-style: normal;
+        color: #059669;
+      }
+      .s3-chips {
+        display: flex;
+        gap: 22px;
+        padding-bottom: 10px;
+      }
+      .stat-chip {
+        background-color: #ffffff;
+        border: 2px solid #d1fae5;
+        border-radius: 18px;
+        padding: 20px 30px;
+        text-align: center;
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+      }
+      .stat-chip .v {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 40px;
+        color: #059669;
+        line-height: 1.1;
+      }
+      .stat-chip .l {
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #475569;
+        margin-top: 6px;
+      }
+      .s3-card {
+        position: relative;
+        flex: 1;
+        padding: 50px 60px 40px;
+        display: flex;
+        flex-direction: column;
+      }
+      .s3-svg-wrap {
+        position: relative;
+        flex: 1;
+      }
+      .s3-svg-wrap svg {
+        position: absolute;
+        inset: 0;
+      }
+      #s3-grade {
+        position: absolute;
+        top: 6px;
+        left: 56%;
+        background-color: #059669;
+        color: #ffffff;
+        border-radius: 12px;
+        padding: 10px 22px;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 28px;
+      }
+      .s3-ticks {
+        display: flex;
+        justify-content: space-between;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 19px;
+        letter-spacing: 0.1em;
+        color: #64748b;
+        padding-top: 18px;
+        border-top: 2px solid #e2e8f0;
+        margin-top: 14px;
+      }
+
+      /* ---------- Scene 4 · Fuel ---------- */
+      #s4-ghost {
+        font-size: 400px;
+        bottom: -60px;
+        right: -50px;
+      }
+      #s4-glow {
+        bottom: -300px;
+        left: 580px;
+        background-color: rgba(209, 250, 229, 0.85);
+      }
+      .s4-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        height: 100%;
+        padding: 120px 160px;
+        gap: 70px;
+      }
+      .s4-h {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 104px;
+        line-height: 1.05;
+        letter-spacing: -0.035em;
+        color: #0f172a;
+      }
+      .s4-h em {
+        font-style: normal;
+        color: #059669;
+      }
+      .s4-stats {
+        display: flex;
+        gap: 120px;
+      }
+      .s4-stat .v {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 128px;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        color: #059669;
+      }
+      .s4-stat .v small {
+        font-size: 54px;
+        font-weight: 500;
+        color: #0f172a;
+        letter-spacing: 0;
+        margin-left: 8px;
+      }
+      .s4-stat .l {
+        margin-top: 16px;
+        font-size: 23px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #64748b;
+      }
+      .corner {
+        position: absolute;
+        width: 56px;
+        height: 56px;
+        border-color: #059669;
+        border-style: solid;
+        border-width: 0;
+      }
+      #c-tl { top: 60px; left: 70px; border-top-width: 4px; border-left-width: 4px; }
+      #c-br { bottom: 60px; right: 70px; border-bottom-width: 4px; border-right-width: 4px; }
+
+      /* ---------- Scene 5 · CTA ---------- */
+      #s5-halo {
+        position: absolute;
+        top: 240px;
+        left: 660px;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background-color: rgba(209, 250, 229, 0.7);
+        filter: blur(80px);
+      }
+      .s5-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 120px 160px;
+        gap: 34px;
+        text-align: center;
+      }
+      .s5-mark {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 156px;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        color: #0f172a;
+      }
+      .s5-mark em {
+        font-style: normal;
+        color: #059669;
+      }
+      .s5-url {
+        font-size: 40px;
+        font-weight: 700;
+        color: #059669;
+        letter-spacing: 0.02em;
+      }
+      .s5-pill {
+        margin-top: 18px;
+        background-color: #059669;
+        color: #ffffff;
+        border-radius: 999px;
+        padding: 26px 64px;
+        font-size: 34px;
+        font-weight: 700;
+        box-shadow: 0 18px 44px rgba(5, 150, 105, 0.35);
+      }
+      .s5-proof {
+        margin-top: 10px;
+        font-size: 27px;
+        color: #475569;
+      }
+      .s5-proof b {
+        color: #059669;
+      }
+      .s5-hr {
+        position: absolute;
+        left: 360px;
+        right: 360px;
+        height: 3px;
+        background-color: #e2e8f0;
+        transform-origin: center;
+      }
+      #s5-hr-top { top: 110px; }
+      #s5-hr-bot { bottom: 110px; }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-ynjl" id="root" data-composition-id="main" data-start="0" data-duration="25" data-width="1920" data-height="1080">
+      <audio data-hf-id="hf-qt9y" id="music" class="clip" data-start="0" data-duration="25" data-track-index="3" src="music.mp3" data-volume="0.55"></audio>
+      <!-- ============ SCENE 1 · HOOK ============ -->
+      <div data-hf-id="hf-yihu" id="s1" class="scene">
+        <div data-hf-id="hf-ds5w" id="s1-blob-a" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-mg1r" id="s1-blob-b" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-xaiq" id="s1-ghost" class="ghost num" data-layout-ignore="">5:32</div>
+        <div data-hf-id="hf-kwf4" class="s1-content">
+          <div data-hf-id="hf-xkhu" class="s1-badge" id="s1-badge">
+            <div data-hf-id="hf-lu65" class="dot"></div>
+            <span data-hf-id="hf-vgyk">Made for runners by a runner</span>
+          </div>
+          <div data-hf-id="hf-yeow">
+            <div data-hf-id="hf-siob" class="s1-line" id="s1-line1">Train Smarter.</div>
+            <div data-hf-id="hf-gqwn" class="s1-line green" id="s1-line2">Race Faster.</div>
+          </div>
+          <div data-hf-id="hf-dgpv" class="rule" id="s1-rule"></div>
+          <div data-hf-id="hf-9c7s" class="s1-sub" id="s1-sub">
+            Science-backed pace zones, real-world course analysis, and
+            personalized race fueling — without expensive coaching.
+          </div>
+        </div>
+        <div data-hf-id="hf-wgsp" class="s1-meta" id="s1-meta"><b data-hf-id="hf-xset">TRAINPACE.COM</b> &#160;·&#160; PACE / COURSE / FUEL</div>
+      </div>
+
+      <!-- ============ SCENE 2 · PACE ZONES ============ -->
+      <div data-hf-id="hf-ukdt" id="s2" class="scene">
+        <div data-hf-id="hf-xo6p" id="s2-glow" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-jfma" id="s2-ghost" class="ghost" data-layout-ignore="">VDOT</div>
+        <div data-hf-id="hf-4pyc" class="s2-grid">
+          <div data-hf-id="hf-gvrb" class="s2-left">
+            <div data-hf-id="hf-ugwj" class="kicker" id="s2-kicker">// Pace Calculator</div>
+            <div data-hf-id="hf-12c6" class="s2-h" id="s2-h">One race time. <em data-hf-id="hf-1wzb">Every training pace.</em></div>
+            <div data-hf-id="hf-n90o" class="s2-body" id="s2-body">
+              Enter any recent result and get your complete set of
+              science-backed training zones, instantly.
+            </div>
+          </div>
+          <div data-hf-id="hf-543g" class="s2-card card" id="s2-card">
+            <div data-hf-id="hf-411d" class="s2-card-head">
+              <div data-hf-id="hf-ntgw" class="s2-card-title">Training Zones · min/km</div>
+              <div data-hf-id="hf-4sgp" class="chip" id="s2-chip" style="font-size: 22px; padding: 10px 24px">⚡ VDOT 45.2</div>
+            </div>
+            <div data-hf-id="hf-9bth" class="zone-row">
+              <div data-hf-id="hf-o045" class="zone-label">Easy</div>
+              <div data-hf-id="hf-iacg" class="zone-bar-track"><div data-hf-id="hf-xtpj" class="zone-bar" style="width: 96%; background-color: #a7f3d0"></div></div>
+              <div data-hf-id="hf-63ws" class="zone-pace num">5:58</div>
+            </div>
+            <div data-hf-id="hf-0mdl" class="zone-row">
+              <div data-hf-id="hf-wiyl" class="zone-label">Marathon</div>
+              <div data-hf-id="hf-1jvc" class="zone-bar-track"><div data-hf-id="hf-8v99" class="zone-bar" style="width: 84%; background-color: #6ee7b7"></div></div>
+              <div data-hf-id="hf-hzdy" class="zone-pace num">5:12</div>
+            </div>
+            <div data-hf-id="hf-5v9s" class="zone-row">
+              <div data-hf-id="hf-uzym" class="zone-label">Threshold</div>
+              <div data-hf-id="hf-0cy9" class="zone-bar-track"><div data-hf-id="hf-hwi4" class="zone-bar" style="width: 76%; background-color: #34d399"></div></div>
+              <div data-hf-id="hf-6qxn" class="zone-pace num">4:52</div>
+            </div>
+            <div data-hf-id="hf-5gyr" class="zone-row">
+              <div data-hf-id="hf-kv1m" class="zone-label">Interval</div>
+              <div data-hf-id="hf-0r9a" class="zone-bar-track"><div data-hf-id="hf-g3tu" class="zone-bar" style="width: 66%; background-color: #10b981"></div></div>
+              <div data-hf-id="hf-rwhi" class="zone-pace num">4:28</div>
+            </div>
+            <div data-hf-id="hf-zfgi" class="zone-row">
+              <div data-hf-id="hf-of44" class="zone-label">Repetition</div>
+              <div data-hf-id="hf-zkc7" class="zone-bar-track"><div data-hf-id="hf-5mtn" class="zone-bar" style="width: 58%; background-color: #059669"></div></div>
+              <div data-hf-id="hf-yh5z" class="zone-pace num">4:09</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 3 · ELEVATION ============ -->
+      <div data-hf-id="hf-tsq0" id="s3" class="scene">
+        <div data-hf-id="hf-57p6" id="s3-glow" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-0fp7" id="s3-ghost" class="ghost" data-layout-ignore="">GPX</div>
+        <div data-hf-id="hf-2tii" class="s3-content">
+          <div data-hf-id="hf-6tqo" class="s3-top">
+            <div data-hf-id="hf-wl5p" class="s3-head">
+              <div data-hf-id="hf-q17q" class="kicker" id="s3-kicker">// ElevationFinder</div>
+              <div data-hf-id="hf-vx0z" class="s3-h" id="s3-h">See every climb <em data-hf-id="hf-f0vz">before race day.</em></div>
+            </div>
+            <div data-hf-id="hf-y4vc" class="s3-chips">
+              <div data-hf-id="hf-2esx" class="stat-chip" id="s3-chip1">
+                <div data-hf-id="hf-skyr" class="v num">312 m</div>
+                <div data-hf-id="hf-s079" class="l">Total gain</div>
+              </div>
+              <div data-hf-id="hf-6cwy" class="stat-chip" id="s3-chip2">
+                <div data-hf-id="hf-3b09" class="v num">8%</div>
+                <div data-hf-id="hf-0b49" class="l">Max grade</div>
+              </div>
+            </div>
+          </div>
+          <div data-hf-id="hf-rzak" class="s3-card card" id="s3-card">
+            <div data-hf-id="hf-7fn8" class="s3-svg-wrap">
+              <svg data-hf-id="hf-x0ql" viewBox="0 0 1600 330" width="100%" height="100%" preserveAspectRatio="none">
+                <path data-hf-id="hf-i6cq" id="s3-area" d="M0,290 C120,280 180,250 260,240 C340,230 400,255 480,245 C560,235 620,180 700,160 C780,140 830,90 900,80 C970,70 1030,120 1100,150 C1170,180 1240,230 1320,235 C1400,240 1500,275 1600,265 L1600,330 L0,330 Z" fill="rgba(5, 150, 105, 0.14)" stroke="none" />
+                <path data-hf-id="hf-swkv" id="s3-path" d="M0,290 C120,280 180,250 260,240 C340,230 400,255 480,245 C560,235 620,180 700,160 C780,140 830,90 900,80 C970,70 1030,120 1100,150 C1170,180 1240,230 1320,235 C1400,240 1500,275 1600,265" fill="none" stroke="#059669" stroke-width="7" stroke-linecap="round" />
+              </svg>
+              <div data-hf-id="hf-n2t7" id="s3-grade">+6.2%</div>
+            </div>
+            <div data-hf-id="hf-yhcu" class="s3-ticks" id="s3-ticks">
+              <span data-hf-id="hf-vcig">0K</span><span data-hf-id="hf-zklt">10K</span><span data-hf-id="hf-3uk9">21K</span><span data-hf-id="hf-9okb">30K</span><span data-hf-id="hf-kcdg">42K</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 4 · FUEL ============ -->
+      <div data-hf-id="hf-pulz" id="s4" class="scene">
+        <div data-hf-id="hf-9cm7" id="s4-glow" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-zil1" id="s4-ghost" class="ghost" data-layout-ignore="">FUEL</div>
+        <div data-hf-id="hf-x6g5" class="corner" id="c-tl"></div>
+        <div data-hf-id="hf-qyhp" class="corner" id="c-br"></div>
+        <div data-hf-id="hf-eq11" class="s4-content">
+          <div data-hf-id="hf-rb4v" class="s4-h" id="s4-h">Fuel it. <em data-hf-id="hf-65rx">Don’t wing it.</em></div>
+          <div data-hf-id="hf-valz" class="s4-stats">
+            <div data-hf-id="hf-fofr" class="s4-stat" id="s4-stat1">
+              <div data-hf-id="hf-892y" class="v num"><span data-hf-id="hf-7vpk" id="f-carbs">0</span><small data-hf-id="hf-vzno">g/hr</small></div>
+              <div data-hf-id="hf-injl" class="l">Carb target</div>
+            </div>
+            <div data-hf-id="hf-70jw" class="s4-stat" id="s4-stat2">
+              <div data-hf-id="hf-geji" class="v num"><span data-hf-id="hf-p5nu" id="f-gels">0</span><small data-hf-id="hf-0a75">gels</small></div>
+              <div data-hf-id="hf-d5zn" class="l">Race total</div>
+            </div>
+            <div data-hf-id="hf-7s7p" class="s4-stat" id="s4-stat3">
+              <div data-hf-id="hf-gsuj" class="v num"><span data-hf-id="hf-aj3o" id="f-kcal">0</span><small data-hf-id="hf-t3vb">kcal</small></div>
+              <div data-hf-id="hf-69p7" class="l">Energy plan</div>
+            </div>
+          </div>
+          <div data-hf-id="hf-wx4e" class="chip" id="s4-chip">✦ AI-personalized to your race</div>
+        </div>
+      </div>
+
+      <!-- ============ SCENE 5 · CTA ============ -->
+      <div data-hf-id="hf-lwhy" id="s5" class="scene">
+        <div data-hf-id="hf-b5bf" id="s5-halo" data-layout-ignore=""></div>
+        <div data-hf-id="hf-pk92" class="s5-hr" id="s5-hr-top"></div>
+        <div data-hf-id="hf-8o2w" class="s5-hr" id="s5-hr-bot"></div>
+        <div data-hf-id="hf-4fk9" class="s5-content" id="s5-inner">
+          <div data-hf-id="hf-arcg" class="s5-mark" id="s5-mark">Train<em data-hf-id="hf-jtk8">Pace</em></div>
+          <div data-hf-id="hf-n804" class="s5-url" id="s5-url">trainpace.com</div>
+          <div data-hf-id="hf-70t9" class="s5-pill" id="s5-pill">Get Started →</div>
+          <div data-hf-id="hf-4zmv" class="s5-proof" id="s5-proof">
+            Free <b data-hf-id="hf-cufq">·</b> No credit card <b data-hf-id="hf-gq2i">·</b> No account needed
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      /* ================= SCENE 1 · HOOK (0 – 5.1) ================= */
+      tl.fromTo("#s1-badge", { y: -44, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 0.2);
+      tl.fromTo("#s1-line1", { y: 90, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "expo.out" }, 0.35);
+      tl.fromTo("#s1-line2", { x: -70, opacity: 0 }, { x: 0, opacity: 1, duration: 0.65, ease: "back.out(1.4)" }, 0.55);
+      tl.fromTo("#s1-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut" }, 0.8);
+      tl.fromTo("#s1-sub", { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "sine.out" }, 1.0);
+      tl.fromTo("#s1-meta", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, 1.25);
+      // ambient: blobs drift (finite yoyo), ghost pace figure slides
+      tl.to("#s1-blob-a", { x: -40, y: 30, duration: 2.3, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+      tl.to("#s1-blob-b", { x: 36, y: 24, duration: 2.3, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0.2);
+      tl.to("#s1-ghost", { x: -34, duration: 4.4, ease: "none" }, 0.2);
+
+      /* ---- T1 (4.6): blur crossfade ---- */
+      tl.to("#s1", { filter: "blur(10px)", scale: 1.03, opacity: 0, duration: 0.5, ease: "power2.inOut" }, 4.6);
+      tl.fromTo("#s2",
+        { filter: "blur(10px)", scale: 0.97, opacity: 0 },
+        { filter: "blur(0px)", scale: 1, opacity: 1, duration: 0.5, ease: "power2.inOut" }, 4.7);
+      tl.set("#s1", { visibility: "hidden" }, 5.25);
+
+      /* ================= SCENE 2 · PACE ZONES (5.1 – 10.1) ================= */
+      tl.fromTo("#s2-kicker", { x: -44, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 5.05);
+      tl.fromTo("#s2-h", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "expo.out" }, 5.2);
+      tl.fromTo("#s2-body", { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: "sine.out" }, 5.45);
+      tl.fromTo("#s2-card", { x: 130, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, 5.3);
+      tl.fromTo("#s2 .zone-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: "power2.out", stagger: 0.09 }, 5.85);
+      tl.fromTo("#s2 .zone-pace", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out", stagger: 0.09 }, 6.0);
+      tl.fromTo("#s2-chip", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(2)" }, 6.6);
+      // ambient: ghost VDOT drifts
+      tl.to("#s2-ghost", { y: 28, duration: 4.6, ease: "none" }, 5.1);
+
+      /* ---- T2 (9.6): blur crossfade ---- */
+      tl.to("#s2", { filter: "blur(10px)", scale: 1.03, opacity: 0, duration: 0.5, ease: "power2.inOut" }, 9.6);
+      tl.fromTo("#s3",
+        { filter: "blur(10px)", scale: 0.97, opacity: 0 },
+        { filter: "blur(0px)", scale: 1, opacity: 1, duration: 0.5, ease: "power2.inOut" }, 9.7);
+      tl.set("#s2", { visibility: "hidden" }, 10.25);
+
+      /* ================= SCENE 3 · ELEVATION (10.1 – 15.1) ================= */
+      const elevPath = document.getElementById("s3-path");
+      const elevLen = elevPath.getTotalLength();
+      gsap.set(elevPath, { strokeDasharray: elevLen });
+
+      tl.fromTo("#s3-kicker", { x: -44, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 10.05);
+      tl.fromTo("#s3-h", { y: 52, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: "expo.out" }, 10.2);
+      tl.fromTo("#s3-chip1", { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 10.5);
+      tl.fromTo("#s3-chip2", { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 10.62);
+      tl.fromTo("#s3-card", { y: 96, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 10.35);
+      tl.fromTo(elevPath, { strokeDashoffset: elevLen }, { strokeDashoffset: 0, duration: 1.6, ease: "power1.inOut" }, 10.8);
+      tl.fromTo("#s3-area", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "sine.out" }, 11.7);
+      tl.fromTo("#s3-grade", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2)" }, 12.1);
+      tl.fromTo("#s3-ticks", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, 11.2);
+      // ambient: ghost GPX drifts
+      tl.to("#s3-ghost", { y: -26, duration: 4.6, ease: "none" }, 10.1);
+
+      /* ---- T3 (14.6): blur crossfade ---- */
+      tl.to("#s3", { filter: "blur(10px)", scale: 1.03, opacity: 0, duration: 0.5, ease: "power2.inOut" }, 14.6);
+      tl.fromTo("#s4",
+        { filter: "blur(10px)", scale: 0.97, opacity: 0 },
+        { filter: "blur(0px)", scale: 1, opacity: 1, duration: 0.5, ease: "power2.inOut" }, 14.7);
+      tl.set("#s3", { visibility: "hidden" }, 15.25);
+
+      /* ================= SCENE 4 · FUEL (15.1 – 19.6) ================= */
+      tl.fromTo("#s4-h", { y: 74, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power4.out" }, 15.1);
+      tl.fromTo("#s4 .s4-stat", { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.12 }, 15.4);
+      tl.fromTo("#c-tl", { opacity: 0, x: -24, y: -24 }, { opacity: 1, x: 0, y: 0, duration: 0.5, ease: "power2.out" }, 15.3);
+      tl.fromTo("#c-br", { opacity: 0, x: 24, y: 24 }, { opacity: 1, x: 0, y: 0, duration: 0.5, ease: "power2.out" }, 15.42);
+      tl.fromTo("#s4-chip", { y: 32, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "sine.out" }, 16.5);
+
+      // count-ups (deterministic — values derive from timeline progress)
+      const counters = { carbs: 0, gels: 0, kcal: 0 };
+      const carbsEl = document.getElementById("f-carbs");
+      const gelsEl = document.getElementById("f-gels");
+      const kcalEl = document.getElementById("f-kcal");
+      tl.fromTo(counters, { carbs: 0 }, {
+        carbs: 68, duration: 1.2, ease: "power2.out",
+        onUpdate: () => { carbsEl.textContent = Math.round(counters.carbs); },
+      }, 15.6);
+      tl.fromTo(counters, { gels: 0 }, {
+        gels: 7, duration: 1.2, ease: "power2.out",
+        onUpdate: () => { gelsEl.textContent = Math.round(counters.gels); },
+      }, 15.72);
+      tl.fromTo(counters, { kcal: 0 }, {
+        kcal: 1840, duration: 1.2, ease: "power2.out",
+        onUpdate: () => { kcalEl.textContent = Math.round(counters.kcal).toLocaleString("en-US"); },
+      }, 15.84);
+
+      // ambient: glow pulse (finite yoyo)
+      tl.to("#s4-glow", { scale: 1.1, duration: 1.0, ease: "sine.inOut", yoyo: true, repeat: 3 }, 15.2);
+
+      /* ---- T4 (19.1): zoom through into CTA ---- */
+      tl.to("#s4", { scale: 2.5, opacity: 0, filter: "blur(8px)", duration: 0.4, ease: "power3.in" }, 19.1);
+      tl.fromTo("#s5",
+        { scale: 0.5, opacity: 0, filter: "blur(8px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 19.25);
+      tl.set("#s4", { visibility: "hidden" }, 19.6);
+
+      /* ================= SCENE 5 · CTA (19.6 – 25) ================= */
+      tl.fromTo("#s5-mark", { scale: 1.12, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.9, ease: "expo.out" }, 19.7);
+      tl.fromTo("#s5-url", { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: "sine.out" }, 20.1);
+      tl.fromTo("#s5-pill", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.55, ease: "back.out(1.6)" }, 20.35);
+      tl.fromTo("#s5-proof", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, 20.7);
+      tl.fromTo("#s5-hr-top", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 19.9);
+      tl.fromTo("#s5-hr-bot", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 20.0);
+      // ambient: halo breathes (finite yoyo)
+      tl.to("#s5-halo", { scale: 1.08, duration: 1.1, ease: "sine.inOut", yoyo: true, repeat: 3 }, 19.7);
+
+      // final-scene fade out (the only allowed exit animation)
+      tl.to("#s5-inner", { opacity: 0, duration: 0.85, ease: "power1.inOut" }, 23.95);
+      tl.to("#s5-hr-top", { opacity: 0, duration: 0.7, ease: "power1.inOut" }, 24.0);
+      tl.to("#s5-hr-bot", { opacity: 0, duration: 0.7, ease: "power1.inOut" }, 24.0);
+      tl.to("#s5-halo", { opacity: 0, duration: 0.8, ease: "power1.inOut" }, 24.0);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

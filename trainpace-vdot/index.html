@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "DM Sans";
+        src: url("fonts/DMSans.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: "Space Grotesk";
+        src: url("fonts/SpaceGrotesk.woff2") format("woff2");
+        font-weight: 300 700;
+        font-style: normal;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #f8fafc;
+      }
+      body {
+        font-family: "DM Sans", system-ui, sans-serif;
+        color: #0f172a;
+      }
+      .num {
+        font-variant-numeric: tabular-nums;
+      }
+      .scene {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background-color: #f8fafc;
+      }
+      #d2, #d3, #d4 {
+        opacity: 0;
+      }
+
+      .blob {
+        position: absolute;
+        width: 760px;
+        height: 760px;
+        border-radius: 50%;
+        filter: blur(90px);
+      }
+      .ghost {
+        position: absolute;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        color: rgba(5, 150, 105, 0.12);
+        letter-spacing: -0.04em;
+        line-height: 1;
+        white-space: nowrap;
+        user-select: none;
+      }
+      .kicker {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        color: #059669;
+        text-transform: uppercase;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        background-color: #059669;
+        color: #ffffff;
+        border-radius: 999px;
+        padding: 14px 30px;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 600;
+        font-size: 26px;
+      }
+      .card {
+        background-color: #ffffff;
+        border-radius: 28px;
+        border: 2px solid #e2e8f0;
+        box-shadow: 0 30px 70px rgba(15, 23, 42, 0.14);
+      }
+      .h {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 88px;
+        line-height: 1.08;
+        letter-spacing: -0.03em;
+        color: #0f172a;
+      }
+      .h em {
+        font-style: normal;
+        color: #059669;
+      }
+      .sub {
+        font-size: 30px;
+        line-height: 1.55;
+        color: #475569;
+        max-width: 660px;
+      }
+
+      /* ---------- D1 · Gauge ---------- */
+      #d1-glow {
+        top: -240px;
+        right: -200px;
+        background-color: rgba(209, 250, 229, 0.9);
+      }
+      #d1-ghost {
+        font-size: 400px;
+        bottom: -70px;
+        left: -60px;
+      }
+      .d1-grid {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 100px 140px 100px 160px;
+        gap: 100px;
+      }
+      .d1-left {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        width: 760px;
+        flex-shrink: 0;
+      }
+      .d1-card {
+        position: relative;
+        flex: 1;
+        padding: 60px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .d1-gauge-wrap {
+        position: relative;
+        width: 560px;
+        height: 320px;
+      }
+      .d1-gauge-wrap svg {
+        position: absolute;
+        inset: 0;
+      }
+      .d1-score-block {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
+      }
+      #d1-score {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 120px;
+        line-height: 1;
+        letter-spacing: -0.03em;
+        color: #059669;
+      }
+      .d1-score-label {
+        margin-top: 10px;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #475569;
+      }
+      #d1-tier {
+        margin-top: 24px;
+      }
+
+      /* ---------- D2 · What-if ---------- */
+      #d2-glow {
+        bottom: -260px;
+        left: -200px;
+        background-color: rgba(219, 234, 254, 0.85);
+      }
+      #d2-ghost {
+        font-size: 340px;
+        top: -50px;
+        right: -50px;
+      }
+      .d2-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        height: 100%;
+        padding: 110px 160px;
+        gap: 54px;
+      }
+      .d2-card {
+        width: 100%;
+        padding: 64px 80px;
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+      }
+      .d2-readouts {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+      .d2-readout .l {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #475569;
+        margin-bottom: 12px;
+      }
+      .d2-readout .t {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 96px;
+        line-height: 1;
+        color: #0f172a;
+      }
+      .d2-readout.green .t {
+        color: #059669;
+      }
+      .d2-slider {
+        position: relative;
+        height: 22px;
+        border-radius: 11px;
+        background-color: #f1f5f9;
+      }
+      #d2-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        border-radius: 11px;
+        background-color: #10b981;
+        transform-origin: left center;
+        transform: scaleX(0.92);
+      }
+      #d2-handle {
+        position: absolute;
+        top: -23px;
+        left: calc(92% - 34px);
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        background-color: #ffffff;
+        border: 5px solid #059669;
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.22);
+      }
+
+      /* ---------- D3 · Predictions ---------- */
+      #d3-glow {
+        top: -240px;
+        left: 560px;
+        background-color: rgba(209, 250, 229, 0.85);
+      }
+      #d3-ghost {
+        font-size: 320px;
+        bottom: -60px;
+        right: -50px;
+      }
+      .d3-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 100px 160px;
+        gap: 50px;
+      }
+      .d3-card {
+        width: 100%;
+        padding: 30px 80px;
+      }
+      .pred-row {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+        padding: 34px 0;
+        border-bottom: 2px solid #e2e8f0;
+      }
+      .pred-row:last-child {
+        border-bottom: none;
+      }
+      .pred-dist {
+        width: 280px;
+        font-size: 34px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .pred-bar-track {
+        flex: 1;
+        height: 18px;
+        border-radius: 9px;
+        background-color: #f1f5f9;
+        overflow: hidden;
+      }
+      .pred-bar {
+        height: 100%;
+        border-radius: 9px;
+        background-color: #10b981;
+        transform-origin: left center;
+      }
+      .pred-time {
+        width: 260px;
+        text-align: right;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 44px;
+        color: #059669;
+      }
+
+      /* ---------- D4 · CTA ---------- */
+      #d4-halo {
+        position: absolute;
+        top: 220px;
+        left: 660px;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background-color: rgba(209, 250, 229, 0.75);
+        filter: blur(80px);
+      }
+      .d4-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 120px 160px;
+        gap: 34px;
+        text-align: center;
+      }
+      .d4-mark {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 130px;
+        letter-spacing: -0.04em;
+        line-height: 1.05;
+        color: #0f172a;
+      }
+      .d4-mark em {
+        font-style: normal;
+        color: #059669;
+      }
+      .d4-pill {
+        margin-top: 16px;
+        background-color: #059669;
+        color: #ffffff;
+        border-radius: 999px;
+        padding: 26px 64px;
+        font-size: 34px;
+        font-weight: 700;
+        box-shadow: 0 18px 44px rgba(5, 150, 105, 0.35);
+      }
+      .d4-proof {
+        margin-top: 8px;
+        font-size: 27px;
+        color: #475569;
+      }
+      .d4-proof b {
+        color: #059669;
+      }
+      .d4-hr {
+        position: absolute;
+        left: 360px;
+        right: 360px;
+        height: 3px;
+        background-color: #e2e8f0;
+        transform-origin: center;
+      }
+      #d4-hr-top { top: 110px; }
+      #d4-hr-bot { bottom: 110px; }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-at0g" id="root" data-composition-id="main" data-start="0" data-duration="20" data-width="1920" data-height="1080">
+      <audio data-hf-id="hf-s96j" id="music" class="clip" data-start="0" data-duration="20" data-track-index="3" src="music.mp3" data-volume="0.55"></audio>
+
+      <!-- ============ D1 · GAUGE ============ -->
+      <div data-hf-id="hf-oorf" id="d1" class="scene">
+        <div data-hf-id="hf-a4nn" id="d1-glow" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-aawg" id="d1-ghost" class="ghost" data-layout-ignore="">VDOT</div>
+        <div data-hf-id="hf-uhdu" class="d1-grid">
+          <div data-hf-id="hf-k1nd" class="d1-left">
+            <div data-hf-id="hf-7i6b" class="kicker" id="d1-kicker">// VDOT Calculator</div>
+            <div data-hf-id="hf-4lgx" class="h" id="d1-h">What’s your <em data-hf-id="hf-voxv">VDOT?</em></div>
+            <div data-hf-id="hf-y8zk" class="sub" id="d1-sub">
+              One number that captures your running fitness — straight from
+              Jack Daniels’ oxygen-cost model.
+            </div>
+          </div>
+          <div data-hf-id="hf-x2gw" class="d1-card card" id="d1-card">
+            <div data-hf-id="hf-bmjo" class="d1-gauge-wrap">
+              <svg data-hf-id="hf-8c6f" viewBox="0 0 560 320">
+                <path data-hf-id="hf-acqj" d="M 60 290 A 220 220 0 0 1 500 290" fill="none" stroke="#e2e8f0" stroke-width="34" stroke-linecap="round" />
+                <path data-hf-id="hf-opae" id="d1-arc" d="M 60 290 A 220 220 0 0 1 500 290" fill="none" stroke="#059669" stroke-width="34" stroke-linecap="round" />
+              </svg>
+              <div data-hf-id="hf-1r10" class="d1-score-block">
+                <div data-hf-id="hf-ten4" id="d1-score" class="num">0.0</div>
+                <div data-hf-id="hf-o3w2" class="d1-score-label">VDOT Score</div>
+              </div>
+            </div>
+            <div data-hf-id="hf-8xjz" class="chip" id="d1-tier">Intermediate · Top 38%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ D2 · WHAT-IF ============ -->
+      <div data-hf-id="hf-g0vk" id="d2" class="scene">
+        <div data-hf-id="hf-4s3u" id="d2-glow" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-irb7" id="d2-ghost" class="ghost" data-layout-ignore="">WHAT IF</div>
+        <div data-hf-id="hf-aqhi" class="d2-content">
+          <div data-hf-id="hf-yeow">
+            <div data-hf-id="hf-5q3u" class="kicker" id="d2-kicker">// What-If Explorer</div>
+            <div data-hf-id="hf-qyqr" class="h" style="margin-top: 22px" id="d2-h">What if you <em data-hf-id="hf-shcr">trained for it?</em></div>
+          </div>
+          <div data-hf-id="hf-tq7k" class="d2-card card" id="d2-card">
+            <div data-hf-id="hf-4yg4" class="d2-readouts">
+              <div data-hf-id="hf-91fp" class="d2-readout" id="d2-time-block">
+                <div data-hf-id="hf-qi88" class="l">5K goal time</div>
+                <div data-hf-id="hf-rtjz" class="t num" id="d2-time">19:50</div>
+              </div>
+              <div data-hf-id="hf-zst2" class="d2-readout green" id="d2-vdot-block">
+                <div data-hf-id="hf-13zt" class="l">Projected VDOT</div>
+                <div data-hf-id="hf-2d5x" class="t num" id="d2-vdot">45.2</div>
+              </div>
+            </div>
+            <div data-hf-id="hf-3gdy" class="d2-slider" id="d2-slider">
+              <div data-hf-id="hf-ofwf" id="d2-fill"></div>
+              <div data-hf-id="hf-y46e" id="d2-handle"></div>
+            </div>
+          </div>
+          <div data-hf-id="hf-xzox" class="sub" id="d2-sub">
+            Slide your goal time and watch your fitness score — and every
+            training pace — move with it.
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ D3 · PREDICTIONS ============ -->
+      <div data-hf-id="hf-gsjd" id="d3" class="scene">
+        <div data-hf-id="hf-gg8x" id="d3-glow" class="blob" data-layout-ignore=""></div>
+        <div data-hf-id="hf-tgc1" id="d3-ghost" class="ghost" data-layout-ignore="">PR</div>
+        <div data-hf-id="hf-5zmv" class="d3-content">
+          <div data-hf-id="hf-y7yw">
+            <div data-hf-id="hf-txid" class="kicker" id="d3-kicker">// Race Predictions</div>
+            <div data-hf-id="hf-nj88" class="h" style="margin-top: 22px" id="d3-h">Every finish line, <em data-hf-id="hf-klt9">predicted.</em></div>
+          </div>
+          <div data-hf-id="hf-w2yo" class="d3-card card" id="d3-card">
+            <div data-hf-id="hf-540u" class="pred-row">
+              <div data-hf-id="hf-06ue" class="pred-dist">5K</div>
+              <div data-hf-id="hf-lw3r" class="pred-bar-track"><div data-hf-id="hf-f7lt" class="pred-bar" style="width: 18%"></div></div>
+              <div data-hf-id="hf-4sv2" class="pred-time num">19:50</div>
+            </div>
+            <div data-hf-id="hf-obcy" class="pred-row">
+              <div data-hf-id="hf-qaos" class="pred-dist">10K</div>
+              <div data-hf-id="hf-fysn" class="pred-bar-track"><div data-hf-id="hf-uxy7" class="pred-bar" style="width: 34%"></div></div>
+              <div data-hf-id="hf-hk3l" class="pred-time num">41:10</div>
+            </div>
+            <div data-hf-id="hf-opnz" class="pred-row">
+              <div data-hf-id="hf-cbcv" class="pred-dist">Half Marathon</div>
+              <div data-hf-id="hf-fkhm" class="pred-bar-track"><div data-hf-id="hf-0it0" class="pred-bar" style="width: 62%"></div></div>
+              <div data-hf-id="hf-76c2" class="pred-time num">1:31:20</div>
+            </div>
+            <div data-hf-id="hf-p3z0" class="pred-row">
+              <div data-hf-id="hf-f9h8" class="pred-dist">Marathon</div>
+              <div data-hf-id="hf-f66l" class="pred-bar-track"><div data-hf-id="hf-vtcz" class="pred-bar" style="width: 96%"></div></div>
+              <div data-hf-id="hf-yfli" class="pred-time num">3:10:49</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ D4 · CTA ============ -->
+      <div data-hf-id="hf-84ni" id="d4" class="scene">
+        <div data-hf-id="hf-hpev" id="d4-halo" data-layout-ignore=""></div>
+        <div data-hf-id="hf-9c0e" class="d4-hr" id="d4-hr-top"></div>
+        <div data-hf-id="hf-21ao" class="d4-hr" id="d4-hr-bot"></div>
+        <div data-hf-id="hf-3jph" class="d4-content" id="d4-inner">
+          <div data-hf-id="hf-ifv1" class="d4-mark" id="d4-mark">Find <em data-hf-id="hf-88vd">your number.</em></div>
+          <div data-hf-id="hf-unys" class="d4-pill" id="d4-pill">trainpace.com/vdot</div>
+          <div data-hf-id="hf-ppdd" class="d4-proof" id="d4-proof">Free <b data-hf-id="hf-cufq">·</b> No account needed</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      /* ============ D1 · GAUGE (0 – 5) ============ */
+      const arc = document.getElementById("d1-arc");
+      const arcLen = arc.getTotalLength();
+      gsap.set(arc, { strokeDasharray: arcLen });
+      const arcTarget = arcLen * (1 - 45.2 / 80); // gauge fills to 45.2 of 80
+
+      tl.fromTo("#d1-kicker", { x: -44, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 0.2);
+      tl.fromTo("#d1-h", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "expo.out" }, 0.35);
+      tl.fromTo("#d1-sub", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: "sine.out" }, 0.6);
+      tl.fromTo("#d1-card", { x: 130, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, 0.45);
+      tl.fromTo(arc, { strokeDashoffset: arcLen }, { strokeDashoffset: arcTarget, duration: 1.5, ease: "power2.inOut" }, 1.1);
+      tl.fromTo("#d1-tier", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(2)" }, 2.5);
+
+      const d1 = { score: 0 };
+      const scoreEl = document.getElementById("d1-score");
+      tl.fromTo(d1, { score: 0 }, {
+        score: 45.2, duration: 1.5, ease: "power2.inOut",
+        onUpdate: () => { scoreEl.textContent = d1.score.toFixed(1); },
+      }, 1.1);
+      tl.to("#d1-ghost", { x: 30, duration: 4.4, ease: "none" }, 0.2);
+
+      /* ---- T1 (4.5): blur crossfade ---- */
+      tl.to("#d1", { filter: "blur(10px)", scale: 1.03, opacity: 0, duration: 0.5, ease: "power2.inOut" }, 4.5);
+      tl.fromTo("#d2",
+        { filter: "blur(10px)", scale: 0.97, opacity: 0 },
+        { filter: "blur(0px)", scale: 1, opacity: 1, duration: 0.5, ease: "power2.inOut" }, 4.6);
+      tl.set("#d1", { visibility: "hidden" }, 5.15);
+
+      /* ============ D2 · WHAT-IF (5 – 10.5) ============ */
+      tl.fromTo("#d2-kicker", { x: -44, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 5.0);
+      tl.fromTo("#d2-h", { y: 56, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: "expo.out" }, 5.15);
+      tl.fromTo("#d2-card", { y: 100, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 5.35);
+      tl.fromTo("#d2-sub", { opacity: 0 }, { opacity: 1, duration: 0.55, ease: "sine.out" }, 5.9);
+
+      // the "drag": handle slides left, goal time drops, VDOT climbs
+      // (start positions live in CSS: handle at 92%, fill scaleX 0.92)
+      tl.to("#d2-handle", { x: -317, duration: 1.6, ease: "power2.inOut" }, 6.8);
+      tl.to("#d2-fill", { scaleX: 0.7, duration: 1.6, ease: "power2.inOut" }, 6.8);
+
+      const d2 = { secs: 1190, vdot: 45.2 };
+      const timeEl = document.getElementById("d2-time");
+      const vdotEl = document.getElementById("d2-vdot");
+      tl.to(d2, {
+        secs: 1150, vdot: 47.1, duration: 1.6, ease: "power2.inOut",
+        onUpdate: () => {
+          const s = Math.round(d2.secs);
+          timeEl.textContent = Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+          vdotEl.textContent = d2.vdot.toFixed(1);
+        },
+      }, 6.8);
+      tl.to("#d2-ghost", { y: 26, duration: 5.0, ease: "none" }, 5.0);
+
+      /* ---- T2 (10.1): blur crossfade ---- */
+      tl.to("#d2", { filter: "blur(10px)", scale: 1.03, opacity: 0, duration: 0.5, ease: "power2.inOut" }, 10.1);
+      tl.fromTo("#d3",
+        { filter: "blur(10px)", scale: 0.97, opacity: 0 },
+        { filter: "blur(0px)", scale: 1, opacity: 1, duration: 0.5, ease: "power2.inOut" }, 10.2);
+      tl.set("#d2", { visibility: "hidden" }, 10.75);
+
+      /* ============ D3 · PREDICTIONS (10.5 – 15.5) ============ */
+      tl.fromTo("#d3-kicker", { x: -44, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, 10.55);
+      tl.fromTo("#d3-h", { y: 56, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: "expo.out" }, 10.7);
+      tl.fromTo("#d3-card", { y: 110, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, 10.9);
+      tl.fromTo("#d3 .pred-dist", { x: -36, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45, ease: "power2.out", stagger: 0.11 }, 11.4);
+      tl.fromTo("#d3 .pred-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out", stagger: 0.11 }, 11.55);
+      tl.fromTo("#d3 .pred-time", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.6)", stagger: 0.11 }, 11.7);
+      tl.to("#d3-ghost", { y: -26, duration: 4.6, ease: "none" }, 10.5);
+
+      /* ---- T3 (15.1): zoom through into CTA ---- */
+      tl.to("#d3", { scale: 2.5, opacity: 0, filter: "blur(8px)", duration: 0.4, ease: "power3.in" }, 15.1);
+      tl.fromTo("#d4",
+        { scale: 0.5, opacity: 0, filter: "blur(8px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 15.25);
+      tl.set("#d3", { visibility: "hidden" }, 15.6);
+
+      /* ============ D4 · CTA (15.5 – 20) ============ */
+      tl.fromTo("#d4-mark", { scale: 1.12, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.9, ease: "expo.out" }, 15.7);
+      tl.fromTo("#d4-pill", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.55, ease: "back.out(1.6)" }, 16.2);
+      tl.fromTo("#d4-proof", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, 16.6);
+      tl.fromTo("#d4-hr-top", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 15.9);
+      tl.fromTo("#d4-hr-bot", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 16.0);
+      tl.to("#d4-halo", { scale: 1.08, duration: 1.1, ease: "sine.inOut", yoyo: true, repeat: 2 }, 15.7);
+
+      // final-scene fade out
+      tl.to("#d4-inner", { opacity: 0, duration: 0.8, ease: "power1.inOut" }, 19.0);
+      tl.to("#d4-hr-top", { opacity: 0, duration: 0.7, ease: "power1.inOut" }, 19.05);
+      tl.to("#d4-hr-bot", { opacity: 0, duration: 0.7, ease: "power1.inOut" }, 19.05);
+      tl.to("#d4-halo", { opacity: 0, duration: 0.7, ease: "power1.inOut" }, 19.05);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

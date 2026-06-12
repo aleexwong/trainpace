@@ -88,6 +88,7 @@ export function generateDataManifest(
         elevation: 0,
         race: 0,
         blog: 0,
+        plan: 0,
       },
     },
   };
@@ -418,6 +419,7 @@ export function calculateBuildStats(pages: SeoPageConfig[]): BuildStats {
     elevation: 0,
     race: 0,
     blog: 0,
+    plan: 0,
   };
 
   let totalTitleLength = 0;

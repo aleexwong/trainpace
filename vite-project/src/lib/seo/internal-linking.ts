@@ -162,6 +162,29 @@ export const HUB_CONFIG: Record<SeoToolType, SeoHubConfig> = {
       },
     ],
   },
+  plan: {
+    id: 'plan:hub',
+    slug: 'plan',
+    path: '/plan',
+    tool: 'plan',
+    title: 'Training Plan Generator',
+    description: 'Free running training plan generator for 5K to Marathon',
+    h1: 'Training Plan Generator',
+    intro: 'Build a personalized periodized training plan for your goal race.',
+    spokePageIds: [],
+    categories: [
+      {
+        name: 'By Distance',
+        description: 'Training plans by race distance',
+        pageIds: [],
+      },
+      {
+        name: 'By Level',
+        description: 'Training plans by experience level',
+        pageIds: [],
+      },
+    ],
+  },
 };
 
 // =============================================================================
@@ -365,6 +388,7 @@ export function generateCrossToolLinks(
     elevation: [],
     race: [],
     blog: [],
+    plan: [],
   };
 
   for (const toolType of Object.keys(result) as SeoToolType[]) {

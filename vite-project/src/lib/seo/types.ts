@@ -12,7 +12,7 @@
 // Core SEO Types
 // =============================================================================
 
-export type SeoToolType = 'pace' | 'fuel' | 'elevation' | 'race' | 'blog';
+export type SeoToolType = 'pace' | 'fuel' | 'elevation' | 'race' | 'blog' | 'plan';
 
 export type SchemaType =
   | 'WebPage'

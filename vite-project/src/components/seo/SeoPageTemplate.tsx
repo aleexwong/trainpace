@@ -80,6 +80,7 @@ const TOOL_VARIANTS: Record<SeoToolType, string> = {
   elevation: 'green',
   race: 'orange',
   blog: 'purple',
+  plan: 'green',
 };
 
 const TOOL_COLORS: Record<SeoToolType, { border: string; bg: string; text: string }> = {
@@ -88,6 +89,7 @@ const TOOL_COLORS: Record<SeoToolType, { border: string; bg: string; text: strin
   elevation: { border: 'border-emerald-100', bg: 'bg-emerald-700', text: 'text-emerald-700' },
   race: { border: 'border-orange-100', bg: 'bg-gray-900', text: 'text-orange-800' },
   blog: { border: 'border-purple-100', bg: 'bg-purple-700', text: 'text-purple-700' },
+  plan: { border: 'border-emerald-100', bg: 'bg-emerald-700', text: 'text-emerald-700' },
 };
 
 // =============================================================================
@@ -235,7 +237,7 @@ function CrossToolLinksSection({ currentTool }: CrossToolLinksSectionProps) {
       colors: { border: 'border-emerald-100', text: 'text-emerald-700' },
     },
     {
-      tool: 'blog' as const,
+      tool: 'plan' as const,
       href: '/plan',
       title: 'Training Plan',
       subtitle: 'Build a training plan',

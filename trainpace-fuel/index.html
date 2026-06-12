@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "DM Sans";
+        src: url("fonts/DMSans.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: "Space Grotesk";
+        src: url("fonts/SpaceGrotesk.woff2") format("woff2");
+        font-weight: 300 700;
+        font-style: normal;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #f8fafc;
+      }
+      body {
+        font-family: "DM Sans", system-ui, sans-serif;
+        color: #0f172a;
+      }
+      .num {
+        font-variant-numeric: tabular-nums;
+      }
+      .scene {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background-color: #f8fafc;
+      }
+      #f2, #f3, #f4, #f5 {
+        opacity: 0;
+      }
+
+      .blob {
+        position: absolute;
+        width: 680px;
+        height: 680px;
+        border-radius: 50%;
+        filter: blur(85px);
+      }
+      .ghost {
+        position: absolute;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        color: rgba(5, 150, 105, 0.12);
+        letter-spacing: -0.04em;
+        line-height: 1;
+        white-space: nowrap;
+        user-select: none;
+      }
+      .kicker {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        color: #059669;
+        text-transform: uppercase;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        background-color: #059669;
+        color: #ffffff;
+        border-radius: 999px;
+        padding: 16px 34px;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 600;
+        font-size: 30px;
+      }
+      .card {
+        background-color: #ffffff;
+        border-radius: 32px;
+        border: 2px solid #e2e8f0;
+        box-shadow: 0 30px 70px rgba(15, 23, 42, 0.14);
+      }
+      .rule {
+        height: 6px;
+        background-color: #059669;
+        border-radius: 3px;
+        transform-origin: left center;
+      }
+      .v-h {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 108px;
+        line-height: 1.04;
+        letter-spacing: -0.035em;
+        color: #0f172a;
+      }
+      .v-h em {
+        font-style: normal;
+        color: #059669;
+      }
+      .stat-chip {
+        background-color: #ffffff;
+        border: 2px solid #d1fae5;
+        border-radius: 20px;
+        padding: 24px 36px;
+        text-align: center;
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+      }
+      .stat-chip .v {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 46px;
+        color: #059669;
+        line-height: 1.1;
+      }
+      .stat-chip .l {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #475569;
+        margin-top: 8px;
+      }
+
+      /* ---------- F1 · Hook ---------- */
+      #f1-blob-a {
+        top: -160px;
+        right: -200px;
+        background-color: rgba(209, 250, 229, 0.9);
+      }
+      #f1-blob-b {
+        bottom: -220px;
+        left: -220px;
+        background-color: rgba(219, 234, 254, 0.9);
+      }
+      #f1-ghost {
+        font-size: 410px;
+        right: -70px;
+        bottom: 140px;
+      }
+      .f1-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        height: 100%;
+        padding: 120px 90px 200px;
+        gap: 44px;
+      }
+      .f1-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        background-color: #ffffff;
+        border: 2px solid #d1fae5;
+        border-radius: 999px;
+        padding: 16px 32px;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      }
+      .f1-badge .dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: #10b981;
+      }
+      .f1-badge span {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #065f46;
+      }
+      .f1-word {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 140px;
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+        color: #0f172a;
+        text-transform: uppercase;
+      }
+      .f1-word.green {
+        color: #059669;
+      }
+      .f1-meta {
+        position: absolute;
+        bottom: 110px;
+        left: 90px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        letter-spacing: 0.18em;
+        color: #64748b;
+      }
+      .f1-meta b {
+        color: #059669;
+        font-weight: 700;
+      }
+
+      /* ---------- F2 · Hourly targets ---------- */
+      #f2-ghost {
+        font-size: 340px;
+        top: -50px;
+        right: -60px;
+      }
+      #f2-glow {
+        bottom: -240px;
+        left: -200px;
+        background-color: rgba(209, 250, 229, 0.85);
+      }
+      .f2-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 120px 90px;
+        gap: 56px;
+      }
+      .f2-card {
+        padding: 56px 54px;
+        display: flex;
+        flex-direction: column;
+        gap: 38px;
+      }
+      .f2-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 26px;
+      }
+      .f2-card-title {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #64748b;
+      }
+      .fuel-row {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+      }
+      .fuel-label {
+        width: 190px;
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .fuel-bar-track {
+        flex: 1;
+        height: 22px;
+        border-radius: 11px;
+        background-color: #f1f5f9;
+        overflow: hidden;
+      }
+      .fuel-bar {
+        height: 100%;
+        border-radius: 11px;
+        transform-origin: left center;
+      }
+      .fuel-val {
+        width: 220px;
+        text-align: right;
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 32px;
+        color: #0f172a;
+      }
+
+      /* ---------- F3 · Gel timeline ---------- */
+      #f3-ghost {
+        font-size: 380px;
+        top: -60px;
+        left: -50px;
+      }
+      #f3-glow {
+        top: -240px;
+        right: -220px;
+        background-color: rgba(219, 234, 254, 0.85);
+      }
+      .f3-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: 120px 90px;
+        gap: 56px;
+      }
+      .f3-card {
+        position: relative;
+        padding: 64px 54px 48px;
+        display: flex;
+        flex-direction: column;
+        gap: 44px;
+      }
+      .f3-card-title {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #64748b;
+      }
+      .gel-strip {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 4px 0;
+      }
+      #gel-track {
+        position: absolute;
+        top: 22px;
+        left: 16px;
+        right: 16px;
+        height: 6px;
+        border-radius: 3px;
+        background-color: #d1fae5;
+        transform-origin: left center;
+      }
+      .gel {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+      }
+      .gel .dot {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: #059669;
+        border: 5px solid #ffffff;
+        box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4);
+      }
+      .gel .t {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 21px;
+        letter-spacing: 0.04em;
+        color: #475569;
+        font-weight: 700;
+      }
+      .f3-chips {
+        display: flex;
+        gap: 24px;
+      }
+
+      /* ---------- F4 · AI tuning ---------- */
+      #f4-ghost {
+        font-size: 420px;
+        bottom: -80px;
+        right: -50px;
+      }
+      #f4-glow {
+        bottom: -260px;
+        left: 240px;
+        background-color: rgba(209, 250, 229, 0.9);
+      }
+      .f4-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        width: 100%;
+        height: 100%;
+        padding: 120px 90px;
+        gap: 64px;
+      }
+      .f4-big .n {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 220px;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        color: #059669;
+      }
+      .f4-big .n small {
+        font-size: 80px;
+        font-weight: 500;
+        color: #0f172a;
+        letter-spacing: 0;
+        margin-left: 12px;
+      }
+      .f4-big .l {
+        margin-top: 18px;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #475569;
+      }
+      .f4-row {
+        display: flex;
+        gap: 24px;
+      }
+
+      /* ---------- F5 · CTA ---------- */
+      #f5-halo {
+        position: absolute;
+        top: 620px;
+        left: 240px;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background-color: rgba(209, 250, 229, 0.75);
+        filter: blur(80px);
+      }
+      .f5-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 160px 90px;
+        gap: 40px;
+        text-align: center;
+      }
+      .f5-mark {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 128px;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        color: #0f172a;
+      }
+      .f5-mark em {
+        font-style: normal;
+        color: #059669;
+      }
+      .f5-url {
+        font-size: 42px;
+        font-weight: 700;
+        color: #059669;
+      }
+      .f5-pill {
+        margin-top: 22px;
+        background-color: #059669;
+        color: #ffffff;
+        border-radius: 999px;
+        padding: 30px 72px;
+        font-size: 38px;
+        font-weight: 700;
+        box-shadow: 0 18px 44px rgba(5, 150, 105, 0.35);
+      }
+      .f5-proof {
+        margin-top: 12px;
+        font-size: 29px;
+        color: #475569;
+      }
+      .f5-proof b {
+        color: #059669;
+      }
+      .f5-hr {
+        position: absolute;
+        left: 200px;
+        right: 200px;
+        height: 3px;
+        background-color: #e2e8f0;
+        transform-origin: center;
+      }
+      #f5-hr-top { top: 200px; }
+      #f5-hr-bot { bottom: 200px; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1080" data-height="1920">
+      <audio id="music" class="clip" data-start="0" data-duration="15" data-track-index="3" src="music.mp3" data-volume="0.6"></audio>
+
+      <!-- ============ F1 · HOOK ============ -->
+      <div id="f1" class="scene">
+        <div id="f1-blob-a" class="blob" data-layout-ignore=""></div>
+        <div id="f1-blob-b" class="blob" data-layout-ignore=""></div>
+        <div id="f1-ghost" class="ghost num" data-layout-ignore="">68g</div>
+        <div class="f1-content">
+          <div class="f1-badge" id="f1-badge">
+            <div class="dot"></div>
+            <span>TrainPace</span>
+          </div>
+          <div>
+            <div class="f1-word" id="f1-w1">The Wall</div>
+            <div class="f1-word" id="f1-w2">Isn't Fate.</div>
+            <div class="f1-word green" id="f1-w3">It's Fuel.</div>
+          </div>
+          <div class="rule" id="f1-rule" style="width: 260px"></div>
+        </div>
+        <div class="f1-meta" id="f1-meta"><b>TRAINPACE.COM</b> · FREE</div>
+      </div>
+
+      <!-- ============ F2 · HOURLY TARGETS ============ -->
+      <div id="f2" class="scene">
+        <div id="f2-glow" class="blob" data-layout-ignore=""></div>
+        <div id="f2-ghost" class="ghost" data-layout-ignore="">FUEL</div>
+        <div class="f2-content">
+          <div>
+            <div class="kicker" id="f2-kicker">// Fuel Planner</div>
+            <div class="v-h" style="margin-top: 24px" id="f2-h">Your race, <em>by the hour.</em></div>
+          </div>
+          <div class="f2-card card" id="f2-card">
+            <div class="f2-card-head">
+              <div class="f2-card-title">Hourly Targets · Marathon</div>
+              <div class="chip" id="f2-chip" style="font-size: 24px; padding: 12px 26px">⚡ 3:28 goal</div>
+            </div>
+            <div class="fuel-row">
+              <div class="fuel-label">Carbs</div>
+              <div class="fuel-bar-track"><div class="fuel-bar" style="width: 92%; background-color: #34d399"></div></div>
+              <div class="fuel-val num"><span id="ff-carbs">0</span> g/hr</div>
+            </div>
+            <div class="fuel-row">
+              <div class="fuel-label">Fluids</div>
+              <div class="fuel-bar-track"><div class="fuel-bar" style="width: 72%; background-color: #6ee7b7"></div></div>
+              <div class="fuel-val num">600 ml/hr</div>
+            </div>
+            <div class="fuel-row">
+              <div class="fuel-label">Sodium</div>
+              <div class="fuel-bar-track"><div class="fuel-bar" style="width: 54%; background-color: #a7f3d0"></div></div>
+              <div class="fuel-val num">420 mg/hr</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ F3 · GEL TIMELINE ============ -->
+      <div id="f3" class="scene">
+        <div id="f3-glow" class="blob" data-layout-ignore=""></div>
+        <div id="f3-ghost" class="ghost" data-layout-ignore="">GEL</div>
+        <div class="f3-content">
+          <div>
+            <div class="kicker" id="f3-kicker">// Race-Day Schedule</div>
+            <div class="v-h" style="margin-top: 24px" id="f3-h">Never miss <em>a gel.</em></div>
+          </div>
+          <div class="f3-card card" id="f3-card">
+            <div class="f3-card-title">Take one every 25 minutes</div>
+            <div class="gel-strip">
+              <div id="gel-track" data-layout-ignore=""></div>
+              <div class="gel"><div class="dot"></div><div class="t">0:25</div></div>
+              <div class="gel"><div class="dot"></div><div class="t">0:50</div></div>
+              <div class="gel"><div class="dot"></div><div class="t">1:15</div></div>
+              <div class="gel"><div class="dot"></div><div class="t">1:40</div></div>
+              <div class="gel"><div class="dot"></div><div class="t">2:05</div></div>
+              <div class="gel"><div class="dot"></div><div class="t">2:30</div></div>
+              <div class="gel"><div class="dot"></div><div class="t">2:55</div></div>
+            </div>
+          </div>
+          <div class="f3-chips">
+            <div class="stat-chip" id="f3-chip1">
+              <div class="v num">7</div>
+              <div class="l">Gels total</div>
+            </div>
+            <div class="stat-chip" id="f3-chip2">
+              <div class="v num">1,840</div>
+              <div class="l">kcal planned</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ F4 · AI TUNING ============ -->
+      <div id="f4" class="scene">
+        <div id="f4-glow" class="blob" data-layout-ignore=""></div>
+        <div id="f4-ghost" class="ghost" data-layout-ignore="">AI</div>
+        <div class="f4-content">
+          <div>
+            <div class="kicker" id="f4-kicker">// AI Recommendations</div>
+            <div class="v-h" style="margin-top: 24px" id="f4-h">Tuned to <em>race day.</em></div>
+          </div>
+          <div class="f4-big" id="f4-big">
+            <div class="n num"><span id="ff-fluid">+0</span><small>ml/hr</small></div>
+            <div class="l">Heat adjustment · 24°C forecast</div>
+          </div>
+          <div class="f4-row">
+            <div class="stat-chip" id="f4-chip1">
+              <div class="v num">30K</div>
+              <div class="l">Caffeine gel</div>
+            </div>
+            <div class="stat-chip" id="f4-chip2">
+              <div class="v num">2×</div>
+              <div class="l">Sodium in heat</div>
+            </div>
+          </div>
+          <div class="chip" id="f4-ai">✦ AI-personalized to your race</div>
+        </div>
+      </div>
+
+      <!-- ============ F5 · CTA ============ -->
+      <div id="f5" class="scene">
+        <div id="f5-halo" data-layout-ignore=""></div>
+        <div class="f5-hr" id="f5-hr-top"></div>
+        <div class="f5-hr" id="f5-hr-bot"></div>
+        <div class="f5-content" id="f5-inner">
+          <div class="f5-mark" id="f5-mark">Train<em>Pace</em></div>
+          <div class="f5-url" id="f5-url">trainpace.com</div>
+          <div class="f5-pill" id="f5-pill">Plan your fuel →</div>
+          <div class="f5-proof" id="f5-proof">Free <b>·</b> No account needed</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      /* ============ F1 · HOOK (0 – 3.45) ============ */
+      tl.fromTo("#f1-badge", { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 0.15);
+      tl.fromTo("#f1-w1", { y: 90, opacity: 0 }, { y: 0, opacity: 1, duration: 0.32, ease: "power4.out" }, 0.3);
+      tl.fromTo("#f1-w2", { y: 90, opacity: 0 }, { y: 0, opacity: 1, duration: 0.32, ease: "power4.out" }, 0.46);
+      tl.fromTo("#f1-w3", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(1.4)" }, 0.64);
+      tl.fromTo("#f1-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, 0.92);
+      tl.fromTo("#f1-meta", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, 1.1);
+      tl.to("#f1-blob-a", { x: -36, y: 26, duration: 1.6, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+      tl.to("#f1-ghost", { y: -28, duration: 3.0, ease: "none" }, 0.2);
+
+      /* ---- T1 (3.25): vertical whip pan ---- */
+      tl.to("#f1", { y: -700, filter: "blur(18px)", duration: 0.28, ease: "power3.in" }, 3.25);
+      tl.fromTo("#f2",
+        { y: 700, filter: "blur(18px)", opacity: 1 },
+        { y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, 3.45);
+      tl.set("#f1", { opacity: 0 }, 3.8);
+
+      /* ============ F2 · HOURLY TARGETS (3.45 – 6.65) ============ */
+      tl.fromTo("#f2-kicker", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 3.6);
+      tl.fromTo("#f2-h", { y: 56, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "expo.out" }, 3.7);
+      tl.fromTo("#f2-card", { y: 110, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 3.85);
+      tl.fromTo("#f2 .fuel-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "power2.out", stagger: 0.09 }, 4.2);
+      tl.fromTo("#f2 .fuel-val", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out", stagger: 0.09 }, 4.32);
+      tl.fromTo("#f2-chip", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2)" }, 4.85);
+      const fCount = { carbs: 0 };
+      const ffCarbs = document.getElementById("ff-carbs");
+      tl.fromTo(fCount, { carbs: 0 }, {
+        carbs: 68, duration: 0.8, ease: "power2.out",
+        onUpdate: () => { ffCarbs.textContent = Math.round(fCount.carbs); },
+      }, 4.3);
+      tl.to("#f2-ghost", { y: 24, duration: 3.0, ease: "none" }, 3.5);
+
+      /* ---- T2 (6.45): vertical whip pan ---- */
+      tl.to("#f2", { y: -700, filter: "blur(18px)", duration: 0.28, ease: "power3.in" }, 6.45);
+      tl.fromTo("#f3",
+        { y: 700, filter: "blur(18px)", opacity: 1 },
+        { y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, 6.65);
+      tl.set("#f2", { opacity: 0 }, 7.0);
+
+      /* ============ F3 · GEL TIMELINE (6.65 – 9.85) ============ */
+      tl.fromTo("#f3-kicker", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 6.8);
+      tl.fromTo("#f3-h", { y: 56, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "expo.out" }, 6.9);
+      tl.fromTo("#f3-card", { scale: 0.94, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" }, 7.05);
+      tl.fromTo("#gel-track", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power1.inOut" }, 7.35);
+      tl.fromTo("#f3 .gel .dot", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(2.2)", stagger: 0.09 }, 7.45);
+      tl.fromTo("#f3 .gel .t", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.out", stagger: 0.09 }, 7.6);
+      tl.fromTo("#f3-chip1", { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 8.5);
+      tl.fromTo("#f3-chip2", { x: -50, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 8.62);
+      tl.to("#f3-ghost", { y: -24, duration: 3.0, ease: "none" }, 6.7);
+
+      /* ---- T3 (9.65): vertical whip pan ---- */
+      tl.to("#f3", { y: -700, filter: "blur(18px)", duration: 0.28, ease: "power3.in" }, 9.65);
+      tl.fromTo("#f4",
+        { y: 700, filter: "blur(18px)", opacity: 1 },
+        { y: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, 9.85);
+      tl.set("#f3", { opacity: 0 }, 10.2);
+
+      /* ============ F4 · AI TUNING (9.85 – 12.55) ============ */
+      tl.fromTo("#f4-kicker", { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: "power2.out" }, 10.0);
+      tl.fromTo("#f4-h", { y: 56, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power4.out" }, 10.1);
+      tl.fromTo("#f4-big", { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" }, 10.3);
+      tl.fromTo("#f4-chip1", { y: 44, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 10.7);
+      tl.fromTo("#f4-chip2", { y: 44, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power2.out" }, 10.82);
+      tl.fromTo("#f4-ai", { y: 36, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "sine.out" }, 11.1);
+
+      const fFluid = { ml: 0 };
+      const ffFluid = document.getElementById("ff-fluid");
+      tl.fromTo(fFluid, { ml: 0 }, {
+        ml: 150, duration: 0.9, ease: "power2.out",
+        onUpdate: () => { ffFluid.textContent = "+" + Math.round(fFluid.ml); },
+      }, 10.45);
+      tl.to("#f4-glow", { scale: 1.1, duration: 0.9, ease: "sine.inOut", yoyo: true, repeat: 2 }, 10.0);
+
+      /* ---- T4 (12.35): zoom through into CTA ---- */
+      tl.to("#f4", { scale: 2.4, opacity: 0, filter: "blur(8px)", duration: 0.35, ease: "power3.in" }, 12.35);
+      tl.fromTo("#f5",
+        { scale: 0.55, opacity: 0, filter: "blur(8px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 12.48);
+
+      /* ============ F5 · CTA (12.55 – 15) ============ */
+      tl.fromTo("#f5-mark", { scale: 1.12, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: "expo.out" }, 12.7);
+      tl.fromTo("#f5-url", { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "sine.out" }, 13.0);
+      tl.fromTo("#f5-pill", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.6)" }, 13.2);
+      tl.fromTo("#f5-proof", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power1.out" }, 13.5);
+      tl.fromTo("#f5-hr-top", { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: "power2.inOut" }, 12.85);
+      tl.fromTo("#f5-hr-bot", { scaleX: 0 }, { scaleX: 1, duration: 0.55, ease: "power2.inOut" }, 12.95);
+      tl.to("#f5-halo", { scale: 1.08, duration: 1.0, ease: "sine.inOut", yoyo: true, repeat: 1 }, 12.7);
+
+      // final-scene fade out
+      tl.to("#f5-inner", { opacity: 0, duration: 0.7, ease: "power1.inOut" }, 14.2);
+      tl.to("#f5-hr-top", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 14.25);
+      tl.to("#f5-hr-bot", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 14.25);
+      tl.to("#f5-halo", { opacity: 0, duration: 0.6, ease: "power1.inOut" }, 14.25);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

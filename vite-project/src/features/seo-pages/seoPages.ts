@@ -2279,8 +2279,183 @@ export function getAllSeoPaths(): string[] {
     ...fuelSeoPages.map((p) => p.path),
     ...elevationGuideSeoPages.map((p) => p.path),
     ...raceSeoPages.map((p) => p.path),
+    ...planSeoPages.map((p) => p.path),
   ];
 }
+
+// ============================================================================
+// Training Plan SEO Pages
+// ============================================================================
+
+export const planSeoPages: SeoPageConfig[] = [
+  {
+    id: generatePageId('plan', 'marathon-training-plan'),
+    slug: 'marathon-training-plan',
+    tool: 'plan',
+    path: '/plan/marathon-training-plan',
+    title: 'Free Marathon Training Plan Generator | TrainPace',
+    description: 'Generate a free personalized marathon training plan. 16–20 week periodized schedule with easy, tempo, interval, and long run paces. Export to Google Calendar.',
+    h1: 'Free Marathon Training Plan',
+    intro: 'Build a personalized marathon training plan in seconds. Based on your current fitness and goal finish time, get a complete 16–20 week periodized schedule with exact paces for every session.',
+    bullets: [
+      '16–20 week marathon-specific periodization',
+      'Daily workouts with exact pace zones (easy, tempo, interval, long)',
+      'Export to Google Calendar or Apple Calendar',
+      'Based on Jack Daniels\' VDOT methodology',
+    ],
+    cta: { href: '/plan', label: 'Build My Marathon Plan' },
+    faq: [
+      { question: 'How long should a marathon training plan be?', answer: 'Most marathon training plans run 16–20 weeks. Beginners should use 20 weeks to build a strong base. Experienced runners with existing mileage can use 16 weeks. The key phases are: Base Building (40%), Development (30%), Sharpening (25%), and Taper (5%).' },
+      { question: 'What paces should I train at for a marathon?', answer: 'Your training paces depend on your current fitness level. Use a recent race result in the VDOT Calculator to get exact paces for easy runs, marathon pace, tempo, and interval sessions. Easy runs should be 70-90 seconds per kilometer slower than marathon pace.' },
+      { question: 'How many days per week should I train for a marathon?', answer: 'Most marathon plans recommend 4–5 days per week. This allows adequate recovery while building sufficient mileage. The essential sessions are: long run (once per week), tempo run (once per week), easy/recovery runs (2–3 times per week).' },
+      { question: 'When should I start tapering for a marathon?', answer: 'The taper period typically begins 3 weeks before race day. Reduce total weekly mileage by 20–30% each week while maintaining intensity. This allows your body to recover and consolidate training adaptations before race day.' },
+    ],
+    howTo: {
+      name: 'How to Build a Marathon Training Plan',
+      description: 'Generate a personalized marathon training plan using VDOT-based periodization',
+      steps: [
+        { name: 'Select Marathon', text: 'Choose Marathon as your goal race distance' },
+        { name: 'Set your race date', text: 'Enter when your race is to calculate the plan length' },
+        { name: 'Choose training days', text: 'Select which days of the week you can train' },
+        { name: 'Enter fitness level', text: 'Provide a recent race time or set your fitness level' },
+        { name: 'Generate your plan', text: 'Get a complete week-by-week training schedule with daily workouts' },
+      ],
+    },
+    relatedPageIds: ['plan-half-marathon-training-plan', 'plan-marathon-training-plan-beginners'],
+  },
+  {
+    id: generatePageId('plan', 'half-marathon-training-plan'),
+    slug: 'half-marathon-training-plan',
+    tool: 'plan',
+    path: '/plan/half-marathon-training-plan',
+    title: 'Free Half Marathon Training Plan Generator | TrainPace',
+    description: 'Generate a free personalized half marathon training plan. 12–16 week periodized schedule with exact training paces. Export to Google Calendar.',
+    h1: 'Free Half Marathon Training Plan',
+    intro: 'Build a complete half marathon training plan tailored to your fitness and goal time. 12–16 weeks of structured training with exact paces for every run.',
+    bullets: [
+      '12–16 week half marathon periodization',
+      'Paces calibrated to your current fitness (easy, tempo, interval)',
+      'Weekly structure with rest days built in',
+      'Export to Google or Apple Calendar',
+    ],
+    cta: { href: '/plan', label: 'Build My Half Marathon Plan' },
+    faq: [
+      { question: 'How long is a half marathon training plan?', answer: 'Half marathon training plans typically run 12–16 weeks. Beginners and those with lower weekly mileage should choose 16 weeks. Experienced runners who are already running 30+ km per week can use 12 weeks.' },
+      { question: 'What is a good half marathon time for a beginner?', answer: 'A realistic half marathon time for a first-timer is 2:00–2:30. With a 12–16 week training plan, beginners often target a sub-2:30 finish. Using the VDOT Calculator with a recent 5K or 10K time gives you an accurate half marathon prediction and appropriate training paces.' },
+      { question: 'How many kilometers per week should I run for a half marathon?', answer: 'Peak weekly mileage for a half marathon plan is typically 50–70 km for intermediate runners. Beginners may peak at 40–50 km. The plan builds mileage gradually to avoid injury.' },
+    ],
+    howTo: {
+      name: 'How to Build a Half Marathon Training Plan',
+      description: 'Generate a personalized half marathon training plan',
+      steps: [
+        { name: 'Select Half Marathon', text: 'Choose Half Marathon as your goal race distance' },
+        { name: 'Enter your race date', text: 'Set when your half marathon is' },
+        { name: 'Choose training days', text: 'Select your available training days per week' },
+        { name: 'Generate plan', text: 'Get a complete 12–16 week schedule with daily workouts and paces' },
+      ],
+    },
+    relatedPageIds: ['plan-marathon-training-plan', 'plan-10k-training-plan'],
+  },
+  {
+    id: generatePageId('plan', '10k-training-plan'),
+    slug: '10k-training-plan',
+    tool: 'plan',
+    path: '/plan/10k-training-plan',
+    title: 'Free 10K Training Plan Generator | TrainPace',
+    description: 'Generate a free personalized 10K training plan. 10–14 week periodized schedule with exact paces for easy, tempo, and interval runs. Export to calendar.',
+    h1: 'Free 10K Training Plan',
+    intro: 'A 10K training plan should balance aerobic base work with enough speed to hold your goal pace for 40–70 minutes. Build yours in seconds.',
+    bullets: [
+      '10–14 week 10K-specific training schedule',
+      'Mix of easy runs, tempo sessions, and intervals',
+      'Paces calculated from your recent race time',
+      'Export to Google or Apple Calendar',
+    ],
+    cta: { href: '/plan', label: 'Build My 10K Plan' },
+    faq: [
+      { question: 'How long should a 10K training plan be?', answer: 'A 10K training plan typically runs 10–14 weeks. 10 weeks works for runners who are already running regularly. 14 weeks gives beginners more time to build aerobic base before adding speed work.' },
+      { question: 'What is a good 10K time?', answer: 'The average 10K finish time for recreational runners is around 55–65 minutes. A sub-60 minute 10K (6:00/km pace) is a common first goal. Elite runners finish under 30 minutes. Use the VDOT Calculator to get a realistic target based on your current fitness.' },
+      { question: 'How often should I run when training for a 10K?', answer: 'Most 10K plans recommend 4 days per week: one long run, one tempo run, one interval session, and one easy recovery run. This provides enough stimulus to improve while allowing adequate recovery.' },
+    ],
+    howTo: {
+      name: 'How to Build a 10K Training Plan',
+      description: 'Generate a personalized 10K training plan',
+      steps: [
+        { name: 'Select 10K', text: 'Choose 10K as your goal race distance' },
+        { name: 'Set your race date', text: 'Enter when your 10K is' },
+        { name: 'Choose training days', text: 'Select which days you can run' },
+        { name: 'Generate plan', text: 'Get a complete 10–14 week schedule' },
+      ],
+    },
+    relatedPageIds: ['plan-half-marathon-training-plan', 'plan-5k-training-plan'],
+  },
+  {
+    id: generatePageId('plan', '5k-training-plan'),
+    slug: '5k-training-plan',
+    tool: 'plan',
+    path: '/plan/5k-training-plan',
+    title: 'Free 5K Training Plan Generator | TrainPace',
+    description: 'Generate a free personalized 5K training plan. 8–12 week periodized schedule for beginners to advanced runners. Export to Google Calendar.',
+    h1: 'Free 5K Training Plan',
+    intro: 'The 5K is the perfect race for runners at every level. Whether you\'re running your first 5K or chasing a PR, a structured training plan makes the difference.',
+    bullets: [
+      '8–12 week 5K training schedule',
+      'Beginner to advanced options',
+      'Interval-focused workouts to build speed',
+      'Export to Google or Apple Calendar',
+    ],
+    cta: { href: '/plan', label: 'Build My 5K Plan' },
+    faq: [
+      { question: 'How long does it take to train for a 5K?', answer: 'Most 5K training plans run 8–12 weeks. Complete beginners who are just starting to run should use 10–12 weeks. Runners with a base of easy mileage can use an 8-week plan focused on speed development.' },
+      { question: 'What is a good 5K time for a beginner?', answer: 'A first 5K finish is a great achievement regardless of time. Beginners typically finish in 35–45 minutes. A sub-30 minute 5K (6:00/km) is a common intermediate goal. Use the VDOT Calculator with any race time to get your optimal training paces.' },
+      { question: 'How many days per week should I run for a 5K?', answer: 'Three to four days per week is ideal for 5K training. More than that increases injury risk for developing runners. Key sessions: one interval workout, one tempo run, one long run (relatively speaking), and one easy recovery run.' },
+    ],
+    howTo: {
+      name: 'How to Build a 5K Training Plan',
+      description: 'Generate a personalized 5K training plan',
+      steps: [
+        { name: 'Select 5K', text: 'Choose 5K as your goal race distance' },
+        { name: 'Set your race date', text: 'Enter when your 5K is' },
+        { name: 'Choose your days', text: 'Pick which days you can train' },
+        { name: 'Generate plan', text: 'Get a complete 8–12 week schedule with exact paces' },
+      ],
+    },
+    relatedPageIds: ['plan-10k-training-plan', 'plan-beginner-running-training-plan'],
+  },
+  {
+    id: generatePageId('plan', 'marathon-training-plan-beginners'),
+    slug: 'marathon-training-plan-beginners',
+    tool: 'plan',
+    path: '/plan/marathon-training-plan-beginners',
+    title: 'Marathon Training Plan for Beginners | Free Generator | TrainPace',
+    description: 'Free beginner marathon training plan. 20-week periodized schedule with easy progression from base to race day. Export to Google Calendar.',
+    h1: 'Beginner Marathon Training Plan',
+    intro: 'Running your first marathon? A 20-week plan with gradual progression, conservative mileage build, and structured recovery is your foundation. Here\'s how to get to the start line healthy.',
+    bullets: [
+      '20-week beginner-specific progression',
+      'Conservative mileage build to prevent injury',
+      'Walk breaks and run/walk options supported',
+      'Complete periodization: base, development, sharpening, taper',
+    ],
+    cta: { href: '/plan', label: 'Build My Beginner Marathon Plan' },
+    faq: [
+      { question: 'Can a beginner run a marathon?', answer: 'Yes. With 20 weeks of dedicated training, most people who can run 30 minutes continuously can complete a marathon. The key is conservative progression (no more than 10% weekly mileage increase), consistent easy running, and protecting the long run each week.' },
+      { question: 'How much should a beginner run per week for a marathon?', answer: 'Beginner marathon plans typically start at 25–30 km per week and peak at 50–60 km. The long run builds from 12 km to a peak of 30–32 km, usually 3 weeks before race day.' },
+      { question: 'Should beginners do intervals when training for a marathon?', answer: 'Not in the early phases. Beginners should focus on building aerobic base with easy running for the first 8 weeks. Structured tempo and interval work can begin in the development phase once you have a consistent mileage base.' },
+    ],
+    howTo: {
+      name: 'How to Follow a Beginner Marathon Training Plan',
+      description: 'A step-by-step guide for first-time marathoners',
+      steps: [
+        { name: 'Select Marathon', text: 'Choose Marathon as your goal race' },
+        { name: 'Set beginner level', text: 'Choose Beginner fitness level in the plan generator' },
+        { name: 'Pick 20 weeks', text: 'Use the longest plan duration for maximum base building' },
+        { name: 'Generate and export', text: 'Get your plan and export to calendar for daily reminders' },
+      ],
+    },
+    relatedPageIds: ['plan-marathon-training-plan', 'plan-half-marathon-training-plan-beginners'],
+  },
+];
 
 /**
  * Get all SEO page configurations
@@ -2291,6 +2466,7 @@ export function getAllSeoPages(): SeoPageConfig[] {
     ...fuelSeoPages,
     ...elevationGuideSeoPages,
     ...raceSeoPages,
+    ...planSeoPages,
   ];
 }
 

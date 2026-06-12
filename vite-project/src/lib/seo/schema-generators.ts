@@ -283,6 +283,12 @@ export function generateSoftwareApplicationSchema(
         'Expert running tips, training guides, and race strategy articles.',
       url: `${BASE_URL}/blog`,
     },
+    plan: {
+      name: 'TrainPace Training Plan Generator',
+      description:
+        'Free personalized running training plan generator for 5K to Marathon.',
+      url: `${BASE_URL}/plan`,
+    },
   };
 
   const data = toolData[tool];
@@ -317,6 +323,7 @@ const TOOL_BREADCRUMB_CONFIG: Record<
   elevation: { name: 'Elevation Finder', path: '/elevationfinder' },
   race: { name: 'Race Prep', path: '/race' },
   blog: { name: 'Blog', path: '/blog' },
+  plan: { name: 'Training Plan', path: '/plan' },
 };
 
 export function generateBreadcrumbsForPage(

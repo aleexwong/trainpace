@@ -199,6 +199,12 @@ export function generateToolMetaTags(tool: SeoToolType): MetaTags {
         'Expert running tips, training guides, and race strategy articles. Learn about pace zones, marathon fueling, and elevation analysis.',
       path: '/blog',
     },
+    plan: {
+      title: 'Free Running Training Plan Generator | TrainPace',
+      description:
+        'Generate a free personalized running training plan for 5K, 10K, half marathon, or marathon. Science-based periodization with daily workouts and calendar export.',
+      path: '/plan',
+    },
   };
 
   const meta = toolMeta[tool];
