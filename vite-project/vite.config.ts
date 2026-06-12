@@ -15,7 +15,9 @@ const prerenderedRoutes = [
   "/calculator",
   "/vdot",
   "/fuel",
+  "/plan",
   "/elevationfinder",
+  "/elevation-finder",
   "/race",
   // Programmatic SEO routes
   ...getAllSeoPaths(),
