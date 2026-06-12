@@ -65,6 +65,11 @@ export function GoalGreeting() {
             </Button>
           </Link>
         ))}
+        <Link to="/plan">
+          <Button variant="outline" size="sm" className="hover:text-emerald-600">
+            Training plan
+          </Button>
+        </Link>
         <Link to="/onboarding">
           <Button variant="outline" size="sm" className="hover:text-emerald-600">
             Edit goal
