@@ -8,9 +8,11 @@ import {
   useFuelPlans,
   usePacePlans,
   useSearch,
+  useTrainingPlans,
   RoutesSection,
   FuelPlansSection,
   PacePlansSection,
+  TrainingPlansSection,
   SearchBar,
   deleteRoute,
   deleteFuelPlan,
@@ -52,11 +54,18 @@ export default function DashboardV2() {
     updatePacePlan: updateLocalPacePlan,
   } = usePacePlans(user?.uid);
 
+  const {
+    trainingPlans,
+    loading: trainingPlansLoading,
+    removePlan: removeTrainingPlan,
+  } = useTrainingPlans(user?.uid);
+
   // Client-side search filtering (zero Firebase operations)
   const {
     filteredPacePlans,
     filteredFuelPlans,
     filteredRoutes,
+    filteredTrainingPlans,
     hasActiveSearch,
     totalResults,
   } = useSearch({
@@ -64,6 +73,7 @@ export default function DashboardV2() {
     pacePlans,
     fuelPlans,
     routes,
+    trainingPlans,
   });
 
   // Action handlers
@@ -268,6 +278,16 @@ export default function DashboardV2() {
           >
             Fuel Plans ({hasActiveSearch ? filteredFuelPlans.length : fuelPlans.length})
           </button>
+          <button
+            onClick={() => setActiveTab("training-plans")}
+            className={`px-4 py-2 rounded-md font-medium transition-all ${
+              activeTab === "training-plans"
+                ? "bg-emerald-600 text-white"
+                : "bg-white text-emerald-600 shadow-sm hover:bg-white hover:text-emerald-600"
+            }`}
+          >
+            Training Plans ({hasActiveSearch ? filteredTrainingPlans.length : trainingPlans.length})
+          </button>
         </div>
       </div>
 
@@ -303,6 +323,14 @@ export default function DashboardV2() {
           loading={fuelPlansLoading}
           onDeletePlan={handleDeleteFuelPlan}
           onCopyPlan={handleCopyFuelPlan}
+        />
+      )}
+
+      {activeTab === "training-plans" && (
+        <TrainingPlansSection
+          plans={filteredTrainingPlans}
+          loading={trainingPlansLoading}
+          onDeletePlan={removeTrainingPlan}
         />
       )}
 

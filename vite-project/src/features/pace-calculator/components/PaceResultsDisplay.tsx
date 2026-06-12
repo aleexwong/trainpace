@@ -299,7 +299,36 @@ export function PaceResultsDisplay({
             per mile to all paces.
           </p>
         </div>
+
+        {/* Training Plan CTA */}
+        <TrainingPlanCta results={results} />
       </CardContent>
     </Card>
+  );
+}
+
+function TrainingPlanCta({ results }: { results: PaceResults }) {
+  const params = new URLSearchParams({
+    easy: results.easy,
+    tempo: results.tempo,
+    interval: results.interval,
+    race: results.race,
+  });
+
+  return (
+    <div className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between gap-4">
+      <div>
+        <div className="text-sm font-semibold text-emerald-800">Ready to train?</div>
+        <div className="text-xs text-emerald-700 mt-0.5">
+          Build a full training plan using these paces.
+        </div>
+      </div>
+      <a
+        href={`/plan?${params.toString()}`}
+        className="flex-shrink-0 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 text-sm transition-colors whitespace-nowrap"
+      >
+        Build plan →
+      </a>
+    </div>
   );
 }

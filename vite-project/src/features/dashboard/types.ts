@@ -8,8 +8,8 @@ export interface RouteMetadata {
   routeSlug?: string; // For bookmarked routes (legacy)
   routeKey?: string; // For bookmarked routes (new)
   routeName?: string; // For bookmarked routes
-  uploadedAt?: any;
-  savedAt?: any; // For bookmarked routes
+  uploadedAt?: Timestamp | null;
+  savedAt?: Timestamp | null; // For bookmarked routes
   schemaVersion?: number; // For migration tracking
   metadata: {
     routeName: string;
@@ -31,7 +31,7 @@ export interface RouteMetadata {
   }>;
   displayUrl: string;
   fileUrl?: string;
-  previewData?: any; // For bookmarked routes
+  previewData?: Record<string, unknown>; // For bookmarked routes
 }
 
 export interface FuelPlan {
@@ -80,4 +80,4 @@ export interface PacePlan {
   createdAt: Timestamp;
 }
 
-export type DashboardTab = "routes" | "fuel-plans" | "pace-plans";
+export type DashboardTab = "routes" | "fuel-plans" | "pace-plans" | "training-plans";

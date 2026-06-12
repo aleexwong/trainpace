@@ -6,12 +6,15 @@ export { RoutesSection } from "./components/RoutesSection";
 export { FuelPlansSection } from "./components/FuelPlansSection";
 export { PacePlansSection } from "./components/PacePlansSection";
 export { SearchBar } from "./components/SearchBar";
+export { TrainingPlanCard } from "./components/TrainingPlanCard";
+export { TrainingPlansSection } from "./components/TrainingPlansSection";
 
 // Hooks
 export { useRoutes } from "./hooks/useRoutes";
 export { useFuelPlans } from "./hooks/useFuelPlans";
 export { usePacePlans } from "./hooks/usePacePlans";
 export { useSearch } from "./hooks/useSearch";
+export { useTrainingPlans } from "./hooks/useTrainingPlans";
 
 // Actions
 export {

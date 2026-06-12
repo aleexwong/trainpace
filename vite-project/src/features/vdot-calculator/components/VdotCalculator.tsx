@@ -3,7 +3,7 @@
  * Dashboard-style grid layout: everything visible at a glance, minimal scrolling.
  */
 
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Clock, ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,9 +23,10 @@ import { VdotFaq } from "./VdotFaq";
 
 export interface VdotCalculatorProps {
   initialInputs?: Partial<VdotInputs>;
+  autoCalculate?: boolean;
 }
 
-export function VdotCalculator({ initialInputs }: VdotCalculatorProps = {}) {
+export function VdotCalculator({ initialInputs, autoCalculate }: VdotCalculatorProps = {}) {
   const {
     inputs,
     result,
@@ -45,8 +46,17 @@ export function VdotCalculator({ initialInputs }: VdotCalculatorProps = {}) {
 
   const resultsRef = useRef<HTMLDivElement>(null);
 
+  // Auto-calculate when arriving from a share link
+  useEffect(() => {
+    if (autoCalculate) {
+      handleCalculate();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // What-If slider state (lifted from VdotScoreWithExplorer so all sections react)
   const [offsetSeconds, setOffsetSeconds] = useState(0);
+  const [copied, setCopied] = useState(false);
 
   const targetVdot = useMemo(() => {
     if (offsetSeconds === 0 || !result) return null;
@@ -99,6 +109,19 @@ export function VdotCalculator({ initialInputs }: VdotCalculatorProps = {}) {
                   </p>
                 </div>
               </div>
+              <button
+                onClick={() => {
+                  const url = `${window.location.origin}/vdot?d=${encodeURIComponent(inputs.distanceMeters)}&t=${encodeURIComponent(totalSeconds)}`;
+                  navigator.clipboard.writeText(url).then(() => {
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }).catch(() => undefined);
+                }}
+                className="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-emerald-700 bg-white border border-slate-200 hover:border-emerald-300 rounded-lg transition-colors shadow-sm"
+                title="Copy share link"
+              >
+                {copied ? "✓ Copied!" : "Share"}
+              </button>
               <div
                 className="relative w-32 h-8 bg-emerald-100 rounded-full cursor-pointer overflow-hidden select-none"
                 onClick={handlePaceUnitToggle}
@@ -239,6 +262,34 @@ export function VdotCalculator({ initialInputs }: VdotCalculatorProps = {}) {
                   </div>
                 </div>
               </div>
+
+              {/* Build Training Plan CTA */}
+              {(() => {
+                const activeZones = targetZones || result.trainingZones;
+                const easyPace = activeZones.find((z) => z.shortName === "E")?.pacePerKm ?? "";
+                const tempoPace = activeZones.find((z) => z.shortName === "T")?.pacePerKm ?? "";
+                const intervalPace = activeZones.find((z) => z.shortName === "I")?.pacePerKm ?? "";
+                const racePace = activeZones.find((z) => z.shortName === "M")?.pacePerKm ?? "";
+                const planUrl = `/plan?easy=${encodeURIComponent(easyPace)}&tempo=${encodeURIComponent(tempoPace)}&interval=${encodeURIComponent(intervalPace)}&race=${encodeURIComponent(racePace)}&source=vdot`;
+                return (
+                  <div className="mt-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-500 p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+                    <div>
+                      <p className="text-white font-bold text-lg leading-tight">
+                        Ready to train for your goal?
+                      </p>
+                      <p className="text-emerald-100 text-sm mt-0.5">
+                        Build a personalized week-by-week training plan using your VDOT {targetVdot || result.vdot} paces.
+                      </p>
+                    </div>
+                    <Link
+                      to={planUrl}
+                      className="flex-shrink-0 inline-flex items-center gap-2 bg-white text-emerald-700 font-bold px-5 py-2.5 rounded-xl hover:bg-emerald-50 transition-colors shadow-sm whitespace-nowrap"
+                    >
+                      Build Training Plan →
+                    </Link>
+                  </div>
+                );
+              })()}
             </div>
           )}
 
