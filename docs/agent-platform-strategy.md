@@ -19,10 +19,38 @@ hallucinated. That division of labor is the whole point.
 |---|---|
 | Where it lives | **Separate public repo** (standalone open-source project) |
 | First deliverable | **This strategy doc** — no code yet |
-| Primary distribution | **npm package + CLI** (agents shell out locally; no infra for us) |
+| Foundation distribution | **npm package + CLI** (the engine the skill calls) |
+| **Who is the hero** | **The runner, not the developer (Scene A).** |
 
-A hosted HTTP API and a developer docs page remain on the roadmap but are explicitly
-*later* — they don't block the MVP and they introduce infra/cost/auth we don't want yet.
+The headline product is a **personal runner skill** — a runner uses *their own* LLM
+(Claude, etc.) with TrainPace's running science and never touches a command line.
+The npm package + CLI are the *engine*; **SKILL.md is the product runners feel.**
+
+A hosted HTTP API moves *up* the roadmap (not down): it's what removes the local-install
+step for a non-technical runner. A developer docs page becomes an "add TrainPace to your
+AI" page — install instructions for a runner, not API reference for a dev.
+
+## Who is the hero — the target user journey (Scene A)
+
+A runner opens Claude (desktop / mobile / web) with the TrainPace skill available. They type:
+
+> "Here's my Sunday long-run gpx. I ran a 40:00 10K last month. Am I going out too
+> hard, and where are the climbs?"
+
+The agent, guided by `SKILL.md`, computes the VDOT, the terrain-adjusted easy pace, and
+the elevation profile, then answers in plain English. The runner never sees a command
+line, never uploads to trainpace.com, never hits a premium gate. It's *their* data,
+*their* LLM, *their* coach-in-a-box.
+
+**Implications that drive everything below:**
+- The LLM brings judgment and narrative; TrainPace brings numbers that must not be
+  hallucinated. The skill exists to enforce that boundary.
+- `SKILL.md` is the headline artifact — the thing we market and a runner "installs."
+- The CLI is plumbing the runner never touches. It still must exist (the skill needs
+  something concrete and correct to call), but it is a *means*, not the end.
+- **Friction caveat:** a local skill today still needs the CLI present on the machine.
+  For a non-technical runner that's real friction — which is exactly why the hosted API
+  is the friction-remover, not a "later, maybe."
 
 ## The layering (build bottom-up)
 
@@ -123,21 +151,32 @@ The agent shells out to `trainpace gpx` and `trainpace vdot`, gets correct numbe
 and writes the narrative. This is the "GPX → skill" loop, fully realized, with no
 server on our side.
 
-## MVP definition (smallest thing that proves the whole idea)
+## Roadmap (sequenced for Scene A — the runner is the hero)
 
+**Phase 1 — Prove the skill (MVP).** A runner with the skill + a local CLI gets a real
+terrain-aware answer.
 1. New public repo, e.g. `trainpace-core` (npm workspaces: `core` + `cli`).
 2. Move `vdot-math.ts` + pace `utils.ts` + GPX math into `core`; make GPX parsing
    isomorphic (porting task above). Publish `@trainpace/core`.
 3. Thin CLI with `vdot`, `paces`, `gpx` — each prints JSON.
-4. `SKILL.md` documenting those three commands with real example I/O.
+4. **`SKILL.md` — the headline deliverable.** Documents the commands with real example
+   I/O *and* the runner-facing framing (what to ask, what you get back).
+   - Done = an agent with the SKILL.md takes a GPX + a race time and produces a
+     terrain-aware training picture, using only published open-source pieces.
 
-Done = an agent with the SKILL.md can take a GPX + a race time and produce a
-terrain-aware training picture, using only published, open-source pieces.
+**Phase 2 — Remove the friction (make it truly personal-runner-grade).**
+5. Hosted HTTP API mirroring the CLI commands (JSON in/out) so the skill works with
+   **no local install** — the unlock for non-technical runners.
+6. SKILL.md gains a "no-install" path that points at the API instead of the CLI.
 
-## Explicitly out of scope for the MVP
+**Phase 3 — Reach.**
+7. "Add TrainPace to your AI" page — runner-facing install instructions (not dev API
+   docs). This is what "developer page" becomes once the hero is the runner.
 
-- Hosted HTTP API (infra, auth, cost) — revisit once core + CLI have traction.
-- Developer docs site — the repo README + SKILL.md suffice at first.
+## Explicitly out of scope for Phase 1
+
+- Hosted HTTP API — Phase 2, not abandoned (it's the friction-remover, above).
+- "Add to your AI" page — Phase 3; the repo README + SKILL.md suffice at first.
 - Fuel planner extraction — `FuelPlannerV2` is large and Gemini-coupled; port the
   deterministic parts later, after the pure-math core lands.
 - Firebase/auth/persistence — never belongs in the open core.
