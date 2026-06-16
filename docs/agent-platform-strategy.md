@@ -106,8 +106,12 @@ calculateVdot(distanceMeters, timeSeconds): number
 predictRaceTime(vdot, distanceMeters): number
 calculateTrainingZones(vdot): TrainingZoneResult[]
 
+// Presentation builders — RELOCATE from useVdotCalculator.ts (already pure, no React)
+buildRacePredictions(vdot, unit): RacePrediction[]
+buildTrainingZones(vdot): TrainingZone[]
+
 // Pace
-calculateTrainingPaces(raceTimeSeconds, raceDistance, units, paceType, opts?): PaceResults
+calculateTrainingPaces(raceTimeSeconds, raceDistanceMeters, paceUnit, opts?): PaceResults
 calculateHeartRateZones(age): HeartRateZones
 
 // GPX (parser injected or isomorphic)
@@ -120,7 +124,13 @@ formatTime(seconds), formatPace(seconds)
 Design rules:
 - **Zero runtime dependencies** in core (parser optional/peer for GPX).
 - **Pure functions only** — no I/O, no globals, no `Date.now()` surprises.
-- **SI-ish inputs** (meters, seconds) with formatting helpers on the side.
+- **Meters & seconds everywhere** for inputs; `--unit km|miles` controls only the
+  *pace output* formatting. This is a deliberate fix to the current code, where
+  `calculateTrainingPaces` takes distance in the display unit — the core/CLI
+  normalize on meters so `vdot` and `paces` never disagree.
+- **Relocate, don't rewrite:** `buildRacePredictions` and `buildTrainingZones`
+  currently live in the React hook `useVdotCalculator.ts` but are pure. Move them
+  into core so the CLI reuses them instead of reimplementing the prediction list.
 - Stable, documented types — the agent contract depends on them.
 
 ## The CLI (the agent's actual entry point)

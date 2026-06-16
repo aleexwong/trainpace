@@ -91,13 +91,13 @@ Quick training-pace ranges without the full VDOT model. Supports optional age
 (heart-rate zones) and temperature (heat adjustment).
 
 ```bash
-trainpace paces --distance 10 --unit km --time 40:00 --age 35 --temp 82
+trainpace paces --distance 10000 --unit km --time 40:00 --age 35 --temp 82
 ```
 
 | Flag | Meaning |
 |---|---|
-| `--distance` | race distance in the chosen unit (not meters) |
-| `--unit` | `km` or `miles` |
+| `--distance` | race distance in **meters** (same as `vdot` — meters everywhere) |
+| `--unit` | pace **output** unit: `km` or `miles` |
 | `--time` | race time `HH:MM:SS` or `MM:SS` |
 | `--age` | *(optional)* adds max-HR-based heart-rate zones |
 | `--temp` | *(optional)* °F; ≥80 slows easy pace and notes the heat adjustment |
