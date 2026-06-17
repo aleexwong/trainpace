@@ -1,0 +1,36 @@
+{
+  "name": "@trainpace/core",
+  "version": "0.1.0",
+  "description": "Running coach math: VDOT, training pace zones, and GPX route analysis. Pure functions — meters in, numbers out. The engine behind trainpace.com.",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "trainpace": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "smoke": "node dist/cli.js vdot --distance 10000 --time 40:00 --pretty",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.6.0"
+  },
+  "keywords": [
+    "running",
+    "vdot",
+    "pace",
+    "gpx",
+    "jack-daniels",
+    "elevation",
+    "training",
+    "marathon"
+  ]
+}

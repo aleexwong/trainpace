@@ -164,14 +164,23 @@ server on our side.
 
 **Phase 1 — Prove the skill (MVP).** A runner with the skill + a local CLI gets a real
 terrain-aware answer.
-1. New public repo, e.g. `trainpace-core` (npm workspaces: `core` + `cli`).
-2. Move `vdot-math.ts` + pace `utils.ts` + GPX math into `core`; make GPX parsing
-   isomorphic (porting task above). Publish `@trainpace/core`.
-3. Thin CLI with `vdot`, `paces`, `gpx` — each prints JSON.
-4. **`SKILL.md` — the headline deliverable.** Documents the commands with real example
-   I/O *and* the runner-facing framing (what to ask, what you get back).
-   - Done = an agent with the SKILL.md takes a GPX + a race time and produces a
-     terrain-aware training picture, using only published open-source pieces.
+
+> **Built in-repo first.** Rather than spin up a separate repo (the session can't
+> create one, and it's a reversible publishing step), the package lives at
+> `packages/core/` inside this repo. It can be published to npm from there, and
+> extracted to a standalone public repo later if the open-source story warrants it.
+
+1. ✅ `packages/core/` scaffolded — `@trainpace/core`, CommonJS build, MIT.
+2. ✅ Relocated `vdot-math.ts`, pace `utils.ts`, GPX math, and the two builders into
+   `core`; GPX parsing now uses `fast-xml-parser` (isomorphic). Pace API normalized
+   to meters-in.
+3. ✅ Thin CLI (bin inside the package): `vdot`, `paces`, `gpx` — each prints JSON,
+   errors print `{"error":...}` + exit 1. Smoke-tested: 40:00 10K → VDOT 51.9.
+4. ◻️ **`SKILL.md` — the headline deliverable.** `docs/SKILL.draft.md` exists and its
+   example output is now verified against the real CLI; promote it to a published
+   `SKILL.md` alongside the package.
+5. ◻️ Rewire the web app to import `@trainpace/core` (single source of truth) — left
+   as a deliberate follow-up so this step can't break the live build.
 
 **Phase 2 — Remove the friction (make it truly personal-runner-grade).**
 5. Hosted HTTP API mirroring the CLI commands (JSON in/out) so the skill works with

@@ -59,24 +59,24 @@ trainpace vdot --distance 10000 --time 40:00
 | `--time` | race time `HH:MM:SS` or `MM:SS` |
 | `--unit` | `km` (default) or `miles` for the pace fields in the output |
 
-**Example output** (illustrative numbers for a 40:00 10K):
+**Example output** (real output for a 40:00 10K, verified against the CLI):
 
 ```json
 {
   "vdot": 51.9,
   "level": "Intermediate",
   "trainingZones": [
-    { "name": "Easy",       "shortName": "E", "pacePerKm": "4:44-5:41" },
-    { "name": "Marathon",   "shortName": "M", "pacePerKm": "4:18-4:36" },
-    { "name": "Threshold",  "shortName": "T", "pacePerKm": "4:07-4:15" },
-    { "name": "Interval",   "shortName": "I", "pacePerKm": "3:48-3:54" },
-    { "name": "Repetition", "shortName": "R", "pacePerKm": "3:32-3:40" }
+    { "name": "Easy",       "shortName": "E", "pacePerKm": "4:45-5:41" },
+    { "name": "Marathon",   "shortName": "M", "pacePerKm": "4:17-4:42" },
+    { "name": "Threshold",  "shortName": "T", "pacePerKm": "4:07-4:19" },
+    { "name": "Interval",   "shortName": "I", "pacePerKm": "3:43-3:53" },
+    { "name": "Repetition", "shortName": "R", "pacePerKm": "3:12-3:34" }
   ],
   "racePredictions": [
     { "distance": "5K",       "time": "19:18" },
     { "distance": "10K",      "time": "40:00" },
-    { "distance": "Half",     "time": "1:28:42" },
-    { "distance": "Marathon", "time": "3:04:30" }
+    { "distance": "Half Marathon", "time": "1:28:33" },
+    { "distance": "Marathon", "time": "3:04:38" }
   ]
 }
 ```
