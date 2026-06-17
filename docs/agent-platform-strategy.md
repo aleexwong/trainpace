@@ -86,15 +86,13 @@ Audit of the existing code (in `vite-project/src`):
 
 ### The single real porting task
 
-`gpxMetaData.ts` parses XML with `DOMParser`, which does not exist in Node. Two clean fixes:
+`gpxMetaData.ts` parses XML with `DOMParser`, which does not exist in Node.
 
-1. **Swap the parser** for an isomorphic one (`fast-xml-parser`, near-zero deps), or
-2. **Split the seam:** keep the math functions taking *already-parsed* points
-   (`extractGPXMetadata(points)`, `douglasPeucker(points)`), and let each consumer
-   (web vs CLI) supply its own parser. The web app keeps `DOMParser`; the CLI uses a
-   Node parser.
-
-Option 2 keeps `@trainpace/core` dependency-free, which is worth protecting.
+**Decision (see resolved questions):** bundle `fast-xml-parser` in core so
+`analyzeGpx(gpxString)` runs identically in the browser, Node, and the CLI — the
+simplest API for agents and builders, at the cost of one small dependency. The pure
+math (Haversine distance, Douglas-Peucker, elevation gain) is unaffected and moves
+over untouched; only the `DOMParser` call is replaced.
 
 ## What `@trainpace/core` exports (proposed surface)
 
@@ -122,7 +120,8 @@ formatTime(seconds), formatPace(seconds)
 ```
 
 Design rules:
-- **Zero runtime dependencies** in core (parser optional/peer for GPX).
+- **Exactly one runtime dependency** in core: `fast-xml-parser` (for GPX). Nothing
+  else — guard this jealously; the value of the package is that it's tiny and trustable.
 - **Pure functions only** — no I/O, no globals, no `Date.now()` surprises.
 - **Meters & seconds everywhere** for inputs; `--unit km|miles` controls only the
   *pace output* formatting. This is a deliberate fix to the current code, where
@@ -191,12 +190,22 @@ terrain-aware answer.
   deterministic parts later, after the pure-math core lands.
 - Firebase/auth/persistence — never belongs in the open core.
 
-## Open questions to resolve before coding
+## Open questions — RESOLVED (2026-06-16)
 
-1. **Package name & scope** — `@trainpace/core` (npm org needed) vs unscoped.
-2. **License** — MIT (max adoption) vs something that keeps the brand closer.
-3. **Web-app integration** — does trainpace.com consume the published package,
-   git submodule, or vendored copy? (Affects how aggressively we dedupe the math.)
-4. **GPX parser choice** — `fast-xml-parser` vs injected-parser seam (option 2 above).
-5. **Versioning contract** — the JSON shapes are an API; semver discipline from v1.
+1. **Package name & scope** → **`@trainpace/core`**, scoped under a new `@trainpace`
+   npm org. Leaves room for `@trainpace/cli`, `@trainpace/react`, etc. under one
+   namespace. (Free for public packages; org must be created on npm.)
+2. **License** → **MIT.** Maximum adoption — anyone can put the math in their agent
+   or app. The goal is reach, not lock-in.
+3. **Web-app integration** → **trainpace.com consumes the published `@trainpace/core`**
+   from npm like any dependency. True single source of truth. Trade-off accepted:
+   new math must be published before the site can use it (mitigated by `npm link`
+   during local dev).
+4. **GPX parser** → **bundle `fast-xml-parser`** in core so `analyzeGpx(gpxString)`
+   works everywhere with no setup. Costs core its zero-dependency status (now exactly
+   one small, well-maintained dep) in exchange for the simplest possible agent/builder
+   API. Worth it.
+5. **Versioning** → **strict semver from v1.0.0.** The JSON shapes the CLI emits and
+   the function signatures core exports are the public contract; breaking either is a
+   major bump. Pre-1.0 (0.x) while the surface is still settling.
 ```

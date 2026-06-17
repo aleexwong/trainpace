@@ -38,9 +38,9 @@ const vdot = calculateVdot(10000, 40 * 60); // 10K in 40:00
 const zones = calculateTrainingZones(vdot);  // easy / tempo / threshold / ...
 ```
 
-- **Zero runtime dependencies.** Pure functions: meters in, numbers out.
+- **One tiny dependency** (`fast-xml-parser`, for GPX). Otherwise pure: meters in, numbers out.
 - **Same engine that powers [trainpace.com](https://www.trainpace.com).**
-- **MIT** *(license TBD — see strategy doc).*
+- **MIT licensed** — use it anywhere, including commercial projects.
 
 ## What it does
 
