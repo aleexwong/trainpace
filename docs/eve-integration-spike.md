@@ -1,12 +1,13 @@
 # Eve Integration Spike — Hosting the TrainPace Running Coach
 
-> Status: **Spike / proposal.** Evaluates [Vercel Eve](https://vercel.com/blog/introducing-eve)
+> Status: **Spike executed (2026-06-17).** Evaluates [Vercel Eve](https://vercel.com/blog/introducing-eve)
 > (open-source TS agent framework, public preview launched 2026-06-17) as the vehicle
 > for the *hosted* TrainPace coach — i.e. Phase 2 of `agent-platform-strategy.md`.
 >
-> ⚠️ Eve is week-one preview software. Every API shape below is **illustrative**, drawn
-> from the launch post, and must be checked against the live Eve docs before relying on
-> it. Treat this as "what the fit looks like," not copy-paste-ready code.
+> ✅ A real agent project was built at `eve/` and **typechecks against the actual Eve
+> 0.11.4 API plus `@trainpace/core`.** The code in `eve/` is verified, not illustrative.
+> The inline sketches lower in this doc were the original guesses; see
+> **Spike results** below for the corrections that real types forced.
 
 ## Why Eve, in one line
 
@@ -198,8 +199,61 @@ power-users in the meantime, on the same core.
 - **Vercel-centric.** Open source and TS, but channels/deploy lean on Vercel. Fine given
   our stack; noted.
 
-## Next step (when ready)
+## Spike results (verified 2026-06-17)
 
-Promote `docs/SKILL.draft.md` → `eve/skills/trainpace.md`, scaffold the three tool files
-above, run `eve dev`, and try the long-run question in a web channel. Timebox to an
-afternoon — that's enough to judge the fit.
+Built `eve/` (a `trainpace-coach` Eve project) and typechecked it against the real
+package. **Result: `tsc --noEmit` passes** — the agent's three tools wrap
+`@trainpace/core` correctly against Eve's actual types.
+
+### What the real API forced (corrections to the sketches above)
+
+| My original guess | Reality (Eve 0.11.4) |
+|---|---|
+| `import { defineTool } from "eve"` | `import { defineTool } from "eve/tools"` |
+| field `parameters` | field **`inputSchema`** |
+| field `name` on the tool | **no `name`** — the tool name is the **filename slug** |
+| project at `eve/tools/*` | project at **`eve/agent/tools/*`** (agent lives under `agent/`) |
+| any Zod | **Zod 4 required.** Eve's `inputSchema` wants a `StandardJSONSchemaV1` whose `~standard` exposes a `jsonSchema` converter. Zod 3.25 has `~standard` but **not** that converter, so it fails to typecheck; Zod 4.4 adds it and passes. |
+| `defineAgent({ model })` | confirmed — `model` is an AI SDK handle or a Gateway string like `"anthropic/<id>"`; **no `name` field** (identity derives from the package name). |
+
+### Real files produced (all typecheck-clean)
+
+```
+eve/
+├── package.json            # eve, zod@^4, @trainpace/core (file:../packages/core)
+├── tsconfig.json
+└── agent/
+    ├── agent.ts            # defineAgent({ model })
+    ├── instructions.md     # coach persona + "always call tools" rule
+    ├── skills/trainpace.md # long-run readiness review procedure
+    └── tools/
+        ├── vdot.ts         # defineTool -> calculateVdot/build* from core
+        ├── paces.ts        # defineTool -> calculateTrainingPaces
+        └── gpx.ts          # defineTool -> analyzeGpx
+```
+
+### Two blockers to a *live* run (not wiring problems — environment)
+
+1. **Eve requires Node ≥24**; this container runs Node 22, so `eve dev` / `eve init`
+   refuse to run here. The live agent loop must be run on Node 24 (your machine or a
+   Vercel deploy).
+2. **No standalone model API key** in this environment (only Claude Code's own proxy,
+   not repurposed). A live run needs a Vercel AI Gateway / Anthropic key.
+
+Neither touches the integration itself — which is proven by the passing typecheck.
+
+## To run it live (handoff — needs Node 24 + a model key)
+
+```bash
+cd eve
+nvm use 24                 # or any Node >= 24
+npm install
+# set a model key for the Vercel AI Gateway / Anthropic, e.g.:
+#   export AI_GATEWAY_API_KEY=...   (or the key your gateway expects)
+# confirm agent.ts `model` is a model id your gateway serves
+npm run typecheck          # expect: clean (already verified here)
+npm run dev                # eve dev — open the local web channel
+```
+
+Then ask the coach the long-run question and confirm it calls `gpx` + `vdot` and
+answers with correct numbers. That closes the Phase-2 evaluation.

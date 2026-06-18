@@ -1,0 +1,18 @@
+{
+  "name": "trainpace-coach",
+  "private": true,
+  "type": "module",
+  "description": "Hosted TrainPace running coach — an Eve agent wrapping @trainpace/core.",
+  "scripts": {
+    "dev": "eve dev",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@trainpace/core": "file:../packages/core",
+    "eve": "^0.11.4",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}
