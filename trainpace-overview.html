@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TrainPace — Core Features, What Runners Love & Next Steps</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --bg-soft: #121933;
+    --card: #161f3d;
+    --card-2: #1b2647;
+    --ink: #eef2ff;
+    --ink-soft: #aeb8d8;
+    --muted: #7c89b3;
+    --line: #28335c;
+    --brand: #5b8cff;
+    --brand-2: #38e1c4;
+    --accent: #ffb454;
+    --love: #ff6b9d;
+    --ok: #4ade80;
+    --radius: 18px;
+    --shadow: 0 18px 50px rgba(0,0,0,.35);
+    --maxw: 1080px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(91,140,255,.18), transparent 60%),
+      radial-gradient(1000px 500px at -10% 10%, rgba(56,225,196,.12), transparent 55%),
+      var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--brand); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: .18em; font-size: 12px;
+    font-weight: 700; color: var(--brand-2);
+  }
+
+  /* HERO */
+  header.hero { padding: 72px 0 40px; }
+  .logo {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-weight: 800; font-size: 18px; letter-spacing: -.01em;
+  }
+  .logo .dot {
+    width: 30px; height: 30px; border-radius: 9px;
+    background: linear-gradient(135deg, var(--brand), var(--brand-2));
+    display: grid; place-items: center; font-size: 16px;
+  }
+  h1 {
+    font-size: clamp(34px, 5vw, 58px); line-height: 1.05; margin: 22px 0 14px;
+    letter-spacing: -.02em; font-weight: 820;
+  }
+  h1 .grad {
+    background: linear-gradient(120deg, var(--brand-2), var(--brand) 55%, var(--love));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .lede { font-size: clamp(17px, 2.2vw, 20px); color: var(--ink-soft); max-width: 720px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .pill {
+    border: 1px solid var(--line); background: rgba(255,255,255,.03);
+    border-radius: 999px; padding: 7px 14px; font-size: 13px; color: var(--ink-soft);
+  }
+  .pill b { color: var(--ink); }
+
+  /* STAT STRIP */
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin: 34px 0 8px;
+  }
+  .stat {
+    background: linear-gradient(180deg, var(--card), var(--bg-soft));
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 18px; text-align: center;
+  }
+  .stat .n { font-size: 26px; font-weight: 800; letter-spacing: -.02em; }
+  .stat .l { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+
+  /* SECTIONS */
+  section { padding: 50px 0; }
+  .sec-head { margin-bottom: 26px; }
+  .sec-head h2 { font-size: clamp(24px, 3.2vw, 34px); margin: 8px 0 6px; letter-spacing: -.02em; }
+  .sec-head p { color: var(--ink-soft); margin: 0; max-width: 720px; }
+
+  /* FEATURE GRID */
+  .grid { display: grid; gap: 16px; }
+  .grid.f3 { grid-template-columns: repeat(3, 1fr); }
+  .grid.f2 { grid-template-columns: repeat(2, 1fr); }
+  .feat {
+    background: var(--card);
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 22px; position: relative; overflow: hidden;
+    transition: transform .18s ease, border-color .18s ease;
+  }
+  .feat:hover { transform: translateY(-3px); border-color: var(--brand); }
+  .feat .ic {
+    width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+    font-size: 22px; margin-bottom: 14px;
+    background: rgba(91,140,255,.14); border: 1px solid rgba(91,140,255,.3);
+  }
+  .feat h3 { margin: 0 0 4px; font-size: 18px; letter-spacing: -.01em; }
+  .feat .route { font-size: 12px; color: var(--brand-2); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .feat p { color: var(--ink-soft); font-size: 14.5px; margin: 10px 0 12px; }
+  .feat ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
+  .feat ul li { margin: 3px 0; }
+  .tag-new {
+    position: absolute; top: 16px; right: 16px;
+    background: linear-gradient(120deg, var(--brand-2), var(--brand));
+    color: #06122a; font-size: 10.5px; font-weight: 800; letter-spacing: .06em;
+    padding: 3px 9px; border-radius: 999px; text-transform: uppercase;
+  }
+  .tag-prem {
+    position: absolute; top: 16px; right: 16px;
+    background: rgba(255,180,84,.16); color: var(--accent);
+    border: 1px solid rgba(255,180,84,.4);
+    font-size: 10.5px; font-weight: 800; letter-spacing: .06em;
+    padding: 3px 9px; border-radius: 999px; text-transform: uppercase;
+  }
+
+  /* LOVES */
+  #loves { background:
+    linear-gradient(180deg, transparent, rgba(255,107,157,.05), transparent); }
+  .loves { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .love {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: var(--card-2); border: 1px solid var(--line);
+    border-radius: 14px; padding: 18px;
+  }
+  .love .heart {
+    flex: 0 0 auto; width: 38px; height: 38px; border-radius: 10px;
+    display: grid; place-items: center; font-size: 18px;
+    background: rgba(255,107,157,.14); border: 1px solid rgba(255,107,157,.35);
+  }
+  .love h4 { margin: 0 0 3px; font-size: 15.5px; }
+  .love p { margin: 0; font-size: 13.8px; color: var(--ink-soft); }
+
+  /* TECH */
+  .chips { display: flex; flex-wrap: wrap; gap: 9px; }
+  .chip {
+    border: 1px solid var(--line); background: rgba(255,255,255,.03);
+    padding: 7px 13px; border-radius: 10px; font-size: 13px; color: var(--ink-soft);
+  }
+  .chip b { color: var(--ink); }
+
+  /* ROADMAP */
+  .road { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .col {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 20px;
+  }
+  .col .horizon {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+    padding: 5px 11px; border-radius: 999px; margin-bottom: 6px;
+  }
+  .col.near .horizon { background: rgba(74,222,128,.14); color: var(--ok); border: 1px solid rgba(74,222,128,.3); }
+  .col.mid .horizon  { background: rgba(91,140,255,.14); color: var(--brand); border: 1px solid rgba(91,140,255,.3); }
+  .col.far .horizon  { background: rgba(255,180,84,.14); color: var(--accent); border: 1px solid rgba(255,180,84,.3); }
+  .col h3 { margin: 8px 0 12px; font-size: 16px; color: var(--muted); font-weight: 600; }
+  .task { display: flex; gap: 11px; align-items: flex-start; margin: 12px 0; }
+  .task .box {
+    flex: 0 0 auto; width: 18px; height: 18px; border-radius: 5px; margin-top: 3px;
+    border: 1.5px solid var(--line); background: rgba(255,255,255,.02);
+  }
+  .task .t { font-weight: 650; font-size: 14.5px; }
+  .task .d { font-size: 13px; color: var(--muted); }
+
+  /* CALLOUT */
+  .callout {
+    background: linear-gradient(120deg, rgba(91,140,255,.12), rgba(56,225,196,.1));
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 26px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap;
+  }
+  .callout .big { font-size: 19px; font-weight: 750; }
+  .callout p { margin: 4px 0 0; color: var(--ink-soft); font-size: 14.5px; }
+
+  footer {
+    border-top: 1px solid var(--line); margin-top: 30px;
+    padding: 30px 0 60px; color: var(--muted); font-size: 13px;
+  }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+  @media (max-width: 860px) {
+    .grid.f3, .grid.f2, .road, .loves, .stats { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .grid.f3, .grid.f2, .road, .loves, .stats { grid-template-columns: 1fr; }
+    header.hero { padding: 48px 0 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="logo"><span class="dot">🏃</span> TrainPace</div>
+    <h1>Smarter race training,<br><span class="grad">from one finish time.</span></h1>
+    <p class="lede">
+      TrainPace is a React + TypeScript web app that turns a single race result into a complete
+      training picture — pace zones, VDOT scores, a week-by-week plan, race-day fueling, and
+      course elevation analysis. Science-backed, mobile-first, and free to start.
+    </p>
+    <div class="hero-meta">
+      <span class="pill">🌐 <b>trainpace.com</b></span>
+      <span class="pill">⚡ Lighthouse <b>95+</b></span>
+      <span class="pill">📦 <b>11</b> feature modules</span>
+      <span class="pill">🔒 No account needed for core tools</span>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="n">9</div><div class="l">Runner-facing tools</div></div>
+      <div class="stat"><div class="n">80+</div><div class="l">Programmatic SEO pages</div></div>
+      <div class="stat"><div class="n">31</div><div class="l">Blog articles</div></div>
+      <div class="stat"><div class="n">PWA</div><div class="l">Offline-capable</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- CORE FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">The product</div>
+      <h2>Core features</h2>
+      <p>Each feature is a self-contained module (components + hooks + types) that composes into a thin route page. Here's what TrainPace actually does for a runner.</p>
+    </div>
+
+    <div class="grid f3">
+
+      <div class="feat">
+        <div class="ic">📊</div>
+        <h3>Training Pace Calculator</h3>
+        <span class="route">/calculator</span>
+        <p>Turn any race time into 7 science-backed training zones, Runna/Strava-style.</p>
+        <ul>
+          <li>Easy, Tempo, Max, Speed, Long-run paces + Yasso 800s</li>
+          <li>Goal-time chips auto-calculate; fine-tune slider rewrites time live</li>
+          <li>Live ⚡ VDOT badge updates as you type</li>
+          <li>km ⇄ miles, save plans to your dashboard</li>
+        </ul>
+      </div>
+
+      <div class="feat">
+        <div class="ic">📈</div>
+        <h3>VDOT Calculator</h3>
+        <span class="route">/vdot</span>
+        <p>Jack Daniels VDOT scoring in a clean dashboard layout.</p>
+        <ul>
+          <li>Animated gauge + percentile, training zones spectrum</li>
+          <li>"What If" slider re-projects every panel in real time</li>
+          <li>Race-time predictions across distances</li>
+          <li>History saved to localStorage</li>
+        </ul>
+      </div>
+
+      <div class="feat">
+        <span class="tag-new">New</span>
+        <div class="ic">🗓️</div>
+        <h3>Training Plan Generator</h3>
+        <span class="route">/plan</span>
+        <p>A full week-by-week plan from your goal race, fitness, and available days.</p>
+        <ul>
+          <li>Phases: Base → Development → Sharpening → Taper → Race Week</li>
+          <li>Per-day workouts with pace zones, weekly focus, mileage</li>
+          <li>Calendar view + export to iCal (.ics)</li>
+          <li>Paces derived from VDOT / pace results</li>
+        </ul>
+      </div>
+
+      <div class="feat">
+        <div class="ic">🥤</div>
+        <h3>Race Fuel Planner</h3>
+        <span class="route">/fuel</span>
+        <p>Personalized carb, calorie, and hydration strategy for race day.</p>
+        <ul>
+          <li>Targets from pace, weight, and race type</li>
+          <li>Google Gemini AI for contextual advice</li>
+          <li>Hourly breakdown — gels, chews, drinks, solids</li>
+          <li>Save & export your plan</li>
+        </ul>
+      </div>
+
+      <div class="feat">
+        <div class="ic">🗺️</div>
+        <h3>Course Elevation Analysis</h3>
+        <span class="route">/elevation-finder</span>
+        <p>Upload a GPX and see exactly what you're up against.</p>
+        <ul>
+          <li>Interactive Chart.js elevation profile + grade analysis</li>
+          <li>Mapbox 3D / Leaflet 2D route rendering</li>
+          <li>Algorithmic difficulty scoring</li>
+          <li>Bookmark routes to Firestore + Storage</li>
+        </ul>
+      </div>
+
+      <div class="feat">
+        <span class="tag-new">New</span>
+        <div class="ic">🎯</div>
+        <h3>Goals &amp; Onboarding</h3>
+        <span class="route">/onboarding</span>
+        <p>One source of truth — your recent race + goal race — captured once.</p>
+        <ul>
+          <li>Stored in canonical units (meters + seconds)</li>
+          <li>Fans out to pre-fill Pace, VDOT, Fuel & Dashboard</li>
+          <li>Toggle which tools the goal feeds</li>
+          <li>Goal greeting + settings card</li>
+        </ul>
+      </div>
+
+      <div class="feat">
+        <div class="ic">📂</div>
+        <h3>Personal Dashboard</h3>
+        <span class="route">/dashboard</span>
+        <p>Everything you've saved, synced across devices via Firebase.</p>
+        <ul>
+          <li>Route library, pace plans, fuel plans</li>
+          <li>Real-time Firestore queries scoped to the user</li>
+          <li>Search across all data types</li>
+          <li>Thumbnail map previews</li>
+        </ul>
+      </div>
+
+      <div class="feat">
+        <span class="tag-prem">Premium</span>
+        <div class="ic">🖼️</div>
+        <h3>Race Poster Generator</h3>
+        <span class="route">poster</span>
+        <p>Turn a route into a framed, shareable race poster.</p>
+        <ul>
+          <li>Mapbox GL route render + HTML Canvas export</li>
+          <li>Custom titles, stats, and styling</li>
+          <li>High-res image download</li>
+        </ul>
+      </div>
+
+      <div class="feat">
+        <div class="ic">📰</div>
+        <h3>Blog + Programmatic SEO</h3>
+        <span class="route">/blog · /race · /calculator/:slug</span>
+        <p>A content + discovery engine built to scale.</p>
+        <ul>
+          <li>31 markdown articles across 7 categories</li>
+          <li>SEO system designed for 100k+ generated pages</li>
+          <li>Hub-spoke internal linking, JSON-LD schema, sitemaps</li>
+          <li>80+ routes prerendered at build time</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LOVES -->
+<section id="loves">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Why it works</div>
+      <h2>What runners (and devs) love</h2>
+      <p>The qualities that make TrainPace feel good to use — and good to build on.</p>
+    </div>
+
+    <div class="loves">
+      <div class="love">
+        <div class="heart">⚡</div>
+        <div><h4>Zero friction</h4><p>Core calculators work instantly — no signup, no paywall, results as you type.</p></div>
+      </div>
+      <div class="love">
+        <div class="heart">🔬</div>
+        <div><h4>Science-backed</h4><p>Paces and predictions built on Jack Daniels' VDOT/oxygen-cost model, not guesswork.</p></div>
+      </div>
+      <div class="love">
+        <div class="heart">🔗</div>
+        <div><h4>One input, many tools</h4><p>A single race time flows into pace zones, VDOT, a training plan, and a fuel strategy.</p></div>
+      </div>
+      <div class="love">
+        <div class="heart">📱</div>
+        <div><h4>Mobile-first &amp; offline</h4><p>Installable PWA with touch-friendly, slider-driven UI and Workbox offline support.</p></div>
+      </div>
+      <div class="love">
+        <div class="heart">🤖</div>
+        <div><h4>AI where it helps</h4><p>Gemini adds contextual nutrition advice without turning the app into a chatbot.</p></div>
+      </div>
+      <div class="love">
+        <div class="heart">🧱</div>
+        <div><h4>Clean architecture</h4><p>Feature modules, custom hooks, Zod-validated forms, and end-to-end TypeScript.</p></div>
+      </div>
+      <div class="love">
+        <div class="heart">🚀</div>
+        <div><h4>Fast &amp; discoverable</h4><p>Lighthouse 95+, code-split bundles, and a programmatic SEO system that scales.</p></div>
+      </div>
+      <div class="love">
+        <div class="heart">🗺️</div>
+        <div><h4>Beautiful data</h4><p>Mapbox routes and Chart.js elevation profiles make the numbers tangible.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH -->
+<section id="tech">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Under the hood</div>
+      <h2>Built on</h2>
+    </div>
+    <div class="chips">
+      <span class="chip"><b>React</b> 18.3</span>
+      <span class="chip"><b>TypeScript</b> 5.6</span>
+      <span class="chip"><b>Vite</b> 5.4 + PWA</span>
+      <span class="chip"><b>React Router</b> 7.5</span>
+      <span class="chip"><b>Tailwind</b> + shadcn/ui</span>
+      <span class="chip"><b>Firebase</b> Auth · Firestore · Storage</span>
+      <span class="chip"><b>Mapbox GL</b> + Leaflet</span>
+      <span class="chip"><b>Chart.js</b></span>
+      <span class="chip"><b>Zod</b> + React Hook Form</span>
+      <span class="chip"><b>Google Gemini</b></span>
+      <span class="chip"><b>PostHog</b> + GA4</span>
+      <span class="chip"><b>Playwright</b> E2E</span>
+      <span class="chip"><b>Vercel</b> hosting</span>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="next">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Where it goes</div>
+      <h2>Next steps</h2>
+      <p>A pragmatic roadmap — finishing what's started, then deepening the loop that makes runners come back.</p>
+    </div>
+
+    <div class="road">
+
+      <div class="col near">
+        <span class="horizon">● Near term</span>
+        <h3>Tighten the new core</h3>
+        <div class="task"><span class="box"></span><div><div class="t">Wire goals across every tool</div><div class="d">Fully connect onboarding's recent/goal race so Pace, VDOT, Fuel & Plan all open pre-filled.</div></div></div>
+        <div class="task"><span class="box"></span><div><div class="t">Plan ↔ Calendar sync</div><div class="d">One-tap Google/Apple Calendar add beyond the .ics export; show the plan on the dashboard.</div></div></div>
+        <div class="task"><span class="box"></span><div><div class="t">Unit tests for the math</div><div class="d">Vitest coverage on vdot-math & plan-math to lock in pace/prediction correctness.</div></div></div>
+        <div class="task"><span class="box"></span><div><div class="t">Document goals &amp; plan in CLAUDE.md</div><div class="d">Both modules exist but aren't in the project docs yet.</div></div></div>
+      </div>
+
+      <div class="col mid">
+        <span class="horizon">● Mid term</span>
+        <h3>Close the training loop</h3>
+        <div class="task"><span class="box"></span><div><div class="t">Strava / Garmin import</div><div class="d">Auto-pull recent runs to seed goals and GPX routes instead of manual entry/upload.</div></div></div>
+        <div class="task"><span class="box"></span><div><div class="t">Adaptive plans</div><div class="d">Adjust upcoming weeks based on completed vs. missed workouts and recent fitness.</div></div></div>
+        <div class="task"><span class="box"></span><div><div class="t">Heart-rate &amp; power zones</div><div class="d">Extend pace zones with HR/power for treadmill and trail running.</div></div></div>
+        <div class="task"><span class="box"></span><div><div class="t">Weather-aware fueling</div><div class="d">Fold temperature/humidity into hydration and carb targets.</div></div></div>
+      </div>
+
+      <div class="col far">
+        <span class="horizon">● Long term</span>
+        <h3>Grow &amp; retain</h3>
+        <div class="task"><span class="box"></span><div><div class="t">Accounts beyond Google</div><div class="d">Add email/password (or passkeys) to widen the funnel past Google OAuth.</div></div></div>
+        <div class="task"><span class="box"></span><div><div class="t">Sharing &amp; community</div><div class="d">Shareable plan/poster links and race-day pace cards to drive organic growth.</div></div></div>
+        <div class="task"><span class="box"></span><div><div class="t">Premium tier</div><div class="d">Expand past the poster generator into a clear, sustainable paid plan.</div></div></div>
+        <div class="task"><span class="box"></span><div><div class="t">Scale SEO to 100k pages</div><div class="d">Use the existing generators + validation to ship race/distance/city pages at volume.</div></div></div>
+      </div>
+
+    </div>
+
+    <div style="height:18px"></div>
+    <div class="callout">
+      <div style="font-size:34px">🏁</div>
+      <div style="flex:1; min-width:240px">
+        <div class="big">The throughline: make every input do more work.</div>
+        <p>TrainPace already turns one race time into many tools. The next chapter is making them talk to each other — goals feeding plans, plans feeding fuel, real runs feeding everything back — so the app becomes a season-long companion, not a one-off calculator.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>TrainPace — overview &amp; roadmap · generated for the team</div>
+    <div>Made with ❤️ for runners who take training seriously</div>
+  </div>
+</footer>
+
+</body>
+</html>
