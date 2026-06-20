@@ -394,6 +394,30 @@ export default function RaceSeoLanding() {
         </section>
       )}
 
+      {page?.previewRouteKey && (
+        <section className="px-4 sm:px-6 pb-6">
+          <div className="max-w-5xl mx-auto">
+            <a
+              href={`/simulate?course=${page.previewRouteKey}`}
+              className="flex items-center justify-between rounded-2xl border border-blue-100 bg-blue-50/60 hover:bg-blue-50 transition-colors p-5"
+            >
+              <div>
+                <div className="text-sm font-semibold text-blue-700">Race Simulator</div>
+                <div className="mt-1 text-lg font-bold text-gray-900">
+                  Simulate your {previewRoute?.name ?? "race"} pacing strategy
+                </div>
+                <p className="mt-1 text-gray-600 text-sm">
+                  Get a split-by-split plan adjusted for the course elevation — see exactly where your pace will slow and where you can push.
+                </p>
+              </div>
+              <svg className="shrink-0 ml-4 text-blue-500" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </section>
+      )}
+
       <section className="px-4 sm:px-6 pb-16">
         <div className="max-w-5xl mx-auto grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <a

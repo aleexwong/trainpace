@@ -19,6 +19,7 @@ const prerenderedRoutes = [
   "/elevationfinder",
   "/elevation-finder",
   "/race",
+  "/simulate",
   // Programmatic SEO routes
   ...getAllSeoPaths(),
   "/preview-route/boston",
