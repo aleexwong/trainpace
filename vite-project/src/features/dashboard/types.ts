@@ -8,6 +8,8 @@ export interface RouteMetadata {
   routeSlug?: string; // For bookmarked routes (legacy)
   routeKey?: string; // For bookmarked routes (new)
   routeName?: string; // For bookmarked routes
+  slug?: string; // For uploaded routes: editable URL slug
+  shortId?: string; // For uploaded routes: immutable URL resolution token
   uploadedAt?: Timestamp | null;
   savedAt?: Timestamp | null; // For bookmarked routes
   schemaVersion?: number; // For migration tracking

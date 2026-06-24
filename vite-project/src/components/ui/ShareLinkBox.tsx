@@ -5,16 +5,17 @@ import { Copy, Facebook, Twitter } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ShareLinkBoxProps {
-  docId: string;
+  /** Pretty path segment, e.g. "boston-marathon-a3f9c". Preferred. */
+  path?: string;
+  /** Legacy fallback: raw Firestore doc id. */
+  docId?: string;
   className?: string;
 }
 
-export function ShareLinkBox({ docId, className }: ShareLinkBoxProps) {
+export function ShareLinkBox({ path, docId, className }: ShareLinkBoxProps) {
   const { toast } = useToast();
-  const shareUrl = `https://www.trainpace.com/elevationfinder/${docId}`;
-
-  // Debug log
-  console.log('ShareLinkBox received docId:', docId);
+  const segment = path || docId || "";
+  const shareUrl = `https://www.trainpace.com/elevationfinder/${segment}`;
 
   const handleCopy = async () => {
     try {
