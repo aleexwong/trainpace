@@ -22,19 +22,26 @@ test.describe("Training Plan Generator", () => {
     await page.goto("/plan");
     await page.waitForLoadState("networkidle");
 
-    // Click Half Marathon
-    const halfButton = page.getByRole("button", { name: /Half Marathon/i }).first();
-    if (await halfButton.isVisible()) {
-      await halfButton.click();
-    }
+    // Select Half Marathon
+    await page.getByRole("button", { name: /Half Marathon/i }).first().click();
 
-    // Click generate / submit button
-    const generateBtn = page.getByRole("button", { name: /Generate|Create|Build/i }).first();
-    if (await generateBtn.isVisible()) {
-      await generateBtn.click();
-      // Wait for plan to appear
-      await page.waitForTimeout(1000);
-    }
+    // Race Date is required and must be at least 4 weeks out, otherwise the
+    // Generate button stays disabled. Pick a date ~6 weeks from today.
+    const raceDate = new Date();
+    raceDate.setDate(raceDate.getDate() + 42);
+    await page
+      .locator('input[type="date"]')
+      .fill(raceDate.toISOString().split("T")[0]);
+
+    // Generate the plan (button is disabled until a valid race date is set)
+    const generateBtn = page.getByRole("button", { name: /Generate My Plan/i });
+    await expect(generateBtn).toBeEnabled();
+    await generateBtn.click();
+
+    // The form is replaced by the generated plan view
+    await expect(
+      page.getByRole("button", { name: /Start over/i })
+    ).toBeVisible();
   });
 
   test("should accept URL params from pace calculator", async ({ page }) => {
