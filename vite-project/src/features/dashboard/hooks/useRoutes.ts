@@ -54,6 +54,8 @@ export function useRoutes(userId: string | undefined) {
           uploadedAt: data.uploadedAt,
           metadata: data.metadata,
           thumbnailPoints: data.thumbnailPoints || [],
+          slug: data.slug,
+          shortId: data.shortId,
           displayUrl: data.displayUrl,
           fileUrl: data.fileUrl,
         });
@@ -112,5 +114,20 @@ export function useRoutes(userId: string | undefined) {
     setRoutes((prev) => prev.filter((route) => route.id !== routeId));
   };
 
-  return { routes, loading, error, reload: loadRoutes, removeRoute };
+  const updateRoute = (routeId: string, patch: Partial<RouteMetadata>) => {
+    setRoutes((prev) =>
+      prev.map((route) =>
+        route.id === routeId ? { ...route, ...patch } : route
+      )
+    );
+  };
+
+  return {
+    routes,
+    loading,
+    error,
+    reload: loadRoutes,
+    removeRoute,
+    updateRoute,
+  };
 }
