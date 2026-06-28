@@ -499,6 +499,29 @@ npm run test:e2e
 - Prerender: 80+ routes statically generated at build time via `vite-plugin-prerender`
 - Sitemap: Generated via `npm run generate-sitemap` (run before deploy if SEO pages change)
 
+### Firebase Environments (prod vs. staging)
+Two separate Firebase projects keep preview/staging data isolated from production. There is
+**no rule-based** staging — Firebase rules can't distinguish a Vercel preview from prod, so
+isolation is done at the project level. Aliases live in `.firebaserc`:
+
+| Alias | Project ID | Used by |
+|-------|------------|---------|
+| `production` (default) | `trainpace-prod` | Vercel **Production** deploys (main) |
+| `staging` | `trainpace-staging` | Vercel **Preview** + **Development** deploys + local dev |
+
+- **Rules files are shared** (`firestore.rules`, `storage.rules`), registered in `firebase.json`
+  (`firestore` + `storage` keys). Deploy to each project explicitly:
+  ```bash
+  firebase deploy --only firestore:rules,storage -P staging
+  firebase deploy --only firestore:rules,storage -P production
+  ```
+  Rules deploys never touch data — they only update the access-control layer.
+- **Vercel routing to projects:** the `VITE_FIREBASE_*` env vars are set twice in Vercel, scoped by
+  environment — Production scope → `trainpace-prod`, Preview + Development scope → `trainpace-staging`.
+  `src/lib/firebase.ts` is fully env-driven, so no code branches on environment.
+- **Auth gotcha:** add `vercel.app` (or specific preview domains) to the staging project's
+  Authentication → Authorized domains, or Google OAuth login fails on preview URLs.
+
 ## External Integrations
 
 | Service | Purpose | Config |
