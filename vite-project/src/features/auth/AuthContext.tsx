@@ -24,16 +24,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Stitch the anonymous journey to this user and unlock signup-conversion
-        // + cross-session tracking in PostHog.
-        posthog.identify(user.uid, {
-          email: user.email ?? undefined,
-          name: user.displayName ?? undefined,
-        });
+        if (user.uid !== prevUidRef.current) {
+          try {
+            posthog.identify(user.uid, {
+              email: user.email ?? undefined,
+              name: user.displayName ?? undefined,
+            });
+          } catch (_err) {
+            // PostHog may be blocked by ad-blockers; don't prevent auth state from updating
+          }
+        }
         prevUidRef.current = user.uid;
       } else if (prevUidRef.current) {
-        // Logout: clear identity so the next visitor isn't merged into this one.
-        posthog.reset();
+        try { posthog.reset(); } catch (_err) {}
         prevUidRef.current = null;
       }
       setUser(user);

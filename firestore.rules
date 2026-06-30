@@ -2,9 +2,11 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // GPX uploads — public read; owner can create/update/delete
+    // GPX uploads — single-doc reads are public (shared routes); list queries owner-only
     match /gpx_uploads/{document} {
-      allow read: if true;
+      allow get: if true;
+      allow list: if request.auth != null
+        && request.auth.uid == resource.data.userId;
       allow create: if request.auth != null
         && request.auth.uid == request.resource.data.userId;
       allow update, delete: if request.auth != null
@@ -21,11 +23,12 @@ service cloud.firestore {
         && request.auth.uid == resource.data.userId;
     }
 
-    // Elevation analysis cache — public read; any authed user can write
+    // Elevation analysis cache — public read; only creator can update/delete
     match /elevation_analysis_cache/{cacheId} {
       allow read: if true;
       allow create: if request.auth != null;
-      allow update, delete: if request.auth != null;
+      allow update, delete: if request.auth != null
+        && resource.data.createdBy == request.auth.uid;
     }
 
     // User fuel plans — owner only

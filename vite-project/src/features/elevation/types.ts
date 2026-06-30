@@ -53,6 +53,7 @@ export interface StaticRouteData {
   difficultyRating: string;
   elevationProfile: ProfilePoint[];
   rawSegments: Array<Record<string, unknown>>;
+  routeName?: string;
 }
 
 export interface GPXAnalysisResponse {
