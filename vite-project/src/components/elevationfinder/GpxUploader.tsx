@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Upload,
   Activity,
@@ -74,13 +74,6 @@ export default function GpxUploader({
   const [uploadsThisHour, setUploadsThisHour] = useState(0);
   const [rateLimitExceeded, setRateLimitExceeded] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      checkRateLimits();
-    }
-    // checkRateLimits is defined inside the component but only reads `user` which is already in deps
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
 
   // Generate SHA-256 hash of file content
   const generateFileHash = async (content: string): Promise<string> => {
@@ -128,7 +121,7 @@ export default function GpxUploader({
   };
 
   // Check rate limits for current user
-  const checkRateLimits = async () => {
+  const checkRateLimits = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -162,7 +155,13 @@ export default function GpxUploader({
     } catch (error) {
       console.error("Error checking rate limits:", error);
     }
-  };
+  }, [user, maxUploadsPerDay, maxUploadsPerHour]);
+
+  useEffect(() => {
+    if (user) {
+      checkRateLimits();
+    }
+  }, [user, checkRateLimits]);
 
   // Validate file before upload
   const validateFile = (file: File): string | null => {
@@ -301,31 +300,25 @@ export default function GpxUploader({
   };
 
   // Handle duplicate file action
-  const handleDuplicateAction = (action: "upload" | "use" | "cancel") => {
+  const handleDuplicateAction = async (action: "upload" | "use" | "cancel") => {
     if (action === "use" && duplicateFound) {
-      // Use the existing file
       toast({
         title: "Using Existing File",
         description: "Loading your previously uploaded GPX file.",
         variant: "default",
       });
-
-      // Fetch the content from the existing file
+      setDuplicateFound(null);
+      setPendingUpload(null);
       fetchExistingFileContent(duplicateFound.fileUrl);
     } else if (action === "upload" && pendingUpload) {
-      // User chose to keep the duplicate — upload a fresh copy anyway.
-      toast({
-        title: "Uploading Duplicate",
-        description: "Saving a new copy of this file.",
-        variant: "default",
-      });
-
       const { file, content, fileHash } = pendingUpload;
-      proceedWithUpload(file, content, fileHash);
+      setDuplicateFound(null);
+      setPendingUpload(null);
+      await proceedWithUpload(file, content, fileHash);
+    } else {
+      setDuplicateFound(null);
+      setPendingUpload(null);
     }
-
-    setDuplicateFound(null);
-    setPendingUpload(null);
   };
 
   // Fetch existing file content using multiple fallback methods
@@ -371,12 +364,16 @@ export default function GpxUploader({
       const processed = processGPXUpload(content);
 
       // Create new document for fallback case
+      const fileHash = await generateFileHash(content);
       const docRef = await addDoc(collection(db, "gpx_uploads"), {
         filename,
         content,
         uploadedAt: serverTimestamp(),
         userId: user?.uid,
         fileUrl,
+        fileHash,
+        deleted: false,
+        contentValidated: true,
         displayPoints: processed.displayPoints,
         metadata: processed.metadata,
         staticRouteData: null,

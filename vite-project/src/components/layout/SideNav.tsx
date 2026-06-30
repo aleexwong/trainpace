@@ -14,6 +14,7 @@ export default function SideNav() {
     { href: "/fuel", label: "Fuel Planner" },
     { href: "/elevation-finder", label: "Elevation Finder" },
     { href: "/plan", label: "Training Plan" },
+    { href: "/simulate", label: "Race Simulator" },
     { href: "/login", label: "Login" },
   ];
 

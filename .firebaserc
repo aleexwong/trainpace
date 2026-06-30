@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "trainpace-prod",
+    "production": "trainpace-prod",
+    "staging": "trainpace-staging"
+  }
+}

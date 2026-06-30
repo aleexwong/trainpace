@@ -98,7 +98,6 @@ const Settings: React.FC = () => {
       "user_pace_plans",
       "user_fuel_plans",
       "user_bookmarks",
-      "user_training_goals",
       "user_training_plans",
     ];
 

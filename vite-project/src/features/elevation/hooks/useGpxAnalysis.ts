@@ -86,7 +86,7 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
         // Reconstruct full API response from cache + static data
         const reconstructed: GPXAnalysisResponse = {
           message: "Loaded from optimized cache",
-          raceName: "Cached Route",
+          raceName: staticData.routeName ?? "Cached Route",
           goalPace: settings.basePaceMinPerKm,
           totalDistanceKm: staticData.totalDistance,
           elevationGain: staticData.totalElevationGain,
@@ -178,7 +178,7 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
       const { staticRouteData } = apiResponse.cacheOptimization;
 
       await updateDoc(doc(db, "gpx_uploads", routeId), {
-        staticRouteData,
+        staticRouteData: { ...staticRouteData, routeName: apiResponse.raceName },
         staticDataCached: new Date().toISOString(),
       });
     } catch (error) {

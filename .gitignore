@@ -1,2 +1,6 @@
 # HyperFrames video project directories
 trainpace-*/
+
+# Firebase CLI debug logs
+firebase-debug.log
+.firebase/
