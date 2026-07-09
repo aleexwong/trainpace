@@ -194,6 +194,10 @@ export function validatePaceInputs(
     errors.time = "Invalid time format";
   }
 
+  if (h > 24) {
+    errors.time = "Time must be 24 hours or less";
+  }
+
   return {
     isValid: Object.keys(errors).length === 0,
     errors,

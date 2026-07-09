@@ -15,12 +15,14 @@ npm install               # Install dependencies
 npm run dev               # Dev server at localhost:5173
 npm run build             # TypeScript check (tsc -b) + production build
 npm run lint              # ESLint
+npm run test               # Vitest unit tests (pure-function/math logic)
+npm run test:watch        # Vitest in watch mode
 npm run test:e2e          # Playwright E2E tests
 npm run test:e2e:ui       # Playwright UI mode
 npm run generate-sitemap  # Regenerate sitemap.xml (run when SEO pages change)
 ```
 
-There are no unit tests — verification is `npm run build` + `npm run lint` + Playwright E2E.
+Verification is `npm run build` + `npm run lint` + `npm run test` + Playwright E2E. Unit tests (Vitest, `vitest.config.ts`) cover pure calculation logic — colocated in `__tests__/` folders next to the module under test (e.g. `vdot-math.ts`, pace-calculator `utils.ts`, `useFuelCalculation.ts`). Hooks with side effects beyond `useMemo`/pure logic aren't unit-tested this way; rely on Playwright E2E for those.
 
 ## Structure
 

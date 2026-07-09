@@ -19,7 +19,7 @@ import {
   FUEL_PRODUCTS,
 } from "../types";
 
-interface UseFuelCalculationParams {
+export interface UseFuelCalculationParams {
   raceType: RaceType;
   weight: string;
   timeHours: string;
@@ -27,7 +27,7 @@ interface UseFuelCalculationParams {
   customCarbsPerHour?: number; // Optional override from slider
 }
 
-interface UseFuelCalculationReturn {
+export interface UseFuelCalculationReturn {
   result: FuelPlanResult | null;
   error: string | null;
   isValid: boolean;
@@ -140,6 +140,98 @@ function generateFuelStops(
 }
 
 /**
+ * Pure fuel-calculation logic, extracted from the hook so it can be unit
+ * tested without a React renderer. `useFuelCalculation` just memoizes this.
+ */
+export function calculateFuelPlan({
+  raceType,
+  weight,
+  timeHours,
+  timeMinutes,
+  customCarbsPerHour,
+}: UseFuelCalculationParams): UseFuelCalculationReturn {
+  // Parse inputs
+  const weightKg = weight ? parseFloat(weight) : NaN;
+
+  // Calculate total time in minutes
+  let finishTimeMin: number;
+  if (raceType === "10K") {
+    finishTimeMin = parseFloat(timeMinutes);
+  } else {
+    const hours = parseFloat(timeHours) || 0;
+    const mins = parseFloat(timeMinutes) || 0;
+    finishTimeMin = hours * 60 + mins;
+  }
+
+  // Validate inputs
+  if (isNaN(finishTimeMin) || finishTimeMin <= 0) {
+    return {
+      result: null,
+      error: "Please enter a valid finish time.",
+      isValid: false,
+    };
+  }
+
+  if (!isNaN(weightKg) && (weightKg < 1 || weightKg > 1000)) {
+    return {
+      result: null,
+      error: "Weight must be between 1kg and 1000kg.",
+      isValid: false,
+    };
+  }
+
+  // Calculate carbs per hour based on weight + race baseline
+  // Logic: weight-based calc provides a floor above race baseline, slider overrides all
+  const raceBaseline = RACE_SETTINGS[raceType];
+  let carbsPerHour: number;
+
+  if (customCarbsPerHour !== undefined) {
+    // Manual slider override - use as-is
+    carbsPerHour = customCarbsPerHour;
+    console.log(`[Fuel Calc] Using custom slider: ${carbsPerHour}g/hr`);
+  } else if (!isNaN(weightKg) && weightKg > 0) {
+    // Weight-based calculation: max(weight × 0.7, race baseline)
+    const weightBased = Math.round(weightKg * CARBS_PER_KG_MULTIPLIER);
+    carbsPerHour = Math.max(weightBased, raceBaseline);
+    console.log(`[Fuel Calc] Weight-based: ${weightKg}kg × 0.7 = ${weightBased}g, max(${weightBased}, ${raceBaseline}) = ${carbsPerHour}g/hr`);
+  } else {
+    // No weight provided - use race baseline
+    carbsPerHour = raceBaseline;
+    console.log(`[Fuel Calc] Using race baseline: ${carbsPerHour}g/hr`);
+  }
+
+  // Calculate totals
+  const durationHours = finishTimeMin / 60;
+  const totalCarbs = Math.round(durationHours * carbsPerHour);
+  const totalCalories = totalCarbs * CALORIES_PER_GRAM_CARB;
+
+  // Calculate gels needed
+  let gelsNeeded = 0;
+  if (raceType === "10K") {
+    gelsNeeded = durationHours >= MIN_10K_TIME_FOR_GEL ? 1 : 0;
+  } else {
+    gelsNeeded = Math.ceil(durationHours * GELS_PER_HOUR);
+    gelsNeeded = Math.min(gelsNeeded, MAX_GELS);
+  }
+
+  // Generate fuel stops timeline
+  const distanceKm = RACE_DISTANCES[raceType];
+  const fuelStops = generateFuelStops(finishTimeMin, distanceKm, carbsPerHour);
+
+  return {
+    result: {
+      carbsPerHour,
+      totalCarbs,
+      totalCalories,
+      gelsNeeded,
+      fuelStops,
+    },
+    error: null,
+    isValid: true,
+  };
+}
+
+/**
  * Calculate fuel needs based on race parameters
  */
 export function useFuelCalculation({
@@ -149,87 +241,17 @@ export function useFuelCalculation({
   timeMinutes,
   customCarbsPerHour,
 }: UseFuelCalculationParams): UseFuelCalculationReturn {
-  return useMemo(() => {
-    // Parse inputs
-    const weightKg = weight ? parseFloat(weight) : NaN;
-
-    // Calculate total time in minutes
-    let finishTimeMin: number;
-    if (raceType === "10K") {
-      finishTimeMin = parseFloat(timeMinutes);
-    } else {
-      const hours = parseFloat(timeHours) || 0;
-      const mins = parseFloat(timeMinutes) || 0;
-      finishTimeMin = hours * 60 + mins;
-    }
-
-    // Validate inputs
-    if (isNaN(finishTimeMin) || finishTimeMin <= 0) {
-      return {
-        result: null,
-        error: "Please enter a valid finish time.",
-        isValid: false,
-      };
-    }
-
-    if (!isNaN(weightKg) && (weightKg < 1 || weightKg > 1000)) {
-      return {
-        result: null,
-        error: "Weight must be between 1kg and 1000kg.",
-        isValid: false,
-      };
-    }
-
-    // Calculate carbs per hour based on weight + race baseline
-    // Logic: weight-based calc provides a floor above race baseline, slider overrides all
-    const raceBaseline = RACE_SETTINGS[raceType];
-    let carbsPerHour: number;
-    
-    if (customCarbsPerHour !== undefined) {
-      // Manual slider override - use as-is
-      carbsPerHour = customCarbsPerHour;
-      console.log(`[Fuel Calc] Using custom slider: ${carbsPerHour}g/hr`);
-    } else if (!isNaN(weightKg) && weightKg > 0) {
-      // Weight-based calculation: max(weight × 0.7, race baseline)
-      const weightBased = Math.round(weightKg * CARBS_PER_KG_MULTIPLIER);
-      carbsPerHour = Math.max(weightBased, raceBaseline);
-      console.log(`[Fuel Calc] Weight-based: ${weightKg}kg × 0.7 = ${weightBased}g, max(${weightBased}, ${raceBaseline}) = ${carbsPerHour}g/hr`);
-    } else {
-      // No weight provided - use race baseline
-      carbsPerHour = raceBaseline;
-      console.log(`[Fuel Calc] Using race baseline: ${carbsPerHour}g/hr`);
-    }
-
-    // Calculate totals
-    const durationHours = finishTimeMin / 60;
-    const totalCarbs = Math.round(durationHours * carbsPerHour);
-    const totalCalories = totalCarbs * CALORIES_PER_GRAM_CARB;
-
-    // Calculate gels needed
-    let gelsNeeded = 0;
-    if (raceType === "10K") {
-      gelsNeeded = durationHours >= MIN_10K_TIME_FOR_GEL ? 1 : 0;
-    } else {
-      gelsNeeded = Math.ceil(durationHours * GELS_PER_HOUR);
-      gelsNeeded = Math.min(gelsNeeded, MAX_GELS);
-    }
-
-    // Generate fuel stops timeline
-    const distanceKm = RACE_DISTANCES[raceType];
-    const fuelStops = generateFuelStops(finishTimeMin, distanceKm, carbsPerHour);
-
-    return {
-      result: {
-        carbsPerHour,
-        totalCarbs,
-        totalCalories,
-        gelsNeeded,
-        fuelStops,
-      },
-      error: null,
-      isValid: true,
-    };
-  }, [raceType, weight, timeHours, timeMinutes, customCarbsPerHour]);
+  return useMemo(
+    () =>
+      calculateFuelPlan({
+        raceType,
+        weight,
+        timeHours,
+        timeMinutes,
+        customCarbsPerHour,
+      }),
+    [raceType, weight, timeHours, timeMinutes, customCarbsPerHour]
+  );
 }
 
 /**

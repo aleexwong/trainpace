@@ -80,9 +80,10 @@ export function PaceCalculatorV2({
     const dist = parseFloat(inputs.distance);
     if (!dist || dist <= 0) return null;
 
+    const hours = parseInt(inputs.hours || "0", 10);
     const minutes = parseInt(inputs.minutes || "0", 10);
     const seconds = parseInt(inputs.seconds || "0", 10);
-    if (minutes >= 60 || seconds >= 60) return null;
+    if (minutes >= 60 || seconds >= 60 || hours > 24) return null;
 
     const totalSecs = timeToSeconds(inputs.hours, inputs.minutes, inputs.seconds);
     if (totalSecs <= 0) return null;
