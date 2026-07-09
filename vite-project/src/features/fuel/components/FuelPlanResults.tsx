@@ -40,6 +40,7 @@ export function FuelPlanResults({
               onClick={onCopy}
               className="p-2 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors"
               title="Copy Plan"
+              aria-label="Copy Plan"
             >
               <Copy className="h-4 w-4 text-emerald-600" />
             </button>
@@ -47,6 +48,7 @@ export function FuelPlanResults({
               onClick={onDownload}
               className="p-2 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors"
               title="Download Plan"
+              aria-label="Download Plan"
             >
               <Download className="h-4 w-4 text-emerald-600" />
             </button>

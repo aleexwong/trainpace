@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Flame, ChevronLeft, ChevronRight } from "lucide-react";
+import { Flame, ChevronLeft, ChevronRight, AlertCircle } from "lucide-react";
 import { FuelPlan } from "../types";
 import { FuelPlanCard } from "./FuelPlanCard";
 
 interface FuelPlansSectionProps {
   fuelPlans: FuelPlan[];
   loading: boolean;
+  error?: string | null;
+  onRetry?: () => void;
   onDeletePlan: (planId: string) => void;
   onCopyPlan: (plan: FuelPlan) => void;
 }
@@ -15,6 +17,8 @@ const PLANS_PER_PAGE = 9; // 3 rows of 3 cards
 export function FuelPlansSection({
   fuelPlans,
   loading,
+  error,
+  onRetry,
   onDeletePlan,
   onCopyPlan,
 }: FuelPlansSectionProps) {
@@ -25,6 +29,26 @@ export function FuelPlansSection({
       <div className="text-center py-12">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto"></div>
         <p className="text-gray-600 mt-4">Loading fuel plans...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
+        <h2 className="text-xl font-semibold text-gray-800 mb-2">
+          Couldn't load fuel plans
+        </h2>
+        <p className="text-gray-600 mb-6">{error}</p>
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            className="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors"
+          >
+            Retry
+          </button>
+        )}
       </div>
     );
   }

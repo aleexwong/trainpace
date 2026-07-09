@@ -786,6 +786,7 @@ const FuelPlannerV2 = () => {
                         onClick={handleCopy}
                         className="p-3 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors"
                         title="Copy Plan"
+                        aria-label="Copy Plan"
                       >
                         <Copy className="h-5 w-5 text-emerald-600" />
                       </button>
@@ -793,6 +794,7 @@ const FuelPlannerV2 = () => {
                         onClick={handleDownload}
                         className="p-3 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors"
                         title="Download Plan"
+                        aria-label="Download Plan"
                       >
                         <Download className="h-5 w-5 text-emerald-600" />
                       </button>
@@ -1021,6 +1023,7 @@ const FuelPlannerV2 = () => {
                               onClick={handleCopyAI}
                               className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
                               title="Copy recommendations"
+                              aria-label="Copy recommendations"
                             >
                               <Copy className="h-5 w-5" />
                             </button>
@@ -1028,6 +1031,7 @@ const FuelPlannerV2 = () => {
                               onClick={handleDownloadAI}
                               className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
                               title="Download recommendations"
+                              aria-label="Download recommendations"
                             >
                               <Download className="h-5 w-5" />
                             </button>

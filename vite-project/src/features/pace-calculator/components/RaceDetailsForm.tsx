@@ -10,7 +10,7 @@
  *  6. Optional age / temperature adjustments
  */
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
@@ -62,6 +62,8 @@ interface RaceDetailsFormProps {
   onPresetClick: (distance: number, presetName: string) => void;
   onCalculate: () => void;
   isCalculating: boolean;
+  /** True once distance + time are both valid – disables the Calculate button when false */
+  canCalculate?: boolean;
   /** Name of the currently selected preset (e.g. "Marathon") */
   selectedPresetName?: string | null;
   /** Live VDOT derived from current inputs – null when inputs are incomplete */
@@ -81,6 +83,7 @@ export function RaceDetailsForm({
   onPresetClick,
   onCalculate,
   isCalculating,
+  canCalculate = true,
   selectedPresetName,
   liveVdot,
   onSuggestedTimeClick,
@@ -92,6 +95,11 @@ export function RaceDetailsForm({
   const minutesRef = useRef<HTMLInputElement>(null);
   const secondsRef = useRef<HTMLInputElement>(null);
 
+  // Tracks whether the user has interacted with a required field, so we don't
+  // show "required" errors before they've had a chance to fill anything in.
+  const [distanceTouched, setDistanceTouched] = useState(false);
+  const [timeTouched, setTimeTouched] = useState(false);
+
   // Suggested times + slider config for the selected preset
   const suggestedTimes = selectedPresetName ? (SUGGESTED_TIMES[selectedPresetName] ?? []) : [];
   const sliderRange    = selectedPresetName ? (SLIDER_RANGES[selectedPresetName]    ?? null) : null;
@@ -101,6 +109,14 @@ export function RaceDetailsForm({
   const minutes = parseInt(inputs.minutes || "0", 10);
   const seconds = parseInt(inputs.seconds || "0", 10);
   const hasValidTime = currentTimeSeconds > 0 && minutes < 60 && seconds < 60;
+
+  // Merge parent-provided (post-submit) errors with live "required field" hints
+  const distanceError =
+    errors.distance ||
+    (distanceTouched && !inputs.distance ? "Distance is required" : undefined);
+  const timeError =
+    errors.time ||
+    (timeTouched && !hasValidTime ? "Finish time is required" : undefined);
 
   // Which suggested chip (if any) matches current time
   const activeChipLabel = hasValidTime
@@ -178,8 +194,9 @@ export function RaceDetailsForm({
               step="0.1"
               value={inputs.distance}
               onChange={onInputChange}
+              onBlur={() => setDistanceTouched(true)}
               className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${
-                errors.distance ? "border-red-500" : "border-gray-300"
+                distanceError ? "border-red-500" : "border-gray-300"
               }`}
             />
             <button
@@ -198,7 +215,7 @@ export function RaceDetailsForm({
               </div>
             </button>
           </div>
-          {errors.distance && <p className="text-red-500 text-sm">{errors.distance}</p>}
+          {distanceError && <p className="text-red-500 text-sm">{distanceError}</p>}
         </div>
 
         {/* ── 2. Suggested finishing times (contextual) ── */}
@@ -240,6 +257,7 @@ export function RaceDetailsForm({
               inputMode="tel"
               placeholder="HH"
               name="hours"
+              aria-label="Hours"
               data-testid="pace-hours"
               min="0"
               max="99"
@@ -247,7 +265,7 @@ export function RaceDetailsForm({
               onChange={onInputChange}
               onKeyUp={(e) => handleTimeKeyUp(e, "hours")}
               className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
-                errors.time ? "border-red-500" : "border-gray-300"
+                timeError ? "border-red-500" : "border-gray-300"
               }`}
             />
             <span className="text-gray-400 font-medium text-xl select-none">:</span>
@@ -257,6 +275,7 @@ export function RaceDetailsForm({
               inputMode="tel"
               placeholder="MM"
               name="minutes"
+              aria-label="Minutes"
               data-testid="pace-minutes"
               min="0"
               max="59"
@@ -264,7 +283,7 @@ export function RaceDetailsForm({
               onChange={onInputChange}
               onKeyUp={(e) => handleTimeKeyUp(e, "minutes")}
               className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
-                errors.time ? "border-red-500" : "border-gray-300"
+                timeError ? "border-red-500" : "border-gray-300"
               }`}
             />
             <span className="text-gray-400 font-medium text-xl select-none">:</span>
@@ -274,17 +293,19 @@ export function RaceDetailsForm({
               inputMode="tel"
               placeholder="SS"
               name="seconds"
+              aria-label="Seconds"
               data-testid="pace-seconds"
               min="0"
               max="59"
               value={inputs.seconds}
               onChange={onInputChange}
+              onBlur={() => setTimeTouched(true)}
               className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
-                errors.time ? "border-red-500" : "border-gray-300"
+                timeError ? "border-red-500" : "border-gray-300"
               }`}
             />
           </div>
-          {errors.time && <p className="text-red-500 text-sm">{errors.time}</p>}
+          {timeError && <p className="text-red-500 text-sm">{timeError}</p>}
         </div>
 
         {/* ── 4. Fine-tune slider (preset distances only, after time is entered) ── */}
@@ -398,12 +419,17 @@ export function RaceDetailsForm({
         {/* ── CTA ── */}
         <button
           onClick={onCalculate}
-          disabled={isCalculating}
+          disabled={isCalculating || !canCalculate}
           data-testid="pace-calculate"
           className="w-full py-4 text-lg font-semibold text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 active:bg-emerald-800 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isCalculating ? "Calculating…" : "Calculate Training Paces"}
         </button>
+        {!canCalculate && !isCalculating && (
+          <p className="text-center text-sm text-gray-500">
+            Enter a distance and finish time to continue.
+          </p>
+        )}
       </CardContent>
     </Card>
   );

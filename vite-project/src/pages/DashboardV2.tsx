@@ -44,12 +44,16 @@ export default function DashboardV2() {
   const {
     fuelPlans,
     loading: fuelPlansLoading,
+    error: fuelPlansError,
+    reload: reloadFuelPlans,
     removeFuelPlan,
   } = useFuelPlans(user?.uid);
 
   const {
     pacePlans,
     loading: pacePlansLoading,
+    error: pacePlansError,
+    reload: reloadPacePlans,
     removePacePlan,
     updatePacePlan: updateLocalPacePlan,
   } = usePacePlans(user?.uid);
@@ -311,6 +315,8 @@ export default function DashboardV2() {
         <PacePlansSection
           pacePlans={filteredPacePlans}
           loading={pacePlansLoading}
+          error={pacePlansError}
+          onRetry={reloadPacePlans}
           onDeletePlan={handleDeletePacePlan}
           onCopyPlan={handleCopyPacePlan}
           onEditPlan={setEditingPlan}
@@ -321,6 +327,8 @@ export default function DashboardV2() {
         <FuelPlansSection
           fuelPlans={filteredFuelPlans}
           loading={fuelPlansLoading}
+          error={fuelPlansError}
+          onRetry={reloadFuelPlans}
           onDeletePlan={handleDeleteFuelPlan}
           onCopyPlan={handleCopyFuelPlan}
         />

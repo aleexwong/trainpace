@@ -138,6 +138,7 @@ export function RaceDetailsForm({
                   type="number"
                   data-testid="fuel-time-minutes"
                   placeholder="Minutes (e.g. 45)"
+                  aria-label="Minutes"
                   value={timeMinutes}
                   onChange={(e) => setTimeMinutes(e.target.value)}
                   className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
@@ -152,6 +153,7 @@ export function RaceDetailsForm({
                     type="number"
                     data-testid="fuel-time-hours"
                     placeholder="HH"
+                    aria-label="Hours"
                     value={timeHours}
                     onChange={(e) => setTimeHours(e.target.value)}
                     className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
@@ -165,6 +167,7 @@ export function RaceDetailsForm({
                     type="number"
                     data-testid="fuel-time-minutes"
                     placeholder="MM"
+                    aria-label="Minutes"
                     value={timeMinutes}
                     onChange={(e) => setTimeMinutes(e.target.value)}
                     className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"

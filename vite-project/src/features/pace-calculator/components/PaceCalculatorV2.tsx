@@ -416,6 +416,7 @@ export function PaceCalculatorV2({
                 onPresetClick={handlePreset}
                 onCalculate={handleCalculate}
                 isCalculating={isCalculating}
+                canCalculate={calculation.isValid}
                 selectedPresetName={selectedPresetName}
                 liveVdot={liveVdot}
                 onSuggestedTimeClick={handleSuggestedTimeClick}

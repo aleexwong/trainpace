@@ -335,6 +335,7 @@ export function ElevationChart({
                 onClick={handleEdit}
                 className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
                 title="Edit filename"
+                aria-label="Edit filename"
               >
                 <PencilIcon className="w-4 h-4" />
               </button>

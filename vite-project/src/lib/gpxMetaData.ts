@@ -27,8 +27,10 @@ function extractGPXMetadata(gpxContent: string, filename?: string): GPXMetadata 
   const trackPoints = doc.querySelectorAll("trkpt");
   const pointCount = trackPoints.length;
 
-  if (pointCount === 0) {
-    throw new Error("No track points found");
+  if (pointCount < 2) {
+    throw new Error(
+      "This GPX file has no usable track — at least 2 track points are required."
+    );
   }
 
   let minLat = Infinity,

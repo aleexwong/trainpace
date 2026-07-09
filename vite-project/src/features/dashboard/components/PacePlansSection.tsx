@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Activity, ChevronLeft, ChevronRight } from "lucide-react";
+import { Activity, ChevronLeft, ChevronRight, AlertCircle } from "lucide-react";
 import { PacePlan } from "../types";
 import { PacePlanCard } from "./PacePlanCard";
 
 interface PacePlansSectionProps {
   pacePlans: PacePlan[];
   loading: boolean;
+  error?: string | null;
+  onRetry?: () => void;
   onDeletePlan: (planId: string) => void;
   onCopyPlan: (plan: PacePlan) => void;
   onEditPlan: (plan: PacePlan) => void;
@@ -16,6 +18,8 @@ const PLANS_PER_PAGE = 9; // 3 rows of 3 cards
 export function PacePlansSection({
   pacePlans,
   loading,
+  error,
+  onRetry,
   onDeletePlan,
   onCopyPlan,
   onEditPlan,
@@ -27,6 +31,26 @@ export function PacePlansSection({
       <div className="text-center py-12">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mx-auto"></div>
         <p className="text-gray-600 mt-4">Loading pace plans...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
+        <h2 className="text-xl font-semibold text-gray-800 mb-2">
+          Couldn't load pace plans
+        </h2>
+        <p className="text-gray-600 mb-6">{error}</p>
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            className="inline-block bg-purple-500 text-white px-6 py-3 rounded-lg hover:bg-purple-600 transition-colors"
+          >
+            Retry
+          </button>
+        )}
       </div>
     );
   }

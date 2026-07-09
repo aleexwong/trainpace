@@ -145,6 +145,7 @@ export function PaceResultsDisplay({
               onClick={onCopy}
               className="p-1.5 sm:p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition-colors"
               title="Copy Plan"
+              aria-label="Copy Plan"
             >
               <Copy className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
             </button>
@@ -152,6 +153,7 @@ export function PaceResultsDisplay({
               onClick={onDownload}
               className="p-1.5 sm:p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition-colors"
               title="Download Plan"
+              aria-label="Download Plan"
             >
               <Download className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
             </button>
@@ -176,6 +178,7 @@ export function PaceResultsDisplay({
                     : "bg-gradient-to-r from-purple-600 to-emerald-600 text-white hover:from-purple-700 hover:to-emerald-700 shadow-md hover:shadow-lg"
                 }`}
                 title={isSaved ? "Saved!" : "Save to Dashboard"}
+                aria-label={isSaved ? "Saved!" : isSaving ? "Saving…" : "Save to Dashboard"}
               >
                 <Save className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 <span className="hidden sm:inline">

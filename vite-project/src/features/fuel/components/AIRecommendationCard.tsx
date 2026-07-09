@@ -41,6 +41,7 @@ export function AIRecommendationCard({
               onClick={onToggleView}
               className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
               title={showAsList ? "Show as cards" : "Show as list"}
+              aria-label={showAsList ? "Show as cards" : "Show as list"}
             >
               {showAsList ? (
                 <Layers className="h-5 w-5" />
@@ -54,6 +55,7 @@ export function AIRecommendationCard({
               onClick={onCopy}
               className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
               title="Copy recommendations"
+              aria-label="Copy recommendations"
             >
               <Copy className="h-5 w-5" />
             </button>
@@ -61,6 +63,7 @@ export function AIRecommendationCard({
               onClick={onDownload}
               className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
               title="Download recommendations"
+              aria-label="Download recommendations"
             >
               <Download className="h-5 w-5" />
             </button>
