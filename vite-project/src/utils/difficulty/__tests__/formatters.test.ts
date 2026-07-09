@@ -82,7 +82,7 @@ describe("formatDistance", () => {
 describe("formatElevation", () => {
   it("should format metric elevation without decimals", () => {
     expect(formatElevation(100)).toBe("100m");
-    expect(formatElevation(1234.5)).toBe("1235m");
+    expect(formatElevation(1234.5)).toBe("1,235m");
   });
 
   it("should format imperial elevation", () => {
