@@ -96,6 +96,7 @@ export function formatElevation(
   const formatter = new Intl.NumberFormat(locale, {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
+    useGrouping: false,
   });
   
   const unit = units === "imperial" ? "ft" : "m";

@@ -1,0 +1,22 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // GPX route files — public read (routes are shareable via
+    // /elevationfinder/:docId, matching gpx_uploads in firestore.rules).
+    // Uploads require auth and the filename must be prefixed with the
+    // uploader's own uid (see generateSafeFilename in GpxUploader.tsx).
+    match /gpx_files/{fileName} {
+      allow read: if true;
+      allow write: if request.auth != null
+        && fileName.matches(request.auth.uid + '_.*')
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('application/(gpx.*|xml)|text/xml');
+    }
+
+    // Deny everything else by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
