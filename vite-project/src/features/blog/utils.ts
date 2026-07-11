@@ -103,3 +103,109 @@ export function getRelatedPosts(
 export function getAllPostSlugs(): string[] {
   return posts.map((post) => post.slug);
 }
+
+// Get the most recent posts (optionally excluding one slug)
+export function getRecentPosts(
+  limit: number = 5,
+  excludeSlug?: string
+): BlogPost[] {
+  return getAllPosts()
+    .filter((post) => post.slug !== excludeSlug)
+    .slice(0, limit);
+}
+
+// Get "popular" posts — featured first, then newest (optionally excluding one slug)
+export function getPopularPosts(
+  limit: number = 5,
+  excludeSlug?: string
+): BlogPost[] {
+  return getAllPosts()
+    .filter((post) => post.slug !== excludeSlug)
+    .sort((a, b) => {
+      const fa = a.featured ? 1 : 0;
+      const fb = b.featured ? 1 : 0;
+      if (fa !== fb) return fb - fa;
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    })
+    .slice(0, limit);
+}
+
+// Get more posts from the same category (excluding the current post)
+export function getMoreFromCategory(
+  category: BlogCategory,
+  excludeSlug: string,
+  limit: number = 4
+): BlogPost[] {
+  return getAllPosts()
+    .filter((post) => post.category === category && post.slug !== excludeSlug)
+    .slice(0, limit);
+}
+
+// Count posts per category (for sidebar navigation)
+export function getCategoryCounts(): { category: BlogCategory; count: number }[] {
+  const counts = new Map<BlogCategory, number>();
+  posts.forEach((post) => {
+    counts.set(post.category, (counts.get(post.category) || 0) + 1);
+  });
+  return Array.from(counts.entries())
+    .map(([category, count]) => ({ category, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
+// Drop a leading H1 from markdown so the page header can own the single H1.
+// Every post starts with "# Title", which would otherwise duplicate the header.
+export function stripLeadingH1(content: string): string {
+  const lines = content.split("\n");
+  let i = 0;
+  // Skip any leading blank lines
+  while (i < lines.length && lines[i].trim() === "") i++;
+  if (i < lines.length && /^#\s+/.test(lines[i])) {
+    lines.splice(0, i + 1);
+    // Also drop the blank line(s) immediately after the removed heading
+    while (lines.length && lines[0].trim() === "") lines.shift();
+    return lines.join("\n");
+  }
+  return content;
+}
+
+export interface TocHeading {
+  id: string;
+  text: string;
+  level: number;
+}
+
+// Slugify heading text into an anchor id (mirrors what we set on rendered headings)
+export function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+// Extract h2/h3 headings from markdown content for a table of contents
+export function extractHeadings(content: string): TocHeading[] {
+  const headings: TocHeading[] = [];
+  const seen = new Map<string, number>();
+  // Only match top-level markdown headings, skip fenced code blocks
+  let inCodeBlock = false;
+  content.split("\n").forEach((line) => {
+    if (line.trim().startsWith("```")) {
+      inCodeBlock = !inCodeBlock;
+      return;
+    }
+    if (inCodeBlock) return;
+    const match = /^(#{2,3})\s+(.+?)\s*#*$/.exec(line);
+    if (!match) return;
+    const level = match[1].length;
+    const text = match[2].trim();
+    let id = slugifyHeading(text);
+    // Ensure unique ids for duplicate headings
+    const count = seen.get(id) || 0;
+    seen.set(id, count + 1);
+    if (count > 0) id = `${id}-${count}`;
+    headings.push({ id, text, level });
+  });
+  return headings;
+}
