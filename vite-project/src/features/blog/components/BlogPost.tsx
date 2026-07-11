@@ -135,20 +135,34 @@ export default function BlogPost() {
           h2: ({ children }) => <h2 id={makeHeadingId(children)}>{children}</h2>,
           h3: ({ children }) => <h3 id={makeHeadingId(children)}>{children}</h3>,
           a: ({ href, children }) => {
-            const isInternal = href?.startsWith("/");
-            if (isInternal) {
+            const h = href || "";
+            // Internal route → client-side link.
+            if (h.startsWith("/")) {
               return (
                 <Link
-                  to={href || "/"}
+                  to={h}
                   className="text-emerald-600 hover:text-emerald-800"
                 >
                   {children}
                 </Link>
               );
             }
+            // In-page anchor → plain link, no new tab.
+            if (h.startsWith("#")) {
+              return (
+                <a href={h} className="text-emerald-600 hover:text-emerald-800">
+                  {children}
+                </a>
+              );
+            }
+            // Only render an href for safe protocols; otherwise degrade to text
+            // (guards against javascript:/data: URLs sneaking through markdown).
+            if (!/^(https?:\/\/|mailto:)/i.test(h)) {
+              return <span>{children}</span>;
+            }
             return (
               <a
-                href={href}
+                href={h}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-emerald-600 hover:text-emerald-800"

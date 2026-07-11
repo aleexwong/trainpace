@@ -23,12 +23,16 @@ const BLOG_LIST_DESCRIPTION =
 // Strip inline markdown (bold/italic/code/links) down to readable text. The static
 // HTML only needs crawlable prose — the live app renders the rich version.
 function stripInlineMarkdown(text) {
+  // All patterns use negated character classes (no nested/backref quantifiers)
+  // so they run in linear time — no catastrophic backtracking on odd input.
   return text
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1") // images -> alt
     .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1") // links -> text
     .replace(/`([^`]+)`/g, "$1") // inline code
-    .replace(/(\*\*|__)(.*?)\1/g, "$2") // bold
-    .replace(/(\*|_)(.*?)\1/g, "$2") // italic
+    .replace(/\*\*([^*]+)\*\*/g, "$1") // bold **
+    .replace(/__([^_]+)__/g, "$1") // bold __
+    .replace(/\*([^*]+)\*/g, "$1") // italic *
+    .replace(/_([^_]+)_/g, "$1") // italic _
     .trim();
 }
 
