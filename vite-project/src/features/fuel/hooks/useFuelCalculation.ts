@@ -10,6 +10,7 @@ import {
   type FuelStop,
   RACE_SETTINGS,
   RACE_DISTANCES,
+  MAX_CARBS_PER_HOUR,
   CARBS_PER_KG_MULTIPLIER,
   CALORIES_PER_GRAM_CARB,
   GELS_PER_HOUR,
@@ -182,9 +183,11 @@ export function useFuelCalculation({
 
     // Calculate carbs per hour based on weight + race baseline
     // Logic: weight-based calc provides a floor above race baseline, slider overrides all
+    // All paths are capped at the race's upper limit (100g/hr for marathon, 90g/hr otherwise)
     const raceBaseline = RACE_SETTINGS[raceType];
+    const raceMax = MAX_CARBS_PER_HOUR[raceType];
     let carbsPerHour: number;
-    
+
     if (customCarbsPerHour !== undefined) {
       // Manual slider override - use as-is
       carbsPerHour = customCarbsPerHour;
@@ -199,6 +202,8 @@ export function useFuelCalculation({
       carbsPerHour = raceBaseline;
       console.log(`[Fuel Calc] Using race baseline: ${carbsPerHour}g/hr`);
     }
+
+    carbsPerHour = Math.min(carbsPerHour, raceMax);
 
     // Calculate totals
     const durationHours = finishTimeMin / 60;

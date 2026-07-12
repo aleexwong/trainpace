@@ -10,6 +10,17 @@ export const RACE_SETTINGS = {
 
 export type RaceType = keyof typeof RACE_SETTINGS;
 
+// Upper limit on carbs/hour per race. Marathon plans go up to 100g/hr —
+// the practical ceiling of modern glucose+fructose fueling — for runners
+// whose guts can handle it; shorter races cap at 90g/hr.
+export const MAX_CARBS_PER_HOUR: Record<RaceType, number> = {
+  "10K": 90,
+  Half: 90,
+  Full: 100,
+};
+
+export const MIN_CARBS_PER_HOUR = 30;
+
 // Race distances in km for fuel stop calculations
 export const RACE_DISTANCES: Record<RaceType, number> = {
   "10K": 10,
