@@ -4,4 +4,5 @@ export {
   ElevationShot,
   FuelStationsShot,
   AgentChatShot,
+  TrainingPlanShot,
 } from "./FeatureShots";

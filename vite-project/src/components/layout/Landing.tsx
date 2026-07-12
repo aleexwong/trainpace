@@ -22,6 +22,7 @@ import {
   ElevationShot,
   FuelStationsShot,
   AgentChatShot,
+  TrainingPlanShot,
 } from "@/components/feature-shots";
 
 // Animated, interactive product shots keyed by the FeatureSection badge.
@@ -30,6 +31,7 @@ const FEATURE_SHOTS: Record<string, () => JSX.Element> = {
   "VDOT Calculator": VdotDialShot,
   "Elevation Finder": ElevationShot,
   "Fuel Planner": FuelStationsShot,
+  "Training Plan Generator": TrainingPlanShot,
 };
 
 // --- Components ---
