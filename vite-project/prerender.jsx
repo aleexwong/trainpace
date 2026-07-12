@@ -514,6 +514,31 @@ function getPageContent(url) {
             null,
             "analyze_route — GPX route analysis: distance, elevation gain, climbs, split-by-split grade-adjusted pacing, and weather impact."
           )
+        ),
+        React.createElement("h2", null, "How to Connect"),
+        React.createElement(
+          "ul",
+          null,
+          React.createElement(
+            "li",
+            null,
+            "Claude.ai / Claude Desktop: Settings → Connectors → Add custom connector. Name it trainpace and paste the server URL — no login step."
+          ),
+          React.createElement(
+            "li",
+            null,
+            "Claude Code: claude mcp add --transport http trainpace https://api.trainpace.com/api/mcp"
+          ),
+          React.createElement(
+            "li",
+            null,
+            "Cursor, Windsurf, and other MCP clients: add the server URL to your client's MCP config file as an HTTP server named trainpace."
+          ),
+          React.createElement(
+            "li",
+            null,
+            "Any other agent: paste the agent briefing from this page as your first message — it describes the server URL and every tool so the agent can connect or defer correctly."
+          )
         )
       );
     default:
