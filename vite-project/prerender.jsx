@@ -311,6 +311,8 @@ function getPageTitle(url) {
       return "GPX Elevation Profile Viewer – Free Route Analysis & Climb Stats | TrainPace";
     case "/race":
       return "Race Prep Pages – Pacing, Fueling, Elevation Strategy | TrainPace";
+    case "/mcp":
+      return "MCP Server - TrainPace Tools for AI Agents";
     default:
       if (url.includes("/preview-route/")) {
         const slug = url.split("/").pop();
@@ -344,6 +346,8 @@ function getPageDescription(url) {
       return "Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty on an interactive map. Analyze marathon courses before race day.";
     case "/race":
       return "Race prep pages for popular running events. Use TrainPace to plan pacing, fueling, and course strategy with free calculators and GPX elevation analysis.";
+    case "/mcp":
+      return "Connect any AI assistant to TrainPace's free public MCP server: training paces, VDOT, race plans, fueling strategy, and GPX route analysis as agent tools.";
     default:
       if (url.includes("/preview-route/")) {
         const slug = url.split("/").pop();
@@ -469,6 +473,47 @@ function getPageContent(url) {
           "p",
           null,
           "Browse race-specific prep pages for pacing, fueling, and course strategy."
+        )
+      );
+    case "/mcp":
+      return React.createElement(
+        "div",
+        null,
+        React.createElement("h1", null, "Use TrainPace from Your AI Assistant"),
+        React.createElement(
+          "p",
+          null,
+          "TrainPace runs a free, public Model Context Protocol (MCP) server at https://api.trainpace.com/api/mcp — Streamable HTTP, no account or API key required. Connect Claude, ChatGPT, or any MCP client and ask training questions in plain English; the agent calls the same math that powers this site."
+        ),
+        React.createElement("h2", null, "Available Tools"),
+        React.createElement(
+          "ul",
+          null,
+          React.createElement(
+            "li",
+            null,
+            "calculate_training_paces — training paces (easy, tempo, interval, speed, long run, Yasso 800s) from a recent race result, plus heart-rate zones and hot-weather adjustments."
+          ),
+          React.createElement(
+            "li",
+            null,
+            "calculate_vdot — VDOT fitness score (Daniels & Gilbert formula) with training zones and equivalent race-time predictions for 5K through marathon."
+          ),
+          React.createElement(
+            "li",
+            null,
+            "generate_training_plan — a periodized week-by-week plan for 5K to marathon, sized to fitness level and available run days."
+          ),
+          React.createElement(
+            "li",
+            null,
+            "calculate_fuel_plan — carbs per hour, total gels, and a fuel-stop timeline for a 10K, half, or full marathon."
+          ),
+          React.createElement(
+            "li",
+            null,
+            "analyze_route — GPX route analysis: distance, elevation gain, climbs, split-by-split grade-adjusted pacing, and weather impact."
+          )
         )
       );
     default:

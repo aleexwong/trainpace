@@ -18,6 +18,7 @@ const staticPaths: Array<{ loc: string; changefreq: string; priority: string }> 
   { loc: `${BASE_URL}/blog`, changefreq: "weekly", priority: "0.8" },
   { loc: `${BASE_URL}/dashboard`, changefreq: "weekly", priority: "0.7" },
   { loc: `${BASE_URL}/about`, changefreq: "yearly", priority: "0.6" },
+  { loc: `${BASE_URL}/mcp`, changefreq: "monthly", priority: "0.6" },
   { loc: `${BASE_URL}/faq`, changefreq: "monthly", priority: "0.7" },
   { loc: `${BASE_URL}/privacy`, changefreq: "yearly", priority: "0.5" },
   { loc: `${BASE_URL}/terms`, changefreq: "yearly", priority: "0.5" },

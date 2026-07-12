@@ -122,6 +122,14 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link
+                  to="/mcp"
+                  className="text-slate-600 hover:text-emerald-600 transition-colors text-sm"
+                >
+                  MCP Server for AI Agents
+                </Link>
+              </li>
+              <li>
                 <a
                   href="mailto:alex@trainpace.com"
                   className="text-slate-600 hover:text-emerald-600 transition-colors text-sm"
