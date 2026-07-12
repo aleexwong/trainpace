@@ -3,4 +3,5 @@ export {
   VdotDialShot,
   ElevationShot,
   FuelStationsShot,
+  AgentChatShot,
 } from "./FeatureShots";
