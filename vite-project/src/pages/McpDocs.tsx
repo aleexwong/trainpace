@@ -189,7 +189,7 @@ function CopyBlock({ label, code }: { label: string; code: string }) {
         <p className="text-sm font-medium text-slate-700">{label}</p>
         <CopyButton text={code} label={label} />
       </div>
-      <pre className="bg-slate-900 text-slate-100 rounded-lg p-4 overflow-x-auto text-sm leading-relaxed">
+      <pre className="bg-slate-900 text-slate-100 rounded-lg p-4 overflow-auto max-h-96 text-left text-sm leading-relaxed">
         <code>{code}</code>
       </pre>
     </div>
@@ -227,7 +227,7 @@ function SetupCard({
 
 export default function McpDocs() {
   return (
-    <div className="bg-white text-slate-900 min-h-screen">
+    <div className="bg-white text-slate-900 min-h-screen text-left">
       <Helmet>
         <title>MCP Server - TrainPace Tools for AI Agents</title>
         <meta
@@ -261,8 +261,8 @@ export default function McpDocs() {
             questions in plain English — the agent calls the same math that
             powers this site.
           </p>
-          <div className="inline-flex items-center gap-3 bg-white border border-emerald-200 rounded-lg px-6 py-3 shadow-sm">
-            <code className="text-emerald-700 font-mono text-sm md:text-base">
+          <div className="inline-flex flex-wrap items-center justify-center gap-3 max-w-full bg-white border border-emerald-200 rounded-lg px-4 sm:px-6 py-3 shadow-sm">
+            <code className="text-emerald-700 font-mono text-sm md:text-base break-all">
               {MCP_URL}
             </code>
             <CopyButton text={MCP_URL} label="server URL" />
