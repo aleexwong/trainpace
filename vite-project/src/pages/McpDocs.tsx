@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
+import { useInView } from "@/components/feature-shots/shared";
 import {
   Bot,
   Check,
@@ -182,6 +183,135 @@ function CopyButton({
   );
 }
 
+// ── Animated terminal ──────────────────────────────────────────────────
+// Types the setup commands out like a real shell session, then idles on a
+// blinking prompt. Reduced-motion users see the finished session instantly.
+
+const TERMINAL_SCRIPT: { kind: "cmd" | "out"; text: string; ok?: boolean }[] = [
+  { kind: "cmd", text: CLAUDE_CODE_COMMAND },
+  { kind: "out", text: 'Added HTTP MCP server "trainpace"' },
+  { kind: "cmd", text: "claude mcp list" },
+  {
+    kind: "out",
+    text: "trainpace: https://api.trainpace.com/api/mcp (HTTP) - ✓ Connected",
+    ok: true,
+  },
+];
+
+function AnimatedTerminal() {
+  const { ref, inView } = useInView<HTMLDivElement>(0.4);
+  const [line, setLine] = useState(-1); // -1 = not started
+  const [chars, setChars] = useState(0);
+  const timer = useRef<number>();
+
+  const finished = line >= TERMINAL_SCRIPT.length;
+
+  const play = useCallback(() => {
+    window.clearTimeout(timer.current);
+    const reduce = window.matchMedia?.(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (reduce) {
+      setLine(TERMINAL_SCRIPT.length);
+      return;
+    }
+    setLine(0);
+    setChars(0);
+  }, []);
+
+  useEffect(() => {
+    if (inView && line === -1) play();
+  }, [inView, line, play]);
+
+  useEffect(() => {
+    if (line < 0 || finished) return;
+    const cur = TERMINAL_SCRIPT[line];
+    if (cur.kind === "cmd" && chars < cur.text.length) {
+      // Type command characters with a little human jitter
+      timer.current = window.setTimeout(() => {
+        setChars((c) => c + 2);
+      }, 24 + Math.random() * 30);
+    } else {
+      // Command fully typed (or output line): pause, then advance
+      timer.current = window.setTimeout(
+        () => {
+          setLine((l) => l + 1);
+          setChars(0);
+        },
+        cur.kind === "cmd" ? 420 : 650
+      );
+    }
+    return () => window.clearTimeout(timer.current);
+  }, [line, chars, finished]);
+
+  return (
+    <div ref={ref} className="mb-4">
+      <div className="rounded-xl overflow-hidden border border-slate-700/60 bg-slate-900 shadow-lg">
+        <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800/90 border-b border-slate-700/60">
+          <span className="w-3 h-3 rounded-full bg-red-400/80" />
+          <span className="w-3 h-3 rounded-full bg-amber-400/80" />
+          <span className="w-3 h-3 rounded-full bg-emerald-400/80" />
+          <span className="ml-2 text-xs text-slate-400 font-mono">
+            zsh — your terminal
+          </span>
+          <div className="ml-auto flex items-center gap-3">
+            {finished && (
+              <button
+                onClick={play}
+                className="text-xs font-mono text-slate-400 hover:text-emerald-400 transition-colors"
+                aria-label="Replay terminal session"
+              >
+                ↺ replay
+              </button>
+            )}
+            <CopyButton
+              text={CLAUDE_CODE_COMMAND}
+              label="setup command"
+              className="text-slate-400 hover:text-emerald-400"
+            />
+          </div>
+        </div>
+        <div className="p-4 font-mono text-[13px] leading-relaxed min-h-[150px]">
+          {TERMINAL_SCRIPT.map((entry, i) => {
+            if (i > line) return null;
+            const isCurrent = i === line;
+            if (entry.kind === "cmd") {
+              const text = isCurrent
+                ? entry.text.slice(0, chars)
+                : entry.text;
+              // Pending output lines render nothing until "executed"
+              return (
+                <div key={i} className="text-slate-100 break-all">
+                  <span className="text-emerald-400 select-none">$ </span>
+                  {text}
+                  {isCurrent && (
+                    <span className="inline-block w-2 h-3.5 ml-0.5 align-middle bg-emerald-400 animate-pulse" />
+                  )}
+                </div>
+              );
+            }
+            if (isCurrent) return null; // output appears once executed
+            return (
+              <div
+                key={i}
+                className={`break-all ${entry.ok ? "text-emerald-400" : "text-slate-400"}`}
+              >
+                {entry.text}
+              </div>
+            );
+          })}
+          {finished && (
+            <div className="text-slate-100">
+              <span className="text-emerald-400 select-none">$ </span>
+              <span className="inline-block w-2 h-3.5 ml-0.5 align-middle bg-emerald-400 animate-pulse" />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CopyBlock({ label, code }: { label: string; code: string }) {
   return (
     <div className="mb-6">
@@ -317,14 +447,11 @@ export default function McpDocs() {
 
           <SetupCard icon={Terminal} title="Claude Code" badge="terminal">
             <p className="text-slate-700 mb-4">
-              Run this once in your terminal, then start a session and ask
-              away:
+              One command and you're connected — this is the whole setup:
             </p>
-            <CopyBlock label="Add the server" code={CLAUDE_CODE_COMMAND} />
+            <AnimatedTerminal />
             <p className="text-slate-700 text-sm">
-              Verify with <code className="font-mono">claude mcp list</code> —
-              you should see <code className="font-mono">trainpace</code>{" "}
-              listed as connected.
+              Then start a session and ask away.
             </p>
           </SetupCard>
 
