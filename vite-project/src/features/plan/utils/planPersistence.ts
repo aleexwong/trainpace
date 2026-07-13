@@ -19,6 +19,7 @@ import type { PlanGeneratorInputs, TrainingPlan } from "../types";
 const DRAFT_PLAN_KEY = "trainpace_plan_draft";
 const DRAFT_INPUTS_KEY = "trainpace_plan_inputs";
 const PENDING_SAVE_KEY = "trainpace_plan_pending_save";
+const PROGRESS_KEY = "trainpace_plan_progress";
 
 function isRaceDateInPast(raceDate: unknown): boolean {
   if (typeof raceDate !== "string") return false;
@@ -125,6 +126,43 @@ export function setPendingSave(): void {
 export function clearPendingSave(): void {
   try {
     localStorage.removeItem(PENDING_SAVE_KEY);
+  } catch {
+    // ignore
+  }
+}
+
+function isCompletedWorkoutsMap(value: unknown): value is Record<string, string> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  return Object.values(value as Record<string, unknown>).every((v) => typeof v === "string");
+}
+
+/**
+ * Guest-mode workout completion tracking (mirrors `TrainingPlan.completedWorkouts`
+ * for signed-out users, and for signed-in users viewing an unsaved plan — see
+ * `useSavePlan`, which merges this into the Firestore doc on save).
+ */
+export function readGuestProgress(): Record<string, string> | null {
+  try {
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    if (!raw) return null;
+    const parsed: unknown = JSON.parse(raw);
+    return isCompletedWorkoutsMap(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+export function writeGuestProgress(progress: Record<string, string>): void {
+  try {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+  } catch {
+    // ignore
+  }
+}
+
+export function clearGuestProgress(): void {
+  try {
+    localStorage.removeItem(PROGRESS_KEY);
   } catch {
     // ignore
   }

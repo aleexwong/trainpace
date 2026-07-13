@@ -1,32 +1,22 @@
 import { useState } from "react";
 import type { TrainingPlan } from "../types";
 import { WeekCard } from "./WeekCard";
+import type { PlanProgress } from "../hooks/usePlanProgress";
 import { exportPlanAsIcal } from "../utils/exportIcal";
 import { phaseSegments, PHASE_META } from "../utils/planDisplay";
+import { currentWeekNumber } from "../utils/planSchedule";
 
 interface Props {
   plan: TrainingPlan;
   onSave?: () => void;
   saving?: boolean;
   savedId?: string | null;
+  /** Omit for exact current read-only rendering (dashboard back-compat). */
+  progress?: PlanProgress;
 }
 
-function currentWeekIndex(plan: TrainingPlan): number | null {
-  if (!plan.raceDate) return null;
-  const now = Date.now();
-  const raceMs = new Date(plan.raceDate).getTime();
-  if (now > raceMs) return null; // race is in the past
-
-  const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-  const weeksUntilRace = Math.ceil((raceMs - now) / msPerWeek);
-  // Week index from end: plan.totalWeeks - weeksUntilRace
-  const idx = plan.totalWeeks - weeksUntilRace;
-  if (idx < 0 || idx >= plan.totalWeeks) return null;
-  return idx;
-}
-
-export function PlanCalendar({ plan, onSave, saving, savedId }: Props) {
-  const currentIdx = currentWeekIndex(plan);
+export function PlanCalendar({ plan, onSave, saving, savedId, progress }: Props) {
+  const currentWeekNum = currentWeekNumber(plan);
   const [exported, setExported] = useState(false);
   const segments = phaseSegments(plan.weeks);
 
@@ -71,9 +61,10 @@ export function PlanCalendar({ plan, onSave, saving, savedId }: Props) {
         </div>
       </div>
 
-      {currentIdx !== null && (
+      {currentWeekNum !== null && (
         <div className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-2.5 text-sm text-emerald-800 font-medium">
-          📍 You are on <strong>Week {currentIdx + 1}</strong> — {plan.weeks[currentIdx]?.phase}
+          📍 You are on <strong>Week {currentWeekNum}</strong> —{" "}
+          {plan.weeks.find((w) => w.weekNumber === currentWeekNum)?.phase}
         </div>
       )}
 
@@ -99,8 +90,17 @@ export function PlanCalendar({ plan, onSave, saving, savedId }: Props) {
                   <WeekCard
                     key={week.weekNumber}
                     week={week}
-                    isCurrent={week.weekNumber - 1 === currentIdx}
-                    defaultOpen={week.weekNumber === 1 || week.weekNumber - 1 === currentIdx}
+                    isCurrent={week.weekNumber === currentWeekNum}
+                    defaultOpen={week.weekNumber === 1 || week.weekNumber === currentWeekNum}
+                    progress={
+                      progress
+                        ? {
+                            isComplete: (day) => progress.isComplete(week.weekNumber, day),
+                            onToggle: (day) => progress.toggle(week.weekNumber, day),
+                            pending: (day) => progress.isPending(week.weekNumber, day),
+                          }
+                        : undefined
+                    }
                   />
                 ))}
             </div>

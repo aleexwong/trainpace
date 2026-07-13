@@ -63,6 +63,17 @@ export interface TrainingPlan {
   weeks: TrainingWeek[];
   paces: PlanPaces;
   createdAt?: { seconds: number };
+  /**
+   * Workout completion tracking. Key = `${weekNumber}:${day}` (e.g. "3:Tue"),
+   * value = ISO completion timestamp. A Map-shape (not an array) so toggling
+   * is idempotent (set/delete a key) and dot-path partial Firestore updates
+   * let concurrent devices merge without clobbering each other. Bounded to
+   * roughly the plan's own (weekNumber, day) grid size (≤140 entries for the
+   * longest plans). Always iterate `plan.weeks` and look up keys here —
+   * never iterate this map directly, since regenerating a plan can leave
+   * orphaned keys behind that should be treated as inert.
+   */
+  completedWorkouts?: Record<string, string>;
 }
 
 export interface PlanPaces {

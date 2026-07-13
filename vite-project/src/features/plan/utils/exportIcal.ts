@@ -7,16 +7,7 @@
  */
 
 import type { TrainingPlan, TrainingDay, TrainingWeek } from "../types";
-
-const DAY_OFFSET: Record<string, number> = {
-  Mon: 0,
-  Tue: 1,
-  Wed: 2,
-  Thu: 3,
-  Fri: 4,
-  Sat: 5,
-  Sun: 6,
-};
+import { DAY_OFFSET, mondayOffsetFromDayOfWeek } from "./planSchedule";
 
 function formatIcalDate(date: Date): string {
   const pad = (n: number) => String(n).padStart(2, "0");
@@ -39,13 +30,15 @@ function escapeIcal(str: string): string {
 }
 
 /**
- * Compute the Monday of the week that contains `raceDate`.
- * Week 1 starts (totalWeeks - 1) weeks before raceDate's week.
+ * Compute the Monday of the week that contains `raceDate`, in UTC (so the
+ * exported .ics timestamps don't drift with the exporting browser's
+ * timezone). Week 1 starts (totalWeeks - 1) weeks before raceDate's week.
+ * Reuses the shared Monday-offset formula from planSchedule.ts; only the
+ * UTC vs. local date arithmetic differs from planSchedule's own
+ * `weekStartMonday`.
  */
 function getWeekStartMonday(raceDate: Date, weekNumber: number, totalWeeks: number): Date {
-  // Find the Monday of the race week
-  const raceDay = raceDate.getUTCDay(); // 0=Sun, 1=Mon...
-  const daysToMonday = raceDay === 0 ? -6 : 1 - raceDay;
+  const daysToMonday = mondayOffsetFromDayOfWeek(raceDate.getUTCDay());
   const raceMondayMs = raceDate.getTime() + daysToMonday * 86400000;
 
   // Weeks are numbered 1..totalWeeks. Race week = totalWeeks.

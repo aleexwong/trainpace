@@ -2,15 +2,18 @@ import { useEffect, useMemo, useRef } from "react";
 import { useAuth } from "../../auth/AuthContext";
 import { usePlanGenerator } from "../hooks/usePlanGenerator";
 import { useSavePlan } from "../hooks/useSavePlan";
+import { usePlanProgress } from "../hooks/usePlanProgress";
 import { PlanInputForm } from "./PlanInputForm";
 import { PlanOverview } from "./PlanOverview";
 import { PlanCalendar } from "./PlanCalendar";
+import { ThisWeekCard } from "./ThisWeekCard";
 import {
   loadDraftInputs,
   clearDraftPlan,
   getPendingSave,
   setPendingSave,
   clearPendingSave,
+  clearGuestProgress,
 } from "../utils/planPersistence";
 
 import type { GoalRace } from "../types";
@@ -31,6 +34,11 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
   const { user, loading: authLoading } = useAuth();
   const { plan, error, generate, reset } = usePlanGenerator();
   const { save, saving, savedId, error: saveError } = useSavePlan();
+  // Before save, planId is undefined and progress lives in guest localStorage
+  // (even for signed-in users viewing an unsaved plan) — those ticks ride
+  // into the Firestore doc via useSavePlan's readGuestProgress() merge once
+  // savedId lands and this hook starts writing there instead.
+  const progress = usePlanProgress({ plan, planId: savedId ?? undefined, userId: user?.uid });
 
   // Previously-entered form values restored from localStorage (see planPersistence.ts).
   // Loaded once — regenerating requires "Start over" first, which remounts the form.
@@ -59,6 +67,7 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
     if (savedId) {
       clearDraftPlan();
       clearPendingSave();
+      clearGuestProgress();
     }
   }, [savedId]);
 
@@ -111,7 +120,18 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
             Start over
           </button>
 
-          <PlanOverview plan={plan} />
+          <PlanOverview plan={plan} progress={progress.planProgress} />
+
+          <ThisWeekCard
+            plan={plan}
+            currentWeekNumber={progress.currentWeekNumber}
+            nextWorkout={progress.nextWorkout}
+            planProgress={progress.planProgress}
+            weekProgress={progress.weekProgress}
+            isComplete={progress.isComplete}
+            onToggle={progress.toggle}
+            isPending={progress.isPending}
+          />
 
           {/* Save prompt for logged-in users */}
           {!user && (
@@ -138,11 +158,18 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
             </div>
           )}
 
+          {progress.error && (
+            <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+              {progress.error}
+            </div>
+          )}
+
           <PlanCalendar
             plan={plan}
             onSave={user ? handleSave : undefined}
             saving={saving}
             savedId={savedId}
+            progress={progress}
           />
         </div>
       )}

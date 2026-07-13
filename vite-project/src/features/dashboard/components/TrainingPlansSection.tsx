@@ -1,14 +1,36 @@
 import { Link } from "react-router-dom";
 import type { TrainingPlan } from "../../plan/types";
 import { TrainingPlanCard } from "./TrainingPlanCard";
+import { ThisWeekCard } from "../../plan/components/ThisWeekCard";
+import { usePlanProgress } from "../../plan/hooks/usePlanProgress";
+import { selectActivePlan } from "../../plan/utils/planSchedule";
 
 interface Props {
   plans: TrainingPlan[];
+  /** Unfiltered plan list (ignores search) — used to find the active plan for ThisWeekCard. */
+  allPlans: TrainingPlan[];
   loading: boolean;
   onDeletePlan: (id: string) => void;
+  userId?: string;
 }
 
-export function TrainingPlansSection({ plans, loading, onDeletePlan }: Props) {
+function ActiveWeekSummary({ plan, userId }: { plan: TrainingPlan; userId?: string }) {
+  const progress = usePlanProgress({ plan, planId: plan.id, userId });
+  return (
+    <ThisWeekCard
+      plan={plan}
+      currentWeekNumber={progress.currentWeekNumber}
+      nextWorkout={progress.nextWorkout}
+      planProgress={progress.planProgress}
+      weekProgress={progress.weekProgress}
+      isComplete={progress.isComplete}
+      onToggle={progress.toggle}
+      isPending={progress.isPending}
+    />
+  );
+}
+
+export function TrainingPlansSection({ plans, allPlans, loading, onDeletePlan, userId }: Props) {
   if (loading) {
     return (
       <div className="space-y-3">
@@ -37,10 +59,13 @@ export function TrainingPlansSection({ plans, loading, onDeletePlan }: Props) {
     );
   }
 
+  const activePlan = selectActivePlan(allPlans);
+
   return (
     <div className="space-y-3">
+      {activePlan && <ActiveWeekSummary plan={activePlan} userId={userId} />}
       {plans.map((plan) => (
-        <TrainingPlanCard key={plan.id} plan={plan} onDelete={onDeletePlan} />
+        <TrainingPlanCard key={plan.id} plan={plan} onDelete={onDeletePlan} userId={userId} />
       ))}
     </div>
   );

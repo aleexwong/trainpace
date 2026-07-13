@@ -1,6 +1,7 @@
 import type { TrainingPlan, TrainingWeek } from "../types";
 import { weeksUntilRace } from "../plan-math";
 import { PHASE_META, PACE_ZONE_ORDER, phaseSegments, parsePlanGoalTime } from "../utils/planDisplay";
+import type { ProgressSummary } from "../hooks/usePlanProgress";
 import { cn } from "@/lib/utils";
 
 function VolumeChart({ weeks }: { weeks: TrainingWeek[] }) {
@@ -52,9 +53,11 @@ function VolumeChart({ weeks }: { weeks: TrainingWeek[] }) {
 
 interface Props {
   plan: TrainingPlan;
+  /** Omit to hide the progress tile — shown once a plan has been generated/saved. */
+  progress?: ProgressSummary;
 }
 
-export function PlanOverview({ plan }: Props) {
+export function PlanOverview({ plan, progress }: Props) {
   const totalKm = plan.weeks.reduce((s, w) => s + w.totalKm, 0);
   const peakKm = Math.max(...plan.weeks.map((w) => w.totalKm));
   const segments = phaseSegments(plan.weeks);
@@ -109,6 +112,26 @@ export function PlanOverview({ plan }: Props) {
               {weeksLeft > 0 ? `${weeksLeft} weeks to go` : "Race week!"}
             </span>
           </p>
+
+          {/* Progress */}
+          {progress && progress.totalCount > 0 && (
+            <div className="mt-5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm px-4 py-3 sm:px-5 sm:py-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                  Plan Progress
+                </span>
+                <span className="font-display text-sm font-bold text-emerald-300 tabular-nums">
+                  {progress.completedCount}/{progress.totalCount} runs · {progress.pct}%
+                </span>
+              </div>
+              <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-emerald-400 transition-all"
+                  style={{ width: `${progress.pct}%` }}
+                />
+              </div>
+            </div>
+          )}
 
           {/* Stat tiles */}
           <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3">

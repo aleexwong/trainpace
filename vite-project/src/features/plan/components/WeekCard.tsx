@@ -1,19 +1,33 @@
 import { useState } from "react";
-import type { TrainingWeek } from "../types";
+import type { RunDay, TrainingWeek } from "../types";
 import { WORKOUT_META, PHASE_META } from "../utils/planDisplay";
 import { cn } from "@/lib/utils";
+
+export interface WeekCardProgress {
+  isComplete: (day: RunDay) => boolean;
+  onToggle: (day: RunDay) => void;
+  pending?: (day: RunDay) => boolean;
+}
 
 interface Props {
   week: TrainingWeek;
   isCurrent?: boolean;
   /** Expanded on first render. Defaults to `isCurrent` when omitted. */
   defaultOpen?: boolean;
+  /** Omit for exact current read-only rendering (dashboard back-compat). */
+  progress?: WeekCardProgress;
 }
 
-export function WeekCard({ week, isCurrent = false, defaultOpen }: Props) {
+export function WeekCard({ week, isCurrent = false, defaultOpen, progress }: Props) {
   const [open, setOpen] = useState(defaultOpen ?? isCurrent);
   const phaseMeta = PHASE_META[week.phase];
   const panelId = `week-panel-${week.weekNumber}`;
+
+  const trackableDays = week.days.filter((d) => d.workout.type !== "rest");
+  const completedCount = progress
+    ? trackableDays.filter((d) => progress.isComplete(d.day)).length
+    : 0;
+  const totalCount = trackableDays.length;
 
   return (
     <div
@@ -65,7 +79,13 @@ export function WeekCard({ week, isCurrent = false, defaultOpen }: Props) {
             <div className="font-display text-base font-bold text-emerald-600 tabular-nums">
               {week.totalKm} km
             </div>
-            <div className="text-xs text-slate-400">{week.days.length} runs</div>
+            {progress ? (
+              <div className="text-xs font-semibold text-slate-500 tabular-nums">
+                {completedCount}/{totalCount} runs
+              </div>
+            ) : (
+              <div className="text-xs text-slate-400">{week.days.length} runs</div>
+            )}
           </div>
 
           {/* Chevron */}
@@ -84,6 +104,18 @@ export function WeekCard({ week, isCurrent = false, defaultOpen }: Props) {
           </svg>
         </button>
 
+        {/* Thin progress bar — only when progress tracking is wired in */}
+        {progress && totalCount > 0 && (
+          <div className="px-4 sm:px-5 -mt-1 pb-3">
+            <div className="h-1 rounded-full bg-slate-100 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-emerald-500 transition-all"
+                style={{ width: `${(completedCount / totalCount) * 100}%` }}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Expanded days — rich day cards only, no duplicated list */}
         {open && (
           <div id={panelId} className="border-t border-slate-100 px-4 sm:px-5 py-4">
@@ -91,22 +123,58 @@ export function WeekCard({ week, isCurrent = false, defaultOpen }: Props) {
               {week.days.map(({ day, workout }) => {
                 const meta = WORKOUT_META[workout.type];
                 const isRest = workout.type === "rest";
+                const done = !isRest && progress ? progress.isComplete(day) : false;
+                const pendingToggle = !isRest && progress?.pending ? progress.pending(day) : false;
                 return (
                   <div
                     key={day}
                     className={cn(
                       "rounded-xl border border-slate-200 bg-white p-3 flex flex-col",
-                      isRest && "bg-slate-50 border-slate-100"
+                      isRest && "bg-slate-50 border-slate-100",
+                      done && "border-emerald-200 bg-emerald-50/40"
                     )}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
                         {day}
                       </span>
-                      <span
-                        className="h-2 w-2 rounded-full flex-shrink-0"
-                        style={{ backgroundColor: meta.bg }}
-                      />
+                      <div className="flex items-center gap-2">
+                        {/* Workout-type dot is redundant with the toggle once progress
+                            tracking is wired in (the label pill below still carries color). */}
+                        {!(progress && !isRest) && (
+                          <span
+                            className="h-2 w-2 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: meta.bg }}
+                          />
+                        )}
+                        {!isRest && progress && (
+                          <button
+                            type="button"
+                            onClick={() => progress.onToggle(day)}
+                            disabled={pendingToggle}
+                            aria-pressed={done}
+                            aria-label={`Mark ${day} ${workout.label} as ${done ? "not done" : "done"}`}
+                            className={cn(
+                              "flex-shrink-0 h-5 w-5 p-0 rounded-full border-2 flex items-center justify-center transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-1",
+                              done
+                                ? "bg-emerald-600 border-emerald-600 text-white"
+                                : "bg-white border-slate-300 text-transparent hover:border-emerald-400",
+                              pendingToggle && "opacity-50 cursor-wait"
+                            )}
+                          >
+                            <svg
+                              className="h-3 w-3"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={3}
+                              aria-hidden="true"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                          </button>
+                        )}
+                      </div>
                     </div>
 
                     <span
