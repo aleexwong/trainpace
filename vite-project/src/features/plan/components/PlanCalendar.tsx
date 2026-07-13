@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { TrainingPlan } from "../types";
 import { WeekCard } from "./WeekCard";
 import { exportPlanAsIcal } from "../utils/exportIcal";
+import { phaseSegments, PHASE_META } from "../utils/planDisplay";
 
 interface Props {
   plan: TrainingPlan;
@@ -27,6 +28,7 @@ function currentWeekIndex(plan: TrainingPlan): number | null {
 export function PlanCalendar({ plan, onSave, saving, savedId }: Props) {
   const currentIdx = currentWeekIndex(plan);
   const [exported, setExported] = useState(false);
+  const segments = phaseSegments(plan.weeks);
 
   function handleExport() {
     exportPlanAsIcal(plan);
@@ -75,13 +77,34 @@ export function PlanCalendar({ plan, onSave, saving, savedId }: Props) {
         </div>
       )}
 
-      <div className="space-y-3">
-        {plan.weeks.map((week, i) => (
-          <WeekCard
-            key={week.weekNumber}
-            week={week}
-            isCurrent={i === currentIdx}
-          />
+      <div className="space-y-6">
+        {segments.map((seg) => (
+          <div key={`${seg.phase}-${seg.startWeek}`} className="space-y-3">
+            <div className="flex items-center gap-2 px-1">
+              <span
+                className="h-2.5 w-2.5 rounded-full flex-shrink-0"
+                style={{ backgroundColor: PHASE_META[seg.phase].bg }}
+              />
+              <h4 className="text-sm font-bold text-slate-800">{seg.phase}</h4>
+              <span className="text-xs font-mono text-slate-400">
+                {seg.startWeek === seg.endWeek
+                  ? `Week ${seg.startWeek}`
+                  : `Weeks ${seg.startWeek}–${seg.endWeek}`}
+              </span>
+            </div>
+            <div className="space-y-3">
+              {plan.weeks
+                .filter((w) => w.weekNumber >= seg.startWeek && w.weekNumber <= seg.endWeek)
+                .map((week) => (
+                  <WeekCard
+                    key={week.weekNumber}
+                    week={week}
+                    isCurrent={week.weekNumber - 1 === currentIdx}
+                    defaultOpen={week.weekNumber === 1 || week.weekNumber - 1 === currentIdx}
+                  />
+                ))}
+            </div>
+          </div>
         ))}
       </div>
     </div>
