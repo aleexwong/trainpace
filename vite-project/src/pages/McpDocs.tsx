@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import posthog from "posthog-js";
 import { Button } from "@/components/ui/button";
 import { useInView } from "@/components/feature-shots/shared";
 import {
@@ -157,6 +158,7 @@ function CopyButton({
       await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      posthog.capture("mcp_docs_copy", { item: label });
     } catch {
       // Clipboard unavailable (e.g. non-secure context) — nothing to do
     }
