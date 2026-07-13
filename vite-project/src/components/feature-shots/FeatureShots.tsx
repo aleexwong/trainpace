@@ -671,3 +671,133 @@ export function AgentChatShot() {
     </div>
   );
 }
+
+/* ═══════════════════════════════════════════════════════════
+   06 · TRAINING PLAN  (periodization bar + week strip)
+   ═══════════════════════════════════════════════════════════ */
+const TP_PHASES = [
+  { name: "Base", weeks: "Wk 1–5", span: 5, z: "var(--z1)" },
+  { name: "Development", weeks: "Wk 6–10", span: 5, z: "var(--z2)" },
+  { name: "Sharpening", weeks: "Wk 11–14", span: 4, z: "var(--z4)" },
+  { name: "Taper", weeks: "Wk 15–16", span: 2, z: "var(--z5)" },
+];
+
+type TpIntensity = "easy" | "long" | "quality" | "rest";
+
+const TP_INTENSITY_COLOR: Record<TpIntensity, string> = {
+  easy: "var(--z1)",
+  long: "var(--z2)",
+  quality: "var(--z4)",
+  rest: "var(--ink-4)",
+};
+
+const TP_DAYS: {
+  day: string;
+  type: string;
+  detail: string;
+  intensity: TpIntensity;
+}[] = [
+  { day: "Mon", type: "Easy", detail: "5 mi · 8:42/mi", intensity: "easy" },
+  {
+    day: "Tue",
+    type: "Intervals",
+    detail: "6×800 · 6:21/mi",
+    intensity: "quality",
+  },
+  { day: "Wed", type: "Rest", detail: "Recovery day", intensity: "rest" },
+  {
+    day: "Thu",
+    type: "Tempo",
+    detail: "4 mi · 7:08/mi",
+    intensity: "quality",
+  },
+  { day: "Fri", type: "Rest", detail: "Recovery day", intensity: "rest" },
+  {
+    day: "Sat",
+    type: "Long run",
+    detail: "10 mi · 8:55/mi",
+    intensity: "long",
+  },
+  { day: "Sun", type: "Recovery", detail: "3 mi easy", intensity: "easy" },
+];
+
+export function TrainingPlanShot() {
+  const { ref, inView } = useInView<HTMLDivElement>();
+  return (
+    <div className="tpfs">
+      <div className="stage">
+        <div className="pad">
+          <div ref={ref} className={`shot${inView ? " in" : ""}`}>
+            <div className="tp-head reveal" style={sv({ "--i": 0 })}>
+              <div className="tp-title">
+                16-week <span className="race">Half Marathon</span> plan
+              </div>
+              <span className="tp-pill">Week 6 · Development</span>
+            </div>
+
+            <div className="tp-phasebar reveal" style={sv({ "--i": 1 })}>
+              <div
+                className="tp-phasebar-track"
+                style={sv({
+                  gridTemplateColumns: TP_PHASES.map(
+                    (p) => `${p.span}fr`
+                  ).join(" "),
+                })}
+              >
+                {TP_PHASES.map((p, i) => (
+                  <div key={p.name} className="tp-phase-col">
+                    <div
+                      className="tp-phase-track"
+                      style={sv({ "--d": i })}
+                      tabIndex={0}
+                    >
+                      <div
+                        className="tp-phase-fill"
+                        style={sv({ background: p.z })}
+                      />
+                    </div>
+                    <div className="tp-phase-meta">
+                      <span className="name">{p.name}</span>
+                      <span className="wk">{p.weeks}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="tp-week">
+              {TP_DAYS.map((d, i) => (
+                <div
+                  key={d.day}
+                  className={`tp-day reveal${
+                    d.intensity === "rest" ? " rest" : ""
+                  }`}
+                  style={sv({
+                    "--i": i + 2,
+                    "--base": "150ms",
+                    borderLeftColor: TP_INTENSITY_COLOR[d.intensity],
+                  })}
+                >
+                  <div className="tp-day-top">
+                    <span className="dow">{d.day}</span>
+                    <span
+                      className="dot"
+                      style={{ background: TP_INTENSITY_COLOR[d.intensity] }}
+                    />
+                  </div>
+                  <div className="tp-day-type">{d.type}</div>
+                  <div className="tp-day-detail">{d.detail}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="tp-foot reveal" style={sv({ "--i": 10 })}>
+              Every session paced to your fitness · Export to Google or Apple
+              Calendar
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
