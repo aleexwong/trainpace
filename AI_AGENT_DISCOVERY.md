@@ -60,7 +60,7 @@ Agents doing web search for "running pace calculator API", "marathon training pl
 - [ ] **`llms-full.txt`** — expanded version with full tool argument schemas and worked examples, for agents that ingest the whole file.
 - [ ] **OpenAPI spec** on `api.trainpace.com` — lets non-MCP agents (function-calling frameworks, GPT Actions) use the endpoints directly.
 - [ ] **`.well-known/ai-plugin.json`-style metadata** — only if a target ecosystem still requires it; MCP registry supersedes this.
-- [ ] **Track adoption** — log MCP `initialize` client names/versions server-side; add a PostHog event on `/mcp` page copy-button clicks to see which setup path wins.
+- [x] **Track adoption** — done 2026-07-12: the MCP endpoint (gpx repo, `lib/analytics.ts`) captures `mcp_initialize` (client name/version), `mcp_tool_call` (tool name), `mcp_tools_list`, and `mcp_rate_limited` into PostHog with hashed anonymous IDs; the `/mcp` page fires `mcp_docs_copy` per copy action. Activate by setting `POSTHOG_API_KEY` on the gpx Vercel project (same project key as `VITE_PUBLIC_POSTHOG_KEY`).
 
 ---
 
