@@ -1,9 +1,17 @@
+import { useEffect, useMemo, useRef } from "react";
 import { useAuth } from "../../auth/AuthContext";
 import { usePlanGenerator } from "../hooks/usePlanGenerator";
 import { useSavePlan } from "../hooks/useSavePlan";
 import { PlanInputForm } from "./PlanInputForm";
 import { PlanOverview } from "./PlanOverview";
 import { PlanCalendar } from "./PlanCalendar";
+import {
+  loadDraftInputs,
+  clearDraftPlan,
+  getPendingSave,
+  setPendingSave,
+  clearPendingSave,
+} from "../utils/planPersistence";
 
 import type { GoalRace } from "../types";
 
@@ -20,14 +28,39 @@ interface Props {
 }
 
 export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSource, prefillGoal }: Props) {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { plan, error, generate, reset } = usePlanGenerator();
   const { save, saving, savedId, error: saveError } = useSavePlan();
+
+  // Previously-entered form values restored from localStorage (see planPersistence.ts).
+  // Loaded once — regenerating requires "Start over" first, which remounts the form.
+  const draftInputs = useMemo(() => loadDraftInputs(), []);
 
   async function handleSave() {
     if (!plan || !user) return;
     await save(plan, user.uid);
   }
+
+  // Sign-in handoff: a guest clicked "Sign in" on a generated plan, flagging it for
+  // auto-save. If they return here signed in with the plan restored, save it for them
+  // instead of making them click "Save" again.
+  const autoSaveAttempted = useRef(false);
+  useEffect(() => {
+    if (authLoading || !user || !plan) return;
+    if (!getPendingSave()) return;
+    if (autoSaveAttempted.current) return;
+    autoSaveAttempted.current = true;
+    save(plan, user.uid);
+  }, [authLoading, user, plan, save]);
+
+  // Once a plan is saved (manually or via auto-save), it lives in the dashboard —
+  // drop the local draft and any pending sign-in flag.
+  useEffect(() => {
+    if (savedId) {
+      clearDraftPlan();
+      clearPendingSave();
+    }
+  }, [savedId]);
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-10 space-y-10">
@@ -56,10 +89,13 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
           )}
           <PlanInputForm
             onGenerate={generate}
-            prefillPaces={prefillPaces}
-            prefillGoalTime={prefillGoalTime ?? prefillGoal?.goalTime}
-            prefillGoalRace={prefillGoal?.goalRace}
+            prefillPaces={prefillPaces ?? draftInputs?.paceResults}
+            prefillGoalTime={prefillGoalTime ?? prefillGoal?.goalTime ?? draftInputs?.goalTime}
+            prefillGoalRace={prefillGoal?.goalRace ?? draftInputs?.goalRace}
             prefillSource={prefillSource}
+            prefillRaceDate={draftInputs?.raceDate}
+            prefillFitness={draftInputs?.currentFitness}
+            prefillDays={draftInputs?.availableDays}
           />
         </div>
       ) : (
@@ -87,7 +123,8 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
                 </div>
               </div>
               <a
-                href="/login"
+                href="/login?returnTo=/plan"
+                onClick={setPendingSave}
                 className="flex-shrink-0 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 text-sm transition-colors"
               >
                 Sign in →

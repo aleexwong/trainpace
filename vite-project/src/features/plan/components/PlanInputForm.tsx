@@ -21,13 +21,29 @@ interface Props {
   prefillGoalTime?: string;
   prefillGoalRace?: GoalRace;
   prefillSource?: "calculator" | "vdot";
+  /** Previously-entered values restored from a persisted draft (see planPersistence.ts). */
+  prefillRaceDate?: string;
+  prefillFitness?: FitnessLevel;
+  prefillDays?: RunDay[];
 }
 
-export function PlanInputForm({ onGenerate, loading, prefillPaces, prefillGoalTime, prefillGoalRace, prefillSource }: Props) {
+export function PlanInputForm({
+  onGenerate,
+  loading,
+  prefillPaces,
+  prefillGoalTime,
+  prefillGoalRace,
+  prefillSource,
+  prefillRaceDate,
+  prefillFitness,
+  prefillDays,
+}: Props) {
   const [goalRace, setGoalRace] = useState<GoalRace>(prefillGoalRace ?? "Half Marathon");
-  const [raceDate, setRaceDate] = useState("");
-  const [fitness, setFitness] = useState<FitnessLevel>("intermediate");
-  const [days, setDays] = useState<RunDay[]>(["Tue", "Thu", "Sat", "Sun"]);
+  const [raceDate, setRaceDate] = useState(prefillRaceDate ?? "");
+  const [fitness, setFitness] = useState<FitnessLevel>(prefillFitness ?? "intermediate");
+  const [days, setDays] = useState<RunDay[]>(
+    prefillDays && prefillDays.length > 0 ? prefillDays : ["Tue", "Thu", "Sat", "Sun"]
+  );
   const [goalTime, setGoalTime] = useState(prefillGoalTime ?? "");
 
   function toggleDay(day: RunDay) {
