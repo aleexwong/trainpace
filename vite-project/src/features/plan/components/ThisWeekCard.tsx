@@ -94,9 +94,9 @@ export function ThisWeekCard({
   );
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-5 sm:p-6">
+    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-4 sm:p-6">
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 flex-wrap mb-4">
+      <div className="flex items-center justify-between gap-3 flex-wrap mb-3 sm:mb-4">
         <div className="flex items-center gap-2 flex-wrap">
           <span
             className="text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
@@ -122,7 +122,7 @@ export function ThisWeekCard({
       </div>
 
       {!beforeStart && wp.totalCount > 0 && (
-        <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden mb-5">
+        <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden mb-3 sm:mb-5">
           <div
             className="h-full rounded-full bg-emerald-500 transition-all"
             style={{ width: `${wp.pct}%` }}
@@ -132,7 +132,7 @@ export function ThisWeekCard({
 
       {/* Next run — highlighted */}
       {highlighted && highlightedMeta && (
-        <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4 mb-4">
+        <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-3 sm:p-4 mb-3 sm:mb-4">
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-3 min-w-0">
               <span
@@ -187,7 +187,7 @@ export function ThisWeekCard({
               <div
                 key={day}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-2.5 py-2 transition-colors",
+                  "flex items-center gap-3 rounded-lg px-2.5 py-1.5 sm:py-2 transition-colors",
                   done ? "bg-emerald-50/60" : "hover:bg-slate-50"
                 )}
               >

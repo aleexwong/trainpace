@@ -16,12 +16,19 @@ interface Props {
   defaultOpen?: boolean;
   /** Omit for exact current read-only rendering (dashboard back-compat). */
   progress?: WeekCardProgress;
+  /**
+   * Disambiguates the panel id when the same week's WeekCard can be mounted
+   * more than once at a time (e.g. the plan page's This Week segment shows
+   * its own copy of the current week alongside PlanCalendar's, which stays
+   * mounted underneath the Schedule segment) — avoids duplicate DOM ids.
+   */
+  idSuffix?: string;
 }
 
-export function WeekCard({ week, isCurrent = false, defaultOpen, progress }: Props) {
+export function WeekCard({ week, isCurrent = false, defaultOpen, progress, idSuffix = "" }: Props) {
   const [open, setOpen] = useState(defaultOpen ?? isCurrent);
   const phaseMeta = PHASE_META[week.phase];
-  const panelId = `week-panel-${week.weekNumber}`;
+  const panelId = `week-panel-${week.weekNumber}${idSuffix}`;
 
   const trackableDays = week.days.filter((d) => d.workout.type !== "rest");
   const completedCount = progress
@@ -45,18 +52,18 @@ export function WeekCard({ week, isCurrent = false, defaultOpen, progress }: Pro
           onClick={() => setOpen((o) => !o)}
           aria-expanded={open}
           aria-controls={panelId}
-          className="w-full flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-4 text-left hover:bg-slate-50 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:-outline-offset-2"
+          className="w-full flex items-center gap-2.5 sm:gap-4 px-3 sm:px-5 py-2 sm:py-4 text-left hover:bg-slate-50 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:-outline-offset-2"
         >
           {/* Week number */}
-          <div className="flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-slate-100 flex items-center justify-center">
-            <span className="font-display text-sm font-bold text-slate-700">
+          <div className="flex-shrink-0 w-8 h-8 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-slate-100 flex items-center justify-center">
+            <span className="font-display text-xs sm:text-sm font-bold text-slate-700">
               W{week.weekNumber}
             </span>
           </div>
 
           {/* Phase + focus */}
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1 flex-wrap">
+            <div className="flex items-center gap-2 mb-0.5 sm:mb-1 flex-wrap">
               <span
                 className="text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
                 style={{ backgroundColor: phaseMeta.bg, color: phaseMeta.text }}
@@ -69,29 +76,29 @@ export function WeekCard({ week, isCurrent = false, defaultOpen, progress }: Pro
                 </span>
               )}
             </div>
-            <p className="text-sm text-slate-600 line-clamp-2 sm:line-clamp-1">
+            <p className="text-xs sm:text-sm text-slate-600 line-clamp-1">
               {week.weeklyFocus}
             </p>
           </div>
 
           {/* Volume */}
           <div className="flex-shrink-0 text-right">
-            <div className="font-display text-base font-bold text-emerald-600 tabular-nums">
+            <div className="font-display text-sm sm:text-base font-bold text-emerald-600 tabular-nums">
               {week.totalKm} km
             </div>
             {progress ? (
-              <div className="text-xs font-semibold text-slate-500 tabular-nums">
+              <div className="text-[10px] sm:text-xs font-semibold text-slate-500 tabular-nums">
                 {completedCount}/{totalCount} runs
               </div>
             ) : (
-              <div className="text-xs text-slate-400">{week.days.length} runs</div>
+              <div className="text-[10px] sm:text-xs text-slate-400">{week.days.length} runs</div>
             )}
           </div>
 
           {/* Chevron */}
           <svg
             className={cn(
-              "flex-shrink-0 w-4 h-4 text-slate-400 transition-transform",
+              "flex-shrink-0 w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 transition-transform",
               open && "rotate-180"
             )}
             fill="none"
@@ -106,7 +113,7 @@ export function WeekCard({ week, isCurrent = false, defaultOpen, progress }: Pro
 
         {/* Thin progress bar — only when progress tracking is wired in */}
         {progress && totalCount > 0 && (
-          <div className="px-4 sm:px-5 -mt-1 pb-3">
+          <div className="px-3 sm:px-5 -mt-1 pb-2 sm:pb-3">
             <div className="h-1 rounded-full bg-slate-100 overflow-hidden">
               <div
                 className="h-full rounded-full bg-emerald-500 transition-all"
@@ -118,8 +125,8 @@ export function WeekCard({ week, isCurrent = false, defaultOpen, progress }: Pro
 
         {/* Expanded days — rich day cards only, no duplicated list */}
         {open && (
-          <div id={panelId} className="border-t border-slate-100 px-4 sm:px-5 py-4">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
+          <div id={panelId} className="border-t border-slate-100 px-3 sm:px-5 py-3 sm:py-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 sm:gap-3">
               {week.days.map(({ day, workout }) => {
                 const meta = WORKOUT_META[workout.type];
                 const isRest = workout.type === "rest";
@@ -129,12 +136,12 @@ export function WeekCard({ week, isCurrent = false, defaultOpen, progress }: Pro
                   <div
                     key={day}
                     className={cn(
-                      "rounded-xl border border-slate-200 bg-white p-3 flex flex-col",
+                      "rounded-xl border border-slate-200 bg-white p-2.5 sm:p-3 flex flex-col",
                       isRest && "bg-slate-50 border-slate-100",
                       done && "border-emerald-200 bg-emerald-50/40"
                     )}
                   >
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center justify-between mb-1.5 sm:mb-2">
                       <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400">
                         {day}
                       </span>

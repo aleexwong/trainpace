@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { TrainingPlan } from "../types";
 import { WeekCard } from "./WeekCard";
 import type { PlanProgress } from "../hooks/usePlanProgress";
@@ -13,12 +13,32 @@ interface Props {
   savedId?: string | null;
   /** Omit for exact current read-only rendering (dashboard back-compat). */
   progress?: PlanProgress;
+  /**
+   * Whether this calendar is the currently-visible segment. When it first
+   * turns true, the current week's card is scrolled into view — once per
+   * mount, not on every toggle back to this segment.
+   */
+  isActive?: boolean;
 }
 
-export function PlanCalendar({ plan, onSave, saving, savedId, progress }: Props) {
+export function PlanCalendar({ plan, onSave, saving, savedId, progress, isActive }: Props) {
   const currentWeekNum = currentWeekNumber(plan);
   const [exported, setExported] = useState(false);
   const segments = phaseSegments(plan.weeks);
+  const currentWeekRef = useRef<HTMLDivElement>(null);
+  const hasScrolledRef = useRef(false);
+
+  useEffect(() => {
+    if (!isActive || hasScrolledRef.current || currentWeekNum === null) return;
+    hasScrolledRef.current = true;
+    const node = currentWeekRef.current;
+    if (!node) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Wait a tick so layout (e.g. the segment just becoming visible) settles first.
+    requestAnimationFrame(() => {
+      node.scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
+    });
+  }, [isActive, currentWeekNum]);
 
   function handleExport() {
     exportPlanAsIcal(plan);
@@ -87,21 +107,25 @@ export function PlanCalendar({ plan, onSave, saving, savedId, progress }: Props)
               {plan.weeks
                 .filter((w) => w.weekNumber >= seg.startWeek && w.weekNumber <= seg.endWeek)
                 .map((week) => (
-                  <WeekCard
+                  <div
                     key={week.weekNumber}
-                    week={week}
-                    isCurrent={week.weekNumber === currentWeekNum}
-                    defaultOpen={week.weekNumber === 1 || week.weekNumber === currentWeekNum}
-                    progress={
-                      progress
-                        ? {
-                            isComplete: (day) => progress.isComplete(week.weekNumber, day),
-                            onToggle: (day) => progress.toggle(week.weekNumber, day),
-                            pending: (day) => progress.isPending(week.weekNumber, day),
-                          }
-                        : undefined
-                    }
-                  />
+                    ref={week.weekNumber === currentWeekNum ? currentWeekRef : undefined}
+                  >
+                    <WeekCard
+                      week={week}
+                      isCurrent={week.weekNumber === currentWeekNum}
+                      defaultOpen={week.weekNumber === 1 || week.weekNumber === currentWeekNum}
+                      progress={
+                        progress
+                          ? {
+                              isComplete: (day) => progress.isComplete(week.weekNumber, day),
+                              onToggle: (day) => progress.toggle(week.weekNumber, day),
+                              pending: (day) => progress.isPending(week.weekNumber, day),
+                            }
+                          : undefined
+                      }
+                    />
+                  </div>
                 ))}
             </div>
           </div>
