@@ -166,7 +166,7 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
   }, [savedId]);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10 space-y-10">
+    <div className={cn("mx-auto px-4 py-10 space-y-10", plan ? "max-w-3xl lg:max-w-6xl" : "max-w-3xl")}>
       {/* Marketing intro — only shown pre-generation. Once a plan exists, the
           lean PlanOverview hero carries the page's identity instead, so this
           duplicate title/tagline block would just be dead scroll height. */}
@@ -251,59 +251,105 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
             </div>
           )}
 
-          <SegmentTabs active={activeSegment} onChange={setUserSegment} />
-
-          {/* This Week */}
-          <div className={cn("space-y-3 sm:space-y-4", activeSegment !== "thisweek" && "hidden")}>
-            <ThisWeekCard
-              plan={plan}
-              currentWeekNumber={progress.currentWeekNumber}
-              nextWorkout={progress.nextWorkout}
-              planProgress={progress.planProgress}
-              weekProgress={progress.weekProgress}
-              isComplete={progress.isComplete}
-              onToggle={progress.toggle}
-              isPending={progress.isPending}
-            />
-
-            {progress.planProgress.totalCount > 0 && (
-              <ProgressStrip
-                completed={progress.planProgress.completedCount}
-                total={progress.planProgress.totalCount}
-                pct={progress.planProgress.pct}
-              />
-            )}
-
-            {progress.currentWeekNumber !== null && currentWeek && (
-              <WeekCard
-                week={currentWeek}
-                isCurrent
-                defaultOpen
-                idSuffix="-thisweek"
-                progress={{
-                  isComplete: (day) => progress.isComplete(currentWeek.weekNumber, day),
-                  onToggle: (day) => progress.toggle(currentWeek.weekNumber, day),
-                  pending: (day) => progress.isPending(currentWeek.weekNumber, day),
-                }}
-              />
-            )}
+          {/* Segment control is a mobile/tablet affordance only — at lg the
+              two-column grid below shows This Week, Schedule, and Stats
+              simultaneously, so there's nothing left to switch between. */}
+          <div className="lg:hidden">
+            <SegmentTabs active={activeSegment} onChange={setUserSegment} />
           </div>
 
-          {/* Schedule */}
-          <div className={cn(activeSegment !== "schedule" && "hidden")}>
-            <PlanCalendar
-              plan={plan}
-              onSave={user ? handleSave : undefined}
-              saving={saving}
-              savedId={savedId}
-              progress={progress}
-              isActive={activeSegment === "schedule"}
-            />
-          </div>
+          {/* lg+: two-column layout. Below lg, `lg:grid` doesn't apply, so
+              this is just a plain block and the left-rail / right-column
+              wrappers below stack with zero imposed margin between them —
+              only one of the three segment panels they contain is ever
+              visible at a time (the others carry the "hidden" class), same
+              as before. Gap/columns only take effect at lg, so mobile
+              spacing is untouched. */}
+          <div className="lg:grid lg:grid-cols-5 lg:gap-6 lg:items-start">
+            {/* Left rail: This Week + progress strip + Stats, stacked.
+                Sticky + capped height with its own scroll region — tried
+                making only the This Week block sticky and letting Stats
+                flow instead, but that produces a real rendering bug: once
+                enough of the page scrolls that the (short) rail approaches
+                its own end, CSS sticky transitions This Week from "stuck at
+                top-88" to "pinned to the rail's bottom edge" — and since
+                Stats' natural (non-sticky) position ends at that same rail
+                bottom edge, the two visually overlap (verified via
+                getBoundingClientRect: This Week's box and the Stats volume
+                chart occupied the same rect). Sticky-ing the whole rail
+                with a max-height + its own scrollbar avoids that overlap
+                entirely — the tradeoff is Stats can require an internal
+                scroll on shorter viewports, which is the lesser issue. */}
+            <div
+              className={cn(
+                "lg:col-span-2 lg:sticky lg:top-[88px] lg:self-start lg:space-y-6",
+                "lg:max-h-[calc(100vh-104px)] lg:overflow-y-auto lg:pb-2"
+              )}
+            >
+              {/* This Week */}
+              <div className={cn("space-y-3 sm:space-y-4", activeSegment !== "thisweek" && "hidden", "lg:block")}>
+                <ThisWeekCard
+                  plan={plan}
+                  currentWeekNumber={progress.currentWeekNumber}
+                  nextWorkout={progress.nextWorkout}
+                  planProgress={progress.planProgress}
+                  weekProgress={progress.weekProgress}
+                  isComplete={progress.isComplete}
+                  onToggle={progress.toggle}
+                  isPending={progress.isPending}
+                />
 
-          {/* Stats */}
-          <div className={cn(activeSegment !== "stats" && "hidden")}>
-            <PlanStats plan={plan} />
+                {progress.planProgress.totalCount > 0 && (
+                  <ProgressStrip
+                    completed={progress.planProgress.completedCount}
+                    total={progress.planProgress.totalCount}
+                    pct={progress.planProgress.pct}
+                  />
+                )}
+
+                {/* Mobile-only: the schedule (with this same week's card,
+                    idSuffix-free) is off-screen behind the Schedule segment,
+                    so This Week carries its own copy here. At lg the
+                    schedule column is always visible right alongside this
+                    rail, so this copy would just be a redundant duplicate —
+                    hidden there instead of dropped, to keep this panel's own
+                    mobile-measured height (accordion state, etc.) untouched. */}
+                {progress.currentWeekNumber !== null && currentWeek && (
+                  <div className="lg:hidden">
+                    <WeekCard
+                      week={currentWeek}
+                      isCurrent
+                      defaultOpen
+                      idSuffix="-thisweek"
+                      progress={{
+                        isComplete: (day) => progress.isComplete(currentWeek.weekNumber, day),
+                        onToggle: (day) => progress.toggle(currentWeek.weekNumber, day),
+                        pending: (day) => progress.isPending(currentWeek.weekNumber, day),
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Stats — the rail's own lg:space-y-6 (above) provides the gap
+                  above this block at lg; no unprefixed spacing here so
+                  mobile (only one panel ever visible) gets no extra gap. */}
+              <div className={cn(activeSegment !== "stats" && "hidden", "lg:block")}>
+                <PlanStats plan={plan} />
+              </div>
+            </div>
+
+            {/* Right column: Schedule */}
+            <div className={cn("lg:col-span-3", activeSegment !== "schedule" && "hidden", "lg:block")}>
+              <PlanCalendar
+                plan={plan}
+                onSave={user ? handleSave : undefined}
+                saving={saving}
+                savedId={savedId}
+                progress={progress}
+                isActive={activeSegment === "schedule"}
+              />
+            </div>
           </div>
         </div>
       )}
