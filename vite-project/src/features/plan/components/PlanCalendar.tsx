@@ -1,32 +1,44 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { TrainingPlan } from "../types";
 import { WeekCard } from "./WeekCard";
+import type { PlanProgress } from "../hooks/usePlanProgress";
 import { exportPlanAsIcal } from "../utils/exportIcal";
+import { phaseSegments, PHASE_META } from "../utils/planDisplay";
+import { currentWeekNumber } from "../utils/planSchedule";
 
 interface Props {
   plan: TrainingPlan;
   onSave?: () => void;
   saving?: boolean;
   savedId?: string | null;
+  /** Omit for exact current read-only rendering (dashboard back-compat). */
+  progress?: PlanProgress;
+  /**
+   * Whether this calendar is the currently-visible segment. When it first
+   * turns true, the current week's card is scrolled into view — once per
+   * mount, not on every toggle back to this segment.
+   */
+  isActive?: boolean;
 }
 
-function currentWeekIndex(plan: TrainingPlan): number | null {
-  if (!plan.raceDate) return null;
-  const now = Date.now();
-  const raceMs = new Date(plan.raceDate).getTime();
-  if (now > raceMs) return null; // race is in the past
-
-  const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-  const weeksUntilRace = Math.ceil((raceMs - now) / msPerWeek);
-  // Week index from end: plan.totalWeeks - weeksUntilRace
-  const idx = plan.totalWeeks - weeksUntilRace;
-  if (idx < 0 || idx >= plan.totalWeeks) return null;
-  return idx;
-}
-
-export function PlanCalendar({ plan, onSave, saving, savedId }: Props) {
-  const currentIdx = currentWeekIndex(plan);
+export function PlanCalendar({ plan, onSave, saving, savedId, progress, isActive }: Props) {
+  const currentWeekNum = currentWeekNumber(plan);
   const [exported, setExported] = useState(false);
+  const segments = phaseSegments(plan.weeks);
+  const currentWeekRef = useRef<HTMLDivElement>(null);
+  const hasScrolledRef = useRef(false);
+
+  useEffect(() => {
+    if (!isActive || hasScrolledRef.current || currentWeekNum === null) return;
+    hasScrolledRef.current = true;
+    const node = currentWeekRef.current;
+    if (!node) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Wait a tick so layout (e.g. the segment just becoming visible) settles first.
+    requestAnimationFrame(() => {
+      node.scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
+    });
+  }, [isActive, currentWeekNum]);
 
   function handleExport() {
     exportPlanAsIcal(plan);
@@ -69,19 +81,54 @@ export function PlanCalendar({ plan, onSave, saving, savedId }: Props) {
         </div>
       </div>
 
-      {currentIdx !== null && (
+      {currentWeekNum !== null && (
         <div className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-2.5 text-sm text-emerald-800 font-medium">
-          📍 You are on <strong>Week {currentIdx + 1}</strong> — {plan.weeks[currentIdx]?.phase}
+          📍 You are on <strong>Week {currentWeekNum}</strong> —{" "}
+          {plan.weeks.find((w) => w.weekNumber === currentWeekNum)?.phase}
         </div>
       )}
 
-      <div className="space-y-3">
-        {plan.weeks.map((week, i) => (
-          <WeekCard
-            key={week.weekNumber}
-            week={week}
-            isCurrent={i === currentIdx}
-          />
+      <div className="space-y-6">
+        {segments.map((seg) => (
+          <div key={`${seg.phase}-${seg.startWeek}`} className="space-y-3">
+            <div className="flex items-center gap-2 px-1">
+              <span
+                className="h-2.5 w-2.5 rounded-full flex-shrink-0"
+                style={{ backgroundColor: PHASE_META[seg.phase].bg }}
+              />
+              <h4 className="text-sm font-bold text-slate-800">{seg.phase}</h4>
+              <span className="text-xs font-mono text-slate-400">
+                {seg.startWeek === seg.endWeek
+                  ? `Week ${seg.startWeek}`
+                  : `Weeks ${seg.startWeek}–${seg.endWeek}`}
+              </span>
+            </div>
+            <div className="space-y-3">
+              {plan.weeks
+                .filter((w) => w.weekNumber >= seg.startWeek && w.weekNumber <= seg.endWeek)
+                .map((week) => (
+                  <div
+                    key={week.weekNumber}
+                    ref={week.weekNumber === currentWeekNum ? currentWeekRef : undefined}
+                  >
+                    <WeekCard
+                      week={week}
+                      isCurrent={week.weekNumber === currentWeekNum}
+                      defaultOpen={week.weekNumber === 1 || week.weekNumber === currentWeekNum}
+                      progress={
+                        progress
+                          ? {
+                              isComplete: (day) => progress.isComplete(week.weekNumber, day),
+                              onToggle: (day) => progress.toggle(week.weekNumber, day),
+                              pending: (day) => progress.isPending(week.weekNumber, day),
+                            }
+                          : undefined
+                      }
+                    />
+                  </div>
+                ))}
+            </div>
+          </div>
         ))}
       </div>
     </div>

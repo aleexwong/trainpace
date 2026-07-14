@@ -4,15 +4,18 @@ import type { TrainingPlan } from "../../plan/types";
 import { phaseColor } from "../../plan/plan-math";
 import { exportPlanAsIcal } from "../../plan/utils/exportIcal";
 import { WeekCard } from "../../plan/components/WeekCard";
+import { usePlanProgress } from "../../plan/hooks/usePlanProgress";
 
 interface Props {
   plan: TrainingPlan;
   onDelete: (id: string) => void;
+  userId?: string;
 }
 
-export function TrainingPlanCard({ plan, onDelete }: Props) {
+export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [confirming, setConfirming] = useState(false);
+  const progress = usePlanProgress({ plan, planId: plan.id, userId });
 
   const raceDate = plan.raceDate
     ? new Date(plan.raceDate).toLocaleDateString("en-US", {
@@ -59,7 +62,23 @@ export function TrainingPlanCard({ plan, onDelete }: Props) {
                 <span className="text-emerald-600 font-medium">{weeksRemaining}w to go</span>
               </>
             )}
+            {progress.planProgress.totalCount > 0 && (
+              <>
+                <span>·</span>
+                <span className="font-medium tabular-nums">
+                  {progress.planProgress.completedCount}/{progress.planProgress.totalCount} runs
+                </span>
+              </>
+            )}
           </div>
+          {progress.planProgress.totalCount > 0 && (
+            <div className="mt-2 h-1 max-w-xs rounded-full bg-slate-100 overflow-hidden">
+              <div
+                className="h-full rounded-full bg-emerald-500 transition-all"
+                style={{ width: `${progress.planProgress.pct}%` }}
+              />
+            </div>
+          )}
         </div>
 
         {/* Actions */}
@@ -152,7 +171,15 @@ export function TrainingPlanCard({ plan, onDelete }: Props) {
             </div>
             <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
               {plan.weeks.map((week) => (
-                <WeekCard key={week.weekNumber} week={week} />
+                <WeekCard
+                  key={week.weekNumber}
+                  week={week}
+                  progress={{
+                    isComplete: (day) => progress.isComplete(week.weekNumber, day),
+                    onToggle: (day) => progress.toggle(week.weekNumber, day),
+                    pending: (day) => progress.isPending(week.weekNumber, day),
+                  }}
+                />
               ))}
             </div>
           </div>

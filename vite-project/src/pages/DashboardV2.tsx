@@ -329,8 +329,10 @@ export default function DashboardV2() {
       {activeTab === "training-plans" && (
         <TrainingPlansSection
           plans={filteredTrainingPlans}
+          allPlans={trainingPlans}
           loading={trainingPlansLoading}
           onDeletePlan={removeTrainingPlan}
+          userId={user?.uid}
         />
       )}
 
