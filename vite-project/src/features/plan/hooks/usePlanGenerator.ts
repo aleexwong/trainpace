@@ -42,6 +42,13 @@ export function usePlanGenerator() {
     }
   }, []);
 
+  // Replace the in-memory plan after a schedule edit (drag-reschedule).
+  // Persistence is the editor's responsibility (localStorage draft for
+  // unsaved plans, Firestore for saved ones) — this only swaps state.
+  const updatePlan = useCallback((next: TrainingPlan) => {
+    setPlan(next);
+  }, []);
+
   const reset = useCallback(() => {
     setPlan(null);
     setError(null);
@@ -51,5 +58,5 @@ export function usePlanGenerator() {
     clearPendingSave();
   }, []);
 
-  return { plan, error, generate, reset };
+  return { plan, error, generate, updatePlan, reset };
 }

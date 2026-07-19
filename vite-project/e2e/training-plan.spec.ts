@@ -1,4 +1,38 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Locator, type Page } from "@playwright/test";
+
+/** Generate a guest Half Marathon plan ~6 weeks out (form → plan view). */
+async function generateHalfMarathonPlan(page: Page) {
+  await page.goto("/plan");
+  await page.waitForLoadState("networkidle");
+
+  await page.getByRole("button", { name: /Half Marathon/i }).first().click();
+
+  const raceDate = new Date();
+  raceDate.setDate(raceDate.getDate() + 42);
+  await page.locator('input[type="date"]').fill(raceDate.toISOString().split("T")[0]);
+
+  const generateBtn = page.getByRole("button", { name: /Generate My Plan/i });
+  await expect(generateBtn).toBeEnabled();
+  await generateBtn.click();
+  await expect(page.getByRole("button", { name: /Start over/i })).toBeVisible();
+}
+
+/**
+ * Drag a workout chip onto a target day cell with raw mouse events —
+ * dnd-kit's MouseSensor has a small distance activation constraint, so
+ * Playwright's dragTo (single synthetic move) may not trigger it.
+ */
+async function dragChip(page: Page, source: Locator, target: Locator) {
+  await source.scrollIntoViewIfNeeded();
+  const from = await source.boundingBox();
+  const to = await target.boundingBox();
+  if (!from || !to) throw new Error("drag source/target not visible");
+
+  await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(to.x + to.width / 2, to.y + to.height / 2, { steps: 12 });
+  await page.mouse.up();
+}
 
 test.describe("Training Plan Generator", () => {
   test("should load the training plan page", async ({ page }) => {
@@ -42,6 +76,50 @@ test.describe("Training Plan Generator", () => {
     await expect(
       page.getByRole("button", { name: /Start over/i })
     ).toBeVisible();
+  });
+
+  test("should drag a workout to an empty day and persist the move", async ({ page }) => {
+    // Generate + drag + a second full navigation — needs more than the
+    // default 30s against the dev server's slow first loads.
+    test.setTimeout(90_000);
+    await generateHalfMarathonPlan(page);
+
+    // Default training days are Tue/Thu/Sat/Sun, so Wed is an empty cell.
+    const week1 = page.locator('[data-week="1"]');
+    const source = week1.locator('[data-day="Tue"] [data-chip]');
+    const target = week1.locator('[data-day="Wed"]');
+    await expect(source).toBeVisible();
+    const movedLabel = (await source.innerText()).split("\n")[0];
+
+    await dragChip(page, source, target);
+
+    // The workout now renders under Wed and Tue is empty.
+    await expect(week1.locator('[data-day="Wed"] [data-chip]')).toContainText(movedLabel);
+    await expect(week1.locator('[data-day="Tue"] [data-chip]')).toHaveCount(0);
+
+    // The move survives a fresh navigation via the localStorage draft.
+    // (goto instead of reload — reload's "load" event is flaky against the
+    // dev server; the assertions below auto-wait for the hydrated grid.)
+    await page.goto("/plan", { waitUntil: "domcontentloaded" });
+    await expect(week1.locator('[data-day="Wed"] [data-chip]')).toContainText(movedLabel);
+    await expect(week1.locator('[data-day="Tue"] [data-chip]')).toHaveCount(0);
+  });
+
+  test("should swap workouts when dropped on an occupied day", async ({ page }) => {
+    await generateHalfMarathonPlan(page);
+
+    const week1 = page.locator('[data-week="1"]');
+    const thuChip = week1.locator('[data-day="Thu"] [data-chip]');
+    const satChip = week1.locator('[data-day="Sat"] [data-chip]');
+    await expect(thuChip).toBeVisible();
+    await expect(satChip).toBeVisible();
+    const thuLabel = (await thuChip.innerText()).split("\n")[0];
+    const satLabel = (await satChip.innerText()).split("\n")[0];
+
+    await dragChip(page, thuChip, week1.locator('[data-day="Sat"]'));
+
+    await expect(week1.locator('[data-day="Sat"] [data-chip]')).toContainText(thuLabel);
+    await expect(week1.locator('[data-day="Thu"] [data-chip]')).toContainText(satLabel);
   });
 
   test("should accept URL params from pace calculator", async ({ page }) => {
