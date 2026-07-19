@@ -116,6 +116,13 @@ export function usePlanProgress({ plan, planId }: UsePlanProgressArgs) {
     [plan, planId, completed]
   );
 
+  // Local-state-only replacement used when a schedule edit migrates
+  // completion keys (the workout's tick travels with it to its new day).
+  // The editor owns persisting the migrated map — one writer per storage.
+  const replaceCompleted = useCallback((next: Record<string, string>) => {
+    setCompleted(next);
+  }, []);
+
   const weekProgress = useCallback(
     (week: TrainingWeek): ProgressSummary =>
       summarize(
@@ -151,6 +158,8 @@ export function usePlanProgress({ plan, planId }: UsePlanProgressArgs) {
   );
 
   return {
+    completed,
+    replaceCompleted,
     isComplete,
     toggle,
     isPending,

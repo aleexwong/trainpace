@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import type { TrainingPlan } from "../types";
-import { WeekCard } from "./WeekCard";
+import { PlanCalendarGrid } from "./PlanCalendarGrid";
 import type { PlanProgress } from "../hooks/usePlanProgress";
+import type { PlanEditor } from "../hooks/usePlanEditor";
 import { exportPlanAsIcal } from "../utils/exportIcal";
-import { phaseSegments, PHASE_META } from "../utils/planDisplay";
 import { currentWeekNumber } from "../utils/planSchedule";
 
 interface Props {
@@ -13,18 +13,19 @@ interface Props {
   savedId?: string | null;
   /** Omit for exact current read-only rendering (dashboard back-compat). */
   progress?: PlanProgress;
+  /** Omit for a read-only calendar; present = workouts drag-reschedule. */
+  editor?: PlanEditor;
   /**
    * Whether this calendar is the currently-visible segment. When it first
-   * turns true, the current week's card is scrolled into view — once per
+   * turns true, the current week's row is scrolled into view — once per
    * mount, not on every toggle back to this segment.
    */
   isActive?: boolean;
 }
 
-export function PlanCalendar({ plan, onSave, saving, savedId, progress, isActive }: Props) {
+export function PlanCalendar({ plan, onSave, saving, savedId, progress, editor, isActive }: Props) {
   const currentWeekNum = currentWeekNumber(plan);
   const [exported, setExported] = useState(false);
-  const segments = phaseSegments(plan.weeks);
   const currentWeekRef = useRef<HTMLDivElement>(null);
   const hasScrolledRef = useRef(false);
 
@@ -88,49 +89,21 @@ export function PlanCalendar({ plan, onSave, saving, savedId, progress, isActive
         </div>
       )}
 
-      <div className="space-y-6">
-        {segments.map((seg) => (
-          <div key={`${seg.phase}-${seg.startWeek}`} className="space-y-3">
-            <div className="flex items-center gap-2 px-1">
-              <span
-                className="h-2.5 w-2.5 rounded-full flex-shrink-0"
-                style={{ backgroundColor: PHASE_META[seg.phase].bg }}
-              />
-              <h4 className="text-sm font-bold text-slate-800">{seg.phase}</h4>
-              <span className="text-xs font-mono text-slate-400">
-                {seg.startWeek === seg.endWeek
-                  ? `Week ${seg.startWeek}`
-                  : `Weeks ${seg.startWeek}–${seg.endWeek}`}
-              </span>
-            </div>
-            <div className="space-y-3">
-              {plan.weeks
-                .filter((w) => w.weekNumber >= seg.startWeek && w.weekNumber <= seg.endWeek)
-                .map((week) => (
-                  <div
-                    key={week.weekNumber}
-                    ref={week.weekNumber === currentWeekNum ? currentWeekRef : undefined}
-                  >
-                    <WeekCard
-                      week={week}
-                      isCurrent={week.weekNumber === currentWeekNum}
-                      defaultOpen={week.weekNumber === 1 || week.weekNumber === currentWeekNum}
-                      progress={
-                        progress
-                          ? {
-                              isComplete: (day) => progress.isComplete(week.weekNumber, day),
-                              onToggle: (day) => progress.toggle(week.weekNumber, day),
-                              pending: (day) => progress.isPending(week.weekNumber, day),
-                            }
-                          : undefined
-                      }
-                    />
-                  </div>
-                ))}
-            </div>
-          </div>
-        ))}
-      </div>
+      {editor && (
+        <p className="text-xs text-slate-400 px-1">
+          Life happens — drag a workout onto another day to reschedule it. Drop
+          on an occupied day to swap the two. On touch, press and hold to pick
+          one up.
+        </p>
+      )}
+
+      <PlanCalendarGrid
+        plan={plan}
+        currentWeekNum={currentWeekNum}
+        progress={progress}
+        editor={editor}
+        currentWeekRef={currentWeekRef}
+      />
     </div>
   );
 }

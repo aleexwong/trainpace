@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "../../auth/AuthContext";
 import { usePlanGenerator } from "../hooks/usePlanGenerator";
 import { useSavePlan } from "../hooks/useSavePlan";
 import { usePlanProgress } from "../hooks/usePlanProgress";
+import { usePlanEditor } from "../hooks/usePlanEditor";
 import { PlanInputForm } from "./PlanInputForm";
 import { PlanOverview } from "./PlanOverview";
 import { PlanStats } from "./PlanStats";
@@ -19,7 +20,7 @@ import {
   clearGuestProgress,
 } from "../utils/planPersistence";
 
-import type { GoalRace } from "../types";
+import type { GoalRace, TrainingPlan } from "../types";
 
 type Segment = "thisweek" | "schedule" | "stats";
 
@@ -92,7 +93,7 @@ interface Props {
 
 export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSource, prefillGoal }: Props) {
   const { user, loading: authLoading } = useAuth();
-  const { plan, error, generate, reset } = usePlanGenerator();
+  const { plan, error, generate, updatePlan, reset } = usePlanGenerator();
   const { save, saving, savedId, error: saveError } = useSavePlan();
   // Before save, planId is undefined and progress lives in guest localStorage
   // (even for signed-in users viewing an unsaved plan) — those ticks ride
@@ -121,6 +122,25 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
     setTrackedPlan(plan);
     setUserSegment(null);
   }
+
+  // Schedule edits (drag-reschedule) swap the plan object too — pre-sync the
+  // identity tracker so the edit isn't mistaken for a fresh generate, which
+  // would reset the user's segment tab out from under their drag.
+  const handlePlanEdited = useCallback(
+    (next: TrainingPlan) => {
+      setTrackedPlan(next);
+      updatePlan(next);
+    },
+    [updatePlan]
+  );
+
+  const editor = usePlanEditor({
+    plan,
+    planId: savedId ?? undefined,
+    completed: progress.completed,
+    onPlanChange: handlePlanEdited,
+    onCompletedChange: progress.replaceCompleted,
+  });
   const activeSegment: Segment = userSegment ?? (progress.currentWeekNumber !== null ? "thisweek" : "schedule");
 
   const currentWeek = plan?.weeks.find((w) => w.weekNumber === progress.currentWeekNumber) ?? null;
@@ -251,6 +271,12 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
             </div>
           )}
 
+          {editor.moveError && (
+            <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+              {editor.moveError}
+            </div>
+          )}
+
           {/* Segment control is a mobile/tablet affordance only — at lg the
               two-column grid below shows This Week, Schedule, and Stats
               simultaneously, so there's nothing left to switch between. */}
@@ -347,6 +373,7 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
                 saving={saving}
                 savedId={savedId}
                 progress={progress}
+                editor={editor}
                 isActive={activeSegment === "schedule"}
               />
             </div>
