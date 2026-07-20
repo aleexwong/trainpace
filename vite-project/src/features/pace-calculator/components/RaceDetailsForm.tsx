@@ -10,8 +10,8 @@
  *  6. Optional age / temperature adjustments
  */
 
-import { useRef } from "react";
-import { Zap, ArrowRight } from "lucide-react";
+import { useRef, useState } from "react";
+import { Zap, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -58,8 +58,8 @@ interface RaceDetailsFormProps {
   inputs: PaceInputs;
   errors: FormErrors;
   onInputChange: (e: { target: { name: string; value: string } }) => void;
-  /** distance in km + preset name so parent can track selected preset */
-  onPresetClick: (distance: number, presetName: string) => void;
+  /** preset distance in km – parent converts to the active unit */
+  onPresetClick: (distanceKm: number) => void;
   onCalculate: () => void;
   isCalculating: boolean;
   /** Name of the currently selected preset (e.g. "Marathon") */
@@ -88,9 +88,15 @@ export function RaceDetailsForm({
 }: RaceDetailsFormProps) {
   const isKm = inputs.units === "km";
 
-  // Refs for auto-advance between HH/MM/SS fields
+  // Refs for auto-advance / backspace navigation between HH/MM/SS fields
+  const hoursRef = useRef<HTMLInputElement>(null);
   const minutesRef = useRef<HTMLInputElement>(null);
   const secondsRef = useRef<HTMLInputElement>(null);
+
+  // Optional adjustments stay collapsed unless already filled in
+  const [showOptional, setShowOptional] = useState(
+    Boolean(inputs.age || inputs.temperature)
+  );
 
   // Suggested times + slider config for the selected preset
   const suggestedTimes = selectedPresetName ? (SUGGESTED_TIMES[selectedPresetName] ?? []) : [];
@@ -101,6 +107,15 @@ export function RaceDetailsForm({
   const minutes = parseInt(inputs.minutes || "0", 10);
   const seconds = parseInt(inputs.seconds || "0", 10);
   const hasValidTime = currentTimeSeconds > 0 && minutes < 60 && seconds < 60;
+
+  const distanceNum = parseFloat(inputs.distance);
+  const hasValidDistance = isFinite(distanceNum) && distanceNum > 0;
+
+  // Live race pace – instant feedback as soon as distance + time are in
+  const livePaceSeconds =
+    hasValidDistance && hasValidTime
+      ? Math.round(currentTimeSeconds / distanceNum)
+      : null;
 
   // Which suggested chip (if any) matches current time
   const activeChipLabel = hasValidTime
@@ -126,12 +141,33 @@ export function RaceDetailsForm({
     onInputChange({ target: { name: "units", value: newUnit } });
   };
 
-  const handleTimeKeyUp = (e: React.KeyboardEvent<HTMLInputElement>, field: "hours" | "minutes") => {
-    if ((e.target as HTMLInputElement).value.length >= 2) {
-      if (field === "hours")   minutesRef.current?.focus();
-      if (field === "minutes") secondsRef.current?.focus();
+  /** Auto-advance to the next field once two digits are typed */
+  const handleTimeChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    next?: React.RefObject<HTMLInputElement>
+  ) => {
+    onInputChange(e);
+    if (e.target.value.replace(/\D/g, "").length >= 2) {
+      next?.current?.select();
     }
   };
+
+  /** Enter calculates; Backspace on an empty field jumps to the previous one */
+  const handleTimeKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    prev?: React.RefObject<HTMLInputElement>
+  ) => {
+    if (e.key === "Enter") {
+      onCalculate();
+      return;
+    }
+    if (e.key === "Backspace" && (e.target as HTMLInputElement).value === "") {
+      prev?.current?.focus();
+    }
+  };
+
+  const selectOnFocus = (e: React.FocusEvent<HTMLInputElement>) =>
+    e.target.select();
 
   // ── Render ──────────────────────────────────────────────────────────────────
 
@@ -146,12 +182,12 @@ export function RaceDetailsForm({
 
           <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
             {PRESET_DISTANCES.map((preset) => {
-              const isSelected = inputs.distance === preset.distance.toString();
+              const isSelected = selectedPresetName === preset.name;
               return (
                 <button
                   key={preset.name}
                   data-testid={`preset-${preset.name.toLowerCase().replace(/\s+/g, "-")}`}
-                  onClick={() => onPresetClick(preset.distance, preset.name)}
+                  onClick={() => onPresetClick(preset.distance)}
                   className={`py-3 px-2 text-sm font-semibold rounded-xl transition-all hover:scale-105 ${
                     isSelected
                       ? "bg-emerald-600 text-white shadow-md"
@@ -178,6 +214,7 @@ export function RaceDetailsForm({
               step="0.1"
               value={inputs.distance}
               onChange={onInputChange}
+              onKeyDown={(e) => e.key === "Enter" && onCalculate()}
               className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${
                 errors.distance ? "border-red-500" : "border-gray-300"
               }`}
@@ -236,55 +273,74 @@ export function RaceDetailsForm({
 
           <div className="flex items-center gap-2">
             <input
-              type="number"
-              inputMode="tel"
+              ref={hoursRef}
+              type="text"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={2}
               placeholder="HH"
               name="hours"
               data-testid="pace-hours"
-              min="0"
-              max="99"
+              aria-label="Hours"
               value={inputs.hours}
-              onChange={onInputChange}
-              onKeyUp={(e) => handleTimeKeyUp(e, "hours")}
-              className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
+              onChange={(e) => handleTimeChange(e, minutesRef)}
+              onKeyDown={(e) => handleTimeKeyDown(e)}
+              onFocus={selectOnFocus}
+              className={`flex-1 min-w-0 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
                 errors.time ? "border-red-500" : "border-gray-300"
               }`}
             />
             <span className="text-gray-400 font-medium text-xl select-none">:</span>
             <input
               ref={minutesRef}
-              type="number"
-              inputMode="tel"
+              type="text"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={2}
               placeholder="MM"
               name="minutes"
               data-testid="pace-minutes"
-              min="0"
-              max="59"
+              aria-label="Minutes"
               value={inputs.minutes}
-              onChange={onInputChange}
-              onKeyUp={(e) => handleTimeKeyUp(e, "minutes")}
-              className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
+              onChange={(e) => handleTimeChange(e, secondsRef)}
+              onKeyDown={(e) => handleTimeKeyDown(e, hoursRef)}
+              onFocus={selectOnFocus}
+              className={`flex-1 min-w-0 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
                 errors.time ? "border-red-500" : "border-gray-300"
               }`}
             />
             <span className="text-gray-400 font-medium text-xl select-none">:</span>
             <input
               ref={secondsRef}
-              type="number"
-              inputMode="tel"
+              type="text"
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={2}
               placeholder="SS"
               name="seconds"
               data-testid="pace-seconds"
-              min="0"
-              max="59"
+              aria-label="Seconds"
               value={inputs.seconds}
-              onChange={onInputChange}
-              className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
+              onChange={(e) => handleTimeChange(e)}
+              onKeyDown={(e) => handleTimeKeyDown(e, minutesRef)}
+              onFocus={selectOnFocus}
+              className={`flex-1 min-w-0 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
                 errors.time ? "border-red-500" : "border-gray-300"
               }`}
             />
           </div>
           {errors.time && <p className="text-red-500 text-sm">{errors.time}</p>}
+
+          {/* Live race pace – confirms the inputs make sense before calculating */}
+          {livePaceSeconds != null && (
+            <p className="text-sm text-gray-600">
+              That's{" "}
+              <span className="font-semibold text-gray-900 tabular-nums">
+                {fmtSeconds(livePaceSeconds)} min/{isKm ? "km" : "mi"}
+              </span>{" "}
+              race pace
+            </p>
+          )}
         </div>
 
         {/* ── 4. Fine-tune slider (preset distances only, after time is entered) ── */}
@@ -331,13 +387,28 @@ export function RaceDetailsForm({
           </Link>
         )}
 
-        {/* ── 6. Optional adjustments ── */}
+        {/* ── 6. Optional adjustments (collapsed by default) ── */}
         <div className="pt-4 border-t border-gray-100 space-y-4">
-          <p className="text-sm font-semibold text-gray-900">
-            Optional{" "}
-            <span className="font-normal text-gray-400 text-xs">for more personalised results</span>
-          </p>
+          <button
+            type="button"
+            onClick={() => setShowOptional((prev) => !prev)}
+            aria-expanded={showOptional}
+            className="w-full flex items-center justify-between text-left"
+          >
+            <span className="text-sm font-semibold text-gray-900">
+              Optional{" "}
+              <span className="font-normal text-gray-400 text-xs">
+                age & weather for heart-rate zones and heat adjustments
+              </span>
+            </span>
+            {showOptional ? (
+              <ChevronUp className="h-4 w-4 text-gray-400 flex-shrink-0" />
+            ) : (
+              <ChevronDown className="h-4 w-4 text-gray-400 flex-shrink-0" />
+            )}
+          </button>
 
+          {showOptional && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -393,17 +464,33 @@ export function RaceDetailsForm({
               />
             </div>
           </div>
+          )}
         </div>
 
         {/* ── CTA ── */}
-        <button
-          onClick={onCalculate}
-          disabled={isCalculating}
-          data-testid="pace-calculate"
-          className="w-full py-4 text-lg font-semibold text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 active:bg-emerald-800 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isCalculating ? "Calculating…" : "Calculate Training Paces"}
-        </button>
+        <div className="space-y-2">
+          <button
+            onClick={onCalculate}
+            disabled={isCalculating}
+            data-testid="pace-calculate"
+            className={`w-full py-4 text-lg font-semibold text-white rounded-xl transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed ${
+              hasValidDistance && hasValidTime
+                ? "bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800"
+                : "bg-emerald-400 hover:bg-emerald-500 active:bg-emerald-600"
+            }`}
+          >
+            {isCalculating ? "Calculating…" : "Calculate Training Paces"}
+          </button>
+          {!(hasValidDistance && hasValidTime) && (
+            <p className="text-center text-xs text-gray-400">
+              {hasValidDistance
+                ? "Now add your finish time"
+                : hasValidTime
+                ? "Now pick or enter a distance"
+                : "Pick a distance and enter a finish time to get your paces"}
+            </p>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

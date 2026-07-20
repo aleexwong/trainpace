@@ -13,9 +13,10 @@ import ReactGA from "react-ga4";
 import { calculateVdot } from "@/features/vdot-calculator/vdot-math";
 
 import type { PaceInputs, PaceResults, FormErrors, PaceUnit } from "../types";
+import { PRESET_DISTANCES } from "../types";
 import { usePaceCalculation } from "../hooks/usePaceCalculation";
 import { usePacePlanPersistence } from "../hooks/usePacePlanPersistence";
-import { timeToSeconds } from "../utils";
+import { timeToSeconds, convertDistance } from "../utils";
 import { RaceDetailsForm } from "./RaceDetailsForm";
 import { PaceResultsDisplay } from "./PaceResultsDisplay";
 import { SavePlanDialog } from "./SavePlanDialog";
@@ -54,9 +55,6 @@ export function PaceCalculatorV2({
   const [errors, setErrors] = useState<FormErrors>({});
   const [isCalculating, setIsCalculating] = useState(false);
 
-  // Track which preset button was last clicked so we can show contextual chips
-  const [selectedPresetName, setSelectedPresetName] = useState<string | null>(null);
-
   // When true the next valid calculation result is auto-committed (e.g. chip click)
   const [autoCalc, setAutoCalc] = useState(false);
 
@@ -72,6 +70,22 @@ export function PaceCalculatorV2({
   // Persistence hook for saving plans
   const { isSaving, isSaved, saveToDashboard, resetSaveState } =
     usePacePlanPersistence();
+
+  // Which preset the current distance corresponds to (drives suggested-time
+  // chips + fine-tune slider). Derived from the value, so it works whether the
+  // distance came from a preset tap, manual typing, a share link, or a goal.
+  const selectedPresetName = useMemo(() => {
+    const dist = parseFloat(inputs.distance);
+    if (!isFinite(dist) || dist <= 0) return null;
+    for (const preset of PRESET_DISTANCES) {
+      const inUnit =
+        inputs.units === "km"
+          ? preset.distance
+          : convertDistance(preset.distance, "km", "miles");
+      if (Math.abs(dist - inUnit) / inUnit < 0.02) return preset.name;
+    }
+    return null;
+  }, [inputs.distance, inputs.units]);
 
   // Live VDOT – updates as user types
   const liveVdot = useMemo(() => {
@@ -97,11 +111,7 @@ export function PaceCalculatorV2({
     if (autoCalc && calculation.isValid && calculation.result) {
       setResults(calculation.result);
       setAutoCalc(false);
-      toast({
-        title: "Calculation Complete! ✨",
-        description: "Your training paces have been calculated.",
-        duration: 3000,
-      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
       ReactGA.event({
         category: "Pace Calculator",
         action: "Calculated Paces",
@@ -141,11 +151,10 @@ export function PaceCalculatorV2({
     if (["hours", "minutes", "seconds"].includes(name)) {
       const numValue = value.replace(/\D/g, "");
       setInputs((prev) => ({ ...prev, [name]: numValue.slice(0, 2) }));
+      if (errors.time) {
+        setErrors((prev) => ({ ...prev, time: undefined }));
+      }
       return;
-    }
-
-    if (name === "distance") {
-      setSelectedPresetName(null);
     }
 
     setInputs((prev) => ({ ...prev, [name]: value }));
@@ -155,10 +164,13 @@ export function PaceCalculatorV2({
     }
   };
 
-  /** Called by distance preset buttons – now also tracks the preset name */
-  const handlePreset = (distance: number, presetName: string) => {
-    setInputs((prev) => ({ ...prev, distance: distance.toString() }));
-    setSelectedPresetName(presetName);
+  /** Called by distance preset buttons – fills the distance in the active unit */
+  const handlePreset = (distanceKm: number) => {
+    const value =
+      inputs.units === "km"
+        ? distanceKm
+        : convertDistance(distanceKm, "km", "miles");
+    setInputs((prev) => ({ ...prev, distance: value.toString() }));
     setErrors({});
   };
 
@@ -190,11 +202,8 @@ export function PaceCalculatorV2({
   const handleCalculate = () => {
     if (!calculation.isValid) {
       setErrors(calculation.errors as FormErrors);
-      toast({
-        title: "Validation Error",
-        description: "Please check the form for errors.",
-        variant: "destructive",
-      });
+      // Bring the inline field errors into view instead of toasting
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
@@ -203,11 +212,7 @@ export function PaceCalculatorV2({
     try {
       if (calculation.result) {
         setResults(calculation.result);
-        toast({
-          title: "Calculation Complete! ✨",
-          description: "Your training paces have been calculated.",
-          duration: 3000,
-        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
 
         ReactGA.event({
           category: "Pace Calculator",
