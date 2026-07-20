@@ -34,6 +34,65 @@ async function dragChip(page: Page, source: Locator, target: Locator) {
   await page.mouse.up();
 }
 
+/**
+ * Stub both Open-Meteo endpoints so weather tests are deterministic and
+ * never depend on external network. The forecast stub honors the request's
+ * past_days/forecast_days so dates line up with the plan's real week grid.
+ */
+async function mockOpenMeteo(page: Page) {
+  await page.route("https://geocoding-api.open-meteo.com/**", (route) =>
+    route.fulfill({
+      json: {
+        results: [
+          {
+            id: 1,
+            name: "Vancouver",
+            latitude: 49.25,
+            longitude: -123.12,
+            country: "Canada",
+            admin1: "British Columbia",
+          },
+        ],
+      },
+    })
+  );
+
+  await page.route("https://api.open-meteo.com/**", (route) => {
+    const url = new URL(route.request().url());
+    const pastDays = Number(url.searchParams.get("past_days") ?? 0);
+    const forecastDays = Number(url.searchParams.get("forecast_days") ?? 7);
+    const total = pastDays + forecastDays;
+
+    const time: string[] = [];
+    const start = new Date();
+    start.setDate(start.getDate() - pastDays);
+    for (let i = 0; i < total; i++) {
+      const d = new Date(start);
+      d.setDate(d.getDate() + i);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      time.push(`${y}-${m}-${day}`);
+    }
+
+    route.fulfill({
+      json: {
+        daily: {
+          time,
+          weather_code: time.map((_, i) => (i % 3 === 0 ? 61 : 1)),
+          temperature_2m_max: time.map((_, i) => 14 + (i % 5)),
+          temperature_2m_min: time.map((_, i) => 6 + (i % 3)),
+          precipitation_probability_max: time.map((_, i) =>
+            i < pastDays ? null : i % 3 === 0 ? 70 : 10
+          ),
+          precipitation_sum: time.map((_, i) => (i % 3 === 0 ? 4.2 : 0)),
+          wind_speed_10m_max: time.map(() => 12),
+        },
+      },
+    });
+  });
+}
+
 test.describe("Training Plan Generator", () => {
   test("should load the training plan page", async ({ page }) => {
     await page.goto("/plan");
@@ -120,6 +179,28 @@ test.describe("Training Plan Generator", () => {
 
     await expect(week1.locator('[data-day="Sat"] [data-chip]')).toContainText(thuLabel);
     await expect(week1.locator('[data-day="Thu"] [data-chip]')).toContainText(satLabel);
+  });
+
+  test("should show training weather after setting a city", async ({ page }) => {
+    test.setTimeout(60_000);
+    await mockOpenMeteo(page);
+    await generateHalfMarathonPlan(page);
+
+    // Weather card renders in the This Week rail with a location prompt.
+    await expect(page.getByRole("heading", { name: "Training Weather" })).toBeVisible();
+
+    await page.getByLabel("Search a city for weather").fill("Vancouver");
+    await page.getByRole("button", { name: "Search", exact: true }).click();
+    await page.getByRole("button", { name: /Vancouver · British Columbia/ }).click();
+
+    // Forecast loads: best run window callout + the Mon–Sun strip.
+    await expect(page.getByText(/Best run window:/)).toBeVisible();
+    await expect(page.getByText("Mon", { exact: true }).first()).toBeVisible();
+
+    // Location persists — a fresh load fetches weather straight away, no prompt.
+    await page.goto("/plan", { waitUntil: "domcontentloaded" });
+    await expect(page.getByText(/Best run window:/).first()).toBeVisible();
+    await expect(page.getByText(/Vancouver · change/)).toBeVisible();
   });
 
   test("should accept URL params from pace calculator", async ({ page }) => {

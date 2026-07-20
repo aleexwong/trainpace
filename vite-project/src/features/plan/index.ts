@@ -1,5 +1,8 @@
 export { TrainingPlanGenerator } from "./components/TrainingPlanGenerator";
 export { ThisWeekCard } from "./components/ThisWeekCard";
+export { WeekWeatherCard } from "./components/WeekWeatherCard";
+export { useTrainingWeather } from "./hooks/useTrainingWeather";
+export type { TrainingWeather } from "./hooks/useTrainingWeather";
 export { usePlanProgress } from "./hooks/usePlanProgress";
 export type { PlanProgress, ProgressSummary } from "./hooks/usePlanProgress";
 export { selectActivePlan } from "./utils/planSchedule";

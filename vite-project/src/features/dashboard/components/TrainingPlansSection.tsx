@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import type { TrainingPlan } from "../../plan/types";
 import { TrainingPlanCard } from "./TrainingPlanCard";
 import { ThisWeekCard } from "../../plan/components/ThisWeekCard";
+import { WeekWeatherCard } from "../../plan/components/WeekWeatherCard";
 import { usePlanProgress } from "../../plan/hooks/usePlanProgress";
+import { useTrainingWeather } from "../../plan/hooks/useTrainingWeather";
 import { selectActivePlan } from "../../plan/utils/planSchedule";
 
 interface Props {
@@ -16,17 +18,21 @@ interface Props {
 
 function ActiveWeekSummary({ plan, userId }: { plan: TrainingPlan; userId?: string }) {
   const progress = usePlanProgress({ plan, planId: plan.id, userId });
+  const weather = useTrainingWeather(plan);
   return (
-    <ThisWeekCard
-      plan={plan}
-      currentWeekNumber={progress.currentWeekNumber}
-      nextWorkout={progress.nextWorkout}
-      planProgress={progress.planProgress}
-      weekProgress={progress.weekProgress}
-      isComplete={progress.isComplete}
-      onToggle={progress.toggle}
-      isPending={progress.isPending}
-    />
+    <>
+      <ThisWeekCard
+        plan={plan}
+        currentWeekNumber={progress.currentWeekNumber}
+        nextWorkout={progress.nextWorkout}
+        planProgress={progress.planProgress}
+        weekProgress={progress.weekProgress}
+        isComplete={progress.isComplete}
+        onToggle={progress.toggle}
+        isPending={progress.isPending}
+      />
+      <WeekWeatherCard weather={weather} />
+    </>
   );
 }
 

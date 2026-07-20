@@ -4,7 +4,9 @@ import { usePlanGenerator } from "../hooks/usePlanGenerator";
 import { useSavePlan } from "../hooks/useSavePlan";
 import { usePlanProgress } from "../hooks/usePlanProgress";
 import { usePlanEditor } from "../hooks/usePlanEditor";
+import { useTrainingWeather } from "../hooks/useTrainingWeather";
 import { PlanInputForm } from "./PlanInputForm";
+import { WeekWeatherCard } from "./WeekWeatherCard";
 import { PlanOverview } from "./PlanOverview";
 import { PlanStats } from "./PlanStats";
 import { PlanCalendar } from "./PlanCalendar";
@@ -142,6 +144,9 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
     onCompletedChange: progress.replaceCompleted,
   });
   const activeSegment: Segment = userSegment ?? (progress.currentWeekNumber !== null ? "thisweek" : "schedule");
+
+  // Fetched fresh on every plan load (and location change) — see useTrainingWeather.
+  const weather = useTrainingWeather(plan);
 
   const currentWeek = plan?.weeks.find((w) => w.weekNumber === progress.currentWeekNumber) ?? null;
 
@@ -324,6 +329,8 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
                   onToggle={progress.toggle}
                   isPending={progress.isPending}
                 />
+
+                <WeekWeatherCard weather={weather} />
 
                 {progress.planProgress.totalCount > 0 && (
                   <ProgressStrip
