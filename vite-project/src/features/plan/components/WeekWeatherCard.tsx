@@ -111,6 +111,10 @@ export function WeekWeatherCard({ weather }: { weather: TrainingWeather }) {
   const [changingLocation, setChangingLocation] = useState(false);
   const { status, weekDays, bestDay, historyWeeks, location } = weather;
 
+  // Race day has passed — ThisWeekCard shows its "plan complete" state, and
+  // there's no upcoming training week to forecast.
+  if (weather.planEnded) return null;
+
   const hasForecast = weekDays.some((d) => d.weather !== null);
 
   return (

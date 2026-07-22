@@ -13,7 +13,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { TrainingPlan } from "../types";
-import { currentWeekNumber, todayNoon, weekStartMonday } from "../utils/planSchedule";
+import { currentWeekNumber, raceDateNoon, todayNoon, weekStartMonday } from "../utils/planSchedule";
 import {
   fetchDailyWeather,
   loadWeatherLocation,
@@ -68,8 +68,18 @@ export function useTrainingWeather(plan: TrainingPlan | null) {
   // mirroring ThisWeekCard's activeWeekNumber so the two cards agree.
   const activeWeekNumber = plan ? currentWeekNumber(plan) ?? 1 : 1;
 
+  // Past race day the plan is finished — consumers hide the card, and the
+  // fetch effect below skips the request entirely.
+  const planEnded = plan ? todayNoon() > raceDateNoon(plan.raceDate) : false;
+
+  // The fetch only depends on these two plan fields — depending on the plan
+  // object itself would refetch weather every time a drag-reschedule swaps
+  // the plan's identity.
+  const raceDate = plan?.raceDate ?? null;
+  const totalWeeks = plan?.totalWeeks ?? 0;
+
   useEffect(() => {
-    if (!plan || !location) {
+    if (!raceDate || !location || planEnded) {
       if (!location) setStatus("no-location");
       return;
     }
@@ -79,9 +89,9 @@ export function useTrainingWeather(plan: TrainingPlan | null) {
     setError(null);
 
     const today = todayNoon();
-    const week1Monday = weekStartMonday(plan.raceDate, 1, plan.totalWeeks);
+    const week1Monday = weekStartMonday(raceDate, 1, totalWeeks);
     const activeSunday = addDays(
-      weekStartMonday(plan.raceDate, activeWeekNumber, plan.totalWeeks),
+      weekStartMonday(raceDate, activeWeekNumber, totalWeeks),
       6
     );
     // History back to the plan's first Monday (API caps at 92 days).
@@ -110,14 +120,16 @@ export function useTrainingWeather(plan: TrainingPlan | null) {
     return () => {
       cancelled = true;
     };
-  }, [plan, location, activeWeekNumber, fetchNonce]);
+  }, [raceDate, totalWeeks, location, activeWeekNumber, planEnded, fetchNonce]);
 
   const refetch = useCallback(() => setFetchNonce((n) => n + 1), []);
 
   const useMyLocation = useCallback(() => {
     if (!("geolocation" in navigator)) {
-      setError("Geolocation isn't supported by this browser");
-      setStatus("error");
+      // Stay in the no-location state so the picker (with city search)
+      // remains visible — an "error" status would replace it with a
+      // retry button that can't help here.
+      setError("Geolocation isn't supported by this browser — search for your city instead");
       return;
     }
     setGeolocating(true);
@@ -224,6 +236,7 @@ export function useTrainingWeather(plan: TrainingPlan | null) {
     bestDay,
     historyWeeks,
     activeWeekNumber,
+    planEnded,
     geolocating,
     useMyLocation,
     chooseCity,
