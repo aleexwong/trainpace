@@ -14,8 +14,9 @@ import {
 } from "lucide-react";
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { comparisonLinks } from "@/features/seo-pages/seoPages";
 import {
   PaceLadderShot,
   VdotDialShot,
@@ -669,6 +670,24 @@ const Comparison = () => {
             </tbody>
           </table>
         </div>
+        {comparisonLinks.length > 0 && (
+          <div className="mt-8 text-center">
+            <p className="text-sm font-medium text-slate-500 mb-3">
+              See how TrainPace compares to the apps you know:
+            </p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {comparisonLinks.map((c) => (
+                <Link
+                  key={c.slug}
+                  to={c.path}
+                  className="rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors"
+                >
+                  {c.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

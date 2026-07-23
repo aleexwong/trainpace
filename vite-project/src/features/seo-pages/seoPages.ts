@@ -2461,6 +2461,36 @@ export const elevationGuideSeoPageMap = new Map(
 export const raceSeoPageMap = new Map(raceSeoPages.map((p) => [p.slug, p]));
 
 // =============================================================================
+// Competitor comparison pages (for internal linking)
+// =============================================================================
+
+/**
+ * Slugs of the competitor-comparison landing pages, in display order.
+ * Used to build cross-links between them and a "Compare" section on the
+ * homepage so the pages are not orphaned.
+ */
+export const comparisonSeoSlugs = [
+  'trainpace-vs-runna',
+  'free-runna-alternative',
+  'trainpace-vs-trainingpeaks',
+  'free-trainingpeaks-alternative',
+  'strava-vs-trainpace-for-training',
+] as const;
+
+export interface ComparisonLink {
+  slug: string;
+  path: string;
+  /** Short label for links/nav, e.g. "TrainPace vs Runna". */
+  label: string;
+}
+
+/** Resolved comparison pages as lightweight link objects. */
+export const comparisonLinks: ComparisonLink[] = comparisonSeoSlugs
+  .map((slug) => calculatorSeoPageMap.get(slug))
+  .filter((p): p is SeoPageConfig => Boolean(p))
+  .map((p) => ({ slug: p.slug, path: p.path, label: p.h1 }));
+
+// =============================================================================
 // Combined Exports
 // =============================================================================
 
