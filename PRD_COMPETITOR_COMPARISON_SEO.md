@@ -123,8 +123,26 @@ Required fields and content rules:
 - CTR from these pages into `/plan` and `/calculator`.
 - Assisted conversions to sign-up from comparison-page sessions (PostHog).
 
-## 10. Follow-on (not in this PRD)
+## 10. Follow-on
 
-- Optional reusable comparison-table component if the format proves out.
-- Additional slugs (e.g. `trainpace-vs-vdot-o2`, `garmin-coach-alternative`) once the first batch
-  shows traction.
+**Batch 2 — shipped.** A second set of comparison pages was added using the same config-only PSEO
+pattern, extending coverage from paid-app competitors into calculators, device ecosystems, and
+training-log platforms:
+
+| Slug | Competitor angle | CTA target |
+|------|------------------|-----------|
+| `trainpace-vs-vdot-o2` | Official paid Jack Daniels VDOT app | `/vdot` |
+| `trainpace-vs-mcmillan-running-calculator` | Respected free/paid pace calculator + plans | `/calculator` |
+| `trainpace-vs-garmin-coach` | Free but device-locked adaptive plans | `/plan` |
+| `trainpace-vs-nike-run-club` | Free audio-guided app + basic plans | `/plan` |
+| `trainpace-vs-final-surge` | Training log + coach-athlete platform | `/plan` |
+
+Same guardrails apply: fair, factual positioning; no exact prices; distinct intro/bullets/FAQ per
+page. All titles < 60 chars, descriptions < 160 chars.
+
+**Still open:**
+
+- Optional reusable comparison-table component if the format proves out (still deliberately out of
+  scope — a separate component task, kept out to stay config-only and shippable).
+- Additional slugs (e.g. a `free-<competitor>-alternative` variant, or newer apps) once these
+  batches show traction.
