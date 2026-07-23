@@ -1336,6 +1336,200 @@ export const calculatorSeoPages: SeoPageConfig[] = [
       ],
     },
   },
+
+  // ===========================================================================
+  // Competitor comparison pages
+  // ===========================================================================
+  {
+    id: generatePageId('pace', 'trainpace-vs-runna'),
+    slug: 'trainpace-vs-runna',
+    tool: 'pace',
+    path: '/calculator/trainpace-vs-runna',
+    title: 'TrainPace vs Runna - Free Plans & Paces | TrainPace',
+    description:
+      'TrainPace vs Runna compared. TrainPace is a free, no-app toolkit for self-coached runners: training paces, plans, GPX course pacing, and race fueling.',
+    h1: 'TrainPace vs. Runna',
+    intro:
+      'Runna is a paid app with adaptive plans and audio-guided workouts. TrainPace is a free, no-signup web toolkit that gives you the training paces, plan, course pacing, and fueling strategy without a subscription.',
+    bullets: [
+      'TrainPace is free with no app or subscription; Runna is a paid mobile subscription',
+      'Both build structured running plans from your goal race and fitness',
+      'TrainPace adds VDOT pace zones, GPX course pacing, and an AI fuel planner Runna does not have',
+      'Runna offers adaptive plans, audio guidance, and device sync that TrainPace does not',
+      'Use your Strava or Garmin GPX export in TrainPace to analyze your race course',
+    ],
+    cta: { href: '/plan', label: 'Build a Free Training Plan' },
+    faq: [
+      {
+        question: 'Is TrainPace a free alternative to Runna?',
+        answer:
+          'Yes. TrainPace is completely free with no app download or subscription. You can generate a periodized training plan, calculate VDOT-based paces, analyze your race course elevation, and plan race fueling without paying anything.',
+      },
+      {
+        question: 'What does Runna do that TrainPace does not?',
+        answer:
+          'Runna is a native mobile app with adaptive plans that adjust automatically, audio-guided workouts, strength plans, and direct device sync with Garmin and Apple Watch. TrainPace is a web tool and does not record activities or sync from a watch automatically.',
+      },
+      {
+        question: 'What does TrainPace do that Runna does not?',
+        answer:
+          'TrainPace includes a VDOT race-time predictor, GPX course pacing that adjusts effort for hills, and an AI race-day fuel planner. All of it is free and needs no login for the core tools.',
+      },
+      {
+        question: 'Can I use TrainPace and Runna together?',
+        answer:
+          'Yes. Many runners follow a plan in one tool and use TrainPace to check training paces, analyze a specific race course from a GPX file, and dial in fueling.',
+      },
+    ],
+  },
+  {
+    id: generatePageId('pace', 'free-runna-alternative'),
+    slug: 'free-runna-alternative',
+    tool: 'pace',
+    path: '/calculator/free-runna-alternative',
+    title: 'Free Runna Alternative for Runners | TrainPace',
+    description:
+      'Looking for a free Runna alternative? TrainPace gives self-coached runners training plans, VDOT paces, GPX course pacing, and race fueling at no cost.',
+    h1: 'A Free Runna Alternative',
+    intro:
+      'If you want structured training without a monthly subscription, TrainPace is a free alternative to Runna. Generate a plan, set your training paces, analyze your race course, and plan fueling in the browser.',
+    bullets: [
+      'No subscription and no app install required',
+      'Periodized training plans from your goal race and available days',
+      'VDOT-style pace zones and race-time predictions',
+      'GPX elevation analysis with hill-adjusted pacing',
+      'AI race-day fuel planner for gels and carbs',
+    ],
+    cta: { href: '/plan', label: 'Build a Free Training Plan' },
+    faq: [
+      {
+        question: 'Is there a truly free alternative to Runna?',
+        answer:
+          'TrainPace is free to use with no paywall on its core tools. You can build a training plan, calculate paces, analyze a course, and plan fueling without paying.',
+      },
+      {
+        question: 'Do I need an account to use TrainPace?',
+        answer:
+          'No. The pace calculator, VDOT calculator, GPX analysis, and fuel planner work without an account. Signing in with Google lets you save plans and routes to your dashboard.',
+      },
+      {
+        question: 'Does the free plan adapt to my runs like Runna?',
+        answer:
+          'TrainPace does not sync from your watch to auto-adapt. You can regenerate your paces and plan any time you run a new race or time trial to keep them current.',
+      },
+    ],
+  },
+  {
+    id: generatePageId('pace', 'trainpace-vs-trainingpeaks'),
+    slug: 'trainpace-vs-trainingpeaks',
+    tool: 'pace',
+    path: '/calculator/trainpace-vs-trainingpeaks',
+    title: 'TrainPace vs TrainingPeaks - Free Option | TrainPace',
+    description:
+      'TrainPace vs TrainingPeaks compared. TrainPace is the free, simple option for self-coached runners who do not need coach tools or training-load analytics.',
+    h1: 'TrainPace vs. TrainingPeaks',
+    intro:
+      'TrainingPeaks is a deep, paid platform built for coached athletes and training-load analytics. TrainPace is the free, straightforward option for self-coached runners who just want paces, a plan, course pacing, and fueling.',
+    bullets: [
+      'TrainPace is free; TrainingPeaks premium is a paid subscription',
+      'TrainingPeaks offers coach-athlete tools, TSS, and the Performance Management Chart',
+      'TrainPace focuses on simple, science-backed paces and plans without the learning curve',
+      'TrainPace adds GPX course pacing and an AI fuel planner out of the box',
+      'Best for self-coached runners who do not need multi-sport training-load tracking',
+    ],
+    cta: { href: '/plan', label: 'Build a Free Training Plan' },
+    faq: [
+      {
+        question: 'Is TrainPace a free alternative to TrainingPeaks?',
+        answer:
+          'Yes, for the self-coached runner. TrainPace covers training paces, a periodized plan, course pacing, and fueling for free. It does not try to replace TrainingPeaks coach tools or training-load analytics.',
+      },
+      {
+        question: 'What does TrainingPeaks do that TrainPace does not?',
+        answer:
+          'TrainingPeaks provides coach-athlete accounts, structured workout tracking, training-load metrics like TSS, CTL and ATL, the Performance Management Chart, and multi-sport support for triathletes.',
+      },
+      {
+        question: 'Who should choose TrainPace instead?',
+        answer:
+          'Runners who coach themselves and want clear paces, a sensible plan, course insight, and a fueling strategy without paying for or learning a full analytics platform.',
+      },
+    ],
+  },
+  {
+    id: generatePageId('pace', 'free-trainingpeaks-alternative'),
+    slug: 'free-trainingpeaks-alternative',
+    tool: 'pace',
+    path: '/calculator/free-trainingpeaks-alternative',
+    title: 'Free TrainingPeaks Alternative | TrainPace',
+    description:
+      'A free TrainingPeaks alternative for self-coached runners. TrainPace delivers VDOT paces, training plans, GPX course pacing, and race fueling at no cost.',
+    h1: 'A Free TrainingPeaks Alternative',
+    intro:
+      'If TrainingPeaks feels like more platform than you need, TrainPace is a free alternative focused on the essentials: training paces, a plan, course pacing, and fueling for self-coached runners.',
+    bullets: [
+      'Free to use with no subscription',
+      'VDOT-based training paces and race-time predictions',
+      'Periodized training plan builder with calendar export',
+      'GPX elevation analysis and hill-adjusted pacing',
+      'AI race-day fuel planner',
+    ],
+    cta: { href: '/calculator', label: 'Open the Free Pace Calculator' },
+    faq: [
+      {
+        question: 'Is there a free version of a TrainingPeaks-style tool?',
+        answer:
+          'TrainPace is free and covers the essentials a self-coached runner needs: paces, a plan, course analysis, and fueling. It is lighter than TrainingPeaks by design.',
+      },
+      {
+        question: 'Can I export my plan to a calendar?',
+        answer:
+          'Yes. TrainPace training plans export to an .ics file you can add to Apple Calendar, Google Calendar, or Outlook.',
+      },
+      {
+        question: 'Does TrainPace track training load like TrainingPeaks?',
+        answer:
+          'Not currently. TrainPace focuses on prescribing paces, plans, and fueling rather than computing TSS or a Performance Management Chart.',
+      },
+    ],
+  },
+  {
+    id: generatePageId('pace', 'strava-vs-trainpace-for-training'),
+    slug: 'strava-vs-trainpace-for-training',
+    tool: 'pace',
+    path: '/calculator/strava-vs-trainpace-for-training',
+    title: 'Strava vs TrainPace for Training Plans | TrainPace',
+    description:
+      'Strava records your runs; TrainPace tells you what to run. Compare them for training paces, plans, and GPX course analysis, and use both together.',
+    h1: 'Strava vs. TrainPace for Training',
+    intro:
+      'Strava is the best place to record and share your runs. TrainPace is where you decide what pace to run, what plan to follow, and how hard a course will be. They work best together.',
+    bullets: [
+      'Strava records activities and adds a social feed; TrainPace prescribes paces and plans',
+      'TrainPace turns a recent race into VDOT training zones Strava does not calculate',
+      'Upload your Strava GPX export to TrainPace for hill-adjusted course pacing',
+      'TrainPace adds a periodized plan builder and an AI fuel planner',
+      'Free to use with no subscription for the core tools',
+    ],
+    cta: { href: '/calculator', label: 'Get Your Training Paces' },
+    faq: [
+      {
+        question: 'Is Strava good for training plans?',
+        answer:
+          'Strava is excellent for recording and sharing runs, but it does not prescribe training paces or build a periodized plan. TrainPace fills that gap with VDOT zones, a plan builder, and fueling.',
+      },
+      {
+        question: 'Can I use Strava and TrainPace together?',
+        answer:
+          'Yes. Record your runs in Strava, export a race or route as a GPX file, and upload it to TrainPace to analyze elevation and get hill-adjusted pacing. Use your recent Strava race time to set training paces.',
+      },
+      {
+        question: 'How do I get pace zones from a Strava run?',
+        answer:
+          'Take a recent race time from Strava and enter it in the TrainPace pace or VDOT calculator to get Easy, Tempo, Threshold, and Interval paces.',
+      },
+    ],
+  },
 ];
 
 // =============================================================================
