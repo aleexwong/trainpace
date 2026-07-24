@@ -67,6 +67,13 @@ export default function GpxUploader({
   const [duplicateFound, setDuplicateFound] = useState<DuplicateFile | null>(
     null
   );
+  // Holds the already validated + hashed file while the duplicate warning is
+  // shown, so "Upload Anyway" can resume without re-reading/re-hashing.
+  const [pendingUpload, setPendingUpload] = useState<{
+    file: File;
+    content: string;
+    fileHash: string;
+  } | null>(null);
   const { user } = useAuth(); // Get current user
 
   // Rate limiting state
@@ -313,7 +320,7 @@ export default function GpxUploader({
   };
 
   // Handle duplicate file action
-  const handleDuplicateAction = (action: "use" | "cancel") => {
+  const handleDuplicateAction = (action: "upload" | "use" | "cancel") => {
     if (action === "use" && duplicateFound) {
       // Use the existing file
       toast({
@@ -324,9 +331,20 @@ export default function GpxUploader({
 
       // Fetch the content from the existing file
       fetchExistingFileContent(duplicateFound.fileUrl);
+    } else if (action === "upload" && pendingUpload) {
+      // User chose to keep the duplicate — upload a fresh copy anyway.
+      toast({
+        title: "Uploading Duplicate",
+        description: "Saving a new copy of this file.",
+        variant: "default",
+      });
+
+      const { file, content, fileHash } = pendingUpload;
+      proceedWithUpload(file, content, fileHash);
     }
 
     setDuplicateFound(null);
+    setPendingUpload(null);
   };
 
   // Fetch existing file content using multiple fallback methods
@@ -422,6 +440,50 @@ export default function GpxUploader({
     }
   };
 
+  // Upload a validated + hashed file to Firebase and notify the parent.
+  // Shared by the normal upload path and the "Upload Anyway" duplicate path.
+  const proceedWithUpload = async (
+    file: File,
+    content: string,
+    fileHash: string
+  ) => {
+    setIsUploading(true);
+    setUploadProgress(60);
+
+    try {
+      const { fileUrl, displayPoints, docId, displayUrl } =
+        await uploadToFirebase(file, content, fileHash);
+      setUploadProgress(85);
+
+      // Update rate limit counters
+      await checkRateLimits();
+      setUploadProgress(100);
+
+      // 🚀 NEW: Pass docId to enable immediate caching + the pretty displayUrl
+      onFileParsed(content, file.name, fileUrl, docId, displayPoints, displayUrl);
+
+      toast({
+        title: "Upload Successful",
+        description:
+          "Your GPX file has been uploaded and is ready for analysis.",
+        variant: "default",
+      });
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast({
+        title: "Upload Failed",
+        description:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(0);
+    }
+  };
+
   // Main file handler
   const handleFile = async (file: File) => {
     if (!user) {
@@ -478,35 +540,19 @@ export default function GpxUploader({
       const fileHash = await generateFileHash(content);
       setUploadProgress(45);
 
-      // Check for duplicates
+      // Check for duplicates — warn the user, but don't block. Stash the
+      // already validated + hashed file so "Upload Anyway" can resume instantly.
       const duplicate = await checkForDuplicate(fileHash);
       if (duplicate) {
+        setPendingUpload({ file, content, fileHash });
         setDuplicateFound(duplicate);
         setIsUploading(false);
         setUploadProgress(0);
         return;
       }
 
-      setUploadProgress(60);
-
       // Upload to Firebase
-      const { fileUrl, displayPoints, docId, displayUrl } =
-        await uploadToFirebase(file, content, fileHash);
-      setUploadProgress(85);
-
-      // Update rate limit counters
-      await checkRateLimits();
-      setUploadProgress(100);
-
-      // 🚀 NEW: Pass docId to enable immediate caching + the pretty displayUrl
-      onFileParsed(content, file.name, fileUrl, docId, displayPoints, displayUrl);
-
-      toast({
-        title: "Upload Successful",
-        description:
-          "Your GPX file has been uploaded and is ready for analysis.",
-        variant: "default",
-      });
+      await proceedWithUpload(file, content, fileHash);
     } catch (error) {
       console.error("Upload error:", error);
       toast({
@@ -517,7 +563,6 @@ export default function GpxUploader({
             : "An unexpected error occurred.",
         variant: "destructive",
       });
-    } finally {
       setIsUploading(false);
       setUploadProgress(0);
     }
@@ -561,7 +606,8 @@ export default function GpxUploader({
 
             <p className="text-gray-600 mb-4">
               You've already uploaded this file:{" "}
-              <strong>{duplicateFound.filename}</strong>
+              <strong>{duplicateFound.filename}</strong>. You can open your
+              existing copy, or upload it again as a new route.
             </p>
 
             <div className="text-sm text-gray-500 mb-6">
@@ -570,16 +616,22 @@ export default function GpxUploader({
                 "Recently"}
             </div>
 
-            <div className="flex space-x-3">
+            <div className="flex flex-col space-y-2">
               <button
                 onClick={() => handleDuplicateAction("use")}
-                className="flex-1 bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-colors"
+                className="w-full bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 transition-colors"
               >
                 Use Existing File
               </button>
               <button
+                onClick={() => handleDuplicateAction("upload")}
+                className="w-full bg-white text-emerald-600 border border-emerald-500 px-4 py-2 rounded-lg hover:bg-emerald-50 transition-colors"
+              >
+                Upload Anyway
+              </button>
+              <button
                 onClick={() => handleDuplicateAction("cancel")}
-                className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                className="w-full bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors"
               >
                 Cancel
               </button>

@@ -21,6 +21,7 @@ import { MetricTiles } from "./MetricTiles";
 import { SplitsTable } from "./SplitsTable";
 import { CumulativeGainChart } from "./CumulativeGainChart";
 import { TerrainBreakdown } from "./TerrainBreakdown";
+import { RaceComparison } from "./RaceComparison";
 import { SettingsPanel } from "./SettingsPanel";
 
 interface DisplayPoint {
@@ -177,6 +178,8 @@ export function RouteDashboard({
           )}
         </div>
       )}
+
+      {insights && <RaceComparison insights={insights} />}
 
       <SettingsPanel
         basePace={basePace}

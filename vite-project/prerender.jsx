@@ -3,10 +3,130 @@ import { renderToString } from "react-dom/server";
 
 import {
   calculatorSeoPages,
+  comparisonLinks,
   elevationGuideSeoPages,
   fuelSeoPages,
   raceSeoPages,
 } from "./src/features/seo-pages/seoPages";
+import blogData from "./src/data/blog-posts.json";
+import { stripLeadingH1 } from "./src/features/blog/utils";
+
+// Blog posts keyed by their public URL, for prerendered SEO content.
+const blogPostsByUrl = Object.fromEntries(
+  blogData.posts.map((p) => [`/blog/${p.slug}`, p])
+);
+
+const BLOG_LIST_TITLE =
+  "Running Blog - Training Tips, Race Strategy & Nutrition | TrainPace";
+const BLOG_LIST_DESCRIPTION =
+  "Expert running advice for marathoners and distance runners. Training tips, race strategy guides, nutrition planning, and more from TrainPace.";
+
+// Strip inline markdown (bold/italic/code/links) down to readable text. The static
+// HTML only needs crawlable prose — the live app renders the rich version.
+function stripInlineMarkdown(text) {
+  // All patterns use negated character classes (no nested/backref quantifiers)
+  // so they run in linear time — no catastrophic backtracking on odd input.
+  return text
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1") // images -> alt
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1") // links -> text
+    .replace(/`([^`]+)`/g, "$1") // inline code
+    .replace(/\*\*([^*]+)\*\*/g, "$1") // bold **
+    .replace(/__([^_]+)__/g, "$1") // bold __
+    .replace(/\*([^*]+)\*/g, "$1") // italic *
+    .replace(/_([^_]+)_/g, "$1") // italic _
+    .trim();
+}
+
+// Convert a markdown string into a flat list of React block elements. Handles the
+// subset used by the blog: headings, lists, blockquotes, tables, and paragraphs.
+function markdownToReactBlocks(markdown) {
+  const lines = markdown.split("\n");
+  const blocks = [];
+  let key = 0;
+  let paragraph = [];
+  let list = null; // { ordered, items: [] }
+
+  const flushParagraph = () => {
+    if (paragraph.length) {
+      blocks.push(
+        React.createElement("p", { key: key++ }, stripInlineMarkdown(paragraph.join(" ")))
+      );
+      paragraph = [];
+    }
+  };
+  const flushList = () => {
+    if (list) {
+      blocks.push(
+        React.createElement(
+          list.ordered ? "ol" : "ul",
+          { key: key++ },
+          list.items.map((it, i) =>
+            React.createElement("li", { key: i }, stripInlineMarkdown(it))
+          )
+        )
+      );
+      list = null;
+    }
+  };
+
+  for (const raw of lines) {
+    const line = raw.trimEnd();
+    const trimmed = line.trim();
+
+    if (trimmed === "") {
+      flushParagraph();
+      flushList();
+      continue;
+    }
+    // Skip table rows / separators — not worth rendering for SEO text
+    if (/^\|.*\|$/.test(trimmed)) {
+      flushParagraph();
+      flushList();
+      continue;
+    }
+    const heading = /^(#{1,6})\s+(.*)$/.exec(trimmed);
+    if (heading) {
+      flushParagraph();
+      flushList();
+      const level = Math.min(heading[1].length, 3);
+      const tag = level <= 1 ? "h2" : `h${level}`;
+      blocks.push(
+        React.createElement(tag, { key: key++ }, stripInlineMarkdown(heading[2]))
+      );
+      continue;
+    }
+    const ordered = /^\d+\.\s+(.*)$/.exec(trimmed);
+    const unordered = /^[-*]\s+(.*)$/.exec(trimmed);
+    if (ordered || unordered) {
+      flushParagraph();
+      const item = (ordered ? ordered[1] : unordered[1]);
+      const isOrdered = !!ordered;
+      if (!list || list.ordered !== isOrdered) {
+        flushList();
+        list = { ordered: isOrdered, items: [] };
+      }
+      list.items.push(item);
+      continue;
+    }
+    if (/^>\s?/.test(trimmed)) {
+      flushParagraph();
+      flushList();
+      blocks.push(
+        React.createElement(
+          "blockquote",
+          { key: key++ },
+          stripInlineMarkdown(trimmed.replace(/^>\s?/, ""))
+        )
+      );
+      continue;
+    }
+    flushList();
+    paragraph.push(trimmed);
+  }
+  flushParagraph();
+  flushList();
+  return blocks;
+}
 
 // Marathon-specific SEO data (defined first so all functions can use it)
 const marathonSeoData = {
@@ -177,6 +297,10 @@ function getPageTitle(url) {
   const seoMeta = getSeoMeta(url);
   if (seoMeta?.title) return seoMeta.title;
 
+  if (url === "/blog") return BLOG_LIST_TITLE;
+  const blogPost = blogPostsByUrl[url];
+  if (blogPost) return `${blogPost.title} | TrainPace Blog`;
+
   switch (url) {
     case "/":
       return "TrainPace – Free Running Pace Calculator & Race Day Tools";
@@ -188,6 +312,8 @@ function getPageTitle(url) {
       return "GPX Elevation Profile Viewer – Free Route Analysis & Climb Stats | TrainPace";
     case "/race":
       return "Race Prep Pages – Pacing, Fueling, Elevation Strategy | TrainPace";
+    case "/mcp":
+      return "MCP Server - TrainPace Tools for AI Agents";
     default:
       if (url.includes("/preview-route/")) {
         const slug = url.split("/").pop();
@@ -206,6 +332,10 @@ function getPageDescription(url) {
   const seoMeta = getSeoMeta(url);
   if (seoMeta?.description) return seoMeta.description;
 
+  if (url === "/blog") return BLOG_LIST_DESCRIPTION;
+  const blogPost = blogPostsByUrl[url];
+  if (blogPost) return blogPost.excerpt;
+
   switch (url) {
     case "/":
       return "Free running calculator for training paces, race fueling, and GPX elevation analysis. Get VDOT-based pace zones, plan how many gels to carry, and preview marathon course profiles.";
@@ -217,6 +347,8 @@ function getPageDescription(url) {
       return "Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty on an interactive map. Analyze marathon courses before race day.";
     case "/race":
       return "Race prep pages for popular running events. Use TrainPace to plan pacing, fueling, and course strategy with free calculators and GPX elevation analysis.";
+    case "/mcp":
+      return "Connect any AI assistant to TrainPace's free public MCP server: training paces, VDOT, race plans, fueling strategy, and GPX route analysis as agent tools.";
     default:
       if (url.includes("/preview-route/")) {
         const slug = url.split("/").pop();
@@ -231,8 +363,73 @@ function getPageDescription(url) {
   }
 }
 
+// Paths of the competitor-comparison pages, for static internal linking.
+const comparisonPaths = new Set(comparisonLinks.map((c) => c.path));
+
+// A crawlable list of comparison-page links, excluding the current path.
+function comparisonNav(currentPath) {
+  const others = comparisonLinks.filter((c) => c.path !== currentPath);
+  if (!others.length) return null;
+  return React.createElement(
+    "nav",
+    { "aria-label": "Compare TrainPace with other apps" },
+    React.createElement("h2", null, "Compare TrainPace with other apps"),
+    React.createElement(
+      "ul",
+      null,
+      others.map((c) =>
+        React.createElement(
+          "li",
+          { key: c.path },
+          React.createElement("a", { href: c.path }, c.label)
+        )
+      )
+    )
+  );
+}
+
 // Helper function to get page content for prerendering
 function getPageContent(url) {
+  // Blog list: heading + description + a crawlable list of every post.
+  if (url === "/blog") {
+    return React.createElement(
+      "div",
+      null,
+      React.createElement("h1", null, "Run Smarter, Race Better"),
+      React.createElement("p", null, BLOG_LIST_DESCRIPTION),
+      React.createElement(
+        "ul",
+        null,
+        blogData.posts.map((p) =>
+          React.createElement(
+            "li",
+            { key: p.slug },
+            React.createElement("a", { href: `/blog/${p.slug}` }, p.title),
+            " — ",
+            p.excerpt
+          )
+        )
+      )
+    );
+  }
+
+  // Blog post: full article body (leading H1 stripped — the header owns the H1).
+  const blogPost = blogPostsByUrl[url];
+  if (blogPost) {
+    return React.createElement(
+      "article",
+      null,
+      React.createElement("h1", null, blogPost.title),
+      React.createElement("p", null, blogPost.excerpt),
+      React.createElement(
+        "p",
+        null,
+        `By ${blogPost.author?.name || "TrainPace"} · ${blogPost.readingTime} min read`
+      ),
+      ...markdownToReactBlocks(stripLeadingH1(blogPost.content))
+    );
+  }
+
   const seoMeta = getSeoMeta(url);
   if (seoMeta) {
     return React.createElement(
@@ -244,7 +441,8 @@ function getPageContent(url) {
         "p",
         null,
         "Open the tool to calculate personalized paces, fueling, or elevation insights."
-      )
+      ),
+      comparisonPaths.has(url) ? comparisonNav(url) : null
     );
   }
 
@@ -258,7 +456,8 @@ function getPageContent(url) {
           "p",
           null,
           "Free running calculator for training paces, race fueling, and GPX elevation analysis. Get VDOT-based pace zones, plan how many gels to carry, and preview marathon course profiles."
-        )
+        ),
+        comparisonNav(null)
       );
     case "/calculator":
       return React.createElement(
@@ -302,6 +501,72 @@ function getPageContent(url) {
           "p",
           null,
           "Browse race-specific prep pages for pacing, fueling, and course strategy."
+        )
+      );
+    case "/mcp":
+      return React.createElement(
+        "div",
+        null,
+        React.createElement("h1", null, "Use TrainPace from Your AI Assistant"),
+        React.createElement(
+          "p",
+          null,
+          "TrainPace runs a free, public Model Context Protocol (MCP) server at https://api.trainpace.com/api/mcp — Streamable HTTP, no account or API key required. Connect Claude, ChatGPT, or any MCP client and ask training questions in plain English; the agent calls the same math that powers this site."
+        ),
+        React.createElement("h2", null, "Available Tools"),
+        React.createElement(
+          "ul",
+          null,
+          React.createElement(
+            "li",
+            null,
+            "calculate_training_paces — training paces (easy, tempo, interval, speed, long run, Yasso 800s) from a recent race result, plus heart-rate zones and hot-weather adjustments."
+          ),
+          React.createElement(
+            "li",
+            null,
+            "calculate_vdot — VDOT fitness score (Daniels & Gilbert formula) with training zones and equivalent race-time predictions for 5K through marathon."
+          ),
+          React.createElement(
+            "li",
+            null,
+            "generate_training_plan — a periodized week-by-week plan for 5K to marathon, sized to fitness level and available run days."
+          ),
+          React.createElement(
+            "li",
+            null,
+            "calculate_fuel_plan — carbs per hour, total gels, and a fuel-stop timeline for a 10K, half, or full marathon."
+          ),
+          React.createElement(
+            "li",
+            null,
+            "analyze_route — GPX route analysis: distance, elevation gain, climbs, split-by-split grade-adjusted pacing, and weather impact."
+          )
+        ),
+        React.createElement("h2", null, "How to Connect"),
+        React.createElement(
+          "ul",
+          null,
+          React.createElement(
+            "li",
+            null,
+            "Claude.ai / Claude Desktop: Settings → Connectors → Add custom connector. Name it trainpace and paste the server URL — no login step."
+          ),
+          React.createElement(
+            "li",
+            null,
+            "Claude Code: claude mcp add --transport http trainpace https://api.trainpace.com/api/mcp"
+          ),
+          React.createElement(
+            "li",
+            null,
+            "Cursor, Windsurf, and other MCP clients: add the server URL to your client's MCP config file as an HTTP server named trainpace."
+          ),
+          React.createElement(
+            "li",
+            null,
+            "Any other agent: paste the agent briefing from this page as your first message — it describes the server URL and every tool so the agent can connect or defer correctly."
+          )
         )
       );
     default:
@@ -352,6 +617,83 @@ function getPageContent(url) {
 
 // Helper function to get structured data
 function getStructuredData(url) {
+  if (url === "/blog") {
+    return {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      name: "TrainPace Blog",
+      description: BLOG_LIST_DESCRIPTION,
+      url: "https://trainpace.com/blog",
+      publisher: {
+        "@type": "Organization",
+        name: "TrainPace",
+        url: "https://trainpace.com",
+      },
+      blogPost: blogData.posts.slice(0, 10).map((p) => ({
+        "@type": "BlogPosting",
+        headline: p.title,
+        description: p.excerpt,
+        datePublished: p.date,
+        url: `https://trainpace.com/blog/${p.slug}`,
+        author: { "@type": "Person", name: p.author?.name || "TrainPace" },
+      })),
+    };
+  }
+
+  const blogPost = blogPostsByUrl[url];
+  if (blogPost) {
+    return {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "BlogPosting",
+          headline: blogPost.title,
+          description: blogPost.excerpt,
+          ...(blogPost.coverImage ? { image: blogPost.coverImage } : {}),
+          datePublished: blogPost.date,
+          dateModified: blogPost.date,
+          author: {
+            "@type": "Person",
+            name: blogPost.author?.name || "TrainPace",
+          },
+          publisher: {
+            "@type": "Organization",
+            name: "TrainPace",
+            url: "https://trainpace.com",
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://trainpace.com${url}`,
+          },
+          keywords: (blogPost.tags || []).join(", "),
+        },
+        {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "TrainPace",
+              item: "https://trainpace.com/",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Blog",
+              item: "https://trainpace.com/blog",
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: blogPost.title,
+              item: `https://trainpace.com${url}`,
+            },
+          ],
+        },
+      ],
+    };
+  }
+
   const seoMeta = getSeoMeta(url);
   if (seoMeta) {
     const breadcrumb = getBreadcrumbForUrl(url, seoMeta.title);
@@ -415,6 +757,14 @@ export async function prerender(data) {
       React.createElement("div", null, getPageContent(data.url))
     );
 
+    // Blog posts are articles, not the site app — reflect that in OG tags.
+    const blogPost = blogPostsByUrl[data.url];
+    const ogType = blogPost ? "article" : "website";
+    const ogImage =
+      blogPost && blogPost.coverImage
+        ? `https://trainpace.com${blogPost.coverImage}`
+        : "https://trainpace.com/landing-page-2025.png";
+
     return {
       html,
       head: {
@@ -453,7 +803,7 @@ export async function prerender(data) {
             type: "meta",
             props: {
               property: "og:image",
-              content: "https://trainpace.com/landing-page-2025.png",
+              content: ogImage,
             },
           },
           {
@@ -467,7 +817,7 @@ export async function prerender(data) {
             type: "meta",
             props: {
               property: "og:type",
-              content: "website",
+              content: ogType,
             },
           },
           // Twitter Card tags
@@ -496,7 +846,7 @@ export async function prerender(data) {
             type: "meta",
             props: {
               name: "twitter:image",
-              content: "https://trainpace.com/landing-page-2025.png",
+              content: ogImage,
             },
           },
           // Canonical URL

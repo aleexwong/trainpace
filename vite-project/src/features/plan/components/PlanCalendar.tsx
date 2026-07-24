@@ -1,32 +1,45 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { TrainingPlan } from "../types";
-import { WeekCard } from "./WeekCard";
+import { PlanCalendarGrid } from "./PlanCalendarGrid";
+import type { PlanProgress } from "../hooks/usePlanProgress";
+import type { PlanEditor } from "../hooks/usePlanEditor";
 import { exportPlanAsIcal } from "../utils/exportIcal";
+import { currentWeekNumber } from "../utils/planSchedule";
 
 interface Props {
   plan: TrainingPlan;
   onSave?: () => void;
   saving?: boolean;
   savedId?: string | null;
+  /** Omit for exact current read-only rendering (dashboard back-compat). */
+  progress?: PlanProgress;
+  /** Omit for a read-only calendar; present = workouts drag-reschedule. */
+  editor?: PlanEditor;
+  /**
+   * Whether this calendar is the currently-visible segment. When it first
+   * turns true, the current week's row is scrolled into view — once per
+   * mount, not on every toggle back to this segment.
+   */
+  isActive?: boolean;
 }
 
-function currentWeekIndex(plan: TrainingPlan): number | null {
-  if (!plan.raceDate) return null;
-  const now = Date.now();
-  const raceMs = new Date(plan.raceDate).getTime();
-  if (now > raceMs) return null; // race is in the past
-
-  const msPerWeek = 7 * 24 * 60 * 60 * 1000;
-  const weeksUntilRace = Math.ceil((raceMs - now) / msPerWeek);
-  // Week index from end: plan.totalWeeks - weeksUntilRace
-  const idx = plan.totalWeeks - weeksUntilRace;
-  if (idx < 0 || idx >= plan.totalWeeks) return null;
-  return idx;
-}
-
-export function PlanCalendar({ plan, onSave, saving, savedId }: Props) {
-  const currentIdx = currentWeekIndex(plan);
+export function PlanCalendar({ plan, onSave, saving, savedId, progress, editor, isActive }: Props) {
+  const currentWeekNum = currentWeekNumber(plan);
   const [exported, setExported] = useState(false);
+  const currentWeekRef = useRef<HTMLDivElement>(null);
+  const hasScrolledRef = useRef(false);
+
+  useEffect(() => {
+    if (!isActive || hasScrolledRef.current || currentWeekNum === null) return;
+    hasScrolledRef.current = true;
+    const node = currentWeekRef.current;
+    if (!node) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Wait a tick so layout (e.g. the segment just becoming visible) settles first.
+    requestAnimationFrame(() => {
+      node.scrollIntoView({ block: "center", behavior: reduceMotion ? "auto" : "smooth" });
+    });
+  }, [isActive, currentWeekNum]);
 
   function handleExport() {
     exportPlanAsIcal(plan);
@@ -69,21 +82,28 @@ export function PlanCalendar({ plan, onSave, saving, savedId }: Props) {
         </div>
       </div>
 
-      {currentIdx !== null && (
+      {currentWeekNum !== null && (
         <div className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-2.5 text-sm text-emerald-800 font-medium">
-          📍 You are on <strong>Week {currentIdx + 1}</strong> — {plan.weeks[currentIdx]?.phase}
+          📍 You are on <strong>Week {currentWeekNum}</strong> —{" "}
+          {plan.weeks.find((w) => w.weekNumber === currentWeekNum)?.phase}
         </div>
       )}
 
-      <div className="space-y-3">
-        {plan.weeks.map((week, i) => (
-          <WeekCard
-            key={week.weekNumber}
-            week={week}
-            isCurrent={i === currentIdx}
-          />
-        ))}
-      </div>
+      {editor && (
+        <p className="text-xs text-slate-400 px-1">
+          Life happens — drag a workout onto another day to reschedule it. Drop
+          on an occupied day to swap the two. On touch, press and hold to pick
+          one up.
+        </p>
+      )}
+
+      <PlanCalendarGrid
+        plan={plan}
+        currentWeekNum={currentWeekNum}
+        progress={progress}
+        editor={editor}
+        currentWeekRef={currentWeekRef}
+      />
     </div>
   );
 }

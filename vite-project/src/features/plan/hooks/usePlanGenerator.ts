@@ -1,9 +1,16 @@
 import { useState, useCallback } from "react";
 import { generateTrainingPlan, weeksUntilRace } from "../plan-math";
 import type { PlanGeneratorInputs, TrainingPlan } from "../types";
+import {
+  loadDraftPlan,
+  saveDraftPlan,
+  clearDraftPlan,
+  saveDraftInputs,
+  clearPendingSave,
+} from "../utils/planPersistence";
 
 export function usePlanGenerator() {
-  const [plan, setPlan] = useState<TrainingPlan | null>(null);
+  const [plan, setPlan] = useState<TrainingPlan | null>(() => loadDraftPlan());
   const [error, setError] = useState<string | null>(null);
 
   const generate = useCallback((inputs: PlanGeneratorInputs) => {
@@ -28,15 +35,28 @@ export function usePlanGenerator() {
     try {
       const generated = generateTrainingPlan(inputs);
       setPlan(generated);
+      saveDraftPlan(generated);
+      saveDraftInputs(inputs);
     } catch (_e) {
       setError("Failed to generate plan. Please check your inputs.");
     }
   }, []);
 
+  // Replace the in-memory plan after a schedule edit (drag-reschedule).
+  // Persistence is the editor's responsibility (localStorage draft for
+  // unsaved plans, Firestore for saved ones) — this only swaps state.
+  const updatePlan = useCallback((next: TrainingPlan) => {
+    setPlan(next);
+  }, []);
+
   const reset = useCallback(() => {
     setPlan(null);
     setError(null);
+    // Keep the persisted inputs so the form stays prefilled; only the
+    // generated plan (and any stale sign-in handoff) is discarded.
+    clearDraftPlan();
+    clearPendingSave();
   }, []);
 
-  return { plan, error, generate, reset };
+  return { plan, error, generate, updatePlan, reset };
 }

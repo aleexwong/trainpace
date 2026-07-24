@@ -10,16 +10,20 @@ import {
   Check,
   ShieldCheck,
   ArrowRight,
+  Bot,
 } from "lucide-react";
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { comparisonLinks } from "@/features/seo-pages/seoPages";
 import {
   PaceLadderShot,
   VdotDialShot,
   ElevationShot,
   FuelStationsShot,
+  AgentChatShot,
+  TrainingPlanShot,
 } from "@/components/feature-shots";
 
 // Animated, interactive product shots keyed by the FeatureSection badge.
@@ -28,6 +32,7 @@ const FEATURE_SHOTS: Record<string, () => JSX.Element> = {
   "VDOT Calculator": VdotDialShot,
   "Elevation Finder": ElevationShot,
   "Fuel Planner": FuelStationsShot,
+  "Training Plan Generator": TrainingPlanShot,
 };
 
 // --- Components ---
@@ -665,6 +670,24 @@ const Comparison = () => {
             </tbody>
           </table>
         </div>
+        {comparisonLinks.length > 0 && (
+          <div className="mt-8 text-center">
+            <p className="text-sm font-medium text-slate-500 mb-3">
+              See how TrainPace compares to the apps you know:
+            </p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {comparisonLinks.map((c) => (
+                <Link
+                  key={c.slug}
+                  to={c.path}
+                  className="rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors"
+                >
+                  {c.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -713,6 +736,51 @@ const FAQ = () => {
               <p className="mt-4 text-slate-600 leading-relaxed">{faq.a}</p>
             </details>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const AiAgentSection = () => {
+  const navigate = useNavigate();
+
+  return (
+    <section className="py-20 lg:py-28 bg-slate-50 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 bg-emerald-100 rounded-lg text-emerald-700">
+                <Bot size={24} />
+              </div>
+              <span className="font-bold text-emerald-600 tracking-wide uppercase text-sm">
+                Works with Claude & ChatGPT
+              </span>
+            </div>
+
+            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
+              Just Ask Your Chatbot
+            </h2>
+            <p className="text-lg text-slate-600 mb-8">
+              TrainPace is a public MCP server. Connect it once and your
+              chatbot answers pace, plan, and fueling questions with our
+              actual formulas instead of made-up numbers.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+              <Button variant="primary" onClick={() => navigate("/mcp")}>
+                Set It Up in a Minute
+              </Button>
+              <code className="text-sm text-slate-400 font-mono">
+                api.trainpace.com/api/mcp
+              </code>
+            </div>
+          </div>
+
+          <div className="flex-1 w-full min-w-0">
+            <AgentChatShot />
+          </div>
         </div>
       </div>
     </section>
@@ -882,6 +950,7 @@ export default function LandingPage() {
       />
 
       <FounderStory />
+      <AiAgentSection />
       <Comparison />
 
       {/* Use Cases Grid */}

@@ -510,3 +510,294 @@ export function FuelStationsShot() {
     </div>
   );
 }
+
+/* ═══════════════════════════════════════════════════════════
+   05 · AGENT CHAT  (scripted MCP conversation, replayable)
+   ═══════════════════════════════════════════════════════════ */
+
+// Cumulative reveal times (ms) for phases 1..N of the conversation.
+const AC_TIMELINE = [200, 900, 1700, 2700, 4400, 5100, 5900, 6900];
+
+const AC_ZONES = [
+  // Real calculate_training_paces output for a 48:30 10K
+  { name: "Easy", pace: "5:49–6:18", w: "58%", z: "var(--z1)" },
+  { name: "Tempo", pace: "4:36–5:05", w: "76%", z: "var(--z3)" },
+  { name: "Interval", pace: "4:21–4:51", w: "90%", z: "var(--z5)" },
+];
+
+const AcCheck = () => (
+  <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M20 6L9 17l-5-5" />
+  </svg>
+);
+
+function AcToolChip({ tool, done }: { tool: string; done: boolean }) {
+  return (
+    <div className="ac-chip">
+      {done ? (
+        <span className="ac-ok"><AcCheck /></span>
+      ) : (
+        <span className="ac-spin" />
+      )}
+      <span>{tool}</span>
+    </div>
+  );
+}
+
+export function AgentChatShot() {
+  const { ref, inView } = useInView<HTMLDivElement>(0.35);
+  const [phase, setPhase] = useState(0);
+  const timers = useRef<number[]>([]);
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  const play = useCallback(() => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setPhase(AC_TIMELINE.length);
+      return;
+    }
+    setPhase(0);
+    AC_TIMELINE.forEach((t, i) => {
+      timers.current.push(window.setTimeout(() => setPhase(i + 1), t));
+    });
+  }, []);
+
+  useEffect(() => {
+    if (inView) play();
+    const pending = timers.current;
+    return () => pending.forEach(clearTimeout);
+  }, [inView, play]);
+
+  // Keep the newest message in view as the script advances.
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+  }, [phase]);
+
+  const typing = phase === 2 || phase === 6;
+  const done = phase >= AC_TIMELINE.length;
+
+  return (
+    <div className="tpfs">
+      <div className="stage">
+        <div ref={ref} className={`shot ac${inView ? " in" : ""}`}>
+          <div className="ac-head">
+            <span className="ac-dot" />
+            <span className="ac-dot" />
+            <span className="ac-dot" />
+            <span className="ac-title">Your chatbot</span>
+            {done && (
+              <button className="ac-replay" onClick={play} aria-label="Replay conversation">
+                ↺ replay
+              </button>
+            )}
+            <span className="ac-status">trainpace</span>
+          </div>
+
+          <div className="ac-body" ref={bodyRef} aria-live="polite">
+            {phase >= 1 && (
+              <div className="ac-msg ac-user">
+                What easy pace should I run? My last 10K was 48:30.
+              </div>
+            )}
+
+            {phase >= 3 && (
+              <AcToolChip tool="calculate_training_paces" done={phase >= 4} />
+            )}
+
+            {phase >= 4 && (
+              <div className="ac-msg ac-bot">
+                From your 48:30 10K, your zones are:
+                <div className="ac-zones">
+                  {AC_ZONES.map((zone, i) => (
+                    <div key={zone.name} className="ac-zrow">
+                      <span className="n">{zone.name}</span>
+                      <span className="bar">
+                        <i style={sv({ "--w": zone.w, "--d": `${i * 140}ms`, background: zone.z })} />
+                      </span>
+                      <span className="v">{zone.pace} /km</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {phase >= 5 && (
+              <div className="ac-msg ac-user">
+                Nice. How many gels for a 3:45 marathon? I'm 70 kg.
+              </div>
+            )}
+
+            {phase >= 7 && (
+              <AcToolChip tool="calculate_fuel_plan" done={phase >= 8} />
+            )}
+
+            {phase >= 8 && (
+              <div className="ac-msg ac-bot">
+                You'll need about 281 g of carbs total:
+                <div className="ac-stats">
+                  <span className="ac-stat"><b>6</b>gels</span>
+                  <span className="ac-stat"><b>75 g</b>carbs / hr</span>
+                  <span className="ac-stat"><b>0:15</b>first gel</span>
+                </div>
+                Fuel every 17–30 minutes, front-loaded while your stomach is
+                fresh.
+              </div>
+            )}
+
+            {typing && (
+              <div className="ac-typing">
+                <i />
+                <i />
+                <i />
+              </div>
+            )}
+          </div>
+
+          <div className="ac-input">
+            <span>Ask about paces, plans, fuel, routes…</span>
+            <span className="ac-caret" />
+            <span className="ac-send">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 19V5M5 12l7-7 7 7" />
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   06 · TRAINING PLAN  (periodization bar + week strip)
+   ═══════════════════════════════════════════════════════════ */
+const TP_PHASES = [
+  { name: "Base", weeks: "Wk 1–5", span: 5, z: "var(--z1)" },
+  { name: "Development", weeks: "Wk 6–10", span: 5, z: "var(--z2)" },
+  { name: "Sharpening", weeks: "Wk 11–14", span: 4, z: "var(--z4)" },
+  { name: "Taper", weeks: "Wk 15–16", span: 2, z: "var(--z5)" },
+];
+
+type TpIntensity = "easy" | "long" | "quality" | "rest";
+
+const TP_INTENSITY_COLOR: Record<TpIntensity, string> = {
+  easy: "var(--z1)",
+  long: "var(--z2)",
+  quality: "var(--z4)",
+  rest: "var(--ink-4)",
+};
+
+const TP_DAYS: {
+  day: string;
+  type: string;
+  detail: string;
+  intensity: TpIntensity;
+}[] = [
+  { day: "Mon", type: "Easy", detail: "5 mi · 8:42/mi", intensity: "easy" },
+  {
+    day: "Tue",
+    type: "Intervals",
+    detail: "6×800 · 6:21/mi",
+    intensity: "quality",
+  },
+  { day: "Wed", type: "Rest", detail: "Recovery day", intensity: "rest" },
+  {
+    day: "Thu",
+    type: "Tempo",
+    detail: "4 mi · 7:08/mi",
+    intensity: "quality",
+  },
+  { day: "Fri", type: "Rest", detail: "Recovery day", intensity: "rest" },
+  {
+    day: "Sat",
+    type: "Long run",
+    detail: "10 mi · 8:55/mi",
+    intensity: "long",
+  },
+  { day: "Sun", type: "Recovery", detail: "3 mi easy", intensity: "easy" },
+];
+
+export function TrainingPlanShot() {
+  const { ref, inView } = useInView<HTMLDivElement>();
+  return (
+    <div className="tpfs">
+      <div className="stage">
+        <div className="pad">
+          <div ref={ref} className={`shot${inView ? " in" : ""}`}>
+            <div className="tp-head reveal" style={sv({ "--i": 0 })}>
+              <div className="tp-title">
+                16-week <span className="race">Half Marathon</span> plan
+              </div>
+              <span className="tp-pill">Week 6 · Development</span>
+            </div>
+
+            <div className="tp-phasebar reveal" style={sv({ "--i": 1 })}>
+              <div
+                className="tp-phasebar-track"
+                style={sv({
+                  gridTemplateColumns: TP_PHASES.map(
+                    (p) => `${p.span}fr`
+                  ).join(" "),
+                })}
+              >
+                {TP_PHASES.map((p, i) => (
+                  <div key={p.name} className="tp-phase-col">
+                    <div
+                      className="tp-phase-track"
+                      style={sv({ "--d": i })}
+                      tabIndex={0}
+                    >
+                      <div
+                        className="tp-phase-fill"
+                        style={sv({ background: p.z })}
+                      />
+                    </div>
+                    <div className="tp-phase-meta">
+                      <span className="name">{p.name}</span>
+                      <span className="wk">{p.weeks}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="tp-week">
+              {TP_DAYS.map((d, i) => (
+                <div
+                  key={d.day}
+                  className={`tp-day reveal${
+                    d.intensity === "rest" ? " rest" : ""
+                  }`}
+                  style={sv({
+                    "--i": i + 2,
+                    "--base": "150ms",
+                    borderLeftColor: TP_INTENSITY_COLOR[d.intensity],
+                  })}
+                >
+                  <div className="tp-day-top">
+                    <span className="dow">{d.day}</span>
+                    <span
+                      className="dot"
+                      style={{ background: TP_INTENSITY_COLOR[d.intensity] }}
+                    />
+                  </div>
+                  <div className="tp-day-type">{d.type}</div>
+                  <div className="tp-day-detail">{d.detail}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="tp-foot reveal" style={sv({ "--i": 10 })}>
+              Every session paced to your fitness · Export to Google or Apple
+              Calendar
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

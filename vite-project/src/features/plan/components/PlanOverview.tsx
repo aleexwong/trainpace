@@ -1,167 +1,108 @@
-import type { TrainingPlan, TrainingPhase, TrainingWeek } from "../types";
-import { phaseColor } from "../plan-math";
-
-function VolumeChart({ weeks }: { weeks: TrainingWeek[] }) {
-  const maxKm = Math.max(...weeks.map((w) => w.totalKm));
-  const chartH = 80;
-  const barW = Math.max(4, Math.floor(540 / weeks.length) - 2);
-
-  return (
-    <div>
-      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
-        Weekly Volume
-      </div>
-      <div className="overflow-x-auto">
-        <svg
-          width={weeks.length * (barW + 2)}
-          height={chartH + 24}
-          className="block"
-        >
-          {weeks.map((w, i) => {
-            const barH = Math.round((w.totalKm / maxKm) * chartH);
-            const x = i * (barW + 2);
-            const y = chartH - barH;
-            const color = phaseColor(w.phase);
-            return (
-              <g key={w.weekNumber}>
-                <rect
-                  x={x}
-                  y={y}
-                  width={barW}
-                  height={barH}
-                  rx={2}
-                  fill={color}
-                />
-                {weeks.length <= 20 && (
-                  <text
-                    x={x + barW / 2}
-                    y={chartH + 14}
-                    textAnchor="middle"
-                    fontSize={9}
-                    fill="#94a3b8"
-                  >
-                    {w.weekNumber}
-                  </text>
-                )}
-              </g>
-            );
-          })}
-        </svg>
-      </div>
-      <div className="text-xs text-slate-400 mt-1">Week number · height = km</div>
-    </div>
-  );
-}
+import type { TrainingPlan } from "../types";
+import { weeksUntilRace } from "../plan-math";
+import { PHASE_META, phaseSegments, parsePlanGoalTime } from "../utils/planDisplay";
 
 interface Props {
   plan: TrainingPlan;
 }
 
+/**
+ * Lean plan hero — race name, goal time, countdown, the 3 stat tiles, and a
+ * slim phase bar. Stays above the segmented view on every breakpoint. The
+ * weekly volume chart, pace zone cards, and the full phase timeline (labels
+ * + legend) live in PlanStats now — see PlanStats.tsx.
+ */
 export function PlanOverview({ plan }: Props) {
-  const phaseSummary = plan.weeks.reduce<Record<TrainingPhase, number>>(
-    (acc, w) => {
-      acc[w.phase] = (acc[w.phase] || 0) + 1;
-      return acc;
-    },
-    {} as Record<TrainingPhase, number>
-  );
-
   const totalKm = plan.weeks.reduce((s, w) => s + w.totalKm, 0);
   const peakKm = Math.max(...plan.weeks.map((w) => w.totalKm));
+  const segments = phaseSegments(plan.weeks);
+  const goalTime = parsePlanGoalTime(plan.name);
+  const weeksLeft = weeksUntilRace(plan.raceDate);
+
+  const raceDateLabel = new Date(plan.raceDate).toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-xl font-bold text-slate-900">{plan.name}</h2>
-        <p className="text-sm text-slate-500 mt-1">
-          {plan.totalWeeks} weeks · Race:{" "}
-          {new Date(plan.raceDate).toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </p>
-      </div>
+    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950 p-5 sm:p-8 shadow-xl">
+      {/* decorative glow */}
+      <div className="pointer-events-none absolute -top-24 -right-16 h-64 w-64 rounded-full bg-emerald-500/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-28 -left-20 h-64 w-64 rounded-full bg-emerald-400/10 blur-3xl" />
 
-      {/* Stats row */}
-      <div className="grid grid-cols-3 gap-4">
-        {[
-          { label: "Total Weeks", value: plan.totalWeeks },
-          { label: "Total Volume", value: `${totalKm} km` },
-          { label: "Peak Week", value: `${peakKm} km` },
-        ].map(({ label, value }) => (
-          <div key={label} className="bg-slate-50 rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-emerald-600">{value}</div>
-            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mt-1">
-              {label}
-            </div>
+      <div className="relative">
+        <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-emerald-300">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          {plan.totalWeeks}-Week Plan
+        </div>
+
+        <h2 className="mt-3 font-display text-2xl sm:text-3xl font-bold text-white tracking-tight">
+          {plan.goalRace}
+        </h2>
+
+        {goalTime ? (
+          <div className="mt-1 flex items-baseline gap-2">
+            <span className="font-display text-4xl sm:text-5xl font-bold text-emerald-300 tabular-nums tracking-tight">
+              {goalTime}
+            </span>
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+              Goal Time
+            </span>
           </div>
-        ))}
-      </div>
+        ) : (
+          <div className="mt-1 text-sm font-medium text-slate-300 capitalize">
+            {plan.fitnessLevel} fitness plan
+          </div>
+        )}
 
-      {/* Phase timeline */}
-      <div>
-        <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
-          Plan Structure
-        </div>
-        <div className="flex rounded-xl overflow-hidden border border-slate-200 h-10">
-          {(Object.entries(phaseSummary) as [TrainingPhase, number][]).map(
-            ([phase, count]) => (
-              <div
-                key={phase}
-                style={{
-                  width: `${(count / plan.totalWeeks) * 100}%`,
-                  backgroundColor: phaseColor(phase),
-                }}
-                title={`${phase}: ${count} weeks`}
-                className="flex items-center justify-center text-xs font-bold text-slate-700 overflow-hidden"
-              >
-                {count >= 2 ? phase.split(" ")[0] : ""}
+        <p className="mt-3 text-sm text-slate-300">
+          Race day{" "}
+          <span className="font-semibold text-white">{raceDateLabel}</span>
+          {" · "}
+          <span className="font-semibold text-emerald-300">
+            {weeksLeft > 0 ? `${weeksLeft} weeks to go` : "Race week!"}
+          </span>
+        </p>
+
+        {/* Stat tiles */}
+        <div className="mt-4 sm:mt-6 grid grid-cols-3 gap-2 sm:gap-3">
+          {[
+            { label: "Total Weeks", value: `${plan.totalWeeks}` },
+            { label: "Total Volume", value: `${totalKm}`, unit: "km" },
+            { label: "Peak Week", value: `${peakKm}`, unit: "km" },
+          ].map(({ label, value, unit }) => (
+            <div
+              key={label}
+              className="rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm px-2 py-3 sm:px-4 sm:py-4 text-center"
+            >
+              <div className="font-display text-xl sm:text-3xl font-bold text-white tabular-nums">
+                {value}
+                {unit && <span className="ml-0.5 text-xs sm:text-sm font-semibold text-slate-400">{unit}</span>}
               </div>
-            )
-          )}
-        </div>
-        <div className="flex flex-wrap gap-3 mt-3">
-          {(Object.entries(phaseSummary) as [TrainingPhase, number][]).map(
-            ([phase, count]) => (
-              <div key={phase} className="flex items-center gap-2">
-                <div
-                  className="w-3 h-3 rounded-sm"
-                  style={{ backgroundColor: phaseColor(phase) }}
-                />
-                <span className="text-xs text-slate-600">
-                  {phase} ({count}w)
-                </span>
+              <div className="mt-1 text-[9px] sm:text-xs font-semibold uppercase tracking-wide text-slate-400">
+                {label}
               </div>
-            )
-          )}
-        </div>
-      </div>
-
-      {/* Volume ramp chart */}
-      <VolumeChart weeks={plan.weeks} />
-
-      {/* Paces */}
-      <div>
-        <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
-          Training Paces (min/km)
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-          {(
-            [
-              ["Easy", plan.paces.easy],
-              ["Long", plan.paces.long],
-              ["Tempo", plan.paces.tempo],
-              ["Interval", plan.paces.interval],
-              ["Recovery", plan.paces.recovery],
-            ] as [string, string][]
-          ).map(([label, pace]) => (
-            <div key={label} className="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-center">
-              <div className="text-base font-bold text-emerald-700 font-mono">{pace}</div>
-              <div className="text-xs text-slate-500 mt-0.5">{label}</div>
             </div>
           ))}
+        </div>
+
+        {/* Slim phase bar — full breakdown with labels/legend lives in the Stats segment */}
+        <div className="mt-4 sm:mt-6">
+          <div className="flex h-2.5 rounded-full overflow-hidden">
+            {segments.map((seg, i) => (
+              <div
+                key={`${seg.phase}-${seg.startWeek}`}
+                style={{
+                  flexGrow: seg.count,
+                  backgroundColor: PHASE_META[seg.phase].bg,
+                }}
+                title={`${seg.phase}: weeks ${seg.startWeek}–${seg.endWeek}`}
+                className={i > 0 ? "h-full border-l border-slate-900/40" : "h-full"}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

@@ -6,7 +6,13 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
-import { RACE_SETTINGS, LBS_TO_KG, type RaceType } from "../types";
+import {
+  RACE_SETTINGS,
+  MAX_CARBS_PER_HOUR,
+  MIN_CARBS_PER_HOUR,
+  LBS_TO_KG,
+  type RaceType,
+} from "../types";
 
 interface RaceDetailsFormProps {
   raceType: RaceType;
@@ -236,16 +242,22 @@ export function RaceDetailsForm({
           <Slider
             value={[carbsPerHour]}
             onValueChange={(value) => setCarbsPerHour(value[0])}
-            min={30}
-            max={90}
+            min={MIN_CARBS_PER_HOUR}
+            max={MAX_CARBS_PER_HOUR[raceType]}
             step={5}
             className="mt-2"
           />
           <div className="flex justify-between text-xs text-gray-500 mt-2">
-            <span>Low (30g)</span>
+            <span>Low ({MIN_CARBS_PER_HOUR}g)</span>
             <span>Moderate (60g)</span>
-            <span>High (90g)</span>
+            <span>High ({MAX_CARBS_PER_HOUR[raceType]}g)</span>
           </div>
+          {raceType === "Full" && (
+            <p className="text-xs text-gray-500 mt-2">
+              Marathon plans support up to 100g/hr — only push past 90g if
+              you've trained your gut for it.
+            </p>
+          )}
         </div>
 
         <button

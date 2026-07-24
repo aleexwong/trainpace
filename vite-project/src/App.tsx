@@ -35,6 +35,7 @@ const RaceIndex = lazy(() => import("./pages/RaceIndex"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const About = lazy(() => import("./pages/About"));
+const McpDocs = lazy(() => import("./pages/McpDocs"));
 const DashboardV2 = lazy(() => import("./pages/DashboardV2"));
 const VdotCalculatorPage = lazy(() => import("./pages/VdotCalculatorPage"));
 const Onboarding = lazy(() => import("./pages/Onboarding"));
@@ -95,6 +96,7 @@ function App() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/about" element={<About />} />
+            <Route path="/mcp" element={<McpDocs />} />
             <Route path="/preview-route/:slug" element={<PreviewRoute />} />
             {/* Blog routes */}
             <Route path="/blog" element={<BlogList />} />
