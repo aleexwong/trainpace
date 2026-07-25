@@ -160,7 +160,16 @@ export default function ElevationPage() {
     setRouteMetadata(null);
     setSharedAnalysisData(null);
     setSharedOriginalGpxText(null);
-    window.history.replaceState(null, "", "/elevationfinder");
+    // Navigate through React Router (not history.replaceState) so the :docId
+    // param actually clears. When viewing a shared route, isSharedRoute is
+    // derived from urlDocId; replaceState leaves that param set, so the
+    // uploader would never re-render and "Upload New Route" would appear to do
+    // nothing. A real navigation resets urlDocId → isSharedRoute → the gate.
+    if (urlDocId) {
+      navigate("/elevation-finder");
+    } else {
+      window.history.replaceState(null, "", "/elevation-finder");
+    }
   };
 
   // Handle filename update
