@@ -35,10 +35,11 @@ export default function ElevationPage() {
     DEFAULT_ANALYSIS_SETTINGS
   );
 
-  // Current document ID (synced with URL)
-  const [currentDocId, setCurrentDocId] = useState<string | null>(
-    urlDocId || null
-  );
+  // Fresh-upload identity. uploadDocId is the real Firestore id (used for
+  // mutations/poster); uploadSlugPath is the pretty "{slug}-{shortId}" segment
+  // (used for the share URL).
+  const [uploadDocId, setUploadDocId] = useState<string | null>(null);
+  const [uploadSlugPath, setUploadSlugPath] = useState<string | null>(null);
 
   // Initialize hooks
   const { performAnalysis, getCachedAnalysis, handleSettingsChange } =
@@ -51,6 +52,7 @@ export default function ElevationPage() {
     originalGpxText: sharedOriginalGpxText,
     loading: routeLoading,
     error: routeError,
+    resolvedDocId,
     setRouteMetadata,
     setAnalysisData: setSharedAnalysisData,
     setOriginalGpxText: setSharedOriginalGpxText,
@@ -66,15 +68,30 @@ export default function ElevationPage() {
     analysisSettings,
     performAnalysis,
     onSuccess: (_analysisData, fileData) => {
-      // Update current doc ID after successful upload
-      if (fileData.docId) {
-        setCurrentDocId(fileData.docId);
+      // Capture both the real doc id and the pretty share path after upload.
+      if (fileData.docId) setUploadDocId(fileData.docId);
+      if (fileData.displayUrl) {
+        setUploadSlugPath(
+          fileData.displayUrl.replace(/^\/elevation(finder|-finder)\//, "")
+        );
       }
     },
   });
 
   // Determine which data source to use (shared route vs fresh upload)
   const isSharedRoute = !!urlDocId;
+
+  // Real Firestore doc id for mutations (filename edit, poster, ownership).
+  // For shared routes this is the resolved id (the URL may be a pretty slug);
+  // for fresh uploads it's the id returned by the uploader.
+  const realDocId = isSharedRoute ? resolvedDocId : uploadDocId;
+
+  // Pretty path segment for the share URL: the URL param itself when viewing a
+  // shared route, or the slug path captured from a fresh upload.
+  const sharePath = isSharedRoute ? urlDocId ?? null : uploadSlugPath;
+
+  // Whether a route is currently loaded (controls uploader vs action buttons).
+  const hasRoute = isSharedRoute || !!uploadDocId;
   const analysisData = isSharedRoute
     ? sharedAnalysisData
     : uploadState.analysisData;
@@ -108,14 +125,6 @@ export default function ElevationPage() {
     }
   }, [urlDocId, navigate, location.search]);
 
-  // Sync currentDocId with URL changes
-  useEffect(() => {
-    console.log(
-      `🔄 URL changed: urlDocId="${urlDocId}", updating currentDocId`
-    );
-    setCurrentDocId(urlDocId || null);
-  }, [urlDocId]);
-
   // Handle settings change
   const onSettingsChange = async (newSettings: AnalysisSettings) => {
     console.log(`🔧 Settings change requested`);
@@ -125,7 +134,7 @@ export default function ElevationPage() {
       await handleSettingsChange(
         newSettings,
         analysisSettings,
-        currentDocId,
+        realDocId,
         routeMetadata,
         originalGpxText,
         filename
@@ -145,7 +154,8 @@ export default function ElevationPage() {
 
   // Handle upload new route
   const handleUploadNew = () => {
-    setCurrentDocId(null);
+    setUploadDocId(null);
+    setUploadSlugPath(null);
     resetUploadState();
     setRouteMetadata(null);
     setSharedAnalysisData(null);
@@ -248,17 +258,17 @@ export default function ElevationPage() {
         </h1>
 
         {/* Upload Section (only show if no current route) */}
-        {!currentDocId && <GpxUploader onFileParsed={handleFileParsed} />}
+        {!hasRoute && <GpxUploader onFileParsed={handleFileParsed} />}
 
         {/* Action Buttons (show when we have a route) */}
-        {currentDocId && (
+        {hasRoute && (
           <div className="text-center space-y-3">
             <div className="flex justify-center gap-2 sm:gap-3 flex-wrap">
               <Button variant="outline" onClick={handleUploadNew}>
                 📁 Upload New Route
               </Button>
 
-              <ShareButton docId={currentDocId} />
+              <ShareButton path={sharePath ?? undefined} />
 
               <PosterButton
                 displayPoints={
@@ -343,7 +353,7 @@ export default function ElevationPage() {
               "Your Route"
             }
             filename={filename}
-            docId={currentDocId}
+            docId={realDocId}
             isOwner={
               auth.user && routeMetadata
                 ? routeMetadata.userId === auth.user.uid

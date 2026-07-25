@@ -12,13 +12,17 @@ import {
 import { ShareLinkBox } from "@/components/ui/ShareLinkBox";
 
 interface ShareButtonProps {
-  docId: string;
+  /** Pretty path segment, e.g. "boston-marathon-a3f9c". Preferred. */
+  path?: string;
+  /** Legacy fallback: raw Firestore doc id. */
+  docId?: string;
   variant?: "default" | "outline" | "ghost";
   size?: "default" | "sm" | "lg" | "icon";
   className?: string;
 }
 
 export function ShareButton({
+  path,
   docId,
   variant = "outline",
   size = "default",
@@ -41,7 +45,7 @@ export function ShareButton({
             Anyone with this link can view your route analysis.
           </DialogDescription>
         </DialogHeader>
-        <ShareLinkBox docId={docId} />
+        <ShareLinkBox path={path} docId={docId} />
       </DialogContent>
     </Dialog>
   );
