@@ -10,6 +10,7 @@ const staticPaths: Array<{ loc: string; changefreq: string; priority: string }> 
   { loc: `${BASE_URL}/`, changefreq: "weekly", priority: "1.0" },
   { loc: `${BASE_URL}/calculator`, changefreq: "monthly", priority: "0.9" },
   { loc: `${BASE_URL}/vdot`, changefreq: "monthly", priority: "0.9" },
+  { loc: `${BASE_URL}/conditions`, changefreq: "monthly", priority: "0.9" },
   { loc: `${BASE_URL}/fuel`, changefreq: "monthly", priority: "0.9" },
   { loc: `${BASE_URL}/plan`, changefreq: "monthly", priority: "0.9" },
   { loc: `${BASE_URL}/elevation-finder`, changefreq: "monthly", priority: "0.8" },
