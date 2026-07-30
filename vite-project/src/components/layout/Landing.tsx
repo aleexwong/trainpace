@@ -112,7 +112,9 @@ const Hero = () => {
                 Made for runners by a runner
               </span>
             </div>
-            <h1 className="text-4xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
+            {/* font-bold, not extrabold: Space Grotesk tops out at 700 and
+                font-synthesis is off, so 800 silently renders as 700 anyway. */}
+            <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 tracking-tight leading-[1.1] mb-6">
               Train Smarter. <br />
               <span className="text-emerald-600">Race Faster.</span>
             </h1>
