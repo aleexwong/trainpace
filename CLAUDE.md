@@ -117,6 +117,19 @@ Guidelines:
 - Reserve `opus` for tasks where a wrong answer is expensive (data model changes, Firestore rules, SEO system changes).
 - Prefer the alias (`opus`/`sonnet`/`haiku`) in agent frontmatter so definitions track the latest model automatically.
 
+## Typography
+
+Two webfonts, loaded from Google Fonts in `vite-project/index.html`: **DM Sans** (body, Tailwind `font-sans`) and **Space Grotesk** (headings, Tailwind `font-display`, plus an `h1`–`h6` rule in `index.css`'s `@layer base`).
+
+`:root` in `index.css` sets `font-synthesis: none`. That is deliberate — it avoids ugly faux-bold and faux-oblique — but it means **any face missing from the font URL fails silently rather than being faked**. Adding a weight or style to markup is not enough; it has to be in the request too. Known consequences:
+
+- **Space Grotesk stops at 700.** Google Fonts returns HTTP 400 for a request at 800. `font-extrabold` or `font-black` on a heading silently renders as 700 — pick `font-bold` instead, or switch the element to a family that goes heavier.
+- **Italics need the `1,...` axis** on DM Sans (`ital,opsz,wght@0,...;1,...`). Drop it and every `italic` element renders upright, with no error anywhere.
+- **Space Grotesk has a `tnum` table; DM Sans does not.** So `font-variant-numeric: tabular-nums` works on Space Grotesk and is a no-op on DM Sans. Any column of numbers, and anything that animates through digits, must use Space Grotesk or it will jitter.
+- **Always give a webfont a fallback stack.** A bare `font-family: "Space Grotesk"` falls back to the browser default *serif* when the font fails to load, which looks nothing like the design. In `feature-shots.css` use the `--display` / `--mono` custom properties rather than naming families inline.
+
+Verify font changes by measuring rendered metrics in a browser, not by reading the CSS — see the `verify-in-browser` skill. `document.fonts.check()` in particular does **not** answer "is this face available".
+
 ## Gotchas
 
 - `console.*` calls are stripped in production builds (esbuild config in `vite.config.ts`).
