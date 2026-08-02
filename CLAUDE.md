@@ -138,3 +138,11 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 - Firebase Auth is Google OAuth only; there is no email/password path.
 - Legacy `/elevationfinder` routes must keep working (redirect aliases in `App.tsx`).
 - Keep SEO titles under 60 chars and descriptions under 160; run `validateAllPages()` before shipping SEO changes.
+- `src/App.css` still carries the Vite template's `#root { text-align: center }`. It cascades into every page, so left-aligned layouts need an explicit `text-left` on their container.
+- shadcn `Slider` wraps Radix: the *thumb* is what receives focus and carries `role="slider"`. An `aria-label` on the root leaves it announced as unnamed — pass `thumbLabel` instead.
+
+## Past Mistakes
+
+`.claude/LESSONS.md` records concrete mistakes from previous sessions (false-negative
+DOM assertions, barrel-import chunking, mobile stack order, lint suppressions used as
+first resort). Worth a skim before non-trivial work; append to it when a new one bites.
