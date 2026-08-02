@@ -1,4 +1,4 @@
-name: E2E Tests
+name: CI
 
 on:
   push:
@@ -10,7 +10,42 @@ permissions:
   contents: read
 
 jobs:
+  verify:
+    name: Typecheck, lint, unit tests, SEO routes
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vite-project
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: vite-project/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # `npm run build` is `tsc -b && vite build`, so this is the typecheck too.
+      # It also produces dist/, which the SEO route check needs in order to
+      # verify every sitemap URL actually has prerendered HTML.
+      - name: Build
+        run: npm run build
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test
+
+      - name: SEO route drift check
+        run: npm run check:seo-routes
+
   e2e:
+    name: E2E (Playwright)
+    needs: verify
     runs-on: ubuntu-latest
     defaults:
       run:

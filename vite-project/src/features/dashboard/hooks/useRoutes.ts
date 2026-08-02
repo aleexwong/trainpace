@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 import { RouteMetadata } from "../types";
+import { reportError } from "@/lib/reportError";
 
 export function useRoutes(userId: string | undefined) {
   const [routes, setRoutes] = useState<RouteMetadata[]>([]);
@@ -94,7 +95,7 @@ export function useRoutes(userId: string | undefined) {
 
       setRoutes(routeData);
     } catch (err) {
-      console.error("Error loading routes:", err);
+      reportError(err, { scope: "dashboard.loadRoutes" });
       setError("Failed to load routes");
     } finally {
       setLoading(false);

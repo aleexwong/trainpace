@@ -82,7 +82,15 @@ describe("formatDistance", () => {
 describe("formatElevation", () => {
   it("should format metric elevation without decimals", () => {
     expect(formatElevation(100)).toBe("100m");
-    expect(formatElevation(1234.5)).toBe("1235m");
+    // formatElevation runs values through Intl.NumberFormat, so four-digit
+    // elevations get a locale-appropriate thousands separator. The test
+    // previously asserted "1235m" and had been failing unnoticed because
+    // nothing ran the suite.
+    expect(formatElevation(1234.5)).toBe("1,235m");
+  });
+
+  it("should use locale for number formatting", () => {
+    expect(formatElevation(1234.5, { locale: "de-DE" })).toBe("1.235m");
   });
 
   it("should format imperial elevation", () => {

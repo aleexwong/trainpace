@@ -22,6 +22,8 @@ import type {
   AnalysisSettings,
   StaticRouteData,
 } from "../types";
+import { debug } from "@/lib/debug";
+import { reportError } from "@/lib/reportError";
 
 /**
  * Resolve a URL param to its Firestore document. Pretty URLs of the form
@@ -132,7 +134,7 @@ export function useRouteLoader({
 
         // 2. Check if we have static data cached
         if (sharedData.staticRouteData) {
-          console.log(`Static route data found in cache`);
+          debug(`Static route data found in cache`);
 
           // Check for cached analysis with current settings
           const cachedAnalysis = await getCachedAnalysis(
@@ -142,7 +144,7 @@ export function useRouteLoader({
           );
 
           if (cachedAnalysis) {
-            console.log(`Instant load from cache!`);
+            debug(`Instant load from cache!`);
             setAnalysisData(cachedAnalysis);
             setOriginalGpxText(null); // Don't need GPX text for cached data
             setLoading(false);
@@ -151,7 +153,7 @@ export function useRouteLoader({
         }
 
         // 3. Cache miss or no static data - call API
-        console.log(`Cache miss - calling API...`);
+        debug(`Cache miss - calling API...`);
 
         // Get GPX content
         let gpxText = sharedData.content;
@@ -181,7 +183,7 @@ export function useRouteLoader({
 
         setAnalysisData(analysis);
       } catch (err) {
-        console.error("Load shared route error:", err);
+        reportError(err, { scope: "elevation.loadSharedRoute" });
         setError((err as Error)?.message ?? "Failed to load shared route");
       } finally {
         setLoading(false);
@@ -189,7 +191,13 @@ export function useRouteLoader({
     };
 
     loadSharedRoute();
-  }, [routeId]); // Only depend on routeId, not analysisSettings
+    // Deliberately narrow: this effect loads a shared route once per routeId.
+    // Including analysisSettings would re-download and re-analyse the GPX every
+    // time the user nudges a setting — settings changes are handled by
+    // useGpxAnalysis.updateSettings, which reuses the already-loaded text.
+    // getCachedAnalysis/performAnalysis are stable useCallbacks over the same data.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routeId]);
 
   return {
     routeMetadata,

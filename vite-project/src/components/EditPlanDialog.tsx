@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { X, Calendar, FileText, Tag, Save } from "lucide-react";
+import { reportError } from "@/lib/reportError";
 
 interface EditPlanDialogProps {
   isOpen: boolean;
@@ -57,7 +58,7 @@ export function EditPlanDialog({
       );
       onClose();
     } catch (error) {
-      console.error("Failed to save:", error);
+      reportError(error, { scope: "plan.editDialogSave" });
     } finally {
       setIsSaving(false);
     }

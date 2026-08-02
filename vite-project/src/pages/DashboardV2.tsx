@@ -19,6 +19,7 @@ import {
   deletePacePlan,
   updatePacePlan,
   updateRouteSlug,
+  setRouteVisibility,
   copyFuelPlanToClipboard,
   copyPacePlanToClipboard,
   DashboardTab,
@@ -26,6 +27,7 @@ import {
   FuelPlan,
 } from "../features/dashboard";
 import { GoalGreeting } from "../features/goals";
+import { reportError } from "../lib/reportError";
 
 export default function DashboardV2() {
   const [activeTab, setActiveTab] = useState<DashboardTab>("routes");
@@ -95,7 +97,7 @@ export default function DashboardV2() {
         } deleted successfully`,
       });
     } catch (err) {
-      console.error("Delete failed:", err);
+      reportError(err, { scope: "dashboard.deleteRoute", routeId, routeType });
       toast({
         title: "Delete failed",
         description: "Failed to delete route",
@@ -119,7 +121,7 @@ export default function DashboardV2() {
         description: "Your route's shareable link has been updated.",
       });
     } catch (err) {
-      console.error("Slug update failed:", err);
+      reportError(err, { scope: "dashboard.updateRouteSlug", routeId });
       toast({
         title: "Update failed",
         description:
@@ -127,6 +129,32 @@ export default function DashboardV2() {
         variant: "destructive",
       });
       throw err; // Let the card keep its dialog open on failure
+    }
+  };
+
+  const handleToggleVisibility = async (routeId: string, isPublic: boolean) => {
+    if (!user) return;
+
+    try {
+      await setRouteVisibility(user.uid, routeId, isPublic);
+      updateRoute(routeId, { isPublic });
+      toast({
+        title: isPublic ? "Route is public" : "Route is private",
+        description: isPublic
+          ? "Anyone with the link can now view this route."
+          : "Only you can view this route. Shared links will stop resolving.",
+      });
+    } catch (err) {
+      reportError(err, { scope: "dashboard.setRouteVisibility", routeId });
+      toast({
+        title: "Update failed",
+        description:
+          err instanceof Error
+            ? err.message
+            : "Failed to change the route's visibility",
+        variant: "destructive",
+      });
+      throw err; // Let the card reset its own pending state
     }
   };
 
@@ -141,7 +169,7 @@ export default function DashboardV2() {
         description: "Fuel plan deleted successfully",
       });
     } catch (err) {
-      console.error("Delete failed:", err);
+      reportError(err, { scope: "dashboard.deleteFuelPlan", planId });
       toast({
         title: "Delete failed",
         description: "Failed to delete fuel plan",
@@ -161,7 +189,7 @@ export default function DashboardV2() {
         description: "Pace plan deleted successfully",
       });
     } catch (err) {
-      console.error("Delete failed:", err);
+      reportError(err, { scope: "dashboard.deletePacePlan", planId });
       toast({
         title: "Delete failed",
         description: "Failed to delete pace plan",
@@ -186,7 +214,7 @@ export default function DashboardV2() {
         description: "Your changes have been saved successfully",
       });
     } catch (err) {
-      console.error("Update failed:", err);
+      reportError(err, { scope: "dashboard.updatePacePlan", planId });
       toast({
         title: "Update failed",
         description: "Failed to update pace plan",
@@ -333,6 +361,7 @@ export default function DashboardV2() {
           loading={routesLoading}
           onDeleteRoute={handleDeleteRoute}
           onEditSlug={handleEditSlug}
+          onToggleVisibility={handleToggleVisibility}
         />
       )}
 

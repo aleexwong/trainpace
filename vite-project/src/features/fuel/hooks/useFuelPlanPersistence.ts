@@ -15,6 +15,7 @@ import type {
   FuelPlanResult,
   AIRecommendation,
 } from "../types";
+import { reportError } from "@/lib/reportError";
 
 interface SavePlanParams {
   raceType: RaceType;
@@ -108,7 +109,7 @@ export function useFuelPlanPersistence(): UseFuelPlanPersistenceReturn {
           label: params.raceType,
         });
       } catch (error) {
-        console.error("Failed to save fuel plan:", error);
+        reportError(error, { scope: "fuelPlan.save" });
         toast({
           title: "Failed to save",
           description: "Something went wrong. Please try again.",

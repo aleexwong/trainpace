@@ -7,6 +7,8 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { type GpxPoint, type PosterData, MAPBOX_TOKEN } from "../types";
 import { loadMapbox, calculateZoom, calculateCenter } from "../utils/mapbox";
+import { debug } from "@/lib/debug";
+import { reportError } from "@/lib/reportError";
 
 interface UseMapboxProps {
   containerRef: React.RefObject<HTMLDivElement>;
@@ -42,14 +44,14 @@ export function useMapbox({
   // Check if Mapbox token is available
   useEffect(() => {
     if (!MAPBOX_TOKEN) {
-      console.log("❌ VITE_MAPBOX_TOKEN not found");
+      debug("❌ VITE_MAPBOX_TOKEN not found");
       toast({
         title: "Configuration Error",
         description: "Mapbox token not configured. Map tiles will not load.",
         variant: "destructive",
       });
     } else {
-      console.log("✅ Mapbox token found");
+      debug("✅ Mapbox token found");
     }
   }, [toast]);
 
@@ -88,7 +90,7 @@ export function useMapbox({
         const latSpan = Math.max(...lats) - Math.min(...lats);
         const lngSpan = Math.max(...lngs) - Math.min(...lngs);
         const maxSpan = Math.max(latSpan, lngSpan);
-        console.log(
+        debug(
           `🗺️ Initial zoom: ${calculatedZoom} (span: ${(maxSpan * 111).toFixed(
             1
           )}km)`
@@ -133,7 +135,7 @@ export function useMapbox({
           });
 
           setMapReady(true);
-          console.log("✅ Preview map ready");
+          debug("✅ Preview map ready");
         });
 
         // Set up move end listener
@@ -141,8 +143,8 @@ export function useMapbox({
           onMapUpdate?.();
         });
       } catch (error) {
-        console.error("Failed to load Mapbox:", error);
-        console.log("❌ Map initialization failed");
+        reportError(error, { scope: "poster.loadMapbox" });
+        debug("❌ Map initialization failed");
       }
     };
 
@@ -154,6 +156,11 @@ export function useMapbox({
         mapRef.current = null;
       }
     };
+    // Deliberately narrow: this effect builds the map instance. Adding
+    // posterData.routeColor, currentMapStyle or onMapUpdate would tear down and
+    // rebuild the whole map on every colour pick, style switch or parent
+    // re-render. Those three are handled by the dedicated update effects below.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [displayPoints, containerRef]);
 
   // Update map style when template changes
@@ -166,7 +173,7 @@ export function useMapbox({
       ?.split("/")[0];
     const newStyleUrl = currentMapStyle.split("/styles/")[1]?.split("/")[0];
 
-    console.log(
+    debug(
       "🎨 Style check - current:",
       currentStyleUrl,
       "| new:",
@@ -175,12 +182,12 @@ export function useMapbox({
 
     // Only reload style if it actually changed
     if (currentStyleUrl !== newStyleUrl) {
-      console.log("🔄 Style changing to:", currentMapStyle);
+      debug("🔄 Style changing to:", currentMapStyle);
       mapRef.current.setStyle(currentMapStyle);
 
       // Re-add route after style loads
       mapRef.current.once("styledata", () => {
-        console.log(
+        debug(
           "🎨 Style loaded, re-adding route with color:",
           posterData.routeColor
         );
@@ -216,16 +223,16 @@ export function useMapbox({
           },
         });
 
-        console.log("✅ Route layer added after style change");
+        debug("✅ Route layer added after style change");
 
         // Wait for idle to ensure everything is rendered
         mapRef.current.once("idle", () => {
-          console.log("✅ Map idle after style change");
+          debug("✅ Map idle after style change");
           mapRef.current.fire("moveend");
         });
       });
     } else {
-      console.log(
+      debug(
         "⏭️ Same style, skipping reload - color will update separately"
       );
     }
@@ -234,7 +241,7 @@ export function useMapbox({
   // Update route color when it changes
   useEffect(() => {
     if (!mapRef.current || !mapReady) {
-      console.log("⏳ Color update blocked: map not ready");
+      debug("⏳ Color update blocked: map not ready");
       return;
     }
 
@@ -242,13 +249,13 @@ export function useMapbox({
     const timer = setTimeout(() => {
       // Wait for style to be fully loaded before updating paint properties
       if (!mapRef.current.isStyleLoaded()) {
-        console.log("⏳ Style not loaded, skipping color update");
+        debug("⏳ Style not loaded, skipping color update");
         return;
       }
 
       // Check if layer exists before updating
       if (mapRef.current.getLayer("route")) {
-        console.log("🎨 Updating route color to:", posterData.routeColor);
+        debug("🎨 Updating route color to:", posterData.routeColor);
         mapRef.current.setPaintProperty(
           "route",
           "line-color",
@@ -258,7 +265,7 @@ export function useMapbox({
         // Force a repaint to ensure the color change is visible
         mapRef.current.triggerRepaint();
       } else {
-        console.log("⚠️ Route layer not found for color update");
+        debug("⚠️ Route layer not found for color update");
       }
     }, 50);
 

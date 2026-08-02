@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import ReactGA from "react-ga4";
 import type { PaceInputs, PaceResults } from "../types";
+import { reportError } from "@/lib/reportError";
 
 interface SavePlanParams {
   inputs: PaceInputs;
@@ -114,7 +115,7 @@ export function usePacePlanPersistence(): UsePacePlanPersistenceReturn {
           label: `${inputs.distance}${inputs.units}`,
         });
       } catch (error) {
-        console.error("Failed to save pace plan:", error);
+        reportError(error, { scope: "pacePlan.save" });
         toast({
           title: "Failed to save",
           description: "Something went wrong. Please try again.",

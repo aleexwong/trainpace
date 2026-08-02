@@ -25,6 +25,7 @@ import { FuelPlanResults } from "./FuelPlanResults";
 import { FuelPlanPlaceholder } from "./FuelPlanPlaceholder";
 import { FuelProductsReference } from "./FuelProductsReference";
 import { AIPersonalization } from "./AIPersonalization";
+import { debug } from "@/lib/debug";
 
 export interface FuelPlannerV2Props {
   seoMode?: "default" | "none";
@@ -70,7 +71,7 @@ export function FuelPlannerV2({
 
   // Update race type and reset custom carbs override
   const handleRaceTypeChange = (type: RaceType) => {
-    console.log(`[FuelPlannerV2] Race type changed to: ${type}, resetting custom carbs`);
+    debug(`[FuelPlannerV2] Race type changed to: ${type}, resetting custom carbs`);
     setRaceType(type);
     setCustomCarbsPerHour(undefined); // Reset to auto-calculate
   };
@@ -90,7 +91,7 @@ export function FuelPlannerV2({
   const displayedCarbsPerHour = customCarbsPerHour ?? calculationResult?.carbsPerHour ?? RACE_SETTINGS[raceType];
   
   // Debug logging
-  console.log(`[FuelPlannerV2] displayedCarbsPerHour: ${displayedCarbsPerHour}, custom: ${customCarbsPerHour}, calculated: ${calculationResult?.carbsPerHour}, baseline: ${RACE_SETTINGS[raceType]}`);
+  debug(`[FuelPlannerV2] displayedCarbsPerHour: ${displayedCarbsPerHour}, custom: ${customCarbsPerHour}, calculated: ${calculationResult?.carbsPerHour}, baseline: ${RACE_SETTINGS[raceType]}`);
 
   const planContext: FuelPlanContext | null = result
     ? {

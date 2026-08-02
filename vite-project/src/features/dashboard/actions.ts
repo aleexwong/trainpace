@@ -58,6 +58,34 @@ export async function updateRouteSlug(
   return { slug, shortId, displayUrl };
 }
 
+/**
+ * Toggle whether an uploaded route is readable by anyone with the link.
+ *
+ * `gpx_uploads` docs contain the full GPX trace, so this is the switch that
+ * decides whether a personal GPS track is world-readable. firestore.rules reads
+ * the same `isPublic` field; routes uploaded before the field existed are
+ * treated as public by the rules' default, and writing it here makes that
+ * explicit for the affected doc.
+ */
+export async function setRouteVisibility(
+  userId: string,
+  routeId: string,
+  isPublic: boolean
+) {
+  const docRef = doc(db, "gpx_uploads", routeId);
+  const docSnap = await getDoc(docRef);
+  if (!docSnap.exists()) {
+    throw new Error("Route does not exist");
+  }
+
+  const data = docSnap.data();
+  if (!data.userId || data.userId !== userId) {
+    throw new Error("You are not authorized to change this route's visibility");
+  }
+
+  await updateDoc(docRef, { isPublic, updatedAt: Date.now() });
+}
+
 export async function deleteRoute(
   userId: string,
   routeId: string,

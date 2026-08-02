@@ -6,6 +6,7 @@ import { auth } from "@/lib/firebase";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { isValidRedirect } from "@/lib/utils";
+import { reportError } from "@/lib/reportError";
 
 // Security-conscious error messages that don't reveal account existence
 const getLoginErrorMessage = (code: string): string => {
@@ -69,7 +70,7 @@ export default function Login() {
       // Don't manually navigate here - let the useEffect handle it
     } catch (err) {
       const errCode = (err as { code?: string })?.code;
-      console.error("Login error:", errCode || err);
+      reportError(err, { scope: "auth.emailSignIn", code: errCode });
 
       const errorMessage = errCode
         ? getLoginErrorMessage(errCode)

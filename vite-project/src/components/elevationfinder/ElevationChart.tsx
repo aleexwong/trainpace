@@ -15,6 +15,7 @@ import { useState, useRef, useMemo, memo } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { downsampleProfile } from "@/features/elevation/utils";
+import { reportError } from "@/lib/reportError";
 
 Chart.register(
   CategoryScale,
@@ -121,7 +122,7 @@ export function ElevationChart({
       onFilenameUpdate?.(trimmedFilename);
       setIsEditing(false);
     } catch (error) {
-      console.error("Failed to update filename:", error);
+      reportError(error, { scope: "elevation.updateFilename" });
       // Reset on error
       setEditFilename(filename || "");
       setIsEditing(false);

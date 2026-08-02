@@ -5,6 +5,8 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { toast } from "@/hooks/use-toast";
 import ReactGA from "react-ga4";
+import { debug } from "@/lib/debug";
+import { reportError } from "@/lib/reportError";
 
 export function usePendingPacePlan() {
   const { user } = useAuth();
@@ -19,7 +21,7 @@ export function usePendingPacePlan() {
       // Get pending plan from session storage
       const pendingPlanJson = sessionStorage.getItem("pending_pace_plan");
       if (!pendingPlanJson) {
-        console.log("No pending pace plan found in session storage");
+        debug("No pending pace plan found in session storage");
         return;
       }
 
@@ -80,7 +82,7 @@ export function usePendingPacePlan() {
           navigate("/dashboard");
         }, 1500);
       } catch (error) {
-        console.error("Failed to save pending pace plan:", error);
+        reportError(error, { scope: "pacePlan.savePending" });
         toast({
           title: "Failed to save plan",
           description: "Something went wrong. Please try creating a new plan.",

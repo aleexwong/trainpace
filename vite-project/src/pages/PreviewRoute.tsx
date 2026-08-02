@@ -116,15 +116,22 @@ export default function PreviewRoute() {
   // Get the preview data (may be undefined before guard)
   const route = slug ? marathonRoutesData[slug] : undefined;
 
+  // The effect reads only these two fields of `route`. Hoisting them keeps the
+  // dependency list honest without re-fetching whenever `route`'s identity
+  // changes; both come from the statically imported marathonRoutesData, so they
+  // are stable for a given slug.
+  const routeSlug = route?.slug;
+  const routeThumbnailPoints = route?.thumbnailPoints;
+
   // Load display/thumbnail points and dynamic stats from ElevationFinder doc
   useEffect(() => {
-    if (!route) return;
+    if (!routeSlug) return;
     let cancelled = false;
     const load = async () => {
       try {
         setLoadingPoints(true);
         setLoadError(null);
-        const resolvedId = getCurrentDocumentId(route.slug);
+        const resolvedId = getCurrentDocumentId(routeSlug);
         const ref = doc(db, "gpx_uploads", resolvedId);
         const snap = await getDoc(ref);
         if (!snap.exists()) return;
@@ -163,7 +170,7 @@ export default function PreviewRoute() {
           if (typeof meta.elevationGain === "number")
             nextStats.elevationGain = meta.elevationGain;
           const elevateFrom = (
-            pts?.length ? pts : route.thumbnailPoints
+            pts?.length ? pts : routeThumbnailPoints
           ) as Array<{ lat: number; lng: number; ele?: number }>;
           if (elevateFrom.length) {
             const firstEle = elevateFrom[0]?.ele;
@@ -186,7 +193,7 @@ export default function PreviewRoute() {
     return () => {
       cancelled = true;
     };
-  }, [route?.slug]);
+  }, [routeSlug, routeThumbnailPoints]);
 
   if (!slug || !route) {
     return <Navigate to="/" replace />;

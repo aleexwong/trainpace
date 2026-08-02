@@ -15,60 +15,44 @@ Each item is tagged with the feature area so it can be triaged independently.
 
 ### P1 — Correctness, should fix soon
 
-#### B1. Fuel planner underfeeds light runners & duplicates fueling logic
+#### B1. Fuel planner underfeeds light runners & duplicates fueling logic — ✅ RESOLVED
 - **Area:** Fuel Planner
-- **Where:** `vite-project/src/pages/FuelPlannerV2.tsx:220-223`
-- **What:** Weight-based carbs override the race-type baseline unconditionally:
-  ```ts
-  let carbsPerHour = raceSettings[raceType];
-  if (!isNaN(weightKg) && weightKg > 0) {
-    carbsPerHour = Math.round(weightKg * 0.7);   // overrides even when LOWER
-  }
-  ```
-  A 50 kg runner doing a half gets `50 * 0.7 = 35 g/hr`, below the half-marathon baseline (~45 g/hr). The hook `vite-project/src/features/fuel/hooks/useFuelCalculation.ts` does this correctly with `Math.max(weightBased, raceBaseline)`, so the page and the hook **disagree** — duplicate, divergent math.
-- **Fix:** Use `Math.max(Math.round(weightKg * 0.7), raceSettings[raceType])`, and ideally delete the inline calculation in the page so `useFuelCalculation` is the single source of truth.
-- **Severity:** Medium — produces real, plausible-but-wrong nutrition numbers.
+- **Was:** `vite-project/src/pages/FuelPlannerV2.tsx:220-223` — a second, divergent copy of the
+  weight-based carb calculation that overrode the race baseline even when lower.
+- **Resolution:** That page was dead code (nothing imported it; the live component is
+  `src/features/fuel/components/FuelPlannerV2.tsx`) and has been deleted. The single
+  source of truth is now `src/features/fuel/hooks/useFuelCalculation.ts`, which uses
+  `Math.max(weightBased, raceBaseline)` and caps at `MAX_CARBS_PER_HOUR[raceType]`.
+  There is no longer a duplicate calculation to diverge.
 
-#### B2. Gemini fetch has no timeout — UI can hang
+#### B2. Gemini fetch has no timeout — UI can hang — ✅ RESOLVED
 - **Area:** Fuel Planner / AI
-- **Where:** `vite-project/src/services/gemini.ts:127`
-- **What:** The `fetch('/api/refine-fuel-plan')` call has no `AbortController`/timeout. If the backend hangs, `isRefining` stays `true`, the button stays locked, and the user gets no resolution. (Note: error handling is otherwise good — `response.json()` is inside the try/catch, 429s have a friendly message, and the API key is server-side, not shipped to the browser.)
-- **Fix:** Wrap the fetch with an `AbortController` and ~15s timeout; surface a "took too long, try again" toast on abort.
-- **Severity:** Medium.
+- **Resolution:** `services/gemini.ts` now wraps the request in an `AbortController`
+  with a 20s timeout and clears it on completion.
 
 ### P2 — Minor / edge cases
 
-#### B3. GPX downsampling can drop the route's final point
+#### B3. GPX downsampling can drop the route's final point — ✅ RESOLVED
 - **Area:** Elevation
-- **Where:** `vite-project/src/lib/gpxMetaData.ts:187-196`
-- **What:** In the fallback step-filter path, the last point is `push`ed and then `simplified.slice(0, maxPoints)` can chop it back off (the filtered array often has slightly more than `maxPoints` entries, and the slice trims the end — exactly where the last point was just appended). Result: the rendered route line can stop short of the true finish.
-  ```ts
-  simplified.push(points[points.length - 1]);
-  simplified = simplified.slice(0, maxPoints);   // can remove the point we just added
-  ```
-- **Fix:** Reserve a slot — `slice(0, maxPoints - 1)` before appending the last point, or slice first then force-set the last element.
-- **Severity:** Low — only hits the rare fallback path (Douglas–Peucker usually succeeds first), cosmetic.
+- **Resolution:** `lib/gpxMetaData.ts` force-sets both endpoints after the slice, so
+  the first and last points always survive downsampling.
 
-#### B4. Live VDOT badge silently disappears for elite & beginner runners
+#### B4. Live VDOT badge silently disappears for elite & beginner runners — ✅ RESOLVED
 - **Area:** Pace Calculator
-- **Where:** `vite-project/src/features/pace-calculator/components/PaceCalculatorV2.tsx:88`
-- **What:** `if (!isFinite(vdot) || vdot < 10 || vdot > 100) return null;` hides the badge outside 10–100. Elite marathoners (~VDOT 85 is fine, but edge configs can exceed) and very slow beginners (<10) get no badge with no explanation. The VDOT calculator itself accepts a wider range.
-- **Fix:** Widen to a sane bound (e.g. `vdot < 1 || vdot > 120`) to match the VDOT tool, or show the badge with a "beginner/elite" label instead of hiding it.
-- **Severity:** Low.
+- **Resolution:** the guard in `PaceCalculatorV2.tsx` was widened to `vdot < 1 || vdot > 120`,
+  matching the VDOT tool's range.
 
-#### B5. Google sign-in failures give no user feedback
+#### B5. Google sign-in failures give no user feedback — ✅ RESOLVED
 - **Area:** Auth
-- **Where:** `vite-project/src/features/auth/LoginButton.tsx:31-34`
-- **What:** `catch (error) { console.error(...) }` — no toast/message. If the popup is blocked or the user closes it (`auth/popup-closed-by-user`), the spinner resets but nothing tells them what happened. Other entry points (`Login.tsx`, `Settings.tsx`) do show a toast, so this is inconsistent.
-- **Fix:** Show a toast on failure; special-case `auth/popup-closed-by-user` ("Sign-in cancelled") and `auth/popup-blocked` ("Allow popups to sign in").
-- **Severity:** Low.
+- **Resolution:** `LoginButton.tsx` shows a toast on failure and special-cases
+  `auth/popup-closed-by-user`, `auth/cancelled-popup-request` and `auth/popup-blocked`.
+  The error also reaches PostHog via `reportError`.
 
-#### B6. Pace validation never checks the hours field
+#### B6. Pace validation never checks the hours field — ✅ RESOLVED
 - **Area:** Pace Calculator
-- **Where:** `vite-project/src/features/pace-calculator/utils.ts:184-195` (`validatePaceInputs`)
-- **What:** Validation rejects `m >= 60 || s >= 60` but never bounds `hours`, and the live VDOT memo (`PaceCalculatorV2.tsx:80-82`) also only checks minutes/seconds. Absurd inputs (e.g. a 99-hour 5K) pass validation. Pace math won't crash, but results are nonsense with no warning.
-- **Fix:** Add an upper bound on hours (e.g. `h > 24`) or a sanity check on resulting pace.
-- **Severity:** Low.
+- **Resolution:** `validatePaceInputs` now rejects `h > 24` with
+  "Race time must be under 24 hours". Covered by
+  `features/pace-calculator/__tests__/utils.test.ts`.
 
 ### Things checked that are NOT bugs (so they don't get re-reported)
 - `convertPace` (`utils.ts:44-46`) — the inline comments ("km to mile") are **backwards**, but the math is correct. Fix the comment, not the code.

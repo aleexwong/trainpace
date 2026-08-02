@@ -1,3 +1,4 @@
+import { debug } from "@/lib/debug";
 // src/config/routes.ts
 
 /**
@@ -23,7 +24,7 @@ export function getCurrentDocumentId(docId: string): string {
   const migratedId = FIREBASE_ID_MIGRATIONS[docId];
   
   if (migratedId) {
-    console.log(`📋 Migrating document ID: ${docId} → ${migratedId}`);
+    debug(`📋 Migrating document ID: ${docId} → ${migratedId}`);
     return migratedId;
   }
   

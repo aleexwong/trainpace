@@ -1,3 +1,5 @@
+import { debug } from "@/lib/debug";
+import { reportError } from "@/lib/reportError";
 /**
  * Reverse geocoding utilities to get city names from coordinates
  * Uses free Nominatim API first, falls back to Mapbox if needed
@@ -51,7 +53,7 @@ async function throttleNominatim(): Promise<void> {
 
   if (timeSinceLastRequest < NOMINATIM_MIN_INTERVAL) {
     const waitTime = NOMINATIM_MIN_INTERVAL - timeSinceLastRequest;
-    console.log(`⏱️  Throttling Nominatim request (waiting ${waitTime}ms)`);
+    debug(`⏱️  Throttling Nominatim request (waiting ${waitTime}ms)`);
     await new Promise((resolve) => setTimeout(resolve, waitTime));
   }
 
@@ -81,7 +83,7 @@ export async function getCityFromRouteNominatim(
     const cacheKey = getCacheKey(centerLat, centerLng);
     const cached = geocodeCache.get(cacheKey);
     if (cached) {
-      console.log("💾 Cache hit for location:", cached.city, "(Nominatim)");
+      debug("💾 Cache hit for location:", cached.city, "(Nominatim)");
       return cached;
     }
 
@@ -98,7 +100,10 @@ export async function getCityFromRouteNominatim(
     });
 
     if (!response.ok) {
-      console.error("Nominatim API error:", response.status);
+      reportError(new Error(`Nominatim API returned ${response.status}`), {
+        scope: "geocoding.nominatim",
+        status: response.status,
+      });
       return { city: null, country: null, source: "fallback" };
     }
 
@@ -115,7 +120,7 @@ export async function getCityFromRouteNominatim(
 
       // Cache the successful result
       geocodeCache.set(cacheKey, result);
-      console.log(
+      debug(
         "📍 Geocoded location (Nominatim):",
         city,
         country,
@@ -127,7 +132,7 @@ export async function getCityFromRouteNominatim(
 
     return { city: null, country: null, source: "fallback" };
   } catch (error) {
-    console.error("Error geocoding location (Nominatim):", error);
+    reportError(error, { scope: "geocoding.nominatim" });
     return { city: null, country: null, source: "fallback" };
   }
 }
@@ -154,7 +159,7 @@ export async function getCityFromRouteNominatim(
 //     const cacheKey = getCacheKey(centerLat, centerLng);
 //     const cached = geocodeCache.get(cacheKey);
 //     if (cached) {
-//       console.log('💾 Cache hit for location:', cached.city, '(Mapbox)');
+//       debug('💾 Cache hit for location:', cached.city, '(Mapbox)');
 //       return cached;
 //     }
 
@@ -188,7 +193,7 @@ export async function getCityFromRouteNominatim(
 
 //       // Cache the successful result
 //       geocodeCache.set(cacheKey, result);
-//       console.log('📍 Geocoded location (Mapbox):', city, country, '- cached');
+//       debug('📍 Geocoded location (Mapbox):', city, country, '- cached');
 
 //       return result;
 //     }
@@ -217,7 +222,7 @@ export async function getCityFromRouteMapbox(
     const cacheKey = getCacheKey(centerLat, centerLng);
     const cached = geocodeCache.get(cacheKey);
     if (cached) {
-      console.log("💾 Cache hit for location:", cached.city, "(Mapbox)");
+      debug("💾 Cache hit for location:", cached.city, "(Mapbox)");
       return cached;
     }
 
@@ -226,7 +231,10 @@ export async function getCityFromRouteMapbox(
 
     const response = await fetch(url);
     if (!response.ok) {
-      console.error("Mapbox Geocoding API error:", response.status);
+      reportError(new Error(`Mapbox geocoding returned ${response.status}`), {
+        scope: "geocoding.mapbox",
+        status: response.status,
+      });
       return { city: null, country: null, source: "fallback" };
     }
 
@@ -301,7 +309,7 @@ export async function getCityFromRouteMapbox(
 
     if (result.city) {
       geocodeCache.set(cacheKey, result);
-      console.log(
+      debug(
         "📍 Geocoded location (Mapbox):",
         result.city,
         result.country,
@@ -312,7 +320,7 @@ export async function getCityFromRouteMapbox(
 
     return { city: null, country: null, source: "fallback" };
   } catch (error) {
-    console.error("Error geocoding location (Mapbox):", error);
+    reportError(error, { scope: "geocoding.mapbox" });
     return { city: null, country: null, source: "fallback" };
   }
 }
@@ -329,26 +337,26 @@ export async function getCityFromRoute(
   }
 
   // Try free Nominatim API first
-  console.log("🌍 Trying Nominatim (free) for geocoding...");
+  debug("🌍 Trying Nominatim (free) for geocoding...");
   const nominatimResult = await getCityFromRouteNominatim(points);
 
   if (nominatimResult.city) {
-    console.log("✅ Nominatim succeeded:", nominatimResult.city);
+    debug("✅ Nominatim succeeded:", nominatimResult.city);
     return nominatimResult;
   }
 
   // Fallback to Mapbox if Nominatim fails and token is available
   if (mapboxToken) {
-    console.log("🔄 Nominatim failed, trying Mapbox fallback...");
+    debug("🔄 Nominatim failed, trying Mapbox fallback...");
     const mapboxResult = await getCityFromRouteMapbox(points, mapboxToken);
 
     if (mapboxResult.city) {
-      console.log("✅ Mapbox fallback succeeded:", mapboxResult.city);
+      debug("✅ Mapbox fallback succeeded:", mapboxResult.city);
       return mapboxResult;
     }
   }
 
   // Both failed
-  console.log("⚠️ All geocoding methods failed");
+  debug("⚠️ All geocoding methods failed");
   return { city: null, country: null, source: "fallback" };
 }

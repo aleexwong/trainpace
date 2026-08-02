@@ -7,6 +7,7 @@ import { useRef, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import { type PosterData, PRINT_CONFIG } from "../types";
 import { updatePreviewCanvas } from "../utils/canvas";
+import { debug } from "@/lib/debug";
 
 interface PosterPreviewProps {
   previewMapRef: React.RefObject<HTMLDivElement>;
@@ -35,11 +36,11 @@ export function PosterPreview({
 
       updatePreviewTimeoutRef.current = setTimeout(() => {
         if (!previewCanvasRef.current) {
-          console.log("Preview update skipped: missing refs");
+          debug("Preview update skipped: missing refs");
           return;
         }
 
-        console.log(
+        debug(
           "Drawing stats overlay with data:",
           posterData.city,
           posterData.time

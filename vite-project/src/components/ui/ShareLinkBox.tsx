@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Copy, Facebook, Twitter } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { reportError } from "@/lib/reportError";
 
 interface ShareLinkBoxProps {
   /** Pretty path segment, e.g. "boston-marathon-a3f9c". Preferred. */
@@ -25,7 +26,7 @@ export function ShareLinkBox({ path, docId, className }: ShareLinkBoxProps) {
         description: "Share link has been copied to your clipboard.",
       });
     } catch (err) {
-      console.error("Failed to copy: ", err);
+      reportError(err, { scope: "ui.copyShareLink" });
       toast({
         title: "Copy failed",
         description: "There was a problem copying the link.",

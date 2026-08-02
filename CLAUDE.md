@@ -14,13 +14,21 @@ All commands run from `vite-project/`:
 npm install               # Install dependencies
 npm run dev               # Dev server at localhost:5173
 npm run build             # TypeScript check (tsc -b) + production build
-npm run lint              # ESLint
+npm run lint              # ESLint — warnings are errors, CI fails on any
+npm test                  # Vitest unit tests (src/**/*.test.ts)
+npm run test:watch        # Vitest in watch mode
+npm run check:seo-routes  # Assert sitemap ↔ prerender ↔ robots.txt agree
+npm run verify            # build + lint + test + check:seo-routes (what CI runs)
 npm run test:e2e          # Playwright E2E tests
 npm run test:e2e:ui       # Playwright UI mode
-npm run generate-sitemap  # Regenerate sitemap.xml (run when SEO pages change)
+npm run generate-sitemap  # Regenerate sitemap.xml (run when routes change)
 ```
 
-There are no unit tests — verification is `npm run build` + `npm run lint` + Playwright E2E.
+**Verification is `npm run verify`.** That is exactly what the `verify` job in
+`.github/workflows/e2e.yml` runs, gating the Playwright job behind it. Unit tests live
+next to the code they cover in `__tests__/` directories and run under Vitest; `e2e/` is
+Playwright's alone (`vitest.config.ts` excludes it — the two runners' `test.describe`
+are not interchangeable).
 
 ## Structure
 
@@ -73,14 +81,14 @@ React 18 + TypeScript 5.6, Vite 5 (PWA + prerender plugins), React Router 7, Tai
 - Components `PascalCase`, hooks `useCamelCase`, utilities `camelCase`, types/interfaces `PascalCase`.
 - Business logic lives in custom hooks; components stay presentational.
 - Forms: Zod schema + React Hook Form.
-- Auth state via `useAuth()` from `src/features/auth/AuthContext.tsx` (Google OAuth only).
+- Auth state via `useAuth()` from `src/features/auth/AuthContext.tsx`.
 - Persistence: localStorage for guest/preferences, Firestore for signed-in users.
 - shadcn/ui components in `src/components/ui/` are **copied source, not npm packages** — add new ones by pasting from the shadcn docs, never via CLI.
 - `cn()` from `src/lib/utils.ts` for conditional classnames.
 
 ## Common Tasks
 
-- **New page**: component in `src/pages/` → route in `src/App.tsx` → nav in `src/components/layout/SideNav.tsx` + `layout/constants/navLinks.ts` → prerender route in `vite.config.ts` if it needs static generation.
+- **New page**: component in `src/pages/` → route in `src/App.tsx` → nav in the `links` array in `src/components/layout/SideNav.tsx` → if it should be crawlable, add it to `STATIC_ROUTES` in `src/lib/seo/routes.ts` (that one list drives both prerendering and the sitemap).
 - **New feature**: folder in `src/features/[name]/` with barrel `index.ts`.
 - **Protect a route**: wrap with `<AuthGuard>` in `App.tsx`.
 - **New SEO page**: add config to `src/features/seo-pages/seoPages.ts` (helpers/validators in `src/lib/seo/` — `generatePageId`, `validateAllPages`). Routing and prerendering pick it up automatically; rerun `npm run generate-sitemap`.
@@ -132,9 +140,32 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 
 ## Gotchas
 
-- `console.*` calls are stripped in production builds (esbuild config in `vite.config.ts`).
+- **`console.*` is stripped from production builds** (`esbuild.drop` in `vite.config.ts`), so
+  a `catch` that only calls `console.error` becomes an empty block in the deployed app —
+  the failure is invisible to the user, the logs, and you. `no-console` is therefore an
+  ESLint **error**. Use one of:
+  - `reportError(err, { scope: "feature.operation" })` from `@/lib/reportError` — captures
+    to PostHog and survives the production build. Use it in every catch that swallows a
+    failure. It is not user feedback: still show a toast if the user is blocked.
+  - `debug(...)` / `debugWarn(...)` from `@/lib/debug` — dev-only traces, compiled out.
+  Never pass GPX contents, tokens, or emails as `reportError` context — ids and counts only.
 - Maps render blank without a valid `VITE_MAPBOX_TOKEN`.
+- **Crawlable routes have one source of truth**: `src/lib/seo/routes.ts`. It feeds the
+  prerender list in `vite.config.ts` *and* `scripts/generateSitemap.ts`, so the two cannot
+  drift the way they used to. Never add a URL to only one. Auth-gated paths must not be
+  listed — they are `Disallow`ed in `robots.txt`, and `npm run check:seo-routes` fails on
+  a sitemap URL that robots blocks, that routes.ts doesn't declare, or that has no
+  prerendered HTML in `dist/`.
+- **`gpx_uploads` docs hold the full GPX trace and are gated on an `isPublic` flag.**
+  Reads resolve for the owner, or for anyone when `isPublic` is true; docs predating the
+  flag default to public so old share links keep working (`firestore.rules` uses
+  `.get('isPublic', true)`). Flipping that default requires a backfill first.
 - The app is a PWA (Workbox) — hard-refresh or unregister the service worker when testing build output.
-- Firebase Auth is Google OAuth only; there is no email/password path.
+- Firebase Auth supports **both** Google OAuth and email/password. Google is the
+  primary path (`LoginButton.tsx`, `signInWithPopup`), but the email/password path is
+  live and routed: `Login.tsx` (`signInWithEmailAndPassword`), `Register.tsx`
+  (`createUserWithEmailAndPassword`), `ResetPassword.tsx` and `Settings.tsx`
+  (`sendPasswordResetEmail`), plus `/register`, `/reset-password`, `/reset-confirmed`.
+  `e2e/auth.spec.ts` covers it. Changes to auth must account for both.
 - Legacy `/elevationfinder` routes must keep working (redirect aliases in `App.tsx`).
 - Keep SEO titles under 60 chars and descriptions under 160; run `validateAllPages()` before shipping SEO changes.

@@ -13,6 +13,7 @@ import {
   LBS_TO_KG,
   type RaceType,
 } from "../types";
+import { debug } from "@/lib/debug";
 
 interface RaceDetailsFormProps {
   raceType: RaceType;
@@ -55,7 +56,7 @@ export function RaceDetailsForm({
     
     if (!value) {
       setWeight("");
-      console.log("[Weight Input] Cleared");
+      debug("[Weight Input] Cleared");
       return;
     }
     
@@ -66,10 +67,10 @@ export function RaceDetailsForm({
     if (weightUnit === "lbs") {
       const kg = numValue * LBS_TO_KG;
       setWeight(kg.toString());
-      console.log(`[Weight Input] ${numValue} lbs → ${kg.toFixed(2)} kg`);
+      debug(`[Weight Input] ${numValue} lbs → ${kg.toFixed(2)} kg`);
     } else {
       setWeight(value);
-      console.log(`[Weight Input] ${value} kg`);
+      debug(`[Weight Input] ${value} kg`);
     }
   };
   
@@ -90,12 +91,12 @@ export function RaceDetailsForm({
       // Format to reasonable precision for display
       const displayLbs = Math.round(lbs * 10) / 10; // 1 decimal place
       setDisplayValue(displayLbs.toString());
-      console.log(`[Weight Unit] Switched to lbs: ${weightKg.toFixed(2)} kg → ${displayLbs} lbs`);
+      debug(`[Weight Unit] Switched to lbs: ${weightKg.toFixed(2)} kg → ${displayLbs} lbs`);
     } else {
       // Format kg to reasonable precision
       const displayKg = Math.round(weightKg * 10) / 10; // 1 decimal place
       setDisplayValue(displayKg.toString());
-      console.log(`[Weight Unit] Switched to kg: ${displayKg} kg`);
+      debug(`[Weight Unit] Switched to kg: ${displayKg} kg`);
     }
   };
   return (

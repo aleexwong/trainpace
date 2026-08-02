@@ -23,6 +23,8 @@ import {
   GpxUploader,
   RouteDashboard,
 } from "@/features/elevation";
+import { debug } from "@/lib/debug";
+import { reportError } from "@/lib/reportError";
 
 export default function ElevationPage() {
   const { docId: urlDocId } = useParams();
@@ -116,7 +118,7 @@ export default function ElevationPage() {
     const currentValidDocId = getCurrentDocumentId(urlDocId);
 
     if (currentValidDocId !== urlDocId) {
-      console.log(
+      debug(
         `🔄 Redirecting outdated document ID: ${urlDocId} → ${currentValidDocId}`
       );
       const newPath = `/elevationfinder/${currentValidDocId}${location.search}`;
@@ -127,7 +129,7 @@ export default function ElevationPage() {
 
   // Handle settings change
   const onSettingsChange = async (newSettings: AnalysisSettings) => {
-    console.log(`🔧 Settings change requested`);
+    debug(`🔧 Settings change requested`);
     setAnalysisSettings(newSettings);
 
     const { analysisData: newAnalysisData, error: settingsError } =
@@ -148,7 +150,7 @@ export default function ElevationPage() {
     }
 
     if (settingsError) {
-      console.error("Settings change error:", settingsError);
+      reportError(settingsError, { scope: "elevation.settingsChange" });
     }
   };
 

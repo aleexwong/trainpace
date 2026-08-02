@@ -10,6 +10,10 @@ export interface RouteMetadata {
   routeName?: string; // For bookmarked routes
   slug?: string; // For uploaded routes: editable URL slug
   shortId?: string; // For uploaded routes: immutable URL resolution token
+  // For uploaded routes: whether anyone with the link can read the GPX trace.
+  // Undefined on routes uploaded before the flag existed; firestore.rules treats
+  // those as public, so undefined must be read as `true`.
+  isPublic?: boolean;
   uploadedAt?: Timestamp | null;
   savedAt?: Timestamp | null; // For bookmarked routes
   schemaVersion?: number; // For migration tracking

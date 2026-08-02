@@ -23,6 +23,7 @@ import { useAuth } from "@/features/auth/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { GoalsSettingsCard } from "@/features/goals";
+import { reportError } from "@/lib/reportError";
 
 const Settings: React.FC = () => {
   const { user } = useAuth();
@@ -48,7 +49,7 @@ const Settings: React.FC = () => {
       await signOut(auth);
       navigate("/");
     } catch (error) {
-      console.error("Sign out error:", error);
+      reportError(error, { scope: "auth.signOut" });
       showMessage("Error signing out. Please try again.", "error");
     }
   };
@@ -65,7 +66,7 @@ const Settings: React.FC = () => {
       setEditingName(false);
     } catch (error) {
       showMessage("Error updating name. Please try again.", "error");
-      console.error("Update name error:", error);
+      reportError(error, { scope: "settings.updateName" });
       setNewName(user.displayName || ""); // Reset on error
     } finally {
       setIsLoading(false);
@@ -86,7 +87,7 @@ const Settings: React.FC = () => {
       showMessage("Password reset email sent! Check your inbox.", "success");
     } catch (error) {
       showMessage("Error sending reset email. Please try again.", "error");
-      console.error("Password reset error:", error);
+      reportError(error, { scope: "auth.passwordReset" });
     } finally {
       setIsLoading(false);
     }
@@ -163,7 +164,7 @@ const Settings: React.FC = () => {
       } else {
         showMessage("Error deleting account. Please try again.", "error");
       }
-      console.error("Delete account error:", error);
+      reportError(error, { scope: "settings.deleteAccount" });
     } finally {
       setIsLoading(false);
       setShowDeleteConfirm(false);

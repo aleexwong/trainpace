@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 import { FuelPlan } from "../types";
+import { reportError } from "@/lib/reportError";
 
 export function useFuelPlans(userId: string | undefined) {
   const [fuelPlans, setFuelPlans] = useState<FuelPlan[]>([]);
@@ -33,7 +34,7 @@ export function useFuelPlans(userId: string | undefined) {
 
       setFuelPlans(plans);
     } catch (err) {
-      console.error("Error loading fuel plans:", err);
+      reportError(err, { scope: "dashboard.loadFuelPlans" });
       setError("Failed to load fuel plans");
     } finally {
       setLoading(false);

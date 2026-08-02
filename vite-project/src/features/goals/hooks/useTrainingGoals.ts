@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from "react";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { RaceGoalProfile, RaceGoalProfileInput } from "../types";
+import { reportError } from "@/lib/reportError";
 
 const COLLECTION = "user_training_goals";
 
@@ -30,7 +31,7 @@ export function useTrainingGoals(userId: string | undefined) {
       const snap = await getDoc(doc(db, COLLECTION, userId));
       setGoals(snap.exists() ? (snap.data() as RaceGoalProfile) : null);
     } catch (err) {
-      console.error("Failed to load training goals:", err);
+      reportError(err, { scope: "goals.load" });
       setError("Failed to load training goals");
     } finally {
       setLoading(false);

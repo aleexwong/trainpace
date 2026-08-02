@@ -19,6 +19,7 @@ import {
   MIN_RACE_TIME_FOR_FUELING,
   FUEL_PRODUCTS,
 } from "../types";
+import { debug } from "@/lib/debug";
 
 interface UseFuelCalculationParams {
   raceType: RaceType;
@@ -109,7 +110,7 @@ function generateFuelStops(
     currentTime += interval;
   }
   
-  console.log(`[Fuel Timeline] Generated ${fuelingSchedule.length} stops for ${(finishTimeMin/60).toFixed(2)}hr race:`, fuelingSchedule.map(t => formatTime(t)).join(', '));
+  debug(`[Fuel Timeline] Generated ${fuelingSchedule.length} stops for ${(finishTimeMin/60).toFixed(2)}hr race:`, fuelingSchedule.map(t => formatTime(t)).join(', '));
   
   // Calculate carbs per stop to hit target carbs/hour
   // Distribute total carbs across stops
@@ -191,16 +192,16 @@ export function useFuelCalculation({
     if (customCarbsPerHour !== undefined) {
       // Manual slider override - use as-is
       carbsPerHour = customCarbsPerHour;
-      console.log(`[Fuel Calc] Using custom slider: ${carbsPerHour}g/hr`);
+      debug(`[Fuel Calc] Using custom slider: ${carbsPerHour}g/hr`);
     } else if (!isNaN(weightKg) && weightKg > 0) {
       // Weight-based calculation: max(weight × 0.7, race baseline)
       const weightBased = Math.round(weightKg * CARBS_PER_KG_MULTIPLIER);
       carbsPerHour = Math.max(weightBased, raceBaseline);
-      console.log(`[Fuel Calc] Weight-based: ${weightKg}kg × 0.7 = ${weightBased}g, max(${weightBased}, ${raceBaseline}) = ${carbsPerHour}g/hr`);
+      debug(`[Fuel Calc] Weight-based: ${weightKg}kg × 0.7 = ${weightBased}g, max(${weightBased}, ${raceBaseline}) = ${carbsPerHour}g/hr`);
     } else {
       // No weight provided - use race baseline
       carbsPerHour = raceBaseline;
-      console.log(`[Fuel Calc] Using race baseline: ${carbsPerHour}g/hr`);
+      debug(`[Fuel Calc] Using race baseline: ${carbsPerHour}g/hr`);
     }
 
     carbsPerHour = Math.min(carbsPerHour, raceMax);

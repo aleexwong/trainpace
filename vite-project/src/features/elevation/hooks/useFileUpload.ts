@@ -5,6 +5,8 @@
 
 import { useState, useCallback } from "react";
 import type { GPXAnalysisResponse, AnalysisSettings, ProfilePoint } from "../types";
+import { debug } from "@/lib/debug";
+import { reportError } from "@/lib/reportError";
 
 export interface UploadedFileData {
   gpxText: string;
@@ -79,8 +81,8 @@ export function useFileUpload({
       setLoading(true);
       setError(null);
       setFilename(filename);
-      console.log(`File parsed: ${fileUrl}`);
-      console.log(`New docId from upload: ${docId}`);
+      debug(`File parsed: ${fileUrl}`);
+      debug(`New docId from upload: ${docId}`);
 
       if (displayPoints && displayPoints.length > 0) {
         setUploadedRoutePoints(displayPoints);
@@ -122,7 +124,7 @@ export function useFileUpload({
         }
       } catch (err) {
         setError((err as Error)?.message ?? "Upload failed");
-        console.error("GPX Analysis Error:", err);
+        reportError(err, { scope: "elevation.gpxAnalysis" });
       } finally {
         setLoading(false);
       }

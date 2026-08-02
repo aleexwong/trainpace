@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { reportError } from "@/lib/reportError";
 
 declare global {
   interface Window {
@@ -180,7 +181,7 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
         });
         
       } catch (error) {
-        console.error("Failed to load Mapbox:", error);
+        reportError(error, { scope: "map.loadMapboxPreview" });
       }
     };
 

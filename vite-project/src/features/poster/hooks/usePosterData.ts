@@ -13,6 +13,7 @@ import {
   TEMPLATE_COLORS,
   MAPBOX_TOKEN,
 } from "../types";
+import { debug } from "@/lib/debug";
 
 interface UsePosterDataProps {
   metadata: GPXMetadata;
@@ -67,7 +68,7 @@ export function usePosterData({
 
     const geocodeCity = async () => {
       setIsGeocodingCity(true);
-      console.log("🌍 Geocoding city from route...");
+      debug("🌍 Geocoding city from route...");
 
       const result = await getCityFromRoute(displayPoints, MAPBOX_TOKEN);
 
@@ -76,9 +77,9 @@ export function usePosterData({
           ...prev,
           city: result.city || "Vancouver",
         }));
-        console.log(`📍 City detected: ${result.city}`);
+        debug(`📍 City detected: ${result.city}`);
       } else {
-        console.log("⚠️ Could not detect city, using default");
+        debug("⚠️ Could not detect city, using default");
       }
 
       setIsGeocodingCity(false);
@@ -90,7 +91,7 @@ export function usePosterData({
   // Update template colors and map style when template changes
   useEffect(() => {
     const template = TEMPLATE_COLORS[selectedTemplate];
-    console.log(
+    debug(
       "🎯 Template changed to:",
       template.name,
       "| Style:",

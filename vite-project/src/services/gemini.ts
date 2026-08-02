@@ -4,6 +4,7 @@
  */
 
 import { auth } from "@/lib/firebase";
+import { reportError } from "@/lib/reportError";
 
 // Use environment variable for backend URL with fallback
 const API_BASE_URL =
@@ -109,10 +110,8 @@ export async function refineFuelPlan(
       try {
         authToken = await currentUser.getIdToken();
       } catch (error) {
-        console.warn(
-          "Failed to get auth token, continuing without auth:",
-          error
-        );
+        // Non-fatal: the request proceeds unauthenticated.
+        reportError(error, { scope: "gemini.authToken", fatal: false });
       }
     }
 
@@ -163,7 +162,7 @@ export async function refineFuelPlan(
       error: data.error,
     };
   } catch (error) {
-    console.error("Fuel plan refinement error:", error);
+    reportError(error, { scope: "gemini.refineFuelPlan" });
 
     if (error instanceof DOMException && error.name === "AbortError") {
       return {

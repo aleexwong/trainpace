@@ -194,6 +194,13 @@ export function validatePaceInputs(
     errors.time = "Invalid time format";
   }
 
+  // Hours was previously unbounded, so a 99-hour 5K validated fine and produced
+  // nonsense paces with no warning. 24h covers every supported race distance
+  // (and most ultras) while still rejecting typos.
+  if (h > 24) {
+    errors.time = "Race time must be under 24 hours";
+  }
+
   return {
     isValid: Object.keys(errors).length === 0,
     errors,

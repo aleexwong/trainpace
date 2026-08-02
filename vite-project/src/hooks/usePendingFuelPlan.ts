@@ -5,6 +5,8 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { toast } from "@/hooks/use-toast";
 import ReactGA from "react-ga4";
+import { debug } from "@/lib/debug";
+import { reportError } from "@/lib/reportError";
 
 export function usePendingFuelPlan() {
   const { user } = useAuth();
@@ -19,7 +21,7 @@ export function usePendingFuelPlan() {
       // Get pending plan from session storage
       const pendingPlanJson = sessionStorage.getItem("pending_fuel_plan");
       if (!pendingPlanJson) {
-        console.log("No pending plan found in session storage");
+        debug("No pending plan found in session storage");
         return;
       }
 
@@ -73,7 +75,7 @@ export function usePendingFuelPlan() {
           navigate("/dashboard");
         }, 1500);
       } catch (error) {
-        console.error("Failed to save pending fuel plan:", error);
+        reportError(error, { scope: "fuelPlan.savePending" });
         toast({
           title: "Failed to save plan",
           description: "Something went wrong. Please try creating a new plan.",

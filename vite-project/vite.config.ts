@@ -4,36 +4,11 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import { vitePrerenderPlugin } from "vite-prerender-plugin";
 
-import { getAllSeoPaths } from "./src/features/seo-pages/seoPages";
-import blogData from "./src/data/blog-posts.json";
+// Prerendered routes come from the same list that generates sitemap.xml, so the
+// two can't drift. Add crawlable routes in src/lib/seo/routes.ts, not here.
+import { getPrerenderPaths } from "./src/lib/seo/routes";
 
-const blogRoutes = blogData.posts.map((post) => `/blog/${post.slug}`);
-
-// Prerendered routes for SEO
-const prerenderedRoutes = [
-  "/",
-  "/calculator",
-  "/vdot",
-  "/fuel",
-  "/plan",
-  "/elevationfinder",
-  "/elevation-finder",
-  "/race",
-  "/mcp",
-  // Programmatic SEO routes
-  ...getAllSeoPaths(),
-  "/preview-route/boston",
-  "/preview-route/nyc",
-  "/preview-route/chicago",
-  "/preview-route/berlin",
-  "/preview-route/london",
-  "/preview-route/tokyo",
-  "/preview-route/sydney",
-  "/preview-route/oslo",
-  // Blog routes
-  "/blog",
-  ...blogRoutes,
-];
+const prerenderedRoutes = getPrerenderPaths();
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -60,6 +35,39 @@ export default defineConfig({
   },
   build: {
     minify: "esbuild",
+    rollupOptions: {
+      output: {
+        // Route-level code splitting alone left Firebase and PostHog in the shared
+        // entry chunk (~270 KB gzipped), which every anonymous visitor landing on a
+        // prerendered SEO page had to download before hydration — for an auth SDK
+        // they may never use. Splitting them out keeps the critical path small; the
+        // chunks are still fetched, just in parallel and cacheable independently.
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return;
+
+          if (id.includes("/firebase/") || id.includes("/@firebase/")) {
+            return "vendor-firebase";
+          }
+          if (id.includes("/posthog-js/")) {
+            return "vendor-posthog";
+          }
+          if (id.includes("/chart.js/") || id.includes("/react-chartjs-2/")) {
+            return "vendor-charts";
+          }
+          if (id.includes("/react-markdown/") || id.includes("/remark-") || id.includes("/micromark")) {
+            return "vendor-markdown";
+          }
+          if (
+            id.includes("/react/") ||
+            id.includes("/react-dom/") ||
+            id.includes("/react-router") ||
+            id.includes("/scheduler/")
+          ) {
+            return "vendor-react";
+          }
+        },
+      },
+    },
   },
   esbuild: {
     drop: process.env.NODE_ENV === "production" ? ["console", "debugger"] : [],

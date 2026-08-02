@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import { reportError } from "@/lib/reportError";
 
 // Helper to get friendly error messages
 const getResetErrorMessage = (code: string): string => {
@@ -31,7 +32,7 @@ export default function ResetPassword() {
       await sendPasswordResetEmail(auth, email);
       setSent(true);
     } catch (err) {
-      console.error("Password reset error:", err);
+      reportError(err, { scope: "auth.passwordReset" });
       
       const errCode = (err as { code?: string })?.code;
       const errorMessage = errCode 

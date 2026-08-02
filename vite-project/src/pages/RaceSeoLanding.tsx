@@ -8,6 +8,7 @@ import marathonData from "@/data/marathon-data.json";
 import LeafletRoutePreview from "@/components/utils/LeafletRoutePreview";
 import { db } from "@/lib/firebase";
 import { getCurrentDocumentId } from "@/config/routes";
+import { reportError } from "@/lib/reportError";
 
 type MarathonPreviewRoute = {
   name: string;
@@ -68,18 +69,22 @@ export default function RaceSeoLanding() {
     ? marathonRoutesData[page.previewRouteKey]
     : undefined;
 
+  // Hoisted so the effect depends on the two primitives it actually reads,
+  // rather than on the identity of `page` / `basePreviewRoute`.
+  const previewRouteKey = page?.previewRouteKey;
+  const previewRouteSlug = basePreviewRoute?.slug;
+
   useEffect(() => {
-    if (!page) return;
     let cancelled = false;
 
     const loadFromFirestore = async () => {
-      if (!page.previewRouteKey || !basePreviewRoute?.slug) {
+      if (!previewRouteKey || !previewRouteSlug) {
         setRouteOverrides(null);
         return;
       }
 
       try {
-        const resolvedId = getCurrentDocumentId(basePreviewRoute.slug);
+        const resolvedId = getCurrentDocumentId(previewRouteSlug);
         const ref = doc(db, "gpx_uploads", resolvedId);
         const snap = await getDoc(ref);
         if (!snap.exists()) return;
@@ -129,7 +134,7 @@ export default function RaceSeoLanding() {
           setRouteOverrides(overrides);
         }
       } catch (err) {
-        console.error("Failed to load race route from Firestore:", err);
+        reportError(err, { scope: "race.loadRouteFromFirestore" });
       }
     };
 
@@ -138,7 +143,7 @@ export default function RaceSeoLanding() {
     return () => {
       cancelled = true;
     };
-  }, [page?.previewRouteKey, basePreviewRoute?.slug]);
+  }, [previewRouteKey, previewRouteSlug]);
 
   const previewRoute = useMemo(() => {
     if (!basePreviewRoute) return undefined;

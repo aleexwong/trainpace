@@ -9,6 +9,8 @@ import {
   Bookmark,
   AlertTriangle,
   Link2,
+  Globe,
+  Lock,
 } from "lucide-react";
 import { Timestamp } from "firebase/firestore";
 import { RouteMetadata } from "../types";
@@ -19,15 +21,25 @@ interface RouteCardProps {
   route: RouteMetadata;
   onDelete: (routeId: string, routeType: "uploaded" | "bookmarked") => void;
   onEditSlug?: (routeId: string, newSlug: string) => Promise<void>;
+  onToggleVisibility?: (routeId: string, isPublic: boolean) => Promise<void>;
 }
 
-export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
+export function RouteCard({
+  route,
+  onDelete,
+  onEditSlug,
+  onToggleVisibility,
+}: RouteCardProps) {
   const [showPreview, setShowPreview] = useState(true);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [editingUrl, setEditingUrl] = useState(false);
   const [slugInput, setSlugInput] = useState("");
   const [savingSlug, setSavingSlug] = useState(false);
+  const [savingVisibility, setSavingVisibility] = useState(false);
   const isBookmarked = route.type === "bookmarked";
+  // Routes uploaded before the flag existed have no `isPublic`; firestore.rules
+  // defaults those to readable, so the UI has to agree.
+  const isPublic = route.isPublic !== false;
   const needsMigration =
     isBookmarked && (!route.routeKey || (route.schemaVersion || 1) < 2);
 
@@ -72,6 +84,18 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
   const openEditUrl = () => {
     setSlugInput(currentSlug);
     setEditingUrl(true);
+  };
+
+  const handleToggleVisibility = async () => {
+    if (!onToggleVisibility) return;
+    setSavingVisibility(true);
+    try {
+      await onToggleVisibility(route.id, !isPublic);
+    } catch {
+      // Parent surfaces the error toast.
+    } finally {
+      setSavingVisibility(false);
+    }
   };
 
   const handleSaveSlug = async () => {
@@ -227,7 +251,35 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
                 <span className="hidden sm:inline">Edit URL</span>
               </button>
             )}
+            {route.type === "uploaded" && onToggleVisibility && (
+              <button
+                onClick={handleToggleVisibility}
+                disabled={savingVisibility}
+                className="text-sm py-2 px-3 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center space-x-1 disabled:opacity-50"
+                title={
+                  isPublic
+                    ? "This route is readable by anyone with the link. Make it private."
+                    : "This route is private. Make it shareable by link."
+                }
+                aria-label={isPublic ? "Make route private" : "Make route public"}
+              >
+                {isPublic ? (
+                  <Globe className="w-4 h-4" />
+                ) : (
+                  <Lock className="w-4 h-4" />
+                )}
+                <span className="hidden sm:inline">
+                  {isPublic ? "Public" : "Private"}
+                </span>
+              </button>
+            )}
           </div>
+          {route.type === "uploaded" && onToggleVisibility && !isPublic && (
+            <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
+              <Lock className="w-3 h-3 flex-shrink-0" />
+              Only you can open this route. Shared links will not resolve.
+            </p>
+          )}
         </div>
       </div>
 

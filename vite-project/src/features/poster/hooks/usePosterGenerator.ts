@@ -7,6 +7,8 @@ import { useState, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { type PosterData } from "../types";
 import { generatePosterImage } from "../utils/canvas";
+import { debug } from "@/lib/debug";
+import { reportError } from "@/lib/reportError";
 
 interface UsePosterGeneratorProps {
   getMapCanvas: () => HTMLCanvasElement | null;
@@ -40,13 +42,13 @@ export function usePosterGenerator({
     }
 
     setIsGenerating(true);
-    console.log("🚀 Starting poster generation");
+    debug("🚀 Starting poster generation");
 
     try {
       // Wait for preview map to be fully loaded
       await waitForMapReady();
 
-      console.log("📸 Capturing preview map");
+      debug("📸 Capturing preview map");
 
       // Get the preview map canvas directly
       const previewCanvas = getMapCanvas();
@@ -54,7 +56,7 @@ export function usePosterGenerator({
         throw new Error("Could not get map canvas");
       }
 
-      console.log("💾 Generating poster image");
+      debug("💾 Generating poster image");
 
       const blob = await generatePosterImage(previewCanvas, posterData);
 
@@ -67,7 +69,7 @@ export function usePosterGenerator({
         link.click();
         URL.revokeObjectURL(url);
 
-        console.log("✅ Poster downloaded!");
+        debug("✅ Poster downloaded!");
         toast({
           title: "Poster Generated!",
           description: "Your high-quality poster has been downloaded.",
@@ -76,8 +78,8 @@ export function usePosterGenerator({
 
       setIsGenerating(false);
     } catch (error) {
-      console.log("❌ Generation failed");
-      console.error("Error generating poster:", error);
+      debug("❌ Generation failed");
+      reportError(error, { scope: "poster.generate" });
       toast({
         title: "Generation Failed",
         description:

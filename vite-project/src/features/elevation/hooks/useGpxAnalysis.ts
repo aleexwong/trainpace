@@ -16,6 +16,8 @@ import type {
 import { API_ENDPOINTS, CACHE_SETTINGS } from "../types";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "@/lib/firebase";
+import { debug } from "@/lib/debug";
+import { reportError } from "@/lib/reportError";
 
 interface UseGpxAnalysisReturn {
   performAnalysis: (
@@ -68,7 +70,7 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
         const cacheSnap = await getDoc(cacheRef);
 
         if (!cacheSnap.exists()) {
-          console.log(`Cache miss for ${cacheKey}`);
+          debug(`Cache miss for ${cacheKey}`);
           return null;
         }
 
@@ -76,12 +78,12 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
 
         // Check expiration
         if (new Date(cached.expiresAt) < new Date()) {
-          console.log(`Cache expired for ${cacheKey}, cleaning up...`);
+          debug(`Cache expired for ${cacheKey}, cleaning up...`);
           await deleteDoc(cacheRef);
           return null;
         }
 
-        console.log(`Cache hit for ${cacheKey} - saved API call!`);
+        debug(`Cache hit for ${cacheKey} - saved API call!`);
 
         // Reconstruct full API response from cache + static data
         const reconstructed: GPXAnalysisResponse = {
@@ -124,7 +126,7 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
 
         return reconstructed;
       } catch (error) {
-        console.error("Cache lookup failed:", error);
+        reportError(error, { scope: "elevation.cacheLookup" });
         return null;
       }
     },
@@ -138,7 +140,10 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
   ) => {
     try {
       if (!apiResponse.cacheOptimization) {
-        console.warn("API response missing cache optimization data");
+        reportError(
+          new Error("Analysis API response missing cacheOptimization"),
+          { scope: "elevation.cacheAnalysis.missingOptimization", routeId }
+        );
         return;
       }
 
@@ -160,7 +165,7 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
         }
       );
     } catch (error) {
-      console.error("Failed to cache analysis:", error);
+      reportError(error, { scope: "elevation.cacheAnalysis" });
     }
   };
 
@@ -171,7 +176,10 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
   ) => {
     try {
       if (!apiResponse.cacheOptimization) {
-        console.warn("API response missing cache optimization data");
+        reportError(
+          new Error("Analysis API response missing cacheOptimization"),
+          { scope: "elevation.cacheStaticData.missingOptimization", routeId }
+        );
         return;
       }
 
@@ -182,7 +190,7 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
         staticDataCached: new Date().toISOString(),
       });
     } catch (error) {
-      console.error("Failed to cache static data:", error);
+      reportError(error, { scope: "elevation.cacheStaticData" });
     }
   };
 
@@ -236,7 +244,7 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
         ]);
       }
 
-      console.log(
+      debug(
         `🔥 API response received, elevation: ${analysis.elevationGain}`
       );
 
@@ -260,13 +268,13 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
       analysisData: GPXAnalysisResponse | null;
       error: string | null;
     }> => {
-      console.log(`🔧 Settings change requested`);
+      debug(`🔧 Settings change requested`);
 
       const oldCacheKey = getCacheKey(currentSettings);
       const newCacheKey = getCacheKey(newSettings);
 
       if (oldCacheKey === newCacheKey) {
-        console.log("Settings unchanged, no API call needed");
+        debug("Settings unchanged, no API call needed");
         return { analysisData: null, error: null };
       }
 
@@ -282,7 +290,7 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
             );
 
             if (cachedForNewSettings) {
-              console.log(`Using cached analysis for new settings`);
+              debug(`Using cached analysis for new settings`);
               return { analysisData: cachedForNewSettings, error: null };
             }
           }
@@ -292,7 +300,7 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
 
           // Fallback methods to get GPX content
           if (!gpxText) {
-            console.log(
+            debug(
               "🔄 originalGpxText not available, trying fallbacks..."
             );
 
@@ -321,7 +329,7 @@ export function useGpxAnalysis(): UseGpxAnalysisReturn {
             throw new Error("Could not retrieve GPX content for re-analysis");
           }
 
-          console.log(`Cache miss for new settings, calling API...`);
+          debug(`Cache miss for new settings, calling API...`);
           const analysis = await performAnalysis(
             gpxText,
             newSettings,

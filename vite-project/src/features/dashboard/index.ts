@@ -23,6 +23,7 @@ export {
   deletePacePlan,
   updatePacePlan,
   updateRouteSlug,
+  setRouteVisibility,
   copyFuelPlanToClipboard,
   copyPacePlanToClipboard,
 } from "./actions";

@@ -22,6 +22,7 @@ import {
   type RaceEntry,
 } from "../types";
 import { RaceEntryFields, type RaceFormState } from "./RaceEntryFields";
+import { reportError } from "@/lib/reportError";
 
 const emptyRaceForm: RaceFormState = {
   distanceMeters: 0,
@@ -117,7 +118,7 @@ export function OnboardingFlow() {
       });
       navigate("/dashboard");
     } catch (err) {
-      console.error("Failed to save goals:", err);
+      reportError(err, { scope: "goals.saveOnboarding" });
       toast({
         title: "Couldn't save your goals",
         description: "Please try again.",

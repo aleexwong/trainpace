@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import PreviewRoutesDropdown from "./PreviewRoutesDropdown";
 import Footer from "./Footer";
+import { reportError } from "@/lib/reportError";
 
 type NavBehavior = "static" | "sticky" | "fixed" | "auto-hide";
 interface NavLink {
@@ -113,7 +114,7 @@ export default function MainLayout() {
       navigate("/");
       setMobileMenuOpen(false);
     } catch (error) {
-      console.error("Error signing out:", error);
+      reportError(error, { scope: "auth.signOut" });
     }
   };
 

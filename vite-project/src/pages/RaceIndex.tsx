@@ -7,6 +7,7 @@ import { raceSeoPages } from "@/features/seo-pages/seoPages";
 import marathonData from "@/data/marathon-data.json";
 import { db } from "@/lib/firebase";
 import { getCurrentDocumentId } from "@/config/routes";
+import { reportError } from "@/lib/reportError";
 
 type MarathonPreviewRoute = {
   name: string;
@@ -168,7 +169,7 @@ export default function RaceIndex() {
           setFeaturedSource("fallback");
         }
       } catch (err) {
-        console.error("Failed to load featured races from Firestore:", err);
+        reportError(err, { scope: "race.loadFeaturedRaces" });
         if (!cancelled) {
           setFeaturedSource("fallback");
           setFeaturedError(err instanceof Error ? err.message : "Unknown error");

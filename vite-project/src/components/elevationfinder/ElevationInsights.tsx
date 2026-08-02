@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import AuthGuard from "@/features/auth/AuthGuard";
 import { UnifiedDifficultyView } from "./UnifiedDifficultyView";
+import { debug } from "@/lib/debug";
 
 export interface ElevationInsightsProps {
   elevationInsights: ElevationAnalysis | null;
@@ -72,12 +73,12 @@ export function ElevationInsights({
 
     // Rate limiting - prevent spam
     if (now - lastApiCall.current < MIN_API_INTERVAL) {
-      console.log("Rate limited - too soon since last call");
+      debug("Rate limited - too soon since last call");
       return;
     }
 
     if (onSettingsChange) {
-      console.log("API call on release:", {
+      debug("API call on release:", {
         basePaceMinPerKm: localBasePace,
         gradeThreshold: localGradeThreshold,
       });

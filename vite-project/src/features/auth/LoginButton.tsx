@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { isValidRedirect } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { reportError } from "@/lib/reportError";
 
 export function LoginButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +32,7 @@ export function LoginButton() {
       }
       // Otherwise stay on current page
     } catch (error) {
-      console.error("Google sign in failed:", error);
+      reportError(error, { scope: "auth.googleSignIn" });
       const code = (error as { code?: string })?.code;
       if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") {
         toast({

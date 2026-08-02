@@ -28,6 +28,8 @@ import {
   buildRouteSlugPath,
   buildRouteUrl,
 } from "../../lib/routeSlug";
+import { debug } from "@/lib/debug";
+import { reportError } from "@/lib/reportError";
 
 interface GpxUploaderProps {
   onFileParsed: (
@@ -130,7 +132,7 @@ export default function GpxUploader({
 
       return null;
     } catch (error) {
-      console.error("Error checking for duplicates:", error);
+      reportError(error, { scope: "gpx.checkDuplicate" });
       return null;
     }
   };
@@ -168,7 +170,7 @@ export default function GpxUploader({
           hourSnapshot.size >= maxUploadsPerHour
       );
     } catch (error) {
-      console.error("Error checking rate limits:", error);
+      reportError(error, { scope: "gpx.checkRateLimits" });
     }
   };
 
@@ -286,6 +288,10 @@ export default function GpxUploader({
         uploadedAt: serverTimestamp(),
         contentValidated: true,
         deleted: false,
+        // Uploading mints a shareable URL, so routes start public to preserve the
+        // existing flow. The owner can flip this from the dashboard; firestore.rules
+        // gates reads on it. See setRouteVisibility in features/dashboard/actions.ts.
+        isPublic: true,
         metadata: processed.metadata,
         displayPoints: processed.displayPoints,
         thumbnailPoints: processed.thumbnailPoints,
@@ -303,9 +309,9 @@ export default function GpxUploader({
 
       await setDoc(docRef, docData);
 
-      console.log(`Route document created: ${docId}`);
-      console.log(`File size: ${(file.size / 1024).toFixed(1)}KB`);
-      console.log(`Ready for smart caching on first analysis`);
+      debug(`Route document created: ${docId}`);
+      debug(`File size: ${(file.size / 1024).toFixed(1)}KB`);
+      debug(`Ready for smart caching on first analysis`);
 
       return {
         fileUrl: downloadURL,
@@ -314,7 +320,7 @@ export default function GpxUploader({
         displayUrl, // Pretty URL so the address bar + share use the slug path
       };
     } catch (error) {
-      console.error("Upload failed:", error);
+      reportError(error, { scope: "gpx.upload" });
       throw new Error("Upload failed. Please try again.");
     }
   };
@@ -354,7 +360,7 @@ export default function GpxUploader({
 
       // Method 1: Use content stored in Firestore (fastest)
       if (duplicateFound?.content) {
-        console.log("Loading content from Firestore cache");
+        debug("Loading content from Firestore cache");
         onFileParsed(
           duplicateFound.content,
           filename,
@@ -368,7 +374,7 @@ export default function GpxUploader({
 
       // Method 2: Get fresh download URL from storage reference
       if (duplicateFound?.storageRef) {
-        console.log("Loading content from Firebase Storage");
+        debug("Loading content from Firebase Storage");
         const fileRef = ref(storage, duplicateFound.storageRef);
         const freshUrl = await getDownloadURL(fileRef);
 
@@ -390,7 +396,7 @@ export default function GpxUploader({
       }
 
       // Method 3: Direct fetch with original URL (fallback)
-      console.log("Trying direct fetch with original URL");
+      debug("Trying direct fetch with original URL");
       const response = await fetch(fileUrl);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -417,6 +423,7 @@ export default function GpxUploader({
         shortId,
         displayUrl,
         staticRouteData: null,
+        isPublic: true,
       });
 
       const docId = docRef.id;
@@ -430,7 +437,7 @@ export default function GpxUploader({
         displayUrl
       );
     } catch (error) {
-      console.error("All fetch methods failed:", error);
+      reportError(error, { scope: "gpx.fetchContent" });
       toast({
         title: "Error Loading File",
         description:
@@ -469,7 +476,7 @@ export default function GpxUploader({
         variant: "default",
       });
     } catch (error) {
-      console.error("Upload error:", error);
+      reportError(error, { scope: "gpx.handleFile" });
       toast({
         title: "Upload Failed",
         description:
@@ -554,7 +561,7 @@ export default function GpxUploader({
       // Upload to Firebase
       await proceedWithUpload(file, content, fileHash);
     } catch (error) {
-      console.error("Upload error:", error);
+      reportError(error, { scope: "gpx.handleFile" });
       toast({
         title: "Upload Failed",
         description:

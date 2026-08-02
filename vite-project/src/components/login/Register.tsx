@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { reportError } from "@/lib/reportError";
 
 const registerSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -97,7 +98,7 @@ export default function Register() {
         }
       }, 1500);
     } catch (err) {
-      console.error("Registration error:", err);
+      reportError(err, { scope: "auth.register" });
       
       const errCode = (err as { code?: string })?.code;
       const errorMessage = errCode 

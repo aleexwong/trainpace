@@ -8,6 +8,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../../lib/firebase";
 import { PacePlan } from "../types";
+import { reportError } from "@/lib/reportError";
 
 export function usePacePlans(userId: string | undefined) {
   const [pacePlans, setPacePlans] = useState<PacePlan[]>([]);
@@ -46,7 +47,7 @@ export function usePacePlans(userId: string | undefined) {
 
       setPacePlans(plans);
     } catch (err) {
-      console.error("Error loading pace plans:", err);
+      reportError(err, { scope: "dashboard.loadPacePlans" });
       setError("Failed to load pace plans");
     } finally {
       setLoading(false);

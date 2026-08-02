@@ -2,9 +2,22 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // GPX uploads — public read; owner can create/update/delete
+    // GPX uploads — readable when the owner has marked the route public,
+    // always readable by the owner.
+    //
+    // These docs hold the full raw GPX `content`, i.e. a GPS trace that usually
+    // starts at the runner's home. `allow read: if true` therefore exposed every
+    // upload whether or not it had been shared, and the human-readable slug URLs
+    // made those docs guessable. Reads are now gated on an explicit `isPublic`
+    // flag set by the owner (see setRouteVisibility in features/dashboard/actions.ts).
+    //
+    // Backward compatibility: docs uploaded before `isPublic` existed have no such
+    // field, and `.get(field, default)` supplies `true` for them, so every link
+    // shared before this change keeps resolving. New uploads write the field
+    // explicitly. Flip the default to `false` only alongside a backfill.
     match /gpx_uploads/{document} {
-      allow read: if true;
+      allow read: if resource.data.get('isPublic', true) == true
+        || (request.auth != null && request.auth.uid == resource.data.userId);
       allow create: if request.auth != null
         && request.auth.uid == request.resource.data.userId;
       allow update, delete: if request.auth != null
@@ -21,11 +34,23 @@ service cloud.firestore {
         && request.auth.uid == resource.data.userId;
     }
 
-    // Elevation analysis cache — public read; any authed user can write
+    // Elevation analysis cache — public read; only the creator may overwrite.
+    //
+    // `allow update, delete: if request.auth != null` let any signed-in user
+    // overwrite or delete ANY cached analysis, including entries for other
+    // people's routes — cheap cache poisoning, since these results feed the
+    // pacing and difficulty numbers shown to viewers. Writes are now pinned to
+    // the creating uid.
+    //
+    // Entries created before this change have `createdBy: ""` and are therefore
+    // immutable: a re-analysis will fail the update, the caller swallows it (it
+    // is only a cache), and the API is hit instead. Delete such docs to reclaim.
     match /elevation_analysis_cache/{cacheId} {
       allow read: if true;
-      allow create: if request.auth != null;
-      allow update, delete: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.createdBy == request.auth.uid;
+      allow update, delete: if request.auth != null
+        && resource.data.get('createdBy', '') == request.auth.uid;
     }
 
     // User fuel plans — owner only

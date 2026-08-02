@@ -8,6 +8,7 @@ interface RoutesSectionProps {
   loading: boolean;
   onDeleteRoute: (routeId: string, routeType: "uploaded" | "bookmarked") => void;
   onEditSlug?: (routeId: string, newSlug: string) => Promise<void>;
+  onToggleVisibility?: (routeId: string, isPublic: boolean) => Promise<void>;
 }
 
 const ROUTES_PER_PAGE = 6; // 2 rows of 3 cards max - keeps WebGL contexts low
@@ -17,6 +18,7 @@ export function RoutesSection({
   loading,
   onDeleteRoute,
   onEditSlug,
+  onToggleVisibility,
 }: RoutesSectionProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -101,6 +103,7 @@ export function RoutesSection({
             route={route}
             onDelete={onDeleteRoute}
             onEditSlug={onEditSlug}
+            onToggleVisibility={onToggleVisibility}
           />
         ))}
       </div>
