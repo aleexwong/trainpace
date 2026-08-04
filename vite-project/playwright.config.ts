@@ -29,6 +29,8 @@ export default defineConfig({
       VITE_FIREBASE_STORAGE_BUCKET: process.env.VITE_FIREBASE_STORAGE_BUCKET ?? "test.appspot.com",
       VITE_FIREBASE_MESSAGING_SENDER_ID: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID ?? "000000000000",
       VITE_FIREBASE_APP_ID: process.env.VITE_FIREBASE_APP_ID ?? "1:000000000000:web:0000000000000000",
+      VITE_PUBLIC_POSTHOG_KEY: process.env.VITE_PUBLIC_POSTHOG_KEY ?? "test-placeholder-key",
+      VITE_PUBLIC_POSTHOG_HOST: process.env.VITE_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com",
     },
   },
 });
