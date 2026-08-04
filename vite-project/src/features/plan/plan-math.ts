@@ -425,6 +425,7 @@ export function generateTrainingPlan(inputs: PlanGeneratorInputs): TrainingPlan 
     : `${raceName} Plan — ${capitalize(currentFitness)}`;
 
   return {
+    id: newPlanId(),
     name,
     goalRace,
     raceDate,
@@ -436,6 +437,21 @@ export function generateTrainingPlan(inputs: PlanGeneratorInputs): TrainingPlan 
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────
+
+/**
+ * Client-minted Firestore document id, assigned at generation time so a plan
+ * has a stable identity before it is ever saved. This is what makes saving
+ * idempotent: the plan always writes to `user_training_plans/{plan.id}`, so
+ * clicking Save twice (or an auto-save racing a manual one after sign-in)
+ * updates one doc instead of creating duplicates.
+ */
+export function newPlanId(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  // Non-secure-context / older-runtime fallback (prerender, embedded webviews).
+  return `plan_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
 
 function capitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);

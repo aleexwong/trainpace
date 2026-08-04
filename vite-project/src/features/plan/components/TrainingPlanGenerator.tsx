@@ -240,8 +240,13 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
 
           <PlanOverview plan={plan} />
 
-          {/* Save prompt for logged-in users */}
-          {!user && (
+          {/* Save affordance — deliberately outside the segmented panels
+              below. It used to live only inside PlanCalendar, i.e. only in the
+              Schedule segment, and the default segment for a plan that has
+              already started is This Week — so on mobile (one panel visible at
+              a time) a signed-in runner had no reachable way to save at all.
+              Here it is visible on every tab and at every width. */}
+          {!user ? (
             <div className="rounded-2xl bg-emerald-50 border border-emerald-100 p-4 sm:p-5 flex items-center justify-between gap-4">
               <div>
                 <div className="font-semibold text-emerald-800 text-sm sm:text-base">Save your plan</div>
@@ -256,6 +261,35 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
               >
                 Sign in →
               </a>
+            </div>
+          ) : (
+            <div className="rounded-2xl bg-emerald-50 border border-emerald-100 p-4 sm:p-5 flex items-center justify-between gap-4">
+              <div>
+                <div className="font-semibold text-emerald-800 text-sm sm:text-base">
+                  {savedId ? "Saved to your dashboard" : "Save your plan"}
+                </div>
+                <div className="hidden sm:block text-sm text-emerald-700 mt-0.5">
+                  {savedId
+                    ? "Your progress now syncs to your account across devices."
+                    : "Keep this plan on your account and track progress as you go."}
+                </div>
+              </div>
+              {savedId ? (
+                <a
+                  href="/dashboard"
+                  className="flex-shrink-0 rounded-xl border border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-700 font-bold px-4 sm:px-5 py-2 sm:py-2.5 text-sm transition-colors"
+                >
+                  ✓ View in dashboard
+                </a>
+              ) : (
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="flex-shrink-0 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold px-4 sm:px-5 py-2 sm:py-2.5 text-sm transition-colors"
+                >
+                  {saving ? "Saving…" : "Save to Dashboard"}
+                </button>
+              )}
             </div>
           )}
 
@@ -367,11 +401,12 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
 
             {/* Right column: Schedule */}
             <div className={cn("lg:col-span-3", activeSegment !== "schedule" && "hidden", "lg:block")}>
+              {/* No onSave/saving/savedId here — the save control moved up to
+                  the always-visible card above, so it isn't buried in this
+                  segment. PlanCalendar keeps those props for the dashboard's
+                  read-only rendering path. */}
               <PlanCalendar
                 plan={plan}
-                onSave={user ? handleSave : undefined}
-                saving={saving}
-                savedId={savedId}
                 progress={progress}
                 editor={editor}
                 isActive={activeSegment === "schedule"}
