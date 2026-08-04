@@ -12,6 +12,7 @@ import { AIRecommendationCard } from "./AIRecommendationCard";
 import { FUEL_CONTEXT_PRESETS, type AIRecommendation, type RaceType } from "../types";
 import { getFuelPlanPrompt, type FuelPlanContext } from "@/services/gemini";
 import { useToast } from "@/hooks/use-toast";
+import posthog from "posthog-js";
 
 interface AIPersonalizationProps {
   raceType: RaceType;
@@ -69,6 +70,11 @@ export function AIPersonalization({
 
   const handleRefine = async () => {
     await onRefine(userContext);
+    posthog.capture("fuel_ai_advice_requested", {
+      race_type: raceType,
+      preset_count: selectedPresets.size,
+      has_custom_context: selectedPresets.size === 0,
+    });
     setCurrentSlide(0);
   };
 

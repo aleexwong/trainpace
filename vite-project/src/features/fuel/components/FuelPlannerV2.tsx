@@ -10,6 +10,7 @@ import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { usePendingFuelPlan } from "@/hooks/usePendingFuelPlan";
 import ReactGA from "react-ga4";
+import posthog from "posthog-js";
 import { type FuelPlanContext } from "@/services/gemini";
 
 // Feature imports
@@ -134,6 +135,10 @@ export function FuelPlannerV2({
         action: "Calculated Fuel Plan",
         label: raceType,
         value: getFinishTimeInMinutes(raceType, timeHours, timeMinutes),
+      });
+      posthog.capture("fuel_plan_calculated", {
+        race_type: raceType,
+        has_custom_carbs_per_hour: customCarbsPerHour !== undefined,
       });
     }
   };

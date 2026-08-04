@@ -1,4 +1,5 @@
 import { useState } from "react";
+import posthog from "posthog-js";
 import type { GoalRace, FitnessLevel, RunDay, PlanGeneratorInputs } from "../types";
 
 const GOAL_RACES: GoalRace[] = ["5K", "10K", "Half Marathon", "Marathon"];
@@ -59,6 +60,12 @@ export function PlanInputForm({
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    posthog.capture("training_plan_generated", {
+      goal_race: goalRace,
+      fitness_level: fitness,
+      training_days_count: days.length,
+      has_pace_prefill: Boolean(prefillPaces),
+    });
     onGenerate({
       goalRace,
       raceDate,

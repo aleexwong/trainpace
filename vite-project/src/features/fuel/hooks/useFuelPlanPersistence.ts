@@ -10,6 +10,7 @@ import { useAuth } from "@/features/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import ReactGA from "react-ga4";
+import posthog from "posthog-js";
 import type {
   RaceType,
   FuelPlanResult,
@@ -106,6 +107,10 @@ export function useFuelPlanPersistence(): UseFuelPlanPersistenceReturn {
           category: "Fuel Planner",
           action: "Saved Plan to Dashboard",
           label: params.raceType,
+        });
+        posthog.capture("fuel_plan_saved", {
+          race_type: params.raceType,
+          includes_ai_advice: params.recommendations.length > 0,
         });
       } catch (error) {
         console.error("Failed to save fuel plan:", error);
