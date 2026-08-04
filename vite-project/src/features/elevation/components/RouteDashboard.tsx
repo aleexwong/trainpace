@@ -17,6 +17,7 @@ import type {
 } from "@/features/elevation/types";
 import type { ElevationAnalysis } from "@/types/elevation";
 import { computeTotalTime } from "@/utils/difficulty";
+import posthog from "posthog-js";
 import { MetricTiles } from "./MetricTiles";
 import { SplitsTable } from "./SplitsTable";
 import { CumulativeGainChart } from "./CumulativeGainChart";
@@ -95,6 +96,10 @@ export function RouteDashboard({
 
   const handleCommit = useCallback(() => {
     onSettingsChange?.({ basePaceMinPerKm: basePace, gradeThreshold });
+    posthog.capture("route_analysis_settings_updated", {
+      base_pace_min_per_km: basePace,
+      grade_threshold: gradeThreshold,
+    });
   }, [onSettingsChange, basePace, gradeThreshold]);
 
   // Resolve the hovered distance to a lat/lng on the route for the map marker.

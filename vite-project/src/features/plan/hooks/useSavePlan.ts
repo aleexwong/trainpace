@@ -23,6 +23,7 @@ import { db } from "../../../lib/firebase";
 import { newPlanId } from "../plan-math";
 import type { TrainingPlan } from "../types";
 import { readGuestProgress, clearGuestProgress } from "../utils/planPersistence";
+import posthog from "posthog-js";
 
 export function useSavePlan() {
   const [saving, setSaving] = useState(false);
@@ -82,6 +83,10 @@ export function useSavePlan() {
           throw e;
         }
       }
+      posthog.capture("training_plan_saved", {
+        goal_race: plan.goalRace,
+        training_weeks: plan.weeks.length,
+      });
       // Safe to clear even though TrainingPlanGenerator also clears this
       // once savedId lands — belt-and-suspenders for other save callers.
       clearGuestProgress();

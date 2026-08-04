@@ -10,6 +10,7 @@ import { useAuth } from "@/features/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import ReactGA from "react-ga4";
+import posthog from "posthog-js";
 import type { PaceInputs, PaceResults } from "../types";
 
 interface SavePlanParams {
@@ -112,6 +113,11 @@ export function usePacePlanPersistence(): UsePacePlanPersistenceReturn {
           category: "Pace Calculator",
           action: "Saved Plan to Dashboard",
           label: `${inputs.distance}${inputs.units}`,
+        });
+        posthog.capture("pace_plan_saved", {
+          distance: inputs.distance,
+          distance_unit: inputs.units,
+          pace_unit: inputs.paceType,
         });
       } catch (error) {
         console.error("Failed to save pace plan:", error);

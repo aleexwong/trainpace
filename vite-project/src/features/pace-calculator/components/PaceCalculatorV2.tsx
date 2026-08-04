@@ -10,6 +10,7 @@ import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { usePendingPacePlan } from "@/hooks/usePendingPacePlan";
 import ReactGA from "react-ga4";
+import posthog from "posthog-js";
 import { calculateVdot } from "@/features/vdot-calculator/vdot-math";
 
 import type { PaceInputs, PaceResults, FormErrors, PaceUnit } from "../types";
@@ -106,6 +107,11 @@ export function PaceCalculatorV2({
         category: "Pace Calculator",
         action: "Calculated Paces",
         label: `${inputs.distance}${inputs.units} (suggested time)`,
+      });
+      posthog.capture("pace_calculated", {
+        distance: inputs.distance,
+        distance_unit: inputs.units,
+        calculation_source: "suggested_time",
       });
     }
   }, [autoCalc, calculation.isValid, calculation.result, inputs.distance, inputs.units]);
@@ -213,6 +219,11 @@ export function PaceCalculatorV2({
           category: "Pace Calculator",
           action: "Calculated Paces",
           label: `${inputs.distance}${inputs.units}`,
+        });
+        posthog.capture("pace_calculated", {
+          distance: inputs.distance,
+          distance_unit: inputs.units,
+          calculation_source: "form_submission",
         });
       }
     } catch (_error) {

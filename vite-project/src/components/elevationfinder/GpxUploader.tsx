@@ -22,6 +22,7 @@ import {
 import { storage, db } from "../../lib/firebase";
 import { useAuth } from "../../features/auth/AuthContext";
 import { processGPXUpload } from "../../lib/gpxMetaData";
+import posthog from "posthog-js";
 import {
   slugify,
   generateShortId,
@@ -461,6 +462,10 @@ export default function GpxUploader({
 
       // 🚀 NEW: Pass docId to enable immediate caching + the pretty displayUrl
       onFileParsed(content, file.name, fileUrl, docId, displayPoints, displayUrl);
+      posthog.capture("gpx_route_uploaded", {
+        file_size_bucket: file.size < 1024 * 1024 ? "under_1mb" : "1mb_or_larger",
+        route_point_count: displayPoints.length,
+      });
 
       toast({
         title: "Upload Successful",

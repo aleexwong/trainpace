@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/features/auth/AuthContext";
 import { calculateVdot, predictRaceTime, formatTime } from "@/features/vdot-calculator/vdot-math";
+import posthog from "posthog-js";
 
 import { useTrainingGoals } from "../hooks/useTrainingGoals";
 import {
@@ -114,6 +115,11 @@ export function OnboardingFlow() {
       toast({
         title: "Goals saved! 🎯",
         description: "Your tools are now personalized to your goal.",
+      });
+      posthog.capture("onboarding_completed", {
+        recent_race_distance: recent.distanceName,
+        goal_race_distance: goal.distanceName,
+        enabled_integrations_count: enabled.length,
       });
       navigate("/dashboard");
     } catch (err) {
