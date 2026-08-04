@@ -8,6 +8,7 @@ export { MetricTiles } from "./MetricTiles";
 export { SplitsTable } from "./SplitsTable";
 export { CumulativeGainChart } from "./CumulativeGainChart";
 export { TerrainBreakdown } from "./TerrainBreakdown";
+export { RaceComparison } from "./RaceComparison";
 export { SettingsPanel } from "./SettingsPanel";
 
 // Re-export existing components from their original locations

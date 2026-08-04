@@ -67,6 +67,16 @@ export function MetricTiles({
       ? estimatedTotalTime / insights.totalDistance / basePaceMinPerKm
       : 1;
 
+  // Grade-adjusted "terrain tax": how much slower the hilly course plays than
+  // the same effort on flat ground. Rounded; only shown when it's non-trivial.
+  const terrainTaxPct = Math.round((avgPaceMultiplier - 1) * 100);
+  const terrainTaxSub =
+    terrainTaxPct >= 1
+      ? `+${terrainTaxPct}% vs flat`
+      : terrainTaxPct <= -1
+        ? `${terrainTaxPct}% vs flat`
+        : "≈ flat";
+
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
       <Tile
@@ -83,8 +93,9 @@ export function MetricTiles({
       />
       <Tile
         icon={<Gauge className="w-4 h-4 text-emerald-500" />}
-        label="Avg Pace"
+        label="Grade-Adj. Pace"
         value={formatPace(avgPaceMultiplier, basePaceMinPerKm)}
+        sub={terrainTaxSub}
       />
       <Tile
         icon={<Activity className="w-4 h-4 text-amber-500" />}

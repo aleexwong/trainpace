@@ -5,7 +5,58 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "../../lib/firebase";
+import {
+  slugify,
+  generateShortId,
+  buildRouteSlugPath,
+  buildRouteUrl,
+} from "../../lib/routeSlug";
 import { FuelPlan, PacePlan } from "./types";
+
+/**
+ * Update the editable URL slug of an uploaded route. The immutable shortId is
+ * preserved (or generated for legacy routes that predate slugs) so existing
+ * shared links keep resolving while the slug part of the URL changes.
+ * Returns the new slug / shortId / displayUrl for optimistic local updates.
+ */
+export async function updateRouteSlug(
+  userId: string,
+  routeId: string,
+  desiredSlug: string
+): Promise<{ slug: string; shortId: string; displayUrl: string }> {
+  const slug = slugify(desiredSlug);
+  if (!slug) {
+    throw new Error("Please enter a URL with at least one letter or number");
+  }
+
+  const docRef = doc(db, "gpx_uploads", routeId);
+  const docSnap = await getDoc(docRef);
+  if (!docSnap.exists()) {
+    throw new Error("Route does not exist");
+  }
+
+  const data = docSnap.data();
+  if (!data.userId || data.userId !== userId) {
+    throw new Error("You are not authorized to edit this route");
+  }
+
+  // Keep the existing resolution token; mint one for legacy routes.
+  const shortId: string =
+    typeof data.shortId === "string" && data.shortId.length > 0
+      ? data.shortId
+      : generateShortId();
+
+  const displayUrl = buildRouteUrl(buildRouteSlugPath(slug, shortId));
+
+  await updateDoc(docRef, {
+    slug,
+    shortId,
+    displayUrl,
+    updatedAt: Date.now(),
+  });
+
+  return { slug, shortId, displayUrl };
+}
 
 export async function deleteRoute(
   userId: string,

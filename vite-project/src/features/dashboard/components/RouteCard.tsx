@@ -8,19 +8,25 @@ import {
   Eye,
   Bookmark,
   AlertTriangle,
+  Link2,
 } from "lucide-react";
 import { Timestamp } from "firebase/firestore";
 import { RouteMetadata } from "../types";
+import { slugify, buildRouteSlugPath } from "../../../lib/routeSlug";
 import MapboxRoutePreview from "../../../components/utils/MapboxRoutePreview";
 
 interface RouteCardProps {
   route: RouteMetadata;
   onDelete: (routeId: string, routeType: "uploaded" | "bookmarked") => void;
+  onEditSlug?: (routeId: string, newSlug: string) => Promise<void>;
 }
 
-export function RouteCard({ route, onDelete }: RouteCardProps) {
+export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
   const [showPreview, setShowPreview] = useState(true);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [editingUrl, setEditingUrl] = useState(false);
+  const [slugInput, setSlugInput] = useState("");
+  const [savingSlug, setSavingSlug] = useState(false);
   const isBookmarked = route.type === "bookmarked";
   const needsMigration =
     isBookmarked && (!route.routeKey || (route.schemaVersion || 1) < 2);
@@ -36,7 +42,9 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
 
   const getRouteLink = () => {
     if (route.type === "uploaded") {
-      return `/elevationfinder/${route.id}`;
+      // Prefer the pretty /elevationfinder/{slug}-{shortId} URL; fall back to
+      // the raw doc id for legacy routes uploaded before slugs existed.
+      return route.displayUrl || `/elevationfinder/${route.id}`;
     } else {
       if (route.routeSlug) {
         return `/elevationfinder/${route.routeSlug}`;
@@ -48,6 +56,40 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
   const handleDelete = () => {
     onDelete(route.id, route.type);
     setDeleteConfirm(false);
+  };
+
+  // Default the editor to the current slug, falling back to a slug derived from
+  // the route/file name for legacy routes that never had one.
+  const currentSlug =
+    route.slug || slugify(route.filename || route.metadata?.routeName || "");
+
+  const previewSlug = slugify(slugInput);
+  const previewPath = buildRouteSlugPath(
+    previewSlug,
+    route.shortId || "xxxxxx"
+  );
+
+  const openEditUrl = () => {
+    setSlugInput(currentSlug);
+    setEditingUrl(true);
+  };
+
+  const handleSaveSlug = async () => {
+    if (!onEditSlug) return;
+    const cleaned = slugify(slugInput);
+    if (!cleaned || cleaned === route.slug) {
+      setEditingUrl(false);
+      return;
+    }
+    setSavingSlug(true);
+    try {
+      await onEditSlug(route.id, cleaned);
+      setEditingUrl(false);
+    } catch {
+      // Parent surfaces the error toast; keep the dialog open to retry.
+    } finally {
+      setSavingSlug(false);
+    }
   };
 
   return (
@@ -174,9 +216,80 @@ export function RouteCard({ route, onDelete }: RouteCardProps) {
                 {route.type === "uploaded" ? "View Upload" : "View Preview"}
               </span>
             </Link>
+            {route.type === "uploaded" && onEditSlug && (
+              <button
+                onClick={openEditUrl}
+                className="text-sm py-2 px-3 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center space-x-1"
+                title="Edit shareable URL"
+                aria-label="Edit shareable URL"
+              >
+                <Link2 className="w-4 h-4" />
+                <span className="hidden sm:inline">Edit URL</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Edit URL Modal */}
+      {editingUrl && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+            <div className="flex items-center space-x-2 mb-2">
+              <Link2 className="w-5 h-5 text-emerald-600" />
+              <h3 className="text-lg font-semibold">Edit Shareable URL</h3>
+            </div>
+            <p className="text-gray-600 text-sm mb-4">
+              Choose a friendly URL for this route. The short code at the end
+              keeps existing shared links working.
+            </p>
+
+            <label
+              htmlFor={`slug-${route.id}`}
+              className="block text-xs font-medium text-gray-500 mb-1"
+            >
+              URL slug
+            </label>
+            <input
+              id={`slug-${route.id}`}
+              type="text"
+              value={slugInput}
+              onChange={(e) => setSlugInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSaveSlug();
+                if (e.key === "Escape") setEditingUrl(false);
+              }}
+              placeholder="boston-marathon"
+              autoFocus
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+
+            <div className="mt-2 text-xs text-gray-500 break-all">
+              Preview:{" "}
+              <span className="text-gray-700">
+                trainpace.com/elevationfinder/{previewPath}
+              </span>
+            </div>
+
+            <div className="flex gap-3 justify-end mt-6">
+              <button
+                onClick={() => setEditingUrl(false)}
+                disabled={savingSlug}
+                className="px-4 py-2 bg-white text-black rounded outline-none border border-gray-300 hover:bg-gray-100 disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveSlug}
+                disabled={savingSlug || !previewSlug}
+                className="px-4 py-2 bg-emerald-500 text-white rounded hover:bg-emerald-600 disabled:opacity-50"
+              >
+                {savingSlug ? "Saving…" : "Save URL"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (

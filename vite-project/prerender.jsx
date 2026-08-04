@@ -3,6 +3,7 @@ import { renderToString } from "react-dom/server";
 
 import {
   calculatorSeoPages,
+  comparisonLinks,
   elevationGuideSeoPages,
   fuelSeoPages,
   raceSeoPages,
@@ -362,6 +363,31 @@ function getPageDescription(url) {
   }
 }
 
+// Paths of the competitor-comparison pages, for static internal linking.
+const comparisonPaths = new Set(comparisonLinks.map((c) => c.path));
+
+// A crawlable list of comparison-page links, excluding the current path.
+function comparisonNav(currentPath) {
+  const others = comparisonLinks.filter((c) => c.path !== currentPath);
+  if (!others.length) return null;
+  return React.createElement(
+    "nav",
+    { "aria-label": "Compare TrainPace with other apps" },
+    React.createElement("h2", null, "Compare TrainPace with other apps"),
+    React.createElement(
+      "ul",
+      null,
+      others.map((c) =>
+        React.createElement(
+          "li",
+          { key: c.path },
+          React.createElement("a", { href: c.path }, c.label)
+        )
+      )
+    )
+  );
+}
+
 // Helper function to get page content for prerendering
 function getPageContent(url) {
   // Blog list: heading + description + a crawlable list of every post.
@@ -415,7 +441,8 @@ function getPageContent(url) {
         "p",
         null,
         "Open the tool to calculate personalized paces, fueling, or elevation insights."
-      )
+      ),
+      comparisonPaths.has(url) ? comparisonNav(url) : null
     );
   }
 
@@ -429,7 +456,8 @@ function getPageContent(url) {
           "p",
           null,
           "Free running calculator for training paces, race fueling, and GPX elevation analysis. Get VDOT-based pace zones, plan how many gels to carry, and preview marathon course profiles."
-        )
+        ),
+        comparisonNav(null)
       );
     case "/calculator":
       return React.createElement(

@@ -5,6 +5,7 @@ import { Navigate, useParams } from "react-router-dom";
 import { PaceCalculatorV2 } from "@/features/pace-calculator";
 import {
   calculatorSeoPageMap,
+  comparisonLinks,
   getSeoUrl,
 } from "@/features/seo-pages/seoPages";
 
@@ -101,6 +102,10 @@ export default function CalculatorSeoLanding() {
 
   if (!page) return <Navigate to="/calculator" replace />;
 
+  const otherComparisons = comparisonLinks.filter((c) => c.slug !== page.slug);
+  const showComparisons =
+    otherComparisons.length < comparisonLinks.length && otherComparisons.length > 0;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50">
       <Helmet>
@@ -158,6 +163,27 @@ export default function CalculatorSeoLanding() {
           />
         </div>
       </section>
+
+      {showComparisons && (
+        <section className="px-4 sm:px-6 pb-16">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Compare TrainPace with other apps
+            </h2>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              {otherComparisons.map((c) => (
+                <a
+                  key={c.slug}
+                  href={c.path}
+                  className="rounded-lg bg-white/70 border border-emerald-100 px-4 py-3 text-emerald-800 font-medium hover:bg-white hover:border-emerald-300 transition-colors"
+                >
+                  {c.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

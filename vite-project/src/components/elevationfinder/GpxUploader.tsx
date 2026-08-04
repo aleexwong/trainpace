@@ -22,6 +22,12 @@ import {
 import { storage, db } from "../../lib/firebase";
 import { useAuth } from "../../features/auth/AuthContext";
 import { processGPXUpload } from "../../lib/gpxMetaData";
+import {
+  slugify,
+  generateShortId,
+  buildRouteSlugPath,
+  buildRouteUrl,
+} from "../../lib/routeSlug";
 
 interface GpxUploaderProps {
   onFileParsed: (
@@ -45,6 +51,7 @@ interface DuplicateFile {
   content?: string; // Optional: content stored in Firestore
   storageRef?: string; // Storage reference path
   docId?: string; // Firestore document ID
+  displayUrl?: string; // Pretty /elevationfinder/{slug}-{shortId} path
 }
 
 export default function GpxUploader({
@@ -117,6 +124,7 @@ export default function GpxUploader({
           content: data.content, // Include content if stored
           storageRef: data.storageRef,
           docId: duplicateDoc.id, // Include document ID for reference
+          displayUrl: data.displayUrl, // Pretty URL if the doc has one
         };
       }
 
@@ -234,6 +242,7 @@ export default function GpxUploader({
     fileUrl: string;
     displayPoints: Array<{ lat: number; lng: number; ele?: number }>;
     docId: string; // Return docId for immediate caching
+    displayUrl: string; // Pretty /elevationfinder/{slug}-{shortId} path
   }> => {
     const safeFilename = generateSafeFilename(file.name);
     const storageRef = ref(storage, `gpx_files/${safeFilename}`);
@@ -257,7 +266,14 @@ export default function GpxUploader({
       // Create document with random ID
       const docRef = doc(collection(db, "gpx_uploads"));
       const docId = docRef.id;
-      const displayUrl = `/elevationfinder/${docId}`;
+
+      // Human-readable shareable URL: /elevationfinder/{slug}-{shortId}.
+      // The slug is derived from the filename (owner-editable later); the
+      // shortId is the immutable resolution key so renaming never breaks links.
+      const slug = slugify(file.name);
+      const shortId = generateShortId();
+      const slugPath = buildRouteSlugPath(slug, shortId);
+      const displayUrl = buildRouteUrl(slugPath);
 
       const docData = {
         userId: user?.uid,
@@ -274,6 +290,8 @@ export default function GpxUploader({
         displayPoints: processed.displayPoints,
         thumbnailPoints: processed.thumbnailPoints,
         docId,
+        slug,
+        shortId,
         displayUrl,
 
         // 🚀 NEW: Prepare for optimized caching (will be populated by API)
@@ -293,6 +311,7 @@ export default function GpxUploader({
         fileUrl: downloadURL,
         displayPoints: processed.displayPoints,
         docId, // Return docId so ElevationPage can cache analysis immediately
+        displayUrl, // Pretty URL so the address bar + share use the slug path
       };
     } catch (error) {
       console.error("Upload failed:", error);
@@ -340,7 +359,9 @@ export default function GpxUploader({
           duplicateFound.content,
           filename,
           fileUrl,
-          duplicateFound.docId || null
+          duplicateFound.docId || null,
+          undefined,
+          duplicateFound.displayUrl
         );
         return;
       }
@@ -357,7 +378,14 @@ export default function GpxUploader({
         }
 
         const content = await response.text();
-        onFileParsed(content, filename, freshUrl, duplicateFound.docId || null);
+        onFileParsed(
+          content,
+          filename,
+          freshUrl,
+          duplicateFound.docId || null,
+          undefined,
+          duplicateFound.displayUrl
+        );
         return;
       }
 
@@ -370,6 +398,12 @@ export default function GpxUploader({
       const content = await response.text();
       const processed = processGPXUpload(content);
 
+      // Build a pretty shareable URL for the fallback document too.
+      const slug = slugify(filename);
+      const shortId = generateShortId();
+      const slugPath = buildRouteSlugPath(slug, shortId);
+      const displayUrl = buildRouteUrl(slugPath);
+
       // Create new document for fallback case
       const docRef = await addDoc(collection(db, "gpx_uploads"), {
         filename,
@@ -379,11 +413,13 @@ export default function GpxUploader({
         fileUrl,
         displayPoints: processed.displayPoints,
         metadata: processed.metadata,
+        slug,
+        shortId,
+        displayUrl,
         staticRouteData: null,
       });
 
       const docId = docRef.id;
-      const displayUrl = `/elevationfinder/${docId}`;
 
       onFileParsed(
         content,
@@ -415,19 +451,16 @@ export default function GpxUploader({
     setUploadProgress(60);
 
     try {
-      const { fileUrl, displayPoints, docId } = await uploadToFirebase(
-        file,
-        content,
-        fileHash
-      );
+      const { fileUrl, displayPoints, docId, displayUrl } =
+        await uploadToFirebase(file, content, fileHash);
       setUploadProgress(85);
 
       // Update rate limit counters
       await checkRateLimits();
       setUploadProgress(100);
 
-      // 🚀 NEW: Pass docId to enable immediate caching
-      onFileParsed(content, file.name, fileUrl, docId, displayPoints);
+      // 🚀 NEW: Pass docId to enable immediate caching + the pretty displayUrl
+      onFileParsed(content, file.name, fileUrl, docId, displayPoints, displayUrl);
 
       toast({
         title: "Upload Successful",
