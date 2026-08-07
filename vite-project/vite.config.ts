@@ -14,6 +14,7 @@ const prerenderedRoutes = [
   "/",
   "/calculator",
   "/vdot",
+  "/conditions",
   "/fuel",
   "/plan",
   "/elevationfinder",
