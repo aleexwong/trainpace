@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="TrainPace" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>New York City Marathon</name>
+    <desc>Approximate course outline for map display, generated from TrainPace course preview data. Simplified to a few dozen points and not a surveyed or certified course file - do not use for navigation or course measurement.</desc>
+    <link href="https://www.tcsnycmarathon.org/">
+      <text>Official race website</text>
+    </link>
+    <keywords>New York, New York, USA, marathon, course outline</keywords>
+  </metadata>
+  <trk>
+    <name>New York City Marathon</name>
+    <type>marathon</type>
+    <trkseg>
+      <trkpt lat="40.6062" lon="-74.0641"><ele>45</ele></trkpt>
+      <trkpt lat="40.6134" lon="-74.0456"><ele>65</ele></trkpt>
+      <trkpt lat="40.6189" lon="-74.0234"><ele>78</ele></trkpt>
+      <trkpt lat="40.6298" lon="-73.9956"><ele>45</ele></trkpt>
+      <trkpt lat="40.6456" lon="-73.9823"><ele>25</ele></trkpt>
+      <trkpt lat="40.6578" lon="-73.9645"><ele>32</ele></trkpt>
+      <trkpt lat="40.6723" lon="-73.9456"><ele>28</ele></trkpt>
+      <trkpt lat="40.6834" lon="-73.9234"><ele>35</ele></trkpt>
+      <trkpt lat="40.6945" lon="-73.9012"><ele>38</ele></trkpt>
+      <trkpt lat="40.7123" lon="-73.8934"><ele>42</ele></trkpt>
+      <trkpt lat="40.7234" lon="-73.8756"><ele>65</ele></trkpt>
+      <trkpt lat="40.7345" lon="-73.8567"><ele>28</ele></trkpt>
+      <trkpt lat="40.7456" lon="-73.8234"><ele>32</ele></trkpt>
+      <trkpt lat="40.7623" lon="-73.8012"><ele>28</ele></trkpt>
+      <trkpt lat="40.7734" lon="-73.8145"><ele>35</ele></trkpt>
+      <trkpt lat="40.7812" lon="-73.8234"><ele>45</ele></trkpt>
+      <trkpt lat="40.7845" lon="-73.8456"><ele>55</ele></trkpt>
+      <trkpt lat="40.7789" lon="-73.8678"><ele>42</ele></trkpt>
+      <trkpt lat="40.7723" lon="-73.8934"><ele>38</ele></trkpt>
+      <trkpt lat="40.7634" lon="-73.9234"><ele>45</ele></trkpt>
+      <trkpt lat="40.7545" lon="-73.9456"><ele>52</ele></trkpt>
+      <trkpt lat="40.7456" lon="-73.9678"><ele>48</ele></trkpt>
+      <trkpt lat="40.7689" lon="-73.9789"><ele>42</ele></trkpt>
+      <trkpt lat="40.7829" lon="-73.9654"><ele>35</ele></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

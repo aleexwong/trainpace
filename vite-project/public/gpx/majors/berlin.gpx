@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="TrainPace" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>Berlin Marathon</name>
+    <desc>Approximate course outline for map display, generated from TrainPace course preview data. Simplified to a few dozen points and not a surveyed or certified course file - do not use for navigation or course measurement.</desc>
+    <link href="https://www.bmw-berlin-marathon.com/">
+      <text>Official race website</text>
+    </link>
+    <keywords>Berlin, Germany, marathon, course outline</keywords>
+  </metadata>
+  <trk>
+    <name>Berlin Marathon</name>
+    <type>marathon</type>
+    <trkseg>
+      <trkpt lat="52.5145" lon="13.3501"><ele>55</ele></trkpt>
+      <trkpt lat="52.5123" lon="13.3623"><ele>53</ele></trkpt>
+      <trkpt lat="52.5089" lon="13.3745"><ele>52</ele></trkpt>
+      <trkpt lat="52.5034" lon="13.3867"><ele>50</ele></trkpt>
+      <trkpt lat="52.4987" lon="13.3989"><ele>48</ele></trkpt>
+      <trkpt lat="52.4934" lon="13.4112"><ele>46</ele></trkpt>
+      <trkpt lat="52.4889" lon="13.4234"><ele>45</ele></trkpt>
+      <trkpt lat="52.4823" lon="13.4356"><ele>42</ele></trkpt>
+      <trkpt lat="52.4756" lon="13.4478"><ele>40</ele></trkpt>
+      <trkpt lat="52.4689" lon="13.4556"><ele>38</ele></trkpt>
+      <trkpt lat="52.4634" lon="13.4634"><ele>36</ele></trkpt>
+      <trkpt lat="52.4567" lon="13.4712"><ele>35</ele></trkpt>
+      <trkpt lat="52.4512" lon="13.4634"><ele>33</ele></trkpt>
+      <trkpt lat="52.4456" lon="13.4556"><ele>32</ele></trkpt>
+      <trkpt lat="52.4389" lon="13.4478"><ele>30</ele></trkpt>
+      <trkpt lat="52.4334" lon="13.4234"><ele>28</ele></trkpt>
+      <trkpt lat="52.4398" lon="13.4012"><ele>30</ele></trkpt>
+      <trkpt lat="52.4456" lon="13.3789"><ele>32</ele></trkpt>
+      <trkpt lat="52.4523" lon="13.3567"><ele>35</ele></trkpt>
+      <trkpt lat="52.4634" lon="13.3456"><ele>38</ele></trkpt>
+      <trkpt lat="52.4789" lon="13.3378"><ele>35</ele></trkpt>
+      <trkpt lat="52.4912" lon="13.3289"><ele>32</ele></trkpt>
+      <trkpt lat="52.5034" lon="13.3234"><ele>35</ele></trkpt>
+      <trkpt lat="52.5123" lon="13.3456"><ele>38</ele></trkpt>
+      <trkpt lat="52.5145" lon="13.3589"><ele>36</ele></trkpt>
+      <trkpt lat="52.5163" lon="13.3777"><ele>35</ele></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

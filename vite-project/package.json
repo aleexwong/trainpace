@@ -11,6 +11,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "generate-sitemap": "vite-node scripts/generateSitemap.ts",
+    "generate-majors-gpx": "vite-node scripts/generateMajorsGpx.ts",
     "generate-pwa-assets": "pwa-assets-generator",
     "host": "vite --host",
     "seed-boston": "vite-node scripts/seedBostonMarathon.ts",

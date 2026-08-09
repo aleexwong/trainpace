@@ -19,6 +19,7 @@ const prerenderedRoutes = [
   "/elevationfinder",
   "/elevation-finder",
   "/race",
+  "/majors",
   "/mcp",
   // Programmatic SEO routes
   ...getAllSeoPaths(),

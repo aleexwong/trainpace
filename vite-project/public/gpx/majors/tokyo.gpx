@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="TrainPace" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>Tokyo Marathon</name>
+    <desc>Approximate course outline for map display, generated from TrainPace course preview data. Simplified to a few dozen points and not a surveyed or certified course file - do not use for navigation or course measurement.</desc>
+    <link href="https://www.marathon.tokyo/en/">
+      <text>Official race website</text>
+    </link>
+    <keywords>Tokyo, Japan, marathon, course outline</keywords>
+  </metadata>
+  <trk>
+    <name>Tokyo Marathon</name>
+    <type>marathon</type>
+    <trkseg>
+      <trkpt lat="35.6896" lon="139.6917"><ele>25</ele></trkpt>
+      <trkpt lat="35.6923" lon="139.7034"><ele>32</ele></trkpt>
+      <trkpt lat="35.6934" lon="139.7156"><ele>35</ele></trkpt>
+      <trkpt lat="35.6889" lon="139.7278"><ele>30</ele></trkpt>
+      <trkpt lat="35.6823" lon="139.7389"><ele>28</ele></trkpt>
+      <trkpt lat="35.6756" lon="139.7456"><ele>25</ele></trkpt>
+      <trkpt lat="35.6689" lon="139.7523"><ele>22</ele></trkpt>
+      <trkpt lat="35.6623" lon="139.7634"><ele>20</ele></trkpt>
+      <trkpt lat="35.6556" lon="139.7745"><ele>18</ele></trkpt>
+      <trkpt lat="35.6489" lon="139.7856"><ele>15</ele></trkpt>
+      <trkpt lat="35.6423" lon="139.7967"><ele>12</ele></trkpt>
+      <trkpt lat="35.6356" lon="139.8078"><ele>10</ele></trkpt>
+      <trkpt lat="35.6289" lon="139.8189"><ele>15</ele></trkpt>
+      <trkpt lat="35.6234" lon="139.8267"><ele>18</ele></trkpt>
+      <trkpt lat="35.6189" lon="139.8345"><ele>22</ele></trkpt>
+      <trkpt lat="35.6256" lon="139.8456"><ele>25</ele></trkpt>
+      <trkpt lat="35.6356" lon="139.8534"><ele>28</ele></trkpt>
+      <trkpt lat="35.6456" lon="139.8612"><ele>32</ele></trkpt>
+      <trkpt lat="35.6567" lon="139.8567"><ele>35</ele></trkpt>
+      <trkpt lat="35.6678" lon="139.8456"><ele>38</ele></trkpt>
+      <trkpt lat="35.6789" lon="139.8234"><ele>42</ele></trkpt>
+      <trkpt lat="35.6845" lon="139.8012"><ele>45</ele></trkpt>
+      <trkpt lat="35.6912" lon="139.7789"><ele>48</ele></trkpt>
+      <trkpt lat="35.6934" lon="139.7567"><ele>46</ele></trkpt>
+      <trkpt lat="35.6889" lon="139.7456"><ele>44</ele></trkpt>
+      <trkpt lat="35.6814" lon="139.7534"><ele>45</ele></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

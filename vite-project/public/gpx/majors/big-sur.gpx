@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="TrainPace" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>Big Sur Marathon</name>
+    <desc>Approximate course outline for map display, generated from TrainPace course preview data. Simplified to a few dozen points and not a surveyed or certified course file - do not use for navigation or course measurement.</desc>
+    <link href="https://www.bigsurmarathon.org/">
+      <text>Official race website</text>
+    </link>
+    <keywords>Big Sur, California, USA, marathon, course outline</keywords>
+  </metadata>
+  <trk>
+    <name>Big Sur Marathon</name>
+    <type>marathon</type>
+    <trkseg>
+      <trkpt lat="36.2704" lon="-121.8078"><ele>305</ele></trkpt>
+      <trkpt lat="36.2823" lon="-121.8156"><ele>280</ele></trkpt>
+      <trkpt lat="36.2945" lon="-121.8234"><ele>255</ele></trkpt>
+      <trkpt lat="36.3067" lon="-121.8312"><ele>230</ele></trkpt>
+      <trkpt lat="36.3189" lon="-121.8389"><ele>350</ele></trkpt>
+      <trkpt lat="36.3312" lon="-121.8467"><ele>460</ele></trkpt>
+      <trkpt lat="36.3434" lon="-121.8545"><ele>380</ele></trkpt>
+      <trkpt lat="36.3556" lon="-121.8623"><ele>250</ele></trkpt>
+      <trkpt lat="36.3678" lon="-121.8701"><ele>180</ele></trkpt>
+      <trkpt lat="36.3801" lon="-121.8778"><ele>120</ele></trkpt>
+      <trkpt lat="36.3923" lon="-121.8856"><ele>80</ele></trkpt>
+      <trkpt lat="36.4045" lon="-121.8934"><ele>50</ele></trkpt>
+      <trkpt lat="36.4167" lon="-121.9012"><ele>25</ele></trkpt>
+      <trkpt lat="36.555" lon="-121.923"><ele>10</ele></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

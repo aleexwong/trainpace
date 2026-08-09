@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="TrainPace" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>California International Marathon</name>
+    <desc>Approximate course outline for map display, generated from TrainPace course preview data. Simplified to a few dozen points and not a surveyed or certified course file - do not use for navigation or course measurement.</desc>
+    <link href="https://runsra.org/california-international-marathon/">
+      <text>Official race website</text>
+    </link>
+    <keywords>Sacramento, California, USA, marathon, course outline</keywords>
+  </metadata>
+  <trk>
+    <name>California International Marathon</name>
+    <type>marathon</type>
+    <trkseg>
+      <trkpt lat="38.678" lon="-121.165"><ele>115</ele></trkpt>
+      <trkpt lat="38.6689" lon="-121.1878"><ele>105</ele></trkpt>
+      <trkpt lat="38.6578" lon="-121.2156"><ele>95</ele></trkpt>
+      <trkpt lat="38.6456" lon="-121.2434"><ele>85</ele></trkpt>
+      <trkpt lat="38.6334" lon="-121.2712"><ele>70</ele></trkpt>
+      <trkpt lat="38.6212" lon="-121.2989"><ele>55</ele></trkpt>
+      <trkpt lat="38.6089" lon="-121.3267"><ele>45</ele></trkpt>
+      <trkpt lat="38.5967" lon="-121.3545"><ele>35</ele></trkpt>
+      <trkpt lat="38.5845" lon="-121.3823"><ele>25</ele></trkpt>
+      <trkpt lat="38.5723" lon="-121.4101"><ele>18</ele></trkpt>
+      <trkpt lat="38.5689" lon="-121.4378"><ele>12</ele></trkpt>
+      <trkpt lat="38.5756" lon="-121.4656"><ele>10</ele></trkpt>
+      <trkpt lat="38.5767" lon="-121.4934"><ele>8</ele></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

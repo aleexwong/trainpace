@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="TrainPace" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>Marine Corps Marathon</name>
+    <desc>Approximate course outline for map display, generated from TrainPace course preview data. Simplified to a few dozen points and not a surveyed or certified course file - do not use for navigation or course measurement.</desc>
+    <link href="https://www.marinemarathon.com/">
+      <text>Official race website</text>
+    </link>
+    <keywords>Washington, DC, USA, marathon, course outline</keywords>
+  </metadata>
+  <trk>
+    <name>Marine Corps Marathon</name>
+    <type>marathon</type>
+    <trkseg>
+      <trkpt lat="38.8719" lon="-77.0563"><ele>15</ele></trkpt>
+      <trkpt lat="38.8834" lon="-77.0678"><ele>25</ele></trkpt>
+      <trkpt lat="38.8945" lon="-77.0789"><ele>35</ele></trkpt>
+      <trkpt lat="38.9023" lon="-77.0656"><ele>45</ele></trkpt>
+      <trkpt lat="38.8912" lon="-77.0512"><ele>35</ele></trkpt>
+      <trkpt lat="38.8789" lon="-77.0389"><ele>10</ele></trkpt>
+      <trkpt lat="38.8656" lon="-77.0278"><ele>8</ele></trkpt>
+      <trkpt lat="38.8789" lon="-77.0167"><ele>12</ele></trkpt>
+      <trkpt lat="38.8912" lon="-77.0289"><ele>18</ele></trkpt>
+      <trkpt lat="38.8856" lon="-77.0423"><ele>28</ele></trkpt>
+      <trkpt lat="38.8789" lon="-77.0534"><ele>38</ele></trkpt>
+      <trkpt lat="38.8723" lon="-77.0645"><ele>32</ele></trkpt>
+      <trkpt lat="38.8789" lon="-77.0712"><ele>28</ele></trkpt>
+      <trkpt lat="38.8901" lon="-77.0656"><ele>25</ele></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

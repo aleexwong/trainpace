@@ -139,6 +139,7 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 - Legacy `/elevationfinder` routes must keep working (redirect aliases in `App.tsx`).
 - Keep SEO titles under 60 chars and descriptions under 160; run `validateAllPages()` before shipping SEO changes.
 - `src/App.css` still carries the Vite template's `#root { text-align: center }`. It cascades into every page, so left-aligned layouts need an explicit `text-left` on their container.
+- `src/index.css` likewise still carries the template's global `button { padding: 0.6em 1.2em; border-radius: 8px }`. With Tailwind's `border-box`, a sized button (`h-3.5 w-3.5`) renders at the padding's size instead — add `p-0`. Bites hardest on non-React DOM (e.g. Mapbox marker elements), where nothing else resets it.
 - shadcn `Slider` wraps Radix: the *thumb* is what receives focus and carries `role="slider"`. An `aria-label` on the root leaves it announced as unnamed — pass `thumbLabel` instead.
 
 ## Past Mistakes

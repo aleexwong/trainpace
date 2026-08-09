@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Globe2 } from "lucide-react";
 import marathonData from "@/data/marathon-data.json";
 
 // Use the actual marathon data
@@ -101,6 +101,19 @@ export default function PreviewRoutesDropdown() {
               Explore world-famous marathon courses
             </p>
           </div>
+
+          <Link
+            to="/majors"
+            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors border-b border-gray-100 ${
+              location.pathname === "/majors"
+                ? "bg-emerald-50 text-emerald-700"
+                : "text-gray-900 hover:bg-gray-50"
+            }`}
+            onClick={() => setIsOpen(false)}
+          >
+            <Globe2 className="w-4 h-4 text-emerald-600" aria-hidden="true" />
+            See every course on the globe
+          </Link>
 
           <div className="py-2">
             {majorMarathonRoutes.map((route) => (

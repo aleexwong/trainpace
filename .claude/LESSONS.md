@@ -113,3 +113,51 @@ fact. `git log`/`git diff` against the base branch takes one call.
   above were invisible to `tsc`, ESLint, and the production build.
 - **Checking lint warning counts before and after** to prove the new code added
   zero, rather than eyeballing a 96-line warning list.
+
+---
+
+## Session: World Majors globe (`/majors`)
+
+### Verification
+
+**A stubbed Mapbox style is enough to test map code without a token.** The
+sandbox has no `VITE_MAPBOX_TOKEN`, so the map appeared untestable. Fulfilling
+`api.mapbox.com/styles/v1/**` with a minimal source-less style JSON (one
+background layer) gets mapbox-gl all the way to `load`, so markers, sources,
+layers, and `fitBounds` all run and can be asserted. Verified the camera landed
+on Berlin (lng 13.4) at the zoom cap, and that reset cleared the route source.
+→ **Rule:** don't skip browser verification of map/canvas features for want of
+an API key. Stub the network at the style level and read state off the map
+object; expose it in dev only (`if (import.meta.env.DEV) window.__globeMap = map`).
+
+**Playwright matches `ctx.route` handlers in reverse registration order.** A
+catch-all `/(events|api)\.mapbox\.com\//` registered last swallowed the
+`mapbox-gl.js` request and returned 204, so `window.mapboxgl` was undefined and
+the page showed "Cannot set properties of undefined (setting 'accessToken')".
+Spent a run blaming the app for a bug in the harness. Fulfilled responses also
+need `access-control-allow-origin` when the tag is `crossOrigin="anonymous"`.
+→ **Rule:** register the catch-all route FIRST and specific ones after. When a
+stubbed page fails, check the stub before the app.
+
+**Measured marker geometry instead of trusting the classes.** `h-3.5 w-3.5`
+was in the class list and the dots still measured 32.8×18.4px — `index.css`'s
+global `button { padding: 0.6em 1.2em }` wins under `box-sizing: border-box`.
+Nothing in the source hinted at it. The same sweep measured nearest-neighbour
+distances between markers: Amsterdam and Rotterdam were **1.8px** apart at globe
+zoom, which is why a click on Berlin selected Rotterdam.
+→ **Rule:** for anything positioned or sized, print computed styles and
+rectangles from the browser. "The class is there" is not evidence it applied.
+→ **Rule:** hidden elements return a 0×0 rect at 0,0 — filter `display: none`
+out of a proximity sweep or it reports a fake 0px cluster.
+
+### Data
+
+**Checked the source data before building on it.** `marathon-data.json`'s
+`thumbnailPoints` are schematic: measured polyline lengths run 11.7 km
+(Rotterdam) to 49.6 km (NYC) against a 42.195 km course. Two minutes of
+haversine up front changed the design — GPX files are the geometry source and
+are drop-in replaceable, displayed stats come from the registry rather than
+being measured off the line, the camera stops at zoom 11.5, and the UI calls the
+line a "simplified course outline".
+→ **Rule:** before presenting stored data as fact, measure it against something
+known. Then design so the weak part is labelled and replaceable.

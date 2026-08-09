@@ -32,6 +32,7 @@ const ElevationGuidesSeoLanding = lazy(() => import("./pages/ElevationGuidesSeoL
 const RaceSeoLanding = lazy(() => import("./pages/RaceSeoLanding"));
 const PlanSeoLanding = lazy(() => import("./pages/PlanSeoLanding"));
 const RaceIndex = lazy(() => import("./pages/RaceIndex"));
+const WorldMajorsGlobe = lazy(() => import("./pages/WorldMajorsGlobe"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const About = lazy(() => import("./pages/About"));
@@ -68,6 +69,9 @@ function App() {
           <Route path="/plan/:seoSlug" element={<PlanSeoLanding />} />
           <Route path="/race" element={<RaceIndex />} />
           <Route path="/race/:raceSlug" element={<RaceSeoLanding />} />
+          <Route path="/majors" element={<WorldMajorsGlobe />} />
+          {/* Short alias people guess for the globe view */}
+          <Route path="/globe" element={<WorldMajorsGlobe />} />
           <Route path="/elevation-finder" element={<ElevationPage />} />
           <Route
             path="/elevation-finder/:docId"

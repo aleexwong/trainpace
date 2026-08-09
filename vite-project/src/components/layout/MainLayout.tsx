@@ -287,6 +287,20 @@ export default function MainLayout() {
 
             {mobilePreviewOpen && (
               <div className="mt-2 space-y-1 bg-white p-2 rounded-lg">
+                <Link
+                  to="/majors"
+                  className={`block py-2 px-6 text-base font-medium rounded-lg transition-colors ${
+                    location.pathname === "/majors"
+                      ? "bg-emerald-50 text-emerald-600"
+                      : "text-gray-900 hover:bg-gray-100 hover:text-emerald-600"
+                  }`}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setMobilePreviewOpen(false);
+                  }}
+                >
+                  🌍 World Majors globe
+                </Link>
                 {[
                   { name: "Boston Marathon", slug: "boston" },
                   { name: "NYC Marathon", slug: "nyc" },

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="TrainPace" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>Oslo Marathon</name>
+    <desc>Approximate course outline for map display, generated from TrainPace course preview data. Simplified to a few dozen points and not a surveyed or certified course file - do not use for navigation or course measurement.</desc>
+    <link href="https://oslomaraton.no/">
+      <text>Official race website</text>
+    </link>
+    <keywords>Oslo, Norway, marathon, course outline</keywords>
+  </metadata>
+  <trk>
+    <name>Oslo Marathon</name>
+    <type>marathon</type>
+    <trkseg>
+      <trkpt lat="59.9111" lon="10.7346"><ele>5</ele></trkpt>
+      <trkpt lat="59.9139" lon="10.7267"><ele>12</ele></trkpt>
+      <trkpt lat="59.9205" lon="10.7156"><ele>18</ele></trkpt>
+      <trkpt lat="59.9301" lon="10.7051"><ele>25</ele></trkpt>
+      <trkpt lat="59.9387" lon="10.7192"><ele>32</ele></trkpt>
+      <trkpt lat="59.942" lon="10.7398"><ele>28</ele></trkpt>
+      <trkpt lat="59.9391" lon="10.7584"><ele>22</ele></trkpt>
+      <trkpt lat="59.9342" lon="10.7765"><ele>18</ele></trkpt>
+      <trkpt lat="59.9255" lon="10.7897"><ele>20</ele></trkpt>
+      <trkpt lat="59.9153" lon="10.7952"><ele>16</ele></trkpt>
+      <trkpt lat="59.9078" lon="10.7821"><ele>10</ele></trkpt>
+      <trkpt lat="59.9071" lon="10.7589"><ele>8</ele></trkpt>
+      <trkpt lat="59.9111" lon="10.7346"><ele>5</ele></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

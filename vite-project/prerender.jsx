@@ -10,6 +10,11 @@ import {
 } from "./src/features/seo-pages/seoPages";
 import blogData from "./src/data/blog-posts.json";
 import { stripLeadingH1 } from "./src/features/blog/utils";
+import { majorRaces } from "./src/features/majors/races";
+
+const MAJORS_TITLE = "World Marathon Majors Map – Course Globe | TrainPace";
+const MAJORS_DESCRIPTION =
+  "Spin an interactive globe of the World Marathon Majors. Draw each course from its GPX file and jump to elevation profiles, pacing, and race prep.";
 
 // Blog posts keyed by their public URL, for prerendered SEO content.
 const blogPostsByUrl = Object.fromEntries(
@@ -312,6 +317,8 @@ function getPageTitle(url) {
       return "GPX Elevation Profile Viewer – Free Route Analysis & Climb Stats | TrainPace";
     case "/race":
       return "Race Prep Pages – Pacing, Fueling, Elevation Strategy | TrainPace";
+    case "/majors":
+      return MAJORS_TITLE;
     case "/mcp":
       return "MCP Server - TrainPace Tools for AI Agents";
     default:
@@ -347,6 +354,8 @@ function getPageDescription(url) {
       return "Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty on an interactive map. Analyze marathon courses before race day.";
     case "/race":
       return "Race prep pages for popular running events. Use TrainPace to plan pacing, fueling, and course strategy with free calculators and GPX elevation analysis.";
+    case "/majors":
+      return MAJORS_DESCRIPTION;
     case "/mcp":
       return "Connect any AI assistant to TrainPace's free public MCP server: training paces, VDOT, race plans, fueling strategy, and GPX route analysis as agent tools.";
     default:
@@ -501,6 +510,29 @@ function getPageContent(url) {
           "p",
           null,
           "Browse race-specific prep pages for pacing, fueling, and course strategy."
+        )
+      );
+    case "/majors":
+      // The globe itself needs WebGL, so the static HTML carries the crawlable
+      // version: every mapped course, linked to its elevation profile.
+      return React.createElement(
+        "div",
+        null,
+        React.createElement("h1", null, "World Marathon Majors, on a globe"),
+        React.createElement("p", null, MAJORS_DESCRIPTION),
+        React.createElement("h2", null, "Courses on the map"),
+        React.createElement(
+          "ul",
+          null,
+          majorRaces.map((race) =>
+            React.createElement(
+              "li",
+              { key: race.id },
+              React.createElement("a", { href: race.previewPath }, race.name),
+              ` — ${race.city}, ${race.country}. ${race.distanceKm.toFixed(1)} km, `,
+              `${Math.round(race.elevationGainM)}m elevation gain. Race day: ${race.raceDate}.`
+            )
+          )
         )
       );
     case "/mcp":

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="TrainPace" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>Boston Marathon</name>
+    <desc>Approximate course outline for map display, generated from TrainPace course preview data. Simplified to a few dozen points and not a surveyed or certified course file - do not use for navigation or course measurement.</desc>
+    <link href="https://www.baa.org/">
+      <text>Official race website</text>
+    </link>
+    <keywords>Boston, Massachusetts, USA, marathon, course outline</keywords>
+  </metadata>
+  <trk>
+    <name>Boston Marathon</name>
+    <type>marathon</type>
+    <trkseg>
+      <trkpt lat="42.2287" lon="-71.5226"><ele>150</ele></trkpt>
+      <trkpt lat="42.2298" lon="-71.5134"><ele>145</ele></trkpt>
+      <trkpt lat="42.2334" lon="-71.4956"><ele>140</ele></trkpt>
+      <trkpt lat="42.2367" lon="-71.4756"><ele>135</ele></trkpt>
+      <trkpt lat="42.2401" lon="-71.4234"><ele>125</ele></trkpt>
+      <trkpt lat="42.2456" lon="-71.3934"><ele>118</ele></trkpt>
+      <trkpt lat="42.2512" lon="-71.3678"><ele>115</ele></trkpt>
+      <trkpt lat="42.2567" lon="-71.3578"><ele>110</ele></trkpt>
+      <trkpt lat="42.2634" lon="-71.3234"><ele>105</ele></trkpt>
+      <trkpt lat="42.2723" lon="-71.2934"><ele>98</ele></trkpt>
+      <trkpt lat="42.2789" lon="-71.2945"><ele>95</ele></trkpt>
+      <trkpt lat="42.2834" lon="-71.2756"><ele>102</ele></trkpt>
+      <trkpt lat="42.2912" lon="-71.2534"><ele>108</ele></trkpt>
+      <trkpt lat="42.3012" lon="-71.2234"><ele>120</ele></trkpt>
+      <trkpt lat="42.3089" lon="-71.2012"><ele>115</ele></trkpt>
+      <trkpt lat="42.3167" lon="-71.1789"><ele>105</ele></trkpt>
+      <trkpt lat="42.3234" lon="-71.1567"><ele>85</ele></trkpt>
+      <trkpt lat="42.3323" lon="-71.1234"><ele>75</ele></trkpt>
+      <trkpt lat="42.3445" lon="-71.0845"><ele>45</ele></trkpt>
+      <trkpt lat="42.3512" lon="-71.0723"><ele>35</ele></trkpt>
+      <trkpt lat="42.3556" lon="-71.0634"><ele>25</ele></trkpt>
+      <trkpt lat="42.3534" lon="-71.0612"><ele>18</ele></trkpt>
+      <trkpt lat="42.3501" lon="-71.0603"><ele>10</ele></trkpt>
+    </trkseg>
+  </trk>
+</gpx>
