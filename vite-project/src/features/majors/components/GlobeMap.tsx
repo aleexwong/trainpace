@@ -56,7 +56,10 @@ export default function GlobeMap({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markersRef = useRef<Map<string, any>>(new Map());
   const spinEnabledRef = useRef(false);
+  const spinGlobeRef = useRef<(() => void) | null>(null);
   const hasFlownRef = useRef(false);
+  // Mirrors mapReady for handlers registered once, which can't see the state.
+  const mapReadyRef = useRef(false);
   const onSelectRaceRef = useRef(onSelectRace);
 
   const [mapReady, setMapReady] = useState(false);
@@ -120,6 +123,10 @@ export default function GlobeMap({
           map.easeTo({ center, duration: 1000, easing: (n: number) => n });
         };
 
+        // The loop is driven by moveend, and the hidden-tab check above breaks
+        // that chain — the visibilitychange effect below restarts it.
+        spinGlobeRef.current = spinGlobe;
+
         const stopSpin = () => {
           spinEnabledRef.current = false;
         };
@@ -134,8 +141,21 @@ export default function GlobeMap({
         map.on("touchstart", stopSpin);
         map.on("wheel", stopSpin);
 
-        map.on("error", (event: { error?: { message?: string } }) => {
+        map.on("error", (event: { error?: { message?: string; status?: number } }) => {
           console.error("Mapbox error:", event?.error);
+
+          // Before the style loads, an error means the map is never coming up:
+          // a rejected token, a blocked api.mapbox.com, an offline client. "load"
+          // won't fire, so without this the loading overlay spins forever. Once
+          // the map is up, a single failed tile must not tear it down.
+          if (mapReadyRef.current) return;
+
+          const status = event?.error?.status;
+          setMapError(
+            status === 401 || status === 403
+              ? "Mapbox rejected the access token, so the globe can't load."
+              : "The globe could not load. Check your connection and try again."
+          );
         });
 
         map.on("style.load", () => {
@@ -200,6 +220,7 @@ export default function GlobeMap({
             },
           });
 
+          mapReadyRef.current = true;
           setMapReady(true);
 
           const prefersReducedMotion =
@@ -222,11 +243,24 @@ export default function GlobeMap({
     return () => {
       cancelled = true;
       spinEnabledRef.current = false;
+      spinGlobeRef.current = null;
       // Markers are torn down by the effect that created them.
       mapRef.current?.remove();
       mapRef.current = null;
+      mapReadyRef.current = false;
       setMapReady(false);
     };
+  }, []);
+
+  // Hiding the tab stops the spin mid-chain (no easeTo, so no moveend to
+  // continue on). Kick it off again when the viewer comes back.
+  useEffect(() => {
+    const resumeSpin = () => {
+      if (document.visibilityState === "visible") spinGlobeRef.current?.();
+    };
+
+    document.addEventListener("visibilitychange", resumeSpin);
+    return () => document.removeEventListener("visibilitychange", resumeSpin);
   }, []);
 
   // Keep the canvas sized to its container (sidebar collapse, orientation change).
@@ -381,7 +415,10 @@ export default function GlobeMap({
       />
 
       {!mapReady && !mapError && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-2xl bg-slate-950/80">
+        <div
+          role="status"
+          className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-2xl bg-slate-950/80"
+        >
           <span className="flex items-center gap-2 text-sm text-slate-300">
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
             Loading globe…
@@ -390,7 +427,10 @@ export default function GlobeMap({
       )}
 
       {mapError && (
-        <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-slate-950/90 p-6 text-center">
+        <div
+          role="alert"
+          className="absolute inset-0 flex items-center justify-center rounded-2xl bg-slate-950/90 p-6 text-center"
+        >
           <p className="flex items-center gap-2 text-sm text-amber-300">
             <TriangleAlert className="h-4 w-4" aria-hidden="true" />
             {mapError}
@@ -399,7 +439,10 @@ export default function GlobeMap({
       )}
 
       {(routeStatus === "loading" || routeStatus === "error") && (
-        <div className="absolute bottom-3 left-3 rounded-lg bg-slate-900/90 px-3 py-2 text-xs text-slate-200 shadow-lg">
+        <div
+          role={routeStatus === "error" ? "alert" : "status"}
+          className="absolute bottom-3 left-3 rounded-lg bg-slate-900/90 px-3 py-2 text-xs text-slate-200 shadow-lg"
+        >
           {routeStatus === "loading" ? (
             <span className="flex items-center gap-2">
               <Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" />
