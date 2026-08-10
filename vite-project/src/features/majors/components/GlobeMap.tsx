@@ -166,6 +166,18 @@ export default function GlobeMap({
             "space-color": "rgb(6, 9, 15)",
             "star-intensity": 0.35,
           });
+
+          // dark-v11 paints land and water as two near-identical darks, so at
+          // globe zoom the sphere reads as blank — you can't pick out the
+          // continents. Push them apart, while staying dark enough for the
+          // route line to carry. Guarded by getLayer so a style without these
+          // layers (or a future rename) simply keeps its own colours.
+          const repaint = (layerId: string, property: string, value: string) => {
+            if (map.getLayer(layerId)) map.setPaintProperty(layerId, property, value);
+          };
+
+          repaint("land", "background-color", "#2b3d4f");
+          repaint("water", "fill-color", "#08131f");
         });
 
         map.on("load", () => {
