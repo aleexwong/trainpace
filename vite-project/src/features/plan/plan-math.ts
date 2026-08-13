@@ -24,7 +24,7 @@ import type {
 
 // ── Plan length by race & fitness ──────────────────────────────────────────
 
-const PLAN_WEEKS: Record<GoalRace, Record<FitnessLevel, number>> = {
+export const PLAN_WEEKS: Record<GoalRace, Record<FitnessLevel, number>> = {
   "5K": { beginner: 8, intermediate: 10, advanced: 12 },
   "10K": { beginner: 10, intermediate: 12, advanced: 14 },
   "Half Marathon": { beginner: 12, intermediate: 14, advanced: 16 },
@@ -33,7 +33,7 @@ const PLAN_WEEKS: Record<GoalRace, Record<FitnessLevel, number>> = {
 
 // ── Phase allocation (fractions of total weeks) ───────────────────────────
 
-function buildPhaseMap(
+export function buildPhaseMap(
   totalWeeks: number,
   race: GoalRace
 ): { phase: TrainingPhase; weeks: number }[] {

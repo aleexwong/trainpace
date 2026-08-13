@@ -4,36 +4,12 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 import { vitePrerenderPlugin } from "vite-prerender-plugin";
 
-import { getAllSeoPaths } from "./src/features/seo-pages/seoPages";
-import blogData from "./src/data/blog-posts.json";
+import { getAllDocPaths } from "./src/lib/llm/page-docs";
 
-const blogRoutes = blogData.posts.map((post) => `/blog/${post.slug}`);
-
-// Prerendered routes for SEO
-const prerenderedRoutes = [
-  "/",
-  "/calculator",
-  "/vdot",
-  "/fuel",
-  "/plan",
-  "/elevationfinder",
-  "/elevation-finder",
-  "/race",
-  "/mcp",
-  // Programmatic SEO routes
-  ...getAllSeoPaths(),
-  "/preview-route/boston",
-  "/preview-route/nyc",
-  "/preview-route/chicago",
-  "/preview-route/berlin",
-  "/preview-route/london",
-  "/preview-route/tokyo",
-  "/preview-route/sydney",
-  "/preview-route/oslo",
-  // Blog routes
-  "/blog",
-  ...blogRoutes,
-];
+// Prerendered routes for SEO. Shared with the Markdown mirror generator
+// (scripts/generateMarkdown.ts) so every prerendered page has a .md twin and
+// neither list can drift from the other — add new routes in getAllDocPaths().
+const prerenderedRoutes = getAllDocPaths();
 
 // https://vite.dev/config/
 export default defineConfig({

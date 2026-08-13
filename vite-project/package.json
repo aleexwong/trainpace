@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && npm run generate-markdown",
+    "generate-markdown": "vite-node scripts/generateMarkdown.ts",
+    "verify-agent-routing": "vite-node scripts/verifyAgentRouting.ts",
     "lint": "eslint .",
     "preview": "vite preview",
     "test:e2e": "playwright test",
@@ -28,6 +30,7 @@
     "@radix-ui/react-toast": "^1.2.7",
     "@radix-ui/react-tooltip": "^1.1.4",
     "@tailwindcss/typography": "^0.5.19",
+    "@vercel/functions": "^3.9.3",
     "chart.js": "^4.4.9",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
