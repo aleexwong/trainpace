@@ -1,6 +1,11 @@
 # TrainPace — https://www.trainpace.com
 # AI agents: see https://www.trainpace.com/llms.txt and https://www.trainpace.com/mcp
 # Free public MCP server for training math: https://api.trainpace.com/api/mcp
+#
+# Every page has a Markdown mirror: append .md to any path
+# (https://www.trainpace.com/calculator.md), or send Accept: text/markdown.
+# Whole site in one file: https://www.trainpace.com/llms-full.txt
+# Page index as JSON:     https://www.trainpace.com/llms-index.json
 
 User-agent: *
 Allow: /
@@ -24,6 +29,12 @@ Allow: /terms
 Allow: /registerSW.js
 Allow: /manifest.webmanifest
 Allow: /assets/*
+
+# Markdown mirrors and agent indexes
+Allow: /*.md$
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /llms-index.json
 
 # Block unnecessary pages (auth, user-specific)
 Disallow: /login
@@ -75,3 +86,7 @@ User-agent: CCBot
 Allow: /
 
 Sitemap: https://www.trainpace.com/sitemap.xml
+
+# Agent-oriented site indexes (not a sitemap directive — for humans reading this file)
+# https://www.trainpace.com/llms.txt
+# https://www.trainpace.com/llms-full.txt

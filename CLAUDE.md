@@ -13,11 +13,13 @@ All commands run from `vite-project/`:
 ```bash
 npm install               # Install dependencies
 npm run dev               # Dev server at localhost:5173
-npm run build             # TypeScript check (tsc -b) + production build
+npm run build             # tsc -b + production build + Markdown mirrors
 npm run lint              # ESLint
 npm run test:e2e          # Playwright E2E tests
 npm run test:e2e:ui       # Playwright UI mode
 npm run generate-sitemap  # Regenerate sitemap.xml (run when SEO pages change)
+npm run generate-markdown # Write dist/**.md mirrors + llms-full.txt (part of `build`)
+npm run verify-agent-routing  # Check Accept negotiation + .md path mapping
 ```
 
 There are no unit tests — verification is `npm run build` + `npm run lint` + Playwright E2E.
@@ -31,13 +33,15 @@ trainpace/
 │   │   ├── features/       # 11 self-contained feature modules (see below)
 │   │   ├── components/     # Shared UI: ui/ (shadcn), layout/, seo/, login/, faq/, elevationfinder/
 │   │   ├── pages/          # Route-level components
-│   │   ├── lib/            # firebase.ts, seo/ (PSEO system), utils.ts (cn), gpxMetaData.ts
+│   │   ├── lib/            # firebase.ts, seo/ (PSEO system), llm/ (agent-facing content), utils.ts (cn), gpxMetaData.ts
 │   │   ├── services/       # gemini.ts (AI nutrition)
 │   │   ├── data/           # blog-posts.json, marathon-data.json, faq-data.json
 │   │   └── hooks/ types/ utils/ config/
 │   ├── e2e/                # Playwright specs + page object models (e2e/pages/)
-│   ├── scripts/            # generateSitemap.ts, seedBostonMarathon.ts, testGemini.ts
-│   └── vite.config.ts      # @ alias → ./src; prerender route list lives here
+│   ├── scripts/            # generateSitemap.ts, generateMarkdown.ts, verifyAgentRouting.ts, testGemini.ts
+│   ├── middleware.ts       # Vercel edge: Accept negotiation + agent request logging
+│   ├── docs/agent-traffic.md   # How to read AI-agent traffic in server logs
+│   └── vite.config.ts      # @ alias → ./src; prerender routes come from lib/llm/page-docs
 ├── .github/workflows/e2e.yml   # CI: Playwright on push to main + PRs
 ├── firebase.json / firestore.rules
 └── vercel.json
@@ -80,11 +84,12 @@ React 18 + TypeScript 5.6, Vite 5 (PWA + prerender plugins), React Router 7, Tai
 
 ## Common Tasks
 
-- **New page**: component in `src/pages/` → route in `src/App.tsx` → nav in `src/components/layout/SideNav.tsx` + `layout/constants/navLinks.ts` → prerender route in `vite.config.ts` if it needs static generation.
+- **New page**: component in `src/pages/` → route in `src/App.tsx` → nav in `src/components/layout/SideNav.tsx` + `layout/constants/navLinks.ts` → if it needs static generation, add the path to `getAllDocPaths()` in `src/lib/llm/page-docs.ts` (`vite.config.ts` reads that list) and give it a case in `getContentBlocks()` so it prerenders real content instead of the generic fallback.
 - **New feature**: folder in `src/features/[name]/` with barrel `index.ts`.
 - **Protect a route**: wrap with `<AuthGuard>` in `App.tsx`.
 - **New SEO page**: add config to `src/features/seo-pages/seoPages.ts` (helpers/validators in `src/lib/seo/` — `generatePageId`, `validateAllPages`). Routing and prerendering pick it up automatically; rerun `npm run generate-sitemap`.
 - **Blog post**: append to `src/data/blog-posts.json`.
+- **Prerendered page copy**: edit `src/lib/llm/page-docs.ts`, not `prerender.jsx`. One block model feeds the static HTML, the `.md` mirror, and `llms-full.txt`.
 
 ## Environment
 
