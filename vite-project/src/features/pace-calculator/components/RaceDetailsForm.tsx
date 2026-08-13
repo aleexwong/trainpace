@@ -144,7 +144,7 @@ export function RaceDetailsForm({
         <div className="space-y-3">
           <label className="block text-sm font-medium text-gray-700">Distance</label>
 
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-2" data-tour="distance-presets">
             {PRESET_DISTANCES.map((preset) => {
               const isSelected = inputs.distance === preset.distance.toString();
               return (
@@ -203,7 +203,7 @@ export function RaceDetailsForm({
 
         {/* ── 2. Suggested finishing times (contextual) ── */}
         {suggestedTimes.length > 0 && (
-          <div className="space-y-2">
+          <div className="space-y-2" data-tour="suggested-times">
             <label className="block text-sm font-medium text-gray-700">
               Common finishing times
             </label>
@@ -234,7 +234,7 @@ export function RaceDetailsForm({
             Finish Time <span className="text-red-500">*</span>
           </label>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" data-tour="time-inputs">
             <input
               type="number"
               inputMode="tel"

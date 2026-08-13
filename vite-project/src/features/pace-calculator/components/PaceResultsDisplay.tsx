@@ -75,7 +75,7 @@ export function PaceResultsDisplay({
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">
             Your Training Paces 🎯
           </h2>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2" data-tour="results-actions">
             {/* Pace Toggle */}
             <div
               className="relative w-36 sm:w-40 h-9 sm:h-10 bg-purple-100 rounded-full cursor-pointer overflow-hidden"
@@ -199,7 +199,10 @@ export function PaceResultsDisplay({
         </div>
 
         {/* Pace Cards Grid - Responsive Layout */}
-        <div className="space-y-2 md:space-y-0 md:grid md:grid-cols-2 md:gap-4">
+        <div
+          className="space-y-2 md:space-y-0 md:grid md:grid-cols-2 md:gap-4"
+          data-tour="results-zones"
+        >
           {Object.entries(results)
             .filter(([key]) => key !== "heartRateZones" && key !== "adjustments")
             .map(([key, value]) => {
@@ -329,7 +332,10 @@ function TrainingPlanCta({ results }: { results: PaceResults }) {
   });
 
   return (
-    <div className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between gap-4">
+    <div
+      className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between gap-4"
+      data-tour="plan-cta"
+    >
       <div>
         <div className="text-sm font-semibold text-emerald-800">Ready to train?</div>
         <div className="text-xs text-emerald-700 mt-0.5">

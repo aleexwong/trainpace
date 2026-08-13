@@ -113,3 +113,61 @@ fact. `git log`/`git diff` against the base branch takes one call.
   above were invisible to `tsc`, ESLint, and the production build.
 - **Checking lint warning counts before and after** to prove the new code added
   zero, rather than eyeballing a 96-line warning list.
+
+---
+
+## Session: opt-in guided tutorial + PostHog instrumentation
+
+### The Vite template's global CSS is still live, and it bites new components
+
+`src/index.css` still carries the Vite starter's bare `button { ... }` rule —
+`background-color: #f9f9f9` in light mode, plus `button:hover { border-color:
+#646cff }` and an `outline` on plain `:focus`, not just `:focus-visible`. Any
+new button that doesn't set its own background renders as a grey pill, and
+every button in the app flashes a heavy outline on ordinary mouse clicks. This
+was invisible in the JSX and obvious in the first screenshot.
+→ **Rule:** new buttons need an explicit `bg-*` (or `bg-transparent`) and
+`border-0`; add `focus:outline-none focus-visible:ring-*` if you want a focus
+ring that isn't the browser default. Same family of trap as the `#root {
+text-align: center }` note in CLAUDE.md — assume the template's globals are
+still cascading.
+
+### Overlay z-index has to clear the toaster, not just the header
+
+The tour's first z-index picks (80–90) cleared the fixed header (z-50) but sat
+*under* the toast viewport (`z-[100]`, and also anchored bottom-right). A
+"Calculation Complete" toast landed squarely on the coach card's Next button.
+→ **Rule:** before choosing a z-index, grep for the ones already in use
+(`grep -rn "z-\[" src/components/ui`). The toaster is the highest thing in this
+app at `z-[100]`.
+
+### New dialog/card titles can shadow existing e2e selectors
+
+A tour step titled "Your training paces" made
+`getByRole("heading", { name: /Training Paces/i })` — the existing
+`CalculatorPage.resultsHeading` — match two elements, and the strict-mode
+retry surfaced as a plain visibility timeout, which reads like the results
+never rendered.
+→ **Rule:** when adding user-visible headings, grep `e2e/` for role-based
+selectors that might now match twice. Distinct copy is the fix, not a more
+contorted locator.
+
+### A Playwright "navigation timeout" is usually the 30s *test* timeout
+
+Multi-navigation journeys (two page loads plus the invite's deliberate 1.4s
+entry delay) blew the default per-test budget. The error points at whichever
+`page.goto`/`reload` was in flight and reads exactly like a dead dev server.
+→ **Rule:** read the message — "Test timeout of 30000ms exceeded" is the test
+budget, not the navigation. Use `test.describe.configure({ timeout })` for
+journeys. Also prefer `reload()` over a second `goto()` to the same URL.
+
+### Verifying analytics: spy on the client, don't only watch the wire
+
+A fake PostHog host proved nothing — posthog queued everything in
+`__request_queue` and never flushed, so even its own `$pageview` never left the
+browser, and "0 events captured" looked like a broken feature. Wrapping
+`capture()` on the *same* module instance the app imported (dynamic-import the
+URL Vite serves for `posthog-js`, from `addInitScript` so it lands before the
+first event) showed all 20 events with their exact properties.
+→ **Rule:** to verify instrumentation, assert on the call, not the request.
+Reserve the network for confirming transport against a real endpoint.

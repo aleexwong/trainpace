@@ -5,12 +5,20 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
+import { useSearchParams } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { usePendingPacePlan } from "@/hooks/usePendingPacePlan";
 import ReactGA from "react-ga4";
 import { calculateVdot } from "@/features/vdot-calculator/vdot-math";
+import {
+  PACE_CALCULATOR_TOUR,
+  TutorialInvite,
+  TutorialLauncher,
+  TutorialOverlay,
+  TutorialProvider,
+} from "@/features/tutorial";
 
 import type { PaceInputs, PaceResults, FormErrors, PaceUnit } from "../types";
 import { usePaceCalculation } from "../hooks/usePaceCalculation";
@@ -44,6 +52,14 @@ export function PaceCalculatorV2({
 }: PaceCalculatorV2Props) {
   // Handle auto-save of pending plan after signup
   usePendingPacePlan();
+
+  // Guided tour. On the standalone calculator the invite may offer itself once;
+  // when this component is embedded in an SEO landing the tour is launcher-only,
+  // so a pop-up never lands on top of someone reading the article. `?tour=1`
+  // starts it immediately from either surface — handy for support links.
+  const [tourParams] = useSearchParams();
+  const isStandalone = seoMode !== "none";
+  const autoStartTour = tourParams.get("tour") === "1";
 
   // Form state
   const [inputs, setInputs] = useState<PaceInputs>(() => ({
@@ -325,7 +341,11 @@ export function PaceCalculatorV2({
   // ── Render ──────────────────────────────────────────────────────────────────
 
   return (
-    <>
+    <TutorialProvider
+      tour={PACE_CALCULATOR_TOUR}
+      surface={isStandalone ? "calculator" : "calculator-seo"}
+      autoStart={autoStartTour}
+    >
       {seoMode !== "none" && (
         <Helmet>
           <title>Running Pace Calculator – VDOT Training Zones | TrainPace</title>
@@ -377,15 +397,18 @@ export function PaceCalculatorV2({
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-purple-50 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-8 gap-3">
             <h1 className="text-4xl font-bold text-gray-900">⏱️ Pace Calculator</h1>
-            <button
-              onClick={() => setShowInfo(!showInfo)}
-              className="p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all"
-              aria-label={showInfo ? "Hide information" : "Show information"}
-            >
-              <Info className="h-6 w-6 text-emerald-600" />
-            </button>
+            <div className="flex items-center gap-2">
+              <TutorialLauncher />
+              <button
+                onClick={() => setShowInfo(!showInfo)}
+                className="p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all"
+                aria-label={showInfo ? "Hide information" : "Show information"}
+              >
+                <Info className="h-6 w-6 text-emerald-600" />
+              </button>
+            </div>
           </div>
 
           {showInfo && (
@@ -507,6 +530,11 @@ export function PaceCalculatorV2({
           raceTime={getRaceTime()}
         />
       </div>
-    </>
+
+      {/* Guided tour: the spotlight renders into a portal, so its position in
+          the tree doesn't matter — only that it sits inside the provider. */}
+      {isStandalone && <TutorialInvite />}
+      <TutorialOverlay />
+    </TutorialProvider>
   );
 }

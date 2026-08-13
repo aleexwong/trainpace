@@ -43,7 +43,17 @@ trainpace/
 └── vercel.json
 ```
 
-**Features** (`src/features/`): `auth`, `pace-calculator`, `vdot-calculator`, `plan` (training plan builder, `plan-math.ts`), `goals`, `elevation`, `fuel`, `dashboard`, `blog`, `poster`, `seo-pages` (PSEO configs).
+**Features** (`src/features/`): `auth`, `pace-calculator`, `vdot-calculator`, `plan` (training plan builder, `plan-math.ts`), `goals`, `elevation`, `fuel`, `dashboard`, `blog`, `poster`, `seo-pages` (PSEO configs), `tutorial` (opt-in guided tour).
+
+The `tutorial` feature is a click-along spotlight tour, currently mounted on the
+pace calculator. Steps live in `tutorial/tours.ts` and point at `data-tour="…"`
+anchors in the calculator's markup — renaming or removing an anchor breaks a
+step (it degrades to an unanchored card and fires
+`tutorial_step_target_missing`). Its PostHog event taxonomy and the insights
+built on it are documented in `TUTORIAL_ANALYTICS.md` at the repo root
+(`vite-project/.gitignore` ignores `*.md`, so app docs live at root); `step_id`
+values are the analytics primary key, so reword steps freely but don't rename
+ids.
 
 Each feature is self-contained: `components/`, `hooks/`, `types.ts`, optional `utils.ts`, public API via `index.ts` barrel. Import as `@/features/[name]`.
 
