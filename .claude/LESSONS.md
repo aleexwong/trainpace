@@ -113,3 +113,72 @@ fact. `git log`/`git diff` against the base branch takes one call.
   above were invisible to `tsc`, ESLint, and the production build.
 - **Checking lint warning counts before and after** to prove the new code added
   zero, rather than eyeballing a 96-line warning list.
+
+---
+
+## Session: Mapbox course maps + request budget (branch `claude/mapbox-integration-rate-limit`)
+
+### Verification
+
+**Blanked the app with a Playwright route pattern and spent three runs
+reading the wreckage as a component bug.** Aborting analytics traffic with
+`/posthog/` also matches the app's own
+`/node_modules/.vite/deps/posthog-js.js`, so React never mounted. Every probe
+dutifully reported `img=no sketch=no note=-` across fifteen pages — a
+completely consistent, completely false picture of the feature.
+→ **Rule:** anchor Playwright abort/route patterns to the host
+(`/^https:\/\/([a-z-]+\.)*posthog\.com\//`), never a bare product name. A
+dependency's filename contains the vendor's name too.
+→ **Corollary:** "nothing rendered anywhere" is a harness failure until
+proven otherwise. Print `#root.innerHTML.length` and the `h1` before
+concluding anything about the component under test.
+
+**`waitUntil: "networkidle"` never fires on any page that touches Firestore.**
+With no reachable backend the SDK retries for ~10s and then keeps a channel
+open, so `goto` times out at 30s. Use `domcontentloaded` plus an explicit
+`waitForSelector` on the thing being measured.
+
+**Wrote `.env` to the repo root instead of `vite-project/`** because the Bash
+tool resets cwd between calls ("Shell cwd was reset to /home/user/trainpace").
+Vite silently served an env with one variable in it, Firebase threw
+`auth/invalid-api-key`, and the page rendered empty — which looked exactly
+like the previous failure.
+→ **Rule:** absolute paths for file writes in this repo; the shell cwd does not
+persist. Confirm env changes landed with
+`curl -s localhost:5173/src/lib/firebase.ts | head -1` rather than assuming.
+
+### Code quality
+
+**Projected Web Mercator with mixed units and it looked plausible.** Longitude
+in *degrees* on x against Mercator latitude in *radians* on y — a factor of
+57 — flattened every course into a horizontal line. Boston is genuinely a
+near-straight east–west line, so the first screenshot looked *correct*. Only
+NYC, which runs south-to-north through five boroughs, exposed it.
+→ **Rule:** when checking a projection, pick the input whose expected shape is
+least ambiguous. A route that "looks about right" proves nothing if its true
+shape is close to the failure mode's.
+
+**Overlaid a caption on a full-bleed SVG with `absolute inset-x-0 bottom-0`**
+and it landed on the start marker. A sibling row in a flex column costs the
+same and cannot collide.
+
+### Process
+
+**Nearly shipped a doc that git would have discarded.** `vite-project/.gitignore`
+ignores `*.md`, so `docs/mapbox.md` needed `git add -f`. The already-referenced
+`docs/agent-traffic.md` is *not* in the repo for exactly this reason.
+→ **Rule:** after writing docs under `vite-project/`, check `git status` shows
+them. `git check-ignore -v <path>` explains why when it doesn't.
+
+### What worked, and is worth repeating
+
+- **Checking the polyline encoder against Google's published reference vector**
+  (`_p~iF~ps|U_ulLnnqC_mqNvxq`@`) rather than eyeballing a map. Instant,
+  unambiguous pass/fail on the one piece of pure math in the change.
+- **Pre-seeding `localStorage` with 12 timestamps to test the rate limiter**
+  instead of trying to trigger it by hammering. Deterministic, and it also
+  proved the recovery path by aging the stamps out.
+- **Stubbing `window.mapboxgl` via `addInitScript`** to verify the interactive
+  path — which options the map is constructed with, how many budget slots it
+  spends — without a real token. Also caught that a failed GL load correctly
+  charges nothing.
