@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Copy, Facebook, Twitter } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { BASE_URL } from "@/lib/seo";
 
 interface ShareLinkBoxProps {
   /** Pretty path segment, e.g. "boston-marathon-a3f9c". Preferred. */
@@ -15,7 +16,7 @@ interface ShareLinkBoxProps {
 export function ShareLinkBox({ path, docId, className }: ShareLinkBoxProps) {
   const { toast } = useToast();
   const segment = path || docId || "";
-  const shareUrl = `https://www.trainpace.com/elevationfinder/${segment}`;
+  const shareUrl = `${BASE_URL}/elevationfinder/${segment}`;
 
   const handleCopy = async () => {
     try {

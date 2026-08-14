@@ -2,9 +2,8 @@ import fs from "fs";
 import path from "path";
 
 import { getAllSeoPaths } from "../src/features/seo-pages/seoPages";
+import { BASE_URL } from "../src/lib/seo/types";
 import blogPosts from "../src/data/blog-posts.json";
-
-const BASE_URL = "https://www.trainpace.com";
 
 const staticPaths: Array<{ loc: string; changefreq: string; priority: string }> = [
   { loc: `${BASE_URL}/`, changefreq: "weekly", priority: "1.0" },

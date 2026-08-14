@@ -392,6 +392,25 @@ function agentFooter(): DocBlock[] {
 
 // ── Per-route content ──────────────────────────────────────────────────────
 
+/**
+ * Where each tool's reference tables actually live. Programmatic SEO pages
+ * point here instead of carrying their own copy.
+ */
+const REFERENCE_HUBS: Partial<
+  Record<string, { href: string; label: string; what: string }>
+> = {
+  pace: {
+    href: "/calculator",
+    label: "pace calculator",
+    what: "training paces by 5K time, in min/km and min/mile",
+  },
+  fuel: {
+    href: "/fuel",
+    label: "fuel planner",
+    what: "carb and gel targets by finish time, plus a worked fuel-stop timeline",
+  },
+};
+
 function seoPageBlocks(url: string): DocBlock[] {
   const page = getSeoMeta(url);
   if (!page) return [];
@@ -432,14 +451,21 @@ function seoPageBlocks(url: string): DocBlock[] {
     });
   }
 
-  // The pace pages share the reference table — a crawler landing on
-  // "/calculator/5k-pace-calculator" gets numbers, not just a CTA.
-  if (page.tool === "pace") {
-    blocks.push({ type: "heading", level: 2, text: "Training pace reference" });
-    blocks.push(trainingPaceTable("km"));
-  } else if (page.tool === "fuel") {
-    blocks.push({ type: "heading", level: 2, text: "Fueling reference" });
-    blocks.push(fuelReferenceTable());
+  // Deliberately no reference table here. These pages number in the dozens per
+  // tool and already share a template; repeating one identical table across all
+  // of them would make near-duplicate pages more duplicate still. The tables
+  // live once, on the hub page each of these links to — so point at them
+  // explicitly rather than inlining a copy.
+  const hub = REFERENCE_HUBS[page.tool];
+  if (hub) {
+    blocks.push({
+      type: "paragraph",
+      text: `Full reference tables — ${hub.what} — are on the ${hub.label}, computed with the same formulas this page describes.`,
+    });
+    blocks.push({
+      type: "linkList",
+      items: [{ href: hub.href, label: hub.label }],
+    });
   }
 
   if (comparisonPaths.has(url)) {

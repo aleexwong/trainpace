@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { BASE_URL } from "@/lib/seo";
 import { useSearchParams } from "react-router-dom";
 import { TrainingPlanGenerator } from "@/features/plan";
 import { useAuth } from "@/features/auth/AuthContext";
@@ -34,11 +35,11 @@ export default function TrainingPlanPage() {
           name="description"
           content="Generate a free personalized running training plan for 5K, 10K, half marathon, or marathon. Science-based periodization using Jack Daniels' VDOT methodology. Export to Google Calendar."
         />
-        <link rel="canonical" href="https://www.trainpace.com/plan" />
+        <link rel="canonical" href={`${BASE_URL}/plan`} />
         <meta property="og:title" content="Free Running Training Plan Generator | TrainPace" />
         <meta property="og:description" content="Get a free personalized 8–20 week running training plan for your goal race. Science-based periodization, daily workouts with pace zones, and calendar export." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.trainpace.com/plan" />
+        <meta property="og:url" content={`${BASE_URL}/plan`} />
         <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Running Training Plan Generator | TrainPace" />
@@ -50,7 +51,7 @@ export default function TrainingPlanPage() {
               {
                 "@type": "WebApplication",
                 name: "Running Training Plan Generator",
-                url: "https://www.trainpace.com/plan",
+                url: `${BASE_URL}/plan`,
                 applicationCategory: "HealthApplication",
                 operatingSystem: "Any",
                 offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -60,7 +61,7 @@ export default function TrainingPlanPage() {
                 "@type": "BreadcrumbList",
                 itemListElement: [
                   { "@type": "ListItem", position: 1, name: "Home", item: "https://trainpace.com/" },
-                  { "@type": "ListItem", position: 2, name: "Training Plan Generator", item: "https://www.trainpace.com/plan" },
+                  { "@type": "ListItem", position: 2, name: "Training Plan Generator", item: `${BASE_URL}/plan` },
                 ],
               },
               {
