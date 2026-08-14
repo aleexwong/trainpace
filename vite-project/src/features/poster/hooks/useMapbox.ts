@@ -5,8 +5,9 @@
 
 import { useRef, useEffect, useState, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { consumeMapboxBudget, loadMapboxGl } from "@/lib/mapbox";
 import { type GpxPoint, type PosterData, MAPBOX_TOKEN } from "../types";
-import { loadMapbox, calculateZoom, calculateCenter } from "../utils/mapbox";
+import { calculateZoom, calculateCenter } from "../utils/mapbox";
 
 interface UseMapboxProps {
   containerRef: React.RefObject<HTMLDivElement>;
@@ -57,16 +58,32 @@ export function useMapbox({
   useEffect(() => {
     if (!containerRef.current || !MAPBOX_TOKEN || !displayPoints.length) return;
 
+    let cancelled = false;
+
     const initializeMap = async () => {
       try {
-        await loadMapbox();
+        const mapboxgl = await loadMapboxGl();
+        if (cancelled) return;
+
+        // The poster map is a full GL session like any other, so it takes a
+        // slot from the shared budget. Spent here rather than at the top of
+        // the effect so a mount that is torn down first costs nothing.
+        const decision = consumeMapboxBudget("gl-session");
+        if (!decision.allowed) {
+          toast({
+            title: "Map paused",
+            description:
+              "Too many map loads in a short window. Wait a moment and try again.",
+            variant: "destructive",
+          });
+          return;
+        }
 
         if (mapRef.current) {
           mapRef.current.remove();
           mapRef.current = null;
         }
 
-        const mapboxgl = window.mapboxgl;
         mapboxgl.accessToken = MAPBOX_TOKEN;
 
         // Calculate center and proper zoom from bounds
@@ -149,6 +166,7 @@ export function useMapbox({
     initializeMap();
 
     return () => {
+      cancelled = true;
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;

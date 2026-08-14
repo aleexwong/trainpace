@@ -5,7 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 import { getSeoUrl, raceSeoPageMap } from "@/features/seo-pages/seoPages";
 import marathonData from "@/data/marathon-data.json";
-import LeafletRoutePreview from "@/components/utils/LeafletRoutePreview";
+import StaticRouteMap from "@/components/utils/StaticRouteMap";
 import { db } from "@/lib/firebase";
 import { getCurrentDocumentId } from "@/config/routes";
 
@@ -344,13 +344,14 @@ export default function RaceSeoLanding() {
               </div>
 
               <div className="border-t border-orange-100 bg-white">
-                <LeafletRoutePreview
+                <StaticRouteMap
                   routePoints={previewRoute.thumbnailPoints}
+                  routeName={previewRoute.name}
                   height="320px"
-                  interactive={false}
                   lineColor="#c2410c"
                   lineWidth={4}
                   showStartEnd={true}
+                  alt={`${previewRoute.name} course map — ${previewRoute.city}, ${previewRoute.country}`}
                 />
               </div>
 

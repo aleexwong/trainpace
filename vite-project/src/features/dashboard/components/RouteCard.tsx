@@ -13,7 +13,7 @@ import {
 import { Timestamp } from "firebase/firestore";
 import { RouteMetadata } from "../types";
 import { slugify, buildRouteSlugPath } from "../../../lib/routeSlug";
-import MapboxRoutePreview from "../../../components/utils/MapboxRoutePreview";
+import StaticRouteMap from "../../../components/utils/StaticRouteMap";
 
 interface RouteCardProps {
   route: RouteMetadata;
@@ -144,15 +144,13 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
         {/* Route Preview Map */}
         <div className="px-4 pb-3">
           {showPreview && route.thumbnailPoints?.length > 0 ? (
-            <MapboxRoutePreview
+            <StaticRouteMap
               routePoints={route.thumbnailPoints}
               routeName={route.metadata?.routeName}
               lineColor={isBookmarked ? "#8b5cf6" : "#059669"}
               height="225px"
               showStartEnd={true}
               className="border border-gray-200"
-              mapStyle="mapbox://styles/mapbox/outdoors-v11"
-              interactive={false}
             />
           ) : (
             <div className="h-32 bg-gray-100 rounded-md border border-gray-200 flex items-center justify-center">

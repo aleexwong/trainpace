@@ -12,7 +12,7 @@ import {
   Utensils,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import LeafletRoutePreview from "../components/utils/LeafletRoutePreview";
+import StaticRouteMap from "../components/utils/StaticRouteMap";
 import { Helmet } from "react-helmet-async";
 import { SavePreviewRouteButton } from "../components/SavePreviewRouteButton";
 import { db } from "../lib/firebase";
@@ -378,7 +378,7 @@ export default function PreviewRoute() {
           Course Profile
         </h2>
         <div className="bg-white rounded-lg border border-gray-200 overflow-hidden relative z-0">
-          <LeafletRoutePreview
+          <StaticRouteMap
             routePoints={
               firebaseThumbPoints.length
                 ? firebaseThumbPoints
@@ -388,8 +388,8 @@ export default function PreviewRoute() {
             lineColor="#059669"
             height="400px"
             showStartEnd={true}
-            className=""
-            interactive={true}
+            allowInteractive={true}
+            alt={`${route.name} course map — ${route.city}, ${route.country}`}
           />
           {loadingPoints && (
             <div className="p-3 text-sm text-gray-500">

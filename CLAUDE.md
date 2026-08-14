@@ -53,7 +53,7 @@ Each feature is self-contained: `components/`, `hooks/`, `types.ts`, optional `u
 
 ## Tech Stack
 
-React 18 + TypeScript 5.6, Vite 5 (PWA + prerender plugins), React Router 7, Tailwind CSS 3.4, shadcn/ui + Radix, Firebase 11 (Auth/Firestore/Storage), Chart.js, Leaflet + Mapbox GL, Zod + React Hook Form, Google Gemini API, PostHog + GA4, Playwright.
+React 18 + TypeScript 5.6, Vite 5 (PWA + prerender plugins), React Router 7, Tailwind CSS 3.4, shadcn/ui + Radix, Firebase 11 (Auth/Firestore/Storage), Chart.js, Mapbox (Static Images + GL JS), Zod + React Hook Form, Google Gemini API, PostHog + GA4, Playwright.
 
 ## Routes (src/App.tsx)
 
@@ -138,7 +138,8 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 ## Gotchas
 
 - `console.*` calls are stripped in production builds (esbuild config in `vite.config.ts`).
-- Maps render blank without a valid `VITE_MAPBOX_TOKEN`.
+- Maps fall back to a tile-free SVG course outline (`RouteSketch`) without a valid `VITE_MAPBOX_TOKEN`.
+- **All Mapbox access goes through `src/lib/mapbox/`** — one CDN loader, one rolling request budget, one IndexedDB image cache. Never call `api.mapbox.com` or construct a `mapboxgl.Map` outside it, or that usage is unmetered. Default to `StaticRouteMap` (one cheap, cached API request); use `MapboxRoutePreview` only when the map must pan/zoom or track a marker, since each mount is a billable map load. See `vite-project/docs/mapbox.md`.
 - The app is a PWA (Workbox) — hard-refresh or unregister the service worker when testing build output.
 - Firebase Auth is Google OAuth only; there is no email/password path.
 - Legacy `/elevationfinder` routes must keep working (redirect aliases in `App.tsx`).

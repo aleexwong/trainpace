@@ -1,18 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mapboxgl: any;
-  }
-}
+import {
+  consumeMapboxBudget,
+  DEFAULT_GL_STYLE,
+  fingerprintRoute,
+  loadMapboxGl,
+  MAPBOX_TOKEN,
+  type BudgetDenialReason,
+  type RoutePoint,
+} from "@/lib/mapbox";
+import { cn } from "@/lib/utils";
+import RouteSketch from "./RouteSketch";
 
-interface RoutePoint {
-  lat: number;
-  lng: number;
-}
-
-interface InteractiveMapboxPreviewProps {
+interface MapboxRoutePreviewProps {
   routePoints: RoutePoint[];
   routeName?: string | null;
   height?: string;
@@ -35,96 +35,101 @@ interface InteractiveMapboxPreviewProps {
   highlightPoint?: RoutePoint | null;
 }
 
-const MAPBOX_TOKEN =
-  import.meta.env.VITE_MAPBOX_TOKEN || "YOUR_MAPBOX_ACCESS_TOKEN";
+type PreviewStatus = "loading" | "ready" | "blocked" | "error";
 
-// Global flag to track if Mapbox is loaded
-let mapboxLoaded = false;
-let mapboxLoadPromise: Promise<void> | null = null;
-
-const loadMapbox = (): Promise<void> => {
-  if (mapboxLoaded) return Promise.resolve();
-  if (mapboxLoadPromise) return mapboxLoadPromise;
-
-  mapboxLoadPromise = new Promise((resolve, reject) => {
-    // Check if already loaded
-    if (window.mapboxgl) {
-      mapboxLoaded = true;
-      resolve();
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js";
-    script.crossOrigin = "anonymous";
-    script.onload = () => {
-      mapboxLoaded = true;
-      resolve();
-    };
-    script.onerror = reject;
-
-    const link = document.createElement("link");
-    link.href = "https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css";
-    link.rel = "stylesheet";
-    link.crossOrigin = "anonymous";
-
-    document.head.appendChild(link);
-    document.head.appendChild(script);
-  });
-
-  return mapboxLoadPromise;
+const blockedMessage = (reason?: BudgetDenialReason): string => {
+  if (reason === "no-token") {
+    return "Interactive map unavailable — showing the course outline.";
+  }
+  return "Interactive map paused to protect our map quota — showing the course outline.";
 };
 
-const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
+/**
+ * A live Mapbox GL map of a route.
+ *
+ * Every mount of this component is a billable Mapbox map load, so it takes a
+ * slot from the shared request budget before constructing the map and renders
+ * a tile-free `RouteSketch` when there is none to take. Prefer
+ * `StaticRouteMap` wherever the map does not need to be panned or zoomed.
+ */
+export function MapboxRoutePreview({
   routePoints,
+  routeName,
   height = "300px",
   width = "100%",
   showStartEnd = true,
   className = "",
-  lineColor = "#ff0000",
+  lineColor = "#059669",
   lineWidth = 4,
-  mapStyle = "mapbox://styles/mapbox/light-v11",
+  mapStyle = DEFAULT_GL_STYLE,
   padding = 20,
   interactive = true,
-  minZoom = 10,
+  minZoom = 3,
   maxZoom = 16,
   scrollZoom = true,
   doubleClickZoom = true,
   boxZoom = true,
   touchZoomRotate = true,
   highlightPoint = null,
-}) => {
+}: MapboxRoutePreviewProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const map = useRef<any>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const highlightMarker = useRef<any>(null);
 
+  const [status, setStatus] = useState<PreviewStatus>("loading");
+  const [blockedReason, setBlockedReason] = useState<BudgetDenialReason>();
+
+  // A parent that rebuilds its points array each render must not re-create the
+  // map (and spend another map load), so the effect keys off the geometry, not
+  // the array's identity.
+  const routeSignature = useMemo(() => fingerprintRoute(routePoints), [routePoints]);
+  const routePointsRef = useRef(routePoints);
+  routePointsRef.current = routePoints;
+
   useEffect(() => {
-    if (!mapContainer.current || !routePoints?.length) return;
+    const points = routePointsRef.current;
+    if (!mapContainer.current || !points?.length) return;
+
+    // No token means no map and no reason to pull down GL JS at all.
+    if (!MAPBOX_TOKEN) {
+      setStatus("blocked");
+      setBlockedReason("no-token");
+      return;
+    }
+
+    let cancelled = false;
 
     const initializeMap = async () => {
       try {
-        await loadMapbox();
+        const mapboxgl = await loadMapboxGl();
+        if (cancelled || !mapContainer.current) return;
 
-        if (map.current) return; // Map already initialized
+        // Spend the budget here rather than at the top of the effect, so the
+        // slot is taken if and only if a map is actually constructed. A mount
+        // that is torn down first — React StrictMode's double-invoke in dev,
+        // or a fast unmount — costs nothing.
+        const decision = consumeMapboxBudget("gl-session");
+        if (!decision.allowed) {
+          setStatus("blocked");
+          setBlockedReason(decision.reason);
+          return;
+        }
 
-        const mapboxgl = window.mapboxgl;
         mapboxgl.accessToken = MAPBOX_TOKEN;
 
-        // Calculate bounds
-        const lats = routePoints.map((p) => p.lat);
-        const lngs = routePoints.map((p) => p.lng);
+        const lats = points.map((p) => p.lat);
+        const lngs = points.map((p) => p.lng);
         const bounds = new mapboxgl.LngLatBounds(
           [Math.min(...lngs), Math.min(...lats)],
           [Math.max(...lngs), Math.max(...lats)]
         );
 
-        // Initialize map
         map.current = new mapboxgl.Map({
-          container: mapContainer.current!,
+          container: mapContainer.current,
           style: mapStyle,
-          bounds: bounds,
+          bounds,
           fitBoundsOptions: { padding },
           interactive,
           minZoom,
@@ -135,8 +140,11 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
           touchZoomRotate,
         });
 
+        map.current.on("error", () => setStatus("error"));
+
         map.current.on("load", () => {
-          // Add route line
+          if (cancelled || !map.current) return;
+
           map.current.addSource("route", {
             type: "geojson",
             data: {
@@ -144,7 +152,7 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
               properties: {},
               geometry: {
                 type: "LineString",
-                coordinates: routePoints.map((p) => [p.lng, p.lat]),
+                coordinates: points.map((p) => [p.lng, p.lat]),
               },
             },
           });
@@ -163,30 +171,31 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
             },
           });
 
-          if (showStartEnd && routePoints.length > 1) {
-            const start = routePoints[0];
-            const end = routePoints[routePoints.length - 1];
+          if (showStartEnd && points.length > 1) {
+            const start = points[0];
+            const end = points[points.length - 1];
 
-            // Add start marker
             new mapboxgl.Marker({ color: "#27ae60" })
               .setLngLat([start.lng, start.lat])
               .addTo(map.current);
 
-            // Add end marker
             new mapboxgl.Marker({ color: "#e74c3c" })
               .setLngLat([end.lng, end.lat])
               .addTo(map.current);
           }
+
+          setStatus("ready");
         });
-        
       } catch (error) {
         console.error("Failed to load Mapbox:", error);
+        if (!cancelled) setStatus("error");
       }
     };
 
     initializeMap();
 
     return () => {
+      cancelled = true;
       if (highlightMarker.current) {
         highlightMarker.current.remove();
         highlightMarker.current = null;
@@ -196,12 +205,25 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
         map.current = null;
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [routePoints, showStartEnd, lineColor, lineWidth, mapStyle, padding, interactive]);
+  }, [
+    routeSignature,
+    showStartEnd,
+    lineColor,
+    lineWidth,
+    mapStyle,
+    padding,
+    interactive,
+    minZoom,
+    maxZoom,
+    scrollZoom,
+    doubleClickZoom,
+    boxZoom,
+    touchZoomRotate,
+  ]);
 
   // Move/show/hide the highlight marker without reinitializing the map.
   useEffect(() => {
-    const mapboxgl = window.mapboxgl;
+    const mapboxgl = typeof window === "undefined" ? null : window.mapboxgl;
     if (!map.current || !mapboxgl) return;
 
     if (!highlightPoint) {
@@ -220,15 +242,37 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
         .setLngLat(lngLat)
         .addTo(map.current);
     }
-  }, [highlightPoint]);
+  }, [highlightPoint, status]);
 
   if (!routePoints?.length) {
     return (
       <div
-        className={`bg-gray-100 rounded-md flex items-center justify-center ${className}`}
+        className={cn("flex items-center justify-center rounded-md bg-gray-100", className)}
         style={{ height, width }}
       >
-        <div className="text-gray-400 text-sm">No route data</div>
+        <div className="text-sm text-gray-400">No route data</div>
+      </div>
+    );
+  }
+
+  if (status === "blocked" || status === "error") {
+    return (
+      <div
+        className={cn("overflow-hidden rounded-md", className)}
+        style={{ height, width }}
+      >
+        <RouteSketch
+          routePoints={routePoints}
+          routeName={routeName}
+          lineColor={lineColor}
+          lineWidth={lineWidth}
+          showStartEnd={showStartEnd}
+          note={
+            status === "error"
+              ? "Map tiles unavailable right now — showing the course outline."
+              : blockedMessage(blockedReason)
+          }
+        />
       </div>
     );
   }
@@ -236,10 +280,10 @@ const InteractiveMapboxPreview: React.FC<InteractiveMapboxPreviewProps> = ({
   return (
     <div
       ref={mapContainer}
-      className={`relative rounded-md overflow-hidden ${className}`}
+      className={cn("relative overflow-hidden rounded-md bg-stone-50", className)}
       style={{ height, width }}
     />
   );
-};
+}
 
-export default InteractiveMapboxPreview;
+export default MapboxRoutePreview;

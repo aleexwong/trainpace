@@ -31,9 +31,6 @@ export default defineConfig({
     host: true,
     port: 5173,
   },
-  ssr: {
-    noExternal: ["leaflet"],
-  },
   build: {
     minify: "esbuild",
   },

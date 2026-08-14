@@ -211,7 +211,7 @@
         {
           "id": "tech-stack",
           "question": "What technologies power TrainPace?",
-          "answer": "TrainPace is built with React 18 and TypeScript for type-safe development, Vite for lightning-fast builds, React Router 7 for navigation, Tailwind CSS + shadcn/ui for styling, Chart.js for elevation visualizations, Mapbox and Leaflet for interactive maps, Firebase for auth and storage, and Vercel for global CDN hosting.",
+          "answer": "TrainPace is built with React 18 and TypeScript for type-safe development, Vite for lightning-fast builds, React Router 7 for navigation, Tailwind CSS + shadcn/ui for styling, Chart.js for elevation visualizations, Mapbox for course maps, Firebase for auth and storage, and Vercel for global CDN hosting.",
           "emoji": "🛠️"
         }
       ]
