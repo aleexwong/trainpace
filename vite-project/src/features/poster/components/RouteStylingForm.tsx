@@ -27,7 +27,7 @@ export function RouteStylingForm({
             type="color"
             id="routeColor"
             value={posterData.routeColor}
-            onChange={(e) => onUpdateField("routeColor", e.target.value)}
+            onChange={(e) => { onUpdateField("routeColor", e.target.value); }}
             className="w-12 h-10 rounded border border-gray-300 cursor-pointer"
           />
           <Input

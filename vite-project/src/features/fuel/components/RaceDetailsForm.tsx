@@ -145,7 +145,7 @@ export function RaceDetailsForm({
                   data-testid="fuel-time-minutes"
                   placeholder="Minutes (e.g. 45)"
                   value={timeMinutes}
-                  onChange={(e) => setTimeMinutes(e.target.value)}
+                  onChange={(e) => { setTimeMinutes(e.target.value); }}
                   className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                   min={1}
                 />
@@ -159,7 +159,7 @@ export function RaceDetailsForm({
                     data-testid="fuel-time-hours"
                     placeholder="HH"
                     value={timeHours}
-                    onChange={(e) => setTimeHours(e.target.value)}
+                    onChange={(e) => { setTimeHours(e.target.value); }}
                     className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                     min={0}
                     max={12}
@@ -241,7 +241,7 @@ export function RaceDetailsForm({
           </div>
           <Slider
             value={[carbsPerHour]}
-            onValueChange={(value) => setCarbsPerHour(value[0])}
+            onValueChange={(value) => { setCarbsPerHour(value[0]); }}
             min={MIN_CARBS_PER_HOUR}
             max={MAX_CARBS_PER_HOUR[raceType]}
             step={5}

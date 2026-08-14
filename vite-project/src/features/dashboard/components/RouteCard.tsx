@@ -131,7 +131,7 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
               )}
             </div>
             <button
-              onClick={() => setDeleteConfirm(true)}
+              onClick={() => { setDeleteConfirm(true); }}
               className="text-gray-400 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
               title={isBookmarked ? "Remove bookmark" : "Delete route"}
               aria-label={isBookmarked ? "Remove bookmark" : "Delete route"}
@@ -165,7 +165,7 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
                 </div>
                 {route.thumbnailPoints?.length > 0 && (
                   <button
-                    onClick={() => setShowPreview(true)}
+                    onClick={() => { setShowPreview(true); }}
                     className="text-emerald-500 text-xs mt-1 hover:underline"
                   >
                     Try loading preview
@@ -256,7 +256,7 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
               value={slugInput}
               onChange={(e) => setSlugInput(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleSaveSlug();
+                if (e.key === "Enter") void handleSaveSlug();
                 if (e.key === "Escape") setEditingUrl(false);
               }}
               placeholder="boston-marathon"

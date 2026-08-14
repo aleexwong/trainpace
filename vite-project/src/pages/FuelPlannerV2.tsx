@@ -144,7 +144,7 @@ const FuelPlannerV2 = () => {
   const parseExpandableRecommendations = (
     text: string
   ): Array<{ headline: string; detail: string }> => {
-    const recommendations: Array<{ headline: string; detail: string }> = [];
+    const recommendations: { headline: string; detail: string }[] = [];
 
     // Try structured format first (HEADLINE/DETAIL)
     const blocks = text.split(/HEADLINE:/i).filter((b) => b.trim());
@@ -627,7 +627,7 @@ const FuelPlannerV2 = () => {
               🏃 Fuel Planner
             </h1>
             <button
-              onClick={() => setShowInfo(!showInfo)}
+              onClick={() => { setShowInfo(!showInfo); }}
               className="p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all"
             >
               <Info className="h-6 w-6 text-emerald-600" />
@@ -744,7 +744,7 @@ const FuelPlannerV2 = () => {
                         type="number"
                         placeholder="e.g. 68"
                         value={weight}
-                        onChange={(e) => setWeight(e.target.value)}
+                        onChange={(e) => { setWeight(e.target.value); }}
                         className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                         min={1}
                         max={1000}
@@ -860,7 +860,7 @@ const FuelPlannerV2 = () => {
                       </h3>
                     </div>
                     <button
-                      onClick={() => setShowPromptModal(true)}
+                      onClick={() => { setShowPromptModal(true); }}
                       className="p-2 rounded-full bg-white hover:bg-purple-200 transition-colors"
                       title="View system prompt"
                     >
@@ -1003,7 +1003,7 @@ const FuelPlannerV2 = () => {
                         <div className="flex items-center justify-between mb-4">
                           <div className="flex items-center gap-2">
                             <button
-                              onClick={() => setShowAsList(!showAsList)}
+                              onClick={() => { setShowAsList(!showAsList); }}
                               className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
                               title={
                                 showAsList ? "Show as cards" : "Show as list"
@@ -1210,7 +1210,7 @@ const FuelPlannerV2 = () => {
           {/* Fueling Philosophy - Full Width at Bottom */}
           <div className="mt-12 max-w-4xl mx-auto">
             <button
-              onClick={() => setShowPhilosophy(!showPhilosophy)}
+              onClick={() => { setShowPhilosophy(!showPhilosophy); }}
               className="w-full flex items-center justify-between p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all"
             >
               <span className="text-lg font-semibold text-gray-900">
@@ -1260,7 +1260,7 @@ const FuelPlannerV2 = () => {
         >
           <div
             className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => { e.stopPropagation(); }}
           >
             <div className="p-6 border-b border-gray-200 flex items-center justify-between bg-purple-50">
               <div className="flex items-center gap-2">

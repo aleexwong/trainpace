@@ -38,7 +38,7 @@ export function useTrainingGoals(userId: string | undefined) {
   }, [userId]);
 
   useEffect(() => {
-    loadGoals();
+    void loadGoals();
   }, [loadGoals]);
 
   const saveGoals = useCallback(

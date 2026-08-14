@@ -29,7 +29,7 @@ export interface GPXAnalysisResponse {
       totalElevationGain: number;
       totalElevationLoss: number;
       difficultyRating: string;
-      rawSegments: Array<Record<string, unknown>>;
+      rawSegments: Record<string, unknown>[];
     };
     analysisResults: {
       segmentClassifications: Array<Record<string, unknown>>;

@@ -46,7 +46,7 @@ function SegmentTabs({ active, onChange }: { active: Segment; onChange: (s: Segm
               type="button"
               role="tab"
               aria-selected={selected}
-              onClick={() => onChange(tab.id)}
+              onClick={() => { onChange(tab.id); }}
               className={cn(
                 "flex-1 rounded-full py-2 px-1 text-[13px] sm:text-sm font-semibold whitespace-nowrap transition-colors",
                 selected
@@ -172,7 +172,7 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
     if (!getPendingSave()) return;
     if (autoSaveAttempted.current) return;
     autoSaveAttempted.current = true;
-    save(plan, user.uid);
+    void save(plan, user.uid);
   }, [authLoading, user, plan, save]);
 
   // Once a plan is saved (manually or via auto-save), it lives in the dashboard —

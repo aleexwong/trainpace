@@ -151,7 +151,7 @@ export function PacePlansSection({
               return (
                 <button
                   key={page}
-                  onClick={() => goToPage(page)}
+                  onClick={() => { goToPage(page); }}
                   className={`w-10 h-10 rounded-md transition-colors flex items-center justify-center ${
                     page === currentPage
                       ? "bg-purple-500 text-white"

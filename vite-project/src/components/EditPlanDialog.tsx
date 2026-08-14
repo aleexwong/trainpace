@@ -104,7 +104,7 @@ export function EditPlanDialog({
             <input
               type="text"
               value={planName}
-              onChange={(e) => setPlanName(e.target.value)}
+              onChange={(e) => { setPlanName(e.target.value); }}
               placeholder="e.g., Boston 2025, Fall PR Attempt"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               disabled={isSaving}

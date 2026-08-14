@@ -93,7 +93,7 @@ function CoverVisual({
           src={post.coverImage}
           alt={post.title}
           loading="lazy"
-          onError={() => setErrored(true)}
+          onError={() => { setErrored(true); }}
           // Guard against a "200 but not an image" response (e.g. SPA fallback):
           // a decoded image with zero natural size means the file is missing.
           onLoad={(e) => {

@@ -129,7 +129,7 @@ const Hero = () => {
                 variant="primary"
                 size="lg"
                 icon={ArrowRight}
-                onClick={() => navigate("/calculator")}
+                onClick={() => { navigate("/calculator"); }}
               >
                 Get Started
               </Button>
@@ -771,7 +771,7 @@ const AiAgentSection = () => {
             </p>
 
             <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
-              <Button variant="primary" onClick={() => navigate("/mcp")}>
+              <Button variant="primary" onClick={() => { navigate("/mcp"); }}>
                 Set It Up in a Minute
               </Button>
               <code className="text-sm text-slate-400 font-mono">

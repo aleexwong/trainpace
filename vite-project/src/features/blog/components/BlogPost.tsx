@@ -281,7 +281,7 @@ export default function BlogPost() {
         // User cancelled or share failed
       }
     } else {
-      navigator.clipboard.writeText(url);
+      void navigator.clipboard.writeText(url);
       alert("Link copied to clipboard!");
     }
   };

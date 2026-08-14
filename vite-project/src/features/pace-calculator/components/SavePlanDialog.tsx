@@ -78,7 +78,7 @@ export function SavePlanDialog({
             <input
               type="text"
               value={planName}
-              onChange={(e) => setPlanName(e.target.value)}
+              onChange={(e) => { setPlanName(e.target.value); }}
               placeholder="e.g., Boston 2025, Fall PR Attempt"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               disabled={isSaving}
@@ -115,7 +115,7 @@ export function SavePlanDialog({
             </label>
             <textarea
               value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              onChange={(e) => { setNotes(e.target.value); }}
               placeholder="e.g., Focus on negative splits, adjust for weather"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
               rows={3}

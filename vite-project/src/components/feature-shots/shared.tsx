@@ -31,7 +31,7 @@ export function useInView<T extends HTMLElement>(threshold = 0.5) {
       { threshold }
     );
     io.observe(el);
-    return () => io.disconnect();
+    return () => { io.disconnect(); };
   }, [threshold]);
 
   return { ref, inView };
@@ -76,7 +76,7 @@ export function CountUp({
       if (p < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => { cancelAnimationFrame(raf); };
   }, [play, value, durationMs]);
 
   return (

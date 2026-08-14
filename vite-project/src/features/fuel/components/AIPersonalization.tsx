@@ -162,7 +162,7 @@ export function AIPersonalization({
                       key={preset.id}
                       preset={preset}
                       isSelected={selectedPresets.has(preset.id)}
-                      onToggle={() => handlePresetToggle(preset.id)}
+                      onToggle={() => { handlePresetToggle(preset.id); }}
                     />
                   ))}
                 </div>
@@ -291,14 +291,14 @@ export function AIPersonalization({
                   </p>
                   <div className="flex gap-3 justify-center">
                     <button
-                      onClick={() => onFeedback(true)}
+                      onClick={() => { onFeedback(true); }}
                       className="flex-1 py-2 px-4 bg-white/20 hover:bg-white/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium text-gray-700"
                     >
                       <span className="text-lg">👍</span>
                       Helpful
                     </button>
                     <button
-                      onClick={() => onFeedback(false)}
+                      onClick={() => { onFeedback(false); }}
                       className="flex-1 py-2 px-4 bg-white/20 hover:bg-white/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium text-gray-700"
                     >
                       <span className="text-lg">👎</span>
@@ -336,7 +336,7 @@ export function AIPersonalization({
         >
           <div
             className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => { e.stopPropagation(); }}
           >
             <div className="p-6 border-b border-gray-200 flex items-center justify-between bg-purple-50">
               <div className="flex items-center gap-2">

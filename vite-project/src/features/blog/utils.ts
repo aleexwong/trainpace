@@ -67,7 +67,7 @@ export function formatDate(dateString: string): string {
 // Get related posts (same category or shared tags, excluding current)
 export function getRelatedPosts(
   currentSlug: string,
-  limit: number = 3
+  limit = 3
 ): BlogPost[] {
   const currentPost = getPostBySlug(currentSlug);
   if (!currentPost) return [];
@@ -109,7 +109,7 @@ export function getAllPostSlugs(): string[] {
 
 // Get the most recent posts (optionally excluding one slug)
 export function getRecentPosts(
-  limit: number = 5,
+  limit = 5,
   excludeSlug?: string
 ): BlogPost[] {
   return getAllPosts()

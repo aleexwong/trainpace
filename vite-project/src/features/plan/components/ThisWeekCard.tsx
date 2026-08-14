@@ -161,7 +161,7 @@ export function ThisWeekCard({
             </div>
             <button
               type="button"
-              onClick={() => onToggle(highlighted.weekNumber, highlighted.day)}
+              onClick={() => { onToggle(highlighted.weekNumber, highlighted.day); }}
               disabled={isPending?.(highlighted.weekNumber, highlighted.day)}
               aria-pressed={isComplete(highlighted.weekNumber, highlighted.day)}
               aria-label={`Mark ${highlighted.day} ${highlighted.workout.label} as done`}

@@ -51,7 +51,7 @@ export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
           </p>
         </div>
         <button
-          onClick={() => onDelete(plan.id)}
+          onClick={() => { onDelete(plan.id); }}
           className="text-gray-400 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
           title="Delete fuel plan"
           aria-label="Delete fuel plan"
@@ -84,7 +84,7 @@ export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
       {plan.aiRecommendations && plan.aiRecommendations.length > 0 && (
         <div className="mb-3">
           <button
-            onClick={() => setExpanded(!expanded)}
+            onClick={() => { setExpanded(!expanded); }}
             className="w-full text-sm text-purple-600 hover:text-purple-700 flex items-center justify-between bg-purple-50 p-2 rounded-lg"
           >
             <span className="font-medium">

@@ -129,7 +129,7 @@ export default function PreviewRoute() {
         const snap = await getDoc(ref);
         if (!snap.exists()) return;
         type FirestoreDoc = {
-          thumbnailPoints?: Array<{ lat: number; lng: number; ele?: number }>;
+          thumbnailPoints?: { lat: number; lng: number; ele?: number }[];
           displayPoints?: Array<{ lat: number; lng: number; ele?: number }>;
           staticRouteData?: { totalDistance?: number; totalElevationGain?: number; totalElevationLoss?: number; elevationProfile?: Array<{ distanceKm: number; elevation: number }> };
           metadata?: { totalDistance?: number; elevationGain?: number };
@@ -164,7 +164,7 @@ export default function PreviewRoute() {
             nextStats.elevationGain = meta.elevationGain;
           const elevateFrom = (
             pts?.length ? pts : route.thumbnailPoints
-          ) as Array<{ lat: number; lng: number; ele?: number }>;
+          ) as { lat: number; lng: number; ele?: number }[];
           if (elevateFrom.length) {
             const firstEle = elevateFrom[0]?.ele;
             const lastEle = elevateFrom[elevateFrom.length - 1]?.ele;
@@ -182,7 +182,7 @@ export default function PreviewRoute() {
         if (!cancelled) setLoadingPoints(false);
       }
     };
-    load();
+    void load();
     return () => {
       cancelled = true;
     };
@@ -574,7 +574,7 @@ export default function PreviewRoute() {
                 item={item}
                 isOpen={openFAQIndex === index}
                 onToggle={() =>
-                  setOpenFAQIndex(openFAQIndex === index ? null : index)
+                  { setOpenFAQIndex(openFAQIndex === index ? null : index); }
                 }
               />
             ))}

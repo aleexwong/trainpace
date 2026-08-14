@@ -184,7 +184,7 @@ export function OnboardingFlow() {
                     Skip for now
                   </Button>
                   <Button
-                    onClick={() => setStep(2)}
+                    onClick={() => { setStep(2); }}
                     disabled={!isValidRace(recent)}
                   >
                     Next
@@ -243,7 +243,7 @@ export function OnboardingFlow() {
                       <input
                         type="checkbox"
                         checked={enabled.includes(key)}
-                        onChange={() => toggleIntegration(key)}
+                        onChange={() => { toggleIntegration(key); }}
                         className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                       />
                       <span>

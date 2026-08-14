@@ -79,7 +79,7 @@ export function SettingsPanel({
             max="5"
             step="0.5"
             value={gradeThreshold}
-            onChange={(e) => onGradeThresholdChange(Number(e.target.value))}
+            onChange={(e) => { onGradeThresholdChange(Number(e.target.value)); }}
             onMouseUp={handleRelease}
             onTouchEnd={handleRelease}
             className="w-full"

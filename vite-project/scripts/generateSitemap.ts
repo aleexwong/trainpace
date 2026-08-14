@@ -32,7 +32,7 @@ const staticPaths: Array<{ loc: string; changefreq: string; priority: string }> 
   { loc: `${BASE_URL}/preview-route/sydney`, changefreq: "yearly", priority: "0.7" },
   { loc: `${BASE_URL}/preview-route/oslo`, changefreq: "yearly", priority: "0.7" },
   // Blog posts
-  ...(blogPosts.posts as Array<{ slug: string; date?: string }>).map((p) => ({
+  ...(blogPosts.posts as { slug: string; date?: string }[]).map((p) => ({
     loc: `${BASE_URL}/blog/${p.slug}`,
     changefreq: "monthly",
     priority: "0.7",

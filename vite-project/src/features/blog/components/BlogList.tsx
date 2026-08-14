@@ -39,7 +39,7 @@ export default function BlogList() {
         setSearchParams(params, { replace: true });
       }
     }, 300);
-    return () => clearTimeout(handle);
+    return () => { clearTimeout(handle); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trimmedSearch]);
 
@@ -190,7 +190,7 @@ export default function BlogList() {
               {categories.map((category) => (
                 <button
                   key={category}
-                  onClick={() => setCategory(category)}
+                  onClick={() => { setCategory(category); }}
                   className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
                     selectedCategory === category
                       ? `${categoryColors[category]} border-transparent`
@@ -246,7 +246,7 @@ export default function BlogList() {
                   <div className="text-center mt-10">
                     <Button
                       variant="outline"
-                      onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                      onClick={() => { setVisibleCount((c) => c + PAGE_SIZE); }}
                       className="px-8"
                     >
                       Load more articles

@@ -11,7 +11,7 @@ export interface UploadedFileData {
   filename: string;
   fileUrl: string | null;
   docId: string | null;
-  displayPoints?: Array<{ lat: number; lng: number; ele?: number }>;
+  displayPoints?: { lat: number; lng: number; ele?: number }[];
   displayUrl?: string | null;
 }
 
@@ -44,7 +44,7 @@ interface UseFileUploadReturn {
     filename: string | null;
     points: ProfilePoint[];
     analysisData: GPXAnalysisResponse | null;
-    uploadedRoutePoints: Array<{ lat: number; lng: number; ele?: number }>;
+    uploadedRoutePoints: { lat: number; lng: number; ele?: number }[];
     originalGpxText: string | null;
   };
   resetUploadState: () => void;
@@ -63,7 +63,7 @@ export function useFileUpload({
     null
   );
   const [uploadedRoutePoints, setUploadedRoutePoints] = useState<
-    Array<{ lat: number; lng: number; ele?: number }>
+    { lat: number; lng: number; ele?: number }[]
   >([]);
   const [originalGpxText, setOriginalGpxText] = useState<string | null>(null);
 

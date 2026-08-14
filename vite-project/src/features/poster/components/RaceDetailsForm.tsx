@@ -28,7 +28,7 @@ export function RaceDetailsForm({
         <Input
           id="raceName"
           value={posterData.raceName}
-          onChange={(e) => onUpdateField("raceName", e.target.value)}
+          onChange={(e) => { onUpdateField("raceName", e.target.value); }}
           placeholder="Bank of America Chicago Marathon"
           className="mt-1"
         />
@@ -60,7 +60,7 @@ export function RaceDetailsForm({
           <Input
             id="distance"
             value={posterData.distance}
-            onChange={(e) => onUpdateField("distance", e.target.value)}
+            onChange={(e) => { onUpdateField("distance", e.target.value); }}
             placeholder="42.195 km"
             className="mt-1"
           />

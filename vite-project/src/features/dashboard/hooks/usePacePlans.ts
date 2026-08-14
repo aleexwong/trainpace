@@ -59,7 +59,7 @@ export function usePacePlans(userId: string | undefined) {
       return;
     }
 
-    loadPacePlans();
+    void loadPacePlans();
   }, [userId, loadPacePlans]);
 
   const removePacePlan = (planId: string) => {

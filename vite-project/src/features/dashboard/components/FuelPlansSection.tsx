@@ -149,7 +149,7 @@ export function FuelPlansSection({
               return (
                 <button
                   key={page}
-                  onClick={() => goToPage(page)}
+                  onClick={() => { goToPage(page); }}
                   className={`w-10 h-10 rounded-md transition-colors flex items-center justify-center ${
                     page === currentPage
                       ? "bg-orange-500 text-white"

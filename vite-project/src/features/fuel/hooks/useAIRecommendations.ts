@@ -44,7 +44,7 @@ export function useAIRecommendations({
       const timer = setTimeout(() => {
         setCooldownSeconds(cooldownSeconds - 1);
       }, 1000);
-      return () => clearTimeout(timer);
+      return () => { clearTimeout(timer); };
     }
   }, [cooldownSeconds]);
 

@@ -92,6 +92,6 @@ export function usePendingPacePlan() {
       }
     };
 
-    handlePendingPlan();
+    void handlePendingPlan();
   }, [user, searchParams, navigate]);
 }

@@ -157,7 +157,7 @@ function CopyButton({
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => { setCopied(false); }, 2000);
       posthog.capture("mcp_docs_copy", { item: label });
     } catch {
       // Clipboard unavailable (e.g. non-secure context) — nothing to do
@@ -243,7 +243,7 @@ function AnimatedTerminal() {
         cur.kind === "cmd" ? 420 : 650
       );
     }
-    return () => window.clearTimeout(timer.current);
+    return () => { window.clearTimeout(timer.current); };
   }, [line, chars, finished]);
 
   return (

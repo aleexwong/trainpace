@@ -65,7 +65,7 @@ export default function FAQ() {
       if (element) observer.observe(element);
     });
 
-    return () => observer.disconnect();
+    return () => { observer.disconnect(); };
   }, []);
 
   // Get current section title for dropdown display
@@ -135,7 +135,7 @@ export default function FAQ() {
               return (
                 <button
                   key={index}
-                  onClick={() => scrollToSection(sectionId)}
+                  onClick={() => { scrollToSection(sectionId); }}
                   className={`
                     px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
                     ${

@@ -22,7 +22,7 @@ export function GoalsSettingsCard() {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => navigate("/onboarding")}
+          onClick={() => { navigate("/onboarding"); }}
           className="hover:text-emerald-600"
         >
           {goals ? "Edit" : "Set goals"}

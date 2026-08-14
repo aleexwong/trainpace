@@ -92,7 +92,7 @@ export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
                 Confirm delete
               </button>
               <button
-                onClick={() => setConfirming(false)}
+                onClick={() => { setConfirming(false); }}
                 className="text-xs text-slate-500 hover:text-slate-700 px-2 py-1.5"
               >
                 Cancel
