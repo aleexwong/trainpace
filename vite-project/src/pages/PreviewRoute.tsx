@@ -389,6 +389,7 @@ export default function PreviewRoute() {
             height="400px"
             showStartEnd={true}
             allowInteractive={true}
+            awaitingPoints={loadingPoints}
             alt={`${route.name} course map — ${route.city}, ${route.country}`}
           />
           {loadingPoints && (

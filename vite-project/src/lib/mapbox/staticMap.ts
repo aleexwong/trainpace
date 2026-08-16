@@ -90,18 +90,25 @@ export function buildStaticMapRequest(
 
   if (!MAPBOX_TOKEN) return null;
 
-  const bounds = getRouteBounds(routePoints ?? []);
-  if (!bounds) return null;
+  // Filter once, up front. Deriving the bounds from clean points but the pins
+  // from the raw array is how you get `pin-s+27ae60(NaN,NaN)` and a 422 on a
+  // request whose budget slot is already spent.
+  const points = (routePoints ?? []).filter(
+    (p) => Number.isFinite(p?.lat) && Number.isFinite(p?.lng)
+  );
+
+  const bounds = getRouteBounds(points);
+  if (!bounds || points.length < 2) return null;
 
   const imageWidth = Math.round(Math.min(STATIC_IMAGE_MAX_DIMENSION, Math.max(1, width)));
   const imageHeight = Math.round(Math.min(STATIC_IMAGE_MAX_DIMENSION, Math.max(1, height)));
   const stroke = normalizeHex(lineColor);
   const size = `${imageWidth}x${imageHeight}${retina ? "@2x" : ""}`;
 
-  const first = routePoints[0];
-  const last = routePoints[routePoints.length - 1];
+  const first = points[0];
+  const last = points[points.length - 1];
   const markers =
-    showStartEnd && routePoints.length > 1
+    showStartEnd
       ? [
           `pin-s+27ae60(${first.lng.toFixed(5)},${first.lat.toFixed(5)})`,
           `pin-s+e74c3c(${last.lng.toFixed(5)},${last.lat.toFixed(5)})`,
@@ -116,7 +123,7 @@ export function buildStaticMapRequest(
   // Start generous and halve until the URL fits. Preview maps are small enough
   // that 900 points already exceeds one point per pixel of route.
   for (let maxPoints = 900; maxPoints >= 24; maxPoints = Math.floor(maxPoints / 2)) {
-    const simplified = simplifyRoute(routePoints, maxPoints);
+    const simplified = simplifyRoute(points, maxPoints);
     if (simplified.length < 2) break;
 
     const path = `path-${lineWidth}+${stroke}-0.9(${encodeURIComponent(

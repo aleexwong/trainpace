@@ -44,8 +44,16 @@ const ALLOWED: BudgetDecision = { allowed: true, retryAfterMs: 0, remaining: 0 }
  */
 let memoryLog: RequestLog = {};
 
+/**
+ * Set once a write to localStorage fails. Without it, reads keep coming from
+ * localStorage while writes land in `memoryLog`, so every recorded request is
+ * silently dropped and the cap quietly stops applying — the one failure mode
+ * this module must not have.
+ */
+let storageFailed = false;
+
 const storage = (): Storage | null => {
-  if (typeof window === "undefined") return null;
+  if (typeof window === "undefined" || storageFailed) return null;
   try {
     const probe = "trainpace.storage.probe";
     window.localStorage.setItem(probe, "1");
@@ -90,8 +98,9 @@ const writeLog = (log: RequestLog): void => {
   try {
     store.setItem(BUDGET_STORAGE_KEY, JSON.stringify(log));
   } catch {
-    // Quota or a disabled store — fall back to the in-memory log so the cap
-    // still holds for this tab.
+    // Quota or a disabled store. Latch to the in-memory log for good, so
+    // subsequent reads see what we just wrote instead of stale localStorage.
+    storageFailed = true;
     memoryLog = log;
   }
 };
@@ -227,5 +236,6 @@ export function getMapboxBudgetSnapshot(): BudgetSnapshot[] {
 /** Clears the log. Intended for tests and local debugging. */
 export function resetMapboxBudget(): void {
   memoryLog = {};
+  storageFailed = false;
   storage()?.removeItem(BUDGET_STORAGE_KEY);
 }

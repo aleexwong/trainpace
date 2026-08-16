@@ -26,10 +26,11 @@ export const STATIC_URL_MAX_LENGTH = 8192;
 export const STATIC_IMAGE_MAX_DIMENSION = 1280;
 
 /**
- * The two things we meter, priced very differently by Mapbox:
- * a GL session is a "map load", a static image is a single API request.
+ * What we meter. Mapbox prices these very differently: a GL session is a
+ * "map load", a static image is a single API request, and geocoding is billed
+ * per lookup.
  */
-export type MapboxRequestKind = "gl-session" | "static-image";
+export type MapboxRequestKind = "gl-session" | "static-image" | "geocoding";
 
 export interface RateWindow {
   /** Maximum requests allowed inside the window. */
@@ -60,6 +61,12 @@ export const MAPBOX_LIMITS: Record<MapboxRequestKind, KindLimits> = {
   "static-image": {
     burst: { max: 12, windowMs: 30_000 },
     sustained: { max: 120, windowMs: HOUR },
+  },
+  // One reverse lookup per poster the user builds, and the caller memoizes by
+  // rounded coordinate, so anything past a handful is a loop.
+  geocoding: {
+    burst: { max: 6, windowMs: 30_000 },
+    sustained: { max: 60, windowMs: HOUR },
   },
 };
 

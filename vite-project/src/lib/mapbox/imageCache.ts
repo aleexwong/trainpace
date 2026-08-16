@@ -27,7 +27,27 @@ interface CacheRecord {
   lastUsedAt: number;
 }
 
+/**
+ * Insertion-ordered, so the first key is the least recently written. This tier
+ * is the *only* cache in private browsing and during prerender, where
+ * IndexedDB is unavailable — it has to evict itself.
+ */
 const memoryCache = new Map<string, CacheRecord>();
+
+/** Well under the IndexedDB ceilings; this one is holding blobs in RAM. */
+const MEMORY_MAX_ENTRIES = 12;
+
+const evictMemory = (now: number): void => {
+  for (const [key, record] of memoryCache) {
+    if (!isFresh(record, now)) memoryCache.delete(key);
+  }
+
+  while (memoryCache.size > MEMORY_MAX_ENTRIES) {
+    const oldest = memoryCache.keys().next();
+    if (oldest.done) break;
+    memoryCache.delete(oldest.value);
+  }
+};
 
 let dbPromise: Promise<IDBDatabase | null> | null = null;
 
@@ -74,11 +94,12 @@ export async function getCachedMapImage(key: string): Promise<Blob | null> {
 
   const cached = memoryCache.get(key);
   if (cached) {
+    memoryCache.delete(key);
     if (isFresh(cached, now)) {
-      cached.lastUsedAt = now;
+      // Re-insert so Map iteration order stays least-recently-used first.
+      memoryCache.set(key, { ...cached, lastUsedAt: now });
       return cached.blob;
     }
-    memoryCache.delete(key);
   }
 
   const db = await openDatabase();
@@ -114,7 +135,9 @@ export async function putCachedMapImage(key: string, blob: Blob): Promise<void> 
     lastUsedAt: now,
   };
 
+  memoryCache.delete(key);
   memoryCache.set(key, record);
+  evictMemory(now);
 
   const db = await openDatabase();
   if (!db) return;

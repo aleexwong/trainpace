@@ -31,6 +31,13 @@ interface StaticRouteMapProps {
   /** Style used once the map goes live, `mapbox://styles/...` form. */
   interactiveMapStyle?: string;
   alt?: string;
+  /**
+   * True while better geometry is still on its way (a Firestore track that
+   * will replace bundled thumbnail points). Holds the request back so the
+   * page buys one image for the final route instead of one for each — the
+   * sketch covers the wait, so nothing looks empty.
+   */
+  awaitingPoints?: boolean;
 }
 
 const formatSeconds = (ms: number): string =>
@@ -58,6 +65,7 @@ export function StaticRouteMap({
   allowInteractive = false,
   interactiveMapStyle,
   alt,
+  awaitingPoints = false,
 }: StaticRouteMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -91,7 +99,7 @@ export function StaticRouteMap({
   const hasPoints = Boolean(routePoints?.length);
 
   const map = useStaticRouteMap(
-    hasPoints && size.width > 0
+    hasPoints && size.width > 0 && !awaitingPoints
       ? {
           routePoints,
           width: size.width,
@@ -130,45 +138,6 @@ export function StaticRouteMap({
   const goLive = useCallback(() => setLive(true), []);
   const goStatic = useCallback(() => setLive(false), []);
 
-  if (!hasPoints) {
-    return (
-      <div
-        className={cn(
-          "flex items-center justify-center rounded-md bg-gray-100",
-          className
-        )}
-        style={{ height, width }}
-      >
-        <div className="text-sm text-gray-400">No route data</div>
-      </div>
-    );
-  }
-
-  if (live) {
-    return (
-      <div className={cn("relative", className)} style={{ height, width }}>
-        <MapboxRoutePreview
-          routePoints={routePoints}
-          routeName={routeName}
-          height="100%"
-          width="100%"
-          lineColor={lineColor}
-          lineWidth={lineWidth}
-          mapStyle={interactiveMapStyle}
-          showStartEnd={showStartEnd}
-        />
-        <button
-          type="button"
-          onClick={goStatic}
-          className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-gray-800 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
-        >
-          <X className="h-3.5 w-3.5" />
-          Close map
-        </button>
-      </div>
-    );
-  }
-
   const blockedNote =
     status === "blocked"
       ? retryIn > 0
@@ -183,13 +152,41 @@ export function StaticRouteMap({
         ? "Map tiles unavailable — showing the course outline."
         : blockedNote;
 
+  // One sized element, always mounted and always carrying the ref, whatever is
+  // rendered inside it. Moving the ref between branches leaves the
+  // ResizeObserver attached to a detached node after the interactive toggle.
   return (
     <div
       ref={containerRef}
       className={cn("relative overflow-hidden rounded-md bg-stone-50", className)}
       style={{ height, width }}
     >
-      {status === "ready" && map.src ? (
+      {!hasPoints ? (
+        <div className="flex h-full w-full items-center justify-center bg-gray-100 text-sm text-gray-400">
+          No route data
+        </div>
+      ) : live ? (
+        <>
+          <MapboxRoutePreview
+            routePoints={routePoints}
+            routeName={routeName}
+            height="100%"
+            width="100%"
+            lineColor={lineColor}
+            lineWidth={lineWidth}
+            mapStyle={interactiveMapStyle}
+            showStartEnd={showStartEnd}
+          />
+          <button
+            type="button"
+            onClick={goStatic}
+            className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-gray-800 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
+          >
+            <X className="h-3.5 w-3.5" />
+            Close map
+          </button>
+        </>
+      ) : status === "ready" && map.src ? (
         <img
           src={map.src}
           alt={alt ?? `${routeName ?? "Race"} course map`}
@@ -210,7 +207,7 @@ export function StaticRouteMap({
         />
       )}
 
-      {status === "blocked" && retryIn <= 0 && (
+      {hasPoints && !live && status === "blocked" && retryIn <= 0 && (
         <button
           type="button"
           onClick={retry}
@@ -220,7 +217,7 @@ export function StaticRouteMap({
         </button>
       )}
 
-      {allowInteractive && status === "ready" && (
+      {hasPoints && !live && allowInteractive && status === "ready" && (
         <button
           type="button"
           onClick={goLive}

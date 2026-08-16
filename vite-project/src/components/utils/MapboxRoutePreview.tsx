@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   consumeMapboxBudget,
@@ -80,6 +80,9 @@ export function MapboxRoutePreview({
 
   const [status, setStatus] = useState<PreviewStatus>("loading");
   const [blockedReason, setBlockedReason] = useState<BudgetDenialReason>();
+  const [retryAfterMs, setRetryAfterMs] = useState(0);
+  const [attempt, setAttempt] = useState(0);
+  const [retryIn, setRetryIn] = useState(0);
 
   // A parent that rebuilds its points array each render must not re-create the
   // map (and spend another map load), so the effect keys off the geometry, not
@@ -100,6 +103,7 @@ export function MapboxRoutePreview({
     }
 
     let cancelled = false;
+    let loaded = false;
 
     const initializeMap = async () => {
       try {
@@ -114,6 +118,7 @@ export function MapboxRoutePreview({
         if (!decision.allowed) {
           setStatus("blocked");
           setBlockedReason(decision.reason);
+          setRetryAfterMs(decision.retryAfterMs);
           return;
         }
 
@@ -140,10 +145,27 @@ export function MapboxRoutePreview({
           touchZoomRotate,
         });
 
-        map.current.on("error", () => setStatus("error"));
+        // GL fires `error` for routine things — a 404 tile, a missing sprite —
+        // that a loaded map recovers from on its own. Only a failure before
+        // first load is fatal, and that one has to tear the map down: a map
+        // left behind on a hidden node holds a WebGL context and keeps
+        // fetching tiles we are still paying for.
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        map.current.on("error", (event: any) => {
+          if (loaded) {
+            console.error("Mapbox GL error:", event?.error ?? event);
+            return;
+          }
+          if (map.current) {
+            map.current.remove();
+            map.current = null;
+          }
+          setStatus("error");
+        });
 
         map.current.on("load", () => {
           if (cancelled || !map.current) return;
+          loaded = true;
 
           map.current.addSource("route", {
             type: "geojson",
@@ -219,7 +241,35 @@ export function MapboxRoutePreview({
     doubleClickZoom,
     boxZoom,
     touchZoomRotate,
+    attempt,
   ]);
+
+  // Count the block down so the retry control appears exactly when a slot is
+  // actually free.
+  useEffect(() => {
+    if (status !== "blocked" || retryAfterMs <= 0) {
+      setRetryIn(0);
+      return;
+    }
+
+    const readyAt = Date.now() + retryAfterMs;
+    setRetryIn(retryAfterMs);
+
+    const timer = window.setInterval(() => {
+      const remaining = readyAt - Date.now();
+      setRetryIn(remaining > 0 ? remaining : 0);
+      if (remaining <= 0) window.clearInterval(timer);
+    }, 500);
+
+    return () => window.clearInterval(timer);
+  }, [status, retryAfterMs, attempt]);
+
+  const retry = useCallback(() => {
+    setStatus("loading");
+    setBlockedReason(undefined);
+    setRetryAfterMs(0);
+    setAttempt((n) => n + 1);
+  }, []);
 
   // Move/show/hide the highlight marker without reinitializing the map.
   useEffect(() => {
@@ -255,34 +305,49 @@ export function MapboxRoutePreview({
     );
   }
 
-  if (status === "blocked" || status === "error") {
-    return (
-      <div
-        className={cn("overflow-hidden rounded-md", className)}
-        style={{ height, width }}
-      >
-        <RouteSketch
-          routePoints={routePoints}
-          routeName={routeName}
-          lineColor={lineColor}
-          lineWidth={lineWidth}
-          showStartEnd={showStartEnd}
-          note={
-            status === "error"
-              ? "Map tiles unavailable right now — showing the course outline."
-              : blockedMessage(blockedReason)
-          }
-        />
-      </div>
-    );
-  }
+  const fellBack = status === "blocked" || status === "error";
+  // "no-token" is a deployment problem, not a wait — retrying cannot fix it.
+  const canRetry = fellBack && blockedReason !== "no-token" && retryIn <= 0;
 
   return (
     <div
-      ref={mapContainer}
       className={cn("relative overflow-hidden rounded-md bg-stone-50", className)}
       style={{ height, width }}
-    />
+    >
+      {/*
+        Always mounted, even while the sketch covers it. When this lived in the
+        fallback's sibling branch, the container ref was null on every later
+        effect run, so a map that hit the budget cap once could never come back.
+      */}
+      <div ref={mapContainer} className="absolute inset-0" />
+
+      {fellBack && (
+        <div className="absolute inset-0 z-10">
+          <RouteSketch
+            routePoints={routePoints}
+            routeName={routeName}
+            lineColor={lineColor}
+            lineWidth={lineWidth}
+            showStartEnd={showStartEnd}
+            note={
+              status === "error"
+                ? "Map tiles unavailable right now — showing the course outline."
+                : blockedMessage(blockedReason)
+            }
+          />
+        </div>
+      )}
+
+      {canRetry && (
+        <button
+          type="button"
+          onClick={retry}
+          className="absolute bottom-2 right-2 z-20 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-gray-800 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
+        >
+          Load map
+        </button>
+      )}
+    </div>
   );
 }
 

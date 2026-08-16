@@ -175,9 +175,13 @@ export function encodePolyline(points: RoutePoint[]): string {
 export function fingerprintRoute(points: RoutePoint[]): string {
   if (!points?.length) return "0";
 
+  // Runs during render, so a malformed entry must degrade rather than throw
+  // past the component into an error boundary.
   const at = (index: number) => {
     const p = points[index];
-    return `${p.lat.toFixed(4)},${p.lng.toFixed(4)}`;
+    return Number.isFinite(p?.lat) && Number.isFinite(p?.lng)
+      ? `${p.lat.toFixed(4)},${p.lng.toFixed(4)}`
+      : "x";
   };
 
   return [
