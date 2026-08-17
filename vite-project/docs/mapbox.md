@@ -5,14 +5,16 @@ public token shipped in the bundle (`VITE_MAPBOX_TOKEN`), so anything that
 mounts a map spends real money, and a visitor holding down F5 spends it fast.
 
 Everything that touches Mapbox goes through `src/lib/mapbox/`. Do not call
-`api.mapbox.com` or construct a `mapboxgl.Map` outside it.
+`api.mapbox.com` or construct a `mapboxgl.Map` outside it — usage that skips
+this module is unmetered, and nothing will tell you it is happening.
 
-## Two kinds of request, priced differently
+## Three kinds of request, priced differently
 
-| | What it is | Component | Mapbox charges |
+| Kind | What it is | Where | Mapbox charges |
 |---|---|---|---|
 | `static-image` | One PNG from the Static Images API | `StaticRouteMap` | one API request |
-| `gl-session` | A live GL JS map | `MapboxRoutePreview` | one **map load** |
+| `gl-session` | A live GL JS map | `MapboxRoutePreview`, poster `useMapbox` | one **map load** |
+| `geocoding` | One reverse lookup | `utils/geocoding.ts` | one lookup |
 
 A map load is the expensive unit. Prefer `StaticRouteMap` — it is a plain
 `<img>`, so it also gets real alt text and costs nothing to re-render. Reach
@@ -29,6 +31,9 @@ for `MapboxRoutePreview` only when the map must pan, zoom, or track a marker
    refresh bypasses that one, and this survives it.
 2. **In-flight dedupe** — two components showing the same course share one
    fetch, and joining a fetch already in flight does not spend budget.
+   `fetchStaticMap` registers its promise synchronously and nothing awaits
+   between the `inFlight` check and that call, so the second mount always
+   observes the first. Keep it that way if you touch `useStaticRouteMap`.
 3. **Budget check** (`budget.ts`) — see below.
 4. **Fetch, cache, render.**
 
@@ -39,6 +44,18 @@ a differently-sized one.
 Verified in a browser: 13 consecutive loads of `/race/boston-marathon` make
 **one** Mapbox request; the other 12 are served from IndexedDB.
 
+### Geometry that arrives late
+
+Race pages render bundled `thumbnailPoints` immediately, then replace them with
+the fuller Firestore track. Left alone that is *two* images per page view — the
+fingerprint changes, so the second geometry misses the cache.
+
+Pass `awaitingPoints` while the better geometry is still in flight
+(`PreviewRoute` uses its `loadingPoints`, `RaceSeoLanding` its `pointsPending`).
+The request is held until the geometry settles; `RouteSketch` covers the wait,
+so nothing looks empty. Any new call site that swaps its points after mount
+needs this, or it quietly doubles its own cost.
+
 ## The budget
 
 `budget.ts` keeps a rolling log of request timestamps in `localStorage` and
@@ -48,12 +65,29 @@ applies two windows per kind:
 |---|---|---|
 | `static-image` | 12 / 30s | 120 / hour |
 | `gl-session` | 4 / 30s | 40 / hour |
+| `geocoding` | 6 / 30s | 60 / hour |
 
-Both must pass. A denied caller is told why and when a slot frees up, and is
-**not** logged — being denied never pushes your own retry further away.
+Both windows must pass. A denied caller is told why and when a slot frees up,
+and is **not** logged — being denied never pushes your own retry further away.
 
 When storage is unavailable (prerender, private browsing) the log falls back to
 an in-memory one: per-tab rather than per-browser, but the cap still applies.
+A *failed write* latches that fallback permanently. It has to: if reads kept
+coming from `localStorage` while writes went to memory, every recorded request
+would be dropped and the cap would silently stop applying — the one failure
+mode this module must not have.
+
+### Recovering from a block
+
+A block is temporary and the UI says so. `StaticRouteMap` and
+`MapboxRoutePreview` both count the window down and surface a **Load map**
+control the moment a slot is actually free; `no-token` is excluded, since
+retrying cannot fix a missing token.
+
+`MapboxRoutePreview` keeps its map container mounted underneath the fallback
+sketch for this reason. If you move the container into the non-blocked render
+branch, the ref is null on every later effect run and a map that hit the cap
+once can never come back for the rest of the session.
 
 ### What this is and is not
 
@@ -77,6 +111,18 @@ paused.
 radians, not degrees). Getting that wrong squashes every route into a
 horizontal line, and it looks plausible enough to ship — check a north–south
 course like NYC after touching it.
+
+## Two traps in the GL path
+
+**Not every GL `error` is fatal.** GL JS fires it for a 404 tile or a missing
+sprite, which a loaded map recovers from on its own. Treat only a failure
+*before* first load as fatal — and when you do, call `.remove()`. A map left
+behind on a hidden node holds a WebGL context and keeps fetching tiles you are
+still paying for.
+
+**Spend the budget at map construction, not at effect start.** React
+StrictMode double-invokes effects in dev, and a fast unmount can tear one down
+before GL even loads. Charging up front bills for maps that never existed.
 
 ## Prerendering
 

@@ -182,3 +182,38 @@ them. `git check-ignore -v <path>` explains why when it doesn't.
   path — which options the map is constructed with, how many budget slots it
   spends — without a real token. Also caught that a failed GL load correctly
   charges nothing.
+
+### Caught in review, not by me
+
+Nine real findings on the Mapbox branch after it was already pushed. The three
+worth internalising:
+
+**Put a ref on one render branch and the other branch silently disables the
+effect.** `MapboxRoutePreview` swapped its map container for the fallback
+sketch when the budget cap hit, so `mapContainer.current` was null on every
+later effect run — a map that hit the cap once stayed a sketch for the rest of
+the session, with no retry affordance. It read as correct because the *first*
+render always worked.
+→ **Rule:** if an effect guards on `ref.current`, the ref'd element must be
+unconditionally mounted. Overlay the fallback; do not substitute it.
+
+**Treated a recoverable event as fatal and leaked the thing that caused it.**
+`map.on("error", …)` fires for a single 404 tile. Marking the whole map failed
+was wrong, and not calling `.remove()` left a live WebGL context on a hidden
+node still fetching billable tiles — the exact cost the branch existed to stop.
+→ **Rule:** before handling a library's error event, find out what routinely
+fires it. And any teardown path for a resource that holds a socket, a context,
+or a request loop must actually dispose of it.
+
+**Asserted an invariant in docs without grepping for violations.** Wrote "all
+Mapbox access goes through `src/lib/mapbox/`" into CLAUDE.md while
+`utils/geocoding.ts` was still calling `api.mapbox.com` directly, on every
+poster open.
+→ **Rule:** an invariant added to CLAUDE.md is a claim about the whole
+repo. `grep` for counter-examples before writing it down, and either fix them
+or scope the claim.
+
+Also: two static images per race-page view, because the page renders bundled
+points and then swaps in the Firestore track — a changed fingerprint misses the
+cache. Cost-saving work needs its cost *measured on the real render sequence*,
+not on the first paint.

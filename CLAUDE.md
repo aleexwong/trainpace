@@ -139,7 +139,7 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 
 - `console.*` calls are stripped in production builds (esbuild config in `vite.config.ts`).
 - Maps fall back to a tile-free SVG course outline (`RouteSketch`) without a valid `VITE_MAPBOX_TOKEN`.
-- **All Mapbox access goes through `src/lib/mapbox/`** — one CDN loader, one rolling request budget, one IndexedDB image cache. Never call `api.mapbox.com` or construct a `mapboxgl.Map` outside it, or that usage is unmetered. Default to `StaticRouteMap` (one cheap, cached API request); use `MapboxRoutePreview` only when the map must pan/zoom or track a marker, since each mount is a billable map load. See `vite-project/docs/mapbox.md`.
+- **All Mapbox access goes through `src/lib/mapbox/`** — one CDN loader, one rolling request budget, one IndexedDB image cache. Never call `api.mapbox.com` or construct a `mapboxgl.Map` outside it, or that usage is unmetered. Default to `StaticRouteMap` (one cheap, cached API request); use `MapboxRoutePreview` only when the map must pan/zoom or track a marker, since each mount is a billable map load. A call site that replaces its points after mount (bundled thumbnail → Firestore track) must pass `awaitingPoints`, or it buys two images per view. See `vite-project/docs/mapbox.md`.
 - The app is a PWA (Workbox) — hard-refresh or unregister the service worker when testing build output.
 - Firebase Auth is Google OAuth only; there is no email/password path.
 - Legacy `/elevationfinder` routes must keep working (redirect aliases in `App.tsx`).
