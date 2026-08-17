@@ -217,3 +217,14 @@ Also: two static images per race-page view, because the page renders bundled
 points and then swaps in the Firestore track — a changed fingerprint misses the
 cache. Cost-saving work needs its cost *measured on the real render sequence*,
 not on the first paint.
+
+**Wrote a fallback's guarantee into the docs without running the fallback.**
+Claimed the request budget "still applies" when localStorage is unavailable,
+falling back to an in-memory log that was "per-tab". It is per *page load* —
+module state dies with the page — so across 15 navigations the cap did not
+hold at all. The claim survived review and only fell over when the degraded
+mode was actually exercised in a browser.
+→ **Rule:** a fallback path is untested code until you have run it. Simulate
+the failure (`Storage.prototype.setItem` throwing, `indexedDB` undefined) rather
+than reasoning about it — and never state a guarantee for a path you have not
+executed.

@@ -70,12 +70,36 @@ applies two windows per kind:
 Both windows must pass. A denied caller is told why and when a slot frees up,
 and is **not** logged — being denied never pushes your own retry further away.
 
-When storage is unavailable (prerender, private browsing) the log falls back to
-an in-memory one: per-tab rather than per-browser, but the cap still applies.
-A *failed write* latches that fallback permanently. It has to: if reads kept
-coming from `localStorage` while writes went to memory, every recorded request
+A *failed write* latches the fallback permanently. It has to: if reads kept
+coming from Web Storage while writes went to memory, every recorded request
 would be dropped and the cap would silently stop applying — the one failure
 mode this module must not have.
+
+### Where the log lives, and what happens when it can't
+
+`localStorage` → `sessionStorage` → in-memory, first writable wins.
+`sessionStorage` is tried on its own because browsers that block `localStorage`
+in private mode do not always block both, and anything surviving a reload keeps
+the cap meaningful against the case it exists for.
+
+Measured, 15 distinct courses navigated back to back against a 12/30s cap:
+
+| Storage | Requests | Cap holds |
+|---|---|---|
+| `localStorage` | 12 | yes |
+| `localStorage` blocked, `sessionStorage` writable | 12 | yes |
+| both blocked | 15 | **no** |
+
+With no persistent store the log dies with the page, so it is per *page load*,
+not per tab, and the windows only constrain a single page view. Be precise
+about what that does and does not expose:
+
+- **Reloading one route is still free** — the IndexedDB image cache serves it
+  with no request at all. Measured: 12 reloads, 0 requests, `localStorage`
+  blocked. The F5 case this module exists for stays covered.
+- **Rapid navigation across many distinct routes is uncapped** in that mode.
+  Each one is a legitimately new image, and there is no persistent place to
+  count them. Accepted.
 
 ### Recovering from a block
 

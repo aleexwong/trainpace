@@ -39,29 +39,59 @@ type RequestLog = Partial<Record<MapboxRequestKind, number[]>>;
 const ALLOWED: BudgetDecision = { allowed: true, retryAfterMs: 0, remaining: 0 };
 
 /**
- * Used when localStorage is unavailable (SSR, private browsing, storage
- * disabled). Per-tab rather than per-browser, but the cap still applies.
+ * Last resort, when no Web Storage is writable at all.
+ *
+ * Note what this costs: module state dies with the page, so the log is
+ * per *page load*, not per tab — a reload starts from zero and the windows
+ * below only constrain a single page view. Reloads of one route are still
+ * free because the IndexedDB image cache serves them without a request
+ * (measured: 12 reloads, 0 requests, with localStorage blocked). What is
+ * genuinely uncapped in this mode is rapid navigation across many distinct
+ * routes. That is the price of having no persistent store to count in.
  */
 let memoryLog: RequestLog = {};
 
 /**
- * Set once a write to localStorage fails. Without it, reads keep coming from
- * localStorage while writes land in `memoryLog`, so every recorded request is
- * silently dropped and the cap quietly stops applying — the one failure mode
- * this module must not have.
+ * Set once a write fails. Without it, reads keep coming from Web Storage
+ * while writes land in `memoryLog`, so every recorded request is silently
+ * dropped and the cap quietly stops applying — the one failure mode this
+ * module must not have.
  */
 let storageFailed = false;
 
-const storage = (): Storage | null => {
-  if (typeof window === "undefined" || storageFailed) return null;
+const isWritable = (store: Storage): boolean => {
   try {
     const probe = "trainpace.storage.probe";
-    window.localStorage.setItem(probe, "1");
-    window.localStorage.removeItem(probe);
-    return window.localStorage;
+    store.setItem(probe, "1");
+    store.removeItem(probe);
+    return true;
   } catch {
-    return null;
+    return false;
   }
+};
+
+/**
+ * localStorage, then sessionStorage, then nothing. sessionStorage is worth
+ * trying on its own: browsers that block localStorage in private mode do not
+ * always block both, and anything that survives a reload keeps the cap
+ * meaningful against the case it exists for.
+ */
+const storage = (): Storage | null => {
+  if (typeof window === "undefined" || storageFailed) return null;
+
+  try {
+    if (isWritable(window.localStorage)) return window.localStorage;
+  } catch {
+    // Touching the property itself can throw when storage is disabled.
+  }
+
+  try {
+    if (isWritable(window.sessionStorage)) return window.sessionStorage;
+  } catch {
+    // Same.
+  }
+
+  return null;
 };
 
 const readLog = (): RequestLog => {
