@@ -5,7 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 import { getSeoUrl, raceSeoPageMap } from "@/features/seo-pages/seoPages";
 import marathonData from "@/data/marathon-data.json";
-import LeafletRoutePreview from "@/components/utils/LeafletRoutePreview";
+import StaticRouteMap from "@/components/utils/StaticRouteMap";
 import { db } from "@/lib/firebase";
 import { getCurrentDocumentId } from "@/config/routes";
 
@@ -61,6 +61,10 @@ export default function RaceSeoLanding() {
   const { raceSlug } = useParams();
   const [routeOverrides, setRouteOverrides] =
     useState<Partial<MarathonPreviewRoute> | null>(null);
+  // Firestore may replace the bundled thumbnail points with the fuller track.
+  // The map waits for that to settle so the page buys one static image, not
+  // one per geometry.
+  const [pointsPending, setPointsPending] = useState(true);
 
   const page = raceSlug ? raceSeoPageMap.get(raceSlug) : undefined;
 
@@ -75,6 +79,7 @@ export default function RaceSeoLanding() {
     const loadFromFirestore = async () => {
       if (!page.previewRouteKey || !basePreviewRoute?.slug) {
         setRouteOverrides(null);
+        setPointsPending(false);
         return;
       }
 
@@ -130,6 +135,8 @@ export default function RaceSeoLanding() {
         }
       } catch (err) {
         console.error("Failed to load race route from Firestore:", err);
+      } finally {
+        if (!cancelled) setPointsPending(false);
       }
     };
 
@@ -344,13 +351,15 @@ export default function RaceSeoLanding() {
               </div>
 
               <div className="border-t border-orange-100 bg-white">
-                <LeafletRoutePreview
+                <StaticRouteMap
                   routePoints={previewRoute.thumbnailPoints}
+                  routeName={previewRoute.name}
                   height="320px"
-                  interactive={false}
                   lineColor="#c2410c"
                   lineWidth={4}
                   showStartEnd={true}
+                  awaitingPoints={pointsPending}
+                  alt={`${previewRoute.name} course map — ${previewRoute.city}, ${previewRoute.country}`}
                 />
               </div>
 

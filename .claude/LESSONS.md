@@ -113,3 +113,118 @@ fact. `git log`/`git diff` against the base branch takes one call.
   above were invisible to `tsc`, ESLint, and the production build.
 - **Checking lint warning counts before and after** to prove the new code added
   zero, rather than eyeballing a 96-line warning list.
+
+---
+
+## Session: Mapbox course maps + request budget (branch `claude/mapbox-integration-rate-limit`)
+
+### Verification
+
+**Blanked the app with a Playwright route pattern and spent three runs
+reading the wreckage as a component bug.** Aborting analytics traffic with
+`/posthog/` also matches the app's own
+`/node_modules/.vite/deps/posthog-js.js`, so React never mounted. Every probe
+dutifully reported `img=no sketch=no note=-` across fifteen pages — a
+completely consistent, completely false picture of the feature.
+→ **Rule:** anchor Playwright abort/route patterns to the host
+(`/^https:\/\/([a-z-]+\.)*posthog\.com\//`), never a bare product name. A
+dependency's filename contains the vendor's name too.
+→ **Corollary:** "nothing rendered anywhere" is a harness failure until
+proven otherwise. Print `#root.innerHTML.length` and the `h1` before
+concluding anything about the component under test.
+
+**`waitUntil: "networkidle"` never fires on any page that touches Firestore.**
+With no reachable backend the SDK retries for ~10s and then keeps a channel
+open, so `goto` times out at 30s. Use `domcontentloaded` plus an explicit
+`waitForSelector` on the thing being measured.
+
+**Wrote `.env` to the repo root instead of `vite-project/`** because the Bash
+tool resets cwd between calls ("Shell cwd was reset to /home/user/trainpace").
+Vite silently served an env with one variable in it, Firebase threw
+`auth/invalid-api-key`, and the page rendered empty — which looked exactly
+like the previous failure.
+→ **Rule:** absolute paths for file writes in this repo; the shell cwd does not
+persist. Confirm env changes landed with
+`curl -s localhost:5173/src/lib/firebase.ts | head -1` rather than assuming.
+
+### Code quality
+
+**Projected Web Mercator with mixed units and it looked plausible.** Longitude
+in *degrees* on x against Mercator latitude in *radians* on y — a factor of
+57 — flattened every course into a horizontal line. Boston is genuinely a
+near-straight east–west line, so the first screenshot looked *correct*. Only
+NYC, which runs south-to-north through five boroughs, exposed it.
+→ **Rule:** when checking a projection, pick the input whose expected shape is
+least ambiguous. A route that "looks about right" proves nothing if its true
+shape is close to the failure mode's.
+
+**Overlaid a caption on a full-bleed SVG with `absolute inset-x-0 bottom-0`**
+and it landed on the start marker. A sibling row in a flex column costs the
+same and cannot collide.
+
+### Process
+
+**Nearly shipped a doc that git would have discarded.** `vite-project/.gitignore`
+ignores `*.md`, so `docs/mapbox.md` needed `git add -f`. The already-referenced
+`docs/agent-traffic.md` is *not* in the repo for exactly this reason.
+→ **Rule:** after writing docs under `vite-project/`, check `git status` shows
+them. `git check-ignore -v <path>` explains why when it doesn't.
+
+### What worked, and is worth repeating
+
+- **Checking the polyline encoder against Google's published reference vector**
+  (`_p~iF~ps|U_ulLnnqC_mqNvxq`@`) rather than eyeballing a map. Instant,
+  unambiguous pass/fail on the one piece of pure math in the change.
+- **Pre-seeding `localStorage` with 12 timestamps to test the rate limiter**
+  instead of trying to trigger it by hammering. Deterministic, and it also
+  proved the recovery path by aging the stamps out.
+- **Stubbing `window.mapboxgl` via `addInitScript`** to verify the interactive
+  path — which options the map is constructed with, how many budget slots it
+  spends — without a real token. Also caught that a failed GL load correctly
+  charges nothing.
+
+### Caught in review, not by me
+
+Nine real findings on the Mapbox branch after it was already pushed. The three
+worth internalising:
+
+**Put a ref on one render branch and the other branch silently disables the
+effect.** `MapboxRoutePreview` swapped its map container for the fallback
+sketch when the budget cap hit, so `mapContainer.current` was null on every
+later effect run — a map that hit the cap once stayed a sketch for the rest of
+the session, with no retry affordance. It read as correct because the *first*
+render always worked.
+→ **Rule:** if an effect guards on `ref.current`, the ref'd element must be
+unconditionally mounted. Overlay the fallback; do not substitute it.
+
+**Treated a recoverable event as fatal and leaked the thing that caused it.**
+`map.on("error", …)` fires for a single 404 tile. Marking the whole map failed
+was wrong, and not calling `.remove()` left a live WebGL context on a hidden
+node still fetching billable tiles — the exact cost the branch existed to stop.
+→ **Rule:** before handling a library's error event, find out what routinely
+fires it. And any teardown path for a resource that holds a socket, a context,
+or a request loop must actually dispose of it.
+
+**Asserted an invariant in docs without grepping for violations.** Wrote "all
+Mapbox access goes through `src/lib/mapbox/`" into CLAUDE.md while
+`utils/geocoding.ts` was still calling `api.mapbox.com` directly, on every
+poster open.
+→ **Rule:** an invariant added to CLAUDE.md is a claim about the whole
+repo. `grep` for counter-examples before writing it down, and either fix them
+or scope the claim.
+
+Also: two static images per race-page view, because the page renders bundled
+points and then swaps in the Firestore track — a changed fingerprint misses the
+cache. Cost-saving work needs its cost *measured on the real render sequence*,
+not on the first paint.
+
+**Wrote a fallback's guarantee into the docs without running the fallback.**
+Claimed the request budget "still applies" when localStorage is unavailable,
+falling back to an in-memory log that was "per-tab". It is per *page load* —
+module state dies with the page — so across 15 navigations the cap did not
+hold at all. The claim survived review and only fell over when the degraded
+mode was actually exercised in a browser.
+→ **Rule:** a fallback path is untested code until you have run it. Simulate
+the failure (`Storage.prototype.setItem` throwing, `indexedDB` undefined) rather
+than reasoning about it — and never state a guarantee for a path you have not
+executed.

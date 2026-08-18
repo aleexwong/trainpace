@@ -19,7 +19,7 @@ import {
   generateBreadcrumbs,
   type RaceEventData,
 } from '../../lib/seo';
-import LeafletRoutePreview from '../utils/LeafletRoutePreview';
+import StaticRouteMap from '../utils/StaticRouteMap';
 
 // =============================================================================
 // Types
@@ -282,13 +282,14 @@ export function RacePageTemplate({
 
               {/* Map */}
               <div className="border-t border-orange-100 bg-white">
-                <LeafletRoutePreview
+                <StaticRouteMap
                   routePoints={routeData.thumbnailPoints}
+                  routeName={routeData.name}
                   height="320px"
-                  interactive={false}
                   lineColor="#c2410c"
                   lineWidth={4}
                   showStartEnd={true}
+                  alt={`${routeData.name} course map — ${routeData.city}, ${routeData.country}`}
                 />
               </div>
 

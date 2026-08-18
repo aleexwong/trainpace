@@ -158,7 +158,6 @@ export function RouteDashboard({
             className="border border-gray-200 min-h-[20rem]"
             lineColor="#059669"
             lineWidth={3}
-            mapStyle="mapbox://styles/mapbox/outdoors-v11"
             maxZoom={16}
             highlightPoint={highlightPoint}
           />
