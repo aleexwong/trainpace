@@ -39,7 +39,7 @@ export default function TrainingPlanPage() {
         <meta property="og:description" content="Get a free personalized 8–20 week running training plan for your goal race. Science-based periodization, daily workouts with pace zones, and calendar export." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.trainpace.com/plan" />
-        <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
+        <meta property="og:image" content="https://www.trainpace.com/landing-page-2025.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Free Running Training Plan Generator | TrainPace" />
         <meta name="twitter:description" content="Free 8–20 week running training plans for 5K to Marathon. VDOT-based periodization with daily workouts and Google Calendar export." />
@@ -59,7 +59,7 @@ export default function TrainingPlanPage() {
               {
                 "@type": "BreadcrumbList",
                 itemListElement: [
-                  { "@type": "ListItem", position: 1, name: "Home", item: "https://trainpace.com/" },
+                  { "@type": "ListItem", position: 1, name: "Home", item: "https://www.trainpace.com/" },
                   { "@type": "ListItem", position: 2, name: "Training Plan Generator", item: "https://www.trainpace.com/plan" },
                 ],
               },

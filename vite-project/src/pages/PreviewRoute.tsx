@@ -238,19 +238,19 @@ export default function PreviewRoute() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://trainpace.com",
+        item: "https://www.trainpace.com",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Race Courses",
-        item: "https://trainpace.com/preview-route",
+        item: "https://www.trainpace.com/preview-route",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: route.name,
-        item: `https://trainpace.com/preview-route/${slug}`,
+        item: `https://www.trainpace.com/preview-route/${slug}`,
       },
     ],
   };
@@ -279,7 +279,7 @@ export default function PreviewRoute() {
         />
         <link
           rel="canonical"
-          href={`https://trainpace.com/preview-route/${slug}`}
+          href={`https://www.trainpace.com/preview-route/${slug}`}
         />
 
         {/* Open Graph */}
@@ -291,7 +291,7 @@ export default function PreviewRoute() {
         <meta property="og:type" content="article" />
         <meta
           property="og:url"
-          content={`https://trainpace.com/preview-route/${slug}`}
+          content={`https://www.trainpace.com/preview-route/${slug}`}
         />
 
         {/* Structured Data */}

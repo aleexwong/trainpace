@@ -202,7 +202,7 @@ export default function RaceIndex() {
           name="description"
           content="Race prep pages for popular running events. Get pacing targets, fueling basics, and course elevation strategy using TrainPace free tools."
         />
-        <link rel="canonical" href="https://trainpace.com/race" />
+        <link rel="canonical" href="https://www.trainpace.com/race" />
       </Helmet>
 
       <div className="max-w-6xl mx-auto">

@@ -1,0 +1,994 @@
+{
+  "https://www.trainpace.com/": {
+    "hash": "bbe2e4b88f15",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/about": {
+    "hash": "bafc25fc81c8",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/blog": {
+    "hash": "a3f7224dee74",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/blog/10k-race-strategy-how-to-run-a-pr": {
+    "hash": "0e8541dd0e7f",
+    "lastmod": "2026-06-11"
+  },
+  "https://www.trainpace.com/blog/beginner-marathon-training-tips": {
+    "hash": "fedc3d31c935",
+    "lastmod": "2025-12-20"
+  },
+  "https://www.trainpace.com/blog/build-mileage-without-breaking-down": {
+    "hash": "c25a9e9e0811",
+    "lastmod": "2026-02-14"
+  },
+  "https://www.trainpace.com/blog/carb-loading-for-runners-what-actually-works": {
+    "hash": "9a9674d0eabb",
+    "lastmod": "2026-06-11"
+  },
+  "https://www.trainpace.com/blog/day-after-hard-workout-recovery": {
+    "hash": "458e1a62d665",
+    "lastmod": "2026-03-04"
+  },
+  "https://www.trainpace.com/blog/elevation-impact-race-strategy": {
+    "hash": "88273c0596ee",
+    "lastmod": "2025-12-28"
+  },
+  "https://www.trainpace.com/blog/half-marathon-pacing-strategy": {
+    "hash": "d04dcd533645",
+    "lastmod": "2025-11-28"
+  },
+  "https://www.trainpace.com/blog/how-to-break-through-a-running-plateau": {
+    "hash": "a9c89c999cc3",
+    "lastmod": "2026-06-11"
+  },
+  "https://www.trainpace.com/blog/how-to-build-a-training-plan-for-your-goal-race": {
+    "hash": "cf9930a5f2ca",
+    "lastmod": "2026-06-11"
+  },
+  "https://www.trainpace.com/blog/how-to-pace-a-5k-without-blowing-up": {
+    "hash": "2c630b3a4e09",
+    "lastmod": "2026-02-26"
+  },
+  "https://www.trainpace.com/blog/how-to-pace-a-marathon": {
+    "hash": "91fe52489ffe",
+    "lastmod": "2026-06-05"
+  },
+  "https://www.trainpace.com/blog/how-to-run-your-first-5k": {
+    "hash": "d070250c7d17",
+    "lastmod": "2026-06-11"
+  },
+  "https://www.trainpace.com/blog/long-run-mistakes-that-cost-confidence": {
+    "hash": "671bda191e15",
+    "lastmod": "2026-02-07"
+  },
+  "https://www.trainpace.com/blog/marathon-fueling-complete-guide": {
+    "hash": "c536f9237a21",
+    "lastmod": "2026-01-05"
+  },
+  "https://www.trainpace.com/blog/overtraining-signs-and-recovery": {
+    "hash": "76d72ec9dd5d",
+    "lastmod": "2026-06-11"
+  },
+  "https://www.trainpace.com/blog/race-morning-nerves-what-actually-helps": {
+    "hash": "949b082da7fd",
+    "lastmod": "2026-01-24"
+  },
+  "https://www.trainpace.com/blog/recovery-strategies-for-runners": {
+    "hash": "940d5ba48268",
+    "lastmod": "2025-12-15"
+  },
+  "https://www.trainpace.com/blog/running-cadence-guide": {
+    "hash": "e38e173032a4",
+    "lastmod": "2026-03-21"
+  },
+  "https://www.trainpace.com/blog/running-form-cues-when-legs-get-tired": {
+    "hash": "4732054579e8",
+    "lastmod": "2026-01-18"
+  },
+  "https://www.trainpace.com/blog/running-in-the-rain-without-being-miserable": {
+    "hash": "eabced81a67d",
+    "lastmod": "2026-01-12"
+  },
+  "https://www.trainpace.com/blog/running-shoes-guide": {
+    "hash": "76df654b0ba7",
+    "lastmod": "2025-12-05"
+  },
+  "https://www.trainpace.com/blog/same-time-different-race-bmo-vancouver-2026": {
+    "hash": "fab66c17b906",
+    "lastmod": "2026-05-08"
+  },
+  "https://www.trainpace.com/blog/strength-training-for-runners": {
+    "hash": "ea8a70f1c87c",
+    "lastmod": "2025-11-20"
+  },
+  "https://www.trainpace.com/blog/taper-marathon-guide": {
+    "hash": "a9d92443bee8",
+    "lastmod": "2025-11-15"
+  },
+  "https://www.trainpace.com/blog/tempo-runs-explained": {
+    "hash": "b09532a3b79f",
+    "lastmod": "2025-12-10"
+  },
+  "https://www.trainpace.com/blog/understanding-vdot-training-paces": {
+    "hash": "d2ab6ba35df0",
+    "lastmod": "2026-01-10"
+  },
+  "https://www.trainpace.com/blog/vo2max-intervals-for-runners": {
+    "hash": "5da6f576f21b",
+    "lastmod": "2026-06-11"
+  },
+  "https://www.trainpace.com/blog/what-i-eat-before-early-morning-runs": {
+    "hash": "314454722ce1",
+    "lastmod": "2026-01-31"
+  },
+  "https://www.trainpace.com/blog/what-is-vdot-and-how-to-use-it": {
+    "hash": "317f73d97257",
+    "lastmod": "2026-06-08"
+  },
+  "https://www.trainpace.com/blog/why-easy-runs-feel-too-slow": {
+    "hash": "9e369e55af83",
+    "lastmod": "2026-03-10"
+  },
+  "https://www.trainpace.com/blog/winter-running-dark-wet-mornings": {
+    "hash": "63a685885a7c",
+    "lastmod": "2026-02-21"
+  },
+  "https://www.trainpace.com/calculator": {
+    "hash": "bef0fbd8ea31",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/10k-pace-calculator": {
+    "hash": "2955f31189a4",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/15k-pace-calculator": {
+    "hash": "a60f244929b9",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/20k-pace-calculator": {
+    "hash": "1f18ba2ad8d3",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/30k-pace-calculator": {
+    "hash": "a3f505bfc5b1",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/5k-pace-calculator": {
+    "hash": "a7d327e6077c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/8k-pace-calculator": {
+    "hash": "90d2bb20d95e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/easy-pace-calculator": {
+    "hash": "32189b6e76e8",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/free-runna-alternative": {
+    "hash": "f36ba19911d7",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/free-trainingpeaks-alternative": {
+    "hash": "769543b946dd",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/half-marathon-pace-calculator": {
+    "hash": "6a2188988526",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/km-to-mile-pace-converter": {
+    "hash": "f09cdabbaa0a",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/marathon-pace-calculator": {
+    "hash": "304c68127800",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/mile-pace-calculator": {
+    "hash": "3b34a1fc082e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/strava-vs-trainpace-for-training": {
+    "hash": "132399231e5f",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-1-20-half-marathon-pace": {
+    "hash": "df23ca692245",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-1-30-half-marathon-pace": {
+    "hash": "c781200a71be",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-1-45-half-marathon-pace": {
+    "hash": "fb3df4763680",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-18-5k-pace": {
+    "hash": "555d68873368",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-2-15-half-marathon-pace": {
+    "hash": "83701a385347",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-2-30-half-marathon-pace": {
+    "hash": "cb86265ca709",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-2-hour-half-marathon-pace": {
+    "hash": "a49fd63df26c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-20-5k-pace": {
+    "hash": "1d7374ea4379",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-25-5k-pace": {
+    "hash": "03a126558b25",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-3-15-marathon-pace": {
+    "hash": "9399da040a5c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-3-30-marathon-pace": {
+    "hash": "4177ed5b111f",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-3-45-marathon-pace": {
+    "hash": "e117f7a0f0eb",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-3-marathon-pace": {
+    "hash": "e17ad9b5e5b0",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-30-5k-pace": {
+    "hash": "3f9098fc36ea",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-4-30-marathon-pace": {
+    "hash": "3be0060c9f34",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-4-marathon-pace": {
+    "hash": "437978445551",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-40-10k-pace": {
+    "hash": "bd787f11af21",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-45-10k-pace": {
+    "hash": "32c9cffe71fa",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-5-marathon-pace": {
+    "hash": "9a90f8ec70f3",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-50-10k-pace": {
+    "hash": "3a45f50419a0",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-60-10k-pace": {
+    "hash": "b997c75c4250",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/sub-90-half-marathon-pace": {
+    "hash": "60b261fee217",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/tempo-pace-calculator": {
+    "hash": "a0792cf22233",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/threshold-pace-calculator": {
+    "hash": "8dcb4eff733f",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/trainpace-vs-runna": {
+    "hash": "6d24e829b730",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/trainpace-vs-trainingpeaks": {
+    "hash": "5b58d3641e9e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/calculator/vdot-calculator": {
+    "hash": "2731de3fc709",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevation-finder": {
+    "hash": "8aea782c0b7c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevationfinder/guides/coros-gpx-analyzer": {
+    "hash": "4aec59de40d2",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevationfinder/guides/elevation-gain-calculator": {
+    "hash": "df30fd7ded1b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevationfinder/guides/garmin-gpx-analyzer": {
+    "hash": "fd9ead06892c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevationfinder/guides/gpx-elevation-profile-analyzer": {
+    "hash": "01b702c3c79b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevationfinder/guides/grade-percentage-calculator": {
+    "hash": "85d3b42e43c0",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevationfinder/guides/hill-repeats-planning": {
+    "hash": "c657b5732a39",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevationfinder/guides/hilly-course-pacing": {
+    "hash": "eb1b3ff1390e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevationfinder/guides/how-to-read-elevation-profile": {
+    "hash": "ead1967a33c8",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevationfinder/guides/marathon-course-elevation": {
+    "hash": "f97a6e1f9e4c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevationfinder/guides/route-difficulty-calculator": {
+    "hash": "542a0ce2db0f",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevationfinder/guides/strava-gpx-analyzer": {
+    "hash": "00fbd4cf6441",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/elevationfinder/guides/trail-running-elevation": {
+    "hash": "837c690c7c5b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/faq": {
+    "hash": "72f3907cd3a5",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel": {
+    "hash": "6b5e62fda656",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/avoid-hitting-the-wall": {
+    "hash": "c36d6e0138fd",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/carb-loading-for-marathon": {
+    "hash": "7d345509fa48",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/carbs-per-hour-running": {
+    "hash": "8f4099e64683",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/carbs-per-hour-running-calculator": {
+    "hash": "93ea6354a98c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/fueling-for-hilly-marathon": {
+    "hash": "5df92696a0f7",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/gel-timing-every-30-minutes": {
+    "hash": "42e8b9028169",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/half-marathon-fueling-calculator": {
+    "hash": "000d8bd79baf",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/half-marathon-fueling-plan": {
+    "hash": "c769c4ebc40b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/how-many-gels-for-half-marathon": {
+    "hash": "c97f5dfd8351",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/how-many-gels-for-marathon": {
+    "hash": "3d52ee93c18f",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/marathon-fueling-calculator": {
+    "hash": "b151ba792c9a",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/marathon-fueling-plan": {
+    "hash": "141cded0686f",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/marathon-hydration-plan": {
+    "hash": "4d55370f776a",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/marathon-nutrition-timing": {
+    "hash": "1b68329031ba",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/fuel/maurten-fuel-planner": {
+    "hash": "48ef03ed7877",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/mcp": {
+    "hash": "9381a9473c7b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/plan": {
+    "hash": "cf0c1f9522aa",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/plan/10k-training-plan": {
+    "hash": "dddca9028f9d",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/plan/16-week-marathon-training-plan": {
+    "hash": "41874ee708af",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/plan/20-week-marathon-training-plan": {
+    "hash": "d08b684f1696",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/plan/5k-training-plan": {
+    "hash": "7b6038fd4e36",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/plan/half-marathon-training-plan": {
+    "hash": "51aebdd46c89",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/plan/half-marathon-training-plan-beginners": {
+    "hash": "f33ab435c2a5",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/plan/marathon-training-plan": {
+    "hash": "030301cef24b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/plan/marathon-training-plan-beginners": {
+    "hash": "25f35aa3cb13",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/preview-route/berlin": {
+    "hash": "af5b9c4f2eee",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/preview-route/boston": {
+    "hash": "53243698bc68",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/preview-route/chicago": {
+    "hash": "ea90446b1faf",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/preview-route/london": {
+    "hash": "ef10a2a0658b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/preview-route/nyc": {
+    "hash": "7fe30a336c20",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/preview-route/oslo": {
+    "hash": "b7b73cd07f66",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/preview-route/sydney": {
+    "hash": "a3cfc7644c94",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/preview-route/tokyo": {
+    "hash": "88b4badd5534",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/privacy": {
+    "hash": "e24086f0d91e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race": {
+    "hash": "1a3332baa792",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/10k": {
+    "hash": "aa587dfbfce4",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/5k": {
+    "hash": "0e8f481058c1",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/amsterdam-half": {
+    "hash": "5b92550ca343",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/amsterdam-marathon": {
+    "hash": "864e9340c274",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/athens-marathon": {
+    "hash": "6608beffbc7c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/atlanta-marathon": {
+    "hash": "c87e649e41ff",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/austin-half-marathon": {
+    "hash": "611daa135e2d",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/austin-marathon": {
+    "hash": "8bceea3021b1",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/barcelona-half": {
+    "hash": "10ac68ea06db",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/barcelona-marathon": {
+    "hash": "36f049fce1fc",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/berlin-half": {
+    "hash": "cca81c33cc90",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/berlin-marathon": {
+    "hash": "5fd04df21fbd",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/big-sur-marathon": {
+    "hash": "b4b18b7ef6c3",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/boston-marathon": {
+    "hash": "e039b33ecf5b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/brighton-marathon": {
+    "hash": "41827e4e5e9b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/brooklyn-half": {
+    "hash": "d9cf692f00e2",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/bruges-marathon": {
+    "hash": "d30ced0be334",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/brussels-marathon": {
+    "hash": "75f541bfa3a0",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/buenos-aires-marathon": {
+    "hash": "1a3489925178",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/cairns-half": {
+    "hash": "0cb54cc8e4e5",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/california-international-marathon": {
+    "hash": "9c03b04c8722",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/cape-town-marathon": {
+    "hash": "55d458318e3e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/charleston-marathon": {
+    "hash": "5e9f7ca89acf",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/chicago-half-marathon": {
+    "hash": "13cfbdcdf8af",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/chicago-marathon": {
+    "hash": "508999f06d0e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/cleveland-half": {
+    "hash": "ebc246ec1ab8",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/cleveland-marathon": {
+    "hash": "da62a9594106",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/copenhagen-half": {
+    "hash": "4e22e433550c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/copenhagen-marathon": {
+    "hash": "2e4325619d45",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/dc-half": {
+    "hash": "f3912c592714",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/denver-colfax-marathon": {
+    "hash": "2a77ce94e75e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/denver-half": {
+    "hash": "3f1cf09457f7",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/detroit-marathon": {
+    "hash": "4c029d732655",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/dubai-marathon": {
+    "hash": "2b44c09a84ff",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/dublin-half": {
+    "hash": "3dd94f8b57e2",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/dublin-marathon": {
+    "hash": "23e4f86dc340",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/edinburgh-half": {
+    "hash": "d4dd8bfb4134",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/edinburgh-marathon": {
+    "hash": "042b0598af61",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/florence-marathon": {
+    "hash": "9063687779d9",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/fukuoka-marathon": {
+    "hash": "ba3bf7ae04c8",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/geneva-marathon": {
+    "hash": "ac0e85502995",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/grandmas-marathon": {
+    "hash": "ee6a7e6f1fb1",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/half-marathon": {
+    "hash": "cc0303f00f10",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/helsinki-marathon": {
+    "hash": "43bc94cf0cb3",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/honolulu-marathon": {
+    "hash": "c9507f9a2e31",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/houston-half-marathon": {
+    "hash": "893e0794f935",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/houston-marathon": {
+    "hash": "6a4eefb2e10c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/indianapolis-monumental-marathon": {
+    "hash": "ce1083b12cad",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/istanbul-marathon": {
+    "hash": "ef8cf8d2c4d3",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/jacksonville-marathon": {
+    "hash": "0563f3121853",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/johannesburg-marathon": {
+    "hash": "81697921d890",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/kansas-city-marathon": {
+    "hash": "af2593f475aa",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/las-vegas-half": {
+    "hash": "0598d425e85d",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/lisbon-half": {
+    "hash": "9ba52ba40bad",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/london-marathon": {
+    "hash": "57ac6de2040e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/los-angeles-marathon": {
+    "hash": "3fa80442e7e2",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/manchester-marathon": {
+    "hash": "5fc497f7f95c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/marathon": {
+    "hash": "8b9235608655",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/marine-corps-marathon": {
+    "hash": "2b24325f24a9",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/mesa-marathon": {
+    "hash": "11cd7198ad94",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/miami-half": {
+    "hash": "b11371f2f068",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/miami-marathon": {
+    "hash": "c96a00a26d02",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/montreal-marathon": {
+    "hash": "dee47a47e2e5",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/nagoya-womens-marathon": {
+    "hash": "fcafe3e02703",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/naples-marathon": {
+    "hash": "1672222102a7",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/nashville-half": {
+    "hash": "7038078e77d7",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/nashville-marathon": {
+    "hash": "4a185f2ca507",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/new-orleans-half": {
+    "hash": "f8e3eb227772",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/new-orleans-marathon": {
+    "hash": "89248b7134f4",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/newport-marathon": {
+    "hash": "6a520fcabe6e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/nyc-half": {
+    "hash": "2b79c7f65c35",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/nyc-marathon": {
+    "hash": "0cc24c1d27c2",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/osaka-marathon": {
+    "hash": "735a7289ba37",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/oslo-marathon": {
+    "hash": "1671fbaec2ce",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/ottawa-marathon": {
+    "hash": "6d9425fa46e3",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/paris-half": {
+    "hash": "539189d4ad2e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/paris-marathon": {
+    "hash": "771c4e6fec1f",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/philadelphia-half-marathon": {
+    "hash": "470e1ee20b4b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/philadelphia-marathon": {
+    "hash": "28d4baf66104",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/phoenix-marathon": {
+    "hash": "994c37d8df8b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/pittsburgh-half": {
+    "hash": "32e41d01ef44",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/pittsburgh-marathon": {
+    "hash": "42bd74b3650e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/portland-half": {
+    "hash": "86e00fd24f1e",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/portland-marathon": {
+    "hash": "c5bbd1b51d31",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/prague-marathon": {
+    "hash": "8aba8e23e66f",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/providence-marathon": {
+    "hash": "ec84055d7d03",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/rbc-brooklyn-half": {
+    "hash": "a0681a3e5a4d",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/reykjavik-marathon": {
+    "hash": "aa6dde70fdda",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/richmond-half": {
+    "hash": "77ea0d3ddd37",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/richmond-marathon": {
+    "hash": "973a51a2df12",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/rio-marathon": {
+    "hash": "6dbb1a9a05e3",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/rome-marathon": {
+    "hash": "0dedb3b34eeb",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/rotterdam-half": {
+    "hash": "dae1b3116379",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/rotterdam-marathon": {
+    "hash": "82d4d0ace904",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/salt-lake-city-marathon": {
+    "hash": "423fb366ef32",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/san-antonio-half": {
+    "hash": "b9442d1c229c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/san-diego-half": {
+    "hash": "beda3bce528b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/san-francisco-half-marathon": {
+    "hash": "f7c2436e9d54",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/san-francisco-marathon": {
+    "hash": "e8ed16f1e88c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/san-jose-half": {
+    "hash": "ce7e8d16337d",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/savannah-marathon": {
+    "hash": "fcd7cc4b86a5",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/seattle-half": {
+    "hash": "01be67818c49",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/seattle-marathon": {
+    "hash": "a511e330f8c5",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/seoul-marathon": {
+    "hash": "79a7f19323e4",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/shanghai-marathon": {
+    "hash": "08ccd1215171",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/singapore-marathon": {
+    "hash": "cadcd42b9c77",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/st-george-marathon": {
+    "hash": "75ad1777bc6b",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/st-louis-marathon": {
+    "hash": "66a356abbeae",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/stockholm-marathon": {
+    "hash": "0a3e05246d39",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/sydney-marathon": {
+    "hash": "879ed7e45ac9",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/tokyo-marathon": {
+    "hash": "05ee423ea035",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/toronto-waterfront-marathon": {
+    "hash": "1ac31d1c6cff",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/tucson-marathon": {
+    "hash": "b994c7ead119",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/twin-cities-marathon": {
+    "hash": "3c78d2c6e220",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/valencia-half": {
+    "hash": "d07fe88d1f8c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/valencia-marathon": {
+    "hash": "a45a1e655107",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/vancouver-marathon": {
+    "hash": "1cdb28bb7e54",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/venice-marathon": {
+    "hash": "28783dc8f47c",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/vienna-city-marathon": {
+    "hash": "f53763193021",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/race/zurich-marathon": {
+    "hash": "bb8a2550b94d",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/terms": {
+    "hash": "015de60ddf02",
+    "lastmod": "2026-08-18"
+  },
+  "https://www.trainpace.com/vdot": {
+    "hash": "21cb8df5dfd4",
+    "lastmod": "2026-08-18"
+  }
+}

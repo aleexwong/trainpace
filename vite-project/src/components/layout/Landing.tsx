@@ -838,26 +838,26 @@ export default function LandingPage() {
           name="description"
           content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Get science-based training paces from Jack Daniels' formula. No account needed."
         />
-        <link rel="canonical" href="https://trainpace.com/" />
+        <link rel="canonical" href="https://www.trainpace.com/" />
         {/* Open Graph */}
         <meta property="og:title" content="TrainPace – Free VDOT Running Calculator & Training Tools" />
         <meta property="og:description" content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Get science-based training paces from Jack Daniels' formula." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://trainpace.com/" />
-        <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
+        <meta property="og:url" content="https://www.trainpace.com/" />
+        <meta property="og:image" content="https://www.trainpace.com/landing-page-2025.png" />
         <meta property="og:site_name" content="TrainPace" />
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="TrainPace – Free VDOT Running Calculator & Training Tools" />
         <meta name="twitter:description" content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Science-based training tools for runners." />
-        <meta name="twitter:image" content="https://trainpace.com/landing-page-2025.png" />
+        <meta name="twitter:image" content="https://www.trainpace.com/landing-page-2025.png" />
         {/* Structured Data */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebApplication",
             name: "TrainPace",
-            url: "https://trainpace.com",
+            url: "https://www.trainpace.com",
             applicationCategory: "HealthApplication",
             operatingSystem: "Any",
             offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
