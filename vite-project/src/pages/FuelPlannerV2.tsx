@@ -570,7 +570,7 @@ const FuelPlannerV2 = () => {
           name="description"
           content="Calculate exactly how many gels you need for your marathon or half marathon. Get a personalized fueling schedule with carb targets and timing recommendations."
         />
-        <link rel="canonical" href="https://trainpace.com/fuel" />
+        <link rel="canonical" href="https://www.trainpace.com/fuel" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

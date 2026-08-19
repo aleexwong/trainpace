@@ -366,7 +366,7 @@ export default function McpDocs() {
           name="description"
           content="Connect any AI assistant to TrainPace's free public MCP server: training paces, VDOT, race plans, fueling strategy, and GPX route analysis as agent tools."
         />
-        <link rel="canonical" href="https://trainpace.com/mcp" />
+        <link rel="canonical" href="https://www.trainpace.com/mcp" />
       </Helmet>
 
       {/* Hero */}

@@ -12,8 +12,8 @@ function buildBreadcrumbJsonLd(path: string, label: string) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "TrainPace", item: "https://trainpace.com/" },
-      { "@type": "ListItem", position: 2, name: "Training Plan", item: "https://trainpace.com/plan" },
+      { "@type": "ListItem", position: 1, name: "TrainPace", item: "https://www.trainpace.com/" },
+      { "@type": "ListItem", position: 2, name: "Training Plan", item: "https://www.trainpace.com/plan" },
       { "@type": "ListItem", position: 3, name: label, item: getSeoUrl(path) },
     ],
   };
@@ -22,6 +22,17 @@ function buildBreadcrumbJsonLd(path: string, label: string) {
 export default function PlanSeoLanding() {
   const { seoSlug } = useParams();
   const page = seoSlug ? planSeoPageMap.get(seoSlug) : undefined;
+
+  // `relatedPageIds` sat in the page configs for months with nothing reading it,
+  // so every plan page was an internal-linking dead end. Resolve the ids here;
+  // `npm run seo-check` fails the build if one of them stops resolving.
+  const relatedPlans = useMemo(
+    () =>
+      (page?.relatedPageIds ?? [])
+        .map((id) => planSeoPages.find((p) => p.id === id))
+        .filter((p): p is NonNullable<typeof p> => Boolean(p)),
+    [page]
+  );
 
   const jsonLd = useMemo(() => {
     if (!page) return {};
@@ -32,7 +43,7 @@ export default function PlanSeoLanding() {
         name: page.title,
         description: page.description,
         url: getSeoUrl(page.path),
-        isPartOf: { "@type": "WebSite", name: "TrainPace", url: "https://trainpace.com/" },
+        isPartOf: { "@type": "WebSite", name: "TrainPace", url: "https://www.trainpace.com/" },
       },
       buildBreadcrumbJsonLd(page.path, page.h1),
     ];
@@ -132,6 +143,27 @@ export default function PlanSeoLanding() {
                   <h3 className="text-lg font-semibold text-gray-900">{item.question}</h3>
                   <p className="mt-2 text-gray-700">{item.answer}</p>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Related plans */}
+      {relatedPlans.length > 0 && (
+        <section className="px-4 sm:px-6 pb-12">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Related training plans</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {relatedPlans.map((related) => (
+                <a
+                  key={related.id}
+                  href={related.path}
+                  className="rounded-2xl border border-emerald-100 bg-white/70 p-6 hover:bg-white transition-colors"
+                >
+                  <div className="text-lg font-bold text-gray-900">{related.h1}</div>
+                  <p className="mt-2 text-gray-700 text-sm">{related.intro}</p>
+                </a>
               ))}
             </div>
           </div>
