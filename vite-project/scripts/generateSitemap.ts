@@ -1,3 +1,5 @@
+/* eslint-disable no-console -- this script's output is the point */
+
 import crypto from "node:crypto";
 import fs from "fs";
 import path from "path";
@@ -121,16 +123,33 @@ function main() {
   ].join("\n");
 
   const outPath = path.resolve(process.cwd(), "public", "sitemap.xml");
+  const urlCount = staticPaths.length + seoEntries.length;
+
+  // --check: the committed sitemap must already match what the current content
+  // produces. Without this the two drift silently — the plan-page content fix in
+  // this same branch left eight URLs carrying a stale lastmod, and only a manual
+  // rerun noticed.
+  if (process.argv.includes("--check")) {
+    const existing = fs.existsSync(outPath) ? fs.readFileSync(outPath, "utf8") : "";
+    if (existing !== xml) {
+      console.error(
+        "public/sitemap.xml is out of date with the page content.\n" +
+          "Run `npm run generate-sitemap` and commit both sitemap.xml and\n" +
+          "scripts/sitemap-lastmod.json."
+      );
+      process.exit(1);
+    }
+    console.log(`sitemap.xml is current (urls: ${urlCount})`);
+    return;
+  }
+
   fs.writeFileSync(outPath, xml, "utf8");
 
   const sorted = Object.fromEntries(Object.entries(store).sort(([a], [b]) => a.localeCompare(b)));
   fs.writeFileSync(STORE_PATH, `${JSON.stringify(sorted, null, 2)}\n`, "utf8");
 
-  // eslint-disable-next-line no-console
   const changed = Object.values(store).filter((e) => e.lastmod === today).length;
-  console.log(
-    `Wrote sitemap: ${outPath} (urls: ${staticPaths.length + seoEntries.length}, lastmod=${today} on ${changed})`
-  );
+  console.log(`Wrote sitemap: ${outPath} (urls: ${urlCount}, lastmod=${today} on ${changed})`);
 }
 
 main();

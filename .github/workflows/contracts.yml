@@ -32,6 +32,11 @@ jobs:
       - name: Agent routing contract
         run: npm run verify-agent-routing
 
+      # Fails when page content has changed without regenerating the sitemap,
+      # which leaves URLs carrying a stale lastmod.
+      - name: Sitemap is current
+        run: npm run generate-sitemap:check
+
       # Fails when the math in src/ no longer produces the committed vectors.
       # Regenerate with `npm run golden-vectors`, then sync the file into the
       # API repo (its test decides whether the API still agrees).
