@@ -20,9 +20,23 @@ npm run test:e2e:ui       # Playwright UI mode
 npm run generate-sitemap  # Regenerate sitemap.xml (run when SEO pages change)
 npm run generate-markdown # Write dist/**.md mirrors + llms-full.txt (part of `build`)
 npm run verify-agent-routing  # Check Accept negotiation + .md path mapping
+npm run seo-check         # SEO gate: hard failures + ratcheted backlog
+npm run golden-vectors    # Regenerate public/golden-vectors.json from the math modules
+npm run golden-vectors:check  # Fail if the committed vectors are out of date
 ```
 
 There are no unit tests — verification is `npm run build` + `npm run lint` + Playwright E2E.
+
+**The math modules have a cross-repo contract.** `vdot-math.ts`, `plan-math.ts`,
+`fuel-math.ts` and `pace-calculator/utils.ts` are hand-ported into the API repo
+(`gpx/lib/training/*`) so the MCP server serves the same numbers this site shows.
+`npm run golden-vectors` records what these modules return for a fixed set of
+inputs into `public/golden-vectors.json` (published, so the API repo can fetch
+it); the API repo replays every case through its copies. **If you change any of
+this math, regenerate the vectors, commit them, and sync the file into
+`gpx/tests/fixtures/golden-vectors.json`** — its test then tells you whether the
+API still agrees. CI runs `golden-vectors:check`, so a forgotten regeneration
+fails the build rather than shipping a silent divergence.
 
 ## Structure
 
