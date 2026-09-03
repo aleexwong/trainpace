@@ -104,3 +104,31 @@ The obvious next inputs are third-party exporters (Health Auto Export and
 similar) that emit JSON on a schedule, and Strava/Garmin, which is already on the
 roadmap. Add a new source that produces `HealthWorkout[]` and everything
 downstream — summary, calculators, Claude handoff — works unchanged.
+
+## Why there is no Shortcut, Strava or auto-export path (yet)
+
+Asked for repeatedly, so the reasoning is recorded here rather than re-derived.
+
+**Apple Shortcuts cannot read workouts.** The `Find Health Samples` action
+offers quantity types — Walking + Running Distance, resting heart rate, VO2 max,
+body mass — and can group them by day or week and run on a schedule. It does not
+offer "Workout" or "Run" as a type. So a Shortcut can report weekly volume in one
+tap, but never per-run duration, and therefore never pace, fastest efforts or
+VDOT. A volume-only Shortcut is a real option for someone tracking mileage; it is
+not a replacement for the export, and the page says so rather than letting people
+find out after building one.
+
+**Auto-export apps work but cost money.** Health Auto Export and similar read
+HealthKit directly and POST full workout JSON on a schedule. That is the only
+zero-effort path that keeps per-run detail. If support is added, the parser
+should accept their JSON alongside `export.zip` — anything producing
+`HealthWorkout[]` reuses the whole downstream pipeline.
+
+**Strava/Garmin is the cleanest fix and the biggest job.** One OAuth grant, then
+activities flow in forever with full pace data. It needs a token exchange, so it
+belongs in the `api.trainpace.com` backend, not in this repo. It is already on
+the roadmap under "Next".
+
+The trade-off table lives in `components/OtherWaysCard.tsx` and is mirrored into
+the prerendered page and Markdown via `importBlocks()` in
+`src/lib/llm/page-docs.ts`. Keep the two in step.

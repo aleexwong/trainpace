@@ -22,6 +22,29 @@ test.describe("Apple Health import", () => {
     await expect(page.getByLabel("Choose file")).toBeVisible();
   });
 
+  test("is honest about what the alternatives give up", async ({ page }) => {
+    await expect(
+      page.getByRole("heading", { name: "Do I have to do this every time?" })
+    ).toBeVisible();
+
+    // The comparison stacks on phones and becomes a table on wider screens;
+    // exactly one of the two is showing at any width.
+    const card = page
+      .getByRole("heading", { name: "Do I have to do this every time?" })
+      .locator("xpath=..");
+    await expect(card.locator("table")).toBeVisible();
+    await expect(card.locator("ul")).toBeHidden();
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect(card.locator("table")).toBeHidden();
+    await expect(card.locator("ul").locator("li")).toHaveCount(4);
+
+    // The limitation that makes a Shortcut a poor substitute must be stated.
+    await expect(
+      page.getByText('"Workout" and "Run" are not types')
+    ).toBeVisible();
+  });
+
   test("turns an export into volume, efforts and a VDOT", async ({ page }) => {
     await importFixture(page, syntheticExportZip());
 
@@ -73,7 +96,7 @@ test.describe("Apple Health import", () => {
     });
 
     await page.getByRole("group", { name: "Distance unit" }).waitFor();
-    await page.locator("summary").click();
+    await page.getByText("Preview what gets copied").click();
 
     const preview = page.locator("pre");
     await expect(preview).toContainText("# My running data (from Apple Health)");

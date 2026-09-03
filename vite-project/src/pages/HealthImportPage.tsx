@@ -16,6 +16,7 @@ import {
   ExportInstructions,
   HealthImportDropzone,
   ImportSummaryView,
+  OtherWaysCard,
   RouteFilesCard,
   useHealthImport,
 } from "@/features/health-import";
@@ -96,6 +97,8 @@ export default function HealthImportPage() {
             onCancel={cancel}
             onReset={reset}
           />
+
+          <OtherWaysCard />
         </div>
       </section>
 

@@ -104,6 +104,7 @@ Each item is tagged with the feature area so it can be triaged independently.
 
 ### Next
 - **Strava / Garmin import** — let users import recent activities/PRs to auto-fill the calculators (race time, GPX route) instead of manual entry. Biggest single UX unlock for a running app; aligns with existing GPX + Firebase infrastructure.
+  - Now the main remaining gap for `/import` (Apple Health, shipped): the Health export is manual and can't be scheduled, and Apple Shortcuts can't read workouts at all — `Find Health Samples` has no "Workout"/"Run" type, only quantity samples — so there is no free way to automate per-run pace. Strava OAuth needs a token exchange, so it lands in the `api.trainpace.com` backend rather than this repo. See `vite-project/docs/apple-health.md`.
 - **VDOT-driven training plan generator** — the VDOT tool already derives zones and predictions; generate a weekly workout plan (the `SampleWorkouts` component is a seed) and save it to the dashboard.
 - **Dashboard error/empty-state polish + offline** — combine U2 with PWA offline support so the calculators work without a connection (the app is already a Workbox PWA).
 - **Goal tracking** — let users set a goal race (date + target time) and show countdown, required paces, and progress on the dashboard/landing "Next Long Run" card that already exists.

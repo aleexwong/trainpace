@@ -673,6 +673,46 @@ function importBlocks(): DocBlock[] {
       type: "paragraph",
       text: "The summary tells the assistant to call TrainPace's MCP server for pace, VDOT, plan, fueling and route math rather than estimating. See /mcp for how to connect one.",
     },
+    { type: "heading", level: 2, text: "Do I have to do this every time?" },
+    {
+      type: "paragraph",
+      text: "Health has no \"export just my runs\" button and no way to schedule an export, so yes, this is a manual job each time. The alternatives all give something up.",
+    },
+    {
+      type: "table",
+      caption: "Ways to get Apple Health running data out, and what each gives up",
+      headers: ["Way", "Effort each time", "What you get", "Cost"],
+      rows: [
+        [
+          "Health export (this page)",
+          "About 5 minutes, by hand",
+          "Everything: per-run pace, fastest efforts, VDOT, GPX routes",
+          "Free",
+        ],
+        [
+          "Apple Shortcut",
+          "One tap, or on a schedule",
+          "Weekly distance, resting heart rate, VO2 max, weight",
+          "Free",
+        ],
+        [
+          "An auto-export app",
+          "Nothing, after setup",
+          "Full workouts as JSON, sent on a schedule",
+          "Paid app",
+        ],
+        [
+          "Strava or Garmin",
+          "Nothing, after setup",
+          "Full activities, if your runs already sync there",
+          "Free, needs an account there",
+        ],
+      ],
+    },
+    {
+      type: "paragraph",
+      text: "A Shortcut cannot replace the export. Shortcuts read quantity samples from Health - daily distance, heart rate, VO2 max - but not workouts: \"Workout\" and \"Run\" are not types the Find Health Samples action offers. A Shortcut can say you ran 48 km last week; it cannot say one of those runs was a 22-minute 5K. Pace, fastest efforts and VDOT need the full export.",
+    },
     {
       type: "paragraph",
       text: "Supported input: export.zip from Health, or the export.xml inside it. Requires a browser with DecompressionStream - Safari 16.4+, Chrome 103+, or Firefox 113+.",
