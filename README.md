@@ -56,6 +56,16 @@ Science-based nutrition calculator for race day:
 - **Multiple Fuel Sources**: Track gels, chews, drinks, and solid foods
 - **Export Support**: Take your nutrition plan anywhere
 
+### 🍎 Apple Health Import
+
+Read your own running history out of an Apple Health export, on your phone:
+
+- **On-Device Parsing**: `export.zip` is streamed and parsed in the browser — no upload, no account, nothing stored
+- **Volume & Efforts**: Weekly mileage plus your fastest 5K, 10K, half and marathon efforts, each with pace and VDOT
+- **One-Tap Handoff**: Send any effort straight into the pace or VDOT calculator
+- **Recorded Routes**: Save the GPX track from any run for elevation analysis
+- **Copy for Claude**: A one-page summary an AI assistant can actually read, wired to the TrainPace MCP server
+
 ### 📈 Personal Dashboard
 
 Track and manage your training data:

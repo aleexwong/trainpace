@@ -30,7 +30,7 @@ There are no unit tests — verification is `npm run build` + `npm run lint` + P
 trainpace/
 ├── vite-project/           # The app (all work happens here)
 │   ├── src/
-│   │   ├── features/       # 11 self-contained feature modules (see below)
+│   │   ├── features/       # 12 self-contained feature modules (see below)
 │   │   ├── components/     # Shared UI: ui/ (shadcn), layout/, seo/, login/, faq/, elevationfinder/
 │   │   ├── pages/          # Route-level components
 │   │   ├── lib/            # firebase.ts, seo/ (PSEO system), llm/ (agent-facing content), utils.ts (cn), gpxMetaData.ts
@@ -41,13 +41,14 @@ trainpace/
 │   ├── scripts/            # generateSitemap.ts, generateMarkdown.ts, verifyAgentRouting.ts, testGemini.ts
 │   ├── middleware.ts       # Vercel edge: Accept negotiation + agent request logging
 │   ├── docs/agent-traffic.md   # How to read AI-agent traffic in server logs
+│   ├── docs/apple-health.md    # Apple Health import: zip/XML streaming, format quirks
 │   └── vite.config.ts      # @ alias → ./src; prerender routes come from lib/llm/page-docs
 ├── .github/workflows/e2e.yml   # CI: Playwright on push to main + PRs
 ├── firebase.json / firestore.rules
 └── vercel.json
 ```
 
-**Features** (`src/features/`): `auth`, `pace-calculator`, `vdot-calculator`, `plan` (training plan builder, `plan-math.ts`), `goals`, `elevation`, `fuel`, `dashboard`, `blog`, `poster`, `seo-pages` (PSEO configs).
+**Features** (`src/features/`): `auth`, `pace-calculator`, `vdot-calculator`, `plan` (training plan builder, `plan-math.ts`), `goals`, `elevation`, `fuel`, `dashboard`, `blog`, `poster`, `seo-pages` (PSEO configs), `health-import` (Apple Health export parsing).
 
 Each feature is self-contained: `components/`, `hooks/`, `types.ts`, optional `utils.ts`, public API via `index.ts` barrel. Import as `@/features/[name]`.
 
@@ -64,6 +65,7 @@ React 18 + TypeScript 5.6, Vite 5 (PWA + prerender plugins), React Router 7, Tai
 /fuel, /fuel/:seoSlug                 Fuel planner + PSEO landings
 /race, /race/:raceSlug                Race index + race prep pages
 /elevation-finder[/:docId], /elevation-finder/guides/:seoSlug   GPX analysis
+/import                               Apple Health export import (on-device)
 /dashboard, /onboarding, /settings    AuthGuard-protected
 /blog, /blog/:slug                    Blog
 /preview-route/:slug                  Marathon route previews
@@ -145,6 +147,7 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 - Legacy `/elevationfinder` routes must keep working (redirect aliases in `App.tsx`).
 - Keep SEO titles under 60 chars and descriptions under 160; run `validateAllPages()` before shipping SEO changes.
 - `src/App.css` still carries the Vite template's `#root { text-align: center }`. It cascades into every page, so left-aligned layouts need an explicit `text-left` on their container.
+- The Apple Health import (`/import`) parses the user's export **entirely in the browser** — no upload, no Firestore, no `localStorage`. Keep it that way: the file is a whole health record, not just runs. See `vite-project/docs/apple-health.md`.
 - shadcn `Slider` wraps Radix: the *thumb* is what receives focus and carries `role="slider"`. An `aria-label` on the root leaves it announced as unnamed — pass `thumbLabel` instead.
 
 ## Past Mistakes

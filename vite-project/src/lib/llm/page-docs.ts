@@ -248,6 +248,8 @@ export function getPageTitle(url: string): string {
       return "Race Prep Pages – Pacing, Fueling, Elevation Strategy | TrainPace";
     case "/mcp":
       return "MCP Server - TrainPace Tools for AI Agents";
+    case "/import":
+      return "Apple Health Import - Your Runs in TrainPace or Claude";
     default:
       if (url.includes("/preview-route/")) {
         const slug = url.split("/").pop()!;
@@ -288,6 +290,8 @@ export function getPageDescription(url: string): string {
       return "Race prep pages for popular running events. Use TrainPace to plan pacing, fueling, and course strategy with free calculators and GPX elevation analysis.";
     case "/mcp":
       return "Connect any AI assistant to TrainPace's free public MCP server: training paces, VDOT, race plans, fueling strategy, and GPX route analysis as agent tools.";
+    case "/import":
+      return "Turn an Apple Health export into training paces, VDOT, and a one-page summary you can paste into Claude. Runs entirely in your browser - nothing is uploaded.";
     default:
       if (url.includes("/preview-route/")) {
         const slug = url.split("/").pop()!;
@@ -350,6 +354,11 @@ function toolNav(currentPath: string): DocBlock[] {
       href: "/elevation-finder",
       label: "Elevation Finder",
       note: "GPX route and climb analysis",
+    },
+    {
+      href: "/import",
+      label: "Apple Health Import",
+      note: "read your own runs out of an Apple Health export",
     },
   ].filter((t) => t.href !== currentPath);
 
@@ -623,6 +632,55 @@ function mcpBlocks(): DocBlock[] {
   ];
 }
 
+function importBlocks(): DocBlock[] {
+  return [
+    {
+      type: "heading",
+      level: 1,
+      text: "Apple Health Import - Your Runs in TrainPace or Claude",
+    },
+    {
+      type: "paragraph",
+      text: "Apple Health can export everything it knows about you, but the file it produces is a few hundred megabytes of XML - too big to read and far too big to paste into an AI chat. TrainPace reads that export in your browser and gives the running parts back: weekly volume, fastest efforts at 5K, 10K, half marathon and marathon, a VDOT estimate, and a one-page summary any assistant can use.",
+    },
+    {
+      type: "paragraph",
+      text: "Nothing is uploaded. The file is parsed on your device, no account is needed, and nothing is stored once the tab closes. That matters because an Apple Health export contains your whole health record; TrainPace reads only workouts, VO2 max, resting heart rate and body mass.",
+    },
+    { type: "heading", level: 2, text: "Getting the file off an iPhone" },
+    {
+      type: "list",
+      ordered: true,
+      items: [
+        "Open the Health app and tap your profile picture in the top right.",
+        "Scroll to the bottom, tap Export All Health Data, then Export. It takes a few minutes.",
+        "In the share sheet choose Save to Files and keep export.zip somewhere you can find it.",
+        "Open trainpace.com/import on the same phone, tap Choose file, and pick that zip.",
+      ],
+    },
+    { type: "heading", level: 2, text: "What you get back" },
+    {
+      type: "list",
+      items: [
+        "Volume: total runs, distance and time, plus a week-by-week breakdown.",
+        "Fastest efforts at 5K, 10K, half marathon and marathon, each with pace and a VDOT value. Treadmill runs are excluded because their distance depends on the machine's calibration.",
+        "One-tap links into the pace calculator and VDOT calculator, pre-filled with an effort.",
+        "The GPX track for every recorded run, ready for the elevation analyzer.",
+        "A copy-for-Claude summary of roughly a page, so an assistant can read your training without the raw export.",
+      ],
+    },
+    {
+      type: "paragraph",
+      text: "The summary tells the assistant to call TrainPace's MCP server for pace, VDOT, plan, fueling and route math rather than estimating. See /mcp for how to connect one.",
+    },
+    {
+      type: "paragraph",
+      text: "Supported input: export.zip from Health, or the export.xml inside it. Requires a browser with DecompressionStream - Safari 16.4+, Chrome 103+, or Firefox 113+.",
+    },
+  ];
+}
+
+
 function homeBlocks(): DocBlock[] {
   return [
     {
@@ -803,6 +861,8 @@ function getContentBlocks(url: string): DocBlock[] {
       return raceIndexBlocks();
     case "/mcp":
       return mcpBlocks();
+    case "/import":
+      return importBlocks();
     default:
       if (url.includes("/preview-route/")) return previewRouteBlocks(url);
       return [
@@ -850,6 +910,7 @@ export function getAllDocPaths(): string[] {
     "/elevation-finder",
     "/race",
     "/mcp",
+    "/import",
     ...getAllSeoPaths(),
     "/preview-route/boston",
     "/preview-route/nyc",

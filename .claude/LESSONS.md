@@ -228,3 +228,52 @@ mode was actually exercised in a browser.
 the failure (`Storage.prototype.setItem` throwing, `indexedDB` undefined) rather
 than reasoning about it — and never state a guarantee for a path you have not
 executed.
+
+---
+
+## Session: Apple Health import (branch `claude/apple-health-export-ph4ctt`)
+
+### Verification
+
+**A `mountedRef` that is only ever set to `false` breaks every parse in dev.**
+The hook used the standard guard — `useEffect(() => () => { mounted.current =
+false })` — with the flag initialised at declaration. `main.tsx` renders under
+`<StrictMode>`, which runs the cleanup once on mount, so the flag was `false`
+before the user could pick a file, and every `setData` was silently skipped: the
+spinner ran forever with no error anywhere. Invisible to `tsc`, ESLint and the
+production build; found in the first browser run.
+→ **Rule:** set `mounted.current = true` *inside* the effect body, not just at
+declaration. Any ref that a cleanup clears has to be re-armed on mount.
+
+**A measurement is worth more than a screenshot for "is this cramped?".**
+The mobile week-by-week bars looked wrong in a screenshot; measuring the track
+gave the actual number (34px of 390px, eaten by three fixed-width columns) and,
+after the fix, a pass condition (190px, fills proportional to distance).
+→ **Rule:** when a layout looks tight, measure the box before changing classes.
+The number tells you which column to shrink.
+
+### Process
+
+**`vite-project/.gitignore` contains `*.md`.** New docs under
+`vite-project/docs/` are invisible to `git add` — `docs/mapbox.md` and
+`README.md` are only tracked because someone forced them in.
+→ **Rule:** `git add -f` for docs inside `vite-project/`, and check
+`git status` afterwards rather than assuming the file was staged.
+
+**The sitemap's static routes are a hardcoded list**, not derived from
+`getAllDocPaths()`. Adding a route to `page-docs.ts` gets it prerendered and
+mirrored to Markdown but leaves it out of `sitemap.xml`.
+→ **Rule:** a new top-level page needs the path in *both*
+`src/lib/llm/page-docs.ts` and `scripts/generateSitemap.ts`.
+
+### What worked, and is worth repeating
+
+- **Building a synthetic `export.zip` before writing any UI.** A `vite-node`
+  harness over the real parser caught two summary bugs (weekly average divided
+  by the whole 90-day window rather than the weeks with data; a plural slip)
+  while they were still cheap to fix, and the same fixture builder then became
+  the E2E fixture — no personal health data in the repo.
+- **Streaming rather than parsing.** `Blob.slice()` + `DecompressionStream` +
+  a chunk scanner means a 1 GB export costs a few MB of memory. Reaching for
+  `DOMParser` or a zip library would have shipped something that crashes on a
+  phone, which is the only device the file is on.
