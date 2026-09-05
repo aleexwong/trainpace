@@ -108,7 +108,9 @@ export default function ClaudeHandoffCard({
         <summary className="cursor-pointer text-sm font-medium text-slate-600 hover:text-slate-900">
           Preview what gets copied ({markdown.length.toLocaleString()} characters)
         </summary>
-        <pre className="mt-3 max-h-80 overflow-auto rounded-lg bg-slate-900 p-4 text-xs leading-relaxed text-slate-100 whitespace-pre-wrap break-words">
+        <pre
+          data-testid="claude-markdown-preview"
+          className="mt-3 max-h-80 overflow-auto rounded-lg bg-slate-900 p-4 text-xs leading-relaxed text-slate-100 whitespace-pre-wrap break-words">
           {markdown}
         </pre>
       </details>

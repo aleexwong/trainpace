@@ -20,6 +20,7 @@ npm run test:e2e:ui       # Playwright UI mode
 npm run generate-sitemap  # Regenerate sitemap.xml (run when SEO pages change)
 npm run generate-markdown # Write dist/**.md mirrors + llms-full.txt (part of `build`)
 npm run verify-agent-routing  # Check Accept negotiation + .md path mapping
+npm run --silent mcp:health -- --export ~/Downloads/export.zip   # Apple Health MCP server (stdio)
 ```
 
 There are no unit tests — verification is `npm run build` + `npm run lint` + Playwright E2E.
@@ -39,6 +40,7 @@ trainpace/
 │   │   └── hooks/ types/ utils/ config/
 │   ├── e2e/                # Playwright specs + page object models (e2e/pages/)
 │   ├── scripts/            # generateSitemap.ts, generateMarkdown.ts, verifyAgentRouting.ts, testGemini.ts
+│   ├── mcp/health-server.ts    # Local MCP server: Claude queries an Apple Health export.zip
 │   ├── middleware.ts       # Vercel edge: Accept negotiation + agent request logging
 │   ├── docs/agent-traffic.md   # How to read AI-agent traffic in server logs
 │   ├── docs/apple-health.md    # Apple Health import: zip/XML streaming, format quirks
@@ -147,6 +149,7 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 - Legacy `/elevationfinder` routes must keep working (redirect aliases in `App.tsx`).
 - Keep SEO titles under 60 chars and descriptions under 160; run `validateAllPages()` before shipping SEO changes.
 - `src/App.css` still carries the Vite template's `#root { text-align: center }`. It cascades into every page, so left-aligned layouts need an explicit `text-left` on their container.
+- `mcp/health-server.ts` speaks JSON-RPC on **stdout** — never `console.log` there, and always run it via `npm run --silent` (npm's banner otherwise corrupts the stream). See `vite-project/docs/apple-health.md`.
 - The Apple Health import (`/import`) parses the user's export **entirely in the browser** — no upload, no Firestore, no `localStorage`. Keep it that way: the file is a whole health record, not just runs. See `vite-project/docs/apple-health.md`.
 - shadcn `Slider` wraps Radix: the *thumb* is what receives focus and carries `role="slider"`. An `aria-label` on the root leaves it announced as unnamed — pass `thumbLabel` instead.
 

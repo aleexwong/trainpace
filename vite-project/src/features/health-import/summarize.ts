@@ -107,7 +107,7 @@ function latestMetric(
   return latest;
 }
 
-function bestEffortsFrom(runs: HealthWorkout[]): BestEffort[] {
+export function bestEffortsFrom(runs: HealthWorkout[]): BestEffort[] {
   const efforts: BestEffort[] = [];
 
   for (const { label, meters: nominal } of STANDARD_DISTANCES) {
@@ -151,7 +151,7 @@ function bestEffortsFrom(runs: HealthWorkout[]): BestEffort[] {
   return efforts;
 }
 
-function weeklyVolume(runs: HealthWorkout[]): WeeklyVolume[] {
+export function weeklyVolume(runs: HealthWorkout[]): WeeklyVolume[] {
   const buckets = new Map<string, WeeklyVolume>();
 
   for (const run of runs) {
@@ -277,9 +277,19 @@ const MCP_URL = "https://api.trainpace.com/api/mcp";
  * numbers, plus a pointer at TrainPace's MCP server so the assistant does the
  * pace maths with real tools instead of guessing.
  */
+export interface ClaudeMarkdownOptions {
+  /**
+   * Append the "connect the MCP server" footer. Right for the clipboard, wrong
+   * inside an MCP tool result - there the assistant is already connected, and
+   * being told to add the server mid-answer is just confusing.
+   */
+  includeHandoff?: boolean;
+}
+
 export function toClaudeMarkdown(
   summary: HealthSummary,
-  unit: DistanceUnit = "km"
+  unit: DistanceUnit = "km",
+  options: ClaudeMarkdownOptions = {}
 ): string {
   const lines: string[] = [];
   const distance = (meters: number) => formatDistance(meters, unit);
@@ -287,7 +297,7 @@ export function toClaudeMarkdown(
   lines.push("# My running data (from Apple Health)");
   lines.push("");
   lines.push(
-    `Exported ${summary.generatedAt.slice(0, 10)} · last ${summary.windowDays} days` +
+    `Summarised ${summary.generatedAt.slice(0, 10)} · last ${summary.windowDays} days` +
       (summary.windowStart
         ? ` · runs from ${summary.windowStart} to ${summary.windowEnd}`
         : "")
@@ -394,12 +404,14 @@ export function toClaudeMarkdown(
     lines.push("");
   }
 
-  lines.push("## How to use this");
-  lines.push(
-    `Do the running maths with TrainPace's free MCP server (${MCP_URL}) rather than estimating: it has tools for training paces, VDOT, plan generation, fuelling, and GPX route analysis. If you can add MCP servers, add it as "trainpace". Then help me read the data above — where my training is now, and what to change.`
-  );
+  if (options.includeHandoff ?? true) {
+    lines.push("## How to use this");
+    lines.push(
+      `Do the running maths with TrainPace's free MCP server (${MCP_URL}) rather than estimating: it has tools for training paces, VDOT, plan generation, fuelling, and GPX route analysis. If you can add MCP servers, add it as "trainpace". Then help me read the data above — where my training is now, and what to change.`
+    );
+  }
 
-  return lines.join("\n");
+  return lines.join("\n").trimEnd();
 }
 
 /** Machine-readable version of the same summary, for anything that wants JSON. */

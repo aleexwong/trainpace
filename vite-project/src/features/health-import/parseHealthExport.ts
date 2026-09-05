@@ -29,6 +29,11 @@ import type {
 export interface ParseOptions {
   onProgress?: (progress: ParseProgress) => void;
   signal?: AbortSignal;
+  /**
+   * Name of the source file. A browser `File` carries its own name; a bare
+   * `Blob` does not, so Node callers using `fs.openAsBlob()` must pass it here.
+   */
+  fileName?: string;
 }
 
 const METERS_PER_MILE = 1609.344;
@@ -459,16 +464,16 @@ function findExportXml(entries: ZipEntry[]): ZipEntry {
   );
 }
 
-async function openSource(file: File): Promise<{
+async function openSource(file: Blob, name: string): Promise<{
   stream: ReadableStream<Uint8Array>;
   totalBytes: number;
   routeFiles: string[];
   entries: ZipEntry[];
 }> {
-  const isZip = /\.zip$/i.test(file.name) || file.type === "application/zip";
+  const isZip = /\.zip$/i.test(name) || file.type === "application/zip";
 
   if (!isZip) {
-    if (!/\.xml$/i.test(file.name)) {
+    if (!/\.xml$/i.test(name)) {
       throw new HealthExportError(
         "Pick the export.zip from Health (or the export.xml inside it)."
       );
@@ -500,10 +505,14 @@ async function openSource(file: File): Promise<{
  * list of GPX route files the archive carries.
  */
 export async function parseHealthExport(
-  file: File,
+  file: Blob,
   options: ParseOptions = {}
 ): Promise<HealthExportHandle> {
-  const source = await openSource(file);
+  // A `File` names itself; a `Blob` from Node's `fs.openAsBlob()` does not.
+  const name =
+    options.fileName ??
+    (typeof (file as File).name === "string" ? (file as File).name : "");
+  const source = await openSource(file, name);
   const { workouts, metrics, bytesScanned } = await scanExportXml(
     source.stream,
     source.totalBytes,

@@ -132,3 +132,66 @@ the roadmap under "Next".
 The trade-off table lives in `components/OtherWaysCard.tsx` and is mirrored into
 the prerendered page and Markdown via `importBlocks()` in
 `src/lib/llm/page-docs.ts`. Keep the two in step.
+
+## The MCP server (`mcp/health-server.ts`)
+
+The import page hands Claude a *summary*. The MCP server hands it the *data*:
+point it at an `export.zip` and Claude gets tools to query the runs inside —
+`export_status`, `training_summary`, `list_runs`, `weekly_volume`,
+`best_efforts`, `compare_periods`. Same parser as the web page, so the numbers
+cannot drift between the two.
+
+```bash
+claude mcp add trainpace-health \
+  --env TRAINPACE_HEALTH_EXPORT=$HOME/Downloads/export.zip \
+  -- npm --prefix /path/to/trainpace/vite-project run --silent mcp:health
+```
+
+For a client that takes JSON config (Claude Desktop, Cursor):
+
+```json
+{
+  "mcpServers": {
+    "trainpace-health": {
+      "command": "npm",
+      "args": ["--prefix", "/abs/path/trainpace/vite-project", "run", "--silent", "mcp:health"],
+      "env": { "TRAINPACE_HEALTH_EXPORT": "/abs/path/export.zip" }
+    }
+  }
+}
+```
+
+`--export <path>` on the command line overrides the environment variable.
+
+### Things that will bite you
+
+- **`--silent` is load-bearing.** Without it npm writes `> vite-project@2.0.0
+  mcp:health` to *stdout*, and stdout is the JSON-RPC channel. The client sees a
+  parse error and the connection dies. Measured: 2 non-JSON lines without it,
+  0 with it.
+- **Never `console.log` in this server.** Same reason. Diagnostics go to
+  `process.stderr`, which is why the load messages use `process.stderr.write`.
+- **The export is read lazily.** `fs.openAsBlob()` returns a `Blob` backed by
+  the file rather than its contents, so `parseHealthExport` streams it exactly
+  as the browser does. Do not swap in `readFile` — that pulls a
+  multi-hundred-megabyte XML into memory to save one line.
+- **A `Blob` has no name.** The browser passes a `File`, which names itself;
+  Node's `openAsBlob` does not, so the server passes `fileName` explicitly.
+  That is what the `fileName` option on `ParseOptions` exists for.
+- **Schemas are JSON Schema, not zod.** `@modelcontextprotocol/server` wants a
+  Standard Schema that can emit JSON Schema; the app's zod 3.25 predates that
+  contract, so tool inputs go through the package's own `fromJsonSchema`. This
+  also decouples the server from the app's zod version — a zod upgrade for the
+  forms cannot break the MCP tools. JSON Schema `default` is advisory, so each
+  handler applies its own fallback.
+- **`toClaudeMarkdown` takes `includeHandoff: false` here.** Its footer tells
+  the reader to connect the TrainPace MCP server, which is right for the
+  clipboard and nonsense inside a tool result from a server the client is
+  already talking to.
+
+### Verifying a change
+
+There is no test harness for MCP in this repo. Drive it the way a client does:
+spawn the server, send `initialize`, then `tools/list` and `tools/call` over
+stdin, and assert **every** stdout line parses as JSON. That last check is the
+one that catches the whole class of "works until something prints" bugs.

@@ -18,6 +18,12 @@ const WAYS: Way[] = [
     current: true,
   },
   {
+    name: "MCP server (in this repo)",
+    effort: "Export once, then just ask",
+    gives: "Claude reads your runs directly and answers questions about them",
+    cost: "Free, needs a computer",
+  },
+  {
     name: "Apple Shortcut",
     effort: "One tap, or on a schedule",
     gives: "Weekly distance, resting heart rate, VO2 max, weight",
@@ -133,6 +139,38 @@ export default function OtherWaysCard() {
       </div>
 
       <details className="mt-4">
+        <summary className="cursor-pointer text-sm font-medium text-slate-600 hover:text-slate-900">
+          Let Claude query the export directly
+        </summary>
+        <div className="mt-3 text-sm text-slate-700 space-y-3">
+          <p>
+            TrainPace ships a small MCP server that reads your{" "}
+            <code className="font-mono">export.zip</code> on your own machine
+            and gives Claude tools to query it — runs in a date range, weekly
+            volume, fastest efforts, two periods compared. It uses the same
+            parser as this page, so the numbers match. Nothing is uploaded; the
+            server only reads the one file you point it at.
+          </p>
+          <p>
+            You still export from Health when you want fresh data. What goes
+            away is the copying: instead of pasting a summary, you just ask.
+          </p>
+          <pre className="overflow-x-auto rounded-lg bg-slate-900 p-4 text-xs leading-relaxed text-slate-100">
+{`claude mcp add trainpace-health \\
+  --env TRAINPACE_HEALTH_EXPORT=$HOME/Downloads/export.zip \\
+  -- npm --prefix /path/to/trainpace/vite-project \\
+     run --silent mcp:health`}
+          </pre>
+          <p className="text-slate-500">
+            Keep <code className="font-mono">--silent</code>: without it npm
+            prints a banner that corrupts the protocol stream. Setup for other
+            MCP clients is in{" "}
+            <code className="font-mono">vite-project/docs/apple-health.md</code>.
+          </p>
+        </div>
+      </details>
+
+      <details className="mt-2">
         <summary className="cursor-pointer text-sm font-medium text-slate-600 hover:text-slate-900">
           Build the volume-only Shortcut anyway
         </summary>

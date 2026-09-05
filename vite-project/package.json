@@ -16,7 +16,8 @@
     "generate-pwa-assets": "pwa-assets-generator",
     "host": "vite --host",
     "seed-boston": "vite-node scripts/seedBostonMarathon.ts",
-    "test-gemini": "vite-node scripts/testGemini.ts"
+    "test-gemini": "vite-node scripts/testGemini.ts",
+    "mcp:health": "vite-node mcp/health-server.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -55,6 +56,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@modelcontextprotocol/server": "^2.0.0",
     "@playwright/test": "^1.58.2",
     "@types/jsdom": "^21.0.0",
     "@types/node": "^22.10.0",

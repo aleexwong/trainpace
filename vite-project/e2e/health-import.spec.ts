@@ -35,9 +35,15 @@ test.describe("Apple Health import", () => {
     await expect(card.locator("table")).toBeVisible();
     await expect(card.locator("ul")).toBeHidden();
 
+    const tableRows = await card.locator("table tbody tr").count();
+    expect(tableRows).toBeGreaterThanOrEqual(4);
+
     await page.setViewportSize({ width: 390, height: 844 });
     await expect(card.locator("table")).toBeHidden();
-    await expect(card.locator("ul").locator("li")).toHaveCount(4);
+    // The stacked cards and the table are two renderings of one list, so they
+    // must never drift apart.
+    await expect(card.locator("ul").locator("li")).toHaveCount(tableRows);
+    await expect(card).toContainText("MCP server");
 
     // The limitation that makes a Shortcut a poor substitute must be stated.
     await expect(
@@ -98,7 +104,7 @@ test.describe("Apple Health import", () => {
     await page.getByRole("group", { name: "Distance unit" }).waitFor();
     await page.getByText("Preview what gets copied").click();
 
-    const preview = page.locator("pre");
+    const preview = page.getByTestId("claude-markdown-preview");
     await expect(preview).toContainText("# My running data (from Apple Health)");
     await expect(preview).toContainText("Half marathon");
     await expect(preview).toContainText("api.trainpace.com/api/mcp");
