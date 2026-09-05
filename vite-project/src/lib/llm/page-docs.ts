@@ -702,12 +702,16 @@ function importBlocks(): DocBlock[] {
           "Paid app",
         ],
         [
-          "Strava or Garmin",
-          "Nothing, after setup",
-          "Full activities, if your runs already sync there",
-          "Free, needs an account there",
+          "Strava or Garmin sync",
+          "Would be nothing",
+          "Nothing - their APIs are closed to an app like this",
+          "Not possible today",
         ],
       ],
+    },
+    {
+      type: "paragraph",
+      text: "There is no \"connect Strava\" button because the terms do not allow one. Strava's 2026 API terms cap standard access at 10 athletes, require the developer to hold a paid subscription, allow caching for only seven days, and forbid using the data in connection with the development, training, evaluation or operation of any AI Application; they separately prohibit running an MCP server over it. Garmin's developer program is on hold and is not issuing new accounts.",
     },
     {
       type: "paragraph",

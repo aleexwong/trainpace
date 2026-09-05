@@ -36,10 +36,10 @@ const WAYS: Way[] = [
     cost: "Paid app",
   },
   {
-    name: "Strava or Garmin",
-    effort: "Nothing, after setup",
-    gives: "Full activities, if your runs already sync there",
-    cost: "Free, needs an account there",
+    name: "Strava or Garmin sync",
+    effort: "Would be nothing",
+    gives: "Nothing — their APIs are closed to an app like this",
+    cost: "Not possible today",
   },
 ];
 
@@ -134,6 +134,26 @@ export default function OtherWaysCard() {
             action. So a Shortcut can tell you that you ran 48 km last week, but
             not that one of those runs was a 22-minute 5K. Pace, fastest efforts
             and VDOT all need the full export.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-4 flex gap-3 rounded-lg bg-slate-50 border border-slate-200 p-4">
+        <Info className="w-5 h-5 text-slate-500 shrink-0 mt-0.5" />
+        <div className="text-sm text-slate-700">
+          <p className="font-semibold text-slate-900 mb-1">
+            Why there is no "connect Strava" button
+          </p>
+          <p>
+            Connecting an account once and letting runs flow in is the obvious
+            fix, and it is closed off. Strava's 2026 API terms cap standard
+            access at 10 athletes, require the developer to hold a paid
+            subscription, allow caching for only seven days, and forbid using
+            the data "in connection with the development, training, evaluation,
+            or operation of any AI Application" — they separately prohibit
+            running an MCP server over it. Garmin's developer program is on hold
+            and is not issuing new accounts. So this is not a feature TrainPace
+            is choosing not to build; it is one the terms do not permit.
           </p>
         </div>
       </div>

@@ -124,10 +124,25 @@ zero-effort path that keeps per-run detail. If support is added, the parser
 should accept their JSON alongside `export.zip` — anything producing
 `HealthWorkout[]` reuses the whole downstream pipeline.
 
-**Strava/Garmin is the cleanest fix and the biggest job.** One OAuth grant, then
-activities flow in forever with full pace data. It needs a token exchange, so it
-belongs in the `api.trainpace.com` backend, not in this repo. It is already on
-the roadmap under "Next".
+**Strava and Garmin are closed, not merely unbuilt.** This was previously
+recorded here as "the cleanest fix and the biggest job", which was wrong.
+Checked against the primary sources in 2026:
+
+- Strava's [API Policy](https://www.strava.com/legal/api_policy) forbids using
+  Strava data "in connection with the development, training, evaluation, or
+  operation of any AI Application", and separately prohibits operating "any MCP
+  Server, agent-mediated interface" over it. Both of those are exactly what this
+  feature does. On top of that the
+  [Standard Tier](https://communityhub.strava.com/insider-journal-9/an-update-to-our-developer-program-13428)
+  caps at 10 athletes, requires the developer to hold a paid Strava
+  subscription, and limits caching to seven days - which also rules out the
+  Firestore-backed dashboard.
+- Garmin's Connect Developer Program is on hold and is not issuing new developer
+  accounts; access is granted to vetted legal entities, not individuals.
+
+So the Apple Health export is not the fallback for a sync we have not got round
+to writing. For an independent app that hands running data to an AI assistant,
+it is currently the only route that is actually permitted.
 
 The trade-off table lives in `components/OtherWaysCard.tsx` and is mirrored into
 the prerendered page and Markdown via `importBlocks()` in
