@@ -47,14 +47,14 @@ describe("formatFuelTime", () => {
     expect(formatFuelTime(95.6)).toBe("1:36");
   });
 
-  // FINDING: formatFuelTime computes hours via Math.floor(minutes/60) and the
-  // minutes remainder via Math.round(minutes % 60) *independently*. When the
-  // remainder is within half a minute of 60 (e.g. 59.6), it rounds up to 60
-  // without carrying into the hour, producing an invalid "H:60" string
-  // instead of rolling over to the next hour. Correct behavior would be
-  // "1:00". See fuel-math.ts:30-34.
-  it.fails(
-    "does NOT roll a rounded-up 60-minute remainder into the next hour (known bug, expected correct behavior)",
+  // Regression guard. formatFuelTime used to compute the hours via
+  // Math.floor(minutes/60) and the minutes remainder via
+  // Math.round(minutes % 60) *independently*. A remainder within half a
+  // minute of 60 rounded up to 60 without carrying, so 59.6 printed "0:60"
+  // and 119.7 printed "1:60" — both visible in the fuel planner. Now fixed by
+  // rounding to whole minutes before splitting.
+  it(
+    "rolls a rounded-up 60-minute remainder into the next hour",
     () => {
       expect(formatFuelTime(59.6)).toBe("1:00");
     }
@@ -151,13 +151,11 @@ describe("resolveCarbsPerHour", () => {
       expect(result).toBe(50);
     });
 
-    // FINDING: a custom value is used "as-is" and only clamped at the upper
-    // bound (Math.min(carbsPerHour, raceMax)); there is no lower clamp. A
-    // negative custom value passes straight through as a negative
-    // carbs/hour target, which is physiologically meaningless. See
-    // fuel-math.ts:147-149 / 163.
-    it.fails(
-      "does not allow a negative custom carbs/hour to pass through (known gap, expected correct behavior)",
+    // Regression guard. A custom value used to be clamped only at the upper
+    // bound, so a negative slider reading passed straight through as a
+    // negative carbs/hour target. Now floored at zero.
+    it(
+      "does not allow a negative custom carbs/hour to pass through",
       () => {
         const result = resolveCarbsPerHour({
           raceType: "Full",
@@ -251,13 +249,11 @@ describe("resolveGelsNeeded", () => {
     });
   });
 
-  // FINDING: for non-10K races, resolveGelsNeeded does not guard against a
-  // negative duration. Math.ceil(-1 * GELS_PER_HOUR) is negative, and
-  // Math.min(negative, MAX_GELS) stays negative, so a negative finish time
-  // produces a negative gel count instead of clamping to 0. See
-  // fuel-math.ts:169-177.
-  it.fails(
-    "does not return a negative gel count for a negative duration (known gap, expected correct behavior)",
+  // Regression guard. For non-10K races a negative duration used to yield a
+  // negative gel count: Math.ceil(-1 * GELS_PER_HOUR) is negative and
+  // Math.min(negative, MAX_GELS) keeps it negative. Now floored at zero.
+  it(
+    "does not return a negative gel count for a negative duration",
     () => {
       const result = resolveGelsNeeded("Full", -1);
       expect(result).toBeGreaterThanOrEqual(0);
@@ -359,8 +355,8 @@ describe("calculateFuelPlan", () => {
   // physiologically meaningful. generateFuelStops at least degrades safely
   // (a negative finish time is caught by `finishTimeMin < MIN_RACE_TIME_FOR_FUELING`
   // and returns []).
-  it.fails(
-    "does not produce negative totals or gel counts for a negative finish time (known gap, expected correct behavior)",
+  it(
+    "does not produce negative totals or gel counts for a negative finish time",
     () => {
       const plan = calculateFuelPlan({ raceType: "Full", finishTimeMin: -60 });
       expect(plan.totalCarbs).toBeGreaterThanOrEqual(0);
