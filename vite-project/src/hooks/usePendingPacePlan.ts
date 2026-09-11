@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { toast } from "@/hooks/use-toast";
-import ReactGA from "react-ga4";
+import { trackEvent } from "@/lib/analytics";
 
 export function usePendingPacePlan() {
   const { user } = useAuth();
@@ -63,7 +63,7 @@ export function usePendingPacePlan() {
         sessionStorage.removeItem("pending_pace_plan");
 
         // Track analytics
-        ReactGA.event({
+        trackEvent({
           category: "Pace Calculator",
           action: "Pending Plan Auto-Saved",
           label: `${inputs.distance}${inputs.units}`,

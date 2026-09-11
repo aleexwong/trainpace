@@ -1,0 +1,45 @@
+# Fast gate: lint, typecheck and unit tests. Runs on every push and PR.
+#
+# This is deliberately separate from e2e.yml and installs no browsers, so it
+# finishes in well under a minute and gives quick feedback. The E2E suite stays
+# in its own workflow.
+name: Verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vite-project
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: vite-project/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Currently 0 errors and ~92 warnings. Gating on errors only, so the
+      # warning backlog can be worked down without blocking every PR. Once it
+      # reaches zero, add --max-warnings 0 here to keep it there.
+      - name: Lint
+        run: npx eslint .
+
+      - name: Typecheck
+        run: npx tsc -b
+
+      - name: Unit tests
+        run: npm test

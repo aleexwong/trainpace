@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { toast } from "@/hooks/use-toast";
-import ReactGA from "react-ga4";
+import { trackEvent } from "@/lib/analytics";
 
 export function usePendingFuelPlan() {
   const { user } = useAuth();
@@ -56,7 +56,7 @@ export function usePendingFuelPlan() {
         sessionStorage.removeItem("pending_fuel_plan");
 
         // Track analytics
-        ReactGA.event({
+        trackEvent({
           category: "Fuel Planner",
           action: "Pending Plan Auto-Saved",
           label: planData.raceType,

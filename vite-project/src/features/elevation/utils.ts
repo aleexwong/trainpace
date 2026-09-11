@@ -19,7 +19,17 @@ export function downsampleProfile<T extends ProfileLike>(
   maxPoints: number
 ): T[] {
   const n = data.length;
-  if (maxPoints >= n || maxPoints <= 2) return data;
+  // Already under the cap: hand back the same array (callers rely on the
+  // reference identity to skip work).
+  if (maxPoints >= n) return data;
+  // LTTB needs at least three points to have a bucket to choose from, so the
+  // degenerate caps are handled directly. Returning `data` here — as this used
+  // to — broke the one guarantee callers depend on: that the result never
+  // exceeds maxPoints. A maxPoints of 1 against a 500-point profile handed
+  // back all 500.
+  if (maxPoints <= 0) return [];
+  if (maxPoints === 1) return [data[0]];
+  if (maxPoints === 2) return [data[0], data[n - 1]];
 
   const sampled: T[] = [];
   const bucketSize = (n - 2) / (maxPoints - 2);
