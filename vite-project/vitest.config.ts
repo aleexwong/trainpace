@@ -1,9 +1,16 @@
 import { defineConfig } from "vitest/config";
 import path from "path";
 
-// Unit tests cover src/domain-style pure modules only: the maths behind the
-// calculators. They must run in plain Node with no DOM, no Firebase, and no
-// component rendering — if a test needs any of those, it belongs in the
+// Unit tests cover the pure maths behind the calculators. The default
+// environment is plain Node: no Firebase, no component rendering.
+//
+// The one exception is DOM parsing. gpxMetaData.ts uses DOMParser, so
+// gpxMetaData.test.ts opts into jsdom with a per-file
+//   /** @vitest-environment jsdom */
+// docblock. That is deliberate and narrow — do NOT switch the global
+// environment to jsdom to accommodate it, which would slow every other file
+// and hide accidental DOM dependencies in modules that should stay pure.
+// Anything needing a real browser (rendering, layout, fonts) belongs in the
 // Playwright suite instead (e2e/).
 export default defineConfig({
   resolve: {
