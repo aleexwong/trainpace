@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { onAuthStateChanged, User } from "firebase/auth";
+import type { User } from "firebase/auth";
 import posthog from "posthog-js";
-import { auth } from "@/lib/firebase";
 
 interface AuthContextValue {
   user: User | null;
@@ -21,25 +20,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // anonymous distinct_ids).
   const prevUidRef = useRef<string | null>(null);
 
+  // Firebase is imported dynamically, not at module scope. AuthProvider wraps
+  // the whole app, so a static import pulled the Auth + Firestore SDK (~114KB
+  // gzip) onto the critical path of every page — including the 80+ prerendered
+  // SEO pages, where nobody is ever signed in. Loading it here keeps it off
+  // first paint and out of those pages entirely.
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // Stitch the anonymous journey to this user and unlock signup-conversion
-        // + cross-session tracking in PostHog.
-        posthog.identify(user.uid, {
-          email: user.email ?? undefined,
-          name: user.displayName ?? undefined,
-        });
-        prevUidRef.current = user.uid;
-      } else if (prevUidRef.current) {
-        // Logout: clear identity so the next visitor isn't merged into this one.
-        posthog.reset();
-        prevUidRef.current = null;
-      }
-      setUser(user);
-      setLoading(false);
-    });
-    return () => unsubscribe();
+    let unsubscribe: (() => void) | undefined;
+    let cancelled = false;
+
+    void (async () => {
+      const [{ onAuthStateChanged }, { auth }] = await Promise.all([
+        import("firebase/auth"),
+        import("@/lib/firebase"),
+      ]);
+      // The component may have unmounted while the SDK was in flight.
+      if (cancelled) return;
+
+      unsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // Stitch the anonymous journey to this user and unlock
+          // signup-conversion + cross-session tracking in PostHog.
+          posthog.identify(user.uid, {
+            email: user.email ?? undefined,
+            name: user.displayName ?? undefined,
+          });
+          prevUidRef.current = user.uid;
+        } else if (prevUidRef.current) {
+          // Logout: clear identity so the next visitor isn't merged into this one.
+          posthog.reset();
+          prevUidRef.current = null;
+        }
+        setUser(user);
+        setLoading(false);
+      });
+    })();
+
+    return () => {
+      cancelled = true;
+      unsubscribe?.();
+    };
   }, []);
 
   return (
