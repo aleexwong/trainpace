@@ -102,7 +102,7 @@ now removes Firestore data. What follows is what is **still** open.
 |----|---------|----------|
 | **Q-1** | Dead code in the tree | `src/pages/FuelPlannerV2.tsx` (1,398 lines) is not imported by anything — `FuelPlannerPage` and `FuelSeoLanding` both use `@/features/fuel`'s copy. `src/pages/RacePredictorOverlay.tsx` (477 lines) is deliberately unrendered. That is ~1,900 lines of unreachable code |
 | **Q-2** | Duplicated, *divergent* business logic | The dead page computes carbs as `weightKg * 0.7` unconditionally while `useFuelCalculation` uses `Math.max(weightBased, raceBaseline)` (B1 in `ROADMAP.md`). Two files named `RaceDetailsForm.tsx` and two named `FuelPlannerV2.tsx` |
-| **Q-3** | Zero unit tests | `vitest` is installed and never used. `plan-math.ts` (530 lines), `vdot-math.ts`, `fuel-math.ts`, and `gpxMetaData.ts` are pure, high-value, and completely uncovered. Verification today is "build + lint + Playwright" |
+| **Q-3** | Unit tests exist but were unrunnable | **Corrected finding.** This originally read "zero unit tests", which was wrong: three files with 50 tests cover `src/utils/difficulty/`, a module six elevation components import. But `package.json` had no `test` script, so nobody could run them and CI never did — and one had rotted on an ICU-dependent `Intl.NumberFormat` assertion. The real gap was the maths: `plan-math.ts` (530 lines), `vdot-math.ts`, `fuel-math.ts`, `pace-calculator/utils.ts` and `gpxMetaData.ts` were uncovered. Addressed in the Stage 1 branch (304 tests), which found five bugs |
 | **Q-4** | Very large files | `seoPages.ts` 2,800 lines, `FuelPlannerV2.tsx` 1,398, `Landing.tsx` 1,001, `page-docs.ts` 865, `FeatureShots.tsx` 822, `GpxUploader.tsx` 766 |
 | **Q-5** | `seoPages.ts` is a hand-written 2,800-line object literal | 79 page configs written out longhand, with content generators available in `lib/seo/` but only partly used |
 | **Q-6** | Mixed import styles | `@/lib/firebase` in some files, `../../../lib/firebase` in `dashboard/hooks/*` |
@@ -809,11 +809,21 @@ error state, and a skeleton.
 - **Domain:** `domain/gpx.ts` (DOM-free parse + Douglas–Peucker simplify) and
   `domain/elevation.ts` (`downsampleProfile`, `computeCumulativeGain`, terrain
   breakdown, splits, difficulty score, race comparison).
-- **Fix B3:** the fallback step-filter path can drop the route's final point —
-  `simplified.push(last)` followed by `slice(0, maxPoints)` can chop off the
-  point just appended. Reserve the slot first (`slice(0, maxPoints - 1)`), then
-  append. Add a unit test that asserts the last output point equals the last
-  input point on both the Douglas–Peucker path and the fallback path.
+- **B3 is a false positive — do not "fix" it.** `ROADMAP.md` B3 claims the
+  fallback step-filter path drops the route's final point via
+  `push(last)` then `slice(0, maxPoints)`. The current code does not do that:
+  it slices first and *then* forces both endpoints by direct index assignment,
+  with a comment saying exactly why. Two independent passes confirmed the last
+  output point equals the last input point in every case. The ROADMAP entry is
+  stale.
+- **There is a real defect next to it.** `step = Math.floor(points.length /
+  maxPoints)` underestimates the stride, so the filter keeps more than
+  `maxPoints` samples and `slice` discards them *from the end of the route*.
+  The forced endpoint overwrite then hides this as a long straight-line jump:
+  at n=149 / maxPoints=50 the last ~35% of the route renders as one straight
+  segment. `Math.ceil`, or an even index resample, fixes it. Only reachable
+  when Douglas–Peucker at its tolerance ceiling still exceeds the cap —
+  plausible for the 50-point thumbnail on a long, convoluted route.
 - Parsing runs in `workers/gpx.worker.ts` with progress reporting (P-8).
 - **Validation before parsing:** extension check, 10 MB cap, a hard cap on
   track-point count, and a rejection if the document contains
@@ -1184,6 +1194,11 @@ The rewrite is done when every line is true.
 - [ ] No unreachable files; `FuelPlannerV2` and `RacePredictorOverlay` are gone, the latter folded into VDOT (Q-1)
 - [ ] One implementation of every formula; the B1 carbs rule is unit-tested (Q-2)
 - [ ] `domain/` ≥ 90% unit-tested; golden-file suite passes (Q-3)
+- [ ] Every finding inherited from `SECURITY_REVIEW.md`, `ROADMAP.md` or an
+      earlier draft of this plan has been re-checked against the code before
+      being acted on. Five were already stale when this plan was written
+      (S-9, S-10, B3, "zero unit tests", the 6-character password minimum).
+      Assume the rest may be too.
 - [ ] No file over 400 lines (Q-4)
 - [ ] SEO pages are validated data, not a code literal (Q-5)
 - [ ] Only `@/` imports (Q-6)
