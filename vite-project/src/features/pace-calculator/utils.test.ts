@@ -289,30 +289,23 @@ describe("calculateTrainingPaces", () => {
     expect(results.adjustments?.weather).toBeDefined();
   });
 
-  // --- BUG: Yasso 800 projection ignores the `units` parameter -----------
+  // --- Regression guard: Yasso 800 projection used to ignore `units` ------
   //
-  // utils.ts lines 119-128:
-  //   const raceTimeMinutes = raceTimeSeconds / 60;
-  //   const pacePerKm = raceTimeMinutes / raceDistance;   // <- raceDistance is
-  //                                                        //    in `units`,
-  //                                                        //    NOT always km
-  //   const marathonDistance = 42.195;                    // <- always km
-  //   const projectedMarathonTime = pacePerKm * marathonDistance;
+  // The projection divided raceTimeMinutes by raceDistance and multiplied by
+  // the marathon constant 42.195. That constant is in km, but raceDistance
+  // arrives in whatever `units` the caller passed. With units === "km" the
+  // maths was self-consistent, and the resulting value fed through
+  // secondsToTimeString happens to reproduce the classic Yasso mnemonic
+  // (marathon H:MM ~= 800m M:SS). With units === "miles" it divided by a
+  // mile count and multiplied by a km distance, inflating the projection by
+  // the 1.609 mile/km factor.
   //
-  // When `units === "km"` this is self-consistent (raceDistance really is in
-  // km, so multiplying a min/km pace by a km distance is correct), and the
-  // resulting "seconds" value fed into secondsToTimeString happens to
-  // reproduce the classic Yasso 800 mnemonic (marathon H:MM ~= 800m M:SS).
-  //
-  // But when `units === "miles"`, raceDistance is in MILES, and the code
-  // still multiplies by the KM marathon constant (42.195) without first
-  // converting raceDistance to km. This inflates the projected time by a
-  // factor of ~1.609 (the mile-to-km ratio) for any miles-based input.
-  //
-  // Proof: the same physical 10K race (40:00) run as "10 km" vs "6.2 miles"
-  // must produce the same Yasso 800 projection, since it is the same event.
-  it.fails(
-    "BUG (utils.ts:120-123): Yasso 800 projection is unit-dependent -- the same physical race entered in km vs miles should give the same Yasso projection",
+  // The same physical 10K in 40:00 gave a Yasso target of 2:48 entered as
+  // 10 km and 4:32 entered as 6.2 miles. raceDistance is now normalised to
+  // km first. The two readings stay a second apart because 6.2 miles is
+  // 9.978 km, not exactly 10 — that residue is correct, not a rounding fudge.
+  it(
+    "Yasso 800 projection is unit-independent: the same physical race entered in km or miles gives the same target",
     () => {
       const kmResults = calculateTrainingPaces(2400, 10, "km", "km");
       const milesResults = calculateTrainingPaces(2400, 6.2, "miles", "Miles");
