@@ -83,16 +83,16 @@ now removes Firestore data. What follows is what is **still** open.
 
 | ID | Finding | Evidence | Severity |
 |----|---------|----------|----------|
-| **S-1** | `elevation_analysis_cache` lets any signed-in user overwrite or delete any document | `firestore.rules`: `allow update, delete: if request.auth != null;` — no ownership check | High — cache poisoning: an attacker can replace the analysis of any public route |
+| **S-1** | `elevation_analysis_cache` lets any signed-in user overwrite or delete any document | `firestore.rules`: `allow update, delete: if request.auth != null;` — no ownership check | High — cache poisoning: an attacker can replace the analysis of any public route. **Fixed in this branch** (creator-only writes, `createdBy` immutable) |
 | **S-2** | CSP allows `script-src 'unsafe-inline'` and whitelists `unpkg.com` | `vercel.json` | High — `unsafe-inline` removes most of the XSS protection CSP is there to provide; `unpkg.com` is a broad, unpinned script source |
-| **S-3** | CSP is missing `frame-ancestors`, `base-uri`, `form-action`, `object-src` | `vercel.json` | Medium — `X-Frame-Options` covers framing in older browsers only; `base-uri` omission allows `<base>` injection to redirect every relative URL |
+| **S-3** | CSP is missing `frame-ancestors`, `base-uri`, `form-action`, `object-src` | `vercel.json` | Medium — `X-Frame-Options` covers framing in older browsers only; `base-uri` omission allows `<base>` injection to redirect every relative URL. **Fixed in this branch** |
 | **S-4** | No field validation in Firestore rules | Rules check `userId` ownership only; nothing constrains document shape or size | Medium — an authenticated user can write arbitrary fields and multi-MB documents into their own plan collections |
 | **S-5** | Upload rate limiting is client-side only | `GpxUploader.tsx` enforces 15/day and 10/hour in the browser | Medium — trivially bypassed by calling the SDK directly |
 | **S-6** | Firebase App Check is not enabled | No `initializeAppCheck` anywhere | Medium — the Firebase project accepts traffic from any origin with the (public) web config |
 | **S-7** | Storage rules are not in the repo | `firebase.json` references Firestore rules only | Medium — the same class of problem that C2 in the old review flagged for Firestore |
 | **S-8** | Account deletion runs client-side, unatomically | `Settings.tsx` `deleteUserData` loops over collections in the browser, then calls `deleteUser` | Medium — closing the tab mid-delete orphans data; a GDPR erasure request can silently half-complete |
-| **S-9** | The Gemini proxy call has no timeout | `src/services/gemini.ts` — no `AbortController` (also logged as B2 in `ROADMAP.md`) | Low — a hung backend locks the UI permanently |
-| **S-10** | Backend error text is shown to the user verbatim | `gemini.ts` surfaces `errorData.error \|\| errorData.details` | Low — information disclosure |
+| ~~**S-9**~~ | ~~The Gemini proxy call has no timeout~~ — **not a finding.** `gemini.ts` already wraps the fetch in an `AbortController` with a 20 s timeout and handles `AbortError`. `ROADMAP.md` B2 is stale | — | none |
+| ~~**S-10**~~ | ~~Backend error text is shown verbatim~~ — **not a finding.** `gemini.ts` already throws a fixed generic message and never surfaces `errorData.details` | — | none |
 | **S-11** | The Mapbox token is in the client bundle | `VITE_MAPBOX_TOKEN` | Low if the token is domain-restricted in the Mapbox dashboard; the plan should not rely on a dashboard setting nobody can verify from the repo |
 | **S-12** | No dependency scanning in CI | `.github/workflows/e2e.yml` is the only workflow | Low/ongoing |
 
@@ -129,7 +129,7 @@ now removes Firestore data. What follows is what is **still** open.
 | Client state | React context for auth + a tiny `zustand` store for user preferences | Fixes U-4 |
 | Forms | Zod v4 + React Hook Form | Already the convention; make it universal (U-9) |
 | Backend | Firebase Auth + Firestore + Storage, **plus Cloud Functions** | Functions are needed for S-5, S-8, and to keep the Mapbox token off the client (S-11) |
-| AI | Gemini via the existing `api.trainpace.com` proxy | Unchanged; add timeout + error sanitisation (S-9, S-10) |
+| AI | Gemini via the existing `api.trainpace.com` proxy | Unchanged; the timeout and error sanitisation are already correct — port them as they are (§5.7) |
 | Charts | **uPlot** for the elevation profile, hand-rolled SVG for everything else | Fixes P-3; uPlot is ~12 KB vs Chart.js ~70 KB and is faster for thousands of points |
 | Maps | The existing `lib/mapbox/` budget + cache design, moved behind an edge function | Keeps the cost control that already works; removes the client token |
 | Analytics | **PostHog only** | Drops `react-ga4` (Q-11). PostHog covers pageviews, funnels, and error capture |
@@ -660,16 +660,17 @@ Keep the rest of today's `vercel.json` headers as they are: the cache policy
 (immutable hashed assets, `no-store` HTML), the `.md` and `llms*.txt` content
 types. Those are correct.
 
-### 5.7 AI proxy hardening (fixes S-9, S-10)
+### 5.7 AI proxy — port, do not redesign
 
-`app/src/server/ai.ts`:
+**The current implementation is already correct — port it, do not redesign it.**
+`services/gemini.ts` already has the `AbortController` (20 s), already handles
+`AbortError` with a friendly message, and already throws a fixed generic error
+rather than surfacing backend details. Carry all of that over as written.
 
-- Wrap the `fetch` in an `AbortController` with a **15 second** timeout; on
-  abort, show "That took too long — try again."
-- Map backend status codes to fixed, friendly user messages
-  (`429 → "You've hit today's AI limit."`, `5xx → "The AI service is having
-  trouble."`). Never render `errorData.details` to the user; send it to
-  `log.error` instead.
+`app/src/server/ai.ts` changes only two things:
+
+- Route the caught error through `log.error` (§4.3) instead of `console.error`,
+  which production strips.
 - Keep the existing 2,000-character input cap and the `getFuelPlanPrompt`
   prompt text — the prompt has been tuned and the constraints in it
   ("no gels means no packaged products", "do not suggest dates") are
@@ -1174,8 +1175,8 @@ The rewrite is done when every line is true.
 - [ ] App Check enabled and enforced (S-6)
 - [ ] `storage.rules` in the repo and deployed (S-7)
 - [ ] Account deletion runs in a Cloud Function (S-8)
-- [ ] AI proxy call has a 15 s timeout (S-9)
-- [ ] Backend error details never reach the UI (S-10)
+- [x] AI proxy call has a timeout — already true in `services/gemini.ts`; preserve it through the port (S-9)
+- [x] Backend error details never reach the UI — already true; preserve it (S-10)
 - [ ] No Mapbox token in the client bundle (S-11)
 - [ ] `npm audit` gate in CI (S-12)
 
