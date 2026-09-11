@@ -21,11 +21,33 @@ service cloud.firestore {
         && request.auth.uid == resource.data.userId;
     }
 
-    // Elevation analysis cache — public read; any authed user can write
+    // Elevation analysis cache — public read; creator-only writes.
+    //
+    // The doc id is `${routeId}_${cacheKey}`, so entries are SHARED: two users
+    // analysing the same public route with the same settings resolve to the
+    // same document. The old rule allowed any signed-in user to update or
+    // delete any entry, which let anyone poison the analysis everyone else
+    // sees for a public route. Writes are now pinned to the creator, and
+    // createdBy is immutable so ownership cannot be handed off.
+    //
+    // Every caller path degrades gracefully when a write is denied:
+    // useGpxAnalysis wraps each cache write and the expired-entry cleanup in
+    // try/catch and falls back to a fresh API analysis. The worst case is a
+    // missed cache hit, never a wrong result shown to a user.
+    //
+    // Known tradeoff: a client that notices another user's expired entry can
+    // no longer delete it, so expired docs accumulate. They are never served
+    // (expiry is checked client-side before use). The real fix is to move
+    // cache writes behind a Cloud Function — see REWRITE_PLAN.md S-1/Stage 5.
     match /elevation_analysis_cache/{cacheId} {
       allow read: if true;
-      allow create: if request.auth != null;
-      allow update, delete: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.createdBy == request.auth.uid;
+      allow update: if request.auth != null
+        && resource.data.createdBy == request.auth.uid
+        && request.resource.data.createdBy == resource.data.createdBy;
+      allow delete: if request.auth != null
+        && resource.data.createdBy == request.auth.uid;
     }
 
     // User fuel plans — owner only

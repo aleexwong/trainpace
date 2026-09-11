@@ -77,7 +77,7 @@ React 18 + TypeScript 5.6, Vite 5 (PWA + prerender plugins), React Router 7, Tai
 - Components `PascalCase`, hooks `useCamelCase`, utilities `camelCase`, types/interfaces `PascalCase`.
 - Business logic lives in custom hooks; components stay presentational.
 - Forms: Zod schema + React Hook Form.
-- Auth state via `useAuth()` from `src/features/auth/AuthContext.tsx` (Google OAuth only).
+- Auth state via `useAuth()` from `src/features/auth/AuthContext.tsx`.
 - Persistence: localStorage for guest/preferences, Firestore for signed-in users.
 - shadcn/ui components in `src/components/ui/` are **copied source, not npm packages** — add new ones by pasting from the shadcn docs, never via CLI.
 - `cn()` from `src/lib/utils.ts` for conditional classnames.
@@ -141,7 +141,12 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 - Maps fall back to a tile-free SVG course outline (`RouteSketch`) without a valid `VITE_MAPBOX_TOKEN`.
 - **All Mapbox access goes through `src/lib/mapbox/`** — one CDN loader, one rolling request budget, one IndexedDB image cache. Never call `api.mapbox.com` or construct a `mapboxgl.Map` outside it, or that usage is unmetered. Default to `StaticRouteMap` (one cheap, cached API request); use `MapboxRoutePreview` only when the map must pan/zoom or track a marker, since each mount is a billable map load. A call site that replaces its points after mount (bundled thumbnail → Firestore track) must pass `awaitingPoints`, or it buys two images per view. See `vite-project/docs/mapbox.md`.
 - The app is a PWA (Workbox) — hard-refresh or unregister the service worker when testing build output.
-- Firebase Auth is Google OAuth only; there is no email/password path.
+- Firebase Auth supports **two** sign-in paths: Google OAuth (`signInWithPopup`
+  in `features/auth/LoginButton.tsx`) and email/password (`/register`,
+  `/reset-password`). An earlier version of this file claimed Google-only; that
+  was wrong. The email/password minimum is **12 characters**, enforced by the
+  Zod schema in `components/login/Register.tsx` — keep that number and the
+  `auth/weak-password` message in sync if you change it.
 - Legacy `/elevationfinder` routes must keep working (redirect aliases in `App.tsx`).
 - Keep SEO titles under 60 chars and descriptions under 160; run `validateAllPages()` before shipping SEO changes.
 - `src/App.css` still carries the Vite template's `#root { text-align: center }`. It cascades into every page, so left-aligned layouts need an explicit `text-left` on their container.
