@@ -496,15 +496,20 @@ describe("calculateElevationAdjustment", () => {
     expect(result?.message).toBeTruthy();
   });
 
-  it("NOTE: models terrain only as a flat/hilly flag, with no elevation-gain (meters) input at all", () => {
-    // The function signature takes no elevation-gain magnitude (e.g. meters
-    // of climb), so a claim like "1000m of climb over a marathon" cannot be
-    // tested here -- the model only distinguishes two fixed states and
-    // applies the same flat +30s/mile penalty regardless of how hilly the
-    // course actually is. This is a modeling limitation, not a unit bug.
-    const gentle = calculateElevationAdjustment("9:00-9:30 min/mi", "hilly", "Miles");
-    const extreme = calculateElevationAdjustment("9:00-9:30 min/mi", "hilly", "Miles");
-    expect(gentle?.adjustedEasyPace).toBe(extreme?.adjustedEasyPace);
+  it("applies a fixed hilly penalty rather than one that scales with pace", () => {
+    // The signature takes no elevation-gain magnitude, only a flat/hilly
+    // flag, so the penalty is a constant step. Asserting that the SAME step
+    // is added at two very different base paces pins that down in a way that
+    // can actually fail: if anyone reworks this into a percentage-based
+    // model, the fast runner's penalty shrinks and this test goes red.
+    const fast = calculateElevationAdjustment("6:00-6:30 min/mi", "hilly", "Miles");
+    const slow = calculateElevationAdjustment("11:00-11:30 min/mi", "hilly", "Miles");
+    const stepOf = (base: string, adjusted?: string) =>
+      parsePaceRange(adjusted ?? "")[0] - parsePaceRange(base)[0];
+    expect(stepOf("6:00-6:30 min/mi", fast?.adjustedEasyPace)).toBeCloseTo(
+      stepOf("11:00-11:30 min/mi", slow?.adjustedEasyPace),
+      5
+    );
   });
 });
 

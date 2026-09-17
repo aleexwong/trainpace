@@ -259,17 +259,23 @@ describe("generateTrainingPlan — progression", () => {
     }
   );
 
-  it("never exceeds each level's peak weekly volume target during build phases", () => {
-    // PEAK_VOLUME_KM isn't exported, but the progression formula caps at 1.0
-    // (plan-math.ts:388-390: `Math.min(progressFraction, 1)`), so no build
-    // week should exceed the plan's own observed maximum by more than the
-    // rounding involved in a single week's computation.
+  it("tapers below the build-phase peak in every race and level combination", () => {
+    // The previous version of this test compared every build week against the
+    // max of those same build weeks, which is true by construction and could
+    // not fail. This compares two DIFFERENT sets: the taper and race weeks
+    // must come in under the build-phase peak, which is the property a taper
+    // actually has to satisfy and which a broken taper would violate.
     for (const [race, level] of ALL_COMBOS) {
       const plan = generateTrainingPlan(makeInputs(race, level));
-      const buildWeeks = plan.weeks.filter((w) => w.phase !== "Taper" && w.phase !== "Race Week");
-      const observedPeak = Math.max(...buildWeeks.map((w) => w.totalKm));
-      for (const w of buildWeeks) {
-        expect(w.totalKm).toBeLessThanOrEqual(observedPeak);
+      const isBuild = (w: { phase: string }) =>
+        w.phase !== "Taper" && w.phase !== "Race Week";
+      const buildPeak = Math.max(
+        ...plan.weeks.filter(isBuild).map((w) => w.totalKm)
+      );
+      const taperWeeks = plan.weeks.filter((w) => !isBuild(w));
+      expect(taperWeeks.length).toBeGreaterThan(0);
+      for (const w of taperWeeks) {
+        expect(w.totalKm).toBeLessThan(buildPeak);
       }
     }
   });
