@@ -32,9 +32,9 @@ interface RouteBudget {
   route: string;
   /** What this route is for, shown in the report. */
   label: string;
-  /** Fails the build above this, in KB gzip. */
+  /** Fails the build above this, in KB gzip. Render-blocking only. */
   budgetKb: number;
-  /** Where this route should end up. Documentation only. */
+  /** Where the render-blocking figure should end up. Documentation only. */
   targetKb: number;
 }
 
@@ -61,6 +61,33 @@ function assetsFor(html: string): string[] {
   return [...found];
 }
 
+/**
+ * Every chunk reachable from a set of entry chunks, following both static
+ * (`from"./x.js"`) and dynamic (`import("./x.js")`) specifiers transitively.
+ *
+ * This is a static approximation of what the browser ends up fetching. It can
+ * over-count — a dynamic import behind a branch the user never takes is still
+ * counted — so treat it as an upper bound on route weight, which is the right
+ * direction for a budget to err in.
+ */
+function reachableAssets(entries: string[]): string[] {
+  const seen = new Set<string>();
+  const queue = [...entries];
+  while (queue.length) {
+    const asset = queue.shift()!;
+    if (seen.has(asset)) continue;
+    seen.add(asset);
+    const file = path.join(DIST, asset.replace(/^\//, ""));
+    if (!existsSync(file)) continue;
+    const code = readFileSync(file, "utf8");
+    for (const m of code.matchAll(/["'`](\.\/[A-Za-z0-9_.-]+\.js)["'`]/g)) {
+      const next = `/assets/${m[1].slice(2)}`;
+      if (!seen.has(next)) queue.push(next);
+    }
+  }
+  return [...seen];
+}
+
 function gzipKb(assetPath: string): number {
   const file = path.join(DIST, assetPath.replace(/^\//, ""));
   if (!existsSync(file)) return 0;
@@ -69,6 +96,7 @@ function gzipKb(assetPath: string): number {
 
 let failed = false;
 const rows: string[] = [];
+const entryAssets: string[] = [];
 
 for (const { route, label, budgetKb, targetKb } of BUDGETS) {
   const htmlPath = path.join(DIST, route, "index.html");
@@ -78,18 +106,39 @@ for (const { route, label, budgetKb, targetKb } of BUDGETS) {
     continue;
   }
   const assets = assetsFor(readFileSync(htmlPath, "utf8"));
-  const totalKb = assets.reduce((sum, a) => sum + gzipKb(a), 0);
-  const over = totalKb > budgetKb;
+  const blockingKb = assets.reduce((sum, a) => sum + gzipKb(a), 0);
+  entryAssets.push(...assets);
+
+  const over = blockingKb > budgetKb;
   if (over) failed = true;
   rows.push(
     `${over ? "FAIL" : "ok  "}  ${(`/${route}`).padEnd(32)} ${label.padEnd(18)}` +
-      `${totalKb.toFixed(1).padStart(7)} KB  (budget ${budgetKb}, target ${targetKb})`
+      `${blockingKb.toFixed(1).padStart(7)} KB  (budget ${budgetKb}, target ${targetKb})`
   );
 }
 
-console.log("\nRender-blocking JS per route, gzipped (not total — see file header):\n");
+console.log("\nJS per route, gzipped:\n");
 console.log(rows.join("\n"));
 console.log("");
+
+// App-wide total. Every route's entry transitively reaches every chunk,
+// because App.tsx lazily imports all of them — so this is NOT a per-route
+// number and must not be presented as one. It is a single ratchet on the
+// whole client bundle, which is what catches a heavy new dependency landing
+// anywhere in the app. It over-counts what any one visitor downloads: a real
+// browser fetches only the chunks a route actually needs (measured at about
+// 379 KB for /calculator/5k-pace-calculator), so treat it as an upper bound.
+const APP_TOTAL_BUDGET_KB = 780;
+const appTotalKb = reachableAssets([...new Set(entryAssets)]).reduce(
+  (sum, a) => sum + gzipKb(a),
+  0
+);
+const overApp = appTotalKb > APP_TOTAL_BUDGET_KB;
+if (overApp) failed = true;
+console.log(
+  `${overApp ? "FAIL" : "ok  "}  whole client bundle (all reachable chunks)   ` +
+    `${appTotalKb.toFixed(1)} KB  (budget ${APP_TOTAL_BUDGET_KB})\n`
+);
 
 if (failed) {
   console.error("Bundle budget exceeded. Either reduce the payload or raise the budget deliberately.\n");
