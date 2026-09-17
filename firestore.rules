@@ -35,19 +35,32 @@ service cloud.firestore {
     // try/catch and falls back to a fresh API analysis. The worst case is a
     // missed cache hit, never a wrong result shown to a user.
     //
-    // Known tradeoff: a client that notices another user's expired entry can
-    // no longer delete it, so expired docs accumulate. They are never served
-    // (expiry is checked client-side before use). The real fix is to move
-    // cache writes behind a Cloud Function — see REWRITE_PLAN.md S-1/Stage 5.
+    // This NARROWS the vector, it does not close it. A first writer can still
+    // seed a poisoned entry for a public route, and is now the only one who
+    // can replace it — so a successful poison is harder to land but sticks.
+    // The real fix is to move cache writes behind a Cloud Function so clients
+    // never write here at all, plus field-shape and expiresAt validation.
     match /elevation_analysis_cache/{cacheId} {
       allow read: if true;
       allow create: if request.auth != null
         && request.resource.data.createdBy == request.auth.uid;
+      // Update stays strict: replacing a live entry is what lets one user feed
+      // wrong analysis to every other viewer of a public route.
       allow update: if request.auth != null
+        && "createdBy" in resource.data
         && resource.data.createdBy == request.auth.uid
         && request.resource.data.createdBy == resource.data.createdBy;
+      // Delete tolerates a MISSING createdBy. Entries written before this
+      // change have no such field, so a strict rule left them undeletable by
+      // anyone, forever — including the expired-entry cleanup in
+      // getCachedAnalysis. That is not merely wasted storage: an expired entry
+      // nobody can delete means every non-creator viewing that route pays a
+      // fresh API analysis on every visit, permanently. Deleting a cache entry
+      // only ever costs a cache miss, so allowing it for legacy docs is a much
+      // cheaper trade than never being able to clean them up.
       allow delete: if request.auth != null
-        && resource.data.createdBy == request.auth.uid;
+        && (!("createdBy" in resource.data)
+            || resource.data.createdBy == request.auth.uid);
     }
 
     // User fuel plans — owner only
