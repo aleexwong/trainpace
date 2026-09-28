@@ -58,8 +58,12 @@ export const MAPBOX_LIMITS: Record<MapboxRequestKind, KindLimits> = {
     burst: { max: 4, windowMs: 30_000 },
     sustained: { max: 40, windowMs: HOUR },
   },
+  // Reloads are served from the image cache and cost nothing, so the burst
+  // only meets first views of distinct routes. 24 covers paging straight
+  // through a 20-route dashboard (6 cards a page); a smaller cap left the
+  // later pages as outlines.
   "static-image": {
-    burst: { max: 12, windowMs: 30_000 },
+    burst: { max: 24, windowMs: 30_000 },
     sustained: { max: 120, windowMs: HOUR },
   },
   // One reverse lookup per poster the user builds, and the caller memoizes by

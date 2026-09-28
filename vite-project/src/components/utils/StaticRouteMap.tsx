@@ -116,7 +116,11 @@ export function StaticRouteMap({
   const { status, retryAfterMs, retry } = map;
   const [retryIn, setRetryIn] = useState(0);
 
-  // Count the block down so the retry control appears exactly when it can work.
+  // Count the block down, then retry once the window has freed a slot. The
+  // budget still gates the retry, so a card that loses the race for that slot
+  // is simply blocked again with a new wait. Without this, a dashboard page
+  // opened after the burst was spent stayed as outlines until each card's
+  // "Load map" was clicked by hand.
   useEffect(() => {
     if (status !== "blocked" || retryAfterMs <= 0) {
       setRetryIn(0);
@@ -129,11 +133,14 @@ export function StaticRouteMap({
     const timer = window.setInterval(() => {
       const remaining = readyAt - Date.now();
       setRetryIn(remaining > 0 ? remaining : 0);
-      if (remaining <= 0) window.clearInterval(timer);
+      if (remaining <= 0) {
+        window.clearInterval(timer);
+        retry();
+      }
     }, 500);
 
     return () => window.clearInterval(timer);
-  }, [status, retryAfterMs]);
+  }, [status, retryAfterMs, retry]);
 
   const goLive = useCallback(() => setLive(true), []);
   const goStatic = useCallback(() => setLive(false), []);
