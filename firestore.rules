@@ -11,6 +11,25 @@ service cloud.firestore {
         && request.auth.uid == resource.data.userId;
     }
 
+    // Dashboard summaries of gpx_uploads (same doc id) — owner only.
+    // Create also requires the matching upload to belong to the requester,
+    // so nobody can claim an id before the real owner writes its summary.
+    // Delete allows a missing doc so removing a summary that was never
+    // written is a no-op, not a permission error.
+    match /gpx_route_summaries/{routeId} {
+      allow read: if request.auth != null
+        && request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null
+        && request.auth.uid == request.resource.data.userId
+        && get(/databases/$(database)/documents/gpx_uploads/$(routeId)).data.userId
+          == request.auth.uid;
+      allow update: if request.auth != null
+        && request.auth.uid == resource.data.userId
+        && request.resource.data.userId == resource.data.userId;
+      allow delete: if request.auth != null
+        && (resource == null || request.auth.uid == resource.data.userId);
+    }
+
     // User bookmarks for preview routes — owner only
     match /user_bookmarks/{bookmarkId} {
       allow read: if request.auth != null

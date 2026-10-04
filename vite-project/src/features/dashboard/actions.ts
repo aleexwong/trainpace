@@ -11,6 +11,10 @@ import {
   buildRouteSlugPath,
   buildRouteUrl,
 } from "../../lib/routeSlug";
+import {
+  removeRouteSummary,
+  syncRouteSummary,
+} from "../../lib/routeSummaries";
 import { FuelPlan, PacePlan } from "./types";
 
 /**
@@ -54,6 +58,9 @@ export async function updateRouteSlug(
     displayUrl,
     updatedAt: Date.now(),
   });
+  // Rewrite the whole summary from the doc we already read, so this also
+  // repairs a summary that was missing or stale.
+  await syncRouteSummary(routeId, { ...data, slug, shortId, displayUrl });
 
   return { slug, shortId, displayUrl };
 }
@@ -77,6 +84,7 @@ export async function deleteRoute(
     }
 
     await updateDoc(docRef, { deleted: true, deletedAt: Date.now() });
+    await removeRouteSummary(routeId);
   } else {
     // Hard delete bookmarked routes
     const docRef = doc(db, "user_bookmarks", routeId);

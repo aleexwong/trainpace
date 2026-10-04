@@ -14,6 +14,7 @@ import {
 import { useState, useRef, useMemo, memo } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { patchRouteSummary } from "@/lib/routeSummaries";
 import { downsampleProfile } from "@/features/elevation/utils";
 
 Chart.register(
@@ -116,6 +117,7 @@ export function ElevationChart({
         filename: trimmedFilename,
         updatedAt: new Date().toISOString(),
       });
+      await patchRouteSummary(docId, { filename: trimmedFilename });
 
       // Notify parent component
       onFilenameUpdate?.(trimmedFilename);

@@ -228,3 +228,33 @@ mode was actually exercised in a browser.
 the failure (`Storage.prototype.setItem` throwing, `indexedDB` undefined) rather
 than reasoning about it — and never state a guarantee for a path you have not
 executed.
+
+---
+
+## Session: dashboard route summaries (branch `claude/route-loading-perf`)
+
+### What worked, and is worth repeating
+
+**Testing Firestore rules and data code against the real emulator.** Java is
+in the sandbox. `npm i firebase-tools` in the scratchpad, then
+`firebase setup:emulators:firestore` and `firebase emulators:start --only
+firestore --project demo-trainpace` from the repo root (it reads
+`firestore.rules` and hot-reloads it on change). In a throwaway
+`vite-project/scripts/_scratch_*.ts`, call `connectFirestoreEmulator(db,
+"127.0.0.1", 8080, { mockUserToken: { user_id: "alice" } })` on the app's own
+`db`, plus a second named app for a second user. Run with
+`NO_PROXY=127.0.0.1 VITE_FIREBASE_PROJECT_ID=demo-trainpace VITE_FIREBASE_API_KEY=x
+VITE_FIREBASE_APP_ID=x npx vite-node ...`. It caught a wrong assumption in the
+test in the first run (rules deny a `get` on a missing doc whose rule reads
+`resource.data`). Swapping in `git show HEAD:firestore.rules` also tested the
+"app shipped before rules were deployed" case.
+
+### Mistakes
+
+**Repeated the `pkill -f` mistake above** with `pkill -f "firebase
+emulators:start"` in the same command line — exit 144, and the rest of that
+command never ran. Use the background task, or `ps -eo pid,args | grep [j]ava`
+and `kill <pid>`.
+
+**The emulator deletes the tracked `firebase-debug.log`** at the repo root and
+writes `firestore-debug.log`. Check `git status` after stopping it.

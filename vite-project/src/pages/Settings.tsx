@@ -10,6 +10,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
+import { ROUTE_SUMMARIES } from "@/lib/routeSummaries";
 import {
   collection,
   query,
@@ -100,6 +101,7 @@ const Settings: React.FC = () => {
       "user_bookmarks",
       "user_training_goals",
       "user_training_plans",
+      ROUTE_SUMMARIES,
     ];
 
     await Promise.all([

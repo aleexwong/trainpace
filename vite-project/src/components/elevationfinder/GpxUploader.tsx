@@ -29,6 +29,7 @@ import {
   buildRouteSlugPath,
   buildRouteUrl,
 } from "../../lib/routeSlug";
+import { syncRouteSummary } from "../../lib/routeSummaries";
 
 /** Saved (not deleted) uploads one account can hold. Bookmarks don't count. */
 const MAX_SAVED_ROUTES = 50;
@@ -335,6 +336,9 @@ export default function GpxUploader({
       };
 
       await setDoc(docRef, docData);
+      // Small copy for the dashboard. Best effort: if it fails, the dashboard
+      // notices the missing summary and repairs it.
+      await syncRouteSummary(docId, docData);
 
       console.log(`Route document created: ${docId}`);
       console.log(`File size: ${(file.size / 1024).toFixed(1)}KB`);
@@ -440,7 +444,7 @@ export default function GpxUploader({
       // Create new document for fallback case. `deleted: false` and
       // thumbnailPoints are what the dashboard query and card need; without
       // them this route never showed up there.
-      const docRef = await addDoc(collection(db, "gpx_uploads"), {
+      const fallbackDoc = {
         filename,
         ...(new Blob([content]).size < MAX_INLINE_CONTENT_BYTES
           ? { content }
@@ -456,9 +460,11 @@ export default function GpxUploader({
         shortId,
         displayUrl,
         staticRouteData: null,
-      });
+      };
+      const docRef = await addDoc(collection(db, "gpx_uploads"), fallbackDoc);
 
       const docId = docRef.id;
+      await syncRouteSummary(docId, fallbackDoc);
 
       onFileParsed(
         content,
