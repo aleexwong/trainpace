@@ -384,9 +384,11 @@ export default function MainLayout() {
       </div>
 
       <main className={`${getMainClasses()} flex-grow`}>
+        {/* min-h-screen keeps the footer below the fold while a page chunk
+            loads, so it doesn't jump up and then get pushed back down. */}
         <Suspense
           fallback={
-            <div className="flex items-center justify-center py-32">
+            <div className="flex min-h-screen items-start justify-center pt-32">
               <div
                 className="h-8 w-8 animate-spin rounded-full border-2 border-gray-200 border-t-emerald-600"
                 role="status"

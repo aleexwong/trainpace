@@ -228,3 +228,18 @@ mode was actually exercised in a browser.
 the failure (`Storage.prototype.setItem` throwing, `indexedDB` undefined) rather
 than reasoning about it — and never state a guarantee for a path you have not
 executed.
+
+---
+
+## Session: first-load performance (Firestore split, vendor chunk, route preload)
+
+### Verification
+
+**Took a lint baseline with `git stash` and compared against the wrong number.**
+`git stash` leaves untracked files in place, so the "before" lint run still
+linted the new `routes.tsx` and reported 120 warnings instead of the real 92.
+That made the change look like it *removed* warnings.
+→ **Rule:** for a before/after comparison, build the baseline in a separate
+worktree (`git worktree add <scratch>/base HEAD`, symlink `node_modules`), or
+use `git stash -u`. The worktree also lets you serve both builds side by side
+and measure them with the same script.

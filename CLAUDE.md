@@ -33,7 +33,7 @@ trainpace/
 │   │   ├── features/       # 11 self-contained feature modules (see below)
 │   │   ├── components/     # Shared UI: ui/ (shadcn), layout/, seo/, login/, faq/, elevationfinder/
 │   │   ├── pages/          # Route-level components
-│   │   ├── lib/            # firebase.ts, seo/ (PSEO system), llm/ (agent-facing content), utils.ts (cn), gpxMetaData.ts
+│   │   ├── lib/            # firebase.ts (app+auth), firestore.ts, storage.ts, lazyRoute.tsx, seo/ (PSEO system), llm/ (agent-facing content), utils.ts (cn), gpxMetaData.ts
 │   │   ├── services/       # gemini.ts (AI nutrition)
 │   │   ├── data/           # blog-posts.json, marathon-data.json, faq-data.json
 │   │   └── hooks/ types/ utils/ config/
@@ -55,7 +55,7 @@ Each feature is self-contained: `components/`, `hooks/`, `types.ts`, optional `u
 
 React 18 + TypeScript 5.6, Vite 5 (PWA + prerender plugins), React Router 7, Tailwind CSS 3.4, shadcn/ui + Radix, Firebase 11 (Auth/Firestore/Storage), Chart.js, Mapbox (Static Images + GL JS), Zod + React Hook Form, Google Gemini API, PostHog + GA4, Playwright.
 
-## Routes (src/App.tsx)
+## Routes (src/routes.tsx)
 
 ```
 /calculator, /calculator/:seoSlug     Pace calculator + PSEO landings
@@ -84,9 +84,9 @@ React 18 + TypeScript 5.6, Vite 5 (PWA + prerender plugins), React Router 7, Tai
 
 ## Common Tasks
 
-- **New page**: component in `src/pages/` → route in `src/App.tsx` → nav in `src/components/layout/SideNav.tsx` + `layout/constants/navLinks.ts` → if it needs static generation, add the path to `getAllDocPaths()` in `src/lib/llm/page-docs.ts` (`vite.config.ts` reads that list) and give it a case in `getContentBlocks()` so it prerenders real content instead of the generic fallback.
+- **New page**: component in `src/pages/` → declare it with `lazyRoute()` in `src/routePages.ts` → route in `src/routes.tsx` → nav in `src/components/layout/SideNav.tsx` + `layout/constants/navLinks.ts` → if it needs static generation, add the path to `getAllDocPaths()` in `src/lib/llm/page-docs.ts` (`vite.config.ts` reads that list) and give it a case in `getContentBlocks()` so it prerenders real content instead of the generic fallback.
 - **New feature**: folder in `src/features/[name]/` with barrel `index.ts`.
-- **Protect a route**: wrap with `<AuthGuard>` in `App.tsx`.
+- **Protect a route**: wrap with `<AuthGuard>` in `src/routes.tsx`.
 - **New SEO page**: add config to `src/features/seo-pages/seoPages.ts` (helpers/validators in `src/lib/seo/` — `generatePageId`, `validateAllPages`). Routing and prerendering pick it up automatically; rerun `npm run generate-sitemap`.
 - **Blog post**: append to `src/data/blog-posts.json`.
 - **Prerendered page copy**: edit `src/lib/llm/page-docs.ts`, not `prerender.jsx`. One block model feeds the static HTML, the `.md` mirror, and `llms-full.txt`.
@@ -142,7 +142,10 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 - **All Mapbox access goes through `src/lib/mapbox/`** — one CDN loader, one rolling request budget, one IndexedDB image cache. Never call `api.mapbox.com` or construct a `mapboxgl.Map` outside it, or that usage is unmetered. Default to `StaticRouteMap` (one cheap, cached API request); use `MapboxRoutePreview` only when the map must pan/zoom or track a marker, since each mount is a billable map load. A call site that replaces its points after mount (bundled thumbnail → Firestore track) must pass `awaitingPoints`, or it buys two images per view. See `vite-project/docs/mapbox.md`.
 - The app is a PWA (Workbox) — hard-refresh or unregister the service worker when testing build output.
 - Firebase Auth is Google OAuth only; there is no email/password path.
-- Legacy `/elevationfinder` routes must keep working (redirect aliases in `App.tsx`).
+- Legacy `/elevationfinder` routes must keep working (redirect aliases in `src/routes.tsx`).
+- **Import `db` from `@/lib/firestore` and `storage` from `@/lib/storage`, never from `@/lib/firebase`.** `firebase.ts` is app + Auth only because it is in the entry chunk; re-exporting Firestore from it puts the whole Firestore SDK back on every page.
+- **Declare route pages with `lazyRoute()`, not `React.lazy`.** `main.tsx` preloads the current route's chunk before the first render, so the prerendered HTML stays up until the real page can replace it (no Suspense spinner, no footer jump), and internal links preload their chunk on hover/focus. A page made with plain `lazy()` loses both.
+- `vite.config.ts` puts React + React Router in a `react-vendor` chunk on purpose. Without it Rollup bundles React into the chunk shared with `prerender.jsx`, and every visitor downloads all SEO page configs to get React.
 - Keep SEO titles under 60 chars and descriptions under 160; run `validateAllPages()` before shipping SEO changes.
 - `src/App.css` still carries the Vite template's `#root { text-align: center }`. It cascades into every page, so left-aligned layouts need an explicit `text-left` on their container.
 - shadcn `Slider` wraps Radix: the *thumb* is what receives focus and carries `role="slider"`. An `aria-label` on the root leaves it announced as unnamed — pass `thumbLabel` instead.
