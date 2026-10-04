@@ -26,8 +26,8 @@ for `MapboxRoutePreview` only when the map must pan, zoom, or track a marker
 `StaticRouteMap` measures its container, builds a Static Images URL, and then:
 
 1. **IndexedDB cache** (`imageCache.ts`) — keyed by the URL minus the token,
-   7-day TTL, LRU-evicted at 60 entries / 12 MB. A hit renders immediately and
-   makes zero network requests. This is deliberately not the HTTP cache: a hard
+   7-day TTL, LRU-evicted at 150 entries / 48 MB (room for a full 50-route
+   dashboard). A hit renders immediately and makes zero network requests. This is deliberately not the HTTP cache: a hard
    refresh bypasses that one, and this survives it.
 2. **In-flight dedupe** — two components showing the same course share one
    fetch, and joining a fetch already in flight does not spend budget.

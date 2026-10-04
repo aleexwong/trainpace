@@ -122,8 +122,13 @@ export default function RaceIndex() {
 
             const resolvedId = getCurrentDocumentId(baseRoute.slug);
             const ref = doc(db, "gpx_uploads", resolvedId);
-            const snap = await getDoc(ref);
-            if (!snap.exists()) return null;
+            // One failed read only drops that race to its bundled data;
+            // letting it reject would send every featured race to fallback.
+            const snap = await getDoc(ref).catch((err) => {
+              console.error(`Failed to load featured race ${previewKey}:`, err);
+              return null;
+            });
+            if (!snap?.exists()) return null;
 
             const data = snap.data() as FeaturedRaceDoc;
             const staticData = data.staticRouteData;

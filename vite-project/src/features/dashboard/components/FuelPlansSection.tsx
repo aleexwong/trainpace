@@ -18,7 +18,7 @@ export function FuelPlansSection({
   onDeletePlan,
   onCopyPlan,
 }: FuelPlansSectionProps) {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [requestedPage, setCurrentPage] = useState(1);
 
   if (loading) {
     return (
@@ -52,6 +52,9 @@ export function FuelPlansSection({
 
   // Pagination logic
   const totalPages = Math.ceil(fuelPlans.length / PLANS_PER_PAGE);
+  // Clamp: deleting the last card on the last page, or a search that
+  // shrinks the list, would otherwise leave an empty page.
+  const currentPage = Math.min(requestedPage, totalPages);
   const startIndex = (currentPage - 1) * PLANS_PER_PAGE;
   const endIndex = startIndex + PLANS_PER_PAGE;
   const currentPlans = fuelPlans.slice(startIndex, endIndex);

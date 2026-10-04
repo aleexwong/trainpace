@@ -106,6 +106,10 @@ export function useRouteLoader({
   const [resolvedDocId, setResolvedDocId] = useState<string | null>(null);
 
   useEffect(() => {
+    // Set when routeId changes or the page unmounts. A slow load for the
+    // previous route must not overwrite the current one, or clear its spinner.
+    let cancelled = false;
+
     const loadSharedRoute = async () => {
       if (!routeId) {
         setResolvedDocId(null);
@@ -114,10 +118,15 @@ export function useRouteLoader({
 
       setLoading(true);
       setError(null);
+      // Don't show the previous route's chart while the next one loads.
+      setRouteMetadata(null);
+      setAnalysisData(null);
+      setOriginalGpxText(null);
 
       try {
         // 1. Resolve the URL param (pretty slug or legacy doc id) to its doc
         const resolved = await resolveRouteDoc(routeId);
+        if (cancelled) return;
 
         if (!resolved) {
           throw new Error("Shared route not found");
@@ -140,6 +149,7 @@ export function useRouteLoader({
             analysisSettings,
             sharedData.staticRouteData
           );
+          if (cancelled) return;
 
           if (cachedAnalysis) {
             console.log(`Instant load from cache!`);
@@ -164,6 +174,7 @@ export function useRouteLoader({
             throw new Error(`Failed to fetch GPX: HTTP ${res.status}`);
           gpxText = await res.text();
         }
+        if (cancelled) return;
 
         if (!gpxText || gpxText.length < 10) {
           throw new Error("GPX content is missing or corrupted");
@@ -178,17 +189,23 @@ export function useRouteLoader({
           sharedData.filename,
           realDocId
         );
+        if (cancelled) return;
 
         setAnalysisData(analysis);
       } catch (err) {
+        if (cancelled) return;
         console.error("Load shared route error:", err);
         setError((err as Error)?.message ?? "Failed to load shared route");
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
     loadSharedRoute();
+
+    return () => {
+      cancelled = true;
+    };
   }, [routeId]); // Only depend on routeId, not analysisSettings
 
   return {

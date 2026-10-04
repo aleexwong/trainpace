@@ -15,6 +15,7 @@ import {
   where,
   collection,
   getDocs,
+  getCountFromServer,
   serverTimestamp,
   addDoc,
   doc,
@@ -28,6 +29,12 @@ import {
   buildRouteSlugPath,
   buildRouteUrl,
 } from "../../lib/routeSlug";
+
+/** Saved (not deleted) uploads one account can hold. Bookmarks don't count. */
+const MAX_SAVED_ROUTES = 50;
+
+/** Firestore caps a document at 1 MiB, so only small files keep a copy inline. */
+const MAX_INLINE_CONTENT_BYTES = 1024 * 1024;
 
 interface GpxUploaderProps {
   onFileParsed: (
@@ -80,6 +87,8 @@ export default function GpxUploader({
   const [uploadsToday, setUploadsToday] = useState(0);
   const [uploadsThisHour, setUploadsThisHour] = useState(0);
   const [rateLimitExceeded, setRateLimitExceeded] = useState(false);
+  const [savedRoutes, setSavedRoutes] = useState(0);
+  const routeLimitReached = savedRoutes >= MAX_SAVED_ROUTES;
 
   useEffect(() => {
     if (user) {
@@ -144,28 +153,47 @@ export default function GpxUploader({
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
 
-      // Check today's uploads
-      const todayQuery = query(
-        collection(db, "gpx_uploads"),
-        where("userId", "==", user.uid),
-        where("uploadedAt", ">=", today)
-      );
-      const todaySnapshot = await getDocs(todayQuery);
-      setUploadsToday(todaySnapshot.size);
+      // Count on the server rather than downloading every matching doc —
+      // each upload doc can carry up to 1 MB of GPX text.
+      const uploads = collection(db, "gpx_uploads");
+      const [todayCount, hourCount, savedCount] = await Promise.all([
+        getCountFromServer(
+          query(
+            uploads,
+            where("userId", "==", user.uid),
+            where("uploadedAt", ">=", today)
+          )
+        ),
+        getCountFromServer(
+          query(
+            uploads,
+            where("userId", "==", user.uid),
+            where("uploadedAt", ">=", oneHourAgo)
+          )
+        ),
+        // The cap fails open, like the rate limits: a failed count must not
+        // stop the two above from being applied.
+        getCountFromServer(
+          query(
+            uploads,
+            where("userId", "==", user.uid),
+            where("deleted", "==", false)
+          )
+        ).catch((error) => {
+          console.error("Error counting saved routes:", error);
+          return null;
+        }),
+      ]);
 
-      // Check this hour's uploads
-      const hourQuery = query(
-        collection(db, "gpx_uploads"),
-        where("userId", "==", user.uid),
-        where("uploadedAt", ">=", oneHourAgo)
-      );
-      const hourSnapshot = await getDocs(hourQuery);
-      setUploadsThisHour(hourSnapshot.size);
+      const todayTotal = todayCount.data().count;
+      const hourTotal = hourCount.data().count;
+      setUploadsToday(todayTotal);
+      setUploadsThisHour(hourTotal);
+      if (savedCount) setSavedRoutes(savedCount.data().count);
 
       // Set rate limit status
       setRateLimitExceeded(
-        todaySnapshot.size >= maxUploadsPerDay ||
-          hourSnapshot.size >= maxUploadsPerHour
+        todayTotal >= maxUploadsPerDay || hourTotal >= maxUploadsPerHour
       );
     } catch (error) {
       console.error("Error checking rate limits:", error);
@@ -260,7 +288,9 @@ export default function GpxUploader({
       });
 
       const downloadURL = await getDownloadURL(snapshot.ref);
-      const shouldStoreContent = file.size < 1024 * 1024; // Store content for files < 1MB
+      // Stored by byte length, not character count: Firestore measures bytes.
+      const shouldStoreContent =
+        new Blob([content]).size < MAX_INLINE_CONTENT_BYTES;
       const processed = processGPXUpload(content);
 
       // Create document with random ID
@@ -298,7 +328,10 @@ export default function GpxUploader({
         staticRouteData: null, // Will be filled by first API call
         staticDataCached: null,
         staticDataSize: 0,
-        content: shouldStoreContent ? content : undefined,
+        // Omit the key for large files. `content: undefined` makes setDoc
+        // throw, which failed every upload over 1 MB after the file had
+        // already gone to Storage.
+        ...(shouldStoreContent ? { content } : {}),
       };
 
       await setDoc(docRef, docData);
@@ -404,14 +437,20 @@ export default function GpxUploader({
       const slugPath = buildRouteSlugPath(slug, shortId);
       const displayUrl = buildRouteUrl(slugPath);
 
-      // Create new document for fallback case
+      // Create new document for fallback case. `deleted: false` and
+      // thumbnailPoints are what the dashboard query and card need; without
+      // them this route never showed up there.
       const docRef = await addDoc(collection(db, "gpx_uploads"), {
         filename,
-        content,
+        ...(new Blob([content]).size < MAX_INLINE_CONTENT_BYTES
+          ? { content }
+          : {}),
         uploadedAt: serverTimestamp(),
         userId: user?.uid,
         fileUrl,
+        deleted: false,
         displayPoints: processed.displayPoints,
+        thumbnailPoints: processed.thumbnailPoints,
         metadata: processed.metadata,
         slug,
         shortId,
@@ -490,6 +529,15 @@ export default function GpxUploader({
       toast({
         title: "Authentication Required",
         description: "Please log in to upload files.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (routeLimitReached) {
+      toast({
+        title: "Route Limit Reached",
+        description: `You can save up to ${MAX_SAVED_ROUTES} routes. Delete one from your dashboard to upload another.`,
         variant: "destructive",
       });
       return;
@@ -591,7 +639,8 @@ export default function GpxUploader({
     if (file) handleFile(file);
   };
 
-  const isDisabled = isUploading || rateLimitExceeded || !user;
+  const isDisabled =
+    isUploading || rateLimitExceeded || routeLimitReached || !user;
 
   return (
     <div className="relative">
@@ -647,6 +696,18 @@ export default function GpxUploader({
           <span className="text-sm text-red-700">
             Upload limit reached. You can upload {maxUploadsPerHour} files per
             hour and {maxUploadsPerDay} per day.
+          </span>
+        </div>
+      )}
+
+      {/* Saved Route Cap Warning */}
+      {routeLimitReached && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-2">
+          <AlertCircle className="w-4 h-4 text-red-500" />
+          <span className="text-sm text-red-700">
+            You have {savedRoutes} saved routes, the limit is{" "}
+            {MAX_SAVED_ROUTES}. Delete a route from your dashboard to upload
+            another.
           </span>
         </div>
       )}
@@ -755,7 +816,8 @@ export default function GpxUploader({
             {user && (
               <div className="text-xs text-gray-500">
                 Today: {uploadsToday}/{maxUploadsPerDay} • This hour:{" "}
-                {uploadsThisHour}/{maxUploadsPerHour}
+                {uploadsThisHour}/{maxUploadsPerHour} • Saved: {savedRoutes}/
+                {MAX_SAVED_ROUTES}
               </div>
             )}
           </div>

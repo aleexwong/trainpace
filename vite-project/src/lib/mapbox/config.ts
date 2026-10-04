@@ -85,6 +85,12 @@ export const IMAGE_CACHE_VERSION = 1;
 /** How long a cached static map stays valid. Course maps change rarely. */
 export const IMAGE_CACHE_TTL_MS = 7 * 24 * HOUR;
 
-/** Cache ceilings; whichever is hit first triggers LRU eviction. */
-export const IMAGE_CACHE_MAX_ENTRIES = 60;
-export const IMAGE_CACHE_MAX_BYTES = 12 * 1024 * 1024;
+/**
+ * Cache ceilings; whichever is hit first triggers LRU eviction.
+ *
+ * Sized so a full dashboard (50 saved routes, one image each) plus the race
+ * pages fits. At 60 entries / 12 MB a 50-route dashboard evicted its own
+ * thumbnails, so every visit bought the images again.
+ */
+export const IMAGE_CACHE_MAX_ENTRIES = 150;
+export const IMAGE_CACHE_MAX_BYTES = 48 * 1024 * 1024;
