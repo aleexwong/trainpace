@@ -7,7 +7,7 @@ import {
   deleteDoc,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "../lib/firebase";
+import { db } from "../lib/firestore";
 import { useAuth } from "../features/auth/AuthContext";
 import { BookmarkPlus, BookmarkCheck, Loader2 } from "lucide-react";
 import { toast } from "../hooks/use-toast";

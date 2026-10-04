@@ -14,7 +14,8 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
-import { db, storage } from "@/lib/firebase";
+import { db } from "@/lib/firestore";
+import { storage } from "@/lib/storage";
 import { extractShortId } from "@/lib/routeSlug";
 import type {
   OptimizedRouteMetadata,

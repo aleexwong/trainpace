@@ -13,7 +13,7 @@ import {
 } from "chart.js";
 import { useState, useRef, useMemo, memo } from "react";
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firestore";
 import { downsampleProfile } from "@/features/elevation/utils";
 
 Chart.register(

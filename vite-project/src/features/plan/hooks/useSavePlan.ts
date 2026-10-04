@@ -19,7 +19,7 @@
 import { useState, useCallback } from "react";
 import { FirebaseError } from "firebase/app";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../../../lib/firebase";
+import { db } from "../../../lib/firestore";
 import { newPlanId } from "../plan-math";
 import type { TrainingPlan } from "../types";
 import { readGuestProgress, clearGuestProgress } from "../utils/planPersistence";

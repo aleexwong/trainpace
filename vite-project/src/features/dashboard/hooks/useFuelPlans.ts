@@ -6,7 +6,7 @@ import {
   getDocs,
   orderBy,
 } from "firebase/firestore";
-import { db } from "../../../lib/firebase";
+import { db } from "../../../lib/firestore";
 import { FuelPlan } from "../types";
 
 export function useFuelPlans(userId: string | undefined) {

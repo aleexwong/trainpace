@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firestore";
 import type { RaceGoalProfile, RaceGoalProfileInput } from "../types";
 
 const COLLECTION = "user_training_goals";

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAuth } from "@/features/auth/AuthContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firestore";
 import { toast } from "@/hooks/use-toast";
 import ReactGA from "react-ga4";
 

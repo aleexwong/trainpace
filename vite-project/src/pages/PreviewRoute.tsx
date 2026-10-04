@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import StaticRouteMap from "../components/utils/StaticRouteMap";
 import { Helmet } from "react-helmet-async";
 import { SavePreviewRouteButton } from "../components/SavePreviewRouteButton";
-import { db } from "../lib/firebase";
+import { db } from "../lib/firestore";
 import { doc, getDoc } from "firebase/firestore";
 import { getCurrentDocumentId } from "../config/routes";
 import marathonData from "@/data/marathon-data.json";

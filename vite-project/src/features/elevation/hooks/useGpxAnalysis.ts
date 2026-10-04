@@ -5,7 +5,7 @@
 
 import { useCallback, useRef } from "react";
 import { doc, getDoc, updateDoc, setDoc, deleteDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firestore";
 import { useAuth } from "@/features/auth/AuthContext";
 import type {
   GPXAnalysisResponse,
@@ -15,7 +15,7 @@ import type {
 } from "../types";
 import { API_ENDPOINTS, CACHE_SETTINGS } from "../types";
 import { getDownloadURL, ref } from "firebase/storage";
-import { storage } from "@/lib/firebase";
+import { storage } from "@/lib/storage";
 
 interface UseGpxAnalysisReturn {
   performAnalysis: (

@@ -4,7 +4,7 @@
  */
 
 import { doc, updateDoc, deleteField, type FieldValue } from "firebase/firestore";
-import { db } from "../../lib/firebase";
+import { db } from "../../lib/firestore";
 import type { TrainingWeek } from "./types";
 
 /**

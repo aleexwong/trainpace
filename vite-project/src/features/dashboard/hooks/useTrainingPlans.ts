@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { collection, query, where, getDocs, orderBy, deleteDoc, doc } from "firebase/firestore";
-import { db } from "../../../lib/firebase";
+import { db } from "../../../lib/firestore";
 import type { TrainingPlan } from "../../plan/types";
 
 export function useTrainingPlans(userId: string | undefined) {

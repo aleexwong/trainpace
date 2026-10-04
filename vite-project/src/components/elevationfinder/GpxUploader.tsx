@@ -19,7 +19,8 @@ import {
   addDoc,
   doc,
 } from "firebase/firestore";
-import { storage, db } from "../../lib/firebase";
+import { db } from "../../lib/firestore";
+import { storage } from "../../lib/storage";
 import { useAuth } from "../../features/auth/AuthContext";
 import { processGPXUpload } from "../../lib/gpxMetaData";
 import {

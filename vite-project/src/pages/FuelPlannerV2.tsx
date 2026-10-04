@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Card, CardContent } from "@/components/ui/card";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firestore";
 import { useAuth } from "@/features/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { usePendingFuelPlan } from "@/hooks/usePendingFuelPlan";

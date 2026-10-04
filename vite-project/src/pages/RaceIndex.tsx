@@ -5,7 +5,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 import { raceSeoPages } from "@/features/seo-pages/seoPages";
 import marathonData from "@/data/marathon-data.json";
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firestore";
 import { getCurrentDocumentId } from "@/config/routes";
 
 type MarathonPreviewRoute = {
