@@ -124,12 +124,14 @@ Guidelines:
 
 ## Typography
 
-Two webfonts, loaded from Google Fonts in `vite-project/index.html`: **DM Sans** (body, Tailwind `font-sans`) and **Space Grotesk** (headings, Tailwind `font-display`, plus an `h1`–`h6` rule in `index.css`'s `@layer base`).
+Two webfonts, **self-hosted** from `@fontsource-variable/*` via `@font-face` rules in `vite-project/src/fonts.css` (imported first in `main.tsx`): **DM Sans** (body, Tailwind `font-sans`) and **Space Grotesk** (headings, Tailwind `font-display`, plus an `h1`–`h6` rule in `index.css`'s `@layer base`). `fonts.css` keeps the plain family names (Fontsource's own CSS says "… Variable"), so the Tailwind config and font stacks stay unchanged. `preloadFonts()` in `vite.config.ts` preloads the Space Grotesk latin file, and the build fails if that file name stops matching.
 
-`:root` in `index.css` sets `font-synthesis: none`. That is deliberate — it avoids ugly faux-bold and faux-oblique — but it means **any face missing from the font URL fails silently rather than being faked**. Adding a weight or style to markup is not enough; it has to be in the request too. Known consequences:
+**Do not go back to Google Fonts.** The CSP in `vercel.json` (`style-src`, `font-src 'self'`) blocks `fonts.googleapis.com` / `fonts.gstatic.com`, so production silently rendered every page in fallback fonts while that was the source. Any third-party font or stylesheet needs a CSP change too, and must be verified against the deployed headers.
 
-- **Space Grotesk stops at 700.** Google Fonts returns HTTP 400 for a request at 800. `font-extrabold` or `font-black` on a heading silently renders as 700 — pick `font-bold` instead, or switch the element to a family that goes heavier.
-- **Italics need the `1,...` axis** on DM Sans (`ital,opsz,wght@0,...;1,...`). Drop it and every `italic` element renders upright, with no error anywhere.
+`:root` in `index.css` sets `font-synthesis: none`. That is deliberate — it avoids ugly faux-bold and faux-oblique — but it means **any face missing from `fonts.css` fails silently rather than being faked**. Adding a weight or style to markup is not enough; there has to be an `@font-face` for it too. Known consequences:
+
+- **Space Grotesk stops at 700.** Its variable `wght` axis ends there, so `font-extrabold` or `font-black` on a heading silently renders as 700 — pick `font-bold` instead, or switch the element to a family that goes heavier.
+- **Italics need the `font-style: italic` faces** for DM Sans in `fonts.css` (the `*-opsz-italic.woff2` files). Drop them and every `italic` element renders upright, with no error anywhere.
 - **Space Grotesk has a `tnum` table; DM Sans does not.** So `font-variant-numeric: tabular-nums` works on Space Grotesk and is a no-op on DM Sans. Any column of numbers, and anything that animates through digits, must use Space Grotesk or it will jitter.
 - **Always give a webfont a fallback stack.** A bare `font-family: "Space Grotesk"` falls back to the browser default *serif* when the font fails to load, which looks nothing like the design. In `feature-shots.css` use the `--display` / `--mono` custom properties rather than naming families inline.
 

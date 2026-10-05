@@ -12,15 +12,8 @@
     <meta name="apple-mobile-web-app-title" content="Train Pace" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Brand fonts: DM Sans (body) + Space Grotesk (headings).
-         The DM Sans `1,...` axis loads the real italic face — `font-synthesis: none`
-         in index.css means dropping it leaves italic text rendering upright. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Space+Grotesk:wght@400..700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Brand fonts (DM Sans + Space Grotesk) are self-hosted: see src/fonts.css.
+         preloadFonts() in vite.config.ts adds preload links for the above-the-fold faces. -->
 
     <!-- SEO tags are injected by prerender.jsx during build -->
   </head>

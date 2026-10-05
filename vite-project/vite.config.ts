@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import path from "path";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
@@ -11,11 +11,44 @@ import { getAllDocPaths } from "./src/lib/llm/page-docs";
 // neither list can drift from the other — add new routes in getAllDocPaths().
 const prerenderedRoutes = getAllDocPaths();
 
+// Preload self-hosted font files (src/fonts.css) so they download alongside the
+// CSS instead of after it. Their names are content-hashed, so the <link> tags can
+// only be written once the bundle exists.
+// Only Space Grotesk (22 KB, the large headings, where the swap shift is
+// biggest). Measured on throttled mobile: it cuts the font-swap CLS on / from
+// 0.09 to 0.02 for ~150 ms of FCP. Also preloading DM Sans (62 KB) gave no
+// further CLS gain and cost another ~150 ms of FCP competing with the CSS.
+function preloadFonts(prefixes: string[]): Plugin {
+  return {
+    name: "trainpace-preload-fonts",
+    apply: "build",
+    transformIndexHtml: {
+      order: "post",
+      handler(_html, ctx) {
+        const files = Object.keys(ctx.bundle ?? {}).filter(
+          (f) => f.endsWith(".woff2") && prefixes.some((p) => f.startsWith(`assets/${p}-`))
+        );
+        // Fail loudly: a renamed Fontsource file would otherwise just drop the preload.
+        const missing = prefixes.filter((p) => !files.some((f) => f.startsWith(`assets/${p}-`)));
+        if (missing.length) {
+          throw new Error(`preloadFonts: no emitted .woff2 for ${missing.join(", ")} (check src/fonts.css)`);
+        }
+        return files.map((f) => ({
+          tag: "link",
+          attrs: { rel: "preload", href: `/${f}`, as: "font", type: "font/woff2", crossorigin: "" },
+          injectTo: "head" as const,
+        }));
+      },
+    },
+  };
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     svgr(),
+    preloadFonts(["space-grotesk-latin-wght-normal"]),
     vitePrerenderPlugin({
       renderTarget: "#root",
       prerenderScript: path.resolve(__dirname, "prerender.jsx"),
