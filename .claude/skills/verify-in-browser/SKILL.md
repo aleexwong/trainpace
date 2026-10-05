@@ -9,16 +9,10 @@ There are no unit tests here. For anything visual, the browser *is* the test. Re
 
 ## Working launch recipe
 
-Three things in this sandbox will each silently give you a wrong answer. All three are already handled below; copy this.
+Two things in this sandbox will each silently give you a wrong answer. Both are handled below; copy this.
 
 ```js
 import { chromium } from "playwright";
-import { execFileSync } from "node:child_process";
-
-const UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
-const curlBytes = (url) =>
-  execFileSync("curl", ["-sS", "--compressed", "-A", UA, "-H", "Accept: */*", url],
-    { maxBuffer: 64 * 1024 * 1024, encoding: "buffer" });
 
 // 1. The project pins a newer Playwright than the installed browsers.
 //    Without executablePath you get "Executable doesn't exist at .../chromium_headless_shell-1208".
@@ -26,17 +20,10 @@ const browser = await chromium.launch({ executablePath: "/opt/pw-browsers/chromi
 
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 2 });
 
-// 2. Chromium cannot reach fonts.googleapis.com through the agent proxy
-//    (ERR_CONNECTION_RESET). Node's curl can. Without this the page renders
-//    entirely in fallback fonts and you measure the sandbox, not the app.
-await ctx.route(/fonts\.(googleapis|gstatic)\.com/, async (route) => {
-  const url = route.request().url();
-  await route.fulfill({
-    status: 200,
-    contentType: url.includes("googleapis.com") ? "text/css; charset=utf-8" : "font/woff2",
-    body: curlBytes(url),
-  });
-});
+// Fonts are self-hosted (src/fonts.css), so they load from localhost with no
+// proxy workaround. Chromium still cannot reach most third-party hosts through
+// the agent proxy (ERR_CERT_AUTHORITY_INVALID); if a check needs one, fetch it
+// with Node's curl and route.fulfill() it.
 
 const page = await ctx.newPage();
 await page.goto("http://localhost:5173/", { waitUntil: "networkidle" });
@@ -47,7 +34,7 @@ Run it from the scratchpad with the project's modules reachable:
 
 ```bash
 ln -sfn /home/user/trainpace/vite-project/node_modules node_modules
-# 3. Playwright forces --proxy-bypass-list=<-loopback>, so localhost:5173 gets
+# 2. Playwright forces --proxy-bypass-list=<-loopback>, so localhost:5173 gets
 #    routed through the agent proxy, which only accepts CONNECT. The page then
 #    "loads" as a proxy error page. This env var restores the loopback bypass.
 PLAYWRIGHT_DISABLE_FORCED_CHROMIUM_PROXIED_LOOPBACK=1 node script.mjs
@@ -76,6 +63,10 @@ const isTabular = Math.abs(widthOf("1111111111", { tnum: true }) - widthOf("0888
 **Print a content fingerprint next to every measurement.** Dump the element's text alongside its computed styles. This is what caught the proxy error page — the "body" being measured had text `"agent-proxy relay: this proxy only accepts…"` in Times New Roman. Without the text in the output, those computed styles look like a plausible finding about the app.
 
 **Assert the webfonts actually loaded before judging typography.** `[...document.fonts]` empty means nothing loaded and every conclusion about type is about the fallback stack. Check it explicitly rather than assuming the route worked.
+
+**Anchor request-blocking patterns to external hosts.** Blocking analytics with `page.route(/posthog|googletagmanager|firebase/, …)` looked harmless, but on the dev server it also matched Vite's local `/node_modules/.vite/deps/firebase_auth.js`. The app never rendered, and it looked like a real "page is blank in dev" bug. Production chunk names happened not to match, so the same pattern passed there. Use `/^https:\/\/[^/]*(posthog|googletagmanager|…)/`.
+
+**To test against production headers, inject them; `vite preview` does not send `vercel.json` headers.** The Google Fonts outage was a CSP block that only existed on the deployed site. Read the CSP from `vite-project/vercel.json` and add it to document responses with `ctx.route()` + `route.fetch()` + `route.fulfill({ response, headers })`, then log any `Content Security Policy` console messages. `CSS.getPlatformFontsForNode` (CDP) tells you which font actually drew an element's glyphs.
 
 **Check your selector matches the element you think it does, and that separate cases are separate elements.** `section .italic` was meant to grab a testimonial and grabbed the founder quote instead, because `#story` is a `<section>` — so two "different" before/after screenshots were the same element, and a claim of covering both cases rested on one. Log `await locator.count()` and the matched text, and if two shots should differ, diff them.
 
