@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" creator="http://www.strava.com">
+ <metadata>
+  <name>BMO Marathon – First 5k</name>
+  <link href="https://www.strava.com/routes/3337000000000000000"/>
+ </metadata>
+ <trk>
+  <name>BMO Marathon – First 5k</name>
+  <link href="https://www.strava.com/routes/3337000000000000000"/>
+  <type>running</type>
+  <trkseg>
+   <trkpt lat="49.2426330" lon="-123.1105580">
+    <ele>97.0</ele>
+   </trkpt>
+   <trkpt lat="49.2428710" lon="-123.1107610">
+    <ele>96.0</ele>
+   </trkpt>
+   <trkpt lat="49.2433200" lon="-123.1112470">
+    <ele>95.0</ele>
+   </trkpt>
+   <trkpt lat="49.2435470" lon="-123.1115740">
+    <ele>94.0</ele>
+   </trkpt>
+   <trkpt lat="49.2437060" lon="-123.1118490">
+    <ele>94.0</ele>
+   </trkpt>
+   <trkpt lat="49.2438260" lon="-123.1121110">
+    <ele>93.0</ele>
+   </trkpt>
+   <trkpt lat="49.2439670" lon="-123.1125220">
+    <ele>92.0</ele>
+   </trkpt>
+   <trkpt lat="49.2440230" lon="-123.1127350">
+    <ele>92.0</ele>
+   </trkpt>
+   <trkpt lat="49.2440960" lon="-123.1131590">
+    <ele>92.0</ele>
+   </trkpt>
+   <trkpt lat="49.2441550" lon="-123.1137090">
+    <ele>91.0</ele>
+   </trkpt>
+   <trkpt lat="49.2441720" lon="-123.1140820">
+    <ele>91.0</ele>
+   </trkpt>
+   <trkpt lat="49.2441570" lon="-123.1144290">
+    <ele>91.0</ele>
+   </trkpt>
+   <trkpt lat="49.2441320" lon="-123.1145930">
+    <ele>92.0</ele>
+   </trkpt>
+   <trkpt lat="49.2440090" lon="-123.1151090">
+    <ele>95.0</ele>
+   </trkpt>
+   <trkpt lat="49.2438480" lon="-123.1155530">
+    <ele>95.0</ele>
+   </trkpt>
+   <trkpt lat="49.2436450" lon="-123.1160320">
+    <ele>98.0</ele>
+   </trkpt>
+   <trkpt lat="49.2432760" lon="-123.1167400">
+    <ele>98.0</ele>
+   </trkpt>
+   <trkpt lat="49.2437640" lon="-123.1174160">
+    <ele>94.0</ele>
+   </trkpt>
+   <trkpt lat="49.2437430" lon="-123.1174490">
+    <ele>94.0</ele>
+   </trkpt>
+   <trkpt lat="49.2436030" lon="-123.1176770">
+    <ele>93.0</ele>
+   </trkpt>
+   <trkpt lat="49.2434360" lon="-123.1179000">
+    <ele>93.0</ele>
+   </trkpt>
+   <trkpt lat="49.2431960" lon="-123.1181240">
+    <ele>93.0</ele>
+   </trkpt>
+   <trkpt lat="49.2429670" lon="-123.1183040">
+    <ele>92.0</ele>
+   </trkpt>
+   <trkpt lat="49.2426950" lon="-123.1184360">
+    <ele>93.0</ele>
+   </trkpt>
+   <trkpt lat="49.2424150" lon="-123.1184960">
+    <ele>94.0</ele>
+   </trkpt>
+   <trkpt lat="49.2410910" lon="-123.1185590">
+    <ele>99.0</ele>
+   </trkpt>
+   <trkpt lat="49.2407490" lon="-123.1185560">
+    <ele>99.0</ele>
+   </trkpt>
+   <trkpt lat="49.2405720" lon="-123.1184930">
+    <ele>99.0</ele>
+   </trkpt>
+   <trkpt lat="49.2403800" lon="-123.1183740">
+    <ele>101.0</ele>
+   </trkpt>
+   <trkpt lat="49.2398910" lon="-123.1178260">
+    <ele>103.0</ele>
+   </trkpt>
+   <trkpt lat="49.2398910" lon="-123.1178270">
+    <ele>102.0</ele>
+   </trkpt>
+   <trkpt lat="49.2386080" lon="-123.1164070">
+    <ele>102.0</ele>
+   </trkpt>
+   <trkpt lat="49.2382880" lon="-123.1161970">
+    <ele>103.0</ele>
+   </trkpt>
+   <trkpt lat="49.2380760" lon="-123.1161780">
+    <ele>101.0</ele>
+   </trkpt>
+   <trkpt lat="49.2372570" lon="-123.1161910">
+    <ele>100.0</ele>
+   </trkpt>
+   <trkpt lat="49.2354030" lon="-123.1162960">
+    <ele>96.0</ele>
+   </trkpt>
+   <trkpt lat="49.2343150" lon="-123.1163330">
+    <ele>94.0</ele>
+   </trkpt>
+   <trkpt lat="49.2310850" lon="-123.1164730">
+    <ele>89.0</ele>
+   </trkpt>
+   <trkpt lat="49.2261690" lon="-123.1166400">
+    <ele>80.0</ele>
+   </trkpt>
+   <trkpt lat="49.2260860" lon="-123.1166420">
+    <ele>80.0</ele>
+   </trkpt>
+   <trkpt lat="49.2261310" lon="-123.1173940">
+    <ele>81.0</ele>
+   </trkpt>
+   <trkpt lat="49.2261440" lon="-123.1181180">
+    <ele>82.0</ele>
+   </trkpt>
+   <trkpt lat="49.2262280" lon="-123.1202520">
+    <ele>86.0</ele>
+   </trkpt>
+   <trkpt lat="49.2263380" lon="-123.1224580">
+    <ele>90.0</ele>
+   </trkpt>
+   <trkpt lat="49.2265630" lon="-123.1283190">
+    <ele>93.0</ele>
+   </trkpt>
+   <trkpt lat="49.2265780" lon="-123.1290950">
+    <ele>93.0</ele>
+   </trkpt>
+   <trkpt lat="49.2269640" lon="-123.1398460">
+    <ele>87.0</ele>
+   </trkpt>
+   <trkpt lat="49.2270803" lon="-123.1487938">
+    <ele>70.5</ele>
+   </trkpt>
+  </trkseg>
+ </trk>
+</gpx>
