@@ -7,6 +7,28 @@ keep entries concrete.
 
 ---
 
+## Graduated to portable skills
+
+Patterns first learned here have been written up as standalone agent skills in
+[aleexwong/claude-skills](https://github.com/aleexwong/claude-skills), so a
+different project can start with them. The entries below stay where they are:
+the skill carries the general rule, this file keeps the local cost that earned
+it. When something here graduates, add a row rather than deleting the entry.
+
+| Learned from | Skill (plugin) |
+|---|---|
+| `src/lib/mapbox/` and `vite-project/docs/mapbox.md` — budget, IndexedDB cache, RouteSketch fallback | `metered-vendor-api` (browser-boundaries) |
+| `firestore.rules`, `SECURITY_REVIEW.md`, `isValidRedirect`, the client-side upload caps | `client-trust-boundary` (browser-boundaries) |
+| `features/plan` draft persistence, the sign-in handoff, `useSavePlan` | `guest-first-persistence` (browser-boundaries) |
+| `src/lib/seo/`, `features/seo-pages/`, `PRD_COMPETITOR_COMPARISON_SEO.md` | `programmatic-seo` |
+| CLAUDE.md **Typography** and the three font fixes behind it | `silent-webfonts` |
+| The Verification sections in this file, and `.claude/skills/verify-in-browser` | `verify-before-claiming` (working-practices) |
+| This file, CLAUDE.md, `.claude/agents/`, `.claude/settings.json` | `project-memory` (working-practices) |
+| `src/lib/llm/page-docs.ts`, `scripts/verifyAgentRouting.ts` | `source-of-truth` (working-practices) |
+| `middleware.ts`, `llms.txt`, the `/mcp` page, `AI_AGENT_DISCOVERY.md` | `agent-legible` |
+
+---
+
 ## Session: `/conditions` heat & altitude calculator (PR #80)
 
 ### Verification
