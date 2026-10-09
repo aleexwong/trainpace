@@ -1530,6 +1530,220 @@ export const calculatorSeoPages: SeoPageConfig[] = [
       },
     ],
   },
+
+  // ---------------------------------------------------------------------------
+  // Competitor comparison pages — batch 2 (PRD §10 follow-on)
+  // ---------------------------------------------------------------------------
+  {
+    id: generatePageId('pace', 'trainpace-vs-vdot-o2'),
+    slug: 'trainpace-vs-vdot-o2',
+    tool: 'pace',
+    path: '/calculator/trainpace-vs-vdot-o2',
+    title: 'TrainPace vs VDOT O2 - Free VDOT Paces | TrainPace',
+    description:
+      'TrainPace vs VDOT O2 compared. TrainPace is a free VDOT calculator for training paces and race predictions - no app or subscription needed.',
+    h1: 'TrainPace vs. VDOT O2',
+    intro:
+      "VDOT O2 is Jack Daniels' official app, with his full plan library and workouts behind a subscription. TrainPace is a free web VDOT calculator that gives the same style of training paces and race predictions with no app or login.",
+    bullets: [
+      'TrainPace is free with no app or subscription; VDOT O2 is a paid app',
+      "Both use Jack Daniels' VDOT system to set training paces",
+      'VDOT O2 adds the official Daniels plan library, workouts, and coaching',
+      'TrainPace adds GPX course pacing and an AI fuel planner VDOT O2 does not',
+      'Enter a recent race time to get Easy, Tempo, Threshold, and Interval paces free',
+    ],
+    cta: { href: '/vdot', label: 'Open the Free VDOT Calculator' },
+    faq: [
+      {
+        question: 'Is TrainPace a free alternative to VDOT O2?',
+        answer:
+          'Yes. TrainPace calculates VDOT-based training paces and race-time predictions for free, with no app download or subscription. VDOT O2 is the official paid Daniels app.',
+      },
+      {
+        question: 'Does TrainPace use the same VDOT system as VDOT O2?',
+        answer:
+          "Both use Jack Daniels' VDOT concept to turn a recent race result into Easy, Tempo, Threshold, and Interval training paces. TrainPace gives you those paces and predictions free in the browser.",
+      },
+      {
+        question: 'What does VDOT O2 do that TrainPace does not?',
+        answer:
+          "VDOT O2 offers Jack Daniels' official training plan library, structured workouts, plan tracking, and coaching inside a paid app. TrainPace focuses on free paces, plans, course pacing, and fueling.",
+      },
+      {
+        question: 'Can I get Daniels-style paces without paying?',
+        answer:
+          'Yes. Enter a recent race time in the free TrainPace VDOT calculator to get your training zones and race predictions instantly.',
+      },
+    ],
+  },
+  {
+    id: generatePageId('pace', 'trainpace-vs-mcmillan-running-calculator'),
+    slug: 'trainpace-vs-mcmillan-running-calculator',
+    tool: 'pace',
+    path: '/calculator/trainpace-vs-mcmillan-running-calculator',
+    title: 'TrainPace vs McMillan Calculator - Free | TrainPace',
+    description:
+      'TrainPace vs the McMillan Running Calculator. Free training paces plus VDOT zones, a plan builder, GPX course pacing, and race fueling in one tool.',
+    h1: 'TrainPace vs. the McMillan Running Calculator',
+    intro:
+      'The McMillan Running Calculator is a respected free tool for turning a race time into training paces. TrainPace does the same and bundles VDOT zones, a plan builder, GPX course pacing, and race fueling into one free toolkit.',
+    bullets: [
+      'Both turn a recent race time into personalized training paces for free',
+      'TrainPace adds VDOT pace zones and race-time predictions in the same tool',
+      'TrainPace includes a periodized plan builder, GPX course pacing, and fueling',
+      'McMillan Running offers paid custom training plans and coaching',
+      'Works in min/km or min/mile with a printable pace chart',
+    ],
+    cta: { href: '/calculator', label: 'Open the Free Pace Calculator' },
+    faq: [
+      {
+        question: 'Is TrainPace a free alternative to the McMillan calculator?',
+        answer:
+          "Yes. TrainPace's pace calculator is free and turns a recent race time into Easy, Tempo, Threshold, and Interval paces, plus VDOT race-time predictions.",
+      },
+      {
+        question: 'What does TrainPace add over a pace calculator?',
+        answer:
+          'Beyond training paces, TrainPace builds a periodized training plan, analyzes a GPX race course for hill-adjusted pacing, and plans race-day fueling, all free.',
+      },
+      {
+        question: 'Does McMillan do anything TrainPace does not?',
+        answer:
+          'McMillan Running offers paid custom training plans and coaching guidance. TrainPace is aimed at self-coached runners who want free paces, a plan, course insight, and fueling.',
+      },
+      {
+        question: 'Can I use both together?',
+        answer:
+          'Yes. Many runners cross-check paces between calculators; TrainPace also adds course pacing and fueling that a standalone calculator does not.',
+      },
+    ],
+  },
+  {
+    id: generatePageId('pace', 'trainpace-vs-garmin-coach'),
+    slug: 'trainpace-vs-garmin-coach',
+    tool: 'pace',
+    path: '/calculator/trainpace-vs-garmin-coach',
+    title: 'TrainPace vs Garmin Coach - Free Plans | TrainPace',
+    description:
+      'TrainPace vs Garmin Coach compared. TrainPace builds a free training plan for any watch or none, plus VDOT paces, GPX course pacing, and fueling.',
+    h1: 'TrainPace vs. Garmin Coach',
+    intro:
+      'Garmin Coach offers free adaptive plans that sync to a Garmin watch, but they are tied to the Garmin ecosystem and a few race distances. TrainPace is a free plan builder that works with any watch or none, plus VDOT paces, course pacing, and fueling.',
+    bullets: [
+      'Both build free structured training plans toward a goal race',
+      'Garmin Coach adapts and syncs workouts to a Garmin watch',
+      'Garmin Coach needs a Garmin account and covers select race distances',
+      'TrainPace works with any device and adds VDOT paces, course pacing, and fueling',
+      'Export your TrainPace plan to any calendar with an .ics file',
+    ],
+    cta: { href: '/plan', label: 'Build a Free Training Plan' },
+    faq: [
+      {
+        question: 'Is TrainPace a free alternative to Garmin Coach?',
+        answer:
+          'Yes. TrainPace builds a free periodized training plan for your goal race and does not require a Garmin account or watch. It also adds VDOT paces, course pacing, and fueling.',
+      },
+      {
+        question: 'What does Garmin Coach do that TrainPace does not?',
+        answer:
+          'Garmin Coach delivers adaptive workouts straight to a Garmin watch and adjusts based on your synced runs. TrainPace does not sync from a watch to auto-adapt.',
+      },
+      {
+        question: 'Do I need a Garmin watch to use TrainPace?',
+        answer:
+          'No. TrainPace works in any browser with any watch or none. You can export the plan to your calendar and follow the paces on any device.',
+      },
+      {
+        question: 'Can I use TrainPace with my Garmin?',
+        answer:
+          'Yes. Export a race or route from Garmin as a GPX file and upload it to TrainPace for hill-adjusted course pacing, and use your Garmin race times to set paces.',
+      },
+    ],
+  },
+  {
+    id: generatePageId('pace', 'trainpace-vs-nike-run-club'),
+    slug: 'trainpace-vs-nike-run-club',
+    tool: 'pace',
+    path: '/calculator/trainpace-vs-nike-run-club',
+    title: 'TrainPace vs Nike Run Club - Free Plans | TrainPace',
+    description:
+      'TrainPace vs Nike Run Club compared. TrainPace sets free VDOT training paces, builds a periodized plan, and adds GPX course pacing and fueling.',
+    h1: 'TrainPace vs. Nike Run Club',
+    intro:
+      'Nike Run Club is a free app with audio-guided runs and simple training plans. TrainPace is a free web toolkit that sets precise VDOT training paces, builds a periodized plan, analyzes your race course, and plans fueling.',
+    bullets: [
+      'Both are free ways to train toward a race',
+      'Nike Run Club adds audio-guided runs and activity tracking in an app',
+      'TrainPace gives VDOT pace zones and race-time predictions NRC does not',
+      'TrainPace adds a periodized plan builder, GPX course pacing, and fueling',
+      'Use NRC to run guided and TrainPace to set the paces, plan, and fuel',
+    ],
+    cta: { href: '/plan', label: 'Build a Free Training Plan' },
+    faq: [
+      {
+        question: 'Is TrainPace a free alternative to Nike Run Club?',
+        answer:
+          'Yes. TrainPace is free and focuses on the training math: VDOT paces, a periodized plan, course pacing, and fueling. Nike Run Club is a free app for guided runs and tracking.',
+      },
+      {
+        question: 'What does Nike Run Club do that TrainPace does not?',
+        answer:
+          'Nike Run Club records your runs, offers audio-guided workouts, and has a social and challenge component in a mobile app. TrainPace does not record activities.',
+      },
+      {
+        question: 'What does TrainPace add over Nike Run Club?',
+        answer:
+          'TrainPace calculates precise VDOT training paces, builds a periodized plan for your goal race, analyzes a GPX course for hills, and plans race fueling, all free.',
+      },
+      {
+        question: 'Can I use both together?',
+        answer:
+          'Yes. Use Nike Run Club to run guided and track activities, and TrainPace to set your training paces, plan, and race-day fueling.',
+      },
+    ],
+  },
+  {
+    id: generatePageId('pace', 'trainpace-vs-final-surge'),
+    slug: 'trainpace-vs-final-surge',
+    tool: 'pace',
+    path: '/calculator/trainpace-vs-final-surge',
+    title: 'TrainPace vs Final Surge - Free Plans | TrainPace',
+    description:
+      'TrainPace vs Final Surge compared. TrainPace is a free, self-coached toolkit that prescribes training paces, a plan, course pacing, and fueling.',
+    h1: 'TrainPace vs. Final Surge',
+    intro:
+      'Final Surge is a training log and coach-athlete platform for recording workouts and following coach-assigned training. TrainPace is a free, self-coached toolkit that prescribes the paces, plan, course pacing, and fueling in the first place.',
+    bullets: [
+      'Final Surge is a training log and coach-athlete platform',
+      'TrainPace prescribes VDOT paces and builds the plan you would log',
+      'TrainPace adds GPX course pacing and an AI fuel planner for free',
+      'Final Surge is stronger for logging and working with a coach',
+      'Best for self-coached runners who want a plan without a coach',
+    ],
+    cta: { href: '/plan', label: 'Build a Free Training Plan' },
+    faq: [
+      {
+        question: 'Is TrainPace a free alternative to Final Surge?',
+        answer:
+          'TrainPace is free and prescribes training paces, a periodized plan, course pacing, and fueling for self-coached runners. Final Surge focuses on logging workouts and coach-athlete tools.',
+      },
+      {
+        question: 'What does Final Surge do that TrainPace does not?',
+        answer:
+          'Final Surge provides a detailed training log, calendar, and coach-athlete features for assigning and reviewing workouts. TrainPace does not log completed workouts in that depth.',
+      },
+      {
+        question: 'Who should choose TrainPace?',
+        answer:
+          'Runners who coach themselves and want a clear plan, training paces, course pacing, and a fueling strategy without setting up a coaching platform or working with a coach.',
+      },
+      {
+        question: 'Can I use TrainPace with a training log?',
+        answer:
+          'Yes. Generate your plan and paces in TrainPace, export the plan to your calendar, and record the runs in whatever log or app you already use.',
+      },
+    ],
+  },
 ];
 
 // =============================================================================
