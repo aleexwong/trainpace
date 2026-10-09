@@ -7,6 +7,7 @@
  * - Content variation support
  * - Internal linking metadata
  */
+import { SITE_URL } from '../../config/site';
 
 // =============================================================================
 // Core SEO Types
@@ -475,7 +476,8 @@ export interface SeoValidationWarning {
 // Export Helpers
 // =============================================================================
 
-export const BASE_URL = 'https://trainpace.com';
+/** Re-exported so page configs and generators share one host. @see src/config/site.ts */
+export const BASE_URL = SITE_URL;
 
 export function withBaseUrl(path: string): string {
   return `${BASE_URL}${path.startsWith('/') ? path : `/${path}`}`;

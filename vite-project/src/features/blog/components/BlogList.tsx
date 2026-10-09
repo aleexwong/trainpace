@@ -100,18 +100,18 @@ export default function BlogList() {
     name: "TrainPace Blog",
     description:
       "Running tips, training guides, and race strategy advice for marathoners and distance runners",
-    url: "https://trainpace.com/blog",
+    url: "https://www.trainpace.com/blog",
     publisher: {
       "@type": "Organization",
       name: "TrainPace",
-      url: "https://trainpace.com",
+      url: "https://www.trainpace.com",
     },
     blogPost: allPosts.slice(0, 10).map((post) => ({
       "@type": "BlogPosting",
       headline: post.title,
       description: post.excerpt,
       datePublished: post.date,
-      url: `https://trainpace.com/blog/${post.slug}`,
+      url: `https://www.trainpace.com/blog/${post.slug}`,
       author: { "@type": "Person", name: post.author.name },
     })),
   };
@@ -126,7 +126,7 @@ export default function BlogList() {
           name="description"
           content="Expert running advice for marathoners and distance runners. Training tips, race strategy guides, nutrition planning, and more from TrainPace."
         />
-        <link rel="canonical" href="https://trainpace.com/blog" />
+        <link rel="canonical" href="https://www.trainpace.com/blog" />
         <script type="application/ld+json">{JSON.stringify(blogSchema)}</script>
       </Helmet>
 

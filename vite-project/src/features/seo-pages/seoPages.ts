@@ -2545,7 +2545,7 @@ export const planSeoPages: SeoPageConfig[] = [
         { name: 'Generate your plan', text: 'Get a complete week-by-week training schedule with daily workouts' },
       ],
     },
-    relatedPageIds: ['plan-half-marathon-training-plan', 'plan-marathon-training-plan-beginners'],
+    relatedPageIds: ['plan:half-marathon-training-plan', 'plan:marathon-training-plan-beginners'],
   },
   {
     id: generatePageId('plan', 'half-marathon-training-plan'),
@@ -2578,7 +2578,7 @@ export const planSeoPages: SeoPageConfig[] = [
         { name: 'Generate plan', text: 'Get a complete 12–16 week schedule with daily workouts and paces' },
       ],
     },
-    relatedPageIds: ['plan-marathon-training-plan', 'plan-10k-training-plan'],
+    relatedPageIds: ['plan:marathon-training-plan', 'plan:10k-training-plan'],
   },
   {
     id: generatePageId('plan', '10k-training-plan'),
@@ -2611,7 +2611,7 @@ export const planSeoPages: SeoPageConfig[] = [
         { name: 'Generate plan', text: 'Get a complete 10–14 week schedule' },
       ],
     },
-    relatedPageIds: ['plan-half-marathon-training-plan', 'plan-5k-training-plan'],
+    relatedPageIds: ['plan:half-marathon-training-plan', 'plan:5k-training-plan'],
   },
   {
     id: generatePageId('plan', '5k-training-plan'),
@@ -2644,7 +2644,7 @@ export const planSeoPages: SeoPageConfig[] = [
         { name: 'Generate plan', text: 'Get a complete 8–12 week schedule with exact paces' },
       ],
     },
-    relatedPageIds: ['plan-10k-training-plan', 'plan-beginner-running-training-plan'],
+    relatedPageIds: ['plan:10k-training-plan'],
   },
   {
     id: generatePageId('plan', 'marathon-training-plan-beginners'),
@@ -2677,7 +2677,7 @@ export const planSeoPages: SeoPageConfig[] = [
         { name: 'Generate and export', text: 'Get your plan and export to calendar for daily reminders' },
       ],
     },
-    relatedPageIds: ['plan-marathon-training-plan', 'plan-half-marathon-training-plan-beginners'],
+    relatedPageIds: ['plan:marathon-training-plan', 'plan:half-marathon-training-plan-beginners'],
   },
   {
     id: generatePageId('plan', '16-week-marathon-training-plan'),
@@ -2710,7 +2710,7 @@ export const planSeoPages: SeoPageConfig[] = [
         { name: 'Generate and export', text: 'Get your week-by-week plan and export to calendar' },
       ],
     },
-    relatedPageIds: ['plan-marathon-training-plan', 'plan-20-week-marathon-training-plan'],
+    relatedPageIds: ['plan:marathon-training-plan', 'plan:20-week-marathon-training-plan'],
   },
   {
     id: generatePageId('plan', '20-week-marathon-training-plan'),
@@ -2742,7 +2742,7 @@ export const planSeoPages: SeoPageConfig[] = [
         { name: 'Generate and export', text: 'Get your plan and export to calendar for daily workout reminders' },
       ],
     },
-    relatedPageIds: ['plan-marathon-training-plan', 'plan-16-week-marathon-training-plan'],
+    relatedPageIds: ['plan:marathon-training-plan', 'plan:16-week-marathon-training-plan'],
   },
   {
     id: generatePageId('plan', 'half-marathon-training-plan-beginners'),
@@ -2775,7 +2775,7 @@ export const planSeoPages: SeoPageConfig[] = [
         { name: 'Generate and export', text: 'Get your 16-week plan and export to calendar' },
       ],
     },
-    relatedPageIds: ['plan-half-marathon-training-plan', 'plan-10k-training-plan'],
+    relatedPageIds: ['plan:half-marathon-training-plan', 'plan:10k-training-plan'],
   },
 ];
 

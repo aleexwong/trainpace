@@ -15,6 +15,7 @@ import {
   comparisonLinks,
   elevationGuideSeoPages,
   fuelSeoPages,
+  planSeoPages,
   raceSeoPages,
   getAllSeoPaths,
 } from "../../features/seo-pages/seoPages";
@@ -90,14 +91,20 @@ export const marathonSeoData: Record<
 
 // ── Programmatic SEO metadata ──────────────────────────────────────────────
 
-const seoPagesByPath = Object.fromEntries(
-  [
-    ...calculatorSeoPages,
-    ...fuelSeoPages,
-    ...elevationGuideSeoPages,
-    ...raceSeoPages,
-  ].map((p) => [p.path, p])
-);
+const allSeoPages = [
+  ...calculatorSeoPages,
+  ...fuelSeoPages,
+  ...elevationGuideSeoPages,
+  ...raceSeoPages,
+  // planSeoPages was missing here while being present in getAllSeoPaths(), so
+  // all eight /plan/* pages prerendered with the generic homepage title,
+  // description and body — the site's most valuable keyword cluster shipping as
+  // a duplicate of "/".
+  ...planSeoPages,
+];
+
+const seoPagesByPath = Object.fromEntries(allSeoPages.map((p) => [p.path, p]));
+const seoPagesById = Object.fromEntries(allSeoPages.map((p) => [p.id, p]));
 
 function getSeoMeta(url: string) {
   return seoPagesByPath[url];
@@ -442,6 +449,18 @@ function seoPageBlocks(url: string): DocBlock[] {
     blocks.push(fuelReferenceTable());
   }
 
+  const related = (page.relatedPageIds ?? [])
+    .map((id: string) => seoPagesById[id])
+    .filter(Boolean);
+  if (related.length) {
+    blocks.push({ type: "heading", level: 2, text: "Related pages" });
+    blocks.push({
+      type: "linkList",
+      label: "Related pages",
+      items: related.map((r) => ({ href: r.path, label: r.h1, note: r.description })),
+    });
+  }
+
   if (comparisonPaths.has(url)) {
     blocks.push(...comparisonNav(url));
   }
@@ -618,7 +637,7 @@ function mcpBlocks(): DocBlock[] {
     {
       type: "code",
       lang: "bash",
-      text: 'curl -H "Accept: text/markdown" https://trainpace.com/calculator\ncurl https://trainpace.com/calculator.md',
+      text: 'curl -H "Accept: text/markdown" https://www.trainpace.com/calculator\ncurl https://www.trainpace.com/calculator.md',
     },
   ];
 }

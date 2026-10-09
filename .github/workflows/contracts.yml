@@ -1,0 +1,44 @@
+name: Contracts
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vite-project
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: vite-project/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Two implementations of one rule — the edge middleware's Accept
+      # negotiation and the build-time .md path mapping — must agree, and
+      # browser navigations must keep getting HTML.
+      - name: Agent routing contract
+        run: npm run verify-agent-routing
+
+      # Fails when page content has changed without regenerating the sitemap,
+      # which leaves URLs carrying a stale lastmod.
+      - name: Sitemap is current
+        run: npm run generate-sitemap:check
+
+      # Fails when the math in src/ no longer produces the committed vectors.
+      # Regenerate with `npm run golden-vectors`, then sync the file into the
+      # API repo (its test decides whether the API still agrees).
+      - name: Golden vectors are current
+        run: npm run golden-vectors:check
