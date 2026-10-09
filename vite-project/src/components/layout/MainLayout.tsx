@@ -1,8 +1,6 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { Suspense, useState, useEffect } from "react";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "@/lib/firebase";
-import type { User } from "firebase/auth";
+import { useAuth } from "@/features/auth/AuthContext";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import PreviewRoutesDropdown from "./PreviewRoutesDropdown";
@@ -18,9 +16,13 @@ interface NavLink {
 export default function MainLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
+  // Auth state comes from AuthContext rather than a second
+  // onAuthStateChanged subscription of this component's own. Two listeners on
+  // the same SDK is wasted work, and the static import that one needed put the
+  // whole Firebase SDK on the critical path of every page — MainLayout wraps
+  // every route, so nothing about it is lazy.
+  const { user, loading } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [navVisible, setNavVisible] = useState(true);
@@ -28,14 +30,6 @@ export default function MainLayout() {
 
   // Navigation behavior configuration
   const navBehavior: NavBehavior = "auto-hide" as NavBehavior;
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
 
   // Handle scroll behavior for sticky/auto-hide nav
   useEffect(() => {
@@ -109,6 +103,12 @@ export default function MainLayout() {
 
   const handleLogout = async () => {
     try {
+      // Imported here, not at module scope: signing out is rare, and a static
+      // import would pull the Firebase SDK back onto the critical path.
+      const [{ signOut }, { auth }] = await Promise.all([
+        import("firebase/auth"),
+        import("@/lib/firebase"),
+      ]);
       await signOut(auth);
       navigate("/");
       setMobileMenuOpen(false);
