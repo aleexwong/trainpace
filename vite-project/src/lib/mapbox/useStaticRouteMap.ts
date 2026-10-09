@@ -38,6 +38,12 @@ export interface StaticRouteMapState {
 /** Shared across components so two previews of one route fetch once. */
 const inFlight = new Map<string, Promise<Blob>>();
 
+/**
+ * `url` is always built by `buildStaticMapRequest` from a fixed
+ * `https://api.mapbox.com/styles/v1/...` template with encoded coordinates —
+ * never a caller-supplied string. Static analysers flag this as SSRF; it is
+ * not one, but keep the invariant if you change how the URL is produced.
+ */
 const fetchStaticMap = (url: string, cacheKey: string): Promise<Blob> => {
   const existing = inFlight.get(cacheKey);
   if (existing) return existing;

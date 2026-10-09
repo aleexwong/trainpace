@@ -142,8 +142,12 @@ export function StaticRouteMap({
     return () => window.clearInterval(timer);
   }, [status, retryAfterMs, retry]);
 
-  const goLive = useCallback(() => setLive(true), []);
-  const goStatic = useCallback(() => setLive(false), []);
+  const goLive = useCallback(() => {
+    setLive(true);
+  }, []);
+  const goStatic = useCallback(() => {
+    setLive(false);
+  }, []);
 
   const blockedNote =
     status === "blocked"
