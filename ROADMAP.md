@@ -29,7 +29,12 @@ Each item is tagged with the feature area so it can be triaged independently.
 - **Fix:** Use `Math.max(Math.round(weightKg * 0.7), raceSettings[raceType])`, and ideally delete the inline calculation in the page so `useFuelCalculation` is the single source of truth.
 - **Severity:** Medium — produces real, plausible-but-wrong nutrition numbers.
 
-#### B2. Gemini fetch has no timeout — UI can hang
+#### B2. Gemini fetch has no timeout — UI can hang  ~~[FIXED]~~
+
+> **Resolved.** `services/gemini.ts` now wraps the fetch in an `AbortController`
+> with a 20 s timeout, handles `AbortError` with a "Request timed out" message,
+> and throws a fixed generic error instead of surfacing backend details. This
+> entry is kept for history; it is no longer an open bug.
 - **Area:** Fuel Planner / AI
 - **Where:** `vite-project/src/services/gemini.ts:127`
 - **What:** The `fetch('/api/refine-fuel-plan')` call has no `AbortController`/timeout. If the backend hangs, `isRefining` stays `true`, the button stays locked, and the user gets no resolution. (Note: error handling is otherwise good — `response.json()` is inside the try/catch, 429s have a friendly message, and the API key is server-side, not shipped to the browser.)

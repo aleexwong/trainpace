@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 const registerSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(12, "Password must be at least 12 characters"),
 });
 
 // Helper to get friendly error messages
@@ -38,7 +38,7 @@ const getAuthErrorMessage = (code: string): string => {
     case "auth/operation-not-allowed":
       return "Email/password accounts are not enabled. Contact support.";
     case "auth/weak-password":
-      return "Password is too weak. Use at least 6 characters.";
+      return "Password is too weak. Use at least 12 characters.";
     case "auth/network-request-failed":
       return "Network error. Check your connection and try again.";
     case "auth/too-many-requests":
