@@ -18,7 +18,7 @@ import {
   formatTime,
   formatPace,
 } from "../vdot-math";
-import ReactGA from "react-ga4";
+import { trackEvent } from "@/lib/analytics";
 
 const HISTORY_KEY = "trainpace_vdot_history";
 const MAX_HISTORY = 5;
@@ -259,7 +259,7 @@ export function useVdotCalculator(initialInputs?: Partial<VdotInputs>) {
       return updated;
     });
 
-    ReactGA.event({
+    trackEvent({
       category: "VDOT Calculator",
       action: "Calculated VDOT",
       label: `${inputs.distanceName} - VDOT ${roundedVdot}`,
