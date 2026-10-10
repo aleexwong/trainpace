@@ -14,6 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import StaticRouteMap from "../components/utils/StaticRouteMap";
 import { Helmet } from "react-helmet-async";
+import { previewRouteTitle } from "@/lib/seo/titles";
 import { SavePreviewRouteButton } from "../components/SavePreviewRouteButton";
 import { db } from "../lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -238,19 +239,19 @@ export default function PreviewRoute() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://trainpace.com",
+        item: "https://www.trainpace.com",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Race Courses",
-        item: "https://trainpace.com/preview-route",
+        item: "https://www.trainpace.com/preview-route",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: route.name,
-        item: `https://trainpace.com/preview-route/${slug}`,
+        item: `https://www.trainpace.com/preview-route/${slug}`,
       },
     ],
   };
@@ -269,9 +270,7 @@ export default function PreviewRoute() {
   return (
     <div className="max-w-6xl mx-auto p-6">
       <Helmet>
-        <title>
-          {route.name} Elevation Profile & Course Analysis | TrainPace
-        </title>
+        <title>{previewRouteTitle(route.name)}</title>
         <meta name="description" content={seoDescription} />
         <meta
           name="keywords"
@@ -279,7 +278,7 @@ export default function PreviewRoute() {
         />
         <link
           rel="canonical"
-          href={`https://trainpace.com/preview-route/${slug}`}
+          href={`https://www.trainpace.com/preview-route/${slug}`}
         />
 
         {/* Open Graph */}
@@ -291,7 +290,7 @@ export default function PreviewRoute() {
         <meta property="og:type" content="article" />
         <meta
           property="og:url"
-          content={`https://trainpace.com/preview-route/${slug}`}
+          content={`https://www.trainpace.com/preview-route/${slug}`}
         />
 
         {/* Structured Data */}

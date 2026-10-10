@@ -38,11 +38,11 @@ function buildLlmsFullTxt(paths: string[]): string {
   const header = [
     "# TrainPace — Full Content",
     "",
-    "> Every page of https://trainpace.com in Markdown, concatenated. Generated at build time from the same content that renders the site, so it is never out of date with the pages themselves.",
+    "> Every page of https://www.trainpace.com in Markdown, concatenated. Generated at build time from the same content that renders the site, so it is never out of date with the pages themselves.",
     "",
     "TrainPace is a free set of running-training tools: pace calculator, VDOT fitness scoring, training plan builder, race-day fuel planner, and GPX elevation analysis. The calculations use established sports science — Daniels & Gilbert VDOT formulas for training paces and race predictions, grade-adjusted pacing from real elevation data, and evidence-based carbohydrate targets for fueling — rather than model estimates.",
     "",
-    "The same math is callable as tools via a free public MCP server at https://api.trainpace.com/api/mcp (Streamable HTTP, no auth). See https://trainpace.com/mcp.",
+    "The same math is callable as tools via a free public MCP server at https://api.trainpace.com/api/mcp (Streamable HTTP, no auth). See https://www.trainpace.com/mcp.",
     "",
     "Any single page is also available on its own: append `.md` to its path, or request the HTML URL with an `Accept: text/markdown` header.",
     "",

@@ -12,8 +12,8 @@ function buildBreadcrumbJsonLd(path: string, label: string) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "TrainPace", item: "https://trainpace.com/" },
-      { "@type": "ListItem", position: 2, name: "Training Plan", item: "https://trainpace.com/plan" },
+      { "@type": "ListItem", position: 1, name: "TrainPace", item: "https://www.trainpace.com/" },
+      { "@type": "ListItem", position: 2, name: "Training Plan", item: "https://www.trainpace.com/plan" },
       { "@type": "ListItem", position: 3, name: label, item: getSeoUrl(path) },
     ],
   };
@@ -32,7 +32,7 @@ export default function PlanSeoLanding() {
         name: page.title,
         description: page.description,
         url: getSeoUrl(page.path),
-        isPartOf: { "@type": "WebSite", name: "TrainPace", url: "https://trainpace.com/" },
+        isPartOf: { "@type": "WebSite", name: "TrainPace", url: "https://www.trainpace.com/" },
       },
       buildBreadcrumbJsonLd(page.path, page.h1),
     ];

@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/features/auth/AuthContext";
 import { getCurrentDocumentId, needsMigration } from "../config/routes";
@@ -197,14 +198,12 @@ export default function ElevationPage() {
   return (
     <>
       <Helmet>
-        <title>
-          GPX Elevation Profile Viewer – Free Route Analysis | TrainPace
-        </title>
+        <title>{STATIC_PAGE_TITLES["/elevation-finder"]}</title>
         <meta
           name="description"
           content="Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty. Analyze marathon courses and training routes."
         />
-        <link rel="canonical" href="https://trainpace.com/elevationfinder" />
+        <link rel="canonical" href="https://www.trainpace.com/elevation-finder" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

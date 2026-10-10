@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { Card, CardContent } from "@/components/ui/card";
 import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
@@ -328,12 +329,12 @@ export function PaceCalculatorV2({
     <>
       {seoMode !== "none" && (
         <Helmet>
-          <title>Running Pace Calculator – VDOT Training Zones | TrainPace</title>
+          <title>{STATIC_PAGE_TITLES["/calculator"]}</title>
           <meta
             name="description"
             content="Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s and race predictor."
           />
-          <link rel="canonical" href="https://trainpace.com/calculator" />
+          <link rel="canonical" href="https://www.trainpace.com/calculator" />
           <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",

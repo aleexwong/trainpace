@@ -1,6 +1,15 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
 
+  "redirects": [
+    {
+      "source": "/:path(.*)",
+      "has": [{ "type": "host", "value": "trainpace.com" }],
+      "destination": "https://www.trainpace.com/:path",
+      "permanent": true
+    }
+  ],
+
   "rewrites": [
     {
       "source": "/(.*)",

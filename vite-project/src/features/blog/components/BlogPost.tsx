@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { blogPostTitle } from "@/lib/seo/titles";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
@@ -248,11 +249,11 @@ export default function BlogPost() {
     publisher: {
       "@type": "Organization",
       name: "TrainPace",
-      url: "https://trainpace.com",
+      url: "https://www.trainpace.com",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://trainpace.com/blog/${post.slug}`,
+      "@id": `https://www.trainpace.com/blog/${post.slug}`,
     },
     keywords: post.tags.join(", "),
   };
@@ -261,13 +262,13 @@ export default function BlogPost() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://trainpace.com" },
-      { "@type": "ListItem", position: 2, name: "Blog", item: "https://trainpace.com/blog" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.trainpace.com" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.trainpace.com/blog" },
       {
         "@type": "ListItem",
         position: 3,
         name: post.title,
-        item: `https://trainpace.com/blog/${post.slug}`,
+        item: `https://www.trainpace.com/blog/${post.slug}`,
       },
     ],
   };
@@ -289,13 +290,13 @@ export default function BlogPost() {
   return (
     <div className="bg-gray-50 text-gray-900 min-h-screen">
       <Helmet>
-        <title>{post.title} | TrainPace Blog</title>
+        <title>{blogPostTitle(post)}</title>
         <meta name="description" content={post.excerpt} />
-        <link rel="canonical" href={`https://trainpace.com/blog/${post.slug}`} />
+        <link rel="canonical" href={`https://www.trainpace.com/blog/${post.slug}`} />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://trainpace.com/blog/${post.slug}`} />
+        <meta property="og:url" content={`https://www.trainpace.com/blog/${post.slug}`} />
         {post.coverImage && <meta property="og:image" content={post.coverImage} />}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={post.title} />
