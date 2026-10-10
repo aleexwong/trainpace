@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Hash, ChevronDown } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import FAQAccordion from "@/components/faq/FAQAccordion";
 import faqData from "@/data/faq-data.json";
 
@@ -95,7 +96,7 @@ export default function FAQ() {
   return (
     <div className="bg-white text-gray-900 min-h-screen">
       <Helmet>
-        <title>TrainPace FAQ – Pace, GPX & Fuel Planning Help</title>
+        <title>{STATIC_PAGE_TITLES["/faq"]}</title>
         <meta
           name="description"
           content="Answers to common questions about TrainPace: VDOT pace calculator, GPX elevation analysis, marathon fuel planning, training zones, and more. Free tools for self-coached runners."

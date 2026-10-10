@@ -16,6 +16,7 @@
 
 import type { SeoPageConfig } from '../../lib/seo';
 import { generatePageId, BASE_URL } from '../../lib/seo';
+import { racePrepTitle } from '../../lib/seo/titles';
 
 // Re-export the old types for backward compatibility
 export type { SeoPageConfig } from './types';
@@ -125,7 +126,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'half-marathon-pace-calculator',
     tool: 'pace',
     path: '/calculator/half-marathon-pace-calculator',
-    title: 'Half Marathon Pace Calculator - Race Pace + Training Zones | TrainPace',
+    title: 'Half Marathon Pace Calculator - Race Pace + Training Zones',
     description:
       'Free half marathon pace calculator. Use your 13.1 finish time to estimate race pace and get VDOT-based training paces for easy, tempo, and threshold runs.',
     h1: 'Half Marathon Pace Calculator',
@@ -166,7 +167,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'marathon-pace-calculator',
     tool: 'pace',
     path: '/calculator/marathon-pace-calculator',
-    title: 'Marathon Pace Calculator - Training Paces + Race Strategy | TrainPace',
+    title: 'Marathon Pace Calculator - Training Paces + Race Strategy',
     description:
       'Free marathon pace calculator. Convert your marathon time to min/km or min/mile and get VDOT-style training paces for easy, tempo, threshold, and interval runs.',
     h1: 'Marathon Pace Calculator',
@@ -207,7 +208,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'vdot-calculator',
     tool: 'pace',
     path: '/calculator/vdot-calculator',
-    title: 'VDOT Calculator - Convert Race Times to Training Paces | TrainPace',
+    title: 'VDOT Calculator - Convert Race Times to Training Paces',
     description:
       'Free VDOT calculator. Convert any race time (5K to marathon) into VDOT-based training paces for easy runs, tempo, threshold, and intervals.',
     h1: 'VDOT Calculator (Training Paces)',
@@ -247,7 +248,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'easy-pace-calculator',
     tool: 'pace',
     path: '/calculator/easy-pace-calculator',
-    title: 'Easy Run Pace Calculator - Find Your Conversational Pace | TrainPace',
+    title: 'Easy Run Pace Calculator - Find Your Conversational Pace',
     description:
       'Easy run pace calculator. Use your race time to find a conversational easy pace range for aerobic base building and recovery runs.',
     h1: 'Easy Run Pace Calculator',
@@ -275,7 +276,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'tempo-pace-calculator',
     tool: 'pace',
     path: '/calculator/tempo-pace-calculator',
-    title: 'Tempo Run Pace Calculator - Lactate Threshold Workouts | TrainPace',
+    title: 'Tempo Run Pace Calculator - Lactate Threshold Workouts',
     description:
       'Tempo pace calculator. Convert your race time to a tempo pace for steady-state threshold workouts and controlled hard runs.',
     h1: 'Tempo Run Pace Calculator',
@@ -331,7 +332,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'mile-pace-calculator',
     tool: 'pace',
     path: '/calculator/mile-pace-calculator',
-    title: 'Mile Pace Calculator - Convert Time to Pace (min/mile) | TrainPace',
+    title: 'Mile Pace Calculator - Convert Time to Pace (min/mile)',
     description:
       'Free mile pace calculator. Convert a 1-mile time into training paces and see how it relates to longer race performances.',
     h1: 'Mile Pace Calculator',
@@ -350,7 +351,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: '8k-pace-calculator',
     tool: 'pace',
     path: '/calculator/8k-pace-calculator',
-    title: '8K Pace Calculator - Training Paces from an 8K Time | TrainPace',
+    title: '8K Pace Calculator - Training Paces from an 8K Time',
     description:
       '8K pace calculator. Enter your 8K time to generate VDOT-style training paces for easy runs, tempo, threshold, and intervals.',
     h1: '8K Pace Calculator',
@@ -388,7 +389,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: '20k-pace-calculator',
     tool: 'pace',
     path: '/calculator/20k-pace-calculator',
-    title: '20K Pace Calculator - Training Zones and Race Pace | TrainPace',
+    title: '20K Pace Calculator - Training Zones and Race Pace',
     description:
       '20K pace calculator. Use a 20K time to estimate half marathon pacing and generate VDOT-style training paces.',
     h1: '20K Pace Calculator',
@@ -407,7 +408,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: '30k-pace-calculator',
     tool: 'pace',
     path: '/calculator/30k-pace-calculator',
-    title: '30K Pace Calculator - Marathon Training Pace Targets | TrainPace',
+    title: '30K Pace Calculator - Marathon Training Pace Targets',
     description:
       '30K pace calculator. Convert a 30K time into marathon training paces and long-run targets (min/km or min/mile).',
     h1: '30K Pace Calculator',
@@ -444,7 +445,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-20-5k-pace',
     tool: 'pace',
     path: '/calculator/sub-20-5k-pace',
-    title: 'Sub-20 5K Pace - Required Pace and Training Zones | TrainPace',
+    title: 'Sub-20 5K Pace - Required Pace and Training Zones',
     description:
       'Sub-20 5K pace guide. See the pace required to break 20 minutes and generate training paces to build toward the goal.',
     h1: 'Sub-20 5K Pace',
@@ -462,7 +463,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-90-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-90-half-marathon-pace',
-    title: 'Sub-90 Half Marathon Pace - Required Pace and Training Zones | TrainPace',
+    title: 'Sub-90 Half Marathon Pace - Required Pace and Training Zones',
     description:
       'Sub-90 half marathon pace guide. See the required pace to break 1:30 and generate training paces to support the goal.',
     h1: 'Sub-90 Half Marathon Pace',
@@ -480,7 +481,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-4-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-4-marathon-pace',
-    title: 'Sub-4 Marathon Pace - Required Pace and Training Zones | TrainPace',
+    title: 'Sub-4 Marathon Pace - Required Pace and Training Zones',
     description:
       'Sub-4 marathon pace guide. See the pace needed to break 4 hours and generate training paces for long runs, tempo, and threshold workouts.',
     h1: 'Sub-4 Marathon Pace',
@@ -502,7 +503,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-3-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-3-marathon-pace',
-    title: 'Sub-3 Hour Marathon Pace - Training Plan + Pace Chart | TrainPace',
+    title: 'Sub-3 Hour Marathon Pace - Training Plan + Pace Chart',
     description:
       'Sub-3 marathon pace guide. Required pace is 4:16/km (6:52/mi). Get training zones, workout targets, and pacing strategy to break 3 hours.',
     h1: 'Sub-3 Hour Marathon Pace',
@@ -549,7 +550,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-3-15-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-3-15-marathon-pace',
-    title: 'Sub-3:15 Marathon Pace - Required Pace + Training Zones | TrainPace',
+    title: 'Sub-3:15 Marathon Pace - Required Pace + Training Zones',
     description:
       'Sub-3:15 marathon pace guide. Required pace is 4:37/km (7:26/mi). Get training zones and workout targets to break 3 hours 15 minutes.',
     h1: 'Sub-3:15 Marathon Pace',
@@ -596,7 +597,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-3-30-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-3-30-marathon-pace',
-    title: 'Sub-3:30 Marathon Pace - Required Pace + Training Zones | TrainPace',
+    title: 'Sub-3:30 Marathon Pace - Required Pace + Training Zones',
     description:
       'Sub-3:30 marathon pace guide. Required pace is 4:59/km (8:02/mi). Get training zones and pacing strategy to break 3 hours 30 minutes.',
     h1: 'Sub-3:30 Marathon Pace',
@@ -643,7 +644,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-3-45-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-3-45-marathon-pace',
-    title: 'Sub-3:45 Marathon Pace - Required Pace + Training Zones | TrainPace',
+    title: 'Sub-3:45 Marathon Pace - Required Pace + Training Zones',
     description:
       'Sub-3:45 marathon pace guide. Required pace is 5:20/km (8:35/mi). Get training zones and strategy to break 3 hours 45 minutes.',
     h1: 'Sub-3:45 Marathon Pace',
@@ -685,7 +686,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-4-30-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-4-30-marathon-pace',
-    title: 'Sub-4:30 Marathon Pace - Required Pace + Training Zones | TrainPace',
+    title: 'Sub-4:30 Marathon Pace - Required Pace + Training Zones',
     description:
       'Sub-4:30 marathon pace guide. Required pace is 6:24/km (10:18/mi). Training zones and pacing strategy for your first or fastest marathon.',
     h1: 'Sub-4:30 Marathon Pace',
@@ -727,7 +728,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-5-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-5-marathon-pace',
-    title: 'Sub-5 Hour Marathon Pace - Required Pace + Training Plan | TrainPace',
+    title: 'Sub-5 Hour Marathon Pace - Required Pace + Training Plan',
     description:
       'Sub-5 marathon pace guide. Required pace is 7:07/km (11:27/mi). Training zones and tips to break 5 hours in your marathon.',
     h1: 'Sub-5 Hour Marathon Pace',
@@ -778,7 +779,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-1-20-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-1-20-half-marathon-pace',
-    title: 'Sub-1:20 Half Marathon Pace - Training Zones + Strategy | TrainPace',
+    title: 'Sub-1:20 Half Marathon Pace - Training Zones + Strategy',
     description:
       'Sub-1:20 half marathon pace guide. Required pace is 3:47/km (6:06/mi). Training zones and race strategy for elite amateur half marathon.',
     h1: 'Sub-1:20 Half Marathon Pace',
@@ -819,7 +820,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-1-30-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-1-30-half-marathon-pace',
-    title: 'Sub-1:30 Half Marathon Pace - Training Zones + Plan | TrainPace',
+    title: 'Sub-1:30 Half Marathon Pace - Training Zones + Plan',
     description:
       'Sub-1:30 half marathon pace guide. Required pace is 4:16/km (6:52/mi). Get training zones and race strategy to break 90 minutes.',
     h1: 'Sub-1:30 Half Marathon Pace',
@@ -866,7 +867,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-1-45-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-1-45-half-marathon-pace',
-    title: 'Sub-1:45 Half Marathon Pace - Training Zones + Strategy | TrainPace',
+    title: 'Sub-1:45 Half Marathon Pace - Training Zones + Strategy',
     description:
       'Sub-1:45 half marathon pace guide. Required pace is 4:58/km (8:00/mi). Training zones and tips to break 1 hour 45 minutes.',
     h1: 'Sub-1:45 Half Marathon Pace',
@@ -908,7 +909,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-2-hour-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-2-hour-half-marathon-pace',
-    title: 'Sub-2 Hour Half Marathon Pace - Training Plan + Tips | TrainPace',
+    title: 'Sub-2 Hour Half Marathon Pace - Training Plan + Tips',
     description:
       'Sub-2 hour half marathon pace guide. Required pace is 5:41/km (9:09/mi). Training zones and strategy to break 2 hours.',
     h1: 'Sub-2 Hour Half Marathon Pace',
@@ -955,7 +956,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-2-15-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-2-15-half-marathon-pace',
-    title: 'Sub-2:15 Half Marathon Pace - Training Zones + Tips | TrainPace',
+    title: 'Sub-2:15 Half Marathon Pace - Training Zones + Tips',
     description:
       'Sub-2:15 half marathon pace guide. Required pace is 6:24/km (10:18/mi). Training zones for intermediate half marathon runners.',
     h1: 'Sub-2:15 Half Marathon Pace',
@@ -997,7 +998,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-2-30-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-2-30-half-marathon-pace',
-    title: 'Sub-2:30 Half Marathon Pace - Training Plan + Tips | TrainPace',
+    title: 'Sub-2:30 Half Marathon Pace - Training Plan + Tips',
     description:
       'Sub-2:30 half marathon pace guide. Required pace is 7:07/km (11:27/mi). Training tips for completing your first half marathon strong.',
     h1: 'Sub-2:30 Half Marathon Pace',
@@ -1173,7 +1174,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-40-10k-pace',
     tool: 'pace',
     path: '/calculator/sub-40-10k-pace',
-    title: 'Sub-40 Minute 10K Pace - Training Plan + Workouts | TrainPace',
+    title: 'Sub-40 Minute 10K Pace - Training Plan + Workouts',
     description:
       'Sub-40 10K pace guide. Required pace is 4:00/km (6:26/mi). Training zones and workouts to break 40 minutes.',
     h1: 'Sub-40 Minute 10K Pace',
@@ -1546,7 +1547,7 @@ function makeRacePage(
     slug,
     tool: 'race',
     path: `/race/${slug}`,
-    title: `${raceName} Race Prep - Pace, Fueling, and Course Strategy | TrainPace`,
+    title: racePrepTitle(raceName),
     description: `${raceName} race prep: set training paces from your goal time, build a fueling plan, and analyze the course elevation. Free running tools for self-coached runners.`,
     h1: `${raceName} Race Prep`,
     intro:
@@ -1722,7 +1723,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'marathon-fueling-plan',
     tool: 'fuel',
     path: '/fuel/marathon-fueling-plan',
-    title: 'Marathon Fueling Plan Calculator - Gels, Carbs/Hour, Timing | TrainPace',
+    title: 'Marathon Fueling Plan Calculator - Gels, Carbs/Hour, Timing',
     description:
       'Build a marathon fueling plan in minutes. Calculate carbs per hour, total carbs, gels needed, and a simple timing schedule to avoid hitting the wall.',
     h1: 'Marathon Fueling Plan Calculator',
@@ -1762,7 +1763,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'half-marathon-fueling-plan',
     tool: 'fuel',
     path: '/fuel/half-marathon-fueling-plan',
-    title: 'Half Marathon Fueling Plan - How Many Gels + Timing | TrainPace',
+    title: 'Half Marathon Fueling Plan - How Many Gels + Timing',
     description:
       'Half marathon fueling plan calculator. Estimate gels needed, carbs/hour targets, and a simple schedule based on your finish time and preferences.',
     h1: 'Half Marathon Fueling Plan Calculator',
@@ -1870,7 +1871,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'carbs-per-hour-running',
     tool: 'fuel',
     path: '/fuel/carbs-per-hour-running',
-    title: 'Carbs Per Hour for Running - Marathon & Half Calculator | TrainPace',
+    title: 'Carbs Per Hour for Running - Marathon & Half Calculator',
     description:
       'Carbs per hour running calculator. Estimate a realistic carb target for marathon or half marathon fueling (60-90g/hr) based on your finish time.',
     h1: 'Carbs Per Hour for Running',
@@ -1938,7 +1939,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'avoid-hitting-the-wall',
     tool: 'fuel',
     path: '/fuel/avoid-hitting-the-wall',
-    title: 'How to Avoid Hitting the Wall in a Marathon (Fuel Plan) | TrainPace',
+    title: 'Avoid Hitting the Wall in a Marathon - Fuel Plan | TrainPace',
     description:
       'Avoid hitting the wall with a simple marathon fuel plan. Estimate carbs/hour, gels needed, and a timing schedule you can execute on race day.',
     h1: 'Avoid Hitting the Wall (Marathon Fuel Plan)',
@@ -1973,7 +1974,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'carb-loading-for-marathon',
     tool: 'fuel',
     path: '/fuel/carb-loading-for-marathon',
-    title: 'Carb Loading for a Marathon - Simple Plan + Calculator | TrainPace',
+    title: 'Carb Loading for a Marathon - Simple Plan + Calculator',
     description:
       'Carb loading for a marathon made simple. Estimate race-day carb needs with the fuel planner, then practice a basic carb-loading approach.',
     h1: 'Carb Loading for a Marathon',
@@ -1991,7 +1992,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'marathon-hydration-plan',
     tool: 'fuel',
     path: '/fuel/marathon-hydration-plan',
-    title: 'Marathon Hydration Plan - Water, Electrolytes, and Gels | TrainPace',
+    title: 'Marathon Hydration Plan - Water, Electrolytes, and Gels',
     description:
       'Marathon hydration plan basics. Pair gels with water, use aid stations strategically, and keep hydration simple to support carb intake.',
     h1: 'Marathon Hydration Plan',
@@ -2009,7 +2010,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'fueling-for-hilly-marathon',
     tool: 'fuel',
     path: '/fuel/fueling-for-hilly-marathon',
-    title: 'Fueling for a Hilly Marathon - Carbs/Hour + Timing | TrainPace',
+    title: 'Fueling for a Hilly Marathon - Carbs/Hour + Timing',
     description:
       'Fueling for a hilly marathon. Keep carbs consistent even when pace varies with climbs. Build a gel schedule based on time, not miles.',
     h1: 'Fueling for a Hilly Marathon',
@@ -2212,7 +2213,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'gpx-elevation-profile-analyzer',
     tool: 'elevation',
     path: '/elevationfinder/guides/gpx-elevation-profile-analyzer',
-    title: 'GPX Elevation Profile Analyzer - Free Route Viewer | TrainPace',
+    title: 'GPX Elevation Profile Analyzer - Free Route Viewer',
     description:
       'GPX elevation profile analyzer. Upload a GPX file to view elevation gain/loss, grade, and climb difficulty with an interactive map.',
     h1: 'GPX Elevation Profile Analyzer',
@@ -2240,7 +2241,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'elevation-gain-calculator',
     tool: 'elevation',
     path: '/elevationfinder/guides/elevation-gain-calculator',
-    title: 'Elevation Gain Calculator (From GPX) - Running Routes | TrainPace',
+    title: 'Elevation Gain Calculator (From GPX) - Running Routes',
     description:
       'Elevation gain calculator for running routes. Upload a GPX file to calculate total ascent/descent and see where the climbs happen.',
     h1: 'Elevation Gain Calculator (From GPX)',
@@ -2288,7 +2289,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'route-difficulty-calculator',
     tool: 'elevation',
     path: '/elevationfinder/guides/route-difficulty-calculator',
-    title: 'Route Difficulty Calculator - Hills, Grades, and Climb Stats | TrainPace',
+    title: 'Route Difficulty Calculator - Hills, Grades, and Climb Stats',
     description:
       'Route difficulty calculator. Upload a GPX to break down grade, climbs, and hard segments so you can plan pacing for hilly courses.',
     h1: 'Route Difficulty Calculator',
@@ -2306,7 +2307,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'strava-gpx-analyzer',
     tool: 'elevation',
     path: '/elevationfinder/guides/strava-gpx-analyzer',
-    title: 'Strava GPX Analyzer - Elevation Profile + Route Insights | TrainPace',
+    title: 'Strava GPX Analyzer - Elevation Profile + Route Insights',
     description:
       'Strava GPX analyzer. Export your Strava route as GPX and upload to view elevation profile, total gain, and grade breakdown.',
     h1: 'Strava GPX Analyzer',
@@ -2324,7 +2325,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'hilly-course-pacing',
     tool: 'elevation',
     path: '/elevationfinder/guides/hilly-course-pacing',
-    title: 'Hilly Course Pacing Strategy - Use Elevation to Plan Effort | TrainPace',
+    title: 'Hilly Course Pacing Strategy - Use Elevation to Plan Effort',
     description:
       'Hilly course pacing strategy. Learn how to use elevation profiles and grade breakdowns to adjust effort on climbs and run smart on descents.',
     h1: 'Hilly Course Pacing Strategy',
@@ -2342,7 +2343,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'marathon-course-elevation',
     tool: 'elevation',
     path: '/elevationfinder/guides/marathon-course-elevation',
-    title: 'Marathon Course Elevation - Analyze Any Course with GPX | TrainPace',
+    title: 'Marathon Course Elevation - Analyze Any Course with GPX',
     description:
       'Analyze marathon course elevation with a GPX file. View elevation profile, total climb, grade %, and identify the key hills that affect pacing.',
     h1: 'Marathon Course Elevation Analysis',
@@ -2360,7 +2361,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'grade-percentage-calculator',
     tool: 'elevation',
     path: '/elevationfinder/guides/grade-percentage-calculator',
-    title: 'Grade Percentage Calculator - Running Hills Explained | TrainPace',
+    title: 'Grade Percentage Calculator - Running Hills Explained',
     description:
       'Grade percentage calculator for running. Learn what grade % means, how to spot steep climbs, and why grade matters more than total elevation gain.',
     h1: 'Grade Percentage Calculator (Running)',
@@ -2378,7 +2379,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'garmin-gpx-analyzer',
     tool: 'elevation',
     path: '/elevationfinder/guides/garmin-gpx-analyzer',
-    title: 'Garmin GPX Analyzer - Elevation Profile and Climb Stats | TrainPace',
+    title: 'Garmin GPX Analyzer - Elevation Profile and Climb Stats',
     description:
       'Garmin GPX analyzer. Export a GPX from Garmin Connect and upload it to view elevation profile, total gain, grade %, and tough segments.',
     h1: 'Garmin GPX Analyzer',
@@ -2396,7 +2397,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'coros-gpx-analyzer',
     tool: 'elevation',
     path: '/elevationfinder/guides/coros-gpx-analyzer',
-    title: 'COROS GPX Analyzer - Elevation Profile and Grade Breakdown | TrainPace',
+    title: 'COROS GPX Analyzer - Elevation Profile and Grade Breakdown',
     description:
       'COROS GPX analyzer. Upload a GPX from COROS to see elevation gain, loss, grade %, and route difficulty on an interactive map.',
     h1: 'COROS GPX Analyzer',
@@ -2414,7 +2415,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'trail-running-elevation',
     tool: 'elevation',
     path: '/elevationfinder/guides/trail-running-elevation',
-    title: 'Trail Running Elevation - Analyze Climbs and Descents with GPX | TrainPace',
+    title: 'Trail Running Elevation - Climbs and Descents from GPX',
     description:
       'Trail running elevation analysis. Upload a GPX to see climbs, descents, grades, and where the toughest sections land on the route.',
     h1: 'Trail Running Elevation Analysis',
@@ -2432,7 +2433,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'hill-repeats-planning',
     tool: 'elevation',
     path: '/elevationfinder/guides/hill-repeats-planning',
-    title: 'Hill Repeats Planning - Find the Right Hill (Grade + Length) | TrainPace',
+    title: 'Hill Repeats Planning - Find the Right Hill (Grade + Length)',
     description:
       'Plan hill repeats by choosing the right hill. Use GPX analysis to identify grade %, climb length, and repeat-friendly segments.',
     h1: 'Hill Repeats Planning',
@@ -2651,7 +2652,7 @@ export const planSeoPages: SeoPageConfig[] = [
     slug: 'marathon-training-plan-beginners',
     tool: 'plan',
     path: '/plan/marathon-training-plan-beginners',
-    title: 'Marathon Training Plan for Beginners | Free Generator | TrainPace',
+    title: 'Marathon Training Plan for Beginners | Free Generator',
     description: 'Free beginner marathon training plan. 20-week periodized schedule with easy progression from base to race day. Export to Google Calendar.',
     h1: 'Beginner Marathon Training Plan',
     intro: 'Running your first marathon? A 20-week plan with gradual progression, conservative mileage build, and structured recovery is your foundation. Here\'s how to get to the start line healthy.',

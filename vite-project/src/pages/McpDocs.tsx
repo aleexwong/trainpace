@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import posthog from "posthog-js";
 import { Button } from "@/components/ui/button";
 import { useInView } from "@/components/feature-shots/shared";
@@ -361,7 +362,7 @@ export default function McpDocs() {
   return (
     <div className="bg-white text-slate-900 min-h-screen text-left">
       <Helmet>
-        <title>MCP Server - TrainPace Tools for AI Agents</title>
+        <title>{STATIC_PAGE_TITLES["/mcp"]}</title>
         <meta
           name="description"
           content="Connect any AI assistant to TrainPace's free public MCP server: training paces, VDOT, race plans, fueling strategy, and GPX route analysis as agent tools."

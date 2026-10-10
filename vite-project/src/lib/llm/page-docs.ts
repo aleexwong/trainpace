@@ -15,6 +15,7 @@ import {
   comparisonLinks,
   elevationGuideSeoPages,
   fuelSeoPages,
+  planSeoPages,
   raceSeoPages,
   getAllSeoPaths,
 } from "../../features/seo-pages/seoPages";
@@ -29,11 +30,15 @@ import {
   trainingPaceTable,
 } from "./reference-tables";
 import type { DocBlock, PageDoc } from "./types";
+import {
+  STATIC_PAGE_TITLES,
+  blogPostTitle,
+  previewRouteTitle,
+} from "../seo/titles";
 
 // ── Shared copy ────────────────────────────────────────────────────────────
 
-export const BLOG_LIST_TITLE =
-  "Running Blog - Training Tips, Race Strategy & Nutrition | TrainPace";
+export const BLOG_LIST_TITLE = STATIC_PAGE_TITLES["/blog"];
 export const BLOG_LIST_DESCRIPTION =
   "Expert running advice for marathoners and distance runners. Training tips, race strategy guides, nutrition planning, and more from TrainPace.";
 
@@ -97,6 +102,7 @@ const seoPagesByPath = Object.fromEntries(
     ...fuelSeoPages,
     ...elevationGuideSeoPages,
     ...raceSeoPages,
+    ...planSeoPages,
   ].map((p) => [p.path, p])
 );
 
@@ -227,49 +233,20 @@ export function getPageTitle(url: string): string {
   const seoMeta = getSeoMeta(url);
   if (seoMeta?.title) return seoMeta.title;
 
-  if (url === "/blog") return BLOG_LIST_TITLE;
   const blogPost = blogPostsByUrl[url];
-  if (blogPost) return `${blogPost.title} | TrainPace Blog`;
+  if (blogPost) return blogPostTitle(blogPost);
 
-  switch (url) {
-    case "/":
-      return "TrainPace – Free Running Pace Calculator & Race Day Tools";
-    case "/calculator":
-      return "Running Pace Calculator – VDOT Training Zones, Easy to Tempo Pace | TrainPace";
-    case "/vdot":
-      return "VDOT Calculator – Fitness Score & Equivalent Race Times | TrainPace";
-    case "/plan":
-      return "Training Plan Builder – Free 5K to Marathon Plans | TrainPace";
-    case "/fuel":
-      return "Marathon Fuel Calculator – How Many Gels & When to Take Them | TrainPace";
-    case "/elevationfinder":
-    case "/elevation-finder":
-      return "GPX Elevation Profile Viewer – Free Route Analysis & Climb Stats | TrainPace";
-    case "/race":
-      return "Race Prep Pages – Pacing, Fueling, Elevation Strategy | TrainPace";
-    case "/mcp":
-      return "MCP Server - TrainPace Tools for AI Agents";
-    case "/about":
-    case "/ethos":
-      return "About TrainPace – Why a Runner Built It";
-    case "/faq":
-      return "TrainPace FAQ – Pace, GPX & Fuel Planning Help";
-    case "/privacy":
-      return "Privacy Policy | TrainPace";
-    case "/terms":
-      return "Terms of Service | TrainPace";
-    default:
-      if (url.includes("/preview-route/")) {
-        const slug = url.split("/").pop()!;
-        const marathon = marathonSeoData[slug];
-        if (marathon) {
-          return `${marathon.name} Elevation Profile – Course Map, Hills & Pace Strategy | TrainPace`;
-        }
-        const cityFormatted = slug.charAt(0).toUpperCase() + slug.slice(1);
-        return `${cityFormatted} Marathon Elevation Profile – Course Map & Hill Analysis | TrainPace`;
-      }
-      return "TrainPace – Free Running Tools";
+  const primary = getCanonicalPath(url) as keyof typeof STATIC_PAGE_TITLES;
+  if (primary in STATIC_PAGE_TITLES) return STATIC_PAGE_TITLES[primary];
+
+  if (url.includes("/preview-route/")) {
+    const slug = url.split("/").pop()!;
+    const marathon = marathonSeoData[slug];
+    const name =
+      marathon?.name ?? `${slug.charAt(0).toUpperCase() + slug.slice(1)} Marathon`;
+    return previewRouteTitle(name);
   }
+  return "TrainPace – Free Running Tools";
 }
 
 export function getPageDescription(url: string): string {
@@ -459,6 +436,9 @@ function seoPageBlocks(url: string): DocBlock[] {
   } else if (page.tool === "fuel") {
     blocks.push({ type: "heading", level: 2, text: "Fueling reference" });
     blocks.push(fuelReferenceTable());
+  } else if (page.tool === "plan") {
+    blocks.push({ type: "heading", level: 2, text: "Plan structure by race" });
+    blocks.push(planStructureTable());
   }
 
   if (comparisonPaths.has(url)) {

@@ -145,6 +145,7 @@ function getBreadcrumbForUrl(url, pageTitle) {
 
   if (url.startsWith("/calculator/")) return trail("Pace Calculator", "/calculator");
   if (url.startsWith("/fuel/")) return trail("Fuel Planner", "/fuel");
+  if (url.startsWith("/plan/")) return trail("Training Plan", "/plan");
   if (url.startsWith("/race/")) return trail("Race Prep", "/race");
 
   if (url.startsWith("/elevationfinder/guides/")) {

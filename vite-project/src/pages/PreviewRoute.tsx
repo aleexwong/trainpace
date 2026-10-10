@@ -14,6 +14,7 @@ import {
 import { Link } from "react-router-dom";
 import StaticRouteMap from "../components/utils/StaticRouteMap";
 import { Helmet } from "react-helmet-async";
+import { previewRouteTitle } from "@/lib/seo/titles";
 import { SavePreviewRouteButton } from "../components/SavePreviewRouteButton";
 import { db } from "../lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -269,9 +270,7 @@ export default function PreviewRoute() {
   return (
     <div className="max-w-6xl mx-auto p-6">
       <Helmet>
-        <title>
-          {route.name} Elevation Profile & Course Analysis | TrainPace
-        </title>
+        <title>{previewRouteTitle(route.name)}</title>
         <meta name="description" content={seoDescription} />
         <meta
           name="keywords"

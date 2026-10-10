@@ -16,6 +16,7 @@ import { type ButtonHTMLAttributes, type ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { comparisonLinks } from "@/features/seo-pages/seoPages";
 import {
   PaceLadderShot,
@@ -833,7 +834,7 @@ export default function LandingPage() {
   return (
     <>
       <Helmet>
-        <title>TrainPace – Free VDOT Running Calculator & Training Tools</title>
+        <title>{STATIC_PAGE_TITLES["/"]}</title>
         <meta
           name="description"
           content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Get science-based training paces from Jack Daniels' formula. No account needed."

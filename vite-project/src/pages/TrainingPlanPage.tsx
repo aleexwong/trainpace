@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { useSearchParams } from "react-router-dom";
 import { TrainingPlanGenerator } from "@/features/plan";
 import { useAuth } from "@/features/auth/AuthContext";
@@ -29,7 +30,7 @@ export default function TrainingPlanPage() {
   return (
     <>
       <Helmet>
-        <title>Free Running Training Plan Generator | TrainPace</title>
+        <title>{STATIC_PAGE_TITLES["/plan"]}</title>
         <meta
           name="description"
           content="Generate a free personalized running training plan for 5K, 10K, half marathon, or marathon. Science-based periodization using Jack Daniels' VDOT methodology. Export to Google Calendar."

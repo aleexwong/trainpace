@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { blogPostTitle } from "@/lib/seo/titles";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
@@ -289,7 +290,7 @@ export default function BlogPost() {
   return (
     <div className="bg-gray-50 text-gray-900 min-h-screen">
       <Helmet>
-        <title>{post.title} | TrainPace Blog</title>
+        <title>{blogPostTitle(post)}</title>
         <meta name="description" content={post.excerpt} />
         <link rel="canonical" href={`https://www.trainpace.com/blog/${post.slug}`} />
         <meta property="og:title" content={post.title} />
