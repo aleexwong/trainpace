@@ -204,7 +204,7 @@ export default function ElevationPage() {
           name="description"
           content="Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty. Analyze marathon courses and training routes."
         />
-        <link rel="canonical" href="https://trainpace.com/elevationfinder" />
+        <link rel="canonical" href="https://www.trainpace.com/elevation-finder" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

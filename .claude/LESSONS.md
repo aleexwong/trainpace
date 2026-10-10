@@ -228,3 +228,24 @@ mode was actually exercised in a browser.
 the failure (`Storage.prototype.setItem` throwing, `indexedDB` undefined) rather
 than reasoning about it — and never state a guarantee for a path you have not
 executed.
+
+---
+
+## Session: SEO drop audit (canonical host split)
+
+**Two hosts, two answers.** `trainpace.com` and `www.trainpace.com` both served
+200 with no redirect. Every prerendered canonical named the apex, while the
+sitemap, robots.txt and about half the React `<Helmet>` tags named `www`. Google
+was handed two copies of every page and contradictory signals about which one
+was real. It was never one commit's fault — new code copied whichever host the
+nearest file used.
+→ **Rule:** one host (`www`), one constant (`BASE_URL`), enforced by lint and a
+308 redirect. See the CLAUDE.md gotcha.
+
+**Unprerendered routes silently claim to be the home page.** `/about`, `/faq`,
+`/privacy`, `/terms` and `/dashboard` were in the sitemap but not in
+`getAllDocPaths()`, so they got the landing page's HTML with `canonical = /`.
+Nothing errors; you only see it by fetching the live URL.
+→ **Rule:** after an SEO change, audit the *live* sitemap: fetch every URL and
+compare its canonical to its own path. A one-line `curl | grep canonical` loop
+catches this.

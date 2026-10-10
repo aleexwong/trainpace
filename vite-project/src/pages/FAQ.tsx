@@ -95,12 +95,12 @@ export default function FAQ() {
   return (
     <div className="bg-white text-gray-900 min-h-screen">
       <Helmet>
-        <title>FAQ - Running Pace Calculator, GPX Analysis & Fuel Planning | TrainPace</title>
+        <title>TrainPace FAQ – Pace, GPX & Fuel Planning Help</title>
         <meta
           name="description"
           content="Answers to common questions about TrainPace: VDOT pace calculator, GPX elevation analysis, marathon fuel planning, training zones, and more. Free tools for self-coached runners."
         />
-        <link rel="canonical" href="https://trainpace.com/faq" />
+        <link rel="canonical" href="https://www.trainpace.com/faq" />
         <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
       </Helmet>
 

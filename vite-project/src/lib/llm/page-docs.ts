@@ -19,6 +19,7 @@ import {
   getAllSeoPaths,
 } from "../../features/seo-pages/seoPages";
 import blogData from "../../data/blog-posts.json";
+import faqData from "../../data/faq-data.json";
 import { stripLeadingH1 } from "../../features/blog/utils";
 import {
   equivalentRaceTimeTable,
@@ -248,6 +249,15 @@ export function getPageTitle(url: string): string {
       return "Race Prep Pages – Pacing, Fueling, Elevation Strategy | TrainPace";
     case "/mcp":
       return "MCP Server - TrainPace Tools for AI Agents";
+    case "/about":
+    case "/ethos":
+      return "About TrainPace – Why a Runner Built It";
+    case "/faq":
+      return "TrainPace FAQ – Pace, GPX & Fuel Planning Help";
+    case "/privacy":
+      return "Privacy Policy | TrainPace";
+    case "/terms":
+      return "Terms of Service | TrainPace";
     default:
       if (url.includes("/preview-route/")) {
         const slug = url.split("/").pop()!;
@@ -288,6 +298,15 @@ export function getPageDescription(url: string): string {
       return "Race prep pages for popular running events. Use TrainPace to plan pacing, fueling, and course strategy with free calculators and GPX elevation analysis.";
     case "/mcp":
       return "Connect any AI assistant to TrainPace's free public MCP server: training paces, VDOT, race plans, fueling strategy, and GPX route analysis as agent tools.";
+    case "/about":
+    case "/ethos":
+      return "Why TrainPace exists: a developer who went from a 3:01 to a 2:06 half marathon built the free pace, fuel, and elevation tools that made the difference.";
+    case "/faq":
+      return "Answers to common questions about TrainPace: VDOT pace calculator, GPX elevation analysis, marathon fuel planning, training zones, and more.";
+    case "/privacy":
+      return "TrainPace privacy policy. Learn how we collect, use, and protect your data. We respect your privacy and never sell your information.";
+    case "/terms":
+      return "TrainPace Terms of Service. Read our terms and conditions for using TrainPace's free training tools, calculators, and elevation analysis.";
     default:
       if (url.includes("/preview-route/")) {
         const slug = url.split("/").pop()!;
@@ -618,7 +637,72 @@ function mcpBlocks(): DocBlock[] {
     {
       type: "code",
       lang: "bash",
-      text: 'curl -H "Accept: text/markdown" https://trainpace.com/calculator\ncurl https://trainpace.com/calculator.md',
+      text: 'curl -H "Accept: text/markdown" https://www.trainpace.com/calculator\ncurl https://www.trainpace.com/calculator.md',
+    },
+  ];
+}
+
+function aboutBlocks(): DocBlock[] {
+  return [
+    { type: "heading", level: 1, text: "From 3:01 to 2:06: Why I Built TrainPace" },
+    {
+      type: "paragraph",
+      text: "A developer's journey from survival runner to data-driven athlete. My first BMO Vancouver Half Marathon, in May 2024, took 3:01:00. I carried 10 gels and two bottles because I had no idea what I actually needed, and I could barely walk down stairs for a week afterwards.",
+    },
+    {
+      type: "paragraph",
+      text: "After 24 weeks of consistent training with a local run club — easy runs at a truly easy pace, structured tempo and interval work, and a real fueling plan — I ran the same race in 2:06. TrainPace is the set of tools I wished I had at the start: training paces from a recent race, a race-day fuel plan, and course elevation analysis, free and without a signup.",
+    },
+  ];
+}
+
+function faqBlocks(): DocBlock[] {
+  const blocks: DocBlock[] = [
+    { type: "heading", level: 1, text: "Frequently Asked Questions" },
+    {
+      type: "paragraph",
+      text: "Answers to common questions about TrainPace's pace calculator, GPX elevation analysis, and race fuel planning.",
+    },
+  ];
+  for (const section of faqData.sections) {
+    // Section titles carry a leading emoji for the UI; headings read better without it.
+    blocks.push({
+      type: "heading",
+      level: 2,
+      text: section.title.replace(/^[^\p{L}\p{N}]+/u, ""),
+    });
+    for (const q of section.questions) {
+      blocks.push({ type: "heading", level: 3, text: q.question });
+      blocks.push({ type: "paragraph", text: q.answer });
+    }
+  }
+  return blocks;
+}
+
+function privacyBlocks(): DocBlock[] {
+  return [
+    { type: "heading", level: 1, text: "Privacy Policy" },
+    {
+      type: "paragraph",
+      text: 'TrainPace ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website and services at trainpace.com (the "Service").',
+    },
+    {
+      type: "paragraph",
+      text: "By using TrainPace, you agree to the collection and use of information in accordance with this policy. If you do not agree with our policies and practices, please do not use our Service.",
+    },
+  ];
+}
+
+function termsBlocks(): DocBlock[] {
+  return [
+    { type: "heading", level: 1, text: "Terms of Service" },
+    {
+      type: "paragraph",
+      text: 'Welcome to TrainPace. By accessing or using our website at trainpace.com (the "Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use the Service.',
+    },
+    {
+      type: "paragraph",
+      text: 'These Terms constitute a legally binding agreement between you and TrainPace ("we," "us," or "our"). We reserve the right to modify these Terms at any time. Your continued use of the Service after changes are posted constitutes acceptance of the updated Terms.',
     },
   ];
 }
@@ -803,6 +887,15 @@ function getContentBlocks(url: string): DocBlock[] {
       return raceIndexBlocks();
     case "/mcp":
       return mcpBlocks();
+    case "/about":
+    case "/ethos":
+      return aboutBlocks();
+    case "/faq":
+      return faqBlocks();
+    case "/privacy":
+      return privacyBlocks();
+    case "/terms":
+      return termsBlocks();
     default:
       if (url.includes("/preview-route/")) return previewRouteBlocks(url);
       return [
@@ -836,6 +929,21 @@ export function getPageDoc(url: string): PageDoc {
 }
 
 /**
+ * Routes that serve the same page as another route. They stay prerendered so
+ * old links keep working, but their canonical points at the primary path so
+ * Google indexes one URL, not two copies.
+ */
+const CANONICAL_ALIASES: Record<string, string> = {
+  "/elevationfinder": "/elevation-finder",
+  "/ethos": "/about",
+};
+
+/** The path a route's `<link rel="canonical">` should name. */
+export function getCanonicalPath(url: string): string {
+  return CANONICAL_ALIASES[url] ?? url;
+}
+
+/**
  * Every route that gets a prerendered page and a Markdown mirror.
  * Mirrors the prerender list in `vite.config.ts`.
  */
@@ -850,6 +958,11 @@ export function getAllDocPaths(): string[] {
     "/elevation-finder",
     "/race",
     "/mcp",
+    "/about",
+    "/ethos",
+    "/faq",
+    "/privacy",
+    "/terms",
     ...getAllSeoPaths(),
     "/preview-route/boston",
     "/preview-route/nyc",

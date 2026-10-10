@@ -8,9 +8,11 @@ import {
   getPageDescription,
   getSeoPage,
   getBlogPost,
+  getCanonicalPath,
   BLOG_LIST_DESCRIPTION,
 } from "./src/lib/llm/page-docs";
 import { markdownPathForRoute } from "./src/lib/llm/markdown";
+import { BASE_URL } from "./src/lib/seo/types";
 
 // Page content lives in src/lib/llm/page-docs.ts as a structured block model,
 // shared with the Markdown generator (scripts/generateMarkdown.ts) so the
@@ -118,7 +120,7 @@ function getBreadcrumbForUrl(url, pageTitle) {
     "@type": "ListItem",
     position: 1,
     name: "TrainPace",
-    item: "https://trainpace.com/",
+    item: `${BASE_URL}/`,
   };
 
   const trail = (label, path) => ({
@@ -130,13 +132,13 @@ function getBreadcrumbForUrl(url, pageTitle) {
         "@type": "ListItem",
         position: 2,
         name: label,
-        item: `https://trainpace.com${path}`,
+        item: `${BASE_URL}${path}`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: pageTitle,
-        item: `https://trainpace.com${url}`,
+        item: `${BASE_URL}${url}`,
       },
     ],
   });
@@ -155,19 +157,19 @@ function getBreadcrumbForUrl(url, pageTitle) {
           "@type": "ListItem",
           position: 2,
           name: "ElevationFinder",
-          item: "https://trainpace.com/elevationfinder",
+          item: `${BASE_URL}/elevationfinder`,
         },
         {
           "@type": "ListItem",
           position: 3,
           name: "Guides",
-          item: "https://trainpace.com/elevationfinder/guides",
+          item: `${BASE_URL}/elevationfinder/guides`,
         },
         {
           "@type": "ListItem",
           position: 4,
           name: pageTitle,
-          item: `https://trainpace.com${url}`,
+          item: `${BASE_URL}${url}`,
         },
       ],
     };
@@ -183,18 +185,18 @@ function getStructuredData(url) {
       "@type": "Blog",
       name: "TrainPace Blog",
       description: BLOG_LIST_DESCRIPTION,
-      url: "https://trainpace.com/blog",
+      url: `${BASE_URL}/blog`,
       publisher: {
         "@type": "Organization",
         name: "TrainPace",
-        url: "https://trainpace.com",
+        url: `${BASE_URL}`,
       },
       blogPost: blogData.posts.slice(0, 10).map((p) => ({
         "@type": "BlogPosting",
         headline: p.title,
         description: p.excerpt,
         datePublished: p.date,
-        url: `https://trainpace.com/blog/${p.slug}`,
+        url: `${BASE_URL}/blog/${p.slug}`,
         author: { "@type": "Person", name: p.author?.name || "TrainPace" },
       })),
     };
@@ -219,11 +221,11 @@ function getStructuredData(url) {
           publisher: {
             "@type": "Organization",
             name: "TrainPace",
-            url: "https://trainpace.com",
+            url: `${BASE_URL}`,
           },
           mainEntityOfPage: {
             "@type": "WebPage",
-            "@id": `https://trainpace.com${url}`,
+            "@id": `${BASE_URL}${url}`,
           },
           keywords: (blogPost.tags || []).join(", "),
         },
@@ -234,19 +236,19 @@ function getStructuredData(url) {
               "@type": "ListItem",
               position: 1,
               name: "TrainPace",
-              item: "https://trainpace.com/",
+              item: `${BASE_URL}/`,
             },
             {
               "@type": "ListItem",
               position: 2,
               name: "Blog",
-              item: "https://trainpace.com/blog",
+              item: `${BASE_URL}/blog`,
             },
             {
               "@type": "ListItem",
               position: 3,
               name: blogPost.title,
-              item: `https://trainpace.com${url}`,
+              item: `${BASE_URL}${url}`,
             },
           ],
         },
@@ -265,11 +267,11 @@ function getStructuredData(url) {
           "@type": "WebPage",
           name: seoMeta.title,
           description: seoMeta.description,
-          url: `https://trainpace.com${url}`,
+          url: `${BASE_URL}${url}`,
           isPartOf: {
             "@type": "WebSite",
             name: "TrainPace",
-            url: "https://trainpace.com/",
+            url: `${BASE_URL}/`,
           },
         },
         ...(breadcrumb ? [breadcrumb] : []),
@@ -282,7 +284,7 @@ function getStructuredData(url) {
     "@type": "WebApplication",
     name: getPageTitle(url),
     description: getPageDescription(url),
-    url: `https://trainpace.com${url}`,
+    url: `${BASE_URL}${url}`,
     applicationCategory: "HealthApplication",
     operatingSystem: "Any",
     browserRequirements: "Requires JavaScript",
@@ -301,7 +303,7 @@ function getStructuredData(url) {
         "@type": "SearchAction",
         target: {
           "@type": "EntryPoint",
-          urlTemplate: "https://trainpace.com/calculator",
+          urlTemplate: `${BASE_URL}/calculator`,
         },
       },
     };
@@ -324,9 +326,10 @@ export async function prerender(data) {
     const ogType = blogPost ? "article" : "website";
     const ogImage =
       blogPost && blogPost.coverImage
-        ? `https://trainpace.com${blogPost.coverImage}`
-        : "https://trainpace.com/landing-page-2025.png";
+        ? `${BASE_URL}${blogPost.coverImage}`
+        : `${BASE_URL}/landing-page-2025.png`;
 
+    const canonicalUrl = `${BASE_URL}${getCanonicalPath(data.url)}`;
     const title = getPageTitle(data.url);
     const description = getPageDescription(data.url);
 
@@ -357,7 +360,7 @@ export async function prerender(data) {
             type: "meta",
             props: {
               property: "og:url",
-              content: `https://trainpace.com${data.url}`,
+              content: canonicalUrl,
             },
           },
           { type: "meta", props: { property: "og:type", content: ogType } },
@@ -377,7 +380,7 @@ export async function prerender(data) {
             type: "link",
             props: {
               rel: "canonical",
-              href: `https://trainpace.com${data.url}`,
+              href: canonicalUrl,
             },
           },
           // Markdown mirror of this page, for agents that prefer plain text.
@@ -387,7 +390,7 @@ export async function prerender(data) {
             props: {
               rel: "alternate",
               type: "text/markdown",
-              href: `https://trainpace.com${markdownPathForRoute(data.url)}`,
+              href: `${BASE_URL}${markdownPathForRoute(data.url)}`,
               title: `${title} (Markdown)`,
             },
           },

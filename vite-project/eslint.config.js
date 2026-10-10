@@ -32,6 +32,19 @@ export default tseslint.config(
         },
       ],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
+      // One canonical host. The apex redirects to www; a URL naming the apex
+      // in a canonical, og:url or JSON-LD splits Google's signals across two hosts.
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'Literal[value=/https:..trainpace\\.com/]',
+          message: 'Use https://www.trainpace.com (BASE_URL from @/lib/seo), not the bare apex.',
+        },
+        {
+          selector: 'TemplateElement[value.raw=/https:..trainpace\\.com/]',
+          message: 'Use https://www.trainpace.com (BASE_URL from @/lib/seo), not the bare apex.',
+        },
+      ],
     },
   },
 )
