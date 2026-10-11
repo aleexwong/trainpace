@@ -22,7 +22,7 @@ import {
   Layers,
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import ReactGA from "react-ga4";
+import { ReactGA } from "@/lib/analytics";
 import {
   refineFuelPlan,
   getFuelPlanPrompt,

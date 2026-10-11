@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
-import posthog from "posthog-js";
+import { identify, reset } from "@/lib/analytics";
 import { auth } from "@/lib/firebase-app";
 
 interface AuthContextValue {
@@ -26,14 +26,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (user) {
         // Stitch the anonymous journey to this user and unlock signup-conversion
         // + cross-session tracking in PostHog.
-        posthog.identify(user.uid, {
+        identify(user.uid, {
           email: user.email ?? undefined,
           name: user.displayName ?? undefined,
         });
         prevUidRef.current = user.uid;
       } else if (prevUidRef.current) {
         // Logout: clear identity so the next visitor isn't merged into this one.
-        posthog.reset();
+        reset();
         prevUidRef.current = null;
       }
       setUser(user);

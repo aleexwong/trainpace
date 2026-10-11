@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { X, Copy, Download, ChevronDown, ChevronUp } from "lucide-react";
-import ReactGA from "react-ga4";
+import { ReactGA } from "@/lib/analytics";
 import { toast } from "@/hooks/use-toast";
 
 interface RacePredictorOverlayProps {

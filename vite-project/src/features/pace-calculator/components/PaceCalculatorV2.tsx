@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { usePendingPacePlan } from "@/hooks/usePendingPacePlan";
-import ReactGA from "react-ga4";
+import { ReactGA } from "@/lib/analytics";
 import { calculateVdot } from "@/features/vdot-calculator/vdot-math";
 
 import type { PaceInputs, PaceResults, FormErrors, PaceUnit } from "../types";

@@ -6,7 +6,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { refineFuelPlan, type FuelPlanContext } from "@/services/gemini";
 import { useToast } from "@/hooks/use-toast";
-import ReactGA from "react-ga4";
+import { ReactGA } from "@/lib/analytics";
 import {
   type AIRecommendation,
   type RaceType,
