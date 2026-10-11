@@ -1,6 +1,6 @@
 // src/features/auth/LoginButton.tsx
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebase-app";
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { isValidRedirect } from "@/lib/utils";

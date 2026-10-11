@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebase-app";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { LoginButton } from "@/features/auth/LoginButton";

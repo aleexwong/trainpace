@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
 import posthog from "posthog-js";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebase-app";
 
 interface AuthContextValue {
   user: User | null;

@@ -1,7 +1,7 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { Suspense, useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebase-app";
 import type { User } from "firebase/auth";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";

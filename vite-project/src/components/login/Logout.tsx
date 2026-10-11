@@ -1,7 +1,7 @@
 // src/pages/Logout.tsx
 import { useEffect } from "react";
 import { signOut } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebase-app";
 import { useNavigate } from "react-router-dom";
 
 export default function Logout() {

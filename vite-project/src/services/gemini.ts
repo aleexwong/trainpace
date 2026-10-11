@@ -3,7 +3,7 @@
  * Now calls your backend API instead of Gemini directly for security
  */
 
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebase-app";
 
 // Use environment variable for backend URL with fallback
 const API_BASE_URL =

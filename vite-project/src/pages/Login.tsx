@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/features/auth/AuthContext";
 import { LoginButton } from "@/features/auth/LoginButton";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/lib/firebase-app";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { isValidRedirect } from "@/lib/utils";
