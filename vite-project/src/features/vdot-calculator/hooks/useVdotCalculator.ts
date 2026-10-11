@@ -18,7 +18,7 @@ import {
   formatTime,
   formatPace,
 } from "../vdot-math";
-import ReactGA from "react-ga4";
+import { ReactGA } from "@/lib/analytics";
 
 const HISTORY_KEY = "trainpace_vdot_history";
 const MAX_HISTORY = 5;

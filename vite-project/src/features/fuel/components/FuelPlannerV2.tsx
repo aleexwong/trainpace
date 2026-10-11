@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { usePendingFuelPlan } from "@/hooks/usePendingFuelPlan";
-import ReactGA from "react-ga4";
+import { ReactGA } from "@/lib/analytics";
 import { type FuelPlanContext } from "@/services/gemini";
 
 // Feature imports

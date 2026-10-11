@@ -9,7 +9,7 @@ import { db } from "@/lib/firebase";
 import { useAuth } from "@/features/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import ReactGA from "react-ga4";
+import { ReactGA } from "@/lib/analytics";
 import type {
   RaceType,
   FuelPlanResult,

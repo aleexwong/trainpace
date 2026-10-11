@@ -1,7 +1,5 @@
 // GoogleAnalytics.js
-import ReactGA from "react-ga4";
 import { Helmet } from "react-helmet-async";
-ReactGA.initialize("G-VT160XERPB");
 
 const GoogleAnalytics = () => (
   <Helmet>
