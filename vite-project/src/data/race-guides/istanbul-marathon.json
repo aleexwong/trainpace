@@ -1,0 +1,68 @@
+{
+  "slug": "istanbul-marathon",
+  "name": "Türkiye İş Bankası Istanbul Marathon",
+  "city": "Istanbul",
+  "country": "Türkiye",
+  "distanceKm": 42.195,
+  "month": "November",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://maraton.istanbul/",
+  "summary": "The Istanbul Marathon is an intercontinental race held in November. It starts on the Asian side near the Bosphorus Bridge (the July 15 Martyrs' Bridge) and finishes on the European side in Sultanahmet. The course is on asphalt, closed to traffic and mostly flat.",
+  "courseHighlights": [
+    "Start on the Asian side, just before the Bosphorus Bridge",
+    "Crossing the Bosphorus from Asia to Europe in the first kilometre",
+    "Bridge over the Golden Horn",
+    "Blue Mosque and Hagia Sophia",
+    "Finish at Sultanahmet Square"
+  ],
+  "paceStrategy": {
+    "summary": "Wikipedia describes the course as mostly flat. The first kilometre includes the Bosphorus Bridge, so hold back there. After that, run an even pace on the European side and save energy for the finish in the historic centre.",
+    "segments": [
+      {
+        "section": "km 0–5",
+        "terrain": "Bosphorus Bridge crossing, then the European side",
+        "advice": "Stay relaxed on the bridge and go slightly under goal pace."
+      },
+      {
+        "section": "km 5–35",
+        "terrain": "Roads on the European side, including a Golden Horn bridge",
+        "advice": "Run at goal pace and use landmarks as checkpoints."
+      },
+      {
+        "section": "km 35–42.2",
+        "terrain": "Return to the historic centre",
+        "advice": "Keep form and push in the last 3 km."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list aid-station positions. Check the official runner guide and plan your gels around the stations.",
+  "tips": [
+    "The start is on the Asian side, so check transport to the start in advance",
+    "The Bosphorus Bridge can be windy, so run in a group",
+    "Course details have changed over the years, so check the latest map before race day"
+  ],
+  "faq": [
+    {
+      "question": "Does the Istanbul Marathon cross two continents?",
+      "answer": "Yes. It starts in Asia and crosses the Bosphorus Bridge into Europe."
+    },
+    {
+      "question": "Is the Istanbul Marathon flat?",
+      "answer": "Wikipedia says the surface is asphalt and the course is mostly flat. It gives no elevation figures."
+    },
+    {
+      "question": "When is the Istanbul Marathon held?",
+      "answer": "It is held in November. It was moved from October in 2012."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Istanbul_Marathon",
+    "https://aa.com.tr/en/sports/30-000-to-run-in-transcontinental-istanbul-marathon/1276921",
+    "https://www.aims-worldrunning.org/articles/178-connecting-continents.html"
+  ],
+  "checked": "2026-10"
+}
