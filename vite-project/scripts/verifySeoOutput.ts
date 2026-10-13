@@ -48,8 +48,10 @@ function htmlFileFor(route: string): string {
     : path.join(DIST, route.replace(/^\//, ""), "index.html");
 }
 
+/** Every match of a global regex literal. */
 function all(re: RegExp, text: string): RegExpExecArray[] {
-  return [...text.matchAll(new RegExp(re.source, re.flags.includes("g") ? re.flags : `${re.flags}g`))];
+  if (!re.global) throw new Error(`all() needs a /g regex: ${re}`);
+  return [...text.matchAll(re)];
 }
 
 function decode(s: string): string {
@@ -72,9 +74,9 @@ for (const route of getAllDocPaths()) {
   const html = fs.readFileSync(file, "utf8");
   const head = html.slice(0, html.indexOf("</head>"));
 
-  const titles = all(/<title>([\s\S]*?)<\/title>/, head);
-  const descriptions = all(/<meta[^>]*name="description"[^>]*content="([^"]*)"/, head);
-  const canonicals = all(/<link[^>]*rel="canonical"[^>]*href="([^"]*)"/, head);
+  const titles = all(/<title>([\s\S]*?)<\/title>/g, head);
+  const descriptions = all(/<meta[^>]*name="description"[^>]*content="([^"]*)"/g, head);
+  const canonicals = all(/<link[^>]*rel="canonical"[^>]*href="([^"]*)"/g, head);
 
   if (titles.length !== 1) errors.push(`${route}: ${titles.length} <title> tags`);
   if (descriptions.length !== 1) errors.push(`${route}: ${descriptions.length} meta descriptions`);
@@ -93,7 +95,7 @@ for (const route of getAllDocPaths()) {
   }
   if (!/<h1[\s>]/.test(html)) errors.push(`${route}: no <h1> in prerendered body`);
 
-  for (const [, json] of all(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/, html)) {
+  for (const [, json] of all(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g, html)) {
     try {
       JSON.parse(json);
     } catch {
@@ -114,7 +116,7 @@ const sitemapPath = path.join(DIST, "sitemap.xml");
 if (!fs.existsSync(sitemapPath)) {
   errors.push("dist/sitemap.xml missing");
 } else {
-  const locs = all(/<loc>([^<]+)<\/loc>/, fs.readFileSync(sitemapPath, "utf8")).map((m) => m[1]);
+  const locs = all(/<loc>([^<]+)<\/loc>/g, fs.readFileSync(sitemapPath, "utf8")).map((m) => m[1]);
   const expected = getIndexablePaths().map(absoluteUrl);
   const missing = expected.filter((u) => !locs.includes(u));
   const extra = locs.filter((u) => !expected.includes(u));
@@ -129,7 +131,7 @@ if (!fs.existsSync(llmsPath)) {
   errors.push("dist/llms.txt missing");
 } else {
   const origin = absoluteUrl("/").replace(/\/$/, "");
-  for (const [, href] of all(/\]\((https:\/\/www\.trainpace\.com[^)]*)\)/, fs.readFileSync(llmsPath, "utf8"))) {
+  for (const [, href] of all(/\]\((https:\/\/www\.trainpace\.com[^)]*)\)/g, fs.readFileSync(llmsPath, "utf8"))) {
     const rel = href.slice(origin.length).replace(/^\//, "") || "index.html";
     const candidates = [rel, path.join(rel, "index.html")];
     if (!candidates.some((c) => fs.existsSync(path.join(DIST, c)))) {
