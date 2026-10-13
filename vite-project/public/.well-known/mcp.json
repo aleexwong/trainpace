@@ -1,0 +1,19 @@
+{
+  "name": "TrainPace",
+  "description": "Running-training math as agent tools: training paces, VDOT, periodized training plans, race-day fueling, and GPX route analysis. Free, no account or API key.",
+  "url": "https://api.trainpace.com/api/mcp",
+  "transport": "streamable-http",
+  "authentication": "none",
+  "documentation": "https://www.trainpace.com/mcp",
+  "tools": [
+    "calculate_training_paces",
+    "calculate_vdot",
+    "generate_training_plan",
+    "calculate_fuel_plan",
+    "analyze_route"
+  ],
+  "provider": {
+    "name": "TrainPace",
+    "url": "https://www.trainpace.com"
+  }
+}

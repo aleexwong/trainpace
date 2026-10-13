@@ -14,13 +14,13 @@ function buildBreadcrumbJsonLd(path: string, label: string) {
         "@type": "ListItem",
         position: 1,
         name: "TrainPace",
-        item: "https://trainpace.com/",
+        item: "https://www.trainpace.com/",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Fuel Planner",
-        item: "https://trainpace.com/fuel",
+        item: "https://www.trainpace.com/fuel",
       },
       {
         "@type": "ListItem",
@@ -49,7 +49,7 @@ export default function FuelSeoLanding() {
         isPartOf: {
           "@type": "WebSite",
           name: "TrainPace",
-          url: "https://trainpace.com/",
+          url: "https://www.trainpace.com/",
         },
       },
       buildBreadcrumbJsonLd(page.path, page.h1),
@@ -108,11 +108,11 @@ export default function FuelSeoLanding() {
         <meta property="og:description" content={page.description} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={getSeoUrl(page.path)} />
-        <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
+        <meta property="og:image" content="https://www.trainpace.com/landing-page-2025.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={page.title} />
         <meta name="twitter:description" content={page.description} />
-        <meta name="twitter:image" content="https://trainpace.com/landing-page-2025.png" />
+        <meta name="twitter:image" content="https://www.trainpace.com/landing-page-2025.png" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 

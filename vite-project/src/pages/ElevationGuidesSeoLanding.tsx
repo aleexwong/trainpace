@@ -16,23 +16,17 @@ function buildBreadcrumbJsonLd(path: string, label: string) {
         "@type": "ListItem",
         position: 1,
         name: "TrainPace",
-        item: "https://trainpace.com/",
+        item: "https://www.trainpace.com/",
       },
       {
         "@type": "ListItem",
         position: 2,
-        name: "ElevationFinder",
-        item: "https://trainpace.com/elevationfinder",
+        name: "Elevation Finder",
+        item: "https://www.trainpace.com/elevation-finder",
       },
       {
         "@type": "ListItem",
         position: 3,
-        name: "Guides",
-        item: "https://trainpace.com/elevationfinder/guides",
-      },
-      {
-        "@type": "ListItem",
-        position: 4,
         name: label,
         item: getSeoUrl(path),
       },
@@ -58,7 +52,7 @@ export default function ElevationGuidesSeoLanding() {
         isPartOf: {
           "@type": "WebSite",
           name: "TrainPace",
-          url: "https://trainpace.com/",
+          url: "https://www.trainpace.com/",
         },
       },
       buildBreadcrumbJsonLd(page.path, page.h1),
@@ -117,11 +111,11 @@ export default function ElevationGuidesSeoLanding() {
         <meta property="og:description" content={page.description} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={getSeoUrl(page.path)} />
-        <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
+        <meta property="og:image" content="https://www.trainpace.com/landing-page-2025.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={page.title} />
         <meta name="twitter:description" content={page.description} />
-        <meta name="twitter:image" content="https://trainpace.com/landing-page-2025.png" />
+        <meta name="twitter:image" content="https://www.trainpace.com/landing-page-2025.png" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
 

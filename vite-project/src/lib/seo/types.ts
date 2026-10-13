@@ -475,7 +475,7 @@ export interface SeoValidationWarning {
 // Export Helpers
 // =============================================================================
 
-export const BASE_URL = 'https://trainpace.com';
+export const BASE_URL = 'https://www.trainpace.com';
 
 export function withBaseUrl(path: string): string {
   return `${BASE_URL}${path.startsWith('/') ? path : `/${path}`}`;

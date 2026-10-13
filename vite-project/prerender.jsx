@@ -8,9 +8,16 @@ import {
   getPageDescription,
   getSeoPage,
   getBlogPost,
+  getPostUpdated,
+  getCanonicalPath,
+  getCourse,
+  getFaqEntries,
   BLOG_LIST_DESCRIPTION,
+  SITE_AUTHOR,
 } from "./src/lib/llm/page-docs";
 import { markdownPathForRoute } from "./src/lib/llm/markdown";
+import { BASE_URL } from "./src/lib/seo/types";
+import { generateSchemaGraph } from "./src/lib/seo/schema-generators";
 
 // Page content lives in src/lib/llm/page-docs.ts as a structured block model,
 // shared with the Markdown generator (scripts/generateMarkdown.ts) so the
@@ -112,302 +119,359 @@ function renderDoc(doc) {
 }
 
 // ── Structured data ────────────────────────────────────────────────────────
+//
+// Emitted into the static HTML so crawlers and AI answer engines that do not
+// run JavaScript still get it. Each page gets one @graph. Site-wide entities
+// (Organization, WebSite, the author) carry stable @ids so every page refers
+// to the same nodes instead of redefining them.
 
-function getBreadcrumbForUrl(url, pageTitle) {
-  const homeItem = {
-    "@type": "ListItem",
-    position: 1,
-    name: "TrainPace",
-    item: "https://trainpace.com/",
-  };
+const abs = (p) => (p === "/" ? `${BASE_URL}/` : `${BASE_URL}${p}`);
 
-  const trail = (label, path) => ({
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      homeItem,
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: label,
-        item: `https://trainpace.com${path}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: pageTitle,
-        item: `https://trainpace.com${url}`,
-      },
+const ORG_ID = `${BASE_URL}/#organization`;
+const WEBSITE_ID = `${BASE_URL}/#website`;
+const AUTHOR_ID = `${BASE_URL}/about#author`;
+const DEFAULT_OG_IMAGE = `${BASE_URL}/landing-page-2025.png`;
+
+const organization = {
+  "@type": "Organization",
+  "@id": ORG_ID,
+  name: "TrainPace",
+  url: abs("/"),
+  logo: {
+    "@type": "ImageObject",
+    url: `${BASE_URL}/android-chrome-512x512.png`,
+    width: 512,
+    height: 512,
+  },
+  email: "alex@trainpace.com",
+  founder: { "@id": AUTHOR_ID },
+  description:
+    "Free running-training tools: pace calculator, VDOT calculator, training plan builder, race fuel planner, and GPX elevation analysis.",
+};
+
+const author = {
+  "@type": "Person",
+  "@id": AUTHOR_ID,
+  name: SITE_AUTHOR.name,
+  url: abs(SITE_AUTHOR.url),
+  jobTitle: SITE_AUTHOR.jobTitle,
+  sameAs: [...SITE_AUTHOR.sameAs],
+};
+
+const website = {
+  "@type": "WebSite",
+  "@id": WEBSITE_ID,
+  name: "TrainPace",
+  url: abs("/"),
+  inLanguage: "en",
+  publisher: { "@id": ORG_ID },
+};
+
+/** The free web tools, described once and referenced from their pages. */
+const TOOL_APPS = {
+  "/calculator": {
+    name: "TrainPace Running Pace Calculator",
+    featureList: [
+      "Easy, marathon, threshold, interval, and repetition paces from a race result",
+      "Race time predictions from 5K to marathon",
+      "min/km and min/mile",
     ],
-  });
+  },
+  "/vdot": {
+    name: "TrainPace VDOT Calculator",
+    featureList: [
+      "VDOT score from any race result (Daniels & Gilbert formula)",
+      "Equivalent race times from 1500m to marathon",
+      "Daniels training zones",
+    ],
+  },
+  "/plan": {
+    name: "TrainPace Training Plan Builder",
+    featureList: [
+      "Periodized 5K, 10K, half marathon, and marathon plans",
+      "Base, development, sharpening, and taper phases",
+      "Calendar export",
+    ],
+  },
+  "/fuel": {
+    name: "TrainPace Race Fuel Planner",
+    featureList: [
+      "Carbohydrate target per hour by distance and finish time",
+      "Gel count and fuel-stop timeline",
+    ],
+  },
+  "/elevation-finder": {
+    name: "TrainPace Elevation Finder",
+    featureList: [
+      "GPX elevation profile and course map",
+      "Climb detection and grade analysis",
+      "Grade-adjusted pacing",
+    ],
+  },
+};
 
-  if (url.startsWith("/calculator/")) return trail("Pace Calculator", "/calculator");
-  if (url.startsWith("/fuel/")) return trail("Fuel Planner", "/fuel");
-  if (url.startsWith("/race/")) return trail("Race Prep", "/race");
-
-  if (url.startsWith("/elevationfinder/guides/")) {
-    return {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        homeItem,
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "ElevationFinder",
-          item: "https://trainpace.com/elevationfinder",
-        },
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: "Guides",
-          item: "https://trainpace.com/elevationfinder/guides",
-        },
-        {
-          "@type": "ListItem",
-          position: 4,
-          name: pageTitle,
-          item: `https://trainpace.com${url}`,
-        },
-      ],
-    };
-  }
-
-  return null;
+function webApplication(url) {
+  const app = TOOL_APPS[url];
+  return {
+    "@type": "WebApplication",
+    "@id": `${abs(url)}#app`,
+    name: app.name,
+    description: getPageDescription(url),
+    url: abs(url),
+    applicationCategory: "HealthApplication",
+    applicationSubCategory: "Running",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    featureList: app.featureList,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    publisher: { "@id": ORG_ID },
+  };
 }
 
-function getStructuredData(url) {
+function webPage(url, type = "WebPage", extra = {}) {
+  return {
+    "@type": type,
+    "@id": `${abs(url)}#webpage`,
+    url: abs(url),
+    name: getPageTitle(url),
+    description: getPageDescription(url),
+    inLanguage: "en",
+    isPartOf: { "@id": WEBSITE_ID },
+    publisher: { "@id": ORG_ID },
+    ...extra,
+  };
+}
+
+function breadcrumb(trail) {
+  return {
+    "@type": "BreadcrumbList",
+    itemListElement: [{ name: "TrainPace", path: "/" }, ...trail].map(
+      (item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.name,
+        item: abs(item.path),
+      })
+    ),
+  };
+}
+
+function faqPage(url, entries) {
+  return {
+    "@type": "FAQPage",
+    "@id": `${abs(url)}#faq`,
+    mainEntity: entries.map((e) => ({
+      "@type": "Question",
+      name: e.question,
+      acceptedAnswer: { "@type": "Answer", text: e.answer },
+    })),
+  };
+}
+
+/** Drop the per-node @context the shared generators add; the graph has one. */
+function stripContext(node) {
+  // eslint-disable-next-line no-unused-vars
+  const { "@context": _ctx, ...rest } = node;
+  return rest;
+}
+
+/** Nodes for one route. Site-wide nodes are added by getStructuredData. */
+function getPageNodes(url) {
+  if (url === "/") {
+    return [webPage("/", "WebPage", { about: { "@id": ORG_ID } }), author];
+  }
+
+  if (TOOL_APPS[url]) {
+    return [
+      webApplication(url),
+      webPage(url, "WebPage", { mainEntity: { "@id": `${abs(url)}#app` } }),
+      breadcrumb([{ name: TOOL_APPS[url].name.replace("TrainPace ", ""), path: url }]),
+    ];
+  }
+
   if (url === "/blog") {
-    return {
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      name: "TrainPace Blog",
-      description: BLOG_LIST_DESCRIPTION,
-      url: "https://trainpace.com/blog",
-      publisher: {
-        "@type": "Organization",
-        name: "TrainPace",
-        url: "https://trainpace.com",
+    return [
+      {
+        "@type": "Blog",
+        "@id": `${abs("/blog")}#blog`,
+        name: "TrainPace Blog",
+        description: BLOG_LIST_DESCRIPTION,
+        url: abs("/blog"),
+        publisher: { "@id": ORG_ID },
+        blogPost: blogData.posts.slice(0, 10).map((p) => ({
+          "@type": "BlogPosting",
+          headline: p.title,
+          url: abs(`/blog/${p.slug}`),
+          datePublished: p.date,
+        })),
       },
-      blogPost: blogData.posts.slice(0, 10).map((p) => ({
-        "@type": "BlogPosting",
-        headline: p.title,
-        description: p.excerpt,
-        datePublished: p.date,
-        url: `https://trainpace.com/blog/${p.slug}`,
-        author: { "@type": "Person", name: p.author?.name || "TrainPace" },
-      })),
-    };
+      breadcrumb([{ name: "Blog", path: "/blog" }]),
+    ];
   }
 
   const blogPost = getBlogPost(url);
   if (blogPost) {
-    return {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "BlogPosting",
-          headline: blogPost.title,
-          description: blogPost.excerpt,
-          ...(blogPost.coverImage ? { image: blogPost.coverImage } : {}),
-          datePublished: blogPost.date,
-          dateModified: blogPost.date,
-          author: {
-            "@type": "Person",
-            name: blogPost.author?.name || "TrainPace",
-          },
-          publisher: {
-            "@type": "Organization",
-            name: "TrainPace",
-            url: "https://trainpace.com",
-          },
-          mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id": `https://trainpace.com${url}`,
-          },
-          keywords: (blogPost.tags || []).join(", "),
-        },
-        {
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            {
-              "@type": "ListItem",
-              position: 1,
-              name: "TrainPace",
-              item: "https://trainpace.com/",
-            },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: "Blog",
-              item: "https://trainpace.com/blog",
-            },
-            {
-              "@type": "ListItem",
-              position: 3,
-              name: blogPost.title,
-              item: `https://trainpace.com${url}`,
-            },
-          ],
-        },
-      ],
-    };
-  }
-
-  const seoMeta = getSeoPage(url);
-  if (seoMeta) {
-    const breadcrumb = getBreadcrumbForUrl(url, seoMeta.title);
-
-    return {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebPage",
-          name: seoMeta.title,
-          description: seoMeta.description,
-          url: `https://trainpace.com${url}`,
-          isPartOf: {
-            "@type": "WebSite",
-            name: "TrainPace",
-            url: "https://trainpace.com/",
-          },
-        },
-        ...(breadcrumb ? [breadcrumb] : []),
-      ],
-    };
-  }
-
-  const baseSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: getPageTitle(url),
-    description: getPageDescription(url),
-    url: `https://trainpace.com${url}`,
-    applicationCategory: "HealthApplication",
-    operatingSystem: "Any",
-    browserRequirements: "Requires JavaScript",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-  };
-
-  if (url === "/") {
-    return {
-      ...baseSchema,
-      "@type": "WebSite",
-      potentialAction: {
-        "@type": "SearchAction",
-        target: {
-          "@type": "EntryPoint",
-          urlTemplate: "https://trainpace.com/calculator",
-        },
+    const image = blogImage(blogPost);
+    return [
+      {
+        "@type": "BlogPosting",
+        "@id": `${abs(url)}#article`,
+        headline: blogPost.title,
+        description: blogPost.excerpt,
+        url: abs(url),
+        image: image ? abs(image) : DEFAULT_OG_IMAGE,
+        datePublished: blogPost.date,
+        dateModified: getPostUpdated(blogPost),
+        inLanguage: "en",
+        author: { "@id": AUTHOR_ID },
+        publisher: { "@id": ORG_ID },
+        mainEntityOfPage: abs(url),
+        articleSection: blogPost.category,
+        keywords: (blogPost.tags || []).join(", "),
+        wordCount: blogPost.content.split(/\s+/).length,
       },
-    };
+      author,
+      breadcrumb([
+        { name: "Blog", path: "/blog" },
+        { name: blogPost.title, path: url },
+      ]),
+    ];
   }
 
-  return baseSchema;
+  const seoPage = getSeoPage(url);
+  if (seoPage) {
+    // Same generator the React page uses, so static and hydrated JSON-LD agree.
+    const nodes = generateSchemaGraph(seoPage)["@graph"].map(stripContext);
+    const course = seoPage.tool === "race" ? getCourse(seoPage.previewRouteKey) : undefined;
+    if (course && !seoPage.faq?.length && course.faq?.length) {
+      nodes.push(faqPage(url, course.faq));
+    }
+    return nodes;
+  }
+
+  if (url.startsWith("/preview-route/")) {
+    const course = getCourse(url.split("/").pop());
+    return [
+      webPage(url),
+      breadcrumb([
+        { name: "Race Prep", path: "/race" },
+        { name: course?.name ?? getPageTitle(url), path: url },
+      ]),
+      ...(course?.faq?.length ? [faqPage(url, course.faq)] : []),
+    ];
+  }
+
+  switch (url) {
+    case "/race":
+      return [webPage(url, "CollectionPage"), breadcrumb([{ name: "Race Prep", path: url }])];
+    case "/mcp":
+      return [webPage(url, "TechArticle"), breadcrumb([{ name: "MCP Server", path: url }])];
+    case "/about":
+    case "/ethos":
+      return [
+        webPage("/about", "AboutPage", { mainEntity: { "@id": AUTHOR_ID } }),
+        author,
+        breadcrumb([{ name: "About", path: "/about" }]),
+      ];
+    case "/faq":
+      return [
+        webPage(url),
+        faqPage(url, getFaqEntries()),
+        breadcrumb([{ name: "FAQ", path: url }]),
+      ];
+    default:
+      return [webPage(url)];
+  }
+}
+
+function getStructuredData(url) {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [organization, website, ...getPageNodes(url)],
+  };
+}
+
+/** A post's cover image path, if it has one. */
+function blogImage(post) {
+  return post.coverImage || null;
 }
 
 // ── Prerender entry ────────────────────────────────────────────────────────
 
+/**
+ * Head tags React Helmet also manages carry `data-rh`, so when the app boots,
+ * Helmet replaces them instead of adding a second description, canonical, and
+ * set of Open Graph tags next to them.
+ */
+const managed = (type, props) => ({
+  type,
+  props: { ...props, "data-rh": "true" },
+});
+
 export async function prerender(data) {
-  try {
-    keyCounter = 0;
+  keyCounter = 0;
+  const url = data.url;
 
-    // Only the content for the #root div, not a full HTML document.
-    const html = renderToString(renderDoc(getPageDoc(data.url)));
+  // Errors are not caught: a page that fails to render must fail the build,
+  // not ship as an empty "Loading..." shell that crawlers then index.
+  const html = renderToString(renderDoc(getPageDoc(url)));
 
-    // Blog posts are articles, not the site app — reflect that in OG tags.
-    const blogPost = getBlogPost(data.url);
-    const ogType = blogPost ? "article" : "website";
-    const ogImage =
-      blogPost && blogPost.coverImage
-        ? `https://trainpace.com${blogPost.coverImage}`
-        : "https://trainpace.com/landing-page-2025.png";
+  // Blog posts are articles, not the site app — reflect that in OG tags.
+  const blogPost = getBlogPost(url);
+  const ogType = blogPost ? "article" : "website";
+  const coverImage = blogPost ? blogImage(blogPost) : null;
+  const ogImage = coverImage ? abs(coverImage) : DEFAULT_OG_IMAGE;
 
-    const title = getPageTitle(data.url);
-    const description = getPageDescription(data.url);
+  const title = getPageTitle(url);
+  const description = getPageDescription(url);
+  const canonical = abs(getCanonicalPath(url));
 
-    return {
-      html,
-      head: {
-        title,
-        elements: new Set([
-          {
-            type: "meta",
-            props: { name: "description", content: description },
-          },
-          {
-            type: "meta",
-            props: {
-              name: "viewport",
-              content: "width=device-width, initial-scale=1",
-            },
-          },
-          // Open Graph tags
-          { type: "meta", props: { property: "og:title", content: title } },
-          {
-            type: "meta",
-            props: { property: "og:description", content: description },
-          },
-          { type: "meta", props: { property: "og:image", content: ogImage } },
-          {
-            type: "meta",
-            props: {
-              property: "og:url",
-              content: `https://trainpace.com${data.url}`,
-            },
-          },
-          { type: "meta", props: { property: "og:type", content: ogType } },
-          // Twitter Card tags
-          {
-            type: "meta",
-            props: { name: "twitter:card", content: "summary_large_image" },
-          },
-          { type: "meta", props: { name: "twitter:title", content: title } },
-          {
-            type: "meta",
-            props: { name: "twitter:description", content: description },
-          },
-          { type: "meta", props: { name: "twitter:image", content: ogImage } },
-          // Canonical URL
-          {
-            type: "link",
-            props: {
-              rel: "canonical",
-              href: `https://trainpace.com${data.url}`,
-            },
-          },
-          // Markdown mirror of this page, for agents that prefer plain text.
-          // Paired with Accept: text/markdown content negotiation in middleware.ts.
-          {
-            type: "link",
-            props: {
-              rel: "alternate",
-              type: "text/markdown",
-              href: `https://trainpace.com${markdownPathForRoute(data.url)}`,
-              title: `${title} (Markdown)`,
-            },
-          },
-          {
-            type: "script",
-            props: { type: "application/ld+json" },
-            children: JSON.stringify(getStructuredData(data.url)),
-          },
-        ]),
+  const elements = [
+    managed("meta", { name: "description", content: description }),
+    managed("link", { rel: "canonical", href: canonical }),
+    // Open Graph
+    managed("meta", { property: "og:site_name", content: "TrainPace" }),
+    managed("meta", { property: "og:title", content: title }),
+    managed("meta", { property: "og:description", content: description }),
+    managed("meta", { property: "og:image", content: ogImage }),
+    managed("meta", { property: "og:url", content: canonical }),
+    managed("meta", { property: "og:type", content: ogType }),
+    // Twitter Card
+    managed("meta", { name: "twitter:card", content: "summary_large_image" }),
+    managed("meta", { name: "twitter:title", content: title }),
+    managed("meta", { name: "twitter:description", content: description }),
+    managed("meta", { name: "twitter:image", content: ogImage }),
+    // Markdown mirror of this page, for agents that prefer plain text.
+    // Paired with Accept: text/markdown content negotiation in middleware.ts.
+    {
+      type: "link",
+      props: {
+        rel: "alternate",
+        type: "text/markdown",
+        href: abs(markdownPathForRoute(url)),
+        title: `${title} (Markdown)`,
       },
-    };
-  } catch (error) {
-    console.error("Prerender error for", data.url, error);
-    // Return minimal HTML on error
-    return {
-      html: "<div>Loading...</div>",
-      head: {
-        title: "TrainPace",
-        elements: new Set(),
-      },
-    };
+    },
+    managed("script", { type: "application/ld+json" }),
+  ];
+
+  if (blogPost) {
+    elements.push(
+      managed("meta", { property: "article:published_time", content: blogPost.date }),
+      managed("meta", { property: "article:modified_time", content: getPostUpdated(blogPost) }),
+      managed("meta", { name: "author", content: blogPost.author?.name || SITE_AUTHOR.name })
+    );
   }
+
+  // The JSON-LD script needs its body; attach it to the element built above.
+  const ldScript = elements.find(
+    (el) => el.type === "script" && el.props.type === "application/ld+json"
+  );
+  ldScript.children = JSON.stringify(getStructuredData(url));
+
+  return {
+    html,
+    head: { title, elements: new Set(elements) },
+  };
 }

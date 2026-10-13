@@ -1,92 +1,45 @@
 # TrainPace — https://www.trainpace.com
 # AI agents: see https://www.trainpace.com/llms.txt and https://www.trainpace.com/mcp
 # Free public MCP server for training math: https://api.trainpace.com/api/mcp
+# MCP server descriptor: https://www.trainpace.com/.well-known/mcp.json
 #
-# Every page has a Markdown mirror: append .md to any path
+# Every public page has a Markdown mirror: append .md to any path
 # (https://www.trainpace.com/calculator.md), or send Accept: text/markdown.
 # Whole site in one file: https://www.trainpace.com/llms-full.txt
 # Page index as JSON:     https://www.trainpace.com/llms-index.json
 
+# Search engines, AI crawlers, and AI assistants are all welcome, under the
+# same rules. They share one group on purpose: a crawler follows only the most
+# specific group that names it, so a separate "Allow: /" group for an AI bot
+# would silently drop the Disallow lines below for that bot.
 User-agent: *
-Allow: /
-
-# Allow specific important pages
-Allow: /calculator
-Allow: /vdot
-Allow: /plan
-Allow: /fuel
-Allow: /mcp
-Allow: /race
-Allow: /preview-route/*
-Allow: /elevation-finder
-Allow: /elevationfinder
-Allow: /faq
-Allow: /ethos
-Allow: /privacy
-Allow: /terms
-
-# Allow PWA files
-Allow: /registerSW.js
-Allow: /manifest.webmanifest
-Allow: /assets/*
-
-# Markdown mirrors and agent indexes
-Allow: /*.md$
-Allow: /llms.txt
-Allow: /llms-full.txt
-Allow: /llms-index.json
-
-# Block unnecessary pages (auth, user-specific)
-Disallow: /login
-Disallow: /register
-Disallow: /dashboard
-Disallow: /settings
-Disallow: /reset-password
-Disallow: /reset-confirmed
-Disallow: /logout
-
-# AI crawlers and assistants are explicitly welcome
 User-agent: GPTBot
-Allow: /
-
 User-agent: OAI-SearchBot
-Allow: /
-
 User-agent: ChatGPT-User
-Allow: /
-
 User-agent: ClaudeBot
-Allow: /
-
 User-agent: Claude-User
-Allow: /
-
 User-agent: Claude-SearchBot
-Allow: /
-
 User-agent: anthropic-ai
-Allow: /
-
 User-agent: PerplexityBot
-Allow: /
-
 User-agent: Perplexity-User
-Allow: /
-
 User-agent: Google-Extended
-Allow: /
-
 User-agent: Applebot-Extended
-Allow: /
-
+User-agent: Amazonbot
+User-agent: DuckAssistBot
+User-agent: MistralAI-User
+User-agent: meta-externalagent
 User-agent: cohere-ai
-Allow: /
-
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://www.trainpace.com/sitemap.xml
+# Per-user application state: no public content.
+Disallow: /login
+Disallow: /register
+Disallow: /logout
+Disallow: /reset-password
+Disallow: /reset-confirmed
+Disallow: /dashboard
+Disallow: /settings
+Disallow: /onboarding
 
-# Agent-oriented site indexes (not a sitemap directive — for humans reading this file)
-# https://www.trainpace.com/llms.txt
-# https://www.trainpace.com/llms-full.txt
+Sitemap: https://www.trainpace.com/sitemap.xml

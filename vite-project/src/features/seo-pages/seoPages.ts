@@ -1546,8 +1546,8 @@ function makeRacePage(
     slug,
     tool: 'race',
     path: `/race/${slug}`,
-    title: `${raceName} Race Prep - Pace, Fueling, and Course Strategy | TrainPace`,
-    description: `${raceName} race prep: set training paces from your goal time, build a fueling plan, and analyze the course elevation. Free running tools for self-coached runners.`,
+    title: `${raceName} Race Prep: Pace, Fuel & Course | TrainPace`,
+    description: `${raceName} race prep: training paces for your goal time, a race-day fueling plan, and course elevation analysis. Free, no signup.`,
     h1: `${raceName} Race Prep`,
     intro:
       `Use TrainPace to plan a simple, repeatable strategy for ${raceName}: pacing targets, fueling basics, and course/elevation awareness.`,

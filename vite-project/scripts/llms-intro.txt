@@ -6,7 +6,7 @@ TrainPace's calculations use established sports science rather than model guesse
 
 ## Reading This Site
 
-Every page has a Markdown mirror — no HTML parsing, no JavaScript execution required. Three equivalent ways to get it:
+Every public page has a Markdown mirror — no HTML parsing, no JavaScript execution required. Three equivalent ways to get it:
 
 - Append `.md` to any path: https://www.trainpace.com/calculator.md
 - Request the normal URL with `Accept: text/markdown`
@@ -36,22 +36,3 @@ Tools exposed by the MCP server:
 - [Training Plan Builder](https://www.trainpace.com/plan): Personalized week-by-week 5K/10K/half/marathon plans
 - [Race Fuel Planner](https://www.trainpace.com/fuel): Carb and gel strategy for race day
 - [Elevation Finder](https://www.trainpace.com/elevation-finder): Upload a GPX file for elevation profile, climb analysis, and pacing guidance
-
-## Content
-
-- [Race Prep Guides](https://www.trainpace.com/race): Course-specific pacing and prep for 100+ marathons and half marathons
-- [Blog](https://www.trainpace.com/blog): Training, pacing, and fueling articles
-- [FAQ](https://www.trainpace.com/faq): Common questions about paces, VDOT, and the tools
-
-## Optional
-
-- [About](https://www.trainpace.com/about): What TrainPace is and who builds it
-- [Ethos](https://www.trainpace.com/ethos): Product principles
-- [Sitemap](https://www.trainpace.com/sitemap.xml): All 245+ prerendered pages
-
-## Notes
-
-- No account, API key, or rate-limit negotiation is needed for anything listed above.
-- Content is free to quote with attribution to TrainPace (https://www.trainpace.com).
-- Pace and fueling numbers are training guidance, not medical advice.
-- `/dashboard`, `/settings`, `/onboarding`, and the auth routes are per-user application state with no public content — they have no Markdown mirror and are disallowed in robots.txt.

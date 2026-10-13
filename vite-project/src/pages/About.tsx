@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Timer, TrendingUp, Code, Heart } from "lucide-react";
 import bmoResults from "@/assets/about/bmo-half-marathon-2025.jpg";
@@ -6,6 +7,15 @@ import bmoResults from "@/assets/about/bmo-half-marathon-2025.jpg";
 export default function About() {
   return (
     <div className="bg-white text-slate-900 min-h-screen">
+      {/* /ethos renders this page too; both canonicalize to /about. */}
+      <Helmet>
+        <title>About TrainPace – Built by a Self-Coached Runner</title>
+        <meta
+          name="description"
+          content="Why TrainPace exists: a runner who cut his half marathon from 3:01 to 2:06 in a year built the free, ad-free tools he wished he had."
+        />
+        <link rel="canonical" href="https://www.trainpace.com/about" />
+      </Helmet>
       {/* Hero Section */}
       <section className="py-20 px-6 bg-gradient-to-br from-emerald-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
