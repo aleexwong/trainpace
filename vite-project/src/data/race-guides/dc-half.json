@@ -1,0 +1,69 @@
+{
+  "slug": "dc-half",
+  "name": "DC Half Marathon",
+  "city": "Washington, D.C.",
+  "country": "District of Columbia, USA",
+  "distanceKm": 21.0975,
+  "month": "September",
+  "courseType": "out-and-back",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Five-year average of about 17 °C at the start and 26 °C in the afternoon (62 °F and 78 °F), per HalfRuns",
+  "website": "http://www.dchalfmarathon.com/",
+  "summary": "The DC Half is organised by Pacers Running and starts in West Potomac Park. The race site says runners pass the monuments in the first mile. HalfRuns describes the course as an ultra-flat, USATF-certified out-and-back along the Potomac River, with sections beside Rock Creek Parkway.",
+  "courseHighlights": [
+    "Start in West Potomac Park",
+    "Early miles past the monuments",
+    "Lincoln Memorial and Washington Monument views",
+    "Potomac River waterfront",
+    "Sections along Rock Creek Parkway"
+  ],
+  "paceStrategy": {
+    "summary": "The course is described as ultra-flat, so an even pace is the best plan. Warm September air is the main challenge, so start a little conservatively and drink early.",
+    "segments": [
+      {
+        "section": "mile 1–4",
+        "terrain": "Flat roads past the monuments",
+        "advice": "Start at goal pace or slightly slower in the crowd."
+      },
+      {
+        "section": "mile 5–9",
+        "terrain": "Flat, along the river and parkway",
+        "advice": "Hold an even pace and take fuel and fluid on schedule."
+      },
+      {
+        "section": "mile 10–13.1",
+        "terrain": "Flat return to West Potomac Park",
+        "advice": "Keep steady, and push only in the final mile if you feel good."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found on the pages we checked. HalfRuns warns that the weather is warm, so plan to drink at every stop.",
+  "tips": [
+    "Dress for a cool start and a warm finish; HalfRuns shows about 17 °C at the start and 26 °C in the afternoon",
+    "Start conservatively in the warm air",
+    "Plan your walk or ride to West Potomac Park, because HalfRuns notes it can be a walk from public transport",
+    "Do not confuse this race with the Rock 'n' Roll DC Half in March; they are separate events"
+  ],
+  "faq": [
+    {
+      "question": "Is the DC Half course flat?",
+      "answer": "Yes. HalfRuns rates it ultra-flat and USATF-certified. We found no official elevation figures."
+    },
+    {
+      "question": "Where does the DC Half start?",
+      "answer": "The race site lists West Potomac Park as the start location."
+    },
+    {
+      "question": "When is the DC Half held?",
+      "answer": "It is held in September, with a 7 a.m. half marathon start."
+    }
+  ],
+  "sources": [
+    "http://www.dchalfmarathon.com/",
+    "https://runsignup.com/Race/DC/Washington/DCHalfandRelay",
+    "https://halfruns.com/races/district-of-columbia/dc-half-races"
+  ],
+  "checked": "2026-10"
+}

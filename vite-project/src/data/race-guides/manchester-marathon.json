@@ -1,0 +1,68 @@
+{
+  "slug": "manchester-marathon",
+  "name": "adidas Manchester Marathon",
+  "city": "Manchester",
+  "country": "England, UK",
+  "distanceKm": 42.195,
+  "month": "April",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.manchestermarathon.co.uk/",
+  "summary": "The adidas Manchester Marathon is the second largest marathon in the UK. It starts near Old Trafford and finishes on Oxford Road outside the University of Manchester. The route is known for its flat profile and long straight sections.",
+  "courseHighlights": [
+    "Start area at Trafford Arch near Old Trafford",
+    "Stretford, Sale and Altrincham",
+    "Chorlton",
+    "Finish on Oxford Road outside the University of Manchester"
+  ],
+  "paceStrategy": {
+    "summary": "The flat profile and long straight roads suit even pacing. Start in your wave at goal pace and hold it, rather than banking time early.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Flat roads from Old Trafford through Stretford and Sale",
+        "advice": "Hold goal pace and avoid weaving in the crowded early waves."
+      },
+      {
+        "section": "km 10–30",
+        "terrain": "Flat suburban roads, including Altrincham and the return towards Chorlton",
+        "advice": "Keep an even rhythm and use the crowds for support."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Flat run back towards the city centre and Oxford Road",
+        "advice": "Stay steady and push in the last kilometre."
+      }
+    ]
+  },
+  "fuelingNotes": "The official site and race guide give the aid-station list; check it before race day. On a flat course, take gels on a time schedule.",
+  "tips": [
+    "Use Metrolink to reach the start; Trafford Bar, Exchange Quay and Pomona are within a short walk",
+    "Arrive at least 45 minutes before your wave to allow for bag drop and the warm-up",
+    "Expect road closures across Greater Manchester until early afternoon",
+    "Waves start from 08:55 for the elite runners, then staggered waves follow"
+  ],
+  "faq": [
+    {
+      "question": "Is the Manchester Marathon flat?",
+      "answer": "Yes. Wikipedia notes a claim that it is the flattest marathon course in the UK, with only 54 m of elevation."
+    },
+    {
+      "question": "When is the Manchester Marathon held?",
+      "answer": "It is held on a Sunday in April."
+    },
+    {
+      "question": "Where does the Manchester Marathon finish?",
+      "answer": "It finishes on Oxford Road outside the University of Manchester."
+    }
+  ],
+  "sources": [
+    "https://www.manchestermarathon.co.uk/news/everything-you-need-to-know-about-the-2026-adidas-manchester-marathon/",
+    "https://manchestermarathon.co.uk/",
+    "https://en.wikipedia.org/wiki/Manchester_Marathon"
+  ],
+  "checked": "2026-10"
+}
