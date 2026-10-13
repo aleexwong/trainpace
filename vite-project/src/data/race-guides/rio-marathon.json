@@ -1,0 +1,75 @@
+{
+  "slug": "rio-marathon",
+  "name": "Maratona da Cidade do Rio de Janeiro",
+  "city": "Rio de Janeiro",
+  "country": "Brazil",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": 110,
+  "elevationLossM": null,
+  "typicalWeather": "About 16–20 °C at the 05:30 start, rising to 22–27 °C late in the race",
+  "website": "https://www.maratonadorio.com.br/en",
+  "summary": "The Rio de Janeiro Marathon is part of a four-day running festival. The marathon runs along the coast from Barra da Tijuca to Aterro do Flamengo. The 2026 course had about 110 m of climbing.",
+  "courseHighlights": [
+    "Start at Praia da Reserva in Barra da Tijuca",
+    "Joatinga Tunnel, which leads into São Conrado",
+    "Leblon, Ipanema and Copacabana beachfronts, with a turn at Leme",
+    "Botafogo Bay",
+    "Finish at Aterro do Flamengo, near Marina da Glória"
+  ],
+  "paceStrategy": {
+    "summary": "The course is flat and near sea level, but the race starts before sunrise and the second half gets warmer. Run the first 10 km a little under control and keep energy for the heat on the beachfront.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Flat roads through Barra da Tijuca, ending with the Joatinga Tunnel",
+        "advice": "Start at goal pace or slightly slower, because cool air and fresh legs make fast running feel easy."
+      },
+      {
+        "section": "km 10–18",
+        "terrain": "São Conrado, flat and open",
+        "advice": "Do not bank time here; hold your goal pace."
+      },
+      {
+        "section": "km 18–30",
+        "terrain": "Leblon, Ipanema and Copacabana beachfronts, with the biggest crowds",
+        "advice": "Stay on pace, drink at every aid station and use shade where you can."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Botafogo and Aterro do Flamengo",
+        "advice": "Expect warmer weather; keep the effort steady and push only in the last 3 km."
+      }
+    ]
+  },
+  "fuelingNotes": "The race starts at 05:30 and the temperature rises later, so plan to drink at every aid station. A third-party guide notes that the back half is warm, so take your gels before you feel low.",
+  "tips": [
+    "Check the route before race day: the 2027 course is still to be confirmed and the 2026 course was revised",
+    "The marathon finish is in the Aterro do Flamengo, near the Monument to the Brazilian Expeditionary Force",
+    "A third-party guide says an official shuttle runs to the start in Barra da Tijuca, leaving the city centre around 3:00 to 4:00 am",
+    "Expect warm and humid weather and consider a light hat or cap"
+  ],
+  "faq": [
+    {
+      "question": "Is the Rio de Janeiro Marathon flat?",
+      "answer": "Mostly. A running guide gives about 110 m of total climbing on the 2026 course, which starts at sea level and follows the coast."
+    },
+    {
+      "question": "When is the Rio de Janeiro Marathon held?",
+      "answer": "The 2027 festival is planned for late May. In some years it has been held in early June, so check the official site."
+    },
+    {
+      "question": "Where does the Rio de Janeiro Marathon start and finish?",
+      "answer": "It starts at Praia da Reserva in Barra da Tijuca and finishes at the Aterro do Flamengo."
+    }
+  ],
+  "sources": [
+    "https://www.maratonadorio.com.br/en",
+    "https://www.maratonadorio.com.br/en/corrida/42k-2027",
+    "https://en.prefeitura.rio/cet-rio/cet-rio-implanta-operacao-especial-para-maratona-do-rio-2026/",
+    "https://fatmarathoner.com/rio-de-janeiro-marathon-guide/"
+  ],
+  "checked": "2026-10"
+}
