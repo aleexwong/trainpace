@@ -957,7 +957,7 @@ function aboutBlocks(): DocBlock[] {
       caption: "The numbers",
       headers: ["Race", "Time", "Average pace"],
       rows: [
-        ["BMO Vancouver Half Marathon, May 2024", "3:01:00", "8:38/km (13:54/mi)"],
+        ["BMO Vancouver Half Marathon, May 2024", "3:01:00", "8:35/km (13:48/mi)"],
         ["BMO Vancouver Half Marathon, May 2025", "2:06:00", "5:58/km (9:37/mi)"],
       ],
     },
@@ -1031,7 +1031,7 @@ function privacyBlocks(): DocBlock[] {
       items: [
         "The Training Pace Calculator and Fuel Planner work without an account, and no data is stored for visitors who are not signed in.",
         "Signing in creates an account through Firebase Authentication (email address and name).",
-        "GPX files you upload while signed in are stored in Firebase Cloud Storage and are visible only to you unless you share a link.",
+        "GPX files you upload while signed in are stored in Firebase Cloud Storage, and only you can access them.",
         "Google Analytics measures how the site is used; Mapbox draws course maps; Vercel hosts the site.",
         "TrainPace does not sell personal data or share it with advertisers. You can ask for a copy of your data or for its deletion.",
       ],
@@ -1146,14 +1146,9 @@ export function getAllDocPaths(): string[] {
     "/privacy",
     "/terms",
     ...getAllSeoPaths(),
-    "/preview-route/boston",
-    "/preview-route/nyc",
-    "/preview-route/chicago",
-    "/preview-route/berlin",
-    "/preview-route/london",
-    "/preview-route/tokyo",
-    "/preview-route/sydney",
-    "/preview-route/oslo",
+    // Every course with data — race pages link to all of them, and a course
+    // left out here would get the noindex app shell.
+    ...Object.keys(marathonData).map((key) => `/preview-route/${key}`),
     "/blog",
     ...blogData.posts.map((p) => `/blog/${p.slug}`),
   ];

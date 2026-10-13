@@ -262,7 +262,7 @@ export default function About() {
               <p className="text-3xl font-bold text-slate-900">3:01:00</p>
               <p className="text-sm text-slate-600">BMO Vancouver – May 2024</p>
               <p className="text-sm text-red-600 mt-2">
-                Avg Pace: 8:38/km (13:54/mi)
+                Avg Pace: 8:35/km (13:48/mi)
               </p>
             </div>
             <div>

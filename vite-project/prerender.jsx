@@ -409,6 +409,16 @@ const managed = (type, props) => ({
   props: { ...props, "data-rh": "true" },
 });
 
+/**
+ * Pages whose React component emits no JSON-LD of its own. Helmet deletes
+ * every `data-rh` script it does not re-emit, so on these pages the static
+ * graph is left unmarked — otherwise it would vanish as soon as the app boots
+ * and a rendering crawler would see no structured data at all. Everywhere
+ * else it stays marked so the client version replaces it rather than
+ * duplicating it (two FAQPage blocks is a Search Console error).
+ */
+const STATIC_ONLY_JSONLD = new Set(["/about", "/ethos", "/privacy", "/terms", "/mcp", "/race"]);
+
 export async function prerender(data) {
   keyCounter = 0;
   const url = data.url;
@@ -453,7 +463,9 @@ export async function prerender(data) {
         title: `${title} (Markdown)`,
       },
     },
-    managed("script", { type: "application/ld+json" }),
+    STATIC_ONLY_JSONLD.has(url)
+      ? { type: "script", props: { type: "application/ld+json" } }
+      : managed("script", { type: "application/ld+json" }),
   ];
 
   if (blogPost) {
