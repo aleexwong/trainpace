@@ -1,0 +1,67 @@
+{
+  "slug": "edinburgh-marathon",
+  "name": "Edinburgh Marathon",
+  "city": "Edinburgh",
+  "country": "Scotland, UK",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "point-to-point",
+  "terrain": "net downhill",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "10–16 °C on race day",
+  "website": "https://www.edinburghmarathon.com/",
+  "summary": "The Edinburgh Marathon is part of the Edinburgh Marathon Festival and is held in May. The course runs point to point from the city centre near Edinburgh Castle to Pinkie Playing Fields near Musselburgh. It is predominantly flat and downhill overall.",
+  "courseHighlights": [
+    "Start near Edinburgh Castle",
+    "Holyrood Park and Arthur's Seat",
+    "Open roads and the coast of the North Sea",
+    "Finish at Pinkie Playing Fields near Musselburgh"
+  ],
+  "paceStrategy": {
+    "summary": "The early downhill can feel easy, and the official guide warns against going out too fast. After the city, the road is flat and open near the coast, where wind can be a factor late in the race. Start a little slower than goal pace and be ready for headwind.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Early downhill from the city centre",
+        "advice": "Hold back and run slightly slower than goal pace."
+      },
+      {
+        "section": "km 10–21",
+        "terrain": "Largely flat roads",
+        "advice": "Settle at goal pace and run with a group if you can."
+      },
+      {
+        "section": "km 21–42.2",
+        "terrain": "Largely flat, exposed roads near the coast",
+        "advice": "Run by effort, as wind and sun can slow you."
+      }
+    ]
+  },
+  "fuelingNotes": "The official guide says to aim for carbohydrates every 30 to 45 minutes and that water and energy drinks are given at regular intervals. Use the same products in training that you plan to use on race day.",
+  "tips": [
+    "Use a conservative start; the early downhill is a common trap",
+    "Wear sun protection, as clear skies and open roads can cause sunburn",
+    "Expect wind on exposed coastal sections in the later miles",
+    "Plan your transport, as the start and finish are in different places"
+  ],
+  "faq": [
+    {
+      "question": "Is the Edinburgh Marathon flat?",
+      "answer": "It is predominantly flat and downhill overall, with gradual rather than dramatic change in height. The official guide gives no elevation figures."
+    },
+    {
+      "question": "Is the Edinburgh Marathon point to point?",
+      "answer": "Yes. It starts near Edinburgh Castle and finishes at Pinkie Playing Fields near Musselburgh."
+    },
+    {
+      "question": "When is the Edinburgh Marathon held?",
+      "answer": "It is usually held in late May. Race-day temperatures are typically 10–16 °C."
+    }
+  ],
+  "sources": [
+    "https://www.edinburghmarathon.com/news/courses-routes/ultimate-guide-edinburgh-marathon",
+    "https://en.wikipedia.org/wiki/Edinburgh_Marathon"
+  ],
+  "checked": "2026-10"
+}

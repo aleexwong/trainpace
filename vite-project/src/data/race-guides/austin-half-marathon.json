@@ -1,0 +1,73 @@
+{
+  "slug": "austin-half-marathon",
+  "name": "Austin Half Marathon",
+  "city": "Austin",
+  "country": "Texas, USA",
+  "distanceKm": 21.0975,
+  "month": "February",
+  "courseType": "loop",
+  "terrain": "rolling",
+  "elevationGainM": 196,
+  "elevationLossM": 186,
+  "typicalWeather": "About 14 °C at the start, with afternoon highs that can reach the mid-20s °C (high 50s °F at the start, mid-70s °F or higher later)",
+  "website": "https://youraustinmarathon.com/",
+  "summary": "The Austin Half Marathon runs on the same weekend as the Austin Marathon. It starts downtown, goes up South Congress Avenue, comes back past Lady Bird Lake and finishes in front of the Texas State Capitol. The course rolls, with one long climb early and a short steep hill near the end.",
+  "courseHighlights": [
+    "Start downtown and run north up South Congress Avenue",
+    "South Congress Bridge over Lady Bird Lake",
+    "Long downhill on South 1st Street",
+    "Cesar Chavez Street, Veterans Drive and Lake Austin Boulevard",
+    "Finish in front of the Texas State Capitol"
+  ],
+  "paceStrategy": {
+    "summary": "A guide built from the official map shows a long climb in the first 2.4 miles, a long downhill from mile 3.6, then flatter miles by the lake. A short, steep hill at mile 12.1 comes right before the finish. Start easy and keep legs fresh for that last climb.",
+    "segments": [
+      {
+        "section": "mile 1–3",
+        "terrain": "Steady climb on South Congress Avenue",
+        "advice": "Run by effort and keep the pace calm on the uphill."
+      },
+      {
+        "section": "mile 4–7",
+        "terrain": "Long downhill on South 1st Street",
+        "advice": "Use quick, light steps and let the pace rise a little without pushing."
+      },
+      {
+        "section": "mile 7–10",
+        "terrain": "Flat by Lady Bird Lake, short rises near miles 8 and 9",
+        "advice": "Settle into goal pace and take fuel here."
+      },
+      {
+        "section": "mile 10–13.1",
+        "terrain": "Rolling road to the Capitol, steep hill at mile 12.1",
+        "advice": "Shorten your stride on the steep climb, then push downhill to the finish."
+      }
+    ]
+  },
+  "fuelingNotes": "A 2025 course guide lists aid stations with water and electrolyte drink at about every mile or two, and gels at mile 9. Check the current race guide, because the aid-station plan can change.",
+  "tips": [
+    "Be ready for a start before sunrise in February; the first corrals leave at 7 a.m.",
+    "Save energy for the hill near mile 12, which has the steepest grade of the course",
+    "Dress in layers you can throw away; it is cool at the start but can warm up fast",
+    "Know where the half and full marathon courses split, at about mile 12.4, and follow the half signs"
+  ],
+  "faq": [
+    {
+      "question": "Is the Austin Half Marathon flat?",
+      "answer": "No, it rolls. A 2025 course guide based on the official map measures about 643 feet (196 m) of climbing and 609 feet (186 m) of descent. The longest climb is on South Congress Avenue and the steepest is near mile 12."
+    },
+    {
+      "question": "Where does the Austin Half Marathon finish?",
+      "answer": "It finishes downtown in front of the Texas State Capitol, on Congress Avenue."
+    },
+    {
+      "question": "When is the Austin Half Marathon held?",
+      "answer": "It is held in February, on a Sunday, starting at 7 a.m."
+    }
+  ],
+  "sources": [
+    "https://youraustinmarathon.com/",
+    "https://runready.substack.com/p/the-2025-austin-marathon-half-marathon"
+  ],
+  "checked": "2026-10"
+}

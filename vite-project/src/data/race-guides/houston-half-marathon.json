@@ -1,0 +1,69 @@
+{
+  "slug": "houston-half-marathon",
+  "name": "Aramco Houston Half Marathon",
+  "city": "Houston",
+  "country": "Texas, USA",
+  "distanceKm": 21.0975,
+  "month": "January",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": 39,
+  "elevationLossM": 39,
+  "typicalWeather": "About 7–18 °C (average January lows in the mid-40s °F, highs in the mid-60s °F)",
+  "website": "https://www.chevronhoustonmarathon.com/",
+  "summary": "The Aramco Houston Half Marathon runs on the same weekend as the Chevron Houston Marathon. Both races share one start line near downtown, and the courses split at mile 7.6. The half is a flat loop that finishes near the George R. Brown Convention Center.",
+  "courseHighlights": [
+    "Start on Congress Street downtown",
+    "Washington Avenue and Kirby Drive through the neighbourhoods",
+    "Bissonnet Street and Montrose Boulevard, close to the Museum District",
+    "Allen Parkway in the last miles",
+    "Finish near the George R. Brown Convention Center"
+  ],
+  "paceStrategy": {
+    "summary": "The course is flat, with small rises and falls. A third-party guide based on the official map puts the small rollers on Allen Parkway in the last 3 miles. Run an even pace and keep a little energy for that last section.",
+    "segments": [
+      {
+        "section": "mile 1–3",
+        "terrain": "Flat downtown streets",
+        "advice": "Start at goal pace or slightly slower, because the crowded start can pull you out too fast."
+      },
+      {
+        "section": "mile 4–9",
+        "terrain": "Flat to gently rolling streets: Kirby, Bissonnet and Montrose",
+        "advice": "Hold a steady rhythm and do not speed up on the long flat stretches."
+      },
+      {
+        "section": "mile 10–13.1",
+        "terrain": "Allen Parkway rollers, then downtown",
+        "advice": "Keep effort steady on the small rises and push in the last mile."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site lists water and Gatorade Endurance about every 1.5 miles, starting at mile 2. Take gels with your own plan between those stops.",
+  "tips": [
+    "Check your corral and start time; the first corral starts at 6:55 a.m. and later corrals start in waves",
+    "Dress for a cool start in January; the average low is in the mid-40s °F",
+    "Know the mile 7.6 split: the half marathon and marathon courses separate there, so follow the half signs",
+    "Spectators are thick on the course, so save a little energy to enjoy it"
+  ],
+  "faq": [
+    {
+      "question": "Is the Houston Half Marathon course flat?",
+      "answer": "Yes, it is mostly flat. A third-party course guide based on the official map measures about 126 feet (39 m) of climbing and about 128 feet (39 m) of descent, with small rollers on Allen Parkway."
+    },
+    {
+      "question": "Where do the Houston Half Marathon and marathon courses split?",
+      "answer": "The official course page says the half marathon follows the marathon course until mile 7.6, where the two courses split."
+    },
+    {
+      "question": "When is the Houston Half Marathon held?",
+      "answer": "It is held in January, on the same weekend as the Chevron Houston Marathon."
+    }
+  ],
+  "sources": [
+    "https://www.chevronhoustonmarathon.com/course/",
+    "https://runready.substack.com/p/the-2025-aramco-houston-half-marathon",
+    "https://en.wikipedia.org/wiki/Houston_Marathon"
+  ],
+  "checked": "2026-10"
+}

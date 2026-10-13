@@ -1,0 +1,80 @@
+{
+  "slug": "rome-marathon",
+  "name": "Acea Run Rome The Marathon",
+  "city": "Rome",
+  "country": "Italy",
+  "distanceKm": 42.195,
+  "month": "March",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "9–15 °C in March, often clear skies",
+  "website": "https://www.runromethemarathon.com/",
+  "summary": "Acea Run Rome The Marathon is a city-centre race in March. It starts on Via dei Fori Imperiali with the Colosseum behind the runners and finishes inside the Circo Massimo. The course is flat, but about 6 km are on cobblestones.",
+  "courseHighlights": [
+    "Start on Fori Imperiali with the Colosseum behind you",
+    "Circo Massimo and the Palatino early in the race",
+    "Castel Sant'Angelo and Via della Conciliazione with St. Peter's Basilica",
+    "Piazza del Popolo, Piazza di Spagna and Piazza Navona",
+    "Last 2 km past the Vittoriano and Bocca della Verità, then the finish in the Circo Massimo"
+  ],
+  "paceStrategy": {
+    "summary": "The course is flat. The official site gives a start height of 22 m, a high point of 31 m and a low point of 8.1 m. The main challenge is the cobblestones, so start steadily and keep your stride short on rough streets.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Central Rome: Piazza Venezia, Palatino, Circo Massimo",
+        "advice": "Start slightly slower than goal pace, as the streets are busy."
+      },
+      {
+        "section": "km 10–20",
+        "terrain": "Lungotevere along the Tiber, then Castel Sant'Angelo and the Vatican (about km 17–20)",
+        "advice": "Settle into an even rhythm on the wide riverside roads."
+      },
+      {
+        "section": "km 20–35",
+        "terrain": "Foro Italico, Ponte Milvio, then back along the Tiber towards the centre",
+        "advice": "Hold goal pace; the course is flat here."
+      },
+      {
+        "section": "km 35–40",
+        "terrain": "City centre: Piazza del Popolo, Piazza di Spagna, Piazza Navona",
+        "advice": "Expect cobblestones in the centre; shorten your stride and watch your footing."
+      },
+      {
+        "section": "km 40–42.2",
+        "terrain": "Vittoriano, Bocca della Verità, finish in the Circo Massimo",
+        "advice": "Save a little energy for the final 2 km, then run it in."
+      }
+    ]
+  },
+  "fuelingNotes": "Take gels on the flat riverside sections, before you reach the cobblestones in the centre, where it is harder to open a gel safely. The sources I used do not list aid-station positions, so check the official runner guide.",
+  "tips": [
+    "Wear shoes with a little cushioning, as about 6 km of the course is cobblestones",
+    "Watch your footing on wet cobbles if it rains",
+    "The start is in the historic centre, so plan transport and arrive early",
+    "Sun can be strong on open stretches even in March, so consider a cap"
+  ],
+  "faq": [
+    {
+      "question": "Is the Rome Marathon course flat?",
+      "answer": "Yes, it is flat. The official site gives a start height of 22 m, a highest point of 31 m and a lowest point of 8.1 m. A race guide says there are one or two short climbs."
+    },
+    {
+      "question": "Does the Rome Marathon have cobblestones?",
+      "answer": "Yes. A race guide that is approved by the organiser says there are about 6 km of cobblestones."
+    },
+    {
+      "question": "When is the Rome Marathon held?",
+      "answer": "It is held in March. The official site lists the next race for 14 March 2027."
+    }
+  ],
+  "sources": [
+    "https://www.runromethemarathon.com/en/home-2025-en-2/marathon/",
+    "https://www.runromethemarathon.com/en/",
+    "https://www.finishers.com/course/marathon-de-rome",
+    "https://en.wikipedia.org/wiki/Rome_Marathon"
+  ],
+  "checked": "2026-10"
+}

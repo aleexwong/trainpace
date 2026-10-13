@@ -1,0 +1,74 @@
+{
+  "slug": "san-francisco-half-marathon",
+  "name": "The San Francisco Marathon Bridge Half (1st Half)",
+  "city": "San Francisco",
+  "country": "California, USA",
+  "distanceKm": 21.0975,
+  "month": "July",
+  "courseType": "point-to-point",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Historical race temperature of about 64 °F (18 °C), per the race site",
+  "website": "https://www.thesfmarathon.com/",
+  "summary": "The San Francisco Marathon weekend has two half marathons, the 1st Half (the Bridge Half) and the 2nd Half (the City Half). This guide covers the Bridge Half, which starts on the Embarcadero, crosses the Golden Gate Bridge and finishes in the Presidio. The course is USATF-certified.",
+  "courseHighlights": [
+    "Start on the Embarcadero at Market Street, along the bay",
+    "Run across the Golden Gate Bridge",
+    "Downhill sections on the north side with views of Sausalito and Cavallo Point",
+    "Cross back into San Francisco over the bridge",
+    "Finish in the Presidio at Lincoln and Ralston, with the bridge behind you"
+  ],
+  "paceStrategy": {
+    "summary": "The race site says there are downhill sections on the north side of the bridge, and that the course has less elevation than you may think. It gives no figures, so run by effort. Coming back over the bridge, expect wind and cooler air.",
+    "segments": [
+      {
+        "section": "mile 1–4",
+        "terrain": "Embarcadero along the bay",
+        "advice": "Start at or just below goal pace while the field spreads out."
+      },
+      {
+        "section": "mile 5–8",
+        "terrain": "Approach to the Golden Gate Bridge and the crossing",
+        "advice": "Run by effort on any rises and keep your hands and gear secure on the bridge."
+      },
+      {
+        "section": "mile 9–11",
+        "terrain": "North side of the bridge, with downhill sections",
+        "advice": "Let the pace come a little faster on the downhills without pounding your legs."
+      },
+      {
+        "section": "mile 12–13.1",
+        "terrain": "Back over the bridge, then to the Presidio finish",
+        "advice": "Keep a steady effort and save a kick for the finish."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site lists 6 water stops with water, electrolytes, medical aid and toilets. Water stop 4 also has energy chews.",
+  "tips": [
+    "The start is early, at 6:30 a.m., so plan your travel to the Embarcadero the night before",
+    "Know the Golden Gate Bridge cut-off times shown on the race site",
+    "Dress in layers you can throw away; mornings can be cool and breezy near the bay",
+    "Check you are entering the right half: the 2nd Half (City Half) starts in Golden Gate Park and finishes on the Embarcadero"
+  ],
+  "faq": [
+    {
+      "question": "Does the San Francisco half marathon cross the Golden Gate Bridge?",
+      "answer": "Yes. The 1st Half, called the Bridge Half, runs across the Golden Gate Bridge and back. The 2nd Half, called the City Half, starts in Golden Gate Park and does not use the bridge."
+    },
+    {
+      "question": "Is the San Francisco Marathon Bridge Half flat?",
+      "answer": "The race site says it has less elevation than you may think, and mentions downhill sections on the north side. It does not give climb figures."
+    },
+    {
+      "question": "When is the San Francisco Marathon held?",
+      "answer": "It is held in July, on a weekend, with the halves on Sunday."
+    }
+  ],
+  "sources": [
+    "https://www.thesfmarathon.com/races/1st-half-marathon/",
+    "https://www.thesfmarathon.com/races/2nd-half-marathon/",
+    "https://www.thesfmarathon.com/"
+  ],
+  "checked": "2026-10"
+}

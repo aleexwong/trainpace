@@ -1,0 +1,69 @@
+{
+  "slug": "chicago-half-marathon",
+  "name": "Life Time Chicago Half Marathon",
+  "city": "Chicago",
+  "country": "Illinois, USA",
+  "distanceKm": 21.0975,
+  "month": "September",
+  "courseType": "out-and-back",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.chicagohalfmarathon.com/",
+  "summary": "The Life Time Chicago Half Marathon starts and finishes in Jackson Park on Chicago's South Side. The organisers describe the course as flat, scenic and fast. Runners go north on a closed Lake Shore Drive, turn around, and come back south past Kenwood and Hyde Park.",
+  "courseHighlights": [
+    "Start and finish in Jackson Park, site of the 1893 World Columbian Exposition",
+    "North on Lake Shore Drive with views of Lake Michigan and the skyline",
+    "Turnaround, then south Lake Shore Drive past Kenwood and Hyde Park",
+    "Museum of Science and Industry campus near the end",
+    "Finish at the golden Statue of the Republic"
+  ],
+  "paceStrategy": {
+    "summary": "The course is flat, so an even pace works well. Wind off the lake can change the effort on the way out and the way back. Run the first miles at goal pace and decide in the last 5K whether to speed up.",
+    "segments": [
+      {
+        "section": "mile 1–3",
+        "terrain": "Flat, out of Jackson Park onto Lake Shore Drive",
+        "advice": "Settle into goal pace and avoid weaving through the field."
+      },
+      {
+        "section": "mile 4–9",
+        "terrain": "Flat, wide Lake Shore Drive with the turnaround",
+        "advice": "Hold an even effort, and tuck behind other runners if there is a wind."
+      },
+      {
+        "section": "mile 10–13.1",
+        "terrain": "Flat, south Lake Shore Drive back to Jackson Park",
+        "advice": "Keep pace steady, then lift the effort when you see the Museum of Science and Industry."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found on the pages we checked. Check the current athlete guide and carry a gel for the middle miles if you use them.",
+  "tips": [
+    "Use the reserved race shuttles from Millennium Park or Belmont, which leave early in the morning",
+    "Get to the start corrals early, because corrals close shortly before the start",
+    "Keep moving after the start; a 16-minute mile pace is enforced so Lake Shore Drive can reopen",
+    "Check the wind forecast, as the route runs beside Lake Michigan"
+  ],
+  "faq": [
+    {
+      "question": "Is the Chicago Half Marathon course flat?",
+      "answer": "Yes. The official race page describes it as a flat, scenic, fast course on Lake Shore Drive. No elevation figures are given."
+    },
+    {
+      "question": "Where does the Chicago Half Marathon start and finish?",
+      "answer": "Both are in Jackson Park, on Chicago's South Side. The finish is at the golden Statue of the Republic."
+    },
+    {
+      "question": "When is the Chicago Half Marathon held?",
+      "answer": "It is held on a Sunday in September. A separate Chicago Spring Half Marathon is held in May."
+    }
+  ],
+  "sources": [
+    "https://www.chicagohalfmarathon.com/half-marathon/",
+    "https://www.chicagohalfmarathon.com/athlete-guide/",
+    "https://www.chicagohalfmarathon.com/"
+  ],
+  "checked": "2026-10"
+}
