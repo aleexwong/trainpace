@@ -33,6 +33,7 @@ import {
   getIndexablePaths,
 } from "../src/lib/llm/page-docs";
 import { absoluteUrl, markdownPathForRoute } from "../src/lib/llm/markdown";
+import { raceSeoPages } from "../src/features/seo-pages/seoPages";
 
 const DIST = path.resolve(process.cwd(), "dist");
 const GENERIC_TITLE = "TrainPace – Free Running Tools";
@@ -147,6 +148,51 @@ if (!fs.existsSync(shellPath)) {
   if (!/<meta name="robots" content="noindex">/.test(shell)) errors.push("app-shell.html is not noindex");
   if (/rel="canonical"/.test(shell)) errors.push("app-shell.html has a canonical");
   if (/application\/ld\+json/.test(shell)) errors.push("app-shell.html has JSON-LD");
+}
+
+// ── Race guides (src/data/race-guides/*.json) ──────────────────────────────
+
+const GUIDE_DIR = path.resolve(process.cwd(), "src/data/race-guides");
+const raceSlugs = new Set(raceSeoPages.map((p) => p.slug));
+const BANNED_WORDS = /\b(iconic|unforgettable|breathtaking|world-class|bucket[- ]list)\b/i;
+const COURSE_TYPES = ["loop", "point-to-point", "out-and-back", "multi-lap"];
+const TERRAINS = ["flat", "rolling", "hilly", "net downhill", "net uphill"];
+
+for (const file of fs.existsSync(GUIDE_DIR) ? fs.readdirSync(GUIDE_DIR) : []) {
+  if (!file.endsWith(".json")) continue;
+  const where = `race-guides/${file}`;
+  let g: Record<string, unknown>;
+  try {
+    g = JSON.parse(fs.readFileSync(path.join(GUIDE_DIR, file), "utf8"));
+  } catch {
+    errors.push(`${where}: not valid JSON`);
+    continue;
+  }
+  const str = (k: string) => typeof g[k] === "string" && (g[k] as string).trim() !== "";
+  const arr = (k: string, min: number, max: number) =>
+    Array.isArray(g[k]) && (g[k] as unknown[]).length >= min && (g[k] as unknown[]).length <= max;
+  const num = (k: string) => g[k] === null || (typeof g[k] === "number" && (g[k] as number) >= 0);
+  const pace = g.paceStrategy as { summary?: string; segments?: unknown[] } | undefined;
+
+  const problems = [
+    g.slug !== file.replace(/\.json$/, "") && "slug does not match file name",
+    !raceSlugs.has(String(g.slug)) && "slug is not a race page",
+    !["name", "city", "country", "month", "website", "summary", "fuelingNotes", "checked"].every(str) &&
+      "missing a required text field",
+    ![42.195, 21.0975].includes(g.distanceKm as number) && "distanceKm must be 42.195 or 21.0975",
+    !COURSE_TYPES.includes(String(g.courseType)) && "bad courseType",
+    !TERRAINS.includes(String(g.terrain)) && "bad terrain",
+    !(num("elevationGainM") && num("elevationLossM")) && "elevation must be a number or null",
+    !/^https:\/\//.test(String(g.website)) && "website must be https",
+    !(pace?.summary && Array.isArray(pace.segments) && pace.segments.length >= 3 && pace.segments.length <= 6) &&
+      "paceStrategy needs a summary and 3–6 segments",
+    !arr("tips", 3, 5) && "tips: 3–5 items",
+    !arr("faq", 2, 4) && "faq: 2–4 items",
+    !arr("sources", 1, 20) && "needs at least one source",
+    !arr("courseHighlights", 0, 6) && "courseHighlights: up to 6",
+    BANNED_WORDS.test(JSON.stringify(g)) && "uses a banned hype word",
+  ].filter(Boolean);
+  for (const p of problems) errors.push(`${where}: ${p}`);
 }
 
 // ── Host consistency across all text output ────────────────────────────────

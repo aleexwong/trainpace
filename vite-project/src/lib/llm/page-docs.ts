@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 /**
  * Route → PageDoc
  *
@@ -19,6 +20,14 @@ import {
   planSeoPages,
   getAllSeoPaths,
 } from "../../features/seo-pages/seoPages";
+import {
+  courseTypeLabel,
+  distanceLabel,
+  elevationLabel,
+  raceGuideDescription,
+  raceGuideSlug,
+  type RaceGuide,
+} from "../../features/seo-pages/raceGuides";
 import blogData from "../../data/blog-posts.json";
 import faqData from "../../data/faq-data.json";
 import marathonData from "../../data/marathon-data.json";
@@ -131,6 +140,7 @@ export function getBlogPost(url: string) {
 const ALIAS_ROUTES: Record<string, string> = {
   "/elevationfinder": "/elevation-finder",
   "/ethos": "/about",
+  "/race/rbc-brooklyn-half": "/race/brooklyn-half",
 };
 
 /** The canonical path for a route (itself, unless it is an alias). */
@@ -153,6 +163,30 @@ export const SITE_AUTHOR = {
 // ── Race course data ───────────────────────────────────────────────────────
 
 type MarathonCourse = (typeof marathonData)[keyof typeof marathonData];
+
+/**
+ * Researched guides for race pages without GPX data, keyed by race page slug.
+ * Eager: this module only runs at build time (prerender + Markdown), so the
+ * browser never downloads the full set — it loads one guide per page view
+ * through `loadRaceGuide`.
+ */
+let raceGuides: Record<string, RaceGuide> | undefined;
+
+/** The researched guide for a race page slug, if there is one. */
+export function getRaceGuide(slug: string | undefined): RaceGuide | undefined {
+  if (!slug) return undefined;
+  // Built on first use: vite.config.ts imports this module for the route list,
+  // and Vite loads its config without the import.meta.glob transform.
+  raceGuides ??= Object.fromEntries(
+    Object.values(
+      import.meta.glob<RaceGuide>("../../data/race-guides/*.json", {
+        eager: true,
+        import: "default",
+      })
+    ).map((g) => [g.slug, g])
+  );
+  return raceGuides[raceGuideSlug(slug)];
+}
 
 /** Course data for a race, keyed by its preview-route slug (e.g. "boston"). */
 export function getCourse(key: string | undefined): MarathonCourse | undefined {
@@ -319,6 +353,8 @@ export function getPageTitle(url: string): string {
 
 export function getPageDescription(url: string): string {
   const seoMeta = getSeoMeta(url);
+  const guide = seoMeta?.tool === "race" ? getRaceGuide(seoMeta.slug) : undefined;
+  if (guide) return raceGuideDescription(guide);
   if (seoMeta?.description) return seoMeta.description;
 
   if (url === "/blog") return BLOG_LIST_DESCRIPTION;
@@ -494,6 +530,72 @@ function agentFooter(): DocBlock[] {
 
 // ── Per-route content ──────────────────────────────────────────────────────
 
+/** The researched race guide, for race pages without GPX course data. */
+function raceGuideBlocks(guide: RaceGuide, opts: { faq: boolean }): DocBlock[] {
+  const rows: string[][] = [
+    ["Location", `${guide.city}, ${guide.country}`],
+    ["Distance", distanceLabel(guide)],
+    ["Usually held", guide.month],
+    ["Course", `${guide.terrain}, ${courseTypeLabel(guide)}`],
+  ];
+  const gain = elevationLabel(guide.elevationGainM);
+  const loss = elevationLabel(guide.elevationLossM);
+  if (gain) rows.push(["Elevation gain", gain]);
+  if (loss) rows.push(["Elevation loss", loss]);
+  if (guide.typicalWeather) rows.push(["Typical weather", guide.typicalWeather]);
+  rows.push(["Official site", guide.website]);
+
+  const blocks: DocBlock[] = [
+    { type: "heading", level: 2, text: `${guide.name} course guide` },
+    { type: "paragraph", text: guide.summary },
+    { type: "table", caption: `${guide.name} at a glance`, headers: ["Fact", "Value"], rows },
+  ];
+
+  if (guide.courseHighlights.length) {
+    blocks.push(
+      { type: "heading", level: 3, text: "Course highlights" },
+      { type: "list", items: guide.courseHighlights }
+    );
+  }
+
+  blocks.push(
+    { type: "heading", level: 2, text: `${guide.name} pacing strategy` },
+    { type: "paragraph", text: guide.paceStrategy.summary },
+    {
+      type: "table",
+      caption: "Pacing by course section",
+      headers: ["Section", "Terrain", "Advice"],
+      rows: guide.paceStrategy.segments.map((s) => [s.section, s.terrain, s.advice]),
+    },
+    { type: "heading", level: 2, text: "Fueling notes" },
+    { type: "paragraph", text: guide.fuelingNotes },
+    { type: "heading", level: 2, text: "Race-day tips" },
+    { type: "list", items: guide.tips }
+  );
+
+  if (opts.faq && guide.faq.length) {
+    blocks.push({ type: "heading", level: 2, text: "Frequently asked questions" });
+    for (const item of guide.faq) {
+      blocks.push({ type: "heading", level: 3, text: item.question });
+      blocks.push({ type: "paragraph", text: item.answer });
+    }
+  }
+
+  blocks.push(
+    {
+      type: "paragraph",
+      text: `Facts checked ${guide.checked} against the sources below. Race details change from year to year — confirm with the official site before race day.`,
+    },
+    {
+      type: "linkList",
+      label: "Sources",
+      items: guide.sources.map((href) => ({ href, label: href.replace(/^https?:\/\//, "").replace(/\/$/, "") })),
+    }
+  );
+
+  return blocks;
+}
+
 /**
  * Course facts, segment pacing, tips, and FAQ for a race we have real data
  * for. Shared by the /race/* prep pages and the /preview-route/* course pages
@@ -567,7 +669,7 @@ function seoPageBlocks(url: string): DocBlock[] {
 
   const blocks: DocBlock[] = [
     { type: "heading", level: 1, text: page.h1 || page.title.replace(" | TrainPace", "") },
-    { type: "paragraph", text: page.description },
+    { type: "paragraph", text: getPageDescription(url) },
   ];
 
   if (page.intro) {
@@ -590,6 +692,11 @@ function seoPageBlocks(url: string): DocBlock[] {
   // Race prep pages with real course data carry it. The config's own FAQ
   // takes precedence; otherwise the course FAQ is used.
   const course = page.tool === "race" ? getCourse(page.previewRouteKey) : undefined;
+  const guide = page.tool === "race" && !course ? getRaceGuide(page.slug) : undefined;
+  if (guide) {
+    blocks.push(...raceGuideBlocks(guide, { faq: !page.faq?.length }));
+  }
+
   if (course) {
     blocks.push(...courseBlocks(course, { faq: !page.faq?.length }));
     blocks.push({

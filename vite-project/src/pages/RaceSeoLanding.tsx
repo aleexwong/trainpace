@@ -8,6 +8,9 @@ import marathonData from "@/data/marathon-data.json";
 import StaticRouteMap from "@/components/utils/StaticRouteMap";
 import { db } from "@/lib/firebase";
 import { getCurrentDocumentId } from "@/config/routes";
+import { raceGuideDescription } from "@/features/seo-pages/raceGuides";
+import { useRaceGuide } from "@/features/seo-pages/hooks/useRaceGuide";
+import { RaceGuideSection } from "@/features/seo-pages/components/RaceGuideSection";
 
 type MarathonPreviewRoute = {
   name: string;
@@ -71,6 +74,10 @@ export default function RaceSeoLanding() {
   const basePreviewRoute = page?.previewRouteKey
     ? marathonRoutesData[page.previewRouteKey]
     : undefined;
+
+  // Races without GPX course data get a researched guide instead.
+  const guide = useRaceGuide(page?.slug, Boolean(page) && !basePreviewRoute);
+  const description = guide ? raceGuideDescription(guide) : page?.description ?? "";
 
   useEffect(() => {
     if (!page) return;
@@ -159,7 +166,7 @@ export default function RaceSeoLanding() {
         "@context": "https://schema.org",
         "@type": "WebPage",
         name: page.title,
-        description: page.description,
+        description,
         url: getSeoUrl(page.path),
         isPartOf: {
           "@type": "WebSite",
@@ -169,28 +176,6 @@ export default function RaceSeoLanding() {
       },
       buildBreadcrumbJsonLd(page.path, page.h1),
     ];
-
-    if (previewRoute) {
-      graph.push({
-        "@context": "https://schema.org",
-        "@type": "SportsEvent",
-        name: previewRoute.name,
-        description: previewRoute.description,
-        url: previewRoute.website,
-        startDate: previewRoute.raceDate,
-        sport: "Running",
-        location: {
-          "@type": "Place",
-          name: `${previewRoute.city}, ${previewRoute.country}`,
-          address: {
-            "@type": "PostalAddress",
-            addressLocality: previewRoute.city,
-            addressCountry: previewRoute.country,
-          },
-        },
-        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-      });
-    }
 
     if (page.howTo) {
       graph.push({
@@ -217,7 +202,9 @@ export default function RaceSeoLanding() {
         ? page.faq
         : previewRoute?.faq?.length
           ? previewRoute.faq
-          : undefined;
+          : guide?.faq?.length
+            ? guide.faq
+            : undefined;
 
     if (faqItems?.length) {
       graph.push({
@@ -238,7 +225,7 @@ export default function RaceSeoLanding() {
       "@context": "https://schema.org",
       "@graph": graph,
     };
-  }, [page, previewRoute]);
+  }, [page, previewRoute, guide, description]);
 
   if (!page) return <Navigate to="/" replace />;
 
@@ -246,16 +233,16 @@ export default function RaceSeoLanding() {
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-orange-50">
       <Helmet>
         <title>{page.title}</title>
-        <meta name="description" content={page.description} />
-        <link rel="canonical" href={getSeoUrl(page.path)} />
+        <meta name="description" content={description} />
+        <link rel="canonical" href={page.canonicalUrl ?? getSeoUrl(page.path)} />
         <meta property="og:title" content={page.title} />
-        <meta property="og:description" content={page.description} />
+        <meta property="og:description" content={description} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={getSeoUrl(page.path)} />
         <meta property="og:image" content="https://www.trainpace.com/landing-page-2025.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={page.title} />
-        <meta name="twitter:description" content={page.description} />
+        <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content="https://www.trainpace.com/landing-page-2025.png" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
@@ -402,6 +389,8 @@ export default function RaceSeoLanding() {
           </div>
         </section>
       )}
+
+      {!previewRoute && guide && <RaceGuideSection guide={guide} />}
 
       <section className="px-4 sm:px-6 pb-16">
         <div className="max-w-5xl mx-auto grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

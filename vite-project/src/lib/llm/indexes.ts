@@ -14,7 +14,7 @@ import {
   raceSeoPages,
 } from "../../features/seo-pages/seoPages";
 import blogData from "../../data/blog-posts.json";
-import { getCourse, getIndexablePaths, getPostUpdated } from "./page-docs";
+import { getCourse, getIndexablePaths, getPostUpdated, getRaceGuide } from "./page-docs";
 import { absoluteUrl, markdownPathForRoute } from "./markdown";
 import type { SeoPageConfig } from "../seo/types";
 
@@ -93,6 +93,16 @@ export function buildLlmsTxt(intro: string): string {
             `${course.elevationGain} m gain, segment pacing strategy, fueling notes`
           );
         }),
+        ...raceSeoPages
+          .filter((p) => !getCourse(p.previewRouteKey) && getRaceGuide(p.slug))
+          .map((p) => {
+            const guide = getRaceGuide(p.slug)!;
+            return mdLink(
+              p.path,
+              guide.name,
+              `${guide.city}, ${guide.terrain} ${guide.courseType} course, pacing by section`
+            );
+          }),
         mdLink(
           "/race",
           "All race prep pages",

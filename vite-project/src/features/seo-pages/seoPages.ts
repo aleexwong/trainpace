@@ -1679,7 +1679,11 @@ export const raceSeoPages: SeoPageConfig[] = [
   makeRacePage('Philadelphia Half Marathon', 'philadelphia-half-marathon'),
   makeRacePage('Chicago Half Marathon', 'chicago-half-marathon'),
   makeRacePage('San Francisco Half Marathon', 'san-francisco-half-marathon'),
-  makeRacePage('RBC Brooklyn Half', 'rbc-brooklyn-half'),
+  // Same race as 'brooklyn-half': kept so the URL works, canonical to that page.
+  {
+    ...makeRacePage('RBC Brooklyn Half', 'rbc-brooklyn-half'),
+    canonicalUrl: getSeoUrl('/race/brooklyn-half'),
+  },
   makeRacePage('Rock n Roll Las Vegas Half', 'las-vegas-half'),
   makeRacePage('Rock n Roll Nashville Half', 'nashville-half'),
   makeRacePage('Rock n Roll San Diego Half', 'san-diego-half'),

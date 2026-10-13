@@ -11,6 +11,7 @@ import {
   getPostUpdated,
   getCanonicalPath,
   getCourse,
+  getRaceGuide,
   getFaqEntries,
   BLOG_LIST_DESCRIPTION,
   SITE_AUTHOR,
@@ -342,10 +343,17 @@ function getPageNodes(url) {
   const seoPage = getSeoPage(url);
   if (seoPage) {
     // Same generator the React page uses, so static and hydrated JSON-LD agree.
-    const nodes = generateSchemaGraph(seoPage)["@graph"].map(stripContext);
-    const course = seoPage.tool === "race" ? getCourse(seoPage.previewRouteKey) : undefined;
-    if (course && !seoPage.faq?.length && course.faq?.length) {
-      nodes.push(faqPage(url, course.faq));
+    const nodes = generateSchemaGraph({
+      ...seoPage,
+      description: getPageDescription(url),
+    })["@graph"].map(stripContext);
+    const isRace = seoPage.tool === "race";
+    const raceFaq =
+      (isRace && getCourse(seoPage.previewRouteKey)?.faq) ||
+      (isRace && getRaceGuide(seoPage.slug)?.faq) ||
+      [];
+    if (!seoPage.faq?.length && raceFaq.length) {
+      nodes.push(faqPage(url, raceFaq));
     }
     return nodes;
   }
