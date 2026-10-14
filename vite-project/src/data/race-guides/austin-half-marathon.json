@@ -7,8 +7,8 @@
   "month": "February",
   "courseType": "loop",
   "terrain": "rolling",
-  "elevationGainM": 196,
-  "elevationLossM": 186,
+  "elevationGainM": null,
+  "elevationLossM": null,
   "typicalWeather": "About 14 °C at the start, with afternoon highs that can reach the mid-20s °C (high 50s °F at the start, mid-70s °F or higher later)",
   "website": "https://youraustinmarathon.com/",
   "summary": "The Austin Half Marathon runs on the same weekend as the Austin Marathon. It starts downtown, goes up South Congress Avenue, comes back past Lady Bird Lake and finishes in front of the Texas State Capitol. The course rolls, with one long climb early and a short steep hill near the end.",
@@ -54,7 +54,7 @@
   "faq": [
     {
       "question": "Is the Austin Half Marathon flat?",
-      "answer": "No, it rolls. A 2025 course guide based on the official map measures about 643 feet (196 m) of climbing and 609 feet (186 m) of descent. The longest climb is on South Congress Avenue and the steepest is near mile 12."
+      "answer": "No, it rolls. Expect steady ups and downs for most of the race. The longest climb is on South Congress Avenue and the steepest is near mile 12."
     },
     {
       "question": "Where does the Austin Half Marathon finish?",

@@ -7,8 +7,8 @@
   "month": "May",
   "courseType": "loop",
   "terrain": "rolling",
-  "elevationGainM": 196,
-  "elevationLossM": 195,
+  "elevationGainM": null,
+  "elevationLossM": null,
   "typicalWeather": null,
   "website": "https://www.runczech.com/en/events/prague-international-marathon",
   "summary": "The Prague International Marathon is a single loop through the centre of Prague in May. It starts in the Old Town Square area and crosses the Vltava river on several bridges, including Charles Bridge. Race guides describe it as mostly flat with a few gentle climbs and some cobblestones.",
@@ -20,7 +20,7 @@
     "Finish back at Old Town Square"
   ],
   "paceStrategy": {
-    "summary": "Plan an even effort. Early on there are cobbles and a gentle rise to Charles Bridge, so do not push the first 3 km. A guide approved by the organiser lists about 196 m of climbing and 195 m of descent, so expect small ups and downs, not one big hill.",
+    "summary": "Plan an even effort. Early on there are cobbles and a gentle rise to Charles Bridge, so do not push the first 3 km. Expect small ups and downs, not one big hill.",
     "segments": [
       {
         "section": "km 0–5",
@@ -54,7 +54,7 @@
   "faq": [
     {
       "question": "Is the Prague Marathon course flat?",
-      "answer": "It is mostly flat with gentle climbs. A guide approved by the organiser lists about 196 m of climbing and 195 m of descent. Another source lists about 280 m of gain, so figures vary."
+      "answer": "It is mostly flat with gentle climbs and some cobbled sections. Published figures for the total climb vary between sources, so expect small ups and downs rather than one big hill."
     },
     {
       "question": "Does the Prague Marathon have cobblestones?",

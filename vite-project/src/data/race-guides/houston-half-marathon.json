@@ -7,8 +7,8 @@
   "month": "January",
   "courseType": "loop",
   "terrain": "flat",
-  "elevationGainM": 39,
-  "elevationLossM": 39,
+  "elevationGainM": null,
+  "elevationLossM": null,
   "typicalWeather": "About 7–18 °C (average January lows in the mid-40s °F, highs in the mid-60s °F)",
   "website": "https://www.chevronhoustonmarathon.com/",
   "summary": "The Aramco Houston Half Marathon runs on the same weekend as the Chevron Houston Marathon. Both races share one start line near downtown, and the courses split at mile 7.6. The half is a flat loop that finishes near the George R. Brown Convention Center.",
@@ -49,7 +49,7 @@
   "faq": [
     {
       "question": "Is the Houston Half Marathon course flat?",
-      "answer": "Yes, it is mostly flat. A third-party course guide based on the official map measures about 126 feet (39 m) of climbing and about 128 feet (39 m) of descent, with small rollers on Allen Parkway."
+      "answer": "Yes, it is mostly flat. The only small rollers are on Allen Parkway in the last miles."
     },
     {
       "question": "Where do the Houston Half Marathon and marathon courses split?",

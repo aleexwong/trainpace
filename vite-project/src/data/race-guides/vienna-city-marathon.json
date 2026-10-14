@@ -7,7 +7,7 @@
   "month": "April",
   "courseType": "point-to-point",
   "terrain": "flat",
-  "elevationGainM": 75,
+  "elevationGainM": null,
   "elevationLossM": null,
   "typicalWeather": "10–18 °C expected on race day",
   "website": "https://www.vienna-marathon.com/",
@@ -53,7 +53,7 @@
   "faq": [
     {
       "question": "Is the Vienna City Marathon flat?",
-      "answer": "Yes. Marathon Index lists a flat profile with about 75 m of total climbing, and a race listing gives a 44 m difference between the highest and lowest points."
+      "answer": "Yes. The course is flat: the difference between its highest and lowest points is only about 44 m."
     },
     {
       "question": "Where does the Vienna City Marathon finish?",

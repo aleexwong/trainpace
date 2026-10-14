@@ -1,0 +1,67 @@
+{
+  "slug": "portland-marathon",
+  "name": "Portland Marathon",
+  "city": "Portland",
+  "country": "Oregon, USA",
+  "distanceKm": 42.195,
+  "month": "October",
+  "courseType": "loop",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.portlandmarathon.com/",
+  "summary": "The Portland Marathon is held on the first Sunday of October. It starts and finishes at Tom McCall Waterfront Park, at Salmon Street and Naito Parkway. The full marathon crosses four bridges. It is a USATF-certified Boston Marathon qualifier.",
+  "courseHighlights": [
+    "Start and finish at Waterfront Park",
+    "Four bridge crossings over the Willamette River",
+    "Past courses and recaps mention the St. Johns Bridge",
+    "A climb at Reed College on the official site"
+  ],
+  "paceStrategy": {
+    "summary": "A runner report calls the course relatively flat, with a maximum height of 178 ft, but the official site names a climb at Reed College and bridges add short rises. Run the climbs by effort and keep the rest steady.",
+    "segments": [
+      {
+        "section": "mile 1–6",
+        "terrain": "Downtown start and early bridge crossings",
+        "advice": "Start at goal pace or slightly slower."
+      },
+      {
+        "section": "mile 7–20",
+        "terrain": "Mid-race neighbourhoods and bridges",
+        "advice": "Hold even effort; slow slightly on rises."
+      },
+      {
+        "section": "mile 21–26.2",
+        "terrain": "Climb near Reed College, then back to the waterfront",
+        "advice": "Keep form and push in the last mile."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list aid-station positions, so check the official course guide. October mornings are cool, so take gels about every 40 minutes with water.",
+  "tips": [
+    "The marathon starts early, so arrive in good time",
+    "Rain is possible, and ponchos are given to runners if rain is forecast",
+    "Check the official site for the current course, as it changed in 2018–2019"
+  ],
+  "faq": [
+    {
+      "question": "Is the Portland Marathon flat?",
+      "answer": "A runner report calls it relatively flat with a maximum elevation of 178 ft. The official site mentions a climb at Reed College."
+    },
+    {
+      "question": "When is the Portland Marathon held?",
+      "answer": "It is held on the first Sunday of October."
+    },
+    {
+      "question": "Where does the Portland Marathon start and finish?",
+      "answer": "Both start and finish at Tom McCall Waterfront Park in downtown Portland."
+    }
+  ],
+  "sources": [
+    "https://www.portlandmarathon.com/",
+    "https://en.wikipedia.org/wiki/Portland_Marathon",
+    "https://runoregonblog.com/2025/08/04/a-tribute-to-our-city-the-portland-marathon/"
+  ],
+  "checked": "2026-10"
+}

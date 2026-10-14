@@ -1,0 +1,69 @@
+{
+  "slug": "valencia-half",
+  "name": "Valencia Trinidad Alfonso Zurich Half Marathon",
+  "city": "Valencia",
+  "country": "Spain",
+  "distanceKm": 21.0975,
+  "month": "October",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.valenciaciudaddelrunning.com/en/half/half-marathon/",
+  "summary": "The Valencia Half Marathon is a fast city race in October. Wikipedia lists world records set here by Letesenbet Gidey in 2021 and Yomif Kejelcha in 2024. The route uses wide, straight avenues, runs parallel to the Turia Gardens, and starts and finishes in the same area.",
+  "courseHighlights": [
+    "Start and finish area on Avinguda dels Tarongers (as announced for 2021)",
+    "Wide, straight avenues with few turns",
+    "Roads beside the Jardí del Túria",
+    "Gran Via Fernando el Católico and Paseo de la Alameda",
+    "Avenida de Francia and Serrería, two straight avenues named in the 2021 route"
+  ],
+  "paceStrategy": {
+    "summary": "Organisers described the 2021 route as extremely fast, with only ten curves and a design to shelter runners from headwinds. Run an even pace, tuck in behind other runners if there is wind, and check the current route first because it has changed over the years.",
+    "segments": [
+      {
+        "section": "km 0–5",
+        "terrain": "Wide avenues near the start area",
+        "advice": "Start at goal pace or slightly slower while the field is dense."
+      },
+      {
+        "section": "km 5–16",
+        "terrain": "Straight avenues, partly beside the Jardí del Túria",
+        "advice": "Hold an even pace and use groups to shelter from wind."
+      },
+      {
+        "section": "km 16–21.1",
+        "terrain": "Wide roads back to the finish area",
+        "advice": "Keep steady, then speed up over the last 2 km."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found on the pages we checked. Check the current race guide and carry your own gels.",
+  "tips": [
+    "Check the current route on the race site, because the start area and route have changed over the years",
+    "Plan for light wind and choose a pace group to shelter",
+    "Use the race's cheering-point map to find friends on the route",
+    "Book travel early, as entries are in high demand"
+  ],
+  "faq": [
+    {
+      "question": "Is the Valencia Half Marathon fast?",
+      "answer": "Yes. Organisers described the 2021 route as extremely fast, mostly on wide, straight avenues with only ten curves. The route has changed before, so check the current map."
+    },
+    {
+      "question": "Where does the Valencia Half Marathon start and finish?",
+      "answer": "For the 2021 edition the start and finish were on Avinguda dels Tarongers. Check the race site for the current location."
+    },
+    {
+      "question": "When is the Valencia Half Marathon held?",
+      "answer": "It is held on a Sunday in October."
+    }
+  ],
+  "sources": [
+    "https://www.valenciaciudaddelrunning.com/en/half/half-marathon/",
+    "https://valencianews.es/deportes/el-medio-maraton-valencia-presenta-su-nuevo-circuito-con-zonas-mas-amplias-y-seguras/",
+    "https://en.wikipedia.org/wiki/Valencia_Half_Marathon"
+  ],
+  "checked": "2026-10"
+}

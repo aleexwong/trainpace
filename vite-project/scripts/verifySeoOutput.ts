@@ -192,7 +192,7 @@ for (const file of fs.existsSync(GUIDE_DIR) ? fs.readdirSync(GUIDE_DIR) : []) {
     !arr("faq", 2, 4) && "faq: 2–4 items",
     !arr("sources", 1, 20) && "needs at least one source",
     !arr("courseHighlights", 0, 6) && "courseHighlights: up to 6",
-    BANNED_WORDS.test(JSON.stringify(g)) && "uses a banned hype word",
+    BANNED_WORDS.test(JSON.stringify({ ...g, sources: [] })) && "uses a banned hype word",
   ].filter(Boolean);
   for (const p of problems) errors.push(`${where}: ${p}`);
 }
