@@ -1,0 +1,68 @@
+{
+  "slug": "jacksonville-marathon",
+  "name": "Ameris Bank Jacksonville Marathon",
+  "city": "Jacksonville",
+  "country": "Florida, USA",
+  "distanceKm": 42.195,
+  "month": "December",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.amerisbank.com/About/What-Guides-Us/Community-Involvement/Jacksonville-Marathon",
+  "summary": "The Ameris Bank Jacksonville Marathon is a flat, fast Boston-qualifying race held in December. It starts at the Bolles School, heads south into Mandarin and loops back along the St. Johns River. A race listing says there are no hills, bridges or overpasses and that about 85% of the route is shaded.",
+  "courseHighlights": [
+    "Start at the Bolles School on San Jose Boulevard",
+    "South into the Mandarin area",
+    "Return along the St. Johns River",
+    "About 85% shade (race listing)"
+  ],
+  "paceStrategy": {
+    "summary": "With no hills, bridges or overpasses, the course suits even pacing. The shade helps in warm weather, but Florida can be humid, so drink early.",
+    "segments": [
+      {
+        "section": "mile 1–7",
+        "terrain": "Flat roads south from the Bolles School; the half marathon splits off near mile 7",
+        "advice": "Hold goal pace and settle into a rhythm."
+      },
+      {
+        "section": "mile 7–20",
+        "terrain": "Flat loop through Mandarin",
+        "advice": "Keep the effort even and take fluids at each aid station."
+      },
+      {
+        "section": "mile 20–26.2",
+        "terrain": "Return along the St. Johns River",
+        "advice": "Stay steady; there are no hills, so hold form."
+      }
+    ]
+  },
+  "fuelingNotes": "A race listing says water stations are about every 2 miles. Carry your own gels and plan to take one about every 45 minutes.",
+  "tips": [
+    "The race starts and finishes at the Bolles School, so parking and logistics are in one place",
+    "Wear light layers: December mornings in Florida can start cool and warm up",
+    "The course is mostly shaded, so sunglasses are less needed but a cap helps if it warms up",
+    "Check the current sponsor and date on the official race page; the name has changed over the years"
+  ],
+  "faq": [
+    {
+      "question": "Is the Jacksonville Marathon flat?",
+      "answer": "Yes. A race listing calls the profile very flat, with no hills, bridges or overpasses."
+    },
+    {
+      "question": "When is the Jacksonville Marathon held?",
+      "answer": "It is held on a Saturday in December."
+    },
+    {
+      "question": "Where does the Jacksonville Marathon start?",
+      "answer": "It starts at the Bolles School in Jacksonville and heads south into Mandarin."
+    }
+  ],
+  "sources": [
+    "https://www.amerisbank.com/About/What-Guides-Us/Community-Involvement/Jacksonville-Marathon",
+    "https://sunriserunco.com/race/jacksonville-marathon/",
+    "https://1stplacesports.com/races/ameris-bank-jacksonville-half-marathon-and-5k/"
+  ],
+  "checked": "2026-10"
+}
