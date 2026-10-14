@@ -1,0 +1,67 @@
+{
+  "slug": "tucson-marathon",
+  "name": "Tucson Marathon",
+  "city": "Tucson",
+  "country": "Arizona, USA",
+  "distanceKm": 42.195,
+  "month": "December",
+  "courseType": "point-to-point",
+  "terrain": "net downhill",
+  "elevationGainM": 89,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://aravaiparunning.com/tucson",
+  "summary": "The Tucson Marathon is a paved point-to-point race held in December. It starts at Biosphere 2 near Oracle and finishes at the Pima Community College Northwest Campus in Tucson. The official page lists 292 ft (89 m) of climbing and a net downhill of 1,493 ft (455 m).",
+  "courseHighlights": [
+    "Start at Biosphere 2 in Oracle",
+    "Rolling hills in the first 2 miles",
+    "Turn onto Highway AZ-77 at mile 2.8",
+    "Cañada del Oro River Park bike path from mile 18",
+    "Finish at Pima Community College Northwest Campus"
+  ],
+  "paceStrategy": {
+    "summary": "The course is mostly downhill, with rolling hills in the first 2 miles. Do not run the opening downhill too fast; the quads take most of the work.",
+    "segments": [
+      {
+        "section": "mile 1–3",
+        "terrain": "Rolling hills, then onto Highway AZ-77",
+        "advice": "Start at goal pace and do not chase the first downhill."
+      },
+      {
+        "section": "mile 3–18",
+        "terrain": "Long downhill on Highway AZ-77",
+        "advice": "Keep an even effort and a short, quick stride on the descent."
+      },
+      {
+        "section": "mile 18–26.2",
+        "terrain": "Cañada del Oro River Park bike path",
+        "advice": "Hold form on the path and aim to finish strong."
+      }
+    ]
+  },
+  "fuelingNotes": "The official page lists water and NEVERSECOND C30 sports drink at every station through mile 24.5. Gels are at miles 12.9, 16.3 and 22.6, bananas at miles 8.7, 14.2 and 19.8, and Oreos at mile 23.5.",
+  "tips": [
+    "The marathon starts at Biosphere 2; the half marathon starts at a different place, in Catalina, so check which start you need",
+    "Train on downhills so your quads are ready for a net downhill course",
+    "Plan transport to Oracle for the start and from the Northwest Campus finish; check the official event page",
+    "Take the gels at miles 12.9, 16.3 and 22.6 on the course or bring your own"
+  ],
+  "faq": [
+    {
+      "question": "Is the Tucson Marathon downhill?",
+      "answer": "Yes. The official page says the course is primarily downhill, with 292 ft (89 m) of climbing and a net downhill of 1,493 ft (455 m)."
+    },
+    {
+      "question": "When is the Tucson Marathon held?",
+      "answer": "It is held on a Sunday in December."
+    },
+    {
+      "question": "Where does the Tucson Marathon start and finish?",
+      "answer": "It starts at Biosphere 2 in Oracle and finishes at the Pima Community College Northwest Campus in Tucson."
+    }
+  ],
+  "sources": [
+    "https://aravaiparunning.com/tucson"
+  ],
+  "checked": "2026-10"
+}

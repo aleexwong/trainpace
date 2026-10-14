@@ -1,0 +1,69 @@
+{
+  "slug": "amsterdam-half",
+  "name": "Mizuno Half Marathon (TCS Amsterdam Marathon weekend)",
+  "city": "Amsterdam",
+  "country": "Netherlands",
+  "distanceKm": 21.0975,
+  "month": "October",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.tcsamsterdammarathon.eu/mizuno-half-marathon",
+  "summary": "The Mizuno Half Marathon is part of the TCS Amsterdam Marathon weekend in October. The organisers call it the biggest half marathon in the Netherlands. It starts on Stadionweg, shares most of its route with the marathon, and finishes inside the Olympic Stadium. The race site describes the Amsterdam course as flat and fast.",
+  "courseHighlights": [
+    "Start on Stadionweg, next to the Olympic Stadium",
+    "Utrechtse Bridge over the Amstel river",
+    "Watergraafsmeer and Zeeburg",
+    "Shared marathon route through Amsterdam city centre",
+    "Finish in front of the grandstand in the Olympic Stadium"
+  ],
+  "paceStrategy": {
+    "summary": "The race site describes the course as flat and fast, so an even pace is the plan. The start is in waves by expected finish time, so line up in your own wave and avoid a fast start.",
+    "segments": [
+      {
+        "section": "km 0–5",
+        "terrain": "Flat city streets: Stadionweg, Churchilllaan and Rijnstraat",
+        "advice": "Start at goal pace or slightly slower in your start wave."
+      },
+      {
+        "section": "km 5–15",
+        "terrain": "Flat; Amstel bridge, Watergraafsmeer, Zeeburg and the shared marathon route",
+        "advice": "Hold an even pace and take fuel at km 9 if you use gels."
+      },
+      {
+        "section": "km 15–21.1",
+        "terrain": "Flat route back to the Olympic Stadium",
+        "advice": "Keep steady and speed up in the final 2 km."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site says Maurten gels are given at km 9, and that no gels or bars are given at the other stations. Bring extra gels yourself; Maurten advises one gel every 6 km.",
+  "tips": [
+    "Check your wave: the race site lists the first start at 13:20 and later waves up to 13:55 for the most recent edition shown",
+    "Arrive at the start area no earlier than half an hour before your start time, as the race site advises",
+    "Use the free clothing drop-off tents in front of Sporthallen Zuid",
+    "Carry your own gels, as only one gel point is listed"
+  ],
+  "faq": [
+    {
+      "question": "Is the Amsterdam Half Marathon flat?",
+      "answer": "Yes. The race site describes the Amsterdam course as known for its flat, fast, and historic character. We found no official climb figure."
+    },
+    {
+      "question": "Where does the Amsterdam Half Marathon finish?",
+      "answer": "It finishes in front of the grandstand in the Olympic Stadium."
+    },
+    {
+      "question": "When is the Amsterdam Half Marathon held?",
+      "answer": "It is held in October, as part of the TCS Amsterdam Marathon weekend, and Wikipedia says the marathon is on the third Sunday of October."
+    }
+  ],
+  "sources": [
+    "https://www.tcsamsterdammarathon.eu/mizuno-half-marathon",
+    "https://www.tcsamsterdammarathon.eu/",
+    "https://en.wikipedia.org/wiki/Amsterdam_Marathon"
+  ],
+  "checked": "2026-10"
+}

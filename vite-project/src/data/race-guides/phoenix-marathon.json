@@ -1,0 +1,74 @@
+{
+  "slug": "phoenix-marathon",
+  "name": "The Phoenix Marathon",
+  "city": "Phoenix",
+  "country": "Arizona, USA",
+  "distanceKm": 42.195,
+  "month": "December",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Average high of about 65 °F (18 °C), with lows in the 40s °F at the start (race site)",
+  "website": "https://phxmarathon.com/",
+  "summary": "The Phoenix Marathon is held in December and is USATF certified. It starts at the base of South Mountain Park and runs north through Phoenix to a finish inside Steele Indian School Park. About 11 miles of the route are on the paved Salt River trail.",
+  "courseHighlights": [
+    "Start at the South Mountain Park Visitor Center",
+    "Central Avenue north through south Phoenix",
+    "Salt River trail from about mile 5 for roughly 11 miles, out and back",
+    "Arizona State Capitol, downtown, ASU Downtown campus and Hance Park",
+    "Finish inside Steele Indian School Park"
+  ],
+  "paceStrategy": {
+    "summary": "The race site does not list elevation numbers in its course text, so use the official profile on the course page. The route is mostly city streets and a paved river path, with one short climb onto the Hance Park deck.",
+    "segments": [
+      {
+        "section": "mile 1–5",
+        "terrain": "Quiet residential streets on Central Avenue",
+        "advice": "Start at goal pace or slightly slower and settle in."
+      },
+      {
+        "section": "mile 5–16",
+        "terrain": "Paved Salt River trail, out and back",
+        "advice": "Hold an even pace on the open path and use other runners for shelter."
+      },
+      {
+        "section": "mile 16–24",
+        "terrain": "Downtown streets, Capitol, ASU Downtown, short climb onto the Hance Park deck",
+        "advice": "Run the short climb by effort and recover on the other side."
+      },
+      {
+        "section": "mile 24–26.2",
+        "terrain": "North on 3rd Street, then a loop in Steele Indian School Park",
+        "advice": "Hold your pace to the finish inside the park."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site lists about 12 aid stations on the marathon course, roughly every 2 miles. They offer Gatorade Endurance and water, and some also have Carbs Fuel energy gels. Check the aid station map on the site.",
+  "tips": [
+    "All marathon runners must use the race buses to reach the South Mountain Park start; cars are not allowed through the gates",
+    "Buses leave from the Arizona State Fairgrounds parking areas, so plan your morning around them",
+    "Dress for a cool start: the race site lists a low around 42 °F (6 °C) before sunrise",
+    "The course may change, so check the course page for the latest map and GPX file"
+  ],
+  "faq": [
+    {
+      "question": "Is the Phoenix Marathon flat?",
+      "answer": "The route is mostly city streets and a paved river trail. The race site does not state an elevation figure in its text, and it mentions one short climb onto the Hance Park deck."
+    },
+    {
+      "question": "When is the Phoenix Marathon held?",
+      "answer": "It is held on a Saturday in December."
+    },
+    {
+      "question": "Where does the Phoenix Marathon finish?",
+      "answer": "It finishes inside Steele Indian School Park in Phoenix."
+    }
+  ],
+  "sources": [
+    "https://phxmarathon.com/info",
+    "https://phxmarathon.com/info?tab=course",
+    "https://mesamarathon.com/"
+  ],
+  "checked": "2026-10"
+}

@@ -1,0 +1,74 @@
+{
+  "slug": "naples-marathon",
+  "name": "Neapolis Marathon",
+  "city": "Naples",
+  "country": "Italy",
+  "distanceKm": 42.195,
+  "month": "October",
+  "courseType": "multi-lap",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.neapolismarathon.it/",
+  "summary": "The Neapolis Marathon (Maratona di Napoli) starts and finishes in Piazza del Plebiscito. A race listing says the 42.195 km distance is two laps of the 21.0975 km half marathon course. The organisers call the course fast, with spectacular sections such as Castel dell'Ovo, Piazza del Plebiscito and the Maschio Angioino.",
+  "courseHighlights": [
+    "Start and finish in Piazza del Plebiscito",
+    "Castel dell'Ovo",
+    "Maschio Angioino (Castel Nuovo)",
+    "Palazzo Reale and the Lungomare",
+    "Two laps of the half-marathon course"
+  ],
+  "paceStrategy": {
+    "summary": "The course is flat with long straight sections, so even pacing works well. Because it is two laps, the second lap runs through the same streets, so keep energy for km 30 onwards.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Flat city and waterfront start",
+        "advice": "Run goal pace and stay out of the crowd's first rush."
+      },
+      {
+        "section": "km 10–21",
+        "terrain": "Rest of the first lap along the waterfront",
+        "advice": "Keep your pace steady; you pass the half-marathon distance near the finish area."
+      },
+      {
+        "section": "km 21–32",
+        "terrain": "Start of lap two, same course",
+        "advice": "Resist the urge to speed up on familiar roads."
+      },
+      {
+        "section": "km 32–42.2",
+        "terrain": "End of lap two to Piazza del Plebiscito",
+        "advice": "Hold form and finish strong."
+      }
+    ]
+  },
+  "fuelingNotes": "The organisers say medical and refreshment points are on the route; check the official map for their positions. On a two-lap course you can plan the second lap's fuelling in the same places.",
+  "tips": [
+    "Download the GPX or PDF map from the official course page",
+    "Because of the two-lap design, you see the same landmarks twice; use them as markers",
+    "Check the official site for the current race date and start time",
+    "The race is smaller than Rome or Venice, so there is more space on the road"
+  ],
+  "faq": [
+    {
+      "question": "Is the Naples Marathon flat?",
+      "answer": "Yes. The course follows the waterfront and city streets with straight sections, and a race listing describes almost no elevation change."
+    },
+    {
+      "question": "When is the Neapolis Marathon held?",
+      "answer": "It is held in October, on a Sunday."
+    },
+    {
+      "question": "Where does the Neapolis Marathon start and finish?",
+      "answer": "Both are in Piazza del Plebiscito in Naples."
+    }
+  ],
+  "sources": [
+    "https://www.neapolismarathon.it/percorso-marathon/",
+    "https://www.finishers.com/it/evento/maratona-di-napoli",
+    "https://www.neapolismarathon.it/"
+  ],
+  "checked": "2026-10"
+}

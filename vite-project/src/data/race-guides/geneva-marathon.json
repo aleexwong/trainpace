@@ -1,0 +1,74 @@
+{
+  "slug": "geneva-marathon",
+  "name": "Generali Geneva Marathon",
+  "city": "Geneva",
+  "country": "Switzerland",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "point-to-point",
+  "terrain": "net downhill",
+  "elevationGainM": 160,
+  "elevationLossM": 200,
+  "typicalWeather": null,
+  "website": "https://generaligenevemarathon.com",
+  "summary": "The Generali Geneva Marathon runs through the countryside east of Geneva first, then follows Lake Geneva into the city. The finish is close to the Jet d'Eau. The course climbs in the first 12 km and is mostly downhill afterwards, with about 160 m of total climbing.",
+  "courseHighlights": [
+    "Countryside and villages east of Geneva with views of Mont Blanc",
+    "Lake Geneva appears after about km 30",
+    "Lakefront run into the city",
+    "Finish at the Pont du Mont-Blanc, facing the Jet d'Eau"
+  ],
+  "paceStrategy": {
+    "summary": "A series of climbs between km 7.5 and 12.5 comes early, then the course is mostly downhill to the finish. Accept a slightly slow start, then use the downhill carefully so your legs are not damaged.",
+    "segments": [
+      {
+        "section": "km 0–7.5",
+        "terrain": "Countryside roads east of Geneva",
+        "advice": "Start controlled and let the field settle."
+      },
+      {
+        "section": "km 7.5–12.5",
+        "terrain": "Series of climbs, including a longer irregular slope from km 11",
+        "advice": "Run by effort and expect to be a little behind goal pace."
+      },
+      {
+        "section": "km 12.5–30",
+        "terrain": "Mostly downhill through villages, with short rises near km 24.5 and 27.5",
+        "advice": "Return to goal pace but keep your stride short on the downhill."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Lake Geneva and the lakefront into the city",
+        "advice": "Hold form, fuel on time and enjoy the crowds near the finish."
+      }
+    ]
+  },
+  "fuelingNotes": "The big climbs are between km 7.5 and 12.5, so take a gel before km 7 so you are fuelled for them. Check the official guide for aid-station positions.",
+  "tips": [
+    "Downhill running damages the quadriceps, so include strength work and downhill practice in training",
+    "The marathon starts on Sunday morning in waves, so be in your corral early",
+    "Pace groups are offered for several finish times between 3:00 and 5:00",
+    "The half marathon starts earlier on the same Sunday, so do not mix up the start times"
+  ],
+  "faq": [
+    {
+      "question": "Is the Geneva Marathon flat?",
+      "answer": "Not completely. It has about 160 m of climbing, with the main climbs between km 7.5 and 12.5, and it is then mostly downhill to the finish."
+    },
+    {
+      "question": "When is the Geneva Marathon held?",
+      "answer": "It is held in early May, on a Sunday, with other races on the Saturday."
+    },
+    {
+      "question": "Where does the Geneva Marathon finish?",
+      "answer": "The finish line is in the centre of Geneva, near the Jet d'Eau, at the Pont du Mont-Blanc."
+    }
+  ],
+  "sources": [
+    "https://www.campus.coach/blog/analyse-du-parcours-du-marathon-de-geneve",
+    "https://www.generali.ch/en/media/generali-geneve-marathon-2026",
+    "https://www.marathons.com/en/events/geneva-marathon_9U7CU",
+    "https://en.wikipedia.org/wiki/Geneva_Marathon"
+  ],
+  "checked": "2026-10"
+}

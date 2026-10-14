@@ -228,3 +228,26 @@ mode was actually exercised in a browser.
 the failure (`Storage.prototype.setItem` throwing, `indexedDB` undefined) rather
 than reasoning about it — and never state a guarantee for a path you have not
 executed.
+
+---
+
+## Session: agent reachability / SEO + GEO pass
+
+**Imported `node:fs` into `prerender.jsx`.** The prerender script is bundled
+with the browser build (Vite externalizes Node builtins to an empty stub), so
+`existsSync` was "not exported by __vite-browser-external" and the build died.
+→ **Rule:** `prerender.jsx` and everything it imports must be browser-safe. Do
+file-system work in the post-build scripts (`scripts/generateMarkdown.ts`).
+
+**Created a source file ending in `.md` and it silently never reached git.**
+`vite-project/.gitignore` ignores `*.md` (for the generated mirrors). The
+`llms.txt` intro template would have been missing in CI and on Vercel.
+→ **Rule:** after adding files, check `git status` lists them as untracked. A
+new file that is not listed is ignored — use `git check-ignore -v <path>`.
+
+**Trusted that every SPA route had real static HTML.** The catch-all rewrite to
+`/index.html` meant `/about`, `/faq`, junk URLs, and even missing `.md` mirrors
+returned 200 with the *home page's* HTML and canonical. Nothing failed; it only
+showed up by fetching the live site with curl.
+→ **Rule:** verify SEO/agent changes against the built `dist/` and the live
+site, not the code. `npm run verify-seo` now fails the build on the known cases.

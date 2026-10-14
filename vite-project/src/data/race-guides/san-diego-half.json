@@ -1,0 +1,69 @@
+{
+  "slug": "san-diego-half",
+  "name": "Rock 'n' Roll San Diego Half Marathon",
+  "city": "San Diego",
+  "country": "California, USA",
+  "distanceKm": 21.0975,
+  "month": "May",
+  "courseType": "point-to-point",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Average air temperature about 20 °C (68 °F), per the race site",
+  "website": "https://www.runrocknroll.com/events/san-diego",
+  "summary": "The Rock 'n' Roll San Diego Half Marathon starts next to Balboa Park and finishes downtown. The route passes through neighbourhoods including Hillcrest, Mission Hills, Mission Valley, Normal Heights and North Park. It is part of the Rock 'n' Roll Running Series.",
+  "courseHighlights": [
+    "Start at Sixth Avenue and Quince Street, next to Balboa Park",
+    "Hillcrest and Mission Hills",
+    "Mission Valley",
+    "Normal Heights and North Park",
+    "Finish downtown at Ash Street and Union Street"
+  ],
+  "paceStrategy": {
+    "summary": "We found no half-specific elevation figures. Reviews and the marathon profile show climbs near the start and a descent into Mission Valley, so run the early miles by effort and decide later whether to speed up.",
+    "segments": [
+      {
+        "section": "mile 1–5",
+        "terrain": "Balboa Park, Hillcrest and the first neighbourhoods",
+        "advice": "Start by effort and do not chase the crowd on the early rises."
+      },
+      {
+        "section": "mile 6–10",
+        "terrain": "Mission Hills, Mission Valley and nearby neighbourhoods",
+        "advice": "Settle into goal pace as the road eases."
+      },
+      {
+        "section": "mile 11–13.1",
+        "terrain": "North Park and Normal Heights toward downtown",
+        "advice": "Hold steady and use the downtown finish crowds to lift your pace."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found for the half on the pages we checked. Take your own gels at planned times.",
+  "tips": [
+    "Check the current course map, because the race says courses are subject to change",
+    "Plan for a start at 6:15 a.m., so travel to Balboa Park early",
+    "Start easy, because the first miles climb in the marathon profile and the half shares the start",
+    "Check shuttle and road-closure information for the downtown finish"
+  ],
+  "faq": [
+    {
+      "question": "Is the Rock 'n' Roll San Diego Half Marathon flat?",
+      "answer": "Not fully. Reviews call the course hilly in places. We found no official elevation figure for the half, so we give none."
+    },
+    {
+      "question": "Where does the Rock 'n' Roll San Diego Half Marathon start and finish?",
+      "answer": "It starts at Sixth Avenue and Quince Street next to Balboa Park and finishes at Ash Street and Union Street downtown."
+    },
+    {
+      "question": "When is the Rock 'n' Roll San Diego Half Marathon held?",
+      "answer": "It is usually held on a Sunday in late May or early June."
+    }
+  ],
+  "sources": [
+    "https://www.runrocknroll.com/events/san-diego/course-overview",
+    "https://runnersconnect.net/race-guides/rock-n-roll-san-diego-marathon-pace-calculator/",
+    "https://www.nbcsandiego.com/news/local/annual-rock-n-roll-races-bring-30000-runners-to-san-diego-streets/4030753/"
+  ],
+  "checked": "2026-10"
+}

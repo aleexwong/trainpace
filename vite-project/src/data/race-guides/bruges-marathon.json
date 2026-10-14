@@ -1,0 +1,69 @@
+{
+  "slug": "bruges-marathon",
+  "name": "Athora Bruges Marathon",
+  "city": "Bruges",
+  "country": "Belgium",
+  "distanceKm": 42.195,
+  "month": "October",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://athorabrugesmarathon.com/en/",
+  "summary": "The Athora Bruges Marathon is held in early October. It starts at 't Zand and finishes on the Grote Markt in the centre of Bruges. The organisers describe a flat, fast course through Bruges and the surrounding polders.",
+  "courseHighlights": [
+    "Start at 't Zand",
+    "Medieval towers and canals of Bruges",
+    "Flat Flemish countryside and polders",
+    "Finish on the Grote Markt"
+  ],
+  "paceStrategy": {
+    "summary": "Organisers describe the course as flat, so an even pace is realistic. The roads in the old town can be crowded at the start, so keep the first kilometres calm.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "City start in Bruges, flat",
+        "advice": "Start calm and avoid weaving in the crowded streets."
+      },
+      {
+        "section": "km 10–30",
+        "terrain": "Flat polder roads outside the city",
+        "advice": "Hold an even pace; countryside can be exposed to wind."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Return to Bruges and the Grote Markt",
+        "advice": "Hold your pace and use the crowds in the centre."
+      }
+    ]
+  },
+  "fuelingNotes": "The organisers list refreshment stations on the course, with Etixx isotonic drink and isotonic energy gel at the aid stations. A fuelling plan is published on the official site.",
+  "tips": [
+    "Bib pick-up is at Sint-Lodewijckscollege, on the day before the race and on race morning",
+    "The start is about 1.5 km from Bruges station",
+    "Practise with the Etixx drink and gel in training if you plan to use the aid stations",
+    "The finish line closes on the Grote Markt in the afternoon; check the practical info page"
+  ],
+  "faq": [
+    {
+      "question": "Is the Bruges Marathon flat?",
+      "answer": "Yes. The organisers describe both the marathon and half marathon courses as flat and fast."
+    },
+    {
+      "question": "When is the Bruges Marathon held?",
+      "answer": "It is held on a Sunday in early October."
+    },
+    {
+      "question": "Where does the Bruges Marathon start and finish?",
+      "answer": "It starts at 't Zand and finishes on the Grote Markt in Bruges."
+    }
+  ],
+  "sources": [
+    "https://athorabrugesmarathon.com/en/practical-info/",
+    "https://athorabrugesmarathon.com/en/edition-2027/",
+    "https://athorabrugesmarathon.com/en/fueling-plan/",
+    "https://www.finishers.com/nl/evenement/marathon-van-brugge"
+  ],
+  "checked": "2026-10"
+}

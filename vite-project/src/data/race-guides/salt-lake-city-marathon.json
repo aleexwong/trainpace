@@ -1,0 +1,68 @@
+{
+  "slug": "salt-lake-city-marathon",
+  "name": "University of Utah Health Salt Lake City Marathon",
+  "city": "Salt Lake City",
+  "country": "Utah, USA",
+  "distanceKm": 42.195,
+  "month": "April",
+  "courseType": "point-to-point",
+  "terrain": "net downhill",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://saltlakecitymarathon.com/",
+  "summary": "The Salt Lake City Marathon is held on a Saturday in April. It starts at the Olympic Legacy Bridge and finishes in the heart of downtown. The race site promises views of the Wasatch Mountains and calls the course challenging.",
+  "courseHighlights": [
+    "Start at the Olympic Legacy Bridge",
+    "Views of the Wasatch Mountains",
+    "Runs through some of the city's neighbourhoods",
+    "Finish in the heart of downtown Salt Lake City"
+  ],
+  "paceStrategy": {
+    "summary": "A race listing calls the course net downhill, while the official site calls it challenging. Check the interactive course map for the elevation profile, and avoid running the early miles too fast.",
+    "segments": [
+      {
+        "section": "mile 1–6",
+        "terrain": "Start near the Olympic Legacy Bridge",
+        "advice": "Hold back; fresh legs and downhill sections tempt you to run fast."
+      },
+      {
+        "section": "mile 6–20",
+        "terrain": "Neighbourhoods on the way to downtown",
+        "advice": "Hold goal pace and respect any climbs shown on the map."
+      },
+      {
+        "section": "mile 20–26.2",
+        "terrain": "Approach to the downtown finish",
+        "advice": "Keep your form and finish strong."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site's text does not list aid stations; open the course maps page for details. At altitude, drink at every opportunity.",
+  "tips": [
+    "The race starts early on a Saturday morning",
+    "Salt Lake City is at altitude, so run by effort",
+    "The official course maps page has interactive maps for each distance",
+    "Check the interactive map because the route may change"
+  ],
+  "faq": [
+    {
+      "question": "Is the Salt Lake City Marathon downhill?",
+      "answer": "A race listing calls it a net downhill course, and the official site calls the course challenging. Check the official elevation profile for details."
+    },
+    {
+      "question": "When is the Salt Lake City Marathon held?",
+      "answer": "It is held on a Saturday in April."
+    },
+    {
+      "question": "Where does the Salt Lake City Marathon start and finish?",
+      "answer": "It starts at the Olympic Legacy Bridge and finishes downtown."
+    }
+  ],
+  "sources": [
+    "https://saltlakecitymarathon.com/",
+    "https://runsignup.com/Race/Info/UT/SaltLakeCity/saltlakecitymarathon",
+    "https://www.halfruns.com/races/utah/salt-lake-city-marathon"
+  ],
+  "checked": "2026-10"
+}

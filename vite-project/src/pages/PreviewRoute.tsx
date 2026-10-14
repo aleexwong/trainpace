@@ -243,8 +243,8 @@ export default function PreviewRoute() {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Race Courses",
-        item: "https://trainpace.com/preview-route",
+        name: "Race Prep",
+        item: "https://trainpace.com/race",
       },
       {
         "@type": "ListItem",
@@ -270,7 +270,7 @@ export default function PreviewRoute() {
     <div className="max-w-6xl mx-auto p-6">
       <Helmet>
         <title>
-          {route.name} Elevation Profile & Course Analysis | TrainPace
+          {route.name} Elevation Profile & Course Map | TrainPace
         </title>
         <meta name="description" content={seoDescription} />
         <meta
