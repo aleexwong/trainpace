@@ -913,7 +913,7 @@ function mcpBlocks(): DocBlock[] {
     {
       type: "code",
       lang: "bash",
-      text: 'curl -H "Accept: text/markdown" https://www.trainpace.com/calculator\ncurl https://www.trainpace.com/calculator.md',
+      text: 'curl -H "Accept: text/markdown" https://trainpace.com/calculator\ncurl https://trainpace.com/calculator.md',
     },
   ];
 }

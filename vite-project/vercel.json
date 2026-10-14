@@ -4,8 +4,13 @@
   "redirects": [
     {
       "source": "/:path(.*)",
-      "has": [{ "type": "host", "value": "trainpace.com" }],
-      "destination": "https://www.trainpace.com/:path",
+      "has": [{ "type": "host", "value": "www.trainpace.com" }],
+      "destination": "https://trainpace.com/:path",
+      "permanent": true
+    },
+    {
+      "source": "/race/:slug(brussels-marathon|savannah-marathon|charleston-marathon|atlanta-marathon|providence-marathon|dublin-half|denver-half|seattle-half|portland-half)",
+      "destination": "/race",
       "permanent": true
     },
     {

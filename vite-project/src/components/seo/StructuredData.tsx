@@ -17,7 +17,7 @@ interface StructuredDataProps {
 }
 
 export default function StructuredData(props: StructuredDataProps) {
-  const baseUrl = "https://www.trainpace.com";
+  const baseUrl = "https://trainpace.com";
 
   const getStructuredData = () => {
     switch (props.type) {

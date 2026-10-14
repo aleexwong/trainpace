@@ -136,7 +136,7 @@ export function buildLlmsTxt(intro: string): string {
     "## Notes",
     "",
     "- No account, API key, or rate-limit negotiation is needed for anything listed above.",
-    "- Content is free to quote with attribution to TrainPace (https://www.trainpace.com).",
+    "- Content is free to quote with attribution to TrainPace (https://trainpace.com).",
     "- Pace and fueling numbers are training guidance, not medical advice.",
     "- `/dashboard`, `/settings`, `/onboarding`, and the auth routes are per-user application state with no public content — they have no Markdown mirror and are disallowed in robots.txt.",
   ].join("\n");

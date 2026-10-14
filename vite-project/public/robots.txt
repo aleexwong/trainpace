@@ -1,12 +1,12 @@
-# TrainPace — https://www.trainpace.com
-# AI agents: see https://www.trainpace.com/llms.txt and https://www.trainpace.com/mcp
+# TrainPace — https://trainpace.com
+# AI agents: see https://trainpace.com/llms.txt and https://trainpace.com/mcp
 # Free public MCP server for training math: https://api.trainpace.com/api/mcp
-# MCP server descriptor: https://www.trainpace.com/.well-known/mcp.json
+# MCP server descriptor: https://trainpace.com/.well-known/mcp.json
 #
 # Every public page has a Markdown mirror: append .md to any path
-# (https://www.trainpace.com/calculator.md), or send Accept: text/markdown.
-# Whole site in one file: https://www.trainpace.com/llms-full.txt
-# Page index as JSON:     https://www.trainpace.com/llms-index.json
+# (https://trainpace.com/calculator.md), or send Accept: text/markdown.
+# Whole site in one file: https://trainpace.com/llms-full.txt
+# Page index as JSON:     https://trainpace.com/llms-index.json
 
 # Search engines, AI crawlers, and AI assistants are all welcome, under the
 # same rules. They share one group on purpose: a crawler follows only the most
@@ -42,4 +42,4 @@ Disallow: /dashboard
 Disallow: /settings
 Disallow: /onboarding
 
-Sitemap: https://www.trainpace.com/sitemap.xml
+Sitemap: https://trainpace.com/sitemap.xml

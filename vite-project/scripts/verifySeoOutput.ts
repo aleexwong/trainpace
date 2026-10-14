@@ -14,7 +14,7 @@
  * - every link in llms.txt resolves to a file in dist;
  * - the app shell (served for non-prerendered routes) is noindex with no
  *   canonical;
- * - no output file uses the bare trainpace.com host.
+ * - no output file uses the www.trainpace.com host (the site is https://trainpace.com).
  *
  * Title and description length are reported as warnings: search engines
  * truncate rather than penalize, so they should not block a release.
@@ -37,7 +37,7 @@ import { raceSeoPages } from "../src/features/seo-pages/seoPages";
 
 const DIST = path.resolve(process.cwd(), "dist");
 const GENERIC_TITLE = "TrainPace – Free Running Tools";
-const BARE_HOST = /https?:\/\/trainpace\.com/;
+const WWW_HOST = /https?:\/\/www\.trainpace\.com/;
 
 const errors: string[] = [];
 const warnings: string[] = [];
@@ -131,7 +131,7 @@ if (!fs.existsSync(llmsPath)) {
   errors.push("dist/llms.txt missing");
 } else {
   const origin = absoluteUrl("/").replace(/\/$/, "");
-  for (const [, href] of all(/\]\((https:\/\/www\.trainpace\.com[^)]*)\)/g, fs.readFileSync(llmsPath, "utf8"))) {
+  for (const [, href] of all(/\]\((https:\/\/trainpace\.com[^)]*)\)/g, fs.readFileSync(llmsPath, "utf8"))) {
     const rel = href.slice(origin.length).replace(/^\//, "") || "index.html";
     const candidates = [rel, path.join(rel, "index.html")];
     if (!candidates.some((c) => fs.existsSync(path.join(DIST, c)))) {
@@ -206,13 +206,13 @@ function walk(dir: string): string[] {
     return /\.(html|md|txt|json|xml)$/.test(e.name) ? [full] : [];
   });
 }
-const bareHostFiles = walk(DIST).filter((f) => BARE_HOST.test(fs.readFileSync(f, "utf8")));
-if (bareHostFiles.length) {
+const wwwHostFiles = walk(DIST).filter((f) => WWW_HOST.test(fs.readFileSync(f, "utf8")));
+if (wwwHostFiles.length) {
   errors.push(
-    `bare trainpace.com host (use https://www.trainpace.com) in: ${bareHostFiles
+    `www.trainpace.com host (use https://trainpace.com) in: ${wwwHostFiles
       .slice(0, 5)
       .map((f) => path.relative(DIST, f))
-      .join(", ")}${bareHostFiles.length > 5 ? ` and ${bareHostFiles.length - 5} more` : ""}`
+      .join(", ")}${wwwHostFiles.length > 5 ? ` and ${wwwHostFiles.length - 5} more` : ""}`
   );
 }
 

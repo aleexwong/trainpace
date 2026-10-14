@@ -4,7 +4,7 @@ Guidance for Claude Code when working in the TrainPace codebase.
 
 ## Project Overview
 
-TrainPace (https://www.trainpace.com) is a React/TypeScript web app for runners: training pace calculator, VDOT calculator, training plan builder, GPX elevation analysis, AI race-fuel planner, goals tracking, personal dashboard, race poster generator, and a blog. Deployed on Vercel with 80+ prerendered SEO pages.
+TrainPace (https://trainpace.com) is a React/TypeScript web app for runners: training pace calculator, VDOT calculator, training plan builder, GPX elevation analysis, AI race-fuel planner, goals tracking, personal dashboard, race poster generator, and a blog. Deployed on Vercel with 80+ prerendered SEO pages.
 
 ## Commands
 
@@ -146,7 +146,7 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 - Firebase Auth is Google OAuth only; there is no email/password path.
 - Legacy `/elevationfinder` routes must keep working (redirect aliases in `App.tsx`).
 - Keep SEO titles under 60 chars and descriptions under 160; `verify-seo` reports pages over the limit (warnings, not failures).
-- **One host: `https://www.trainpace.com`.** Canonicals, `og:url`, JSON-LD, sitemap and llms files all use it, and `vercel.json` 308s the bare `trainpace.com` to it. `verify-seo` fails the build if a bare-host URL appears in dist. Use `BASE_URL` from `src/lib/seo/types.ts`.
+- **One host: `https://trainpace.com` (no www).** Canonicals, `og:url`, JSON-LD, sitemap and llms files all use it, and `vercel.json` 308s `www.trainpace.com` to it. `verify-seo` fails the build if a `www.trainpace.com` URL appears in dist. Use `BASE_URL` from `src/lib/seo/types.ts`.
 - **Non-prerendered routes get `app-shell.html`** (noindex, no canonical) via the `vercel.json` rewrite, not the home page. Paths with a file extension are not rewritten, so a missing `.md`/image is a real 404. Anything that should be indexed must be in `getAllDocPaths()`.
 - Prerendered head tags carry `data-rh="true"` so React Helmet replaces them on boot instead of duplicating them. A page that omits its own Helmet canonical/description therefore loses the static one once JS runs — give every routed page a Helmet canonical.
 - `src/App.css` still carries the Vite template's `#root { text-align: center }`. It cascades into every page, so left-aligned layouts need an explicit `text-left` on their container.

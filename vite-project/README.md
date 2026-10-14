@@ -3,7 +3,7 @@
 [![Deployed on Vercel](https://img.shields.io/badge/deployed%20on-Vercel-black?logo=vercel)](https://vercel.com/aleexwongs-projects/trainpace)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/171bbd8a94744254a9db632e2650b6e4)](https://app.codacy.com/gh/aleexwong/trainingpacecalculator2/dashboard)
 
-**Live App**: [www.trainpace.com](https://www.trainpace.com)
+**Live App**: [trainpace.com](https://trainpace.com)
 
 TrainPace is a modern web application designed to help runners optimize their training through intelligent pace calculation, real-world course analysis, and personalized race fueling strategies.
 

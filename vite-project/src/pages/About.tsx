@@ -14,7 +14,7 @@ export default function About() {
           name="description"
           content="Why TrainPace exists: a runner who cut his half marathon from 3:01 to 2:06 in a year built the free, ad-free tools he wished he had."
         />
-        <link rel="canonical" href="https://www.trainpace.com/about" />
+        <link rel="canonical" href="https://trainpace.com/about" />
       </Helmet>
       {/* Hero Section */}
       <section className="py-20 px-6 bg-gradient-to-br from-emerald-50 to-white">

@@ -11,7 +11,7 @@ export default function Privacy() {
           content="TrainPace privacy policy. Learn how we collect, use, and protect your data. We respect your privacy and never sell your information."
         />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://www.trainpace.com/privacy" />
+        <link rel="canonical" href="https://trainpace.com/privacy" />
       </Helmet>
 
       <div className="max-w-4xl mx-auto px-6 py-8">
@@ -360,10 +360,10 @@ export default function Privacy() {
               <p className="text-gray-700">
                 <strong>Website:</strong>{" "}
                 <a
-                  href="https://www.trainpace.com"
+                  href="https://trainpace.com"
                   className="text-emerald-600 hover:underline"
                 >
-                  www.trainpace.com
+                  trainpace.com
                 </a>
               </p>
             </div>
