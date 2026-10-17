@@ -251,3 +251,24 @@ returned 200 with the *home page's* HTML and canonical. Nothing failed; it only
 showed up by fetching the live site with curl.
 → **Rule:** verify SEO/agent changes against the built `dist/` and the live
 site, not the code. `npm run verify-seo` now fails the build on the known cases.
+
+---
+
+## Session: WebGPU 3D route simulator
+
+**Spent several runs debugging a "white canvas" that was the sandbox.**
+Screenshots of the WebGPU canvas came back blank, then `mapAsync` hung. Both
+were headless-Chromium limits (no WebGPU canvas presentation; no frame
+back-pressure once presentation is bypassed), not renderer bugs. Browser stderr
+(`DEBUG=pw:browser`) showed the cause in one line: `Could not find
+SharedImageBackingFactory ... WebGPUSwapBufferProvider`.
+→ **Rule:** when a GPU page renders blank in headless, read browser stderr
+before touching shaders. The working capture recipe is in
+`verify-in-browser` → "WebGPU canvases".
+
+**Used sRGB-looking colour values as linear albedo.** Skin `[0.74, 0.5, 0.36]`
+rendered grey-white after lighting and tone mapping. In a linear HDR pipeline
+albedos must be linear (medium skin ≈ `[0.42, 0.21, 0.13]`).
+→ **Rule:** any colour constant fed to lighting maths is linear; convert from
+a picked sRGB colour (≈ value^2.2) before using it.
+

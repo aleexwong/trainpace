@@ -23,6 +23,7 @@ import { CumulativeGainChart } from "./CumulativeGainChart";
 import { TerrainBreakdown } from "./TerrainBreakdown";
 import { RaceComparison } from "./RaceComparison";
 import { SettingsPanel } from "./SettingsPanel";
+import { RouteSimulatorCard } from "./RouteSimulatorCard";
 
 interface DisplayPoint {
   lat: number;
@@ -163,6 +164,15 @@ export function RouteDashboard({
           />
         )}
       </div>
+
+      {displayPoints.length > 1 && points.length > 1 && (
+        <RouteSimulatorCard
+          displayPoints={displayPoints}
+          profile={points}
+          basePaceMinPerKm={basePace}
+          routeName={routeName}
+        />
+      )}
 
       {/* Secondary analytics */}
       {points.length > 0 && (

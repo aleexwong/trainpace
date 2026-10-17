@@ -55,6 +55,37 @@ PLAYWRIGHT_DISABLE_FORCED_CHROMIUM_PROXIED_LOOPBACK=1 node script.mjs
 
 The dev server needs `vite-project/.env` to exist. Dummy Firebase values are fine for anything that is not auth or maps; `.env` is gitignored.
 
+## WebGPU canvases (the route simulator)
+
+`features/elevation/simulator` renders with WebGPU. Headless Chromium here *has* WebGPU (SwiftShader, with `--enable-unsafe-webgpu --enable-unsafe-swiftshader`), but it **cannot present a WebGPU canvas**: the swap-chain shared image fails, the device is lost with "A valid external Instance reference no longer exists", and `page.screenshot()` / `canvas.toDataURL()` give a blank or transparent image. That is the sandbox, not a bug in the renderer.
+
+To see a frame, swap the canvas context for a readable texture in an init script, and gate submits on GPU completion (SwiftShader is slow; without back-pressure the queue grows forever and `mapAsync` never resolves):
+
+```js
+await page.addInitScript(() => {
+  let dev, fmt, tex, cv;
+  GPUCanvasContext.prototype.configure = function (c) { dev = c.device; fmt = c.format; cv = this.canvas; };
+  GPUCanvasContext.prototype.unconfigure = () => {};
+  GPUCanvasContext.prototype.getCurrentTexture = function () {
+    if (!tex || tex.width !== cv.width || tex.height !== cv.height)
+      tex = dev.createTexture({ size: [cv.width, cv.height], format: fmt,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC });
+    return tex;
+  };
+  const submit = GPUQueue.prototype.submit;
+  GPUQueue.prototype.submit = function (cmds) {
+    if (window.__busy) return;                 // drop frames while the GPU is behind
+    submit.call(this, cmds);
+    window.__busy = true;
+    this.onSubmittedWorkDone().then(() => (window.__busy = false));
+    // To grab: copyTextureToBuffer(tex) → mapAsync → putImageData on a 2D canvas.
+    // The texture is BGRA; swap R and B.
+  };
+});
+```
+
+Pure-CPU parts (pacing, gait, terrain) are easier to check with a `vite-node` script than in the browser — e.g. dump `writeRunner` bones for ten phases and draw them as a strip.
+
 ## Traps that produce confident wrong answers
 
 **`document.fonts.check()` does not tell you a face is available.** It reports whether the string *can be rendered*, and fallback counts as yes. It returned `true` for `800 16px 'Space Grotesk'` (a weight that does not exist) and for `italic 400 16px 'DM Sans'` (a face that was not loaded) — and kept returning `true` on a page that had failed to load entirely. It is not a probe. Measure metrics instead:
