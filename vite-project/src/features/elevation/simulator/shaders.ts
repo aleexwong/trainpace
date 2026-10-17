@@ -509,14 +509,18 @@ fn fs(in: VOut, @builtin(front_facing) front: bool) -> @location(0) vec4f {
     let trans = pow(max(dot(-V, L), 0.0), 3.0) * 0.35;
     col = in.color * leaf * (frame.sunColor.rgb * (wrap + trans) * sh + ambient(n) * 1.1);
   } else {
-    let ndl = max(dot(n, L), 0.0);
+    let runner = in.material > 1.5;
+    // Runner: wrapped diffuse and a warm shadow tint stand in for light
+    // scattering under skin and through fabric, so the shaded side isn't
+    // the flat blue-grey of pure skylight. Props stay plain Lambert.
+    let wrapK = select(0.0, 0.35, runner);
+    let ndl = max((dot(n, L) + wrapK) / (1.0 + wrapK), 0.0);
+    let sss = select(vec3f(1.0), vec3f(1.25, 0.95, 0.8), runner);
     let H = normalize(L + V);
-    // Skin/cloth on the runner gets a soft sheen; props stay matte.
-    let gloss = select(0.04, 0.12, in.material > 1.5);
+    let gloss = select(0.04, 0.12, runner);
     let spec = pow(max(dot(n, H), 0.0), 24.0) * gloss;
-    let rim = pow(1.0 - max(dot(n, V), 0.0), 3.0) * 0.15 * select(0.0, 1.0, in.material > 1.5);
-    col = in.color * (frame.sunColor.rgb * ndl * sh + ambient(n))
-      + frame.sunColor.rgb * spec * sh + frame.skyAmbient.rgb * rim;
+    col = in.color * (frame.sunColor.rgb * ndl * sh + ambient(n) * sss)
+      + frame.sunColor.rgb * spec * sh;
   }
   col = applyFog(col, in.world);
   return vec4f(col, 1.0);
