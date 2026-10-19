@@ -231,21 +231,23 @@ executed.
 
 ---
 
-## Session: SEO drop audit (canonical host split)
+## Session: agent reachability / SEO + GEO pass
 
-**Two hosts, two answers.** `trainpace.com` and `www.trainpace.com` both served
-200 with no redirect. Every prerendered canonical named the apex, while the
-sitemap, robots.txt and about half the React `<Helmet>` tags named `www`. Google
-was handed two copies of every page and contradictory signals about which one
-was real. It was never one commit's fault — new code copied whichever host the
-nearest file used.
-→ **Rule:** one host (`www`), one constant (`BASE_URL`), enforced by lint and a
-308 redirect. See the CLAUDE.md gotcha.
+**Imported `node:fs` into `prerender.jsx`.** The prerender script is bundled
+with the browser build (Vite externalizes Node builtins to an empty stub), so
+`existsSync` was "not exported by __vite-browser-external" and the build died.
+→ **Rule:** `prerender.jsx` and everything it imports must be browser-safe. Do
+file-system work in the post-build scripts (`scripts/generateMarkdown.ts`).
 
-**Unprerendered routes silently claim to be the home page.** `/about`, `/faq`,
-`/privacy`, `/terms` and `/dashboard` were in the sitemap but not in
-`getAllDocPaths()`, so they got the landing page's HTML with `canonical = /`.
-Nothing errors; you only see it by fetching the live URL.
-→ **Rule:** after an SEO change, audit the *live* sitemap: fetch every URL and
-compare its canonical to its own path. A one-line `curl | grep canonical` loop
-catches this.
+**Created a source file ending in `.md` and it silently never reached git.**
+`vite-project/.gitignore` ignores `*.md` (for the generated mirrors). The
+`llms.txt` intro template would have been missing in CI and on Vercel.
+→ **Rule:** after adding files, check `git status` lists them as untracked. A
+new file that is not listed is ignored — use `git check-ignore -v <path>`.
+
+**Trusted that every SPA route had real static HTML.** The catch-all rewrite to
+`/index.html` meant `/about`, `/faq`, junk URLs, and even missing `.md` mirrors
+returned 200 with the *home page's* HTML and canonical. Nothing failed; it only
+showed up by fetching the live site with curl.
+→ **Rule:** verify SEO/agent changes against the built `dist/` and the live
+site, not the code. `npm run verify-seo` now fails the build on the known cases.

@@ -1,0 +1,75 @@
+{
+  "slug": "copenhagen-marathon",
+  "name": "Copenhagen Marathon",
+  "city": "Copenhagen",
+  "country": "Denmark",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://copenhagenmarathon.dk/en/",
+  "summary": "The Copenhagen Marathon is a flat loop through the inner city, held in May. It starts at Øster Allé next to Fælledparken. The route passes through Østerbro, Christianshavn, Vesterbro, Nørrebro and Frederiksberg.",
+  "courseHighlights": [
+    "Start at Øster Allé by Fælledparken",
+    "Christianshavn",
+    "Vesterbro and Nørrebro",
+    "Frederiksberg",
+    "Back to Østerbro for the finish"
+  ],
+  "paceStrategy": {
+    "summary": "The organisers call the course flat, so the main job is steady pacing. Use the 10 refreshment zones as checkpoints. Run the first half by feel, then check your effort at the Faxe Kondi power zone at 21.1 km.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Flat city streets from Østerbro",
+        "advice": "Start at or just under goal pace and avoid weaving."
+      },
+      {
+        "section": "km 10–21",
+        "terrain": "Flat inner-city streets",
+        "advice": "Keep a steady rhythm to the half-way power zone at 21.1 km."
+      },
+      {
+        "section": "km 21–35",
+        "terrain": "Flat streets through the city",
+        "advice": "Stay on goal pace; free High5 gels are at 27.9 km."
+      },
+      {
+        "section": "km 35–42.2",
+        "terrain": "Flat streets back to the finish",
+        "advice": "Take the drink at 35.3 km and run the last 5 km by effort."
+      }
+    ]
+  },
+  "fuelingNotes": "There are 10 refreshment zones with water and High5 energy drink; some also give bananas. Free High5 gels are at 16 km and 27.9 km, and Faxe Kondi drink is at 21.1 km and 35.3 km (official course page).",
+  "tips": [
+    "Use the refreshment zones at 3.8, 8.1, 12.3 and 16 km for early drinking",
+    "Bananas are at 8.1 km and 24.3 km",
+    "Check the official course map before race day, as the organiser can change the route",
+    "Medics are at the start, finish and all refreshment zones"
+  ],
+  "faq": [
+    {
+      "question": "Is the Copenhagen Marathon flat?",
+      "answer": "Yes. The organisers describe the course as flat."
+    },
+    {
+      "question": "Where does the Copenhagen Marathon start?",
+      "answer": "It starts at Øster Allé next to Fælledparken, a start area introduced in 2023."
+    },
+    {
+      "question": "When is the Copenhagen Marathon held?",
+      "answer": "It is held in May."
+    }
+  ],
+  "sources": [
+    "https://copenhagenmarathon.dk/en/the-course/",
+    "https://copenhagenmarathon.dk/en/new-course/",
+    "https://copenhagenmarathon.dk/en/",
+    "https://en.wikipedia.org/wiki/Copenhagen_Marathon"
+  ],
+  "checked": "2026-10"
+}

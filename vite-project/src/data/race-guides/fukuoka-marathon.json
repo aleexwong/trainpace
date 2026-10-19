@@ -1,0 +1,68 @@
+{
+  "slug": "fukuoka-marathon",
+  "name": "Fukuoka International Marathon",
+  "city": "Fukuoka",
+  "country": "Japan",
+  "distanceKm": 42.195,
+  "month": "December",
+  "courseType": "out-and-back",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.fukuoka-international-marathon.jp/",
+  "summary": "The Fukuoka International Marathon is an elite men's race held in early December. It is not a mass-participation event: the field is limited to invited runners and men who meet fast qualifying times. It starts and finishes at Heiwadai Track and Field Stadium and turns around in the Kashii area.",
+  "courseHighlights": [
+    "Start and finish at Heiwadai Track and Field Stadium",
+    "Ohori Park (start for Group B)",
+    "South-west Fukuoka",
+    "Kashii area, the turnaround point"
+  ],
+  "paceStrategy": {
+    "summary": "Because this is an elite-level race, pacing is usually set by the pacemakers. The course is described as flat, so the plan is to hold an even pace through the Kashii turnaround and run the return leg strongly.",
+    "segments": [
+      {
+        "section": "km 0–20",
+        "terrain": "Roads through Ohori Park and south-west Fukuoka (flat profile)",
+        "advice": "Run even splits behind the pace group."
+      },
+      {
+        "section": "km 20–30",
+        "terrain": "Kashii turnaround area",
+        "advice": "Stay relaxed through the turn."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Return to Heiwadai Stadium",
+        "advice": "Hold goal pace and push in the last 5 km."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list aid-station positions. Check the technical guide for drink-table rules.",
+  "tips": [
+    "This race is for invited and qualified elite men only; general entry is not offered",
+    "Group A starts at the stadium and Group B starts at Ohori Park",
+    "The race starts around midday in early December, so dress for cool conditions"
+  ],
+  "faq": [
+    {
+      "question": "Can anyone enter the Fukuoka Marathon?",
+      "answer": "No. It is an elite men's race. The field is limited to invited runners and men who meet the qualifying times, and the usual field is about 400 runners."
+    },
+    {
+      "question": "Is the Fukuoka Marathon flat?",
+      "answer": "A recent listing describes a flat profile. No elevation figures were found."
+    },
+    {
+      "question": "When is the Fukuoka Marathon held?",
+      "answer": "It is held in early December. Recent editions started at 12:10."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Fukuoka_Marathon",
+    "https://www.fukuoka-now.com/en/event/fukuoka-international-marathon2025/",
+    "https://www.fukuoka-now.com/en/news/fukuoka-international-marathon-to-continue-under-new-system/",
+    "https://www.fukuoka-international-marathon.jp/"
+  ],
+  "checked": "2026-10"
+}

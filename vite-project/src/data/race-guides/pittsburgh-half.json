@@ -1,0 +1,69 @@
+{
+  "slug": "pittsburgh-half",
+  "name": "UPMC Health Plan Pittsburgh Half Marathon",
+  "city": "Pittsburgh",
+  "country": "Pennsylvania, USA",
+  "distanceKm": 21.0975,
+  "month": "May",
+  "courseType": "point-to-point",
+  "terrain": "hilly",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.thepittsburghmarathon.com/",
+  "summary": "The Pittsburgh Half Marathon is part of the Pittsburgh Marathon weekend, held in early May. It uses much of the marathon course through a hilly city with many bridges. In 2022 the half followed the first 11 miles of the marathon, then split after the Birmingham Bridge and returned Downtown on 5th Avenue.",
+  "courseHighlights": [
+    "Race weekend based Downtown",
+    "Crossing Pittsburgh's rivers on city bridges",
+    "Birmingham Bridge, where the half and full courses split (2022 route)",
+    "Return Downtown on 5th Avenue (2022 route)",
+    "Large crowds and local bands along the route"
+  ],
+  "paceStrategy": {
+    "summary": "Wikipedia describes the Pittsburgh course as hilly, and the half shares much of the marathon route. We found no elevation figures, so run by effort on the hills and keep your pace easy early. Check the current map, because the route changes from year to year.",
+    "segments": [
+      {
+        "section": "mile 1–5",
+        "terrain": "Downtown and the first bridges",
+        "advice": "Start slightly slower than goal pace and avoid surging in the crowd."
+      },
+      {
+        "section": "mile 6–11",
+        "terrain": "Hilly neighbourhood streets shared with the marathon",
+        "advice": "Run by effort on the climbs and keep your breathing steady."
+      },
+      {
+        "section": "mile 11–13.1",
+        "terrain": "After the Birmingham Bridge, back Downtown (2022 route)",
+        "advice": "Use the final miles to push if you feel strong."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found on the pages we checked. Wikipedia notes that volunteers staff aid stations along the course; check the current race guide and carry your own gels.",
+  "tips": [
+    "Train on hills, as Wikipedia describes the course as hilly",
+    "Check the current course map; the route can change slightly each year",
+    "Check road-closure notices from the City of Pittsburgh for race morning, as the Downtown closures start in the early hours",
+    "Plan for crowds; the half had about 13,000 entrants in 2012 according to Wikipedia"
+  ],
+  "faq": [
+    {
+      "question": "Is the Pittsburgh Half Marathon hilly?",
+      "answer": "Yes. Wikipedia describes the Pittsburgh Marathon course as hilly, and the half follows much of the same route. We found no official elevation figures."
+    },
+    {
+      "question": "Where does the Pittsburgh Half Marathon split from the marathon?",
+      "answer": "In the 2022 course announcement, the half followed the first 11 miles of the marathon and split after the Birmingham Bridge. Check the current map."
+    },
+    {
+      "question": "When is the Pittsburgh Half Marathon held?",
+      "answer": "It is held on a Sunday in early May, as part of the Pittsburgh Marathon weekend."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Pittsburgh_Marathon",
+    "https://www.runningusa.org/industry-news/courses-announced-for-the-2022-dicks-sporting-goods-pittsburgh-marathon-weekend-of-events/",
+    "https://www.pittsburghpa.gov/News-articles/Homepage/Road-Closures-Announced-for-2026-DICK’S-Sporting-Goods-Pittsburgh-Marathon-Weekend-of-Events"
+  ],
+  "checked": "2026-10"
+}

@@ -1,0 +1,68 @@
+{
+  "slug": "nashville-half",
+  "name": "St. Jude Rock 'n' Roll Nashville Half Marathon",
+  "city": "Nashville",
+  "country": "Tennessee, USA",
+  "distanceKm": 21.0975,
+  "month": "April",
+  "courseType": "point-to-point",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Average air temperature about 24 °C (75 °F), per the race site",
+  "website": "https://www.runrocknroll.com/events/nashville",
+  "summary": "The St. Jude Rock 'n' Roll Nashville Half Marathon is part of the Rock 'n' Roll Running Series. It starts at 8th and Broadway and finishes at Nissan Stadium, past Broadway's honky-tonks, Music Row and the Country Music Hall of Fame. HalfRuns rates the course as rolling hills.",
+  "courseHighlights": [
+    "Start at 8th Avenue and Broadway",
+    "Broadway honky-tonks",
+    "Dolly Parton's recording studio on Music Row",
+    "Country Music Hall of Fame",
+    "Finish at Nissan Stadium, home of the Tennessee Titans"
+  ],
+  "paceStrategy": {
+    "summary": "HalfRuns rates the course as rolling hills, and the race site gives no elevation figures. Run by effort on the rises, and keep a little in reserve for the second half.",
+    "segments": [
+      {
+        "section": "mile 1–4",
+        "terrain": "Downtown, starting down Broadway",
+        "advice": "Start at or just under goal pace and avoid surging in the crowd."
+      },
+      {
+        "section": "mile 5–9",
+        "terrain": "Rolling streets through Music Row and other neighbourhoods",
+        "advice": "Run by effort and accept small changes in pace on the hills."
+      },
+      {
+        "section": "mile 10–13.1",
+        "terrain": "Rolling road back toward Nissan Stadium",
+        "advice": "Keep the effort steady and speed up only in the last mile."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found on the pages we checked. The race site gives an average air temperature of 24 °C (75 °F), so plan to drink at every stop.",
+  "tips": [
+    "Train on rolling hills, because HalfRuns rates this course as rolling",
+    "Plan for warm weather and drink early",
+    "Check the start and finish locations: the start is at 8th and Broadway and the finish is at Nissan Stadium",
+    "The race site says the course maps can change, so check the latest map before race day"
+  ],
+  "faq": [
+    {
+      "question": "Is the Rock 'n' Roll Nashville Half Marathon flat?",
+      "answer": "No. HalfRuns rates it as rolling hills. We found no official elevation figures."
+    },
+    {
+      "question": "Where does the Rock 'n' Roll Nashville Half Marathon start and finish?",
+      "answer": "It starts at 8th Avenue and Broadway and finishes at Nissan Stadium."
+    },
+    {
+      "question": "When is the Rock 'n' Roll Nashville Half Marathon held?",
+      "answer": "It is usually held on a Saturday in April."
+    }
+  ],
+  "sources": [
+    "https://www.runrocknroll.com/events/nashville/course-overview",
+    "https://halfruns.com/races/tennessee/rock-n-roll-nashville-nashville-tn-2027"
+  ],
+  "checked": "2026-10"
+}

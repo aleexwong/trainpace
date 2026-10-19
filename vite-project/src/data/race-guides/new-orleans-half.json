@@ -1,0 +1,69 @@
+{
+  "slug": "new-orleans-half",
+  "name": "New Orleans Marathon Half Marathon",
+  "city": "New Orleans",
+  "country": "Louisiana, USA",
+  "distanceKm": 21.0975,
+  "month": "November",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Five-year average of about 14 °C at the start and 21 °C in the afternoon (57 °F and 70 °F), per HalfRuns",
+  "website": "https://runsignup.com/Race/LA/NewOrleans/runNewOrleans",
+  "summary": "The New Orleans Marathon weekend, run by Premier Event Management, returned after a seven-year break and includes a half marathon. The half starts at the New Orleans Museum of Art in City Park, runs along Bayou St. John and Lakeshore Drive, and finishes on Roosevelt Mall in City Park. The organisers describe the course as super flat and fast.",
+  "courseHighlights": [
+    "Start at the New Orleans Museum of Art in City Park",
+    "Bayou St. John and the Bayou St. John Bridge",
+    "Lakeshore Drive, with a turn near Shelter #4",
+    "City Park streets such as Harrison Avenue and Diagonal Drive",
+    "Finish on Roosevelt Mall"
+  ],
+  "paceStrategy": {
+    "summary": "The organisers describe the course as super flat and fast, so an even pace is the plan. The route has several turns and a U-turn on Lakeshore Drive, so run the tangents and stay alert at the turnaround.",
+    "segments": [
+      {
+        "section": "mile 1–4",
+        "terrain": "Flat streets by the museum, Wisner Boulevard and St. Bernard Avenue",
+        "advice": "Start at goal pace or slightly slower and settle in."
+      },
+      {
+        "section": "mile 5–9",
+        "terrain": "Flat; Lakeshore Drive with a U-turn, then back by Bayou St. John",
+        "advice": "Hold an even pace and expect a possible breeze off the lake."
+      },
+      {
+        "section": "mile 10–13.1",
+        "terrain": "Flat City Park roads to Roosevelt Mall",
+        "advice": "Keep steady through the park turns and finish strong."
+      }
+    ]
+  },
+  "fuelingNotes": "No half-marathon aid-station positions were found on the pages we checked. Check the current athlete guide and carry your own gels.",
+  "tips": [
+    "Check the turn-by-turn directions on the race site; the route has many turns and a U-turn marshalled at Lakeshore Drive",
+    "Pick up your packet before race day at Tad Gormley Stadium, as race-day pickup is very limited",
+    "Note the start is at the Museum of Art while the finish is on Roosevelt Mall",
+    "Allow time for parking and travel to City Park; check the parking and transportation page on the race site"
+  ],
+  "faq": [
+    {
+      "question": "Is the New Orleans Half Marathon course flat?",
+      "answer": "Yes. The organisers describe the race course as super flat and fast. They give a climb figure only for the full marathon, so we give none for the half."
+    },
+    {
+      "question": "Where does the New Orleans Half Marathon start and finish?",
+      "answer": "It starts at the New Orleans Museum of Art in City Park and finishes on Roosevelt Mall."
+    },
+    {
+      "question": "When is the New Orleans Half Marathon held?",
+      "answer": "It is held on a Saturday in November."
+    }
+  ],
+  "sources": [
+    "https://runsignup.com/Race/runNewOrleans/Page/NOLAHalfMarathonRace",
+    "https://runsignup.com/Race/runNewOrleans/Page/FAQ",
+    "https://halfruns.com/races/louisiana/new-orleans-marathon"
+  ],
+  "checked": "2026-10"
+}

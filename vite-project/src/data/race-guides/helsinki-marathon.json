@@ -1,0 +1,75 @@
+{
+  "slug": "helsinki-marathon",
+  "name": "Helsinki City Marathon",
+  "city": "Helsinki",
+  "country": "Finland",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "multi-lap",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "13–18 °C during the race",
+  "website": "https://helsinkicityrun.fi/en/",
+  "summary": "The Helsinki City Marathon is run on two almost identical laps through parks, along the sea and in the city centre. It has been held in May since 2018 as part of the Helsinki City Run. The finish is in the Helsinki Olympic Stadium.",
+  "courseHighlights": [
+    "Start near the Olympic Stadium",
+    "Seaside stretches along the bay",
+    "Pikku-Huopalahti area",
+    "Parks and downtown streets",
+    "Finish in the Helsinki Olympic Stadium"
+  ],
+  "paceStrategy": {
+    "summary": "Wikipedia says the course is at sea level with a highest point of 32 m, so pacing can be even. Because there are two almost identical laps, you can use lap one to learn the route and lap two to push. Do not go out too fast.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Flat streets and parks near the sea",
+        "advice": "Run at or slightly slower than goal pace."
+      },
+      {
+        "section": "km 10–21",
+        "terrain": "Seaside and park roads, first lap",
+        "advice": "Keep a steady rhythm and note any short rises."
+      },
+      {
+        "section": "km 21–35",
+        "terrain": "Second lap on the same route",
+        "advice": "Stay on pace; you now know the course."
+      },
+      {
+        "section": "km 35–42.2",
+        "terrain": "Final part of the second lap, finish in the stadium",
+        "advice": "Use remaining energy in the last 3 km."
+      }
+    ]
+  },
+  "fuelingNotes": "The organiser lists 11 refreshment stations at regular intervals, all with water and sports drink (2023 route page). Plan gels between stations so you can wash them down.",
+  "tips": [
+    "Race day is in May and temperatures can be cool; bring a layer for the start",
+    "The route was changed in 2023 to avoid the hillier Niemenmäki section, so check the current map",
+    "Use the 11 refreshment stations to drink at regular intervals",
+    "The finish is inside the Olympic Stadium"
+  ],
+  "faq": [
+    {
+      "question": "Is the Helsinki City Marathon flat?",
+      "answer": "Wikipedia says the route is at sea level with a highest point of 32 m and about 1.1% steep uphill. The organiser says the 2023 route has less climbing than 2022."
+    },
+    {
+      "question": "When is the Helsinki City Marathon held?",
+      "answer": "It has been held in May since 2018. It was in August before that."
+    },
+    {
+      "question": "How many laps is the Helsinki City Marathon?",
+      "answer": "Two almost identical laps. The first lap is longer because it has an extra loop in the south of the city (older route notes)."
+    }
+  ],
+  "sources": [
+    "https://helsinkicityrun.fi/en/",
+    "https://helsinkicityrun.fi/en/?p=19031",
+    "https://helsinkicityrun.fi/en/helsinkicitymarathon/",
+    "https://en.wikipedia.org/wiki/Helsinki_City_Marathon"
+  ],
+  "checked": "2026-10"
+}

@@ -1,0 +1,66 @@
+{
+  "slug": "seattle-marathon",
+  "name": "UW Medicine Seattle Marathon",
+  "city": "Seattle",
+  "country": "Washington, USA",
+  "distanceKm": 42.195,
+  "month": "November",
+  "courseType": "point-to-point",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.seattlemarathon.org/",
+  "summary": "The UW Medicine Seattle Marathon is held on or near Thanksgiving weekend in late November. In the 2026 listing the marathon starts at Seattle Center and finishes at Pier 66 (Bell Harbor) on the waterfront. The route has changed over the years, so check the current map.",
+  "courseHighlights": [
+    "Start at Seattle Center near the Space Needle",
+    "Pier 66 (Bell Harbor) finish on the waterfront",
+    "Past routes crossed the Ship Canal Bridge, the University of Washington campus and Green Lake"
+  ],
+  "paceStrategy": {
+    "summary": "The course has hills and bridges, so run by effort. Expect cool, wet weather. Because the route changes between years, download the official map and elevation profile before planning splits.",
+    "segments": [
+      {
+        "section": "mile 1–6",
+        "terrain": "Downtown streets from Seattle Center",
+        "advice": "Start at or just under goal pace."
+      },
+      {
+        "section": "mile 7–20",
+        "terrain": "City neighbourhoods and bridge crossings (check the current map)",
+        "advice": "Run the rises by effort and hold steady on the flats."
+      },
+      {
+        "section": "mile 21–26.2",
+        "terrain": "Return to the waterfront finish at Pier 66",
+        "advice": "Save a little energy and push in the last mile."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list aid-station positions, so check the official course description. Cold weather can reduce thirst, but keep taking gels and fluid at regular intervals.",
+  "tips": [
+    "Late November is cool and often wet, so bring layers and a throwaway jacket",
+    "Download the official map and course description before race day",
+    "The finish is at Pier 66, away from the start, so plan transport"
+  ],
+  "faq": [
+    {
+      "question": "Where does the Seattle Marathon start and finish?",
+      "answer": "The 2026 listing shows the marathon starting at Seattle Center and finishing at Pier 66 (Bell Harbor)."
+    },
+    {
+      "question": "When is the Seattle Marathon held?",
+      "answer": "It is usually held on the weekend after Thanksgiving."
+    },
+    {
+      "question": "Is the Seattle Marathon hilly?",
+      "answer": "I found no reliable total-climb figure. Wikipedia describes a route that crossed the Ship Canal Bridge and Aurora Bridge, so expect some climbing. Check the official elevation map."
+    }
+  ],
+  "sources": [
+    "https://www.seattlemarathon.org/",
+    "https://www.seattlemarathon.org/marathon-and-half-marathon",
+    "https://en.wikipedia.org/wiki/Seattle_Marathon"
+  ],
+  "checked": "2026-10"
+}

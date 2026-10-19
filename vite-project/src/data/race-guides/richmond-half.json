@@ -1,0 +1,69 @@
+{
+  "slug": "richmond-half",
+  "name": "CarMax Richmond Half Marathon",
+  "city": "Richmond",
+  "country": "Virginia, USA",
+  "distanceKm": 21.0975,
+  "month": "November",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Five-year average of about 6 °C at the start and 16 °C in the afternoon (42 °F and 60 °F), per HalfRuns",
+  "website": "https://www.richmondmarathon.org/races/half-marathon/",
+  "summary": "The CarMax Richmond Half Marathon is part of the Richmond Marathon weekend, known as America's Friendliest Marathon. It starts at 8th and Broad Street in downtown Richmond and finishes with a downhill run to 5th and Byrd Streets. The route passes street art, river views, historic buildings and parks.",
+  "courseHighlights": [
+    "Start at 8th and Broad Street, downtown Richmond",
+    "Street art, river views and historic architecture",
+    "Party zones, bands and spirit groups along the route",
+    "Junk food stop at mile 9 and pickle juice at mile 10",
+    "Downhill finish at 5th and Byrd Streets, then Brown's Island"
+  ],
+  "paceStrategy": {
+    "summary": "HalfRuns rates the course ultra-flat, and the official site stresses a downhill finish. Run an even pace and use the last downhill to finish strong. Check the current map, as the course is subject to change.",
+    "segments": [
+      {
+        "section": "mile 1–4",
+        "terrain": "Downtown streets",
+        "advice": "Start at goal pace or slightly slower while the field spreads."
+      },
+      {
+        "section": "mile 5–10",
+        "terrain": "Neighbourhood streets and parks",
+        "advice": "Hold an even pace and use the water stops."
+      },
+      {
+        "section": "mile 11–13.1",
+        "terrain": "Return downtown with a downhill finish",
+        "advice": "Build the pace over the final downhill to 5th and Byrd Streets."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site lists water stops at the start and about miles 2, 4, 6, 7 and 9–12, with Tailwind drink at every stop. GU gel and Noogs chews are at mile 7, a junk food stop is at mile 9 and pickle juice is at mile 10.",
+  "tips": [
+    "Know that the start is at 8th and Broad Street, one block from the 8K start",
+    "Use the mile 7 gel station if you use GU or chews",
+    "Dress for a cool November start; HalfRuns shows an average low of 42 °F",
+    "Expect crowd support and party zones along the route, and plan to enjoy it"
+  ],
+  "faq": [
+    {
+      "question": "Is the Richmond Half Marathon course flat?",
+      "answer": "HalfRuns rates it ultra-flat, and the official course page highlights a downhill finish at 5th and Byrd Streets. We found no official climb figure."
+    },
+    {
+      "question": "Where does the Richmond Half Marathon start and finish?",
+      "answer": "It starts at 8th and Broad Street and finishes at 5th and Byrd Streets, near Brown's Island."
+    },
+    {
+      "question": "When is the Richmond Half Marathon held?",
+      "answer": "It is held on a Saturday in mid-November, at 7:15 a.m."
+    }
+  ],
+  "sources": [
+    "https://www.richmondmarathon.org/race-weekend/course-information/half-marathon-course/",
+    "https://www.richmondmarathon.org/races/half-marathon/",
+    "https://halfruns.com/races/virginia/allianz-richmond-marathon-carmax-richmond-half-marathon-capital-one-richmond-8k"
+  ],
+  "checked": "2026-10"
+}

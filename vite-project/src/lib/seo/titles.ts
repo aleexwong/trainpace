@@ -49,7 +49,8 @@ export function previewRouteTitle(marathonName: string): string {
   return fitTitle(
     `${marathonName} Elevation Profile – Course Map & Hills | TrainPace`,
     `${marathonName} Elevation Profile & Course Map | TrainPace`,
-    `${marathonName} Elevation Profile | TrainPace`
+    `${marathonName} Elevation Profile | TrainPace`,
+    `${marathonName} Elevation Profile`
   );
 }
 

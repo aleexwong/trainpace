@@ -1,0 +1,75 @@
+{
+  "slug": "vienna-city-marathon",
+  "name": "Vienna City Marathon",
+  "city": "Vienna",
+  "country": "Austria",
+  "distanceKm": 42.195,
+  "month": "April",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "10–18 °C expected on race day",
+  "website": "https://www.vienna-marathon.com/",
+  "summary": "The Vienna City Marathon starts at the Vienna International Centre and finishes on the Ringstrasse between the Burgtheater and City Hall. It passes the Prater, the State Opera and Schönbrunn Palace. Race guides describe it as a flat, fast road course.",
+  "courseHighlights": [
+    "Start at the Vienna International Centre (UNO-City) and over the Reichsbrücke",
+    "Prater park",
+    "Vienna State Opera and the Ringstrasse",
+    "Schönbrunn Palace",
+    "Finish on the Ringstrasse between the Burgtheater and City Hall"
+  ],
+  "paceStrategy": {
+    "summary": "The course is flat, so even pacing should work well. Use the early kilometres to settle in, then hold a steady rhythm through the city. Keep a little energy for the last kilometres on the Ringstrasse.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Flat roads from the start over the Reichsbrücke",
+        "advice": "Run slightly under goal effort while the field is dense."
+      },
+      {
+        "section": "km 10–21",
+        "terrain": "Flat city roads",
+        "advice": "Lock into goal pace and stay relaxed."
+      },
+      {
+        "section": "km 21–35",
+        "terrain": "Flat city roads",
+        "advice": "Keep pace steady; even pacing pays off on a flat course."
+      },
+      {
+        "section": "km 35–42.2",
+        "terrain": "Flat city roads, finish on the Ringstrasse",
+        "advice": "Hold form and push in the last 2 km towards the finish."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list aid-station positions, so check the official runner information. On a flat course, take gels at regular intervals, for example every 30–40 minutes.",
+  "tips": [
+    "Race day can be cool in spring, so bring a throwaway layer for the start",
+    "The start is at UNO-City, away from the finish, so plan your transport",
+    "Crowds are dense early; line up in your correct start block"
+  ],
+  "faq": [
+    {
+      "question": "Is the Vienna City Marathon flat?",
+      "answer": "Yes. The course is flat: the difference between its highest and lowest points is only about 44 m."
+    },
+    {
+      "question": "Where does the Vienna City Marathon finish?",
+      "answer": "The finish is on the Ringstrasse between the Burgtheater and City Hall, according to the Vienna tourist board."
+    },
+    {
+      "question": "When is the Vienna City Marathon held?",
+      "answer": "It is usually held in April."
+    }
+  ],
+  "sources": [
+    "https://www.wien.info/en/livable-vienna/sports/city-marathon-343250",
+    "https://en.wikipedia.org/wiki/Vienna_City_Marathon",
+    "https://marathon-index.com/races/vienna-city-marathon/course/",
+    "https://realbuzz.com/events/vcm-vienna-city-marathon-2025",
+    "https://www.vienna-marathon.com/"
+  ],
+  "checked": "2026-10"
+}
