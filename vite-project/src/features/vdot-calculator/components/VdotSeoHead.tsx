@@ -3,11 +3,12 @@
  */
 
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 
 export function VdotSeoHead() {
   return (
     <Helmet>
-      <title>VDOT Running Calculator – Jack Daniels Formula | TrainPace</title>
+      <title>{STATIC_PAGE_TITLES["/vdot"]}</title>
       <meta
         name="description"
         content="Free VDOT running calculator based on Jack Daniels' formula. Enter any race time to get your VDOT score, equivalent race predictions for 800m to marathon, and training paces for Easy, Marathon, Threshold, Interval, and Repetition zones."

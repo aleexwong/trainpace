@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { Search, X, BookOpen } from "lucide-react";
 import BlogCard from "./BlogCard";
 import BlogSidebar from "./BlogSidebar";
@@ -119,9 +120,7 @@ export default function BlogList() {
   return (
     <div className="bg-gray-50 text-gray-900 min-h-screen">
       <Helmet>
-        <title>
-          Running Blog - Training Tips, Race Strategy & Nutrition | TrainPace
-        </title>
+        <title>{STATIC_PAGE_TITLES["/blog"]}</title>
         <meta
           name="description"
           content="Expert running advice for marathoners and distance runners. Training tips, race strategy guides, nutrition planning, and more from TrainPace."

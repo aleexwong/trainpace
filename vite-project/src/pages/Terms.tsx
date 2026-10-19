@@ -1,11 +1,12 @@
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { Link } from "react-router-dom";
 
 export default function Terms() {
   return (
     <>
       <Helmet>
-        <title>Terms of Service - TrainPace</title>
+        <title>{STATIC_PAGE_TITLES["/terms"]}</title>
         <meta
           name="description"
           content="TrainPace Terms of Service. Read our terms and conditions for using TrainPace's free training tools, calculators, and elevation analysis."

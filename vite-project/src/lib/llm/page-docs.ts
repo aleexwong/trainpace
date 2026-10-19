@@ -40,11 +40,15 @@ import {
   trainingPaceTable,
 } from "./reference-tables";
 import type { DocBlock, PageDoc } from "./types";
+import {
+  STATIC_PAGE_TITLES,
+  blogPostTitle,
+  previewRouteTitle,
+} from "../seo/titles";
 
 // ── Shared copy ────────────────────────────────────────────────────────────
 
-export const BLOG_LIST_TITLE =
-  "Running Blog - Training Tips, Race Strategy & Nutrition | TrainPace";
+export const BLOG_LIST_TITLE = STATIC_PAGE_TITLES["/blog"];
 export const BLOG_LIST_DESCRIPTION =
   "Expert running advice for marathoners and distance runners. Training tips, race strategy guides, nutrition planning, and more from TrainPace.";
 
@@ -307,48 +311,21 @@ export function getPageTitle(url: string): string {
   const seoMeta = getSeoMeta(url);
   if (seoMeta?.title) return seoMeta.title;
 
-  if (url === "/blog") return BLOG_LIST_TITLE;
   const blogPost = blogPostsByUrl[url];
-  if (blogPost) return `${blogPost.title} | TrainPace Blog`;
+  if (blogPost) return blogPostTitle(blogPost);
 
-  switch (url) {
-    case "/":
-      return "TrainPace – Free Running Pace Calculator & Race Day Tools";
-    case "/calculator":
-      return "Running Pace Calculator – VDOT Training Zones, Easy to Tempo Pace | TrainPace";
-    case "/vdot":
-      return "VDOT Calculator – Fitness Score & Equivalent Race Times | TrainPace";
-    case "/plan":
-      return "Training Plan Builder – Free 5K to Marathon Plans | TrainPace";
-    case "/fuel":
-      return "Marathon Fuel Calculator – How Many Gels & When to Take Them | TrainPace";
-    case "/elevationfinder":
-    case "/elevation-finder":
-      return "GPX Elevation Profile Viewer – Free Route Analysis & Climb Stats | TrainPace";
-    case "/race":
-      return "Race Prep Pages – Pacing, Fueling, Elevation Strategy | TrainPace";
-    case "/mcp":
-      return "MCP Server - TrainPace Tools for AI Agents";
-    case "/about":
-    case "/ethos":
-      return "About TrainPace – Built by a Self-Coached Runner";
-    case "/faq":
-      return "TrainPace FAQ – Pace, GPX, Fuel & Plan Questions";
-    case "/privacy":
-      return "Privacy Policy | TrainPace";
-    case "/terms":
-      return "Terms of Service | TrainPace";
-    default:
-      if (url.includes("/preview-route/")) {
-        const slug = url.split("/").pop()!;
-        const name =
-          getCourse(slug)?.name ??
-          marathonSeoData[slug]?.name ??
-          `${slug.charAt(0).toUpperCase()}${slug.slice(1)} Marathon`;
-        return `${name} Elevation Profile & Course Map | TrainPace`;
-      }
-      return "TrainPace – Free Running Tools";
+  const primary = getCanonicalPath(url) as keyof typeof STATIC_PAGE_TITLES;
+  if (primary in STATIC_PAGE_TITLES) return STATIC_PAGE_TITLES[primary];
+
+  if (url.includes("/preview-route/")) {
+    const slug = url.split("/").pop()!;
+    const name =
+      getCourse(slug)?.name ??
+      marathonSeoData[slug]?.name ??
+      `${slug.charAt(0).toUpperCase()}${slug.slice(1)} Marathon`;
+    return previewRouteTitle(name);
   }
+  return "TrainPace – Free Running Tools";
 }
 
 export function getPageDescription(url: string): string {

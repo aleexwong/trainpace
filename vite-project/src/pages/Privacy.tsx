@@ -1,11 +1,12 @@
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { Link } from "react-router-dom";
 
 export default function Privacy() {
   return (
     <>
       <Helmet>
-        <title>Privacy Policy - TrainPace</title>
+        <title>{STATIC_PAGE_TITLES["/privacy"]}</title>
         <meta
           name="description"
           content="TrainPace privacy policy. Learn how we collect, use, and protect your data. We respect your privacy and never sell your information."

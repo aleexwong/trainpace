@@ -475,6 +475,9 @@ export interface SeoValidationWarning {
 // Export Helpers
 // =============================================================================
 
+// The one canonical origin. www, never the bare apex: the apex 308-redirects
+// here (vercel.json), and every canonical, og:url, JSON-LD id and sitemap entry
+// must agree with it or Google splits ranking signals across two hosts.
 export const BASE_URL = 'https://trainpace.com';
 
 export function withBaseUrl(path: string): string {
