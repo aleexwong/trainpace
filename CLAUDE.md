@@ -150,6 +150,7 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 - **Non-prerendered routes get `app-shell.html`** (noindex, no canonical) via the `vercel.json` rewrite, not the home page. Paths with a file extension are not rewritten, so a missing `.md`/image is a real 404. Anything that should be indexed must be in `getAllDocPaths()`.
 - Prerendered head tags carry `data-rh="true"` so React Helmet replaces them on boot instead of duplicating them. A page that omits its own Helmet canonical/description therefore loses the static one once JS runs — give every routed page a Helmet canonical.
 - `src/App.css` still carries the Vite template's `#root { text-align: center }`. It cascades into every page, so left-aligned layouts need an explicit `text-left` on their container.
+- **Never re-add a `background-color` to the global `button` rule in `src/index.css`.** It used to carry the Vite template's `button { background-color: #1a1a1a }` (light grey only under `prefers-color-scheme: light`), so every new `<button>` without its own `bg-*` class rendered **black** for dark-mode users (e.g. the dashboard "Edit URL" button). The rule now leaves the background transparent. Still give every new button an explicit `bg-*` (e.g. `bg-white`) or use the shadcn `Button`, so it looks the same on every OS theme.
 - shadcn `Slider` wraps Radix: the *thumb* is what receives focus and carries `role="slider"`. An `aria-label` on the root leaves it announced as unnamed — pass `thumbLabel` instead.
 
 ## Past Mistakes

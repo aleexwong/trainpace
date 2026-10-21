@@ -251,3 +251,17 @@ returned 200 with the *home page's* HTML and canonical. Nothing failed; it only
 showed up by fetching the live site with curl.
 → **Rule:** verify SEO/agent changes against the built `dist/` and the live
 site, not the code. `npm run verify-seo` now fails the build on the known cases.
+
+---
+
+## Session: black "Edit URL" button on dashboard route cards
+
+**New buttons kept rendering black, and got fixed one by one by hand.**
+`src/index.css` still had the Vite template's `button { background-color: #1a1a1a }`,
+reset to `#f9f9f9` only inside `@media (prefers-color-scheme: light)`. Any
+`<button>` without its own `bg-*` class was black for dark-mode users. Testing
+in a light-mode browser hid it, so it came back with each new button.
+→ **Rule:** fix the global cause, not each button. The global `button` rule no
+longer sets a background — do not add one back. Still give new buttons an
+explicit `bg-*` class (or use shadcn `Button`), and check a visual change with
+`colorScheme: 'dark'` in Playwright as well as light.
