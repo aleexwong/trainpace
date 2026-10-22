@@ -1,23 +1,18 @@
-import {
-  Activity,
-  Map,
-  Zap,
-  ChevronDown,
-  X,
-  Clock,
-  TrendingUp,
-  Battery,
-  Check,
-  ShieldCheck,
-  ArrowRight,
-  Bot,
-} from "lucide-react";
-import { type ButtonHTMLAttributes, type ReactNode } from "react";
-import type { LucideIcon } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight, ChevronDown } from "lucide-react";
+import { type ReactNode } from "react";
+import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { comparisonLinks } from "@/features/seo-pages/seoPages";
+// Deep import: the pure math module, not the barrel, so the landing chunk
+// doesn't pull in the VDOT calculator's component tree.
+import {
+  calculateVdot,
+  calculateTrainingZones,
+  predictRaceTime,
+  formatPace,
+  formatTime,
+} from "@/features/vdot-calculator/vdot-math";
 import {
   PaceLadderShot,
   VdotDialShot,
@@ -27,804 +22,556 @@ import {
   TrainingPlanShot,
 } from "@/components/feature-shots";
 
-// Animated, interactive product shots keyed by the FeatureSection badge.
-const FEATURE_SHOTS: Record<string, () => JSX.Element> = {
-  "Pace Calculator": PaceLadderShot,
-  "VDOT Calculator": VdotDialShot,
-  "Elevation Finder": ElevationShot,
-  "Fuel Planner": FuelStationsShot,
-  "Training Plan Generator": TrainingPlanShot,
-};
+// --- Worked example shown in the hero ---
+// Computed with the same formulas the calculators use, so the numbers on the
+// home page are real outputs rather than mock-up values.
+
+const EXAMPLE_DISTANCE_M = 10000;
+const EXAMPLE_TIME_S = 50 * 60;
+const exampleVdot = calculateVdot(EXAMPLE_DISTANCE_M, EXAMPLE_TIME_S);
+const exampleZones = calculateTrainingZones(exampleVdot);
+const examplePredictions = [
+  { label: "5K", meters: 5000 },
+  { label: "Half", meters: 21097.5 },
+  { label: "Marathon", meters: 42195 },
+].map((p) => ({
+  ...p,
+  time: formatTime(predictRaceTime(exampleVdot, p.meters)),
+}));
 
 // --- Components ---
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "ghost";
-  className?: string;
-  icon?: LucideIcon;
-  size?: "sm" | "md" | "lg";
-  children?: ReactNode;
-}
+// Links, not <button>s: these only navigate, and index.css still carries the
+// Vite template's global `button` background and purple hover border.
+const BUTTON_BASE =
+  "inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-emerald-700";
 
-const Button = ({
-  children,
-  variant = "primary",
-  className = "",
-  icon: Icon,
-  ...props
-}: ButtonProps) => {
-  const baseStyle =
-    "inline-flex items-center justify-center font-semibold transition-all duration-200 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
-
-  const variants: Record<string, string> = {
-    primary:
-      "bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20 focus:ring-emerald-600",
-    secondary:
-      "bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 focus:ring-slate-200",
-    outline:
-      "border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 focus:ring-emerald-600",
-    ghost: "text-slate-600 hover:text-emerald-600 hover:bg-emerald-50/50",
-  };
-
-  const sizes: Record<string, string> = {
-    sm: "px-4 py-2 text-sm",
-    md: "px-6 py-3 text-base",
-    lg: "px-8 py-4 text-lg",
-  };
-
-  return (
-    <button
-      className={`${baseStyle} ${variants[variant]} ${
-        sizes[props.size || "md"]
-      } ${className}`}
-      {...props}
-    >
-      {children}
-      {Icon && <Icon className="ml-2 w-5 h-5" />}
-    </button>
-  );
+const BUTTON_VARIANTS = {
+  primary: "bg-slate-900 text-white hover:bg-slate-700",
+  secondary:
+    "border border-slate-300 bg-white text-slate-900 hover:border-slate-400 hover:bg-slate-50",
+  inversePrimary: "bg-white text-slate-900 hover:bg-slate-200",
+  inverseSecondary: "border border-slate-600 text-white hover:border-slate-400",
 };
+
+const ButtonLink = ({
+  to,
+  variant = "primary",
+  children,
+}: {
+  to: string;
+  variant?: keyof typeof BUTTON_VARIANTS;
+  children: ReactNode;
+}) => (
+  <Link to={to} className={`${BUTTON_BASE} ${BUTTON_VARIANTS[variant]}`}>
+    {children}
+  </Link>
+);
+
+const SectionLabel = ({
+  index,
+  children,
+}: {
+  index: string;
+  children: ReactNode;
+}) => (
+  <p className="mb-4 flex items-baseline gap-3 font-display text-sm text-slate-500">
+    <span className="tabular-nums text-emerald-700">{index}</span>
+    <span>{children}</span>
+  </p>
+);
 
 // --- Sections ---
 
-const Hero = () => {
-  const navigate = useNavigate();
+const Hero = () => (
+  <section className="border-b border-slate-200 bg-white pt-24 pb-16 lg:pt-32 lg:pb-24">
+    <div className="mx-auto grid max-w-6xl items-start gap-12 px-4 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:px-8">
+      <div className="max-w-xl">
+        <p className="mb-5 font-display text-sm text-slate-500">
+          Free running tools · no account needed
+        </p>
+        <h1 className="mb-6 text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 lg:text-5xl">
+          Training paces, race plans and fueling from one race time.
+        </h1>
+        <p className="mb-8 text-lg leading-relaxed text-slate-600">
+          Enter a recent result. TrainPace works out your VDOT, your five
+          Daniels training paces, a week-by-week plan, and how many gels to
+          carry on race day.
+        </p>
 
-  const scrollToFeatures = () => {
-    const featuresSection = document.getElementById("features");
-    if (featuresSection) {
-      featuresSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <ButtonLink to="/calculator">
+            Calculate my paces <ArrowRight className="h-4 w-4" />
+          </ButtonLink>
+          <ButtonLink to="/elevation-finder" variant="secondary">
+            Analyze a GPX route
+          </ButtonLink>
+        </div>
+      </div>
 
-  return (
-    <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-50">
-      {/* Abstract Background Shapes */}
-      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-      <div className="absolute top-0 left-0 -ml-20 -mt-20 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+      <HeroExample />
+    </div>
+  </section>
+);
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          {/* Copy */}
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-1.5 shadow-sm border border-emerald-100 mb-6">
-              <span className="flex h-2 w-2 rounded-full bg-emerald-500"></span>
-              <span className="text-sm font-semibold text-emerald-800 tracking-wide uppercase">
-                Made for runners by a runner
-              </span>
-            </div>
-            {/* font-bold, not extrabold: Space Grotesk tops out at 700 and
-                font-synthesis is off, so 800 silently renders as 700 anyway. */}
-            <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 tracking-tight leading-[1.1] mb-6">
-              Train Smarter. <br />
-              <span className="text-emerald-600">Race Faster.</span>
-            </h1>
-            <p className="text-lg text-slate-600 mb-8 leading-relaxed max-w-lg">
-              Science-backed pace zones, real-world course analysis, and
-              personalized race fueling strategies. Used by runners who want
-              results without expensive coaching.
-            </p>
+const HeroExample = () => (
+  <Link
+    to="/vdot"
+    className="group block rounded-lg border border-slate-200 bg-white transition-colors hover:border-slate-400"
+    aria-label="Open the VDOT calculator"
+  >
+    <div className="flex items-baseline justify-between border-b border-slate-200 px-5 py-4">
+      <div>
+        <p className="text-xs text-slate-500">Example input</p>
+        <p className="font-display text-lg font-semibold text-slate-900">
+          10K in 50:00
+        </p>
+      </div>
+      <div className="text-right">
+        <p className="text-xs text-slate-500">VDOT</p>
+        <p className="font-display text-lg font-semibold tabular-nums text-slate-900">
+          {exampleVdot.toFixed(1)}
+        </p>
+      </div>
+    </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                variant="primary"
-                size="lg"
-                icon={ArrowRight}
-                onClick={() => navigate("/calculator")}
-              >
-                Get Started
-              </Button>
-              <Button variant="secondary" size="lg" onClick={scrollToFeatures}>
-                See How It Works
-              </Button>
-            </div>
+    <table className="w-full text-sm">
+      <caption className="sr-only">
+        Training paces per kilometre for a 50:00 10K
+      </caption>
+      <thead>
+        <tr className="text-xs text-slate-500">
+          <th scope="col" className="px-5 pt-3 pb-1 text-left font-normal">
+            Zone
+          </th>
+          <th scope="col" className="px-5 pt-3 pb-1 text-right font-normal">
+            Pace / km
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {exampleZones.map((z) => {
+          const [fast, slow] = z.pacePerKmSeconds;
+          const pace =
+            Math.round(fast) === Math.round(slow)
+              ? formatPace(fast)
+              : `${formatPace(fast)}–${formatPace(slow)}`;
+          return (
+            <tr key={z.name} className="border-t border-slate-100">
+              <td className="px-5 py-2 text-slate-700">{z.name}</td>
+              <td className="px-5 py-2 text-right font-display tabular-nums text-slate-900">
+                {pace}
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
 
-            <div className="mt-8 flex items-center space-x-6 text-sm text-slate-500">
-              <span className="flex items-center">
-                <Check className="w-4 h-4 text-emerald-500 mr-2" /> No credit
-                card
-              </span>
-              <span className="flex items-center">
-                <Check className="w-4 h-4 text-emerald-500 mr-2" /> No account
-                needed
-              </span>
-            </div>
-          </div>
+    <dl className="grid grid-cols-3 border-t border-slate-200">
+      {examplePredictions.map((p, i) => (
+        <div
+          key={p.label}
+          className={`px-5 py-4 ${i > 0 ? "border-l border-slate-200" : ""}`}
+        >
+          <dt className="text-xs text-slate-500">{p.label}</dt>
+          <dd className="font-display font-semibold tabular-nums text-slate-900">
+            {p.time}
+          </dd>
+        </div>
+      ))}
+    </dl>
 
-          {/* Visual / Dashboard Mockup */}
-          <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
-            <div
-              className="relative rounded-2xl bg-white shadow-2xl border border-slate-200 overflow-hidden cursor-pointer hover:shadow-emerald-200 hover:border-emerald-300 transition-all duration-200 group"
-              onClick={() => navigate("/race")}
-              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && navigate("/race")}
-              role="link"
-              tabIndex={0}
-              aria-label="Browse race courses"
+    <p className="flex items-center justify-between border-t border-slate-200 px-5 py-3 text-xs text-slate-500 group-hover:text-slate-900">
+      Daniels &amp; Gilbert formula · try your own time
+      <ArrowRight className="h-3.5 w-3.5" />
+    </p>
+  </Link>
+);
+
+const TOOLS = [
+  {
+    name: "Pace calculator",
+    route: "/calculator",
+    desc: "Easy, tempo, threshold and interval paces from any 5K–marathon time.",
+  },
+  {
+    name: "VDOT calculator",
+    route: "/vdot",
+    desc: "A VDOT score and equivalent race times from 800 m to the marathon.",
+  },
+  {
+    name: "Training plans",
+    route: "/plan",
+    desc: "8–20 week periodized plans with a target pace on every session.",
+  },
+  {
+    name: "Fuel planner",
+    route: "/fuel",
+    desc: "Carbs per hour, gel count and timing for your distance and weight.",
+  },
+  {
+    name: "Elevation finder",
+    route: "/elevation-finder",
+    desc: "Upload a GPX file to see gain, loss, grades and climb difficulty.",
+  },
+  {
+    name: "Race guides",
+    route: "/race",
+    desc: "Course profile, pacing and fueling notes for 90+ major races.",
+  },
+];
+
+const ToolIndex = () => (
+  <section className="border-b border-slate-200 bg-slate-50 py-16">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <h2 className="mb-8 text-2xl font-bold text-slate-900">The tools</h2>
+      <ul className="grid gap-px overflow-hidden rounded-lg border border-slate-200 bg-slate-200 sm:grid-cols-2 lg:grid-cols-3">
+        {TOOLS.map((tool) => (
+          <li key={tool.route} className="bg-white">
+            <Link
+              to={tool.route}
+              className="group flex h-full flex-col p-5 transition-colors hover:bg-slate-50"
             >
-              <div className="bg-slate-50 px-4 py-3 border-b border-slate-200 flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                <div className="ml-4 text-xs text-slate-400 font-mono group-hover:text-emerald-600 transition-colors">
-                  trainpace.com/race
-                </div>
-              </div>
-              <div className="p-6 grid gap-6">
-                {/* Mock UI Elements - Race page preview */}
-                <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                  <div>
-                    <div className="text-sm text-slate-500 font-medium uppercase">
-                      Race Courses
-                    </div>
-                    <div className="text-2xl font-bold text-slate-900">
-                      Boston Marathon{" "}
-                    </div>
-                  </div>
-                  <div className="h-10 w-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
-                    <Map size={20} />
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex justify-between text-sm font-medium">
-                    <span className="text-slate-600">
-                      Race Course Elevation
-                    </span>
-                    <span className="text-orange-500">Rolling Hills</span>
-                  </div>
-                  <div className="h-24 w-full bg-slate-50 rounded-lg border border-slate-100 relative flex items-end px-2 pb-2 gap-1 overflow-hidden">
-                    {/* Fake elevation bars */}
-                    {[
-                      4, 6, 3, 8, 12, 5, 3, 7, 9, 12, 8, 5, 3, 4, 6, 8, 10, 14,
-                      8, 6, 4, 2, 4, 6,
-                    ].map((h, i) => (
-                      <div
-                        key={i}
-                        className="flex-1 bg-emerald-200 rounded-t-sm"
-                        style={{ height: `${h * 6}%` }}
-                      ></div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
-                  <div className="flex items-start gap-3">
-                    <Zap className="w-5 h-5 text-blue-600 mt-0.5" />
-                    <div>
-                      <h4 className="font-bold text-blue-900 text-sm">
-                        Fueling Strategy
-                      </h4>
-                      <p className="text-xs text-blue-700 mt-1">
-                        Take 1 gel every 40 mins. Target 50g carbs/hr.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Floating Card */}
-            <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-slate-100 max-w-xs hidden sm:block animate-bounce-slow">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 bg-slate-900 rounded-full flex items-center justify-center text-white font-bold">
-                  AW
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500">Founder's PB</p>
-                  <p className="text-sm font-bold text-slate-900">
-                    3:01 → <span className="text-emerald-600">2:06 (HM)</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const ValueProps = () => {
-  const props = [
-    {
-      icon: TrendingUp,
-      title: "Science-Backed Zones",
-      desc: "Get personalized Easy, Tempo, Speed, and Long Run paces from any race result. Stop guessing.",
-    },
-    {
-      icon: Map,
-      title: "Analyze Any Course",
-      desc: "Upload GPX files to visualize elevation and terrain difficulty. Intel for marathons & trails.",
-    },
-    {
-      icon: Battery,
-      title: "Never Bonk Again",
-      desc: "Calculate exactly how many gels and carbs needed based on your race duration and weight.",
-    },
-  ];
-
-  return (
-    <section className="py-16 bg-white border-b border-slate-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-3 gap-12">
-          {props.map((item, idx) => (
-            <div key={idx} className="flex flex-col items-start">
-              <div className="h-12 w-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-4">
-                <item.icon className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">
-                {item.title}
-              </h3>
-              <p className="text-slate-600 leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const PainPoints = () => {
-  const pains = [
-    {
-      problem: "I train too hard on easy days and crash on hard days.",
-      solution: "Precision pace zones based on proven formulas.",
-    },
-    {
-      problem: "I don't know if my race course is hilly or runnable.",
-      solution: "Upload any GPX file, see elevation profiles in seconds.",
-    },
-    {
-      problem: "I hit the wall at mile 18 because I didn't fuel right.",
-      solution: "Personalized gel timing and carb calculations.",
-    },
-    {
-      problem: "I want to know what pace I should be going per km.",
-      solution: "Get your exact per-km pace zones from any recent race time.",
-    },
-  ];
-
-  return (
-    <section className="py-20 bg-slate-50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-900">
-            Self-Coached Doesn't Mean Going It Alone
-          </h2>
-          <p className="mt-4 text-lg text-slate-600">
-            You bring the grit. We provide the data.
-          </p>
-        </div>
-
-        <div className="grid gap-4">
-          {pains.map((item, idx) => (
-            <div
-              key={idx}
-              className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col sm:flex-row items-start sm:items-center gap-4 transition-transform hover:-translate-y-1"
-            >
-              <div className="flex-shrink-0">
-                <div className="h-8 w-8 rounded-full bg-red-100 flex items-center justify-center">
-                  <X className="w-4 h-4 text-red-600" />
-                </div>
-              </div>
-              <div className="flex-grow">
-                <p className="text-slate-500 line-through text-sm">
-                  {item.problem}
-                </p>
-                <p className="text-slate-900 font-medium text-lg flex items-center gap-2 mt-1">
-                  <ArrowRight className="w-4 h-4 text-emerald-500" />{" "}
-                  {item.solution}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
+              <span className="mb-1 flex items-center justify-between font-display font-semibold text-slate-900">
+                {tool.name}
+                <ArrowRight className="h-4 w-4 text-slate-300 transition-colors group-hover:text-slate-900" />
+              </span>
+              <span className="text-sm leading-relaxed text-slate-600">
+                {tool.desc}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+);
 
 interface FeatureSectionProps {
+  index: string;
+  label: string;
   title: string;
   subtitle: string;
   features: string[];
   cta: string;
   ctaRoute: string;
-  icon: LucideIcon;
+  shot: () => JSX.Element;
   imageSide?: "left" | "right";
-  badge: string;
+  id?: string;
 }
 
 const FeatureSection = ({
+  index,
+  label,
   title,
   subtitle,
   features,
   cta,
   ctaRoute,
-  icon: Icon,
+  shot: Shot,
   imageSide = "right",
-  badge,
-}: FeatureSectionProps) => {
-  const navigate = useNavigate();
+  id,
+}: FeatureSectionProps) => (
+  <section
+    id={id}
+    className="overflow-hidden border-b border-slate-200 py-16 lg:py-24"
+  >
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div
+        className={`flex flex-col items-center gap-12 lg:flex-row lg:gap-16 ${
+          imageSide === "left" ? "lg:flex-row-reverse" : ""
+        }`}
+      >
+        <div className="flex-1">
+          <SectionLabel index={index}>{label}</SectionLabel>
+          <h2 className="mb-4 text-3xl font-bold tracking-tight text-slate-900">
+            {title}
+          </h2>
+          <p className="mb-6 text-lg leading-relaxed text-slate-600">
+            {subtitle}
+          </p>
 
-  return (
-    <div id="features" className="py-20 lg:py-28 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className={`flex flex-col lg:flex-row items-center gap-12 lg:gap-20 ${
-            imageSide === "left" ? "lg:flex-row-reverse" : ""
-          }`}
-        >
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-emerald-100 rounded-lg text-emerald-700">
-                <Icon size={24} />
-              </div>
-              <span className="font-bold text-emerald-600 tracking-wide uppercase text-sm">
-                {badge}
-              </span>
-            </div>
+          <ul className="mb-8 border-t border-slate-200">
+            {features.map((feature) => (
+              <li
+                key={feature}
+                className="border-b border-slate-200 py-2.5 text-slate-700"
+              >
+                {feature}
+              </li>
+            ))}
+          </ul>
 
-            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-              {title}
-            </h2>
-            <p className="text-lg text-slate-600 mb-8">{subtitle}</p>
+          <Link
+            to={ctaRoute}
+            className="inline-flex items-center gap-2 font-semibold text-emerald-700 hover:text-emerald-900"
+          >
+            {cta} <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
 
-            <ul className="space-y-4 mb-8">
-              {features.map((feature: string, idx: number) => (
-                <li key={idx} className="flex items-start">
-                  <div className="flex-shrink-0 h-6 w-6 rounded-full bg-emerald-100 flex items-center justify-center mt-0.5">
-                    <Check className="w-3.5 h-3.5 text-emerald-600" />
-                  </div>
-                  <span className="ml-3 text-slate-700">{feature}</span>
-                </li>
-              ))}
-            </ul>
-
-            <Button
-              variant="primary"
-              onClick={() => ctaRoute && navigate(ctaRoute)}
-            >
-              {cta}
-            </Button>
-          </div>
-
-          <div className="flex-1 w-full min-w-0">
-            {(() => {
-              const Shot = FEATURE_SHOTS[badge];
-              return Shot ? <Shot /> : null;
-            })()}
-          </div>
+        <div className="w-full min-w-0 flex-1">
+          <Shot />
         </div>
       </div>
     </div>
-  );
-};
+  </section>
+);
 
-// const FounderStory = () => {
-//   const navigate = useNavigate();
-
-//   return (
-//     <section
-//       id="story"
-//       className="py-20 bg-slate-900 text-white relative overflow-hidden"
-//     >
-//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-//         <div className="grid lg:grid-cols-2 gap-12 items-center">
-//           <div>
-//             <h2 className="text-3xl font-bold mb-6">
-//               Built By a Runner Who Knows Your Struggle
-//             </h2>
-//             <div className="prose prose-invert prose-lg opacity-90">
-//               <p>
-//                 Meet <strong>Alex Wong</strong>, TrainPace founder. In 2023,
-//                 Alex ran his first half marathon in 3:01:00—undertrained,
-//                 overpacing, and hitting the wall hard.
-//               </p>
-//               <p>
-//                 Determined to improve, he built TrainPace to apply proper
-//                 training zones, analyze courses, and nail his fueling.
-//               </p>
-//               <p className="text-xl font-semibold text-emerald-400 my-4">
-//                 24 weeks later, he ran 2:06:00. A 55-minute improvement.
-//               </p>
-//               <p className="italic border-l-4 border-emerald-500 pl-4 text-slate-300">
-//                 "I built TrainPace because every runner deserves access to the
-//                 tools that elite athletes use. No paywalls. No BS. Just
-//                 science-backed training that works."
-//               </p>
-//             </div>
-//             <div className="mt-8">
-//               <Button variant="primary" onClick={() => navigate("/about")}>
-//                 Read Alex's Full Story
-//               </Button>
-//             </div>
-//           </div>
-
-//           <div className="relative">
-//             <div className="bg-slate-800 rounded-2xl p-8 border border-slate-700">
-//               <div className="flex justify-between items-end border-b border-slate-700 pb-4 mb-4">
-//                 <div>
-//                   <p className="text-sm text-slate-400">First Race</p>
-//                   <p className="text-3xl font-bold text-slate-200">3:01:00</p>
-//                 </div>
-//                 <span className="text-red-400 text-sm font-medium">
-//                   Bonked @ Mile 8
-//                 </span>
-//               </div>
-
-//               <div className="flex justify-between items-start pt-4">
-//                 <div>
-//                   <p className="text-sm text-slate-400">After TrainPace</p>
-//                   <p className="text-4xl font-bold text-emerald-400">2:06:00</p>
-//                 </div>
-//                 <span className="text-emerald-400 text-sm font-medium bg-emerald-400/10 px-2 py-1 rounded">
-//                   -55 Minutes
-//                 </span>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-const FounderStory = () => {
-  const navigate = useNavigate();
-
-  return (
-    <section
-      id="story"
-      className="py-24 bg-slate-900 text-white relative overflow-hidden"
-    >
-      {/* Background decorative glow */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px]" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* LEFT COLUMN: Text Content */}
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
-              Built By a Runner Who <br />
-              <span className="text-emerald-400">Knows Your Struggle</span>
-            </h2>
-            <div className="prose prose-invert prose-lg opacity-90">
-              <p>
-                Meet <strong>Alex Wong</strong>, TrainPace founder. In 2024,
-                Alex ran his first half marathon in{" "}
-                <span className="text-white font-semibold">3:01:00</span>
-                —undertrained, overpacing, and hitting the wall hard.
-              </p>
-              <p>
-                Determined to improve, he built TrainPace to apply proper
-                training zones, analyze courses, and nail his fueling.
-              </p>
-
-              {/* Highlight Box */}
-              <div className="my-6 p-4 border-l-4 border-emerald-500 bg-emerald-500/5 rounded-r-lg not-prose">
-                <p className="text-xl font-bold text-emerald-400 mb-1">
-                  24 weeks later: 2:06:00
-                </p>
-                <p className="text-emerald-200/70 text-sm uppercase tracking-wider font-medium">
-                  A 55-minute improvement
-                </p>
-              </div>
-
-              <p className="italic text-slate-400 pl-4">
-                "I built TrainPace because every runner deserves access to the
-                tools that elite athletes use. No paywalls. No BS. Just
-                science-backed training that works."
-              </p>
-            </div>
-            <div className="mt-8">
-              <Button variant="primary" onClick={() => navigate("/about")}>
-                Read Alex's Full Story
-              </Button>
-            </div>
-          </div>
-
-          {/* RIGHT COLUMN: Visual Composition (Image + Floating Card) */}
-          <div className="relative lg:h-full flex items-center justify-center lg:justify-end mt-12 lg:mt-0">
-            {/* 1. The Runner Image (Anchors the design) */}
-            <div className="relative w-full max-w-md rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl rotate-2 hover:rotate-0 transition-all duration-500 group">
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10 opacity-60" />
-              <img
-                src="https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?q=80&w=1000&auto=format&fit=crop"
-                alt="Alex running"
-                className="w-full h-[450px] object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-              />
-            </div>
-
-            {/* 2. The Stats Card (Floats on top) */}
-            <div className="absolute -bottom-6 -left-4 md:-left-12 w-[90%] max-w-xs bg-slate-800/95 backdrop-blur-md border border-slate-700 p-6 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform transition hover:-translate-y-2 duration-300 z-20">
-              {/* Before Stats */}
-              <div className="flex justify-between items-end border-b border-slate-700 pb-4 mb-4">
-                <div>
-                  <p className="text-xs text-slate-400 uppercase tracking-wider font-bold mb-1">
-                    First Race
-                  </p>
-                  <p className="text-3xl font-bold text-slate-500 line-through decoration-red-500/50 decoration-4">
-                    3:01:00
-                  </p>
-                </div>
-                <span className="text-red-400 text-[10px] font-bold bg-red-500/10 px-2 py-1 rounded uppercase tracking-wide self-center ml-2">
-                  Bonked
-                </span>
-              </div>
-
-              {/* After Stats */}
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-xs text-emerald-400 uppercase tracking-wider font-bold mb-1">
-                    After TrainPace
-                  </p>
-                  <p className="text-4xl font-bold text-white">2:06:00</p>
-                </div>
-                <div className="flex flex-col items-end text-emerald-400">
-                  <TrendingUp className="w-6 h-6 mb-1" />
-                  <span className="text-sm font-bold">-55 min</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-const Comparison = () => {
-  return (
-    <section className="py-20 bg-white">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-slate-900">
-            Why Runners Choose TrainPace
-          </h2>
-        </div>
-        <div className="overflow-hidden border border-slate-200 rounded-xl shadow-sm">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 text-slate-900 font-bold uppercase text-xs tracking-wider">
-              <tr>
-                <th className="p-4 border-b border-slate-200">Feature</th>
-                <th className="p-4 border-b border-slate-200 bg-emerald-50 text-emerald-800 border-l border-r border-emerald-100 w-1/3">
-                  TrainPace
-                </th>
-                <th className="p-4 border-b border-slate-200 w-1/3 text-slate-500">
-                  Typical Apps
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              <tr>
-                <td className="p-4 font-medium text-slate-900">Price</td>
-                <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100 font-bold text-emerald-700">
-                  Free Forever
-                </td>
-                <td className="p-4 text-slate-500">$10-20/month</td>
-              </tr>
-              <tr>
-                <td className="p-4 font-medium text-slate-900">Pace Zones</td>
-                <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
-                  <span className="flex items-center">
-                    <Check className="w-4 h-4 text-emerald-500 mr-2" />{" "}
-                    Science-backed
-                  </span>
-                </td>
-                <td className="p-4 text-slate-500">Generic / Basic</td>
-              </tr>
-              <tr>
-                <td className="p-4 font-medium text-slate-900">
-                  Course Analysis
-                </td>
-                <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
-                  <span className="flex items-center">
-                    <Check className="w-4 h-4 text-emerald-500 mr-2" />{" "}
-                    Unlimited GPX
-                  </span>
-                </td>
-                <td className="p-4 text-slate-500">Premium Only</td>
-              </tr>
-              <tr>
-                <td className="p-4 font-medium text-slate-900">
-                  Fuel Planning
-                </td>
-                <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
-                  <span className="flex items-center">
-                    <Check className="w-4 h-4 text-emerald-500 mr-2" />{" "}
-                    AI-Powered
-                  </span>
-                </td>
-                <td className="p-4 text-slate-500">Rarely included</td>
-              </tr>
-              <tr>
-                <td className="p-4 font-medium text-slate-900">
-                  Account Required?
-                </td>
-                <td className="p-4 bg-emerald-50/30 border-l border-r border-emerald-100">
-                  <span className="flex items-center">
-                    <X className="w-4 h-4 text-emerald-500 mr-2" /> No, use
-                    instantly
-                  </span>
-                </td>
-                <td className="p-4 text-slate-500">Yes, mandatory signup</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        {comparisonLinks.length > 0 && (
-          <div className="mt-8 text-center">
-            <p className="text-sm font-medium text-slate-500 mb-3">
-              See how TrainPace compares to the apps you know:
-            </p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {comparisonLinks.map((c) => (
-                <Link
-                  key={c.slug}
-                  to={c.path}
-                  className="rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-sm font-medium text-emerald-800 hover:bg-emerald-100 transition-colors"
-                >
-                  {c.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-};
-
-const FAQ = () => {
-  const faqs = [
-    {
-      q: "Is TrainPace really free?",
-      a: "Yes. Core features (pace calculator, VDOT calculator, elevation analysis, fuel planning) are free forever. No credit card, no trials, no hidden fees.",
-    },
-    {
-      q: "Do I need an account?",
-      a: "No! You can use the Pace Calculator, VDOT Calculator, and ElevationFinder without signing up. Create an account (free) only if you want to save plans.",
-    },
-    {
-      q: "What is VDOT and how does it work?",
-      a: "VDOT is a running fitness metric from Jack Daniels' Running Formula. Enter any race time and our VDOT Calculator gives you a score plus training paces for Easy, Marathon, Threshold, Interval, and Repetition zones.",
-    },
-    {
-      q: "Where do the pace formulas come from?",
-      a: "We use proven exercise science formulas (Jack Daniels' VDOT and Riegel's formula) used by elite coaches.",
-    },
-    {
-      q: "How accurate is the fuel planning?",
-      a: "It's based on sports nutrition research recommending 30-60g carbs/hour, tailored to your body weight and goal time.",
-    },
-  ];
-
-  return (
-    <section className="py-20 bg-slate-50">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-slate-900 text-center mb-12">
-          Common Questions
+const FounderStory = () => (
+  <section
+    id="story"
+    className="border-b border-slate-200 bg-slate-50 py-16 lg:py-24"
+  >
+    <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+      <div>
+        <h2 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">
+          Why it exists
         </h2>
-        <div className="space-y-4 text-left">
-          {faqs.map((faq, i) => (
-            <details
-              key={i}
-              className="group bg-white rounded-lg shadow-sm border border-slate-200 p-6 cursor-pointer"
-            >
-              <summary className="flex justify-between items-center font-medium text-slate-900 list-none">
-                <span>{faq.q}</span>
-                <ChevronDown className="transition-transform group-open:rotate-180 text-slate-400" />
-              </summary>
-              <p className="mt-4 text-slate-600 leading-relaxed">{faq.a}</p>
-            </details>
-          ))}
+        <div className="space-y-4 text-lg leading-relaxed text-slate-600">
+          <p>
+            I ran my first half marathon in May 2024 in 3:01:00. I was
+            undertrained, started too fast, and didn&rsquo;t eat anything on the
+            course.
+          </p>
+          <p>
+            I built TrainPace to fix those three things: the right paces,
+            knowing the course, and a fueling plan. A year later I ran the same
+            race in 2:06:00.
+          </p>
+          <p className="text-base text-slate-500">— Alex Wong, founder</p>
         </div>
+        <Link
+          to="/about"
+          className="mt-8 inline-flex items-center gap-2 font-semibold text-emerald-700 hover:text-emerald-900"
+        >
+          Read the full story <ArrowRight className="h-4 w-4" />
+        </Link>
       </div>
-    </section>
-  );
-};
 
-const AiAgentSection = () => {
-  const navigate = useNavigate();
-
-  return (
-    <section className="py-20 lg:py-28 bg-slate-50 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-emerald-100 rounded-lg text-emerald-700">
-                <Bot size={24} />
-              </div>
-              <span className="font-bold text-emerald-600 tracking-wide uppercase text-sm">
-                Works with Claude & ChatGPT
+      <dl className="rounded-lg border border-slate-200 bg-white">
+        {[
+          {
+            label: "BMO Vancouver Half · May 2024",
+            time: "3:01:00",
+            pace: "8:35 /km",
+          },
+          {
+            label: "BMO Vancouver Half · May 2025",
+            time: "2:06:00",
+            pace: "5:58 /km",
+          },
+        ].map((r) => (
+          <div
+            key={r.label}
+            className="flex items-baseline justify-between border-b border-slate-200 px-6 py-5"
+          >
+            <dt className="text-sm text-slate-500">{r.label}</dt>
+            <dd className="text-right">
+              <span className="block font-display text-3xl font-bold tabular-nums text-slate-900">
+                {r.time}
               </span>
-            </div>
-
-            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
-              Just Ask Your Chatbot
-            </h2>
-            <p className="text-lg text-slate-600 mb-8">
-              TrainPace is a public MCP server. Connect it once and your
-              chatbot answers pace, plan, and fueling questions with our
-              actual formulas instead of made-up numbers.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
-              <Button variant="primary" onClick={() => navigate("/mcp")}>
-                Set It Up in a Minute
-              </Button>
-              <code className="text-sm text-slate-400 font-mono">
-                api.trainpace.com/api/mcp
-              </code>
-            </div>
+              <span className="font-display text-sm tabular-nums text-slate-500">
+                {r.pace}
+              </span>
+            </dd>
           </div>
+        ))}
+        <div className="flex items-baseline justify-between px-6 py-5">
+          <dt className="text-sm text-slate-500">Difference</dt>
+          <dd className="font-display text-xl font-bold tabular-nums text-emerald-700">
+            −55:00
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+);
 
-          <div className="flex-1 w-full min-w-0">
-            <AgentChatShot />
-          </div>
+const AiAgentSection = () => (
+  <section className="overflow-hidden border-b border-slate-200 py-16 lg:py-24">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
+        <div className="flex-1">
+          <SectionLabel index="06">MCP server</SectionLabel>
+          <h2 className="mb-4 text-3xl font-bold tracking-tight text-slate-900">
+            Use it from Claude or ChatGPT
+          </h2>
+          <p className="mb-6 text-lg leading-relaxed text-slate-600">
+            TrainPace is a public MCP server. Connect it once and your assistant
+            answers pace, plan and fueling questions with these formulas instead
+            of guessing.
+          </p>
+          <code className="mb-8 block w-fit rounded border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-sm text-slate-700">
+            https://api.trainpace.com/api/mcp
+          </code>
+          <Link
+            to="/mcp"
+            className="inline-flex items-center gap-2 font-semibold text-emerald-700 hover:text-emerald-900"
+          >
+            Setup instructions <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+
+        <div className="w-full min-w-0 flex-1">
+          <AgentChatShot />
         </div>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
-const CTA = () => {
-  const navigate = useNavigate();
+const COMPARISON_ROWS = [
+  { feature: "Price", trainpace: "Free", typical: "$10–20 / month" },
+  {
+    feature: "Account",
+    trainpace: "Optional (to save plans)",
+    typical: "Required",
+  },
+  {
+    feature: "Training paces",
+    trainpace: "Daniels VDOT, 5 zones",
+    typical: "Varies",
+  },
+  {
+    feature: "GPX course analysis",
+    trainpace: "Unlimited",
+    typical: "Often premium",
+  },
+  {
+    feature: "Race fueling plan",
+    trainpace: "Included",
+    typical: "Rarely included",
+  },
+];
 
-  return (
-    <section className="py-24 bg-emerald-600">
-      <div className="max-w-4xl mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-          Ready to Train Smarter?
+const Comparison = () => (
+  <section className="border-b border-slate-200 py-16 lg:py-24">
+    <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <h2 className="mb-8 text-3xl font-bold tracking-tight text-slate-900">
+        Compared with typical training apps
+      </h2>
+      <div className="overflow-x-auto rounded-lg border border-slate-200">
+        <table className="w-full text-left text-sm">
+          <thead className="bg-slate-50 text-xs text-slate-500">
+            <tr>
+              <th scope="col" className="px-4 py-3 font-medium" />
+              <th
+                scope="col"
+                className="px-4 py-3 font-semibold text-slate-900"
+              >
+                TrainPace
+              </th>
+              <th scope="col" className="px-4 py-3 font-medium">
+                Typical apps
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-200">
+            {COMPARISON_ROWS.map((row) => (
+              <tr key={row.feature}>
+                <th
+                  scope="row"
+                  className="px-4 py-3 font-medium text-slate-900"
+                >
+                  {row.feature}
+                </th>
+                <td className="px-4 py-3 text-slate-900">{row.trainpace}</td>
+                <td className="px-4 py-3 text-slate-500">{row.typical}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {comparisonLinks.length > 0 && (
+        <div className="mt-6">
+          <p className="mb-3 text-sm text-slate-500">
+            Side-by-side comparisons:
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {comparisonLinks.map((c) => (
+              <Link
+                key={c.slug}
+                to={c.path}
+                className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900"
+              >
+                {c.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+);
+
+const FAQS = [
+  {
+    q: "Is TrainPace free?",
+    a: "Yes. The pace calculator, VDOT calculator, training plans, elevation analysis and fuel planner are all free. There is no trial and no card.",
+  },
+  {
+    q: "Do I need an account?",
+    a: "No. Every calculator works without one. Sign in with Google only if you want to save plans and routes to a dashboard.",
+  },
+  {
+    q: "What is VDOT?",
+    a: "VDOT is a fitness score from Jack Daniels' Running Formula. One race time gives you a VDOT, and the VDOT gives you training paces for the Easy, Marathon, Threshold, Interval and Repetition zones.",
+  },
+  {
+    q: "Where do the formulas come from?",
+    a: "Training paces and race predictions use the Daniels & Gilbert oxygen-cost equations. Equivalent times between distances also use Riegel's formula.",
+  },
+  {
+    q: "How is the fueling target set?",
+    a: "The planner starts from 30 g of carbs per hour for a 10K, 45 g for a half and 75 g for a marathon, raises it for heavier runners (0.7 g per kg per hour), and caps it at 90–100 g.",
+  },
+];
+
+const FAQ = () => (
+  <section className="border-b border-slate-200 bg-slate-50 py-16 lg:py-24">
+    <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <h2 className="mb-8 text-3xl font-bold tracking-tight text-slate-900">
+        Questions
+      </h2>
+      <div className="divide-y divide-slate-200 border-y border-slate-200">
+        {FAQS.map((faq) => (
+          <details key={faq.q} className="group">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium text-slate-900">
+              <span>{faq.q}</span>
+              <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
+            </summary>
+            <p className="pb-4 leading-relaxed text-slate-600">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+const CTA = () => (
+  <section className="bg-slate-900 py-16 lg:py-20">
+    <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+      <div>
+        <h2 className="text-3xl font-bold tracking-tight text-white">
+          Start with a recent race time.
         </h2>
-        <p className="text-emerald-100 text-lg mb-10 max-w-2xl mx-auto">
-          Join thousands of runners using TrainPace to achieve their goals—no
-          credit card, no commitment, no BS.
-        </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <button
-            className="bg-white text-emerald-700 font-bold py-4 px-8 rounded-full hover:bg-emerald-50 transition shadow-xl"
-            onClick={() => navigate("/calculator")}
-          >
-            Get Started
-          </button>
-          <button
-            className="bg-emerald-700 text-white font-semibold py-4 px-8 rounded-full hover:bg-emerald-800 transition border border-emerald-500"
-            onClick={() => navigate("/elevation-finder")}
-          >
-            Analyze a Route
-          </button>
-        </div>
-        <p className="mt-8 text-sm text-emerald-200 flex items-center justify-center gap-2">
-          <ShieldCheck className="w-4 h-4" /> Your data is private. We never
-          sell your info.
+        <p className="mt-2 text-slate-400">
+          No account. Your data is never sold.
         </p>
       </div>
-    </section>
-  );
-};
+      <div className="flex flex-col gap-3 sm:flex-row">
+        <ButtonLink to="/calculator" variant="inversePrimary">
+          Calculate my paces <ArrowRight className="h-4 w-4" />
+        </ButtonLink>
+        <ButtonLink to="/plan" variant="inverseSecondary">
+          Build a training plan
+        </ButtonLink>
+      </div>
+    </div>
+  </section>
+);
 
 // Footer is provided by MainLayout, so we don't need to define it here
 
@@ -841,17 +588,35 @@ export default function LandingPage() {
         />
         <link rel="canonical" href="https://trainpace.com/" />
         {/* Open Graph */}
-        <meta property="og:title" content="TrainPace – Free VDOT Running Calculator & Training Tools" />
-        <meta property="og:description" content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Get science-based training paces from Jack Daniels' formula." />
+        <meta
+          property="og:title"
+          content="TrainPace – Free VDOT Running Calculator & Training Tools"
+        />
+        <meta
+          property="og:description"
+          content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Get science-based training paces from Jack Daniels' formula."
+        />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://trainpace.com/" />
-        <meta property="og:image" content="https://trainpace.com/landing-page-2025.png" />
+        <meta
+          property="og:image"
+          content="https://trainpace.com/landing-page-2025.png"
+        />
         <meta property="og:site_name" content="TrainPace" />
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="TrainPace – Free VDOT Running Calculator & Training Tools" />
-        <meta name="twitter:description" content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Science-based training tools for runners." />
-        <meta name="twitter:image" content="https://trainpace.com/landing-page-2025.png" />
+        <meta
+          name="twitter:title"
+          content="TrainPace – Free VDOT Running Calculator & Training Tools"
+        />
+        <meta
+          name="twitter:description"
+          content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Science-based training tools for runners."
+        />
+        <meta
+          name="twitter:image"
+          content="https://trainpace.com/landing-page-2025.png"
+        />
         {/* Structured Data */}
         <script type="application/ld+json">
           {JSON.stringify({
@@ -867,136 +632,96 @@ export default function LandingPage() {
           })}
         </script>
       </Helmet>
-      <div className="font-sans text-slate-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
+      {/* text-left: App.css still centres #root. */}
+      <div className="bg-white text-left font-sans text-slate-900 antialiased">
         <Hero />
-        <ValueProps />
-      <PainPoints />
+        <ToolIndex />
 
-      <FeatureSection
-        badge="Pace Calculator"
-        title="Get Your Personal Training Zones in 30 Seconds"
-        subtitle="Enter any recent race time (5K to Marathon) and instantly get science-backed pace zones for all your training runs."
-        icon={Clock}
-        features={[
-          "Easy & Recovery paces to prevent burnout",
-          "Lactate Threshold & Tempo zones",
-          "VO2 Max & Interval targets",
-          "Save unlimited plans to dashboard",
-        ]}
-        cta="Calculate My Paces"
-        ctaRoute="/calculator"
-        imageSide="right"
-      />
+        <FeatureSection
+          id="features"
+          index="01"
+          label="Pace calculator"
+          title="Your training zones from one result"
+          subtitle="Enter a recent 5K, 10K, half or marathon time. You get a pace for every type of run, in km or miles."
+          shot={PaceLadderShot}
+          features={[
+            "Easy and recovery pace",
+            "Tempo and threshold pace",
+            "Interval and speed pace",
+            "Save plans to your dashboard",
+          ]}
+          cta="Calculate my paces"
+          ctaRoute="/calculator"
+        />
 
-      <FeatureSection
-        badge="VDOT Calculator"
-        title="Know Your VDOT Score & Race Predictions"
-        subtitle="Use the proven Daniels Running Formula to calculate your VDOT fitness score. Get equivalent race predictions from 800m to the marathon and training paces for all 5 Daniels zones."
-        icon={Activity}
-        features={[
-          "VDOT score with fitness level rating",
-          "Race time predictions across 9 distances",
-          "Easy, Marathon, Threshold, Interval & Repetition paces",
-          "Based on Jack Daniels' Running Formula",
-        ]}
-        cta="Calculate My VDOT"
-        ctaRoute="/vdot"
-        imageSide="left"
-      />
+        <FeatureSection
+          index="02"
+          label="VDOT calculator"
+          title="A fitness score and race predictions"
+          subtitle="The Daniels Running Formula turns one race into a VDOT score, predicted times at nine distances, and paces for all five Daniels zones."
+          shot={VdotDialShot}
+          features={[
+            "VDOT score with a fitness rating",
+            "Predicted times from 800 m to the marathon",
+            "Easy, Marathon, Threshold, Interval and Repetition paces",
+          ]}
+          cta="Calculate my VDOT"
+          ctaRoute="/vdot"
+          imageSide="left"
+        />
 
-      <FeatureSection
-        badge="Elevation Finder"
-        title="Know Every Hill Before Race Day"
-        subtitle="Upload GPX files from your watch or Strava to get instant elevation insights and terrain difficulty ratings."
-        icon={TrendingUp}
-        features={[
-          "Interactive elevation profiles",
-          "Terrain difficulty scoring (Flat vs Hilly)",
-          "Total gain/loss analysis",
-          "Analyze Boston, NYC, or local trails",
-        ]}
-        cta="Analyze a Route"
-        ctaRoute="/elevation-finder"
-        imageSide="left"
-      />
+        <FeatureSection
+          index="03"
+          label="Elevation finder"
+          title="See the hills before race day"
+          subtitle="Upload a GPX file from your watch or Strava. You get the elevation profile, grades, and a difficulty rating for the course."
+          shot={ElevationShot}
+          features={[
+            "Elevation profile on a course map",
+            "Total gain and loss",
+            "Grade by segment and a difficulty score",
+          ]}
+          cta="Analyze a route"
+          ctaRoute="/elevation-finder"
+        />
 
-      <FeatureSection
-        badge="Fuel Planner"
-        title="Never Hit the Wall Again"
-        subtitle="Get a personalized fueling strategy based on your specific race distance, goal time, and body weight."
-        icon={Zap}
-        features={[
-          "Exact gel count and timing",
-          "Carbohydrate targets per hour",
-          "AI-powered nutrition suggestions",
-          "Prevent energy crashes",
-        ]}
-        cta="Plan My Fueling"
-        ctaRoute="/fuel"
-        imageSide="right"
-      />
+        <FeatureSection
+          index="04"
+          label="Fuel planner"
+          title="How much to eat, and when"
+          subtitle="Set your distance, goal time and body weight. The planner gives a carbs-per-hour target and a timed list of gels."
+          shot={FuelStationsShot}
+          features={[
+            "Carbs per hour for your race",
+            "Gel count and timing",
+            "Optional AI suggestions for real foods",
+          ]}
+          cta="Plan my fueling"
+          ctaRoute="/fuel"
+          imageSide="left"
+        />
 
-      <FeatureSection
-        badge="Training Plan Generator"
-        title="A Full Training Plan in Seconds"
-        subtitle="Choose your goal race, pick your available days, and get a complete periodized training plan with the right paces for every session."
-        icon={TrendingUp}
-        features={[
-          "8–20 week plans for 5K to Marathon",
-          "Base, Development, Sharpening & Taper phases",
-          "Daily workouts with zone-specific paces",
-          "Export to Google Calendar or Apple Calendar",
-        ]}
-        cta="Build My Plan"
-        ctaRoute="/plan"
-        imageSide="left"
-      />
+        <FeatureSection
+          index="05"
+          label="Training plans"
+          title="A full plan with a pace on every run"
+          subtitle="Choose a goal race and the days you can train. You get a periodized plan from base to taper."
+          shot={TrainingPlanShot}
+          features={[
+            "8–20 weeks, 5K to marathon",
+            "Base, development, sharpening and taper phases",
+            "Export to Google or Apple Calendar",
+          ]}
+          cta="Build my plan"
+          ctaRoute="/plan"
+        />
 
-      <FounderStory />
-      <AiAgentSection />
-      <Comparison />
-
-      {/* Use Cases Grid */}
-      <section className="py-20 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900">
-              Built for Every Runner
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                role: "First-Time Marathoner",
-                quote:
-                  "I analyzed the Boston course elevation and calculated my fueling needs. I finished strong without hitting the wall.",
-                color: "bg-blue-50 border-blue-100",
-              },
-              {
-                role: "Comeback Runner",
-                quote:
-                  "After 2 years off, I didn't know where to start. I plugged in my old 10K time, got my Easy pace, and built a base safely.",
-                color: "bg-orange-50 border-orange-100",
-              },
-              {
-                role: "Trail Runner",
-                quote:
-                  "I analyze trail GPX files before races—seeing grade percentages helps me plan walk breaks. The terrain difficulty score is spot-on.",
-                color: "bg-emerald-50 border-emerald-100",
-              },
-            ].map((card, i) => (
-              <div key={i} className={`p-6 rounded-xl border ${card.color}`}>
-                <div className="font-bold text-slate-900 mb-2">{card.role}</div>
-                <p className="text-slate-600 text-sm italic">"{card.quote}"</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <FAQ />
-      <CTA />
-    </div>
+        <AiAgentSection />
+        <FounderStory />
+        <Comparison />
+        <FAQ />
+        <CTA />
+      </div>
     </>
   );
 }
