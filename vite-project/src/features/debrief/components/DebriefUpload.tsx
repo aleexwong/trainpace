@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import { AlertCircle, Lock, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import "./debrief.css";
 
 interface DebriefUploadProps {
   error: string | null;
@@ -14,7 +14,14 @@ export function DebriefUpload({ error, onFile, onSample }: DebriefUploadProps) {
   const [dragging, setDragging] = useState(false);
 
   return (
-    <div className="space-y-4">
+    <div className="tpdb">
+      <p className="kicker">Race debrief</p>
+      <h1 className="verdict">How did you really pace your race?</h1>
+      <p className="lede">
+        Give it the GPX file your watch recorded. You get a short, honest report: where the race
+        turned, what it cost you, and how to split the next one. Your file stays in your browser.
+      </p>
+
       <div
         onDragOver={(e) => {
           e.preventDefault();
@@ -27,23 +34,15 @@ export function DebriefUpload({ error, onFile, onSample }: DebriefUploadProps) {
           const file = e.dataTransfer.files[0];
           if (file) onFile(file);
         }}
-        className={cn(
-          "rounded-xl border-2 border-dashed p-8 text-center transition-colors",
-          dragging ? "border-blue-500 bg-blue-50" : "border-gray-300 bg-white"
-        )}
+        className={cn("drop", dragging && "dragging")}
       >
-        <Upload className="w-10 h-10 mx-auto text-blue-600 mb-3" aria-hidden="true" />
-        <p className="font-semibold text-gray-900">Drop your race GPX here</p>
-        <p className="text-sm text-gray-600 mt-1 mb-4">
-          Export the activity from Garmin Connect, Strava, Coros or your watch app.
-        </p>
-        <div className="flex flex-wrap justify-center gap-3">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
           <Button type="button" onClick={() => inputRef.current?.click()}>
-            Choose GPX file
+            Choose a race GPX
           </Button>
-          <Button type="button" variant="outline" onClick={onSample}>
-            Try a sample race
-          </Button>
+          <span className="text-sm" style={{ color: "var(--ink-3)" }}>
+            or drop it here. From Garmin Connect, Strava, Coros or your watch app.
+          </span>
         </div>
         <input
           ref={inputRef}
@@ -60,15 +59,16 @@ export function DebriefUpload({ error, onFile, onSample }: DebriefUploadProps) {
       </div>
 
       {error && (
-        <div role="alert" className="flex gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
-          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
-          <span>{error}</span>
-        </div>
+        <p role="alert" className="mt-4 text-sm" style={{ color: "var(--clay-deep)" }}>
+          {error}
+        </p>
       )}
 
-      <p className="flex items-center gap-2 text-sm text-gray-600">
-        <Lock className="w-4 h-4 shrink-0" aria-hidden="true" />
-        Your file is read in your browser. It is never uploaded or saved.
+      <p className="mt-6 text-sm" style={{ color: "var(--ink-3)" }}>
+        No file to hand?{" "}
+        <button type="button" className="text-btn" onClick={onSample}>
+          Read the debrief of a sample marathon
+        </button>
       </p>
     </div>
   );

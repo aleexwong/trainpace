@@ -2,12 +2,14 @@ import { useCallback, useMemo, useState } from "react";
 import ReactGA from "react-ga4";
 import {
   analyzeRace,
-  buildTakeaways,
+  buildEvenEffortPlan,
+  buildFindings,
+  buildVerdict,
   matchOfficialDistance,
   parseTimedGpx,
 } from "../debrief-math";
 import { simulateSampleRace } from "../sample-race";
-import type { DebriefResult, SplitUnit, TimedPoint } from "../types";
+import type { DebriefResult, Finding, PlanLeg, SplitUnit, TimedPoint } from "../types";
 
 const MAX_FILE_MB = 15;
 
@@ -21,7 +23,10 @@ export interface RaceDebriefState {
   unit: SplitUnit;
   setUnit: (unit: SplitUnit) => void;
   result: DebriefResult | null;
-  takeaways: string[];
+  verdict: string;
+  findings: Finding[];
+  /** Pacing plan to run the same time with even effort. */
+  plan: PlanLeg[];
   /** Official distance in metres, or "gps". */
   distance: DistanceChoice;
   setDistance: (d: DistanceChoice) => void;
@@ -52,8 +57,9 @@ export function useRaceDebrief(): RaceDebriefState {
   }, [points, unit]);
 
   const result = analysis.result;
-  const takeaways = useMemo(
-    () => (result ? buildTakeaways(result, unit) : []),
+  const verdict = useMemo(() => (result ? buildVerdict(result, unit) : ""), [result, unit]);
+  const findings = useMemo(
+    () => (result ? buildFindings(result, unit) : []),
     [result, unit]
   );
 
@@ -94,7 +100,7 @@ export function useRaceDebrief(): RaceDebriefState {
   );
 
   const loadSample = useCallback(() => {
-    accept(simulateSampleRace(), "Simulated sample marathon", true);
+    accept(simulateSampleRace(), "Sample marathon", true);
   }, [accept]);
 
   const reset = useCallback(() => {
@@ -109,6 +115,13 @@ export function useRaceDebrief(): RaceDebriefState {
       ? result.gpsDistanceKm * 1000
       : distance
     : null;
+  const plan = useMemo(
+    () =>
+      result && resultMeters !== null
+        ? buildEvenEffortPlan(resultMeters, result.elapsedSec)
+        : [],
+    [result, resultMeters]
+  );
 
   return {
     fileName,
@@ -117,7 +130,9 @@ export function useRaceDebrief(): RaceDebriefState {
     unit,
     setUnit,
     result,
-    takeaways,
+    verdict,
+    findings,
+    plan,
     distance,
     setDistance,
     resultMeters,

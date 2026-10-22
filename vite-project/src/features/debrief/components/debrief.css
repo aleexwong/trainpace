@@ -1,0 +1,296 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Race Debrief — a written race report, not a stats dashboard.
+   Same visual language as the landing page feature shots
+   (components/feature-shots/feature-shots.css): low-hue ink, one emerald
+   accent, clay for the part that went wrong, thin rules instead of cards.
+   Scoped under `.tpdb`.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.tpdb {
+  --ink: oklch(0.24 0.012 260);
+  --ink-2: oklch(0.45 0.011 260);
+  --ink-3: oklch(0.6 0.009 260);
+  --ink-4: oklch(0.72 0.007 260);
+  --line: oklch(0.915 0.004 260);
+  --fog: oklch(0.967 0.003 260);
+  --accent: oklch(0.6 0.085 165);
+  --accent-deep: oklch(0.45 0.075 165);
+  --accent-soft: oklch(0.955 0.022 165);
+  --clay: oklch(0.62 0.07 48);
+  --clay-deep: oklch(0.5 0.08 48);
+  --clay-soft: oklch(0.94 0.03 48);
+  --display: "Space Grotesk", system-ui, sans-serif;
+
+  color: var(--ink);
+  text-align: left;
+}
+
+.tpdb .num {
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── header ─────────────────────────────────────────────── */
+.tpdb .kicker {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+}
+.tpdb .verdict {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.875rem, 4.5vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin: 0.5rem 0 1rem;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+.tpdb .meta {
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.0625rem;
+  color: var(--ink-2);
+}
+.tpdb .meta b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.tpdb .meta .sep {
+  color: var(--ink-4);
+  margin: 0 0.5em;
+}
+
+.tpdb .controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--ink-3);
+}
+.tpdb .controls select {
+  border: 0;
+  border-bottom: 1px solid var(--ink-4);
+  background: transparent;
+  color: var(--ink);
+  padding: 0.125rem 0;
+  font: inherit;
+  cursor: pointer;
+}
+.tpdb .seg {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+.tpdb .seg button {
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  color: var(--ink-3);
+}
+.tpdb .seg button[aria-pressed="true"] {
+  color: var(--ink);
+  background: var(--fog);
+  font-weight: 500;
+}
+.tpdb .text-btn {
+  background: none;
+  padding: 0;
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--ink-4);
+}
+.tpdb .text-btn:hover {
+  color: var(--ink);
+}
+
+/* ── sections ───────────────────────────────────────────── */
+.tpdb section {
+  border-top: 1px solid var(--line);
+  padding-top: 1.75rem;
+  margin-top: 2.5rem;
+}
+.tpdb h2 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.125rem;
+  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+.tpdb .lede {
+  color: var(--ink-2);
+  max-width: 60ch;
+  margin-bottom: 1.25rem;
+}
+
+/* ── chart ──────────────────────────────────────────────── */
+.tpdb figure {
+  margin: 0;
+}
+.tpdb .chart text {
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  fill: var(--ink-3);
+}
+.tpdb .chart .note {
+  font-size: 12px;
+  font-weight: 600;
+}
+.tpdb .chart .note.clay {
+  fill: var(--clay-deep);
+}
+.tpdb .chart .note.ink {
+  fill: var(--ink-2);
+}
+.tpdb figcaption {
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+  margin-top: 0.5rem;
+  max-width: 70ch;
+}
+
+/* ── findings ───────────────────────────────────────────── */
+.tpdb .findings {
+  display: grid;
+  gap: 1.25rem;
+  max-width: 62ch;
+}
+.tpdb .findings h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+.tpdb .findings p {
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+
+/* ── next-time plan ─────────────────────────────────────── */
+.tpdb .plan {
+  border-top: 1px solid var(--ink);
+}
+.tpdb .plan-row {
+  display: grid;
+  grid-template-columns: 7.5rem 6.5rem 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.tpdb .plan-range {
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  font-size: 0.875rem;
+}
+.tpdb .plan-pace {
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+.tpdb .plan-pace small {
+  font-weight: 400;
+  font-size: 0.75rem;
+  color: var(--ink-3);
+  margin-left: 0.125rem;
+}
+.tpdb .plan-note {
+  color: var(--ink-2);
+}
+@media (max-width: 560px) {
+  .tpdb .plan-row {
+    grid-template-columns: 1fr auto;
+    gap: 0.25rem 1rem;
+  }
+  .tpdb .plan-note {
+    grid-column: 1 / -1;
+  }
+}
+
+.tpdb .onward {
+  margin-top: 1.25rem;
+  color: var(--ink-2);
+  line-height: 1.7;
+  max-width: 62ch;
+}
+.tpdb .onward a {
+  color: var(--accent-deep);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklch, var(--accent) 45%, transparent);
+}
+
+/* ── splits ─────────────────────────────────────────────── */
+.tpdb details summary {
+  cursor: pointer;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.125rem;
+  list-style: none;
+}
+.tpdb details summary::-webkit-details-marker {
+  display: none;
+}
+.tpdb details summary::after {
+  content: " +";
+  color: var(--ink-3);
+  font-weight: 400;
+}
+.tpdb details[open] summary::after {
+  content: " −";
+}
+.tpdb .splits {
+  width: 100%;
+  max-width: 34rem;
+  margin-top: 1rem;
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.875rem;
+}
+.tpdb .splits th {
+  font-weight: 500;
+  color: var(--ink-3);
+  font-size: 0.75rem;
+  text-align: right;
+  padding: 0.25rem 0;
+}
+.tpdb .splits th:first-child,
+.tpdb .splits td:first-child {
+  text-align: left;
+}
+.tpdb .splits td {
+  text-align: right;
+  padding: 0.3rem 0;
+  border-top: 1px solid var(--line);
+}
+.tpdb .splits .slow {
+  color: var(--clay-deep);
+}
+.tpdb .splits .partial {
+  color: var(--ink-4);
+}
+
+.tpdb .footnote {
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+  margin-top: 0.5rem;
+}
+
+/* ── upload ─────────────────────────────────────────────── */
+.tpdb .drop {
+  border: 1.5px dashed var(--ink-4);
+  border-radius: 0.75rem;
+  padding: 2.5rem 1.5rem;
+  transition: border-color 0.15s, background 0.15s;
+}
+.tpdb .drop.dragging {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}

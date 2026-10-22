@@ -7,12 +7,15 @@
  * directly and safe to deep-import.
  */
 import type {
-  ConsistencyLabel,
   DebriefResult,
+  Finding,
   OfficialDistance,
+  PlanLeg,
+  ProfilePoint,
   Split,
   SplitShape,
   SplitUnit,
+  Stop,
   TimedPoint,
 } from "./types";
 import { KM_PER_MILE, distanceInUnit, formatClock as clock, paceInUnit } from "./utils";
@@ -30,6 +33,11 @@ const STOP_SPEED_MPS = 0.6;
 const EVEN_SPLIT_PCT = 1;
 // The pace has to drop by this much before we call it a slowdown.
 const SLOWDOWN_PCT = 5;
+// Stops shorter than this still count toward stopped time but aren't marked.
+const MIN_LISTED_STOP_S = 10;
+const PROFILE_STEP_M = 200;
+// "Next time" plan: run the first 10% this much slower than goal pace.
+const PLAN_START_EASE_SEC_PER_KM = 5;
 
 export const OFFICIAL_DISTANCES: OfficialDistance[] = [
   { name: "5K", meters: 5000 },
@@ -233,17 +241,40 @@ function effortPace(track: Track, fromM: number, toM: number): number {
   return seconds / (km * effortRatio(track, fromM, toM));
 }
 
-function stoppedSeconds(track: Track): number {
+/** Total time standing still, and each stop of at least MIN_LISTED_STOP_S. */
+function findStops(track: Track): { totalSec: number; stops: Stop[] } {
   const end = track.tSec[track.tSec.length - 1];
-  let stopped = 0;
+  let totalSec = 0;
+  const stops: Stop[] = [];
+  let current: Stop | null = null;
   for (let t = 0; t < end; t += STOP_WINDOW_S) {
     const dt = Math.min(STOP_WINDOW_S, end - t);
-    const moved =
-      interpolate(track.tSec, track.cumM, t + dt) -
-      interpolate(track.tSec, track.cumM, t);
-    if (dt > 0 && moved / dt < STOP_SPEED_MPS) stopped += dt;
+    const at = interpolate(track.tSec, track.cumM, t);
+    const moved = interpolate(track.tSec, track.cumM, t + dt) - at;
+    if (dt > 0 && moved / dt < STOP_SPEED_MPS) {
+      totalSec += dt;
+      if (current) current.seconds += dt;
+      else current = { km: at / 1000, seconds: dt };
+    } else if (current) {
+      if (current.seconds >= MIN_LISTED_STOP_S) stops.push(current);
+      current = null;
+    }
   }
-  return stopped;
+  if (current && current.seconds >= MIN_LISTED_STOP_S) stops.push(current);
+  return { totalSec, stops };
+}
+
+/** Smoothed elevation every PROFILE_STEP_M, for drawing the course under the chart. */
+function buildProfile(track: Track): ProfilePoint[] {
+  const out: ProfilePoint[] = [];
+  for (let m = 0; m < track.totalM; m += PROFILE_STEP_M) {
+    out.push({ km: m / 1000, ele: interpolate(track.sampleM, track.sampleEle, m) });
+  }
+  out.push({
+    km: track.totalM / 1000,
+    ele: track.sampleEle[track.sampleEle.length - 1],
+  });
+  return out;
 }
 
 // ── Metrics ────────────────────────────────────────────────────────────────
@@ -256,13 +287,6 @@ function median(values: number[]): number {
 
 function mean(values: number[]): number {
   return values.reduce((s, v) => s + v, 0) / values.length;
-}
-
-function consistencyLabel(score: number): ConsistencyLabel {
-  if (score >= 85) return "Very even";
-  if (score >= 70) return "Steady";
-  if (score >= 50) return "Uneven";
-  return "Very uneven";
 }
 
 function buildSplits(track: Track, unit: SplitUnit): Split[] {
@@ -299,7 +323,10 @@ function buildSplits(track: Track, unit: SplitUnit): Split[] {
  * SLOWDOWN_PCT below the first-half norm and mostly stayed there. Ignores the
  * first quarter of the race, where a slow start is not a slowdown.
  */
-function findSlowdown(full: Split[], totalKm: number): number | null {
+function findSlowdown(
+  full: Split[],
+  totalKm: number
+): { fromKm: number; costSec: number } | null {
   const firstHalf = full.filter((s) => s.startKm + s.lengthKm <= totalKm / 2);
   if (firstHalf.length < 2) return null;
   const baseline = median(firstHalf.map((s) => s.gapSecPerKm));
@@ -314,7 +341,12 @@ function findSlowdown(full: Split[], totalKm: number): number | null {
       mean(rest.map((s) => s.gapSecPerKm)) >= slow &&
       mostlySlow
     ) {
-      return full[i].startKm;
+      // What the fade cost against the runner's own first-half effort.
+      const costSec = rest.reduce(
+        (sum, s) => sum + Math.max(0, s.gapSecPerKm - baseline) * s.lengthKm,
+        0
+      );
+      return { fromKm: full[i].startKm, costSec };
     }
   }
   return null;
@@ -347,19 +379,17 @@ export function analyzeRace(points: TimedPoint[], unit: SplitUnit): DebriefResul
   const finalQuarterFadePct =
     (effortPace(track, totalM * 0.75, totalM) / effortPace(track, 0, halfM) - 1) * 100;
 
-  const gaps = full.map((s) => s.gapSecPerKm);
-  const gapMean = gaps.length > 0 ? mean(gaps) : avgGapSecPerKm;
-  const cvPct =
-    gaps.length > 1
-      ? (Math.sqrt(mean(gaps.map((g) => (g - gapMean) ** 2))) / gapMean) * 100
-      : 0;
-  const score = Math.round(Math.max(0, Math.min(100, 100 - (cvPct - 1) * 12)));
+  const { totalSec: stoppedSec, stops } = findStops(track);
+  const slowdown =
+    finalQuarterFadePct >= SLOWDOWN_PCT ? findSlowdown(full, totalKm) : null;
 
   return {
     gpsDistanceKm: totalKm,
     elapsedSec,
-    stoppedSec: stoppedSeconds(track),
+    stoppedSec,
+    stops,
     hasElevation: track.hasElevation,
+    profile: buildProfile(track),
     splits,
     avgPaceSecPerKm: elapsedSec / totalKm,
     avgGapSecPerKm,
@@ -370,9 +400,8 @@ export function analyzeRace(points: TimedPoint[], unit: SplitUnit): DebriefResul
     shape,
     startVsAvgPct,
     finalQuarterFadePct,
-    slowdownFromKm:
-      finalQuarterFadePct >= SLOWDOWN_PCT ? findSlowdown(full, totalKm) : null,
-    consistency: { cvPct, score, label: consistencyLabel(score) },
+    slowdownFromKm: slowdown?.fromKm ?? null,
+    fadeCostSec: slowdown?.costSec ?? 0,
   };
 }
 
@@ -391,80 +420,144 @@ export function matchOfficialDistance(gpsKm: number): OfficialDistance | null {
   );
 }
 
-// ── Takeaways ──────────────────────────────────────────────────────────────
+// ── Words ──────────────────────────────────────────────────────────────────
+// Everything below turns numbers into a coach's notes. Written at CEFR B2,
+// like the rest of the site's copy.
+
+function unitWord(unit: SplitUnit): string {
+  return unit === "km" ? "km" : "mile";
+}
+
+/** One sentence that sums up the race. Used as the page headline. */
+export function buildVerdict(r: DebriefResult, unit: SplitUnit): string {
+  const turn =
+    r.slowdownFromKm !== null
+      ? `${unitWord(unit)} ${Math.round(distanceInUnit(r.slowdownFromKm, unit))}`
+      : null;
+  if (turn && r.startVsAvgPct <= -3) {
+    return `You went out too fast, and the race turned at ${turn}.`;
+  }
+  if (turn) return `You held it together until ${turn}. Then the pace went.`;
+  if (r.shape === "negative") return "You finished faster than you started. That is how good races are run.";
+  if (r.shape === "even") return "You ran it evenly, from the start to the finish.";
+  if (r.halfDiffPct <= 3) return "A well-paced race, with the small slowdown most runners have.";
+  return "You slowed down through the second half.";
+}
 
 /**
- * Plain-language lessons from a debrief, most important first. Written at
- * CEFR B2 like the rest of the site's copy.
+ * What happened, as short titled paragraphs, most important first. Each one is
+ * a fact from the file plus what it usually means.
  */
-export function buildTakeaways(r: DebriefResult, unit: SplitUnit): string[] {
-  const out: string[] = [];
-  const unitLabel = unit === "km" ? "km" : "mile";
+export function buildFindings(r: DebriefResult, unit: SplitUnit): Finding[] {
+  const out: Finding[] = [];
+  const u = unitWord(unit);
   const halfGap = clock(r.secondHalfSec - r.firstHalfSec);
 
-  if (r.shape === "negative") {
-    out.push(
-      `You ran a negative split: your second half was ${halfGap} faster than your first. Most records are run this way, so keep this approach.`
-    );
-  } else if (r.shape === "even") {
-    out.push(
-      `Your two halves were almost the same (${halfGap} apart). That is very good pacing.`
-    );
-  } else if (r.halfDiffPct <= 3) {
-    out.push(
-      `Your second half was ${halfGap} slower (${r.halfDiffPct.toFixed(1)}%). A small positive split like this is normal, especially on a long course.`
-    );
-  } else {
-    out.push(
-      `Your second half was ${halfGap} slower than your first (${r.halfDiffPct.toFixed(1)}%). More than 3% usually means the start was too fast or you ran low on fuel.`
-    );
-  }
-
-  if (r.hasElevation && Math.sign(r.gapHalfDiffPct) !== Math.sign(r.halfDiffPct)) {
-    const effortWord = r.gapHalfDiffPct < 0 ? "stronger" : "weaker";
-    out.push(
-      `After adjusting for hills, your second half was actually ${effortWord}. The course profile, not your pacing, explains the clock times.`
-    );
-  }
-
-  if (r.startVsAvgPct <= -3 && r.finalQuarterFadePct >= 3) {
-    const perUnit = paceInUnit(
-      (r.avgGapSecPerKm * -r.startVsAvgPct) / 100,
-      unit
-    );
-    out.push(
-      `You started about ${Math.round(perUnit)} s per ${unitLabel} faster than your average effort, and paid for it later. Next time, run the first 10% at your goal pace or a little slower.`
-    );
+  if (r.startVsAvgPct <= -3) {
+    const quick = Math.round(paceInUnit((r.avgGapSecPerKm * -r.startVsAvgPct) / 100, unit));
+    out.push({
+      title: "The start",
+      body:
+        r.finalQuarterFadePct >= 3
+          ? `For the first 10% of the race you ran about ${quick} s per ${u} faster than your average effort. It felt easy because you were fresh. You paid for it later.`
+          : `You started about ${quick} s per ${u} faster than your average effort, and you got away with it. On a harder day, this kind of start costs more.`,
+    });
   }
 
   if (r.slowdownFromKm !== null) {
     const at = Math.round(distanceInUnit(r.slowdownFromKm, unit));
-    const fuelHint =
+    const fuel =
       r.gpsDistanceKm > 30
-        ? " In a marathon this is often when carbohydrate stores run low, so check your fuel plan."
+        ? " In a marathon this is often the point where carbohydrate stores run low, so look at your fuelling as well as your pacing."
         : "";
-    out.push(
-      `Your pace dropped from ${unitLabel} ${at} and did not come back.${fuelHint}`
-    );
-  } else if (r.finalQuarterFadePct <= 0) {
-    out.push("You were as strong or stronger in the final quarter. That shows good endurance.");
+    out.push({
+      title: `The turn at ${u} ${at}`,
+      body: `From ${u} ${at} your pace dropped and did not come back. Against your own first-half effort, the rest of the race cost you about ${clock(r.fadeCostSec)}.${fuel}`,
+    });
   }
 
-  if (r.consistency.score >= 85) {
-    out.push(
-      `Your effort was very even from split to split (consistency ${r.consistency.score}/100).`
-    );
+  if (r.shape === "negative") {
+    out.push({
+      title: "The halves",
+      body: `Your second half was ${halfGap} faster than your first. Most records are run this way. Keep doing it.`,
+    });
+  } else if (r.shape === "even") {
+    out.push({
+      title: "The halves",
+      body: `Your two halves were only ${halfGap} apart. That is very good pacing.`,
+    });
+  } else {
+    out.push({
+      title: "The halves",
+      body:
+        r.halfDiffPct <= 3
+          ? `Your second half was ${halfGap} slower (${r.halfDiffPct.toFixed(1)}%). Up to about 3% is normal, especially on a long course.`
+          : `Your second half was ${halfGap} slower (${r.halfDiffPct.toFixed(1)}%). More than 3% usually means the start was too fast, the fuel ran short, or both.`,
+    });
+  }
+
+  if (r.hasElevation && Math.sign(r.gapHalfDiffPct) !== Math.sign(r.halfDiffPct)) {
+    out.push({
+      title: "The hills",
+      body: `After adjusting for hills, your second half was actually ${r.gapHalfDiffPct < 0 ? "stronger" : "weaker"} than the clock says. The course, not your pacing, explains the clock times.`,
+    });
+  }
+
+  if (r.slowdownFromKm === null && r.finalQuarterFadePct <= 0) {
+    out.push({
+      title: "The finish",
+      body: "You were as strong or stronger in the final quarter. That shows good endurance and good judgement early on.",
+    });
   }
 
   if (r.stoppedSec >= 30) {
-    out.push(
-      `You were stopped for ${clock(r.stoppedSec)} in total (aid stations, toilets or traffic lights). That time is part of your result.`
-    );
+    out.push({
+      title: "The stops",
+      body: `You stood still for ${clock(r.stoppedSec)} in total, at aid stations, toilets or traffic lights. That time is part of your result. Practise drinking on the move if you want it back.`,
+    });
   }
 
   if (!r.hasElevation) {
-    out.push("This file has no elevation data, so the splits are not adjusted for hills.");
+    out.push({
+      title: "No elevation",
+      body: "This file has no elevation data, so nothing here is adjusted for hills.",
+    });
   }
 
   return out;
+}
+
+/**
+ * A three-part pacing plan to run the same time with even effort: ease into
+ * the first 10%, finish the last 25% at goal pace, and the middle makes up the
+ * difference. The total always adds back to the same finish time.
+ */
+export function buildEvenEffortPlan(raceMeters: number, finishSec: number): PlanLeg[] {
+  const km = raceMeters / 1000;
+  const goal = finishSec / km;
+  const startKm = km * 0.1;
+  const finishKm = km * 0.25;
+  const middleKm = km - startKm - finishKm;
+  const startPace = goal + PLAN_START_EASE_SEC_PER_KM;
+  const middlePace = (finishSec - startPace * startKm - goal * finishKm) / middleKm;
+  return [
+    {
+      fromKm: 0,
+      toKm: startKm,
+      paceSecPerKm: startPace,
+      note: "Hold back. It should feel too easy. Let other people go.",
+    },
+    {
+      fromKm: startKm,
+      toKm: startKm + middleKm,
+      paceSecPerKm: middlePace,
+      note: "Settle in. On hills, keep the same effort, not the same pace.",
+    },
+    {
+      fromKm: startKm + middleKm,
+      toKm: km,
+      paceSecPerKm: goal,
+      note: "Hold goal pace. Speed up only if you still feel good.",
+    },
+  ];
 }

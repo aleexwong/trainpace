@@ -2,7 +2,9 @@
 import { describe, it, expect } from "vitest";
 import {
   analyzeRace,
-  buildTakeaways,
+  buildEvenEffortPlan,
+  buildFindings,
+  buildVerdict,
   gradeCostFactor,
   matchOfficialDistance,
   parseTimedGpx,
@@ -74,7 +76,6 @@ describe("analyzeRace", () => {
     expect(r.shape).toBe("even");
     expect(r.splits).toHaveLength(10);
     for (const s of r.splits) expect(s.paceSecPerKm).toBeCloseTo(300, 0);
-    expect(r.consistency.score).toBe(100);
     expect(r.slowdownFromKm).toBeNull();
     expect(r.stoppedSec).toBe(0);
   });
@@ -128,8 +129,22 @@ describe("analyzeRace", () => {
     expect(spread(full.map((s) => s.gapSecPerKm))).toBeLessThan(
       spread(full.map((s) => s.paceSecPerKm))
     );
-    const takeaways = buildTakeaways(r, "km");
-    expect(takeaways.join(" ")).toMatch(/pace dropped from km (29|30|31)/);
+    expect(r.stops.length).toBe(3);
+    expect(r.fadeCostSec).toBeGreaterThan(240);
+    expect(buildVerdict(r, "km")).toMatch(/went out too fast, and the race turned at km (29|30|31)/);
+    const titles = buildFindings(r, "km").map((f) => f.title);
+    expect(titles[0]).toBe("The start");
+    expect(titles[1]).toMatch(/^The turn at km/);
+  });
+});
+
+describe("buildEvenEffortPlan", () => {
+  it("adds back up to the same finish time, easing into the start", () => {
+    const legs = buildEvenEffortPlan(42195, 14000);
+    const total = legs.reduce((sum, l) => sum + (l.toKm - l.fromKm) * l.paceSecPerKm, 0);
+    expect(total).toBeCloseTo(14000, 6);
+    expect(legs[0].paceSecPerKm).toBeGreaterThan(legs[2].paceSecPerKm);
+    expect(legs[2].toKm).toBeCloseTo(42.195, 6);
   });
 });
 

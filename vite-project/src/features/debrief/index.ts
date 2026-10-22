@@ -1,4 +1,4 @@
 export { DebriefUpload } from "./components/DebriefUpload";
-export { DebriefResults } from "./components/DebriefResults";
+export { DebriefReport } from "./components/DebriefReport";
 export { useRaceDebrief } from "./hooks/useRaceDebrief";
 export type { DebriefResult, Split, SplitUnit, TimedPoint } from "./types";

@@ -353,7 +353,7 @@ export function getPageDescription(url: string): string {
     case "/elevation-finder":
       return "Free GPX elevation profile viewer. Upload a route to see elevation gain, grades, and climb difficulty on a map, and plan race-day pacing.";
     case "/debrief":
-      return "Upload your race GPX from Garmin or Strava. See split paces adjusted for hills, where you slowed down, your pacing score, and your new VDOT.";
+      return "Upload your race GPX from Garmin or Strava. See split paces adjusted for hills, where you slowed down, and how to pace your next race.";
     case "/race":
       return "Race prep pages for popular running events. Use TrainPace to plan pacing, fueling, and course strategy with free calculators and GPX elevation analysis.";
     case "/mcp":
@@ -437,7 +437,7 @@ function toolNav(currentPath: string): DocBlock[] {
     {
       href: "/debrief",
       label: "Race Debrief",
-      note: "splits, fade and pacing score from a race GPX",
+      note: "what went wrong in a race, and how to pace the next one",
     },
   ].filter((t) => t.href !== currentPath);
 
@@ -828,12 +828,12 @@ function debriefBlocks(): DocBlock[] {
     {
       type: "list",
       items: [
-        "Splits per kilometre or mile, with each split also converted to the flat-ground pace for the same effort, so climbs and descents don't hide your real pacing.",
-        "Your two halves: a negative, even or positive split, on clock time and on hill-adjusted effort.",
+        "A one-line verdict on how the race went, and a chart of its shape: pace for each split, adjusted for hills, against your own average.",
         "Whether you started too fast: your effort over the first 10% compared with the whole race.",
-        "Where your pace dropped and did not come back — in a marathon, often the point where carbohydrate stores ran low.",
+        "Where the race turned — the point your pace dropped and did not come back — and how much time that cost against your own first-half effort.",
+        "Your two halves: a negative, even or positive split, on clock time and on hill-adjusted effort.",
         "Time spent standing still at aid stations or traffic lights.",
-        "A pacing consistency score from 0 to 100, based on how much your hill-adjusted split paces varied.",
+        "Next time: a three-part plan to run the same finish time with even effort — ease into the first 10%, settle through the middle, hold goal pace for the last quarter.",
         "The VDOT shown by the result, with links to update your training paces and build your next plan.",
       ],
     },

@@ -37,15 +37,17 @@ export interface Split {
 
 export type SplitShape = "negative" | "even" | "positive";
 
-export type ConsistencyLabel = "Very even" | "Steady" | "Uneven" | "Very uneven";
-
 export interface DebriefResult {
   gpsDistanceKm: number;
   /** First to last timestamp, in seconds — the race result. */
   elapsedSec: number;
   /** Time spent standing still (aid stations, toilet stops, traffic lights). */
   stoppedSec: number;
+  /** Individual stops long enough to mark on the chart. */
+  stops: Stop[];
   hasElevation: boolean;
+  /** Smoothed course elevation, for drawing under the pace line. */
+  profile: ProfilePoint[];
   splits: Split[];
   avgPaceSecPerKm: number;
   /** Overall grade-adjusted pace, seconds per km. */
@@ -66,17 +68,37 @@ export interface DebriefResult {
   finalQuarterFadePct: number;
   /** Distance (km) from which the pace dropped and never came back, or null. */
   slowdownFromKm: number | null;
-  consistency: {
-    /** Coefficient of variation of grade-adjusted split paces, in percent. */
-    cvPct: number;
-    /** 0–100. 100 means every full split was run at the same effort. */
-    score: number;
-    label: ConsistencyLabel;
-  };
+  /** Seconds lost after the slowdown, against the runner's own first-half effort. */
+  fadeCostSec: number;
 }
 
 /** A standard race distance a GPS distance can be matched to. */
 export interface OfficialDistance {
   name: string;
   meters: number;
+}
+
+export interface Stop {
+  /** Where the stop started, in km. */
+  km: number;
+  seconds: number;
+}
+
+export interface ProfilePoint {
+  km: number;
+  ele: number;
+}
+
+/** One paragraph of the debrief: a short title and a plain-language body. */
+export interface Finding {
+  title: string;
+  body: string;
+}
+
+/** One section of the "next time" pacing plan. */
+export interface PlanLeg {
+  fromKm: number;
+  toKm: number;
+  paceSecPerKm: number;
+  note: string;
 }
