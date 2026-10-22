@@ -8,9 +8,10 @@
  * Drawn at the measured pixel width rather than scaled through a viewBox, so
  * the labels stay 11-12 px on a phone.
  */
-import { useEffect, useId, useRef, useState } from "react";
+import { useId } from "react";
+import { useElementWidth } from "../hooks/useElementWidth";
 import type { DebriefResult, SplitUnit } from "../types";
-import { distanceInUnit, formatClock, paceInUnit } from "../utils";
+import { distanceInUnit, formatClock, paceInUnit, xTickStep } from "../utils";
 
 interface RaceShapeChartProps {
   result: DebriefResult;
@@ -23,27 +24,8 @@ const MARGIN = { top: 30, right: 12, bottom: 26, left: 40 };
 const COURSE_H = 36;
 const COURSE_GAP = 10;
 
-function useWidth<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const [width, setWidth] = useState(0);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-  return [ref, width] as const;
-}
-
-function xTickStep(total: number): number {
-  if (total <= 6) return 1;
-  if (total <= 14) return 2;
-  return 5;
-}
-
 export function RaceShapeChart({ result, unit }: RaceShapeChartProps) {
-  const [ref, width] = useWidth<HTMLDivElement>();
+  const [ref, width] = useElementWidth<HTMLDivElement>();
   // useId returns ":r1:"-style ids; colons break url(#…) references.
   const clipId = `race-shape${useId().replace(/:/g, "")}`;
   const height = width < 520 ? 260 : 310;

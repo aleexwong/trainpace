@@ -146,6 +146,11 @@
 .tpdb .chart .note.ink {
   fill: var(--ink-2);
 }
+.tpdb .chart .note.plan {
+  fill: var(--accent-deep);
+  font-size: 13px;
+  font-weight: 700;
+}
 .tpdb figcaption {
   font-size: 0.8125rem;
   color: var(--ink-3);
@@ -153,78 +158,238 @@
   max-width: 70ch;
 }
 
-/* ── findings ───────────────────────────────────────────── */
-.tpdb .findings {
-  display: grid;
-  gap: 1.25rem;
-  max-width: 62ch;
-}
-.tpdb .findings h3 {
-  font-family: var(--display);
-  font-weight: 600;
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
-}
-.tpdb .findings p {
-  color: var(--ink-2);
-  line-height: 1.6;
-}
-
-/* ── next-time plan ─────────────────────────────────────── */
-.tpdb .plan {
-  border-top: 1px solid var(--ink);
-}
-.tpdb .plan-row {
-  display: grid;
-  grid-template-columns: 7.5rem 6.5rem 1fr;
-  gap: 1rem;
-  align-items: baseline;
-  padding: 0.875rem 0;
-  border-bottom: 1px solid var(--line);
-}
-.tpdb .plan-range {
-  font-family: var(--display);
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-3);
-  font-size: 0.875rem;
-}
-.tpdb .plan-pace {
-  font-family: var(--display);
-  font-variant-numeric: tabular-nums;
-  font-weight: 700;
-  font-size: 1.25rem;
-}
-.tpdb .plan-pace small {
-  font-weight: 400;
+/* ── legends ───────────────────────────────────────────── */
+.tpdb .legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
   font-size: 0.75rem;
   color: var(--ink-3);
-  margin-left: 0.125rem;
+  margin-top: 0.375rem;
 }
-.tpdb .plan-note {
-  color: var(--ink-2);
+.tpdb .legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
 }
-@media (max-width: 560px) {
-  .tpdb .plan-row {
-    grid-template-columns: 1fr auto;
-    gap: 0.25rem 1rem;
-  }
-  .tpdb .plan-note {
-    grid-column: 1 / -1;
-  }
+.tpdb .legend-hint {
+  margin-left: auto;
+}
+.tpdb .sw {
+  display: inline-block;
+  width: 14px;
+  height: 0;
+  border-top: 2px solid var(--ink);
+}
+.tpdb .sw.dash {
+  border-top: 1.5px dashed var(--ink-4);
+}
+.tpdb .sw.course {
+  height: 8px;
+  border: 1px solid var(--line);
+  background: var(--fog);
+}
+.tpdb .sw.stop {
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid var(--clay);
+  border-radius: 50%;
+}
+.tpdb .sw.plan {
+  border-top: 3px solid var(--accent-deep);
+}
+.tpdb .sw.actual {
+  border-top: 1.5px solid var(--ink-4);
+}
+.tpdb .h2-sub {
+  margin-left: 0.5rem;
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: var(--ink-3);
 }
 
-.tpdb .onward {
-  margin-top: 1.25rem;
-  color: var(--ink-2);
-  line-height: 1.7;
-  max-width: 62ch;
+/* ── what happened: small multiples ─────────────────────── */
+.tpdb .minis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 2rem 2.5rem;
 }
-.tpdb .onward a {
-  color: var(--accent-deep);
+.tpdb .mini {
+  margin: 0;
+  min-width: 0;
+}
+.tpdb .mini-title {
+  font-size: 0.75rem;
   font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.tpdb .mini-big {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0.25rem 0 0.75rem;
+}
+.tpdb .mini-big.clay {
+  color: var(--clay-deep);
+}
+.tpdb .mini-big small {
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-3);
+  margin-left: 0.375rem;
+}
+.tpdb .mini-note {
+  font-size: 0.8125rem;
+  color: var(--ink-3);
+  margin-top: 0.5rem;
+}
+
+/* dumbbell */
+.tpdb .dumbbell {
+  position: relative;
+  padding-top: 1.25rem;
+}
+.tpdb .db-track {
+  position: relative;
+  height: 2.25rem;
+  border-top: 1px solid var(--line);
+  margin: 0.5rem 0.75rem 0;
+}
+.tpdb .db-gap {
+  position: absolute;
+  top: -2px;
+  height: 3px;
+  border-radius: 2px;
+}
+.tpdb .db-point {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tpdb .db-text {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tpdb .db-dot {
+  width: 11px;
+  height: 11px;
+  margin-top: -6px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px var(--ink-4);
+  background: var(--ink-4);
+}
+.tpdb .db-label {
+  font-size: 0.6875rem;
+  color: var(--ink-3);
+  margin-top: 0.25rem;
+  white-space: nowrap;
+}
+
+/* tones shared by dumbbell, stack and dots */
+.tpdb .db-gap.clay,
+.tpdb .mini-fill.clay,
+.tpdb .dot.clay {
+  background: var(--clay);
+}
+.tpdb .db-dot.clay {
+  background: var(--clay);
+  box-shadow: 0 0 0 1px var(--clay);
+}
+.tpdb .db-gap.accent,
+.tpdb .mini-fill.accent,
+.tpdb .dot.accent {
+  background: var(--accent);
+}
+.tpdb .db-dot.accent {
+  background: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.tpdb .db-gap.ink,
+.tpdb .mini-fill.ink,
+.tpdb .dot.ink {
+  background: var(--ink-2);
+}
+.tpdb .db-dot.ink {
+  background: var(--ink-2);
+  box-shadow: 0 0 0 1px var(--ink-2);
+}
+
+/* stacked time-lost bar */
+.tpdb .mini-stack {
+  display: flex;
+  height: 12px;
+  border-radius: 3px;
+  overflow: hidden;
+  gap: 2px;
+  margin-top: 1.25rem;
+}
+.tpdb .mini-stack .mini-fill {
+  display: block;
+  height: 100%;
+}
+.tpdb .mini-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--ink-2);
+}
+.tpdb .mini-legend b {
+  font-weight: 600;
+  margin-left: 0.25rem;
+}
+.tpdb .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  margin-right: 0.375rem;
+}
+
+/* AI lines and onward links */
+.tpdb .ai-lines {
+  margin-top: 1.5rem;
+  max-width: 62ch;
+  display: grid;
+  gap: 0.375rem;
+  color: var(--ink-2);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.tpdb .ai-lines b {
+  color: var(--ink);
+  font-weight: 600;
+}
+.tpdb .ai-lines.pending {
+  opacity: 0.45;
+}
+.tpdb .onward-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 1.5rem;
+  font-weight: 500;
+}
+.tpdb .onward-links a {
+  color: var(--accent-deep);
+}
+.tpdb .onward-links a:hover {
   text-decoration: underline;
   text-underline-offset: 3px;
-  text-decoration-color: color-mix(in oklch, var(--accent) 45%, transparent);
 }
 
 /* ── splits ─────────────────────────────────────────────── */
@@ -333,30 +498,6 @@
   padding: 0.125rem 0.5rem;
   vertical-align: 0.15em;
 }
-.tpdb .findings.pending {
-  opacity: 0.45;
-  transition: opacity 0.2s;
-}
-.tpdb .ai-next {
-  margin-top: 1.5rem;
-  max-width: 62ch;
-}
-.tpdb .ai-next h3 {
-  font-family: var(--display);
-  font-weight: 600;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
-.tpdb .ai-next ul {
-  list-style: disc;
-  padding-left: 1.25rem;
-  color: var(--ink-2);
-  line-height: 1.6;
-}
-.tpdb .ai-next li + li {
-  margin-top: 0.375rem;
-}
-
 /* ── upload ─────────────────────────────────────────────── */
 .tpdb .drop {
   border: 1.5px dashed var(--ink-4);

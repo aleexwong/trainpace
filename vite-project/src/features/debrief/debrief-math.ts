@@ -8,7 +8,6 @@
  */
 import type {
   DebriefResult,
-  Finding,
   OfficialDistance,
   PlanLeg,
   ProfilePoint,
@@ -18,7 +17,7 @@ import type {
   Stop,
   TimedPoint,
 } from "./types";
-import { KM_PER_MILE, distanceInUnit, formatClock as clock, paceInUnit } from "./utils";
+import { KM_PER_MILE, distanceInUnit } from "./utils";
 
 const EARTH_RADIUS_M = 6_371_000;
 // Resample step and smoothing window for elevation. ±100 m of smoothing keeps
@@ -429,8 +428,7 @@ export function matchOfficialDistance(gpsKm: number): OfficialDistance | null {
 }
 
 // ── Words ──────────────────────────────────────────────────────────────────
-// Everything below turns numbers into a coach's notes. Written at CEFR B2,
-// like the rest of the site's copy.
+// The headline and plan labels. Written at CEFR B2, like the rest of the site.
 
 function unitWord(unit: SplitUnit): string {
   return unit === "km" ? "km" : "mile";
@@ -453,89 +451,6 @@ export function buildVerdict(r: DebriefResult, unit: SplitUnit): string {
 }
 
 /**
- * What happened, as short titled paragraphs, most important first. Each one is
- * a fact from the file plus what it usually means.
- */
-export function buildFindings(r: DebriefResult, unit: SplitUnit): Finding[] {
-  const out: Finding[] = [];
-  const u = unitWord(unit);
-  const halfGap = clock(r.secondHalfSec - r.firstHalfSec);
-
-  if (r.startVsAvgPct <= -3) {
-    const quick = Math.round(paceInUnit((r.avgGapSecPerKm * -r.startVsAvgPct) / 100, unit));
-    out.push({
-      title: "The start",
-      body:
-        r.finalQuarterFadePct >= 3
-          ? `For the first 10% of the race you ran about ${quick} s per ${u} faster than your average effort. It felt easy because you were fresh. You paid for it later.`
-          : `You started about ${quick} s per ${u} faster than your average effort, and you got away with it. On a harder day, this kind of start costs more.`,
-    });
-  }
-
-  if (r.slowdownFromKm !== null) {
-    const at = Math.round(distanceInUnit(r.slowdownFromKm, unit));
-    const fuel =
-      r.gpsDistanceKm > 30
-        ? " In a marathon this is often the point where carbohydrate stores run low, so look at your fuelling as well as your pacing."
-        : "";
-    out.push({
-      title: `The turn at ${u} ${at}`,
-      body: `From ${u} ${at} your pace dropped and did not come back. Against your own first-half effort, the rest of the race cost you about ${clock(r.fadeCostSec)}.${fuel}`,
-    });
-  }
-
-  if (r.shape === "negative") {
-    out.push({
-      title: "The halves",
-      body: `Your second half was ${halfGap} faster than your first. Most records are run this way. Keep doing it.`,
-    });
-  } else if (r.shape === "even") {
-    out.push({
-      title: "The halves",
-      body: `Your two halves were only ${halfGap} apart. That is very good pacing.`,
-    });
-  } else {
-    out.push({
-      title: "The halves",
-      body:
-        r.halfDiffPct <= 3
-          ? `Your second half was ${halfGap} slower (${r.halfDiffPct.toFixed(1)}%). Up to about 3% is normal, especially on a long course.`
-          : `Your second half was ${halfGap} slower (${r.halfDiffPct.toFixed(1)}%). More than 3% usually means the start was too fast, the fuel ran short, or both.`,
-    });
-  }
-
-  if (r.hasElevation && Math.sign(r.gapHalfDiffPct) !== Math.sign(r.halfDiffPct)) {
-    out.push({
-      title: "The hills",
-      body: `After adjusting for hills, your second half was actually ${r.gapHalfDiffPct < 0 ? "stronger" : "weaker"} than the clock says. The course, not your pacing, explains the clock times.`,
-    });
-  }
-
-  if (r.slowdownFromKm === null && r.finalQuarterFadePct <= 0) {
-    out.push({
-      title: "The finish",
-      body: "You were as strong or stronger in the final quarter. That shows good endurance and good judgement early on.",
-    });
-  }
-
-  if (r.stoppedSec >= 30) {
-    out.push({
-      title: "The stops",
-      body: `You stood still for ${clock(r.stoppedSec)} in total, at aid stations, toilets or traffic lights. That time is part of your result. Practise drinking on the move if you want it back.`,
-    });
-  }
-
-  if (!r.hasElevation) {
-    out.push({
-      title: "No elevation",
-      body: "This file has no elevation data, so nothing here is adjusted for hills.",
-    });
-  }
-
-  return out;
-}
-
-/**
  * A three-part pacing plan to run the same time with even effort: ease into
  * the first 10%, finish the last 25% at goal pace, and the middle makes up the
  * difference. The total always adds back to the same finish time.
@@ -553,19 +468,19 @@ export function buildEvenEffortPlan(raceMeters: number, finishSec: number): Plan
       fromKm: 0,
       toKm: startKm,
       paceSecPerKm: startPace,
-      note: "Hold back. It should feel too easy. Let other people go.",
+      note: "hold back",
     },
     {
       fromKm: startKm,
       toKm: startKm + middleKm,
       paceSecPerKm: middlePace,
-      note: "Settle in. On hills, keep the same effort, not the same pace.",
+      note: "settle",
     },
     {
       fromKm: startKm + middleKm,
       toKm: km,
       paceSecPerKm: goal,
-      note: "Hold goal pace. Speed up only if you still feel good.",
+      note: "hold or push",
     },
   ];
 }

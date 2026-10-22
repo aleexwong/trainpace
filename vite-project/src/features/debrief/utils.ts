@@ -25,3 +25,10 @@ export function distanceInUnit(km: number, unit: SplitUnit): number {
 export function formatPaceIn(secPerKm: number, unit: SplitUnit): string {
   return `${formatClock(paceInUnit(secPerKm, unit))} /${unit}`;
 }
+
+/** Distance between x-axis ticks for a race of `total` display units. */
+export function xTickStep(total: number): number {
+  if (total <= 6) return 1;
+  if (total <= 14) return 2;
+  return 5;
+}

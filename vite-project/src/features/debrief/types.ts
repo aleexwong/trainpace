@@ -89,7 +89,7 @@ export interface ProfilePoint {
   ele: number;
 }
 
-/** One paragraph of the debrief: a short title and a plain-language body. */
+/** One AI-written line about the race: a short title and one sentence. */
 export interface Finding {
   title: string;
   body: string;
@@ -100,5 +100,6 @@ export interface PlanLeg {
   fromKm: number;
   toKm: number;
   paceSecPerKm: number;
+  /** Two-word label drawn on the chart ("hold back"). */
   note: string;
 }

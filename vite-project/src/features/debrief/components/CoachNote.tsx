@@ -30,11 +30,9 @@ export function CoachNote({
 
   return (
     <section className="coach-note">
-      <h2>Anything your watch didn't see?</h2>
-      <p className="lede">
-        The heat, a missed gel, a cold, a toilet stop. Tell the AI coach and it rewrites this
-        debrief around your day.
-      </p>
+      <h2>
+        Anything your watch didn't see? <span className="h2-sub">AI</span>
+      </h2>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -48,8 +46,8 @@ export function CoachNote({
           id="coach-note"
           value={note}
           maxLength={MAX_NOTE_LENGTH}
-          rows={3}
-          placeholder="28°C at the start. Skipped my second gel because my stomach felt off. Calf cramped around 35 km."
+          rows={2}
+          placeholder="28°C, skipped my second gel, calf cramped at 35 km"
           onChange={(e) => onNoteChange(e.target.value)}
         />
         <div className="coach-actions">
@@ -57,8 +55,8 @@ export function CoachNote({
             {status === "loading"
               ? "Rewriting…"
               : hasRewrite
-                ? "Rewrite again"
-                : "Rewrite my debrief"}
+                ? "Ask again"
+                : "Ask the coach"}
           </Button>
           {hasRewrite && status !== "loading" && (
             <button type="button" className="text-btn" onClick={onShowOriginal}>
@@ -73,9 +71,7 @@ export function CoachNote({
         </p>
       )}
       <p className="footnote">
-        This sends your race summary (times, paces and splits — not your GPX file) and your note
-        to Google Gemini. We don't save either. The numbers in the report never change; only the
-        words do.
+        Sends your note and race numbers (not the GPX) to Google Gemini. Nothing is saved.
       </p>
     </section>
   );

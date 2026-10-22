@@ -1,27 +1,26 @@
 /**
  * DebriefReport
- * The debrief as a short written report: a one-line verdict, the shape of the
- * race, what happened, and a plan for next time. Splits are there for anyone
- * who wants them, folded away at the end.
+ * The debrief as charts with a one-line verdict: the race, what happened,
+ * and a plan for next time. Splits are folded away at the end.
  *
- * With an AI rewrite, the verdict, findings and next-time advice come from
- * the rewrite instead and are labelled as such. Numbers (meta line, chart,
- * plan table, splits) are always the browser's own.
+ * With an AI rewrite, the verdict comes from it and short AI lines appear
+ * under the charts, labelled. Every number and chart is the browser's own.
  */
 import { Link } from "react-router-dom";
 import type { AiRewrite } from "../ai";
 import { OFFICIAL_DISTANCES, raceDistanceName } from "../debrief-math";
 import type { DistanceChoice } from "../hooks/useRaceDebrief";
-import type { DebriefResult, Finding, PlanLeg, SplitUnit } from "../types";
-import { distanceInUnit, formatClock, paceInUnit } from "../utils";
+import type { DebriefResult, PlanLeg, SplitUnit } from "../types";
+import { formatClock, paceInUnit } from "../utils";
 import { CoachNote } from "./CoachNote";
+import { NextTimeChart } from "./NextTimeChart";
 import { RaceShapeChart } from "./RaceShapeChart";
+import { WhatHappened } from "./WhatHappened";
 import "./debrief.css";
 
 interface DebriefReportProps {
   result: DebriefResult;
   verdict: string;
-  findings: Finding[];
   plan: PlanLeg[];
   fileName: string;
   isSample: boolean;
@@ -41,20 +40,9 @@ interface DebriefReportProps {
   onShowOriginal: () => void;
 }
 
-function legRange(leg: PlanLeg, unit: SplitUnit): string {
-  const from = distanceInUnit(leg.fromKm, unit);
-  const to = distanceInUnit(leg.toKm, unit);
-  const fmt = (d: number) => {
-    const r = Math.round(d * 10) / 10;
-    return Number.isInteger(r) ? String(r) : r.toFixed(1);
-  };
-  return `${unit} ${fmt(from)}–${fmt(to)}`;
-}
-
 export function DebriefReport({
   result,
   verdict,
-  findings,
   plan,
   fileName,
   isSample,
@@ -83,7 +71,7 @@ export function DebriefReport({
     <article className="tpdb">
       <p className="kicker">
         Race debrief · {fileName}
-        {isSample && " (simulated, not a real runner)"}
+        {isSample && " (simulated)"}
       </p>
       <h1 className="verdict">{aiRewrite?.verdict ?? verdict}</h1>
       <p className="meta">
@@ -127,17 +115,34 @@ export function DebriefReport({
       </div>
 
       <section>
-        <h2>The shape of your race</h2>
+        <h2>The race</h2>
         <figure>
           <RaceShapeChart result={result} unit={unit} />
-          <figcaption>
-            {result.hasElevation ? "Pace adjusted for hills" : "Pace"} for each {unit === "km" ? "km" : "mile"}.
-            Higher is faster. The dashed line is your average; green is faster than it, clay is
-            slower.
-            {result.hasElevation && " The grey shape underneath is the course."}
-            {result.stops.length > 0 && " Circles mark where you stopped."}
+          <figcaption className="legend">
+            <span><i className="sw line" />{result.hasElevation ? "effort (hill-adjusted)" : "pace"}</span>
+            <span><i className="sw dash" />average</span>
+            {result.hasElevation && <span><i className="sw course" />course</span>}
+            {result.stops.length > 0 && <span><i className="sw stop" />stop</span>}
+            <span className="legend-hint">higher = faster</span>
           </figcaption>
         </figure>
+      </section>
+
+      <section aria-busy={aiStatus === "loading"}>
+        <h2>
+          What happened <span className="h2-sub">faster →</span>
+          {aiRewrite && <span className="ai-tag">AI</span>}
+        </h2>
+        <WhatHappened result={result} unit={unit} />
+        {aiRewrite && (
+          <ul className={aiStatus === "loading" ? "ai-lines pending" : "ai-lines"}>
+            {aiRewrite.findings.map((f) => (
+              <li key={f.title}>
+                <b>{f.title}.</b> {f.body}
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <CoachNote
@@ -150,74 +155,36 @@ export function DebriefReport({
         onShowOriginal={onShowOriginal}
       />
 
-      <section aria-busy={aiStatus === "loading"}>
-        <h2>
-          What happened
-          {aiRewrite && <span className="ai-tag">rewritten by AI with your note</span>}
-        </h2>
-        <div className={aiStatus === "loading" ? "findings pending" : "findings"}>
-          {(aiRewrite?.findings ?? findings).map((f) => (
-            <div key={f.title}>
-              <h3>{f.title}</h3>
-              <p>{f.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <section>
-        <h2>Next time</h2>
-        <p className="lede">
-          Same fitness, better shape. To run {formatClock(result.elapsedSec)} again with even
-          effort, split the race like this:
-        </p>
-        <div className="plan">
-          {plan.map((leg) => (
-            <div key={leg.fromKm} className="plan-row">
-              <span className="plan-range">{legRange(leg, unit)}</span>
-              <span className="plan-pace">
-                {formatClock(paceInUnit(leg.paceSecPerKm, unit))}
-                <small>/{unit}</small>
-              </span>
-              <span className="plan-note">{leg.note}</span>
-            </div>
-          ))}
-        </div>
+        <h2>
+          Next time <span className="h2-sub">same time, even effort</span>
+        </h2>
+        <figure>
+          <NextTimeChart result={result} plan={plan} unit={unit} />
+          <figcaption className="legend">
+            <span><i className="sw plan" />plan</span>
+            <span><i className="sw actual" />this race</span>
+          </figcaption>
+        </figure>
         {aiRewrite && (
-          <div className="ai-next">
-            <h3>
-              For your day <span className="ai-tag">AI</span>
-            </h3>
-            <ul>
-              {aiRewrite.nextTime.map((tip) => (
-                <li key={tip}>{tip}</li>
-              ))}
-            </ul>
-          </div>
+          <ul className="ai-lines">
+            {aiRewrite.nextTime.map((tip) => (
+              <li key={tip}>{tip}</li>
+            ))}
+          </ul>
         )}
-        <p className="onward">
-          When that feels controlled, aim higher.{" "}
-          {vdot !== null ? (
-            <>
-              <Link to={`/vdot?d=${Math.round(resultMeters)}&t=${Math.round(result.elapsedSec)}`}>
-                See what VDOT {vdot.toFixed(1)} predicts
-              </Link>
-              ,{" "}
-            </>
-          ) : null}
-          <Link
-            to={`/calculator?d=${(resultMeters / 1000).toFixed(3)}&t=${Math.round(result.elapsedSec)}`}
-          >
-            update your training paces
-          </Link>{" "}
-          or <Link to="/plan">build the next block</Link>.
-          {fuelRelevant && (
-            <>
-              {" "}
-              And before race day, <Link to="/fuel">plan your fuel</Link> for the second half.
-            </>
+        <nav className="onward-links" aria-label="Use this result">
+          {vdot !== null && (
+            <Link to={`/vdot?d=${Math.round(resultMeters)}&t=${Math.round(result.elapsedSec)}`}>
+              VDOT {vdot.toFixed(1)} →
+            </Link>
           )}
-        </p>
+          <Link to={`/calculator?d=${(resultMeters / 1000).toFixed(3)}&t=${Math.round(result.elapsedSec)}`}>
+            Training paces →
+          </Link>
+          <Link to="/plan">Next plan →</Link>
+          {fuelRelevant && <Link to="/fuel">Fuel plan →</Link>}
+        </nav>
       </section>
 
       <section>

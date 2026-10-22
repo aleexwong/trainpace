@@ -23,7 +23,6 @@ export default function RaceDebriefPage() {
           <DebriefReport
             result={result}
             verdict={debrief.verdict}
-            findings={debrief.findings}
             plan={debrief.plan}
             fileName={debrief.fileName ?? "Your race"}
             isSample={debrief.isSample}

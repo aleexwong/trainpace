@@ -3,7 +3,6 @@ import { describe, it, expect } from "vitest";
 import {
   analyzeRace,
   buildEvenEffortPlan,
-  buildFindings,
   buildVerdict,
   gradeCostFactor,
   matchOfficialDistance,
@@ -132,9 +131,7 @@ describe("analyzeRace", () => {
     expect(r.stops.length).toBe(3);
     expect(r.fadeCostSec).toBeGreaterThan(240);
     expect(buildVerdict(r, "km")).toMatch(/went out too fast, and the race turned at km (29|30|31)/);
-    const titles = buildFindings(r, "km").map((f) => f.title);
-    expect(titles[0]).toBe("The start");
-    expect(titles[1]).toMatch(/^The turn at km/);
+
   });
 });
 

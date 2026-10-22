@@ -17,10 +17,7 @@ export function DebriefUpload({ error, onFile, onSample }: DebriefUploadProps) {
     <div className="tpdb">
       <p className="kicker">Race debrief</p>
       <h1 className="verdict">How did you really pace your race?</h1>
-      <p className="lede">
-        Give it the GPX file your watch recorded. You get a short, honest report: where the race
-        turned, what it cost you, and how to split the next one. Your file stays in your browser.
-      </p>
+      <p className="lede">Drop in your race GPX. See where it turned and how to split the next one.</p>
 
       <div
         onDragOver={(e) => {
@@ -41,7 +38,7 @@ export function DebriefUpload({ error, onFile, onSample }: DebriefUploadProps) {
             Choose a race GPX
           </Button>
           <span className="text-sm" style={{ color: "var(--ink-3)" }}>
-            or drop it here. From Garmin Connect, Strava, Coros or your watch app.
+            Garmin, Strava, Coros. Stays in your browser.
           </span>
         </div>
         <input
@@ -65,9 +62,8 @@ export function DebriefUpload({ error, onFile, onSample }: DebriefUploadProps) {
       )}
 
       <p className="mt-6 text-sm" style={{ color: "var(--ink-3)" }}>
-        No file to hand?{" "}
         <button type="button" className="text-btn" onClick={onSample}>
-          Read the debrief of a sample marathon
+          Try a sample marathon
         </button>
       </p>
     </div>

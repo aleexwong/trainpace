@@ -6,14 +6,13 @@ import { buildAiContext, requestAiRewrite, type AiRewrite } from "../ai";
 import {
   analyzeRace,
   buildEvenEffortPlan,
-  buildFindings,
   buildVerdict,
   matchOfficialDistance,
   parseTimedGpx,
   raceDistanceName,
 } from "../debrief-math";
 import { simulateSampleRace } from "../sample-race";
-import type { DebriefResult, Finding, PlanLeg, SplitUnit, TimedPoint } from "../types";
+import type { DebriefResult, PlanLeg, SplitUnit, TimedPoint } from "../types";
 
 const MAX_FILE_MB = 15;
 
@@ -28,7 +27,6 @@ export interface RaceDebriefState {
   setUnit: (unit: SplitUnit) => void;
   result: DebriefResult | null;
   verdict: string;
-  findings: Finding[];
   /** Pacing plan to run the same time with even effort. */
   plan: PlanLeg[];
   /** Official distance in metres, or "gps". */
@@ -88,10 +86,6 @@ export function useRaceDebrief(): RaceDebriefState {
 
   const result = analysis.result;
   const verdict = useMemo(() => (result ? buildVerdict(result, unit) : ""), [result, unit]);
-  const findings = useMemo(
-    () => (result ? buildFindings(result, unit) : []),
-    [result, unit]
-  );
 
   const accept = useCallback((next: TimedPoint[], name: string, sample: boolean) => {
     // Pick the matching race distance once per file; the runner can change it.
@@ -199,7 +193,6 @@ export function useRaceDebrief(): RaceDebriefState {
     setUnit,
     result,
     verdict,
-    findings,
     plan,
     distance,
     setDistance,
