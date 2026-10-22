@@ -835,6 +835,7 @@ function debriefBlocks(): DocBlock[] {
         "Time spent standing still at aid stations or traffic lights.",
         "Next time: a three-part plan to run the same finish time with even effort — ease into the first 10%, settle through the middle, hold goal pace for the last quarter.",
         "The VDOT shown by the result, with links to update your training paces and build your next plan.",
+        "Optional: add a note about the day (heat, a missed gel, illness) and an AI coach rewrites the verdict and advice around it. Only the computed summary and your note are sent, to Google Gemini, and neither is stored; the numbers never change.",
       ],
     },
     { type: "heading", level: 2, text: "How splits are measured" },

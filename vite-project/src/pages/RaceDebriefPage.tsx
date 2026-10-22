@@ -32,7 +32,15 @@ export default function RaceDebriefPage() {
             distance={debrief.distance}
             onDistanceChange={debrief.setDistance}
             resultMeters={resultMeters}
+            vdot={debrief.vdot}
             onReset={debrief.reset}
+            note={debrief.note}
+            onNoteChange={debrief.setNote}
+            aiStatus={debrief.aiStatus}
+            aiError={debrief.aiError}
+            aiRewrite={debrief.aiRewrite}
+            onAskCoach={debrief.askCoach}
+            onShowOriginal={debrief.clearAiRewrite}
           />
         ) : (
           <DebriefUpload

@@ -405,6 +405,14 @@ export function analyzeRace(points: TimedPoint[], unit: SplitUnit): DebriefResul
   };
 }
 
+/** "Marathon" for 42195 m, otherwise the distance in km. */
+export function raceDistanceName(meters: number): string {
+  return (
+    OFFICIAL_DISTANCES.find((d) => d.meters === meters)?.name ??
+    `${(meters / 1000).toFixed(2)} km`
+  );
+}
+
 /**
  * The standard race distance a GPS distance most likely was. Watches usually
  * read a little long (tangents, weaving), rarely short, so the window is

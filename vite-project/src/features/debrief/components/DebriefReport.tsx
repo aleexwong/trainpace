@@ -3,13 +3,18 @@
  * The debrief as a short written report: a one-line verdict, the shape of the
  * race, what happened, and a plan for next time. Splits are there for anyone
  * who wants them, folded away at the end.
+ *
+ * With an AI rewrite, the verdict, findings and next-time advice come from
+ * the rewrite instead and are labelled as such. Numbers (meta line, chart,
+ * plan table, splits) are always the browser's own.
  */
 import { Link } from "react-router-dom";
-import { calculateVdot } from "@/features/vdot-calculator/vdot-math";
-import { OFFICIAL_DISTANCES } from "../debrief-math";
+import type { AiRewrite } from "../ai";
+import { OFFICIAL_DISTANCES, raceDistanceName } from "../debrief-math";
 import type { DistanceChoice } from "../hooks/useRaceDebrief";
 import type { DebriefResult, Finding, PlanLeg, SplitUnit } from "../types";
 import { distanceInUnit, formatClock, paceInUnit } from "../utils";
+import { CoachNote } from "./CoachNote";
 import { RaceShapeChart } from "./RaceShapeChart";
 import "./debrief.css";
 
@@ -25,14 +30,15 @@ interface DebriefReportProps {
   distance: DistanceChoice;
   onDistanceChange: (d: DistanceChoice) => void;
   resultMeters: number;
+  vdot: number | null;
   onReset: () => void;
-}
-
-function distanceName(meters: number): string {
-  return (
-    OFFICIAL_DISTANCES.find((d) => d.meters === meters)?.name ??
-    `${(meters / 1000).toFixed(2)} km`
-  );
+  note: string;
+  onNoteChange: (note: string) => void;
+  aiStatus: "idle" | "loading" | "error";
+  aiError: string | null;
+  aiRewrite: AiRewrite | null;
+  onAskCoach: () => void;
+  onShowOriginal: () => void;
 }
 
 function legRange(leg: PlanLeg, unit: SplitUnit): string {
@@ -57,10 +63,16 @@ export function DebriefReport({
   distance,
   onDistanceChange,
   resultMeters,
+  vdot,
   onReset,
+  note,
+  onNoteChange,
+  aiStatus,
+  aiError,
+  aiRewrite,
+  onAskCoach,
+  onShowOriginal,
 }: DebriefReportProps) {
-  const vdot = calculateVdot(resultMeters, result.elapsedSec);
-  const showVdot = isFinite(vdot) && vdot > 20 && vdot < 90;
   const avgPace = paceInUnit((result.elapsedSec / resultMeters) * 1000, unit);
   const fuelRelevant = result.slowdownFromKm !== null && result.gpsDistanceKm > 15;
   const full = result.splits.filter((s) => !s.partial);
@@ -73,12 +85,12 @@ export function DebriefReport({
         Race debrief · {fileName}
         {isSample && " (simulated, not a real runner)"}
       </p>
-      <h1 className="verdict">{verdict}</h1>
+      <h1 className="verdict">{aiRewrite?.verdict ?? verdict}</h1>
       <p className="meta">
-        <b>{formatClock(result.elapsedSec)}</b> {distanceName(resultMeters).toLowerCase()}
+        <b>{formatClock(result.elapsedSec)}</b> {raceDistanceName(resultMeters).toLowerCase()}
         <span className="sep">·</span>
         {formatClock(avgPace)} /{unit}
-        {showVdot && (
+        {vdot !== null && (
           <>
             <span className="sep">·</span>VDOT {vdot.toFixed(1)}
           </>
@@ -128,10 +140,23 @@ export function DebriefReport({
         </figure>
       </section>
 
-      <section>
-        <h2>What happened</h2>
-        <div className="findings">
-          {findings.map((f) => (
+      <CoachNote
+        note={note}
+        onNoteChange={onNoteChange}
+        status={aiStatus}
+        error={aiError}
+        hasRewrite={aiRewrite !== null}
+        onSubmit={onAskCoach}
+        onShowOriginal={onShowOriginal}
+      />
+
+      <section aria-busy={aiStatus === "loading"}>
+        <h2>
+          What happened
+          {aiRewrite && <span className="ai-tag">rewritten by AI with your note</span>}
+        </h2>
+        <div className={aiStatus === "loading" ? "findings pending" : "findings"}>
+          {(aiRewrite?.findings ?? findings).map((f) => (
             <div key={f.title}>
               <h3>{f.title}</h3>
               <p>{f.body}</p>
@@ -158,9 +183,21 @@ export function DebriefReport({
             </div>
           ))}
         </div>
+        {aiRewrite && (
+          <div className="ai-next">
+            <h3>
+              For your day <span className="ai-tag">AI</span>
+            </h3>
+            <ul>
+              {aiRewrite.nextTime.map((tip) => (
+                <li key={tip}>{tip}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         <p className="onward">
           When that feels controlled, aim higher.{" "}
-          {showVdot ? (
+          {vdot !== null ? (
             <>
               <Link to={`/vdot?d=${Math.round(resultMeters)}&t=${Math.round(result.elapsedSec)}`}>
                 See what VDOT {vdot.toFixed(1)} predicts
