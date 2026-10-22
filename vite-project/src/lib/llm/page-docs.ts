@@ -352,6 +352,8 @@ export function getPageDescription(url: string): string {
     case "/elevationfinder":
     case "/elevation-finder":
       return "Free GPX elevation profile viewer. Upload a route to see elevation gain, grades, and climb difficulty on a map, and plan race-day pacing.";
+    case "/debrief":
+      return "Upload your race GPX from Garmin or Strava. See split paces adjusted for hills, where you slowed down, your pacing score, and your new VDOT.";
     case "/race":
       return "Race prep pages for popular running events. Use TrainPace to plan pacing, fueling, and course strategy with free calculators and GPX elevation analysis.";
     case "/mcp":
@@ -432,6 +434,11 @@ function toolNav(currentPath: string): DocBlock[] {
       label: "Elevation Finder",
       note: "GPX route and climb analysis",
     },
+    {
+      href: "/debrief",
+      label: "Race Debrief",
+      note: "splits, fade and pacing score from a race GPX",
+    },
   ].filter((t) => t.href !== currentPath);
 
   return [
@@ -443,6 +450,11 @@ function toolNav(currentPath: string): DocBlock[] {
 const DANIELS_SOURCES = [
   "Daniels, J. Daniels' Running Formula. Human Kinetics — VDOT, training zones, and equivalent race times.",
   "Daniels, J. & Gilbert, J. (1979). Oxygen Power: Performance Tables for Distance Runners — the oxygen-cost and %VO2max equations behind VDOT.",
+];
+
+const DEBRIEF_SOURCES = [
+  "Minetti, A. E. et al. (2002). Energy cost of walking and running at extreme uphill and downhill slopes. Journal of Applied Physiology 93:1039–1046 — the grade-to-energy-cost curve behind the hill-adjusted splits.",
+  DANIELS_SOURCES[1],
 ];
 
 const FUEL_SOURCES = [
@@ -462,7 +474,9 @@ function methodSources(url: string): DocBlock[] {
       ? DANIELS_SOURCES
       : url === "/fuel" || tool === "fuel"
         ? FUEL_SOURCES
-        : null;
+        : url === "/debrief"
+          ? DEBRIEF_SOURCES
+          : null;
   if (!sources) return [];
   return [
     { type: "heading", level: 2, text: "Method and sources" },
@@ -795,6 +809,38 @@ function planBlocks(): DocBlock[] {
     {
       type: "paragraph",
       text: "Every plan ends with a race week in addition to the taper weeks shown. Weekly volume starts from your current fitness level and builds with down weeks for recovery; workout paces come from the same VDOT zones as the pace calculator.",
+    },
+  ];
+}
+
+function debriefBlocks(): DocBlock[] {
+  return [
+    {
+      type: "heading",
+      level: 1,
+      text: "Race Debrief – How Did You Really Pace Your Race?",
+    },
+    {
+      type: "paragraph",
+      text: "Upload the GPX file from a race you have run (exported from Garmin Connect, Strava, Coros or a watch app). The debrief reads the timestamps and shows how you paced it. The file is read in your browser and never uploaded.",
+    },
+    { type: "heading", level: 2, text: "What the debrief shows" },
+    {
+      type: "list",
+      items: [
+        "Splits per kilometre or mile, with each split also converted to the flat-ground pace for the same effort, so climbs and descents don't hide your real pacing.",
+        "Your two halves: a negative, even or positive split, on clock time and on hill-adjusted effort.",
+        "Whether you started too fast: your effort over the first 10% compared with the whole race.",
+        "Where your pace dropped and did not come back — in a marathon, often the point where carbohydrate stores ran low.",
+        "Time spent standing still at aid stations or traffic lights.",
+        "A pacing consistency score from 0 to 100, based on how much your hill-adjusted split paces varied.",
+        "The VDOT shown by the result, with links to update your training paces and build your next plan.",
+      ],
+    },
+    { type: "heading", level: 2, text: "How splits are measured" },
+    {
+      type: "paragraph",
+      text: "Distance comes from the GPS track, so it usually reads slightly long; choose the official race distance and the result is scored over that. Split times are interpolated at each kilometre or mile mark. Elevation is resampled every 20 m and smoothed over about 200 m before grades are calculated, so GPS noise does not create false climbs.",
     },
   ];
 }
@@ -1157,6 +1203,8 @@ function getContentBlocks(url: string): DocBlock[] {
       return planBlocks();
     case "/fuel":
       return fuelBlocks();
+    case "/debrief":
+      return debriefBlocks();
     case "/elevationfinder":
     case "/elevation-finder":
       return elevationBlocks();
@@ -1220,6 +1268,7 @@ export function getAllDocPaths(): string[] {
     "/vdot",
     "/fuel",
     "/plan",
+    "/debrief",
     "/elevationfinder",
     "/elevation-finder",
     "/race",

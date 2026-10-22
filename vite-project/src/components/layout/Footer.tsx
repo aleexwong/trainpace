@@ -68,6 +68,14 @@ const Footer = () => {
               </li>
               <li>
                 <Link
+                  to="/debrief"
+                  className="text-slate-600 hover:text-emerald-600 transition-colors text-sm"
+                >
+                  Race Debrief
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/vdot"
                   className="text-slate-600 hover:text-emerald-600 transition-colors text-sm"
                 >

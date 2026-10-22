@@ -29,6 +29,7 @@ export const STATIC_PAGE_TITLES = {
   "/vdot": "VDOT Calculator – Fitness Score & Race Times | TrainPace",
   "/plan": "Training Plan Builder – Free 5K to Marathon | TrainPace",
   "/fuel": "Marathon Fuel Calculator – How Many Gels? | TrainPace",
+  "/debrief": "Race Debrief – Analyze Your Race Splits From GPX | TrainPace",
   "/elevation-finder": "GPX Elevation Profile Viewer & Analyzer | TrainPace",
   "/race": "Race Prep Pages – Pacing, Fueling, Elevation | TrainPace",
   "/mcp": "MCP Server - TrainPace Tools for AI Agents",

@@ -36,3 +36,4 @@ Tools exposed by the MCP server:
 - [Training Plan Builder](https://trainpace.com/plan): Personalized week-by-week 5K/10K/half/marathon plans
 - [Race Fuel Planner](https://trainpace.com/fuel): Carb and gel strategy for race day
 - [Elevation Finder](https://trainpace.com/elevation-finder): Upload a GPX file for elevation profile, climb analysis, and pacing guidance
+- [Race Debrief](https://trainpace.com/debrief): Upload a finished race's GPX for hill-adjusted splits, fade point, pacing score, and VDOT
