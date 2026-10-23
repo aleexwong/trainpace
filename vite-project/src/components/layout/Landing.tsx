@@ -88,23 +88,23 @@ const Hero = () => (
     <div className="mx-auto grid max-w-6xl items-start gap-12 px-4 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:px-8">
       <div className="max-w-xl">
         <p className="mb-5 font-display text-sm text-slate-500">
-          Free running tools · no account needed
+          For runners who coach themselves
         </p>
         <h1 className="mb-6 text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 lg:text-5xl">
-          Training paces, race plans and fueling from one race time.
+          Your last race already knows your next one.
         </h1>
         <p className="mb-8 text-lg leading-relaxed text-slate-600">
-          Enter a recent result. TrainPace works out your VDOT, your five
-          Daniels training paces, a week-by-week plan, and how many gels to
-          carry on race day.
+          Put in a recent race time. TrainPace turns it into a pace for every
+          run in your week, a plan up to race day, and a fueling schedule so the
+          last 10K doesn&rsquo;t fall apart.
         </p>
 
         <div className="flex flex-col gap-3 sm:flex-row">
           <ButtonLink to="/calculator">
-            Calculate my paces <ArrowRight className="h-4 w-4" />
+            Get my paces <ArrowRight className="h-4 w-4" />
           </ButtonLink>
           <ButtonLink to="/elevation-finder" variant="secondary">
-            Analyze a GPX route
+            Drop in a GPX file
           </ButtonLink>
         </div>
       </div>
@@ -183,69 +183,10 @@ const HeroExample = () => (
     </dl>
 
     <p className="flex items-center justify-between border-t border-slate-200 px-5 py-3 text-xs text-slate-500 group-hover:text-slate-900">
-      Daniels &amp; Gilbert formula · try your own time
+      Your numbers will be different. Try yours
       <ArrowRight className="h-3.5 w-3.5" />
     </p>
   </Link>
-);
-
-const TOOLS = [
-  {
-    name: "Pace calculator",
-    route: "/calculator",
-    desc: "Easy, tempo, threshold and interval paces from any 5K–marathon time.",
-  },
-  {
-    name: "VDOT calculator",
-    route: "/vdot",
-    desc: "A VDOT score and equivalent race times from 800 m to the marathon.",
-  },
-  {
-    name: "Training plans",
-    route: "/plan",
-    desc: "8–20 week periodized plans with a target pace on every session.",
-  },
-  {
-    name: "Fuel planner",
-    route: "/fuel",
-    desc: "Carbs per hour, gel count and timing for your distance and weight.",
-  },
-  {
-    name: "Elevation finder",
-    route: "/elevation-finder",
-    desc: "Upload a GPX file to see gain, loss, grades and climb difficulty.",
-  },
-  {
-    name: "Race guides",
-    route: "/race",
-    desc: "Course profile, pacing and fueling notes for 90+ major races.",
-  },
-];
-
-const ToolIndex = () => (
-  <section className="border-b border-slate-200 bg-slate-50 py-16">
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <h2 className="mb-8 text-2xl font-bold text-slate-900">The tools</h2>
-      <ul className="grid gap-px overflow-hidden rounded-lg border border-slate-200 bg-slate-200 sm:grid-cols-2 lg:grid-cols-3">
-        {TOOLS.map((tool) => (
-          <li key={tool.route} className="bg-white">
-            <Link
-              to={tool.route}
-              className="group flex h-full flex-col p-5 transition-colors hover:bg-slate-50"
-            >
-              <span className="mb-1 flex items-center justify-between font-display font-semibold text-slate-900">
-                {tool.name}
-                <ArrowRight className="h-4 w-4 text-slate-300 transition-colors group-hover:text-slate-900" />
-              </span>
-              <span className="text-sm leading-relaxed text-slate-600">
-                {tool.desc}
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
 );
 
 interface FeatureSectionProps {
@@ -259,6 +200,7 @@ interface FeatureSectionProps {
   shot: () => JSX.Element;
   imageSide?: "left" | "right";
   id?: string;
+  more?: { label: string; route: string };
 }
 
 const FeatureSection = ({
@@ -272,6 +214,7 @@ const FeatureSection = ({
   shot: Shot,
   imageSide = "right",
   id,
+  more,
 }: FeatureSectionProps) => (
   <section
     id={id}
@@ -303,12 +246,22 @@ const FeatureSection = ({
             ))}
           </ul>
 
-          <Link
-            to={ctaRoute}
-            className="inline-flex items-center gap-2 font-semibold text-emerald-700 hover:text-emerald-900"
-          >
-            {cta} <ArrowRight className="h-4 w-4" />
-          </Link>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Link
+              to={ctaRoute}
+              className="inline-flex items-center gap-2 font-semibold text-emerald-700 hover:text-emerald-900"
+            >
+              {cta} <ArrowRight className="h-4 w-4" />
+            </Link>
+            {more && (
+              <Link
+                to={more.route}
+                className="text-sm text-slate-500 underline-offset-4 hover:text-slate-900 hover:underline"
+              >
+                {more.label}
+              </Link>
+            )}
+          </div>
         </div>
 
         <div className="w-full min-w-0 flex-1">
@@ -327,18 +280,16 @@ const FounderStory = () => (
     <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
       <div>
         <h2 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">
-          Why it exists
+          Why I built it
         </h2>
         <div className="space-y-4 text-lg leading-relaxed text-slate-600">
           <p>
-            I ran my first half marathon in May 2024 in 3:01:00. I was
-            undertrained, started too fast, and didn&rsquo;t eat anything on the
-            course.
+            My first half marathon took 3:01. I hadn&rsquo;t trained properly, I
+            went out too fast, and I ate nothing for 21 kilometers.
           </p>
           <p>
-            I built TrainPace to fix those three things: the right paces,
-            knowing the course, and a fueling plan. A year later I ran the same
-            race in 2:06:00.
+            TrainPace is the set of tools I built to fix exactly those three
+            things. A year later, same race: 2:06.
           </p>
           <p className="text-base text-slate-500">— Alex Wong, founder</p>
         </div>
@@ -396,12 +347,12 @@ const AiAgentSection = () => (
         <div className="flex-1">
           <SectionLabel index="06">MCP server</SectionLabel>
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-slate-900">
-            Use it from Claude or ChatGPT
+            Your chatbot is bad at pace math. Fix that.
           </h2>
           <p className="mb-6 text-lg leading-relaxed text-slate-600">
-            TrainPace is a public MCP server. Connect it once and your assistant
-            answers pace, plan and fueling questions with these formulas instead
-            of guessing.
+            Ask a chatbot for your threshold pace and you&rsquo;ll often get a
+            guess. Connect TrainPace as an MCP server and Claude, ChatGPT or any
+            MCP client uses these calculators instead. Free, no API key.
           </p>
           <code className="mb-8 block w-fit rounded border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-sm text-slate-700">
             https://api.trainpace.com/api/mcp
@@ -426,8 +377,8 @@ const COMPARISON_ROWS = [
   { feature: "Price", trainpace: "Free", typical: "$10–20 / month" },
   {
     feature: "Account",
-    trainpace: "Optional (to save plans)",
-    typical: "Required",
+    trainpace: "Only to save plans",
+    typical: "Required to start",
   },
   {
     feature: "Training paces",
@@ -450,7 +401,7 @@ const Comparison = () => (
   <section className="border-b border-slate-200 py-16 lg:py-24">
     <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
       <h2 className="mb-8 text-3xl font-bold tracking-tight text-slate-900">
-        Compared with typical training apps
+        How it stacks up
       </h2>
       <div className="overflow-x-auto rounded-lg border border-slate-200">
         <table className="w-full text-left text-sm">
@@ -555,18 +506,18 @@ const CTA = () => (
     <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
       <div>
         <h2 className="text-3xl font-bold tracking-tight text-white">
-          Start with a recent race time.
+          Got a race time? That&rsquo;s all it takes.
         </h2>
         <p className="mt-2 text-slate-400">
-          No account. Your data is never sold.
+          Free. No account. Your data is never sold.
         </p>
       </div>
       <div className="flex flex-col gap-3 sm:flex-row">
         <ButtonLink to="/calculator" variant="inversePrimary">
-          Calculate my paces <ArrowRight className="h-4 w-4" />
+          Get my paces <ArrowRight className="h-4 w-4" />
         </ButtonLink>
         <ButtonLink to="/plan" variant="inverseSecondary">
-          Build a training plan
+          Build a plan
         </ButtonLink>
       </div>
     </div>
@@ -635,37 +586,35 @@ export default function LandingPage() {
       {/* text-left: App.css still centres #root. */}
       <div className="bg-white text-left font-sans text-slate-900 antialiased">
         <Hero />
-        <ToolIndex />
 
         <FeatureSection
           id="features"
           index="01"
           label="Pace calculator"
-          title="Your training zones from one result"
-          subtitle="Enter a recent 5K, 10K, half or marathon time. You get a pace for every type of run, in km or miles."
+          title="Your easy runs are too fast."
+          subtitle="Most people's are. Then the hard days feel flat and nobody can say why. Put in a recent race and get a pace range for every kind of run, from the slow Sunday long run to 400 m repeats."
           shot={PaceLadderShot}
           features={[
-            "Easy and recovery pace",
-            "Tempo and threshold pace",
-            "Interval and speed pace",
-            "Save plans to your dashboard",
+            "Works from any 5K, 10K, half or marathon",
+            "Minutes per km or per mile",
+            "Saves to your dashboard",
           ]}
-          cta="Calculate my paces"
+          cta="Get my paces"
           ctaRoute="/calculator"
         />
 
         <FeatureSection
           index="02"
           label="VDOT calculator"
-          title="A fitness score and race predictions"
-          subtitle="The Daniels Running Formula turns one race into a VDOT score, predicted times at nine distances, and paces for all five Daniels zones."
+          title="What your 10K says about your marathon."
+          subtitle="VDOT is Jack Daniels' fitness score. One race gives you the number, and the number predicts your time at nine distances. Use it to check whether that goal time is ambitious or just wishful."
           shot={VdotDialShot}
           features={[
-            "VDOT score with a fitness rating",
+            "VDOT score and fitness level",
             "Predicted times from 800 m to the marathon",
-            "Easy, Marathon, Threshold, Interval and Repetition paces",
+            "Paces for all five Daniels zones",
           ]}
-          cta="Calculate my VDOT"
+          cta="Find my VDOT"
           ctaRoute="/vdot"
           imageSide="left"
         />
@@ -673,28 +622,29 @@ export default function LandingPage() {
         <FeatureSection
           index="03"
           label="Elevation finder"
-          title="See the hills before race day"
-          subtitle="Upload a GPX file from your watch or Strava. You get the elevation profile, grades, and a difficulty rating for the course."
+          title="Know where the hills are before your legs do."
+          subtitle="Drop in a GPX file from your watch, Strava or the race website. See every climb, how steep it gets, and how hard the whole course is. Then decide where to push and where to hold back."
           shot={ElevationShot}
           features={[
-            "Elevation profile on a course map",
-            "Total gain and loss",
-            "Grade by segment and a difficulty score",
+            "Elevation profile on a real map",
+            "Total climb and descent",
+            "Grade for every section",
           ]}
-          cta="Analyze a route"
+          cta="Drop in a GPX file"
           ctaRoute="/elevation-finder"
+          more={{ label: "Or look up your race", route: "/race" }}
         />
 
         <FeatureSection
           index="04"
           label="Fuel planner"
-          title="How much to eat, and when"
-          subtitle="Set your distance, goal time and body weight. The planner gives a carbs-per-hour target and a timed list of gels."
+          title="The wall is a fueling problem."
+          subtitle="Run out of carbs and no amount of fitness will save you. Put in your distance, goal time and weight to get a carbs-per-hour target and a time for every gel."
           shot={FuelStationsShot}
           features={[
             "Carbs per hour for your race",
-            "Gel count and timing",
-            "Optional AI suggestions for real foods",
+            "When to take each gel",
+            "Real-food options if gels aren't your thing",
           ]}
           cta="Plan my fueling"
           ctaRoute="/fuel"
@@ -704,12 +654,12 @@ export default function LandingPage() {
         <FeatureSection
           index="05"
           label="Training plans"
-          title="A full plan with a pace on every run"
-          subtitle="Choose a goal race and the days you can train. You get a periodized plan from base to taper."
+          title="Every run has a pace. Even the easy ones."
+          subtitle="Give it a race date, your experience and the days you can run. You get a week-by-week plan from base miles to taper, with a target pace on every session."
           shot={TrainingPlanShot}
           features={[
-            "8–20 weeks, 5K to marathon",
-            "Base, development, sharpening and taper phases",
+            "5K to marathon, 8–20 weeks",
+            "Base, build, sharpen, taper",
             "Export to Google or Apple Calendar",
           ]}
           cta="Build my plan"
