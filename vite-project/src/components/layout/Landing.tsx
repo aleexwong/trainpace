@@ -4,15 +4,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { comparisonLinks } from "@/features/seo-pages/seoPages";
-// Deep import: the pure math module, not the barrel, so the landing chunk
-// doesn't pull in the VDOT calculator's component tree.
-import {
-  calculateVdot,
-  calculateTrainingZones,
-  predictRaceTime,
-  formatPace,
-  formatTime,
-} from "@/features/vdot-calculator/vdot-math";
+import HeroPaceDemo from "./HeroPaceDemo";
 import {
   PaceLadderShot,
   VdotDialShot,
@@ -21,23 +13,6 @@ import {
   AgentChatShot,
   TrainingPlanShot,
 } from "@/components/feature-shots";
-
-// --- Worked example shown in the hero ---
-// Computed with the same formulas the calculators use, so the numbers on the
-// home page are real outputs rather than mock-up values.
-
-const EXAMPLE_DISTANCE_M = 10000;
-const EXAMPLE_TIME_S = 50 * 60;
-const exampleVdot = calculateVdot(EXAMPLE_DISTANCE_M, EXAMPLE_TIME_S);
-const exampleZones = calculateTrainingZones(exampleVdot);
-const examplePredictions = [
-  { label: "5K", meters: 5000 },
-  { label: "Half", meters: 21097.5 },
-  { label: "Marathon", meters: 42195 },
-].map((p) => ({
-  ...p,
-  time: formatTime(predictRaceTime(exampleVdot, p.meters)),
-}));
 
 // --- Components ---
 
@@ -84,14 +59,15 @@ const SectionLabel = ({
 // --- Sections ---
 
 const Hero = () => (
-  <section className="border-b border-slate-200 bg-white pt-24 pb-16 lg:pt-32 lg:pb-24">
-    <div className="mx-auto grid max-w-6xl items-start gap-12 px-4 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:px-8">
+  <section className="overflow-hidden border-b border-slate-200 bg-white pt-24 pb-20 lg:pt-32 lg:pb-28">
+    <div className="mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1fr_1.05fr] lg:gap-20 lg:px-8">
       <div className="max-w-xl">
         <p className="mb-5 font-display text-sm text-slate-500">
           For runners who coach themselves
         </p>
         <h1 className="mb-6 text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 lg:text-5xl">
-          Your last race already knows your next one.
+          Your last race already knows{" "}
+          <span className="text-emerald-600">your next one.</span>
         </h1>
         <p className="mb-8 text-lg leading-relaxed text-slate-600">
           Put in a recent race time. TrainPace turns it into a pace for every
@@ -109,84 +85,9 @@ const Hero = () => (
         </div>
       </div>
 
-      <HeroExample />
+      <HeroPaceDemo />
     </div>
   </section>
-);
-
-const HeroExample = () => (
-  <Link
-    to="/vdot"
-    className="group block rounded-lg border border-slate-200 bg-white transition-colors hover:border-slate-400"
-    aria-label="Open the VDOT calculator"
-  >
-    <div className="flex items-baseline justify-between border-b border-slate-200 px-5 py-4">
-      <div>
-        <p className="text-xs text-slate-500">Example input</p>
-        <p className="font-display text-lg font-semibold text-slate-900">
-          10K in 50:00
-        </p>
-      </div>
-      <div className="text-right">
-        <p className="text-xs text-slate-500">VDOT</p>
-        <p className="font-display text-lg font-semibold tabular-nums text-slate-900">
-          {exampleVdot.toFixed(1)}
-        </p>
-      </div>
-    </div>
-
-    <table className="w-full text-sm">
-      <caption className="sr-only">
-        Training paces per kilometre for a 50:00 10K
-      </caption>
-      <thead>
-        <tr className="text-xs text-slate-500">
-          <th scope="col" className="px-5 pt-3 pb-1 text-left font-normal">
-            Zone
-          </th>
-          <th scope="col" className="px-5 pt-3 pb-1 text-right font-normal">
-            Pace / km
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {exampleZones.map((z) => {
-          const [fast, slow] = z.pacePerKmSeconds;
-          const pace =
-            Math.round(fast) === Math.round(slow)
-              ? formatPace(fast)
-              : `${formatPace(fast)}–${formatPace(slow)}`;
-          return (
-            <tr key={z.name} className="border-t border-slate-100">
-              <td className="px-5 py-2 text-slate-700">{z.name}</td>
-              <td className="px-5 py-2 text-right font-display tabular-nums text-slate-900">
-                {pace}
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-
-    <dl className="grid grid-cols-3 border-t border-slate-200">
-      {examplePredictions.map((p, i) => (
-        <div
-          key={p.label}
-          className={`px-5 py-4 ${i > 0 ? "border-l border-slate-200" : ""}`}
-        >
-          <dt className="text-xs text-slate-500">{p.label}</dt>
-          <dd className="font-display font-semibold tabular-nums text-slate-900">
-            {p.time}
-          </dd>
-        </div>
-      ))}
-    </dl>
-
-    <p className="flex items-center justify-between border-t border-slate-200 px-5 py-3 text-xs text-slate-500 group-hover:text-slate-900">
-      Your numbers will be different. Try yours
-      <ArrowRight className="h-3.5 w-3.5" />
-    </p>
-  </Link>
 );
 
 interface FeatureSectionProps {
