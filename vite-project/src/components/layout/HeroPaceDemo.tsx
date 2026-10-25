@@ -11,6 +11,7 @@ import {
   formatTime,
 } from "@/features/vdot-calculator/vdot-math";
 import { calculateFuelPlan } from "@/features/fuel/fuel-math";
+import DotPanel from "./DotPanel";
 
 // Every number in this card comes from the same formulas the calculators use.
 // Switching example tweens the VDOT and re-derives everything else from it,
@@ -116,16 +117,7 @@ export default function HeroPaceDemo() {
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
     >
-      {/* Tinted dot-grid panel behind the card for depth. */}
-      <div
-        aria-hidden
-        className="absolute -inset-4 rounded-2xl bg-emerald-50 sm:-inset-6"
-        style={{
-          backgroundImage:
-            "radial-gradient(rgb(16 185 129 / 0.18) 1px, transparent 1px)",
-          backgroundSize: "16px 16px",
-        }}
-      />
+      <DotPanel />
 
       <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5">
         {/* Example picker */}

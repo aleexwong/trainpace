@@ -5,6 +5,8 @@ import { Helmet } from "react-helmet-async";
 import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { comparisonLinks } from "@/features/seo-pages/seoPages";
 import HeroPaceDemo from "./HeroPaceDemo";
+import DotPanel from "./DotPanel";
+import { useInView } from "@/components/feature-shots/shared";
 import {
   PaceLadderShot,
   VdotDialShot,
@@ -119,7 +121,9 @@ const FeatureSection = ({
 }: FeatureSectionProps) => (
   <section
     id={id}
-    className="overflow-hidden border-b border-slate-200 py-16 lg:py-24"
+    className={`overflow-hidden border-b border-slate-200 py-20 lg:py-28 ${
+      Number(index) % 2 === 1 ? "bg-slate-50" : "bg-white"
+    }`}
   >
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div
@@ -165,84 +169,115 @@ const FeatureSection = ({
           </div>
         </div>
 
-        <div className="w-full min-w-0 flex-1">
-          <Shot />
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
-const FounderStory = () => (
-  <section
-    id="story"
-    className="border-b border-slate-200 bg-slate-50 py-16 lg:py-24"
-  >
-    <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
-      <div>
-        <h2 className="mb-6 text-3xl font-bold tracking-tight text-slate-900">
-          Why I built it
-        </h2>
-        <div className="space-y-4 text-lg leading-relaxed text-slate-600">
-          <p>
-            My first half marathon took 3:01. I hadn&rsquo;t trained properly, I
-            went out too fast, and I ate nothing for 21 kilometers.
-          </p>
-          <p>
-            TrainPace is the set of tools I built to fix exactly those three
-            things. A year later, same race: 2:06.
-          </p>
-          <p className="text-base text-slate-500">— Alex Wong, founder</p>
-        </div>
-        <Link
-          to="/about"
-          className="mt-8 inline-flex items-center gap-2 font-semibold text-emerald-700 hover:text-emerald-900"
-        >
-          Read the full story <ArrowRight className="h-4 w-4" />
-        </Link>
-      </div>
-
-      <dl className="rounded-lg border border-slate-200 bg-white">
-        {[
-          {
-            label: "BMO Vancouver Half · May 2024",
-            time: "3:01:00",
-            pace: "8:35 /km",
-          },
-          {
-            label: "BMO Vancouver Half · May 2025",
-            time: "2:06:00",
-            pace: "5:58 /km",
-          },
-        ].map((r) => (
-          <div
-            key={r.label}
-            className="flex items-baseline justify-between border-b border-slate-200 px-6 py-5"
-          >
-            <dt className="text-sm text-slate-500">{r.label}</dt>
-            <dd className="text-right">
-              <span className="block font-display text-3xl font-bold tabular-nums text-slate-900">
-                {r.time}
-              </span>
-              <span className="font-display text-sm tabular-nums text-slate-500">
-                {r.pace}
-              </span>
-            </dd>
+        <div className="relative w-full min-w-0 flex-1">
+          <DotPanel />
+          <div className="relative">
+            <Shot />
           </div>
-        ))}
-        <div className="flex items-baseline justify-between px-6 py-5">
-          <dt className="text-sm text-slate-500">Difference</dt>
-          <dd className="font-display text-xl font-bold tabular-nums text-emerald-700">
-            −55:00
-          </dd>
         </div>
-      </dl>
+      </div>
     </div>
   </section>
 );
+
+const FOUNDER_RACES = [
+  { label: "May 2024", time: "3:01:00", pace: "8:35 /km", minutes: 181 },
+  { label: "May 2025", time: "2:06:00", pace: "5:58 /km", minutes: 126 },
+];
+
+const FounderStory = () => {
+  const { ref, inView } = useInView<HTMLDivElement>(0.4);
+
+  return (
+    <section
+      id="story"
+      className="overflow-hidden bg-slate-900 py-20 text-white lg:py-28"
+    >
+      <div className="mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
+        <div>
+          <p className="mb-4 font-display text-sm text-emerald-400">
+            From the founder
+          </p>
+          <h2 className="mb-6 text-3xl font-bold tracking-tight">
+            Why I built it
+          </h2>
+          <div className="space-y-4 text-lg leading-relaxed text-slate-300">
+            <p>
+              My first half marathon took 3:01. I hadn&rsquo;t trained properly,
+              I went out too fast, and I ate nothing for 21 kilometers.
+            </p>
+            <p>
+              TrainPace is the set of tools I built to fix exactly those three
+              things. A year later, same race:{" "}
+              <span className="font-semibold text-emerald-400">2:06</span>.
+            </p>
+            <p className="text-base text-slate-500">— Alex Wong</p>
+          </div>
+          <Link
+            to="/about"
+            className="mt-8 inline-flex items-center gap-2 font-semibold text-emerald-400 hover:text-emerald-300"
+          >
+            Read the full story <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+
+        <div ref={ref} className="relative">
+          <DotPanel tone="dark" />
+          <div className="relative rounded-xl border border-slate-700 bg-slate-900 p-6 shadow-2xl shadow-black/40 sm:p-8">
+            <p className="mb-6 text-sm text-slate-400">
+              BMO Vancouver Half Marathon
+            </p>
+            <dl className="space-y-6">
+              {FOUNDER_RACES.map((r, i) => (
+                <div key={r.label}>
+                  <div className="mb-2 flex items-baseline justify-between">
+                    <dt className="text-sm text-slate-400">{r.label}</dt>
+                    <dd className="text-right">
+                      <span
+                        className={`font-display text-3xl font-bold tabular-nums ${
+                          i === 0 ? "text-slate-400" : "text-white"
+                        }`}
+                      >
+                        {r.time}
+                      </span>
+                      <span className="ml-3 font-display text-sm tabular-nums text-slate-500">
+                        {r.pace}
+                      </span>
+                    </dd>
+                  </div>
+                  <div className="h-3 rounded-full bg-slate-800">
+                    <div
+                      className={`h-full rounded-full transition-[width] duration-1000 ease-out motion-reduce:transition-none ${
+                        i === 0 ? "bg-slate-600" : "bg-emerald-500"
+                      }`}
+                      style={{
+                        width: inView
+                          ? `${(r.minutes / FOUNDER_RACES[0].minutes) * 100}%`
+                          : "0%",
+                        transitionDelay: `${i * 250}ms`,
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </dl>
+            <div className="mt-8 flex items-baseline justify-between border-t border-slate-800 pt-5">
+              <span className="text-sm text-slate-400">
+                Same course, one year
+              </span>
+              <span className="font-display text-2xl font-bold tabular-nums text-emerald-400">
+                −55:00
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const AiAgentSection = () => (
-  <section className="overflow-hidden border-b border-slate-200 py-16 lg:py-24">
+  <section className="overflow-hidden border-b border-slate-200 bg-white py-20 lg:py-28">
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
         <div className="flex-1">
@@ -266,8 +301,11 @@ const AiAgentSection = () => (
           </Link>
         </div>
 
-        <div className="w-full min-w-0 flex-1">
-          <AgentChatShot />
+        <div className="relative w-full min-w-0 flex-1">
+          <DotPanel />
+          <div className="relative">
+            <AgentChatShot />
+          </div>
         </div>
       </div>
     </div>
@@ -299,19 +337,19 @@ const COMPARISON_ROWS = [
 ];
 
 const Comparison = () => (
-  <section className="border-b border-slate-200 py-16 lg:py-24">
+  <section className="border-b border-slate-200 bg-white py-20 lg:py-28">
     <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
       <h2 className="mb-8 text-3xl font-bold tracking-tight text-slate-900">
         How it stacks up
       </h2>
-      <div className="overflow-x-auto rounded-lg border border-slate-200">
+      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5">
         <table className="w-full text-left text-sm">
           <thead className="bg-slate-50 text-xs text-slate-500">
             <tr>
               <th scope="col" className="px-4 py-3 font-medium" />
               <th
                 scope="col"
-                className="px-4 py-3 font-semibold text-slate-900"
+                className="bg-emerald-50 px-4 py-3 font-semibold text-emerald-800"
               >
                 TrainPace
               </th>
@@ -325,12 +363,14 @@ const Comparison = () => (
               <tr key={row.feature}>
                 <th
                   scope="row"
-                  className="px-4 py-3 font-medium text-slate-900"
+                  className="px-4 py-3.5 font-medium text-slate-900"
                 >
                   {row.feature}
                 </th>
-                <td className="px-4 py-3 text-slate-900">{row.trainpace}</td>
-                <td className="px-4 py-3 text-slate-500">{row.typical}</td>
+                <td className="bg-emerald-50/50 px-4 py-3.5 font-medium text-slate-900">
+                  {row.trainpace}
+                </td>
+                <td className="px-4 py-3.5 text-slate-500">{row.typical}</td>
               </tr>
             ))}
           </tbody>
@@ -382,14 +422,17 @@ const FAQS = [
 ];
 
 const FAQ = () => (
-  <section className="border-b border-slate-200 bg-slate-50 py-16 lg:py-24">
+  <section className="bg-slate-50 py-20 lg:py-28">
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
       <h2 className="mb-8 text-3xl font-bold tracking-tight text-slate-900">
         Questions
       </h2>
-      <div className="divide-y divide-slate-200 border-y border-slate-200">
+      <div className="space-y-3">
         {FAQS.map((faq) => (
-          <details key={faq.q} className="group">
+          <details
+            key={faq.q}
+            className="group rounded-xl border border-slate-200 bg-white px-5 shadow-sm transition-colors open:border-emerald-200"
+          >
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium text-slate-900">
               <span>{faq.q}</span>
               <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
@@ -403,7 +446,14 @@ const FAQ = () => (
 );
 
 const CTA = () => (
-  <section className="bg-slate-900 py-16 lg:py-20">
+  <section
+    className="bg-slate-900 py-20 lg:py-24"
+    style={{
+      backgroundImage:
+        "radial-gradient(rgb(52 211 153 / 0.14) 1px, transparent 1px)",
+      backgroundSize: "16px 16px",
+    }}
+  >
     <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
       <div>
         <h2 className="text-3xl font-bold tracking-tight text-white">
