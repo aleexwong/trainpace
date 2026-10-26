@@ -15,6 +15,7 @@ import AuthGuard from "./features/auth/AuthGuard";
 // bundling the entire app (Mapbox, Chart.js, Firebase, etc.) into one ~2MB blob.
 // Safe with prerendering: the static SEO HTML comes from prerender.jsx, not these routes.
 const Landing = lazy(() => import("./components/layout/Landing"));
+const LandingLab = lazy(() => import("./pages/LandingLab"));
 const Login = lazy(() => import("./pages/Login"));
 const Logout = lazy(() => import("./components/login/Logout"));
 const Register = lazy(() => import("./components/login/Register"));
@@ -64,6 +65,7 @@ function App() {
           <Route path="/fuel" element={<FuelPlannerPage />} />
           <Route path="/fuel/:seoSlug" element={<FuelSeoLanding />} />
           <Route path="/vdot" element={<VdotCalculatorPage />} />
+          <Route path="/lab/:variant" element={<LandingLab />} />
           <Route path="/plan" element={<TrainingPlanPage />} />
           <Route path="/plan/:seoSlug" element={<PlanSeoLanding />} />
           <Route path="/race" element={<RaceIndex />} />
