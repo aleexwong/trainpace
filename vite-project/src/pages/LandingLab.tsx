@@ -9,6 +9,15 @@ import {
   Timer,
   CalendarDays,
   Bot,
+  Gauge,
+  Flag,
+  BookOpen,
+  Info,
+  ChevronDown,
+  ChevronRight,
+  Menu as MenuIcon,
+  X,
+  Search,
 } from "lucide-react";
 import {
   calculateVdot,
@@ -2191,6 +2200,1094 @@ function RaceWatch() {
   );
 }
 
+// --- Round 4: watch variations + navigation -------------------------------
+
+// Information architecture shared by every nav variant: three groups that
+// match how a runner thinks (train → race → learn), every tool reachable.
+const NAV_GROUPS = [
+  {
+    label: "Train",
+    items: [
+      {
+        label: "Pace calculator",
+        to: "/calculator",
+        desc: "Paces for every run from one race",
+        icon: Timer,
+      },
+      {
+        label: "VDOT calculator",
+        to: "/vdot",
+        desc: "Fitness score and race predictions",
+        icon: Gauge,
+      },
+      {
+        label: "Training plans",
+        to: "/plan",
+        desc: "8–20 weeks, 5K to marathon",
+        icon: CalendarDays,
+      },
+    ],
+  },
+  {
+    label: "Race",
+    items: [
+      {
+        label: "Race guides",
+        to: "/race",
+        desc: "Course, pacing and fueling for 90+ races",
+        icon: Flag,
+      },
+      {
+        label: "Elevation finder",
+        to: "/elevation-finder",
+        desc: "Drop in a GPX, see every climb",
+        icon: Mountain,
+      },
+      {
+        label: "Fuel planner",
+        to: "/fuel",
+        desc: "Carbs per hour and when to take each gel",
+        icon: Zap,
+      },
+    ],
+  },
+  {
+    label: "Learn",
+    items: [
+      {
+        label: "Blog",
+        to: "/blog",
+        desc: "Training, pacing and fueling articles",
+        icon: BookOpen,
+      },
+      {
+        label: "Use with AI",
+        to: "/mcp",
+        desc: "TrainPace inside Claude or ChatGPT",
+        icon: Bot,
+      },
+      {
+        label: "About",
+        to: "/about",
+        desc: "3:01 to 2:06, and why this exists",
+        icon: Info,
+      },
+    ],
+  },
+];
+
+function LogoMark({ className = "" }: { className?: string }) {
+  // A watch bezel with a progress arc: the brand mark for this direction.
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden>
+      <circle
+        cx="12"
+        cy="12"
+        r="9"
+        fill="none"
+        stroke="currentColor"
+        strokeOpacity="0.25"
+        strokeWidth="3"
+      />
+      <path
+        d="M12 3 A9 9 0 0 1 20.6 14.6"
+        fill="none"
+        stroke="rgb(52 211 153)"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function Wordmark({ dark = true }: { dark?: boolean }) {
+  return (
+    <Link
+      to="/"
+      className={`flex items-center gap-2 font-display text-lg font-bold ${dark ? "text-white" : "text-slate-900"}`}
+    >
+      <LogoMark className="h-6 w-6" />
+      TrainPace
+    </Link>
+  );
+}
+
+// N1 · Dark mega-menu nav ------------------------------------------------------
+
+function NavMega() {
+  const [open, setOpen] = useState<string | null>(null);
+  const [sheet, setSheet] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
+  return (
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-colors ${open ? "border-b border-white/10 bg-black/95 backdrop-blur-xl" : scrolled ? "border-b border-white/10 bg-black/70 backdrop-blur-xl" : "bg-transparent"}`}
+      onMouseLeave={() => setOpen(null)}
+    >
+      <nav
+        className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6"
+        aria-label="Main"
+      >
+        <Wordmark />
+        <ul className="hidden items-center gap-1 md:flex">
+          {NAV_GROUPS.map((g) => (
+            <li key={g.label}>
+              <button
+                type="button"
+                aria-expanded={open === g.label}
+                onMouseEnter={() => setOpen(g.label)}
+                onClick={() => setOpen(open === g.label ? null : g.label)}
+                className={`flex items-center gap-1 rounded-md border-0 px-3 py-2 text-sm font-medium transition-colors hover:border-transparent ${
+                  open === g.label
+                    ? "bg-white/10 text-white"
+                    : "bg-transparent text-slate-300 hover:text-white"
+                }`}
+              >
+                {g.label}
+                <ChevronDown
+                  className={`h-3.5 w-3.5 transition-transform ${open === g.label ? "rotate-180" : ""}`}
+                />
+              </button>
+            </li>
+          ))}
+        </ul>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/login"
+            className="hidden rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:text-white md:block"
+          >
+            Log in
+          </Link>
+          <Link
+            to="/calculator"
+            className={`${btn} hidden bg-emerald-400 py-2 text-slate-950 hover:bg-emerald-300 sm:inline-flex`}
+          >
+            Get my paces
+          </Link>
+          <button
+            type="button"
+            aria-label="Open menu"
+            onClick={() => setSheet(true)}
+            className="rounded-md border-0 bg-transparent p-2 text-white hover:border-transparent md:hidden"
+          >
+            <MenuIcon className="h-6 w-6" />
+          </button>
+        </div>
+      </nav>
+
+      {open && (
+        <div className="hidden border-t border-white/10 md:block">
+          <div className="mx-auto grid max-w-6xl grid-cols-[180px_1fr] gap-8 px-6 py-6">
+            <p className="font-display text-2xl font-bold text-white">{open}</p>
+            <ul className="grid grid-cols-3 gap-2">
+              {NAV_GROUPS.find((g) => g.label === open)!.items.map((it) => (
+                <li key={it.to}>
+                  <Link
+                    to={it.to}
+                    className="group flex gap-3 rounded-xl p-3 transition-colors hover:bg-white/5"
+                  >
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-400/10 text-emerald-300 group-hover:bg-emerald-400 group-hover:text-slate-950">
+                      <it.icon className="h-5 w-5" />
+                    </span>
+                    <span>
+                      <span className="block text-sm font-semibold text-white">
+                        {it.label}
+                      </span>
+                      <span className="block text-sm text-slate-400">
+                        {it.desc}
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
+      {sheet && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black px-6 pb-10 md:hidden">
+          <div className="flex h-16 items-center justify-between">
+            <Wordmark />
+            <button
+              type="button"
+              aria-label="Close menu"
+              onClick={() => setSheet(false)}
+              className="rounded-md border-0 bg-transparent p-2 text-white hover:border-transparent"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+          {NAV_GROUPS.map((g) => (
+            <div key={g.label} className="mt-6">
+              <p className="mb-2 text-xs uppercase tracking-[0.2em] text-slate-500">
+                {g.label}
+              </p>
+              <ul className="divide-y divide-white/5 rounded-xl border border-white/10">
+                {g.items.map((it) => (
+                  <li key={it.to}>
+                    <Link
+                      to={it.to}
+                      className="flex items-center gap-3 px-4 py-3.5"
+                    >
+                      <it.icon className="h-5 w-5 text-emerald-300" />
+                      <span className="flex-1 font-medium text-white">
+                        {it.label}
+                      </span>
+                      <ChevronRight className="h-4 w-4 text-slate-600" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div className="mt-8 grid grid-cols-2 gap-3">
+            <Link
+              to="/login"
+              className={`${btn} border border-white/15 text-white`}
+            >
+              Log in
+            </Link>
+            <Link
+              to="/calculator"
+              className={`${btn} bg-emerald-400 text-slate-950`}
+            >
+              Get my paces
+            </Link>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
+
+// N2 · Floating pill nav --------------------------------------------------------
+
+const PILL_LINKS = [
+  { label: "Paces", to: "/calculator" },
+  { label: "Plans", to: "/plan" },
+  { label: "Races", to: "/race" },
+  { label: "Fuel", to: "/fuel" },
+  { label: "Elevation", to: "/elevation-finder" },
+];
+
+function NavPill({ dark = false }: { dark?: boolean }) {
+  const [sheet, setSheet] = useState(false);
+  const shell = dark
+    ? "border-white/10 bg-slate-900/70 text-white"
+    : "border-slate-200 bg-white/80 text-slate-900";
+  return (
+    <header className="fixed inset-x-0 top-4 z-50 px-4">
+      <nav
+        aria-label="Main"
+        className={`mx-auto flex max-w-3xl items-center justify-between gap-2 rounded-full border py-1.5 pr-1.5 pl-4 shadow-lg shadow-slate-900/5 backdrop-blur-xl ${shell}`}
+      >
+        <Wordmark dark={dark} />
+        <ul className="hidden items-center md:flex">
+          {PILL_LINKS.map((l, i) => (
+            <li key={l.to}>
+              <Link
+                to={l.to}
+                className={`relative rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
+                  i === 0
+                    ? dark
+                      ? "bg-white/10 text-white"
+                      : "bg-slate-100 text-slate-900"
+                    : dark
+                      ? "text-slate-300 hover:text-white"
+                      : "text-slate-500 hover:text-slate-900"
+                }`}
+              >
+                {l.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className="flex items-center gap-1">
+          <Link
+            to="/login"
+            className={`hidden rounded-full px-3 py-1.5 text-sm font-medium md:block ${dark ? "text-slate-300" : "text-slate-500 hover:text-slate-900"}`}
+          >
+            Log in
+          </Link>
+          <Link
+            to="/calculator"
+            className="inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/10 hover:bg-slate-700"
+          >
+            Start <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+          <button
+            type="button"
+            aria-label="Open menu"
+            onClick={() => setSheet(!sheet)}
+            className={`rounded-full border-0 p-2 hover:border-transparent md:hidden ${dark ? "bg-white/10 text-white" : "bg-slate-100 text-slate-900"}`}
+          >
+            {sheet ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <MenuIcon className="h-4 w-4" />
+            )}
+          </button>
+        </div>
+      </nav>
+      {sheet && (
+        <div
+          className={`mx-auto mt-2 max-w-3xl rounded-3xl border p-2 shadow-xl backdrop-blur-xl md:hidden ${shell}`}
+        >
+          <ul className="grid grid-cols-2 gap-1">
+            {[
+              ...PILL_LINKS,
+              { label: "VDOT", to: "/vdot" },
+              { label: "Blog", to: "/blog" },
+              { label: "Use with AI", to: "/mcp" },
+              { label: "Log in", to: "/login" },
+            ].map((l) => (
+              <li key={l.to}>
+                <Link
+                  to={l.to}
+                  className={`block rounded-2xl px-4 py-3 text-sm font-medium ${dark ? "hover:bg-white/10" : "hover:bg-slate-100"}`}
+                >
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </header>
+  );
+}
+
+// N3 · Command bar + mobile tab bar ------------------------------------------------
+
+const POPULAR_RACES = ["boston", "nyc", "chicago", "london", "berlin", "tokyo"];
+
+function NavCommand() {
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setOpen((o) => !o);
+      }
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+  const tools = NAV_GROUPS.flatMap((g) => g.items).filter((t) =>
+    t.label.toLowerCase().includes(q.toLowerCase()),
+  );
+  const races = POPULAR_RACES.filter((k) =>
+    COURSES[k].name.toLowerCase().includes(q.toLowerCase()),
+  );
+  return (
+    <>
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-black/60 backdrop-blur-xl">
+        <nav
+          aria-label="Main"
+          className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-6"
+        >
+          <Wordmark />
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="hidden w-full max-w-sm items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-slate-400 transition-colors hover:border-white/20 sm:flex"
+          >
+            <Search className="h-4 w-4" />
+            <span className="flex-1 text-left">Find a race or tool…</span>
+            <kbd className="rounded border border-white/10 px-1.5 font-sans text-[11px] text-slate-500">
+              ⌘K
+            </kbd>
+          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Search"
+              onClick={() => setOpen(true)}
+              className="rounded-md border-0 bg-transparent p-2 text-slate-300 hover:border-transparent sm:hidden"
+            >
+              <Search className="h-5 w-5" />
+            </button>
+            <Link
+              to="/login"
+              className="rounded-md px-3 py-1.5 text-sm font-medium text-slate-300 hover:text-white"
+            >
+              Log in
+            </Link>
+            <Link
+              to="/calculator"
+              className={`${btn} hidden bg-emerald-400 py-1.5 text-slate-950 hover:bg-emerald-300 sm:inline-flex`}
+            >
+              Get my paces
+            </Link>
+          </div>
+        </nav>
+      </header>
+
+      {open && (
+        <div
+          className="fixed inset-0 z-[60] flex items-start justify-center bg-black/60 px-4 pt-24 backdrop-blur-sm"
+          onClick={() => setOpen(false)}
+        >
+          <div
+            className="w-full max-w-lg overflow-hidden rounded-2xl border border-white/10 bg-slate-900 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3 border-b border-white/10 px-4">
+              <Search className="h-4 w-4 text-slate-500" />
+              <input
+                autoFocus
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Boston, fuel, VDOT…"
+                className="h-12 flex-1 bg-transparent text-white outline-none placeholder:text-slate-500"
+              />
+              <kbd className="rounded border border-white/10 px-1.5 text-[11px] text-slate-500">
+                esc
+              </kbd>
+            </div>
+            <div className="max-h-[60vh] overflow-y-auto p-2">
+              {tools.length > 0 && (
+                <p className="px-2 pt-2 pb-1 text-xs text-slate-500">Tools</p>
+              )}
+              {tools.map((t, i) => (
+                <Link
+                  key={t.to}
+                  to={t.to}
+                  className={`flex items-center gap-3 rounded-lg px-2 py-2 ${i === 0 ? "bg-white/5" : "hover:bg-white/5"}`}
+                >
+                  <t.icon className="h-4 w-4 text-emerald-300" />
+                  <span className="text-sm text-white">{t.label}</span>
+                  <span className="ml-auto truncate text-xs text-slate-500">
+                    {t.desc}
+                  </span>
+                </Link>
+              ))}
+              {races.length > 0 && (
+                <p className="px-2 pt-3 pb-1 text-xs text-slate-500">
+                  Popular races
+                </p>
+              )}
+              {races.map((k) => (
+                <Link
+                  key={k}
+                  to={`/preview-route/${k}`}
+                  className="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-white/5"
+                >
+                  <Flag className="h-4 w-4 text-amber-300" />
+                  <span className="text-sm text-white">{COURSES[k].name}</span>
+                  <span className="ml-auto text-xs tabular-nums text-slate-500">
+                    {COURSES[k].elevationGain} m climb
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* App-style tab bar on phones: the tools runners reach for most. */}
+      <nav
+        aria-label="Tools"
+        className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-black/85 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden"
+      >
+        <ul className="grid grid-cols-5">
+          {[
+            { label: "Paces", to: "/calculator", icon: Timer },
+            { label: "Plan", to: "/plan", icon: CalendarDays },
+            { label: "Races", to: "/race", icon: Flag },
+            { label: "Fuel", to: "/fuel", icon: Zap },
+            { label: "More", to: "#", icon: MenuIcon },
+          ].map((t, i) => (
+            <li key={t.label}>
+              <Link
+                to={t.to}
+                className={`flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium ${i === 0 ? "text-emerald-300" : "text-slate-400"}`}
+              >
+                <t.icon className="h-5 w-5" />
+                {t.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </>
+  );
+}
+
+// Watch face, reusable ----------------------------------------------------------------
+
+type Screen = "race" | "elevation" | "fuel" | "paces";
+const SCREENS: { id: Screen; label: string }[] = [
+  { id: "race", label: "Race" },
+  { id: "elevation", label: "Elevation" },
+  { id: "fuel", label: "Fuel" },
+  { id: "paces", label: "Paces" },
+];
+
+function WatchFace({
+  courseKey,
+  p,
+  screen,
+  size = 420,
+}: {
+  courseKey: string;
+  p: number;
+  screen: Screen;
+  size?: number;
+}) {
+  const c = COURSES[courseKey];
+  const src = c.thumbnailPoints;
+  const st = raceState(src, p);
+  const route = routePath(220, 130, 12, src);
+  const routeRef = useRef<SVGPathElement>(null);
+  const rp = pointAtFrac(routeRef.current, p);
+  const prof = profile(240, 90, 0.12, src);
+  const profRef = useRef<SVGPathElement>(null);
+  const pp = pointAtX(profRef.current, p * 240);
+  const R = 200;
+  const circ = 2 * Math.PI * R;
+  const nextStop = st.nextIdx >= 0 ? FUEL.fuelStops[st.nextIdx] : null;
+  const prevKm = st.nextIdx > 0 ? FUEL.fuelStops[st.nextIdx - 1].distanceKm : 0;
+  const fuelFrac = nextStop
+    ? (st.km - prevKm) / (nextStop.distanceKm - prevKm)
+    : 1;
+  const r2 = 62;
+  const c2 = 2 * Math.PI * r2;
+
+  return (
+    <div
+      className="relative"
+      style={{ width: size, maxWidth: "86vw", aspectRatio: "1 / 1" }}
+    >
+      <div className="absolute inset-0 rounded-full border-[14px] border-slate-800 bg-slate-950 shadow-[0_30px_80px_rgba(0,0,0,0.55),inset_0_0_40px_rgba(16,185,129,0.08)]" />
+      <svg
+        viewBox="0 0 440 440"
+        className="absolute inset-0 h-full w-full -rotate-90"
+      >
+        <circle
+          cx="220"
+          cy="220"
+          r={R}
+          fill="none"
+          stroke="rgb(30 41 59)"
+          strokeWidth="6"
+        />
+        <circle
+          cx="220"
+          cy="220"
+          r={R}
+          fill="none"
+          stroke="rgb(52 211 153)"
+          strokeWidth="6"
+          strokeLinecap="round"
+          strokeDasharray={`${p * circ} ${circ}`}
+        />
+        {FUEL.fuelStops.map((s) => {
+          const a = (s.distanceKm / st.total) * Math.PI * 2;
+          return (
+            <circle
+              key={s.time}
+              cx={220 + Math.cos(a) * R}
+              cy={220 + Math.sin(a) * R}
+              r="4"
+              fill={s.distanceKm <= st.km ? "rgb(251 191 36)" : "rgb(15 23 42)"}
+              stroke="rgb(251 191 36)"
+              strokeWidth="1.5"
+            />
+          );
+        })}
+      </svg>
+
+      <div className="absolute inset-[16%] flex flex-col items-center justify-center text-center text-white">
+        <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500">
+          {SCREENS.find((s) => s.id === screen)!.label}
+        </p>
+
+        {screen === "race" && (
+          <>
+            <p
+              className="mt-1 font-display font-bold leading-none tabular-nums"
+              style={{ fontSize: `min(${size * 0.13}px, 11vw)` }}
+            >
+              {fmtClock(st.elapsed)}
+            </p>
+            <div className="mt-2 flex gap-5 font-display tabular-nums">
+              <span>
+                <span className="text-xl font-bold">{st.km.toFixed(1)}</span>
+                <span className="ml-1 text-[11px] text-slate-500">km</span>
+              </span>
+              <span>
+                <span className="text-xl font-bold">
+                  {formatPace(MARATHON_S / 42.195)}
+                </span>
+                <span className="ml-1 text-[11px] text-slate-500">/km</span>
+              </span>
+            </div>
+            <svg viewBox="0 0 220 130" className="mt-2 h-[70px] w-[120px]">
+              <path
+                ref={routeRef}
+                d={route.d}
+                fill="none"
+                stroke="rgb(51 65 85)"
+                strokeWidth="3"
+                strokeLinecap="round"
+              />
+              <path
+                d={route.d}
+                pathLength={1}
+                strokeDasharray={`${p} 1`}
+                fill="none"
+                stroke="rgb(52 211 153)"
+                strokeWidth="3"
+                strokeLinecap="round"
+              />
+              {rp && (
+                <circle
+                  cx={rp.x}
+                  cy={rp.y}
+                  r="6"
+                  fill="white"
+                  stroke="rgb(16 185 129)"
+                  strokeWidth="2.5"
+                />
+              )}
+            </svg>
+          </>
+        )}
+
+        {screen === "elevation" && (
+          <>
+            <p className="mt-1 font-display text-4xl font-bold tabular-nums">
+              {Math.round(st.ele)}
+              <span className="ml-1 text-sm text-slate-500">m</span>
+            </p>
+            <p
+              className={`font-display text-sm tabular-nums ${st.grade > 0.5 ? "text-amber-300" : "text-emerald-300"}`}
+            >
+              {st.grade > 0 ? "+" : ""}
+              {st.grade.toFixed(1)}% grade
+            </p>
+            <svg viewBox="0 0 240 90" className="mt-3 h-[70px] w-[190px]">
+              <path d={prof.area} fill="rgb(16 185 129 / 0.18)" />
+              <path
+                ref={profRef}
+                d={prof.line}
+                fill="none"
+                stroke="rgb(52 211 153)"
+                strokeWidth="2"
+              />
+              {pp && (
+                <>
+                  <line
+                    x1={pp.x}
+                    x2={pp.x}
+                    y1={pp.y}
+                    y2={90}
+                    stroke="white"
+                    strokeOpacity="0.5"
+                  />
+                  <circle cx={pp.x} cy={pp.y} r="4.5" fill="white" />
+                </>
+              )}
+            </svg>
+            <p className="mt-1 text-[11px] text-slate-500">
+              {c.elevationGain} m total climb
+            </p>
+          </>
+        )}
+
+        {screen === "fuel" && (
+          <>
+            <svg
+              viewBox="0 0 150 150"
+              className="mt-1 h-[120px] w-[120px] -rotate-90"
+            >
+              <circle
+                cx="75"
+                cy="75"
+                r={r2}
+                fill="none"
+                stroke="rgb(30 41 59)"
+                strokeWidth="9"
+              />
+              <circle
+                cx="75"
+                cy="75"
+                r={r2}
+                fill="none"
+                stroke="rgb(251 191 36)"
+                strokeWidth="9"
+                strokeLinecap="round"
+                strokeDasharray={`${fuelFrac * c2} ${c2}`}
+              />
+            </svg>
+            <div className="-mt-[86px] mb-[36px] flex flex-col items-center">
+              <Zap className="h-4 w-4 text-amber-300" />
+              <span className="font-display text-xl font-bold tabular-nums">
+                {st.toNext !== null ? fmtClock(st.toNext) : "—"}
+              </span>
+            </div>
+            <p className="font-display text-sm tabular-nums text-slate-300">
+              Stop {Math.min(st.nextIdx + 1, FUEL.fuelStops.length)} of{" "}
+              {FUEL.fuelStops.length}
+            </p>
+            <p className="text-[11px] text-slate-500">
+              {FUEL.carbsPerHour} g carbs / hr
+            </p>
+          </>
+        )}
+
+        {screen === "paces" && (
+          <ul className="mt-2 w-full max-w-[200px] space-y-1.5">
+            {ZONES.map((z, i) => (
+              <li
+                key={z.name}
+                className="flex items-center justify-between font-display text-sm tabular-nums"
+              >
+                <span className="flex items-center gap-2 text-slate-400">
+                  <span
+                    className="h-2 w-2 rounded-full bg-emerald-400"
+                    style={{ opacity: 0.35 + i * 0.16 }}
+                  />
+                  {z.name}
+                </span>
+                <span className="font-semibold">
+                  {formatPace(z.pacePerKmSeconds[0])}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <div className="mt-3 flex gap-1.5">
+          {SCREENS.map((s) => (
+            <span
+              key={s.id}
+              className={`h-1.5 rounded-full transition-all ${s.id === screen ? "w-4 bg-emerald-400" : "w-1.5 bg-slate-700"}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function useScreenCycle(ms: number) {
+  const [i, setI] = useState(0);
+  const [auto, setAuto] = useState(true);
+  useEffect(() => {
+    if (!auto || reduceMotion()) return;
+    const id = window.setTimeout(
+      () => setI((n) => (n + 1) % SCREENS.length),
+      ms,
+    );
+    return () => window.clearTimeout(id);
+  }, [i, auto, ms]);
+  return {
+    screen: SCREENS[i].id,
+    i,
+    pick: (n: number) => (setAuto(false), setI(n)),
+  };
+}
+
+function ScreenTabs({
+  active,
+  onPick,
+  dark = true,
+}: {
+  active: number;
+  onPick: (i: number) => void;
+  dark?: boolean;
+}) {
+  return (
+    <div
+      className={`inline-flex rounded-full p-1 ${dark ? "bg-white/5" : "bg-slate-200/60"}`}
+      role="tablist"
+      aria-label="Watch screen"
+    >
+      {SCREENS.map((s, i) => (
+        <button
+          key={s.id}
+          type="button"
+          role="tab"
+          aria-selected={i === active}
+          onClick={() => onPick(i)}
+          className={`rounded-full border-0 px-3.5 py-1.5 text-xs font-medium transition-colors hover:border-transparent ${
+            i === active
+              ? dark
+                ? "bg-emerald-400 text-slate-950"
+                : "bg-slate-900 text-white"
+              : dark
+                ? "bg-transparent text-slate-400"
+                : "bg-transparent text-slate-600"
+          }`}
+        >
+          {s.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// M · Watch pages (dark, mega nav) -------------------------------------------------------
+
+function WatchPages() {
+  const p = useSimLoop(18000, "nyc");
+  const { screen, i, pick } = useScreenCycle(3500);
+  return (
+    <div className="min-h-screen bg-black">
+      <NavMega />
+      <section className="relative flex min-h-[100svh] items-center overflow-hidden pt-28 pb-16 text-white">
+        <TopoBg tint="rgb(52 211 153 / 0.06)" />
+        <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-6 lg:grid-cols-[1fr_auto]">
+          <div>
+            <p className="mb-6 font-display text-sm uppercase tracking-[0.25em] text-emerald-400">
+              Race-day rehearsal
+            </p>
+            <h1 className="text-6xl font-bold leading-[0.95] tracking-tight lg:text-8xl">
+              Race day,
+              <br />
+              <span className="text-emerald-400">rehearsed.</span>
+            </h1>
+            <p className="mt-7 max-w-md text-lg leading-relaxed text-slate-400">
+              Your pace, every climb and every gel, second by second, on the
+              course you&rsquo;re actually running.
+            </p>
+            <div className="mt-8 flex gap-3">
+              <Link
+                to="/race"
+                className={`${btn} bg-emerald-400 text-slate-950 hover:bg-emerald-300`}
+              >
+                Find my race <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/calculator"
+                className={`${btn} border border-slate-700 text-white hover:border-slate-500`}
+              >
+                Get my paces
+              </Link>
+            </div>
+            <div className="mt-10">
+              <ScreenTabs active={i} onPick={pick} />
+            </div>
+          </div>
+          <div className="relative mx-auto">
+            <span
+              aria-hidden
+              className={`absolute top-[28%] -right-2.5 h-14 w-3 rounded-r-md transition-colors ${i % 2 ? "bg-emerald-500" : "bg-slate-700"}`}
+            />
+            <span
+              aria-hidden
+              className="absolute top-[52%] -right-2.5 h-10 w-3 rounded-r-md bg-slate-800"
+            />
+            <WatchFace courseKey="nyc" p={p} screen={screen} size={440} />
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// N · Light, strapped watch (pill nav) ------------------------------------------------------
+
+function Strap({ side }: { side: "top" | "bottom" }) {
+  return (
+    <div
+      aria-hidden
+      className={`absolute left-1/2 h-[150px] w-[46%] -translate-x-1/2 bg-gradient-to-b from-slate-700 to-slate-800 ${
+        side === "top"
+          ? "-top-[120px] rounded-t-[44px]"
+          : "-bottom-[120px] rounded-b-[44px]"
+      }`}
+    >
+      {side === "bottom" && (
+        <div className="absolute inset-x-0 top-[70px] flex flex-col items-center gap-3">
+          {[0, 1, 2].map((n) => (
+            <span
+              key={n}
+              className="h-2.5 w-2.5 rounded-full bg-slate-950/60"
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function WatchLight() {
+  const p = useSimLoop(18000, "chicago");
+  const { screen, i, pick } = useScreenCycle(3500);
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <NavPill />
+      <section className="relative overflow-hidden pt-32 pb-24">
+        <TopoBg tint="rgb(15 23 42 / 0.05)" />
+        <div className="relative mx-auto grid max-w-6xl items-center gap-16 px-6 lg:grid-cols-[1fr_auto]">
+          <div>
+            <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Free
+              · no account needed
+            </p>
+            <h1 className="text-6xl font-bold leading-[0.95] tracking-tight text-slate-900 lg:text-8xl">
+              Your race,
+              <br />
+              <span className="text-emerald-600">on your wrist.</span>
+            </h1>
+            <p className="mt-7 max-w-md text-lg leading-relaxed text-slate-600">
+              Before race day, see exactly what it will feel like: the pace, the
+              climbs, and the minute each gel goes in.
+            </p>
+            <div className="mt-8 flex gap-3">
+              <Link
+                to="/race"
+                className={`${btn} bg-slate-900 text-white hover:bg-slate-700`}
+              >
+                Find my race <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/calculator"
+                className={`${btn} border border-slate-300 bg-white text-slate-900 hover:border-slate-400`}
+              >
+                Get my paces
+              </Link>
+            </div>
+            <div className="mt-10">
+              <ScreenTabs active={i} onPick={pick} dark={false} />
+            </div>
+          </div>
+          <div className="relative mx-auto mt-32 mb-28 -rotate-6 lg:mt-28">
+            <Strap side="top" />
+            <Strap side="bottom" />
+            <span
+              aria-hidden
+              className="absolute top-[30%] -right-3 h-14 w-3.5 rounded-r-md bg-slate-600"
+            />
+            <WatchFace courseKey="chicago" p={p} screen={screen} size={380} />
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// O · Exploded view (command nav + mobile tab bar) ------------------------------------------
+
+function WatchExploded() {
+  const p = useSimLoop(18000, "berlin");
+  const { screen } = useScreenCycle(3500);
+  const cards = [
+    {
+      pos: "left-0 top-[12%]",
+      k: "Your fitness",
+      v: `VDOT ${VDOT.toFixed(1)}`,
+      s: "from a 50:00 10K",
+      icon: Gauge,
+    },
+    {
+      pos: "right-0 top-[8%]",
+      k: "Predicted finish",
+      v: formatTime(MARATHON_S),
+      s: "Berlin Marathon",
+      icon: Flag,
+    },
+    {
+      pos: "left-0 bottom-[14%]",
+      k: "Race fuel",
+      v: `${FUEL.gelsNeeded} gels`,
+      s: `${FUEL.carbsPerHour} g carbs/hr`,
+      icon: Zap,
+    },
+    {
+      pos: "right-0 bottom-[10%]",
+      k: "Getting there",
+      v: "16 weeks",
+      s: "base → taper plan",
+      icon: CalendarDays,
+    },
+  ];
+  return (
+    <div className="min-h-screen bg-black pb-16 md:pb-0">
+      <NavCommand />
+      <section className="relative overflow-hidden pt-28 pb-24 text-white">
+        <TopoBg tint="rgb(52 211 153 / 0.06)" />
+        <div className="relative mx-auto max-w-6xl px-6 text-center">
+          <h1 className="text-5xl font-bold leading-[0.95] tracking-tight lg:text-7xl">
+            One race time.{" "}
+            <span className="text-emerald-400">Your whole race.</span>
+          </h1>
+          <p className="mx-auto mt-5 max-w-lg text-lg text-slate-400">
+            Paces, plan, course and fuel, worked out before the start line.
+          </p>
+          <div className="mt-7 flex justify-center gap-3">
+            <Link
+              to="/calculator"
+              className={`${btn} bg-emerald-400 text-slate-950 hover:bg-emerald-300`}
+            >
+              Get my paces <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/race"
+              className={`${btn} border border-slate-700 text-white hover:border-slate-500`}
+            >
+              Find my race
+            </Link>
+          </div>
+
+          <div className="relative mx-auto mt-14 flex max-w-5xl justify-center py-6">
+            <svg
+              aria-hidden
+              className="absolute inset-0 hidden h-full w-full lg:block"
+              preserveAspectRatio="none"
+              viewBox="0 0 100 100"
+            >
+              {[
+                [18, 22, 42, 38],
+                [82, 18, 58, 36],
+                [18, 80, 42, 64],
+                [82, 84, 58, 66],
+              ].map(([x1, y1, x2, y2], n) => (
+                <line
+                  key={n}
+                  x1={x1}
+                  y1={y1}
+                  x2={x2}
+                  y2={y2}
+                  stroke="rgb(52 211 153 / 0.35)"
+                  strokeDasharray="1 1.2"
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
+            </svg>
+            {cards.map((cd) => (
+              <div
+                key={cd.k}
+                className={`absolute hidden w-[220px] rounded-xl border border-white/10 bg-slate-900/80 p-4 text-left backdrop-blur lg:block ${cd.pos}`}
+              >
+                <p className="flex items-center gap-2 text-xs text-slate-400">
+                  <cd.icon className="h-3.5 w-3.5 text-emerald-300" />
+                  {cd.k}
+                </p>
+                <p className="mt-1 font-display text-2xl font-bold tabular-nums">
+                  {cd.v}
+                </p>
+                <p className="text-xs text-slate-500">{cd.s}</p>
+              </div>
+            ))}
+            <WatchFace courseKey="berlin" p={p} screen={screen} size={400} />
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 const VARIANTS: Record<string, () => JSX.Element> = {
   a: RaceDay,
   b: Editorial,
@@ -2204,6 +3301,9 @@ const VARIANTS: Record<string, () => JSX.Element> = {
   j: FullBleedRun,
   k: Horizon,
   l: RaceWatch,
+  m: WatchPages,
+  n: WatchLight,
+  o: WatchExploded,
 };
 
 export default function LandingLab() {

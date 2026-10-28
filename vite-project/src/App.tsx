@@ -1,5 +1,5 @@
 import "./App.css";
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
@@ -55,6 +55,15 @@ function App() {
       <HelmetProvider>
         {/* Side Navigation */}
         <Routes>
+          {/* TEMPORARY lab: outside MainLayout so variants can show their own nav. */}
+          <Route
+            path="/lab/:variant"
+            element={
+              <Suspense fallback={null}>
+                <LandingLab />
+              </Suspense>
+            }
+          />
           <Route path="/" element={<MainLayout />}>
           <Route index element={<Landing />} />
           <Route path="/calculator" element={<TrainingPaceCalculator />} />
@@ -65,7 +74,6 @@ function App() {
           <Route path="/fuel" element={<FuelPlannerPage />} />
           <Route path="/fuel/:seoSlug" element={<FuelSeoLanding />} />
           <Route path="/vdot" element={<VdotCalculatorPage />} />
-          <Route path="/lab/:variant" element={<LandingLab />} />
           <Route path="/plan" element={<TrainingPlanPage />} />
           <Route path="/plan/:seoSlug" element={<PlanSeoLanding />} />
           <Route path="/race" element={<RaceIndex />} />
