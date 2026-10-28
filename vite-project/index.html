@@ -22,6 +22,12 @@
       rel="stylesheet"
     />
 
+    <!-- Prerendered page copy (prerender.jsx) is classless text for crawlers.
+         Hide it so JS visitors don't see it flash before React replaces #root;
+         no-JS visitors still get it via the noscript override. -->
+    <style>#root > [data-prerender] { visibility: hidden; }</style>
+    <noscript><style>#root > [data-prerender] { visibility: visible; }</style></noscript>
+
     <!-- SEO tags are injected by prerender.jsx during build -->
   </head>
   <body>

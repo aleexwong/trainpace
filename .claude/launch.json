@@ -4,8 +4,28 @@
     {
       "name": "vite-project",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "vite-project", "run", "dev"],
+      "runtimeArgs": [
+        "--prefix",
+        "vite-project",
+        "run",
+        "dev"
+      ],
       "port": 5173
+    },
+    {
+      "name": "vite-preview",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "vite-project",
+        "run",
+        "preview",
+        "--",
+        "--port",
+        "4173",
+        "--strictPort"
+      ],
+      "port": 4173
     }
   ]
 }
