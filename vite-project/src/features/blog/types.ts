@@ -1,6 +1,8 @@
 export interface BlogPost {
   slug: string;
   title: string;
+  /** Shorter title for <title> when `title` is over 60 chars on its own. */
+  seoTitle?: string;
   excerpt: string;
   content: string; // Markdown content
   date: string; // ISO date string

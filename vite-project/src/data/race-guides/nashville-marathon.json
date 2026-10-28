@@ -1,0 +1,70 @@
+{
+  "slug": "nashville-marathon",
+  "name": "Rock 'n' Roll Nashville Marathon",
+  "city": "Nashville",
+  "country": "Tennessee, USA",
+  "distanceKm": 42.195,
+  "month": "April",
+  "courseType": "point-to-point",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.runrocknroll.com/events/nashville",
+  "summary": "The Rock 'n' Roll Nashville Marathon, formerly the Country Music Marathon, is held in April. Recent courses started downtown on Broadway and finished at Nissan Stadium. The route passes Broadway's honky-tonks, Music Row, The Gulch and the Country Music Hall of Fame.",
+  "courseHighlights": [
+    "Start at 8th and Broadway",
+    "Broadway honky-tonks and the Country Music Hall of Fame",
+    "Music Row and The Gulch",
+    "Dolly Parton's recording studio",
+    "Finish at Nissan Stadium"
+  ],
+  "paceStrategy": {
+    "summary": "A race listing describes rolling hills throughout, and the race site says the course is subject to change. Run the hills by effort and do not use pace alone as your guide.",
+    "segments": [
+      {
+        "section": "mile 1–8",
+        "terrain": "Downtown, Broadway and Music Row",
+        "advice": "Start at goal pace or slightly slower and settle in."
+      },
+      {
+        "section": "mile 8–18",
+        "terrain": "Rolling roads through the city",
+        "advice": "Run by effort over the hills; keep your breathing relaxed."
+      },
+      {
+        "section": "mile 18–26.2",
+        "terrain": "Return towards the Cumberland River and Nissan Stadium",
+        "advice": "Hold form and push down the last miles to the stadium."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site's course page does not list aid stations; check the event guide. With rolling hills throughout, take gels at regular times, not just on the flat parts.",
+  "tips": [
+    "Check the official page for the current course before race day",
+    "The race site says courses are subject to change",
+    "Train on hills; a race listing describes rolling hills throughout",
+    "Check the event schedule for the start time and time limit"
+  ],
+  "faq": [
+    {
+      "question": "Is the Nashville Marathon hilly?",
+      "answer": "A race listing describes rolling hills throughout. Reviewers and listings differ on the total climb, so no number is given here."
+    },
+    {
+      "question": "When is the Nashville Marathon held?",
+      "answer": "It is held in April, on a Saturday."
+    },
+    {
+      "question": "Where does the Nashville Marathon start and finish?",
+      "answer": "Recent courses started downtown at 8th and Broadway and finished at Nissan Stadium. Check the official page for the current course."
+    }
+  ],
+  "sources": [
+    "https://www.runrocknroll.com/events/nashville/course-overview",
+    "https://www.runrocknroll.com/events/nashville",
+    "https://en.wikipedia.org/wiki/Country_Music_Marathon",
+    "https://sunriserunco.com/race/rock-n-roll-nashville-marathon/"
+  ],
+  "checked": "2026-10"
+}

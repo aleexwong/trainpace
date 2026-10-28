@@ -1,0 +1,74 @@
+{
+  "slug": "venice-marathon",
+  "name": "Venicemarathon",
+  "city": "Venice",
+  "country": "Italy",
+  "distanceKm": 42.195,
+  "month": "October",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.venicemarathon.it/",
+  "summary": "The Venice Marathon has been held since 1986, usually in October. It starts at Villa Pisani in Stra, follows the Riviera del Brenta, passes Marghera and Mestre and Parco San Giuliano, and crosses the Ponte della Libertà into Venice. The finish is on the Riva dei Sette Martiri.",
+  "courseHighlights": [
+    "Start at Villa Pisani in Stra",
+    "Riviera del Brenta, with Dolo at about km 5 and Mira at km 11",
+    "Parco San Giuliano, with about 2 km inside the park",
+    "Ponte della Libertà, a bridge nearly 4 km long",
+    "Temporary pontoon bridge over the Grand Canal near Punta della Dogana, and finish on the Riva dei Sette Martiri"
+  ],
+  "paceStrategy": {
+    "summary": "The first 30 km are flat and easy to run fast, but the long bridge and the small bridges in Venice make the last 12 km harder. Keep some energy in reserve for the bridges.",
+    "segments": [
+      {
+        "section": "km 0–24",
+        "terrain": "Flat roads along the Riviera del Brenta to Marghera",
+        "advice": "Run goal pace and avoid going out fast."
+      },
+      {
+        "section": "km 24–32",
+        "terrain": "Mestre and Parco San Giuliano",
+        "advice": "Stay relaxed; the park path has some bends."
+      },
+      {
+        "section": "km 32–37",
+        "terrain": "Ponte della Libertà, flat and straight",
+        "advice": "Expect wind and fatigue; hold your effort and break the bridge into segments."
+      },
+      {
+        "section": "km 37–42.2",
+        "terrain": "Venice, with about 14 small bridges and wooden ramps",
+        "advice": "Shorten your stride on the short bridge rises and keep fuelling."
+      }
+    ]
+  },
+  "fuelingNotes": "A Venice running guide calls the bridge from km 32 to 37 the hardest section, so take a gel before it, around km 30 to 31. Aid-station positions are in the official runner's guide.",
+  "tips": [
+    "Ramps are built over small bridges so runners do not run on stairs, but the rises are short and steep, so save your legs",
+    "GPS can fail near km 24, where a railway underpass runs; follow the course distance markers",
+    "The route may avoid Piazza San Marco if the tide is high",
+    "Bridge wind on the Ponte della Libertà can slow you; run with other runners"
+  ],
+  "faq": [
+    {
+      "question": "Is the Venice Marathon flat?",
+      "answer": "Mostly. A running guide says the course has no significant elevation change, but the Ponte della Libertà and about 14 small bridges in Venice add short rises."
+    },
+    {
+      "question": "When is the Venice Marathon held?",
+      "answer": "It is usually held in October, on a Sunday."
+    },
+    {
+      "question": "Where does the Venice Marathon start and finish?",
+      "answer": "It starts at Villa Pisani in Stra and finishes on the Riva dei Sette Martiri in Venice."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Venice_Marathon",
+    "https://www.therunningclub.it/?p=9499",
+    "https://www.venicemarathon.it/"
+  ],
+  "checked": "2026-10"
+}

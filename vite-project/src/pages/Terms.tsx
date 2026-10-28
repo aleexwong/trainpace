@@ -1,17 +1,18 @@
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { Link } from "react-router-dom";
 
 export default function Terms() {
   return (
     <>
       <Helmet>
-        <title>Terms of Service - TrainPace</title>
+        <title>{STATIC_PAGE_TITLES["/terms"]}</title>
         <meta
           name="description"
           content="TrainPace Terms of Service. Read our terms and conditions for using TrainPace's free training tools, calculators, and elevation analysis."
         />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://www.trainpace.com/terms" />
+        <link rel="canonical" href="https://trainpace.com/terms" />
       </Helmet>
 
       <div className="max-w-4xl mx-auto px-6 py-8">
@@ -477,10 +478,10 @@ export default function Terms() {
               <p className="text-gray-700">
                 <strong>Website:</strong>{" "}
                 <a
-                  href="https://www.trainpace.com"
+                  href="https://trainpace.com"
                   className="text-emerald-600 hover:underline"
                 >
-                  www.trainpace.com
+                  trainpace.com
                 </a>
               </p>
             </div>

@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 /**
  * Route → PageDoc
  *
@@ -16,9 +17,20 @@ import {
   elevationGuideSeoPages,
   fuelSeoPages,
   raceSeoPages,
+  planSeoPages,
   getAllSeoPaths,
 } from "../../features/seo-pages/seoPages";
+import {
+  courseTypeLabel,
+  distanceLabel,
+  elevationLabel,
+  raceGuideDescription,
+  raceGuideSlug,
+  type RaceGuide,
+} from "../../features/seo-pages/raceGuides";
 import blogData from "../../data/blog-posts.json";
+import faqData from "../../data/faq-data.json";
+import marathonData from "../../data/marathon-data.json";
 import { stripLeadingH1 } from "../../features/blog/utils";
 import {
   equivalentRaceTimeTable,
@@ -28,11 +40,15 @@ import {
   trainingPaceTable,
 } from "./reference-tables";
 import type { DocBlock, PageDoc } from "./types";
+import {
+  STATIC_PAGE_TITLES,
+  blogPostTitle,
+  previewRouteTitle,
+} from "../seo/titles";
 
 // ── Shared copy ────────────────────────────────────────────────────────────
 
-export const BLOG_LIST_TITLE =
-  "Running Blog - Training Tips, Race Strategy & Nutrition | TrainPace";
+export const BLOG_LIST_TITLE = STATIC_PAGE_TITLES["/blog"];
 export const BLOG_LIST_DESCRIPTION =
   "Expert running advice for marathoners and distance runners. Training tips, race strategy guides, nutrition planning, and more from TrainPace.";
 
@@ -96,6 +112,7 @@ const seoPagesByPath = Object.fromEntries(
     ...fuelSeoPages,
     ...elevationGuideSeoPages,
     ...raceSeoPages,
+    ...planSeoPages,
   ].map((p) => [p.path, p])
 );
 
@@ -108,9 +125,77 @@ export function getSeoPage(url: string) {
   return seoPagesByPath[url];
 }
 
+/** A post's last-modified date: its `updated` field, or its publish date. */
+export function getPostUpdated(post: { date: string; updated?: string }): string {
+  return post.updated ?? post.date;
+}
+
 /** The blog post published at a route, if there is one. */
 export function getBlogPost(url: string) {
   return blogPostsByUrl[url];
+}
+
+/**
+ * Routes that render the same page as another route. Each is still
+ * prerendered (so the URL keeps working without JavaScript), but its canonical
+ * points at the primary path and it is left out of the sitemap and agent
+ * indexes so search engines and agents see one copy.
+ */
+const ALIAS_ROUTES: Record<string, string> = {
+  "/elevationfinder": "/elevation-finder",
+  "/ethos": "/about",
+  "/race/rbc-brooklyn-half": "/race/brooklyn-half",
+};
+
+/** The canonical path for a route (itself, unless it is an alias). */
+export function getCanonicalPath(url: string): string {
+  return ALIAS_ROUTES[url] ?? url;
+}
+
+/**
+ * The person behind TrainPace. Used for blog bylines and as the `author` /
+ * `founder` in structured data, so AI answer engines can attribute the
+ * content to a real, verifiable person rather than an anonymous site.
+ */
+export const SITE_AUTHOR = {
+  name: "Alex",
+  url: "/about",
+  sameAs: ["https://www.linkedin.com/in/aleexwong/"],
+  jobTitle: "Software developer and runner",
+} as const;
+
+// ── Race course data ───────────────────────────────────────────────────────
+
+type MarathonCourse = (typeof marathonData)[keyof typeof marathonData];
+
+/**
+ * Researched guides for race pages without GPX data, keyed by race page slug.
+ * Eager: this module only runs at build time (prerender + Markdown), so the
+ * browser never downloads the full set — it loads one guide per page view
+ * through `loadRaceGuide`.
+ */
+let raceGuides: Record<string, RaceGuide> | undefined;
+
+/** The researched guide for a race page slug, if there is one. */
+export function getRaceGuide(slug: string | undefined): RaceGuide | undefined {
+  if (!slug) return undefined;
+  // Built on first use: vite.config.ts imports this module for the route list,
+  // and Vite loads its config without the import.meta.glob transform.
+  raceGuides ??= Object.fromEntries(
+    Object.values(
+      import.meta.glob<RaceGuide>("../../data/race-guides/*.json", {
+        eager: true,
+        import: "default",
+      })
+    ).map((g) => [g.slug, g])
+  );
+  return raceGuides[raceGuideSlug(slug)];
+}
+
+/** Course data for a race, keyed by its preview-route slug (e.g. "boston"). */
+export function getCourse(key: string | undefined): MarathonCourse | undefined {
+  if (!key) return undefined;
+  return (marathonData as Record<string, MarathonCourse>)[key];
 }
 
 // ── Markdown helpers ───────────────────────────────────────────────────────
@@ -226,44 +311,27 @@ export function getPageTitle(url: string): string {
   const seoMeta = getSeoMeta(url);
   if (seoMeta?.title) return seoMeta.title;
 
-  if (url === "/blog") return BLOG_LIST_TITLE;
   const blogPost = blogPostsByUrl[url];
-  if (blogPost) return `${blogPost.title} | TrainPace Blog`;
+  if (blogPost) return blogPostTitle(blogPost);
 
-  switch (url) {
-    case "/":
-      return "TrainPace – Free Running Pace Calculator & Race Day Tools";
-    case "/calculator":
-      return "Running Pace Calculator – VDOT Training Zones, Easy to Tempo Pace | TrainPace";
-    case "/vdot":
-      return "VDOT Calculator – Fitness Score & Equivalent Race Times | TrainPace";
-    case "/plan":
-      return "Training Plan Builder – Free 5K to Marathon Plans | TrainPace";
-    case "/fuel":
-      return "Marathon Fuel Calculator – How Many Gels & When to Take Them | TrainPace";
-    case "/elevationfinder":
-    case "/elevation-finder":
-      return "GPX Elevation Profile Viewer – Free Route Analysis & Climb Stats | TrainPace";
-    case "/race":
-      return "Race Prep Pages – Pacing, Fueling, Elevation Strategy | TrainPace";
-    case "/mcp":
-      return "MCP Server - TrainPace Tools for AI Agents";
-    default:
-      if (url.includes("/preview-route/")) {
-        const slug = url.split("/").pop()!;
-        const marathon = marathonSeoData[slug];
-        if (marathon) {
-          return `${marathon.name} Elevation Profile – Course Map, Hills & Pace Strategy | TrainPace`;
-        }
-        const cityFormatted = slug.charAt(0).toUpperCase() + slug.slice(1);
-        return `${cityFormatted} Marathon Elevation Profile – Course Map & Hill Analysis | TrainPace`;
-      }
-      return "TrainPace – Free Running Tools";
+  const primary = getCanonicalPath(url) as keyof typeof STATIC_PAGE_TITLES;
+  if (primary in STATIC_PAGE_TITLES) return STATIC_PAGE_TITLES[primary];
+
+  if (url.includes("/preview-route/")) {
+    const slug = url.split("/").pop()!;
+    const name =
+      getCourse(slug)?.name ??
+      marathonSeoData[slug]?.name ??
+      `${slug.charAt(0).toUpperCase()}${slug.slice(1)} Marathon`;
+    return previewRouteTitle(name);
   }
+  return "TrainPace – Free Running Tools";
 }
 
 export function getPageDescription(url: string): string {
   const seoMeta = getSeoMeta(url);
+  const guide = seoMeta?.tool === "race" ? getRaceGuide(seoMeta.slug) : undefined;
+  if (guide) return raceGuideDescription(guide);
   if (seoMeta?.description) return seoMeta.description;
 
   if (url === "/blog") return BLOG_LIST_DESCRIPTION;
@@ -272,25 +340,38 @@ export function getPageDescription(url: string): string {
 
   switch (url) {
     case "/":
-      return "Free running calculator for training paces, race fueling, and GPX elevation analysis. Get VDOT-based pace zones, plan how many gels to carry, and preview marathon course profiles.";
+      return "Free running tools: VDOT training paces, race-day fueling and gel counts, training plans, and GPX elevation analysis. No signup required.";
     case "/calculator":
-      return "Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s, race predictor for 5K to marathon, and printable pace charts.";
+      return "Free running pace calculator. Enter a race time to get Easy, Tempo, Threshold, and Interval paces, plus race predictions from 5K to marathon.";
     case "/vdot":
-      return "Free VDOT calculator using the Daniels & Gilbert formula. Turn any race result into a VDOT fitness score, Daniels training zones, and equivalent race times from 5K to marathon.";
+      return "Free VDOT calculator (Daniels & Gilbert formula). Turn a race result into a VDOT score, training zones, and equivalent times from 5K to marathon.";
     case "/plan":
-      return "Build a free periodized running plan for 5K, 10K, half marathon, or marathon. Week-by-week base, development, sharpening, and taper phases sized to your fitness and run days.";
+      return "Free periodized running plans for 5K to marathon: week-by-week base, development, sharpening, and taper phases sized to your fitness.";
     case "/fuel":
-      return "Calculate exactly how many gels you need for your marathon or half marathon. Get a personalized fueling schedule with 60-90g/hr carb targets, timing recommendations, and avoid hitting the wall.";
+      return "How many gels you need for a marathon or half: a fueling schedule with 60-90 g/hr carb targets and timing, so you don't hit the wall.";
     case "/elevationfinder":
     case "/elevation-finder":
-      return "Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty on an interactive map. Analyze marathon courses before race day.";
+      return "Free GPX elevation profile viewer. Upload a route to see elevation gain, grades, and climb difficulty on a map, and plan race-day pacing.";
     case "/race":
       return "Race prep pages for popular running events. Use TrainPace to plan pacing, fueling, and course strategy with free calculators and GPX elevation analysis.";
     case "/mcp":
       return "Connect any AI assistant to TrainPace's free public MCP server: training paces, VDOT, race plans, fueling strategy, and GPX route analysis as agent tools.";
+    case "/about":
+    case "/ethos":
+      return "Why TrainPace exists: a runner who cut his half marathon from 3:01 to 2:06 in a year built the free, ad-free tools he wished he had.";
+    case "/faq":
+      return "Answers about TrainPace's VDOT pace calculator, GPX elevation analysis, race fuel planner, training plans, accounts, and data privacy.";
+    case "/privacy":
+      return "How TrainPace collects, uses, and protects your data. Calculators work without an account, and we never sell personal information.";
+    case "/terms":
+      return "The terms for using TrainPace's free running calculators, training plan builder, fuel planner, and GPX elevation analysis tools.";
     default:
       if (url.includes("/preview-route/")) {
         const slug = url.split("/").pop()!;
+        const course = getCourse(slug);
+        if (course) {
+          return `${course.name} elevation profile: ${course.elevationGain} m gain and ${course.elevationLoss} m loss over ${course.distance} km, with segment pacing, fueling notes, and race tips.`;
+        }
         const marathon = marathonSeoData[slug];
         if (marathon) {
           return `${marathon.name} elevation profile with ${marathon.elevation} gain. Course analysis, mile-by-mile pace strategy, and fueling tips. Known for: ${marathon.highlight}. Difficulty: ${marathon.difficulty}.`;
@@ -359,13 +440,47 @@ function toolNav(currentPath: string): DocBlock[] {
   ];
 }
 
+const DANIELS_SOURCES = [
+  "Daniels, J. Daniels' Running Formula. Human Kinetics — VDOT, training zones, and equivalent race times.",
+  "Daniels, J. & Gilbert, J. (1979). Oxygen Power: Performance Tables for Distance Runners — the oxygen-cost and %VO2max equations behind VDOT.",
+];
+
+const FUEL_SOURCES = [
+  "Jeukendrup, A. (2014). A step towards personalized sports nutrition: carbohydrate intake during exercise. Sports Medicine 44(Suppl 1), S25–S33 — carbohydrate targets by event duration, and glucose + fructose for intakes above 60 g/hr.",
+  "Thomas, D.T., Erdman, K.A. & Burke, L.M. (2016). Nutrition and Athletic Performance (joint position statement of the ACSM, Academy of Nutrition and Dietetics, and Dietitians of Canada). Medicine & Science in Sports & Exercise 48(3), 543–568.",
+];
+
+/**
+ * Where a page's numbers come from. Answer engines weigh cited, verifiable
+ * methods over unsourced claims, and it tells a reader the tables are not
+ * invented.
+ */
+function methodSources(url: string): DocBlock[] {
+  const tool = getSeoMeta(url)?.tool;
+  const sources =
+    ["/calculator", "/vdot", "/plan"].includes(url) || tool === "pace" || tool === "plan"
+      ? DANIELS_SOURCES
+      : url === "/fuel" || tool === "fuel"
+        ? FUEL_SOURCES
+        : null;
+  if (!sources) return [];
+  return [
+    { type: "heading", level: 2, text: "Method and sources" },
+    {
+      type: "paragraph",
+      text: "The numbers on this page are computed with the same code as the TrainPace calculators, from these published methods. They are training guidance, not medical advice.",
+    },
+    { type: "list", items: sources },
+  ];
+}
+
 /** Pointer to the agent-facing entry points, included on every page. */
 function agentFooter(): DocBlock[] {
   return [
     { type: "heading", level: 2, text: "For AI agents" },
     {
       type: "paragraph",
-      text: "Every page on this site has a Markdown mirror at the same path with a .md suffix (for example /calculator.md), and honors an Accept: text/markdown request header on the HTML URL. The calculations here are also available as callable tools through a free public MCP server — no account or API key.",
+      text: "Every public page on this site has a Markdown mirror at the same path with a .md suffix (for example /calculator.md), and honors an Accept: text/markdown request header on the HTML URL. The calculations here are also available as callable tools through a free public MCP server — no account or API key.",
     },
     {
       type: "linkList",
@@ -392,13 +507,146 @@ function agentFooter(): DocBlock[] {
 
 // ── Per-route content ──────────────────────────────────────────────────────
 
+/** The researched race guide, for race pages without GPX course data. */
+function raceGuideBlocks(guide: RaceGuide, opts: { faq: boolean }): DocBlock[] {
+  const rows: string[][] = [
+    ["Location", `${guide.city}, ${guide.country}`],
+    ["Distance", distanceLabel(guide)],
+    ["Usually held", guide.month],
+    ["Course", `${guide.terrain}, ${courseTypeLabel(guide)}`],
+  ];
+  const gain = elevationLabel(guide.elevationGainM);
+  const loss = elevationLabel(guide.elevationLossM);
+  if (gain) rows.push(["Elevation gain", gain]);
+  if (loss) rows.push(["Elevation loss", loss]);
+  if (guide.typicalWeather) rows.push(["Typical weather", guide.typicalWeather]);
+  rows.push(["Official site", guide.website]);
+
+  const blocks: DocBlock[] = [
+    { type: "heading", level: 2, text: `${guide.name} course guide` },
+    { type: "paragraph", text: guide.summary },
+    { type: "table", caption: `${guide.name} at a glance`, headers: ["Fact", "Value"], rows },
+  ];
+
+  if (guide.courseHighlights.length) {
+    blocks.push(
+      { type: "heading", level: 3, text: "Course highlights" },
+      { type: "list", items: guide.courseHighlights }
+    );
+  }
+
+  blocks.push(
+    { type: "heading", level: 2, text: `${guide.name} pacing strategy` },
+    { type: "paragraph", text: guide.paceStrategy.summary },
+    {
+      type: "table",
+      caption: "Pacing by course section",
+      headers: ["Section", "Terrain", "Advice"],
+      rows: guide.paceStrategy.segments.map((s) => [s.section, s.terrain, s.advice]),
+    },
+    { type: "heading", level: 2, text: "Fueling notes" },
+    { type: "paragraph", text: guide.fuelingNotes },
+    { type: "heading", level: 2, text: "Race-day tips" },
+    { type: "list", items: guide.tips }
+  );
+
+  if (opts.faq && guide.faq.length) {
+    blocks.push({ type: "heading", level: 2, text: "Frequently asked questions" });
+    for (const item of guide.faq) {
+      blocks.push({ type: "heading", level: 3, text: item.question });
+      blocks.push({ type: "paragraph", text: item.answer });
+    }
+  }
+
+  blocks.push(
+    {
+      type: "paragraph",
+      text: `Facts checked ${guide.checked} against the sources below. Race details change from year to year — confirm with the official site before race day.`,
+    },
+    {
+      type: "linkList",
+      label: "Sources",
+      items: guide.sources.map((href) => ({ href, label: href.replace(/^https?:\/\//, "").replace(/\/$/, "") })),
+    }
+  );
+
+  return blocks;
+}
+
+/**
+ * Course facts, segment pacing, tips, and FAQ for a race we have real data
+ * for. Shared by the /race/* prep pages and the /preview-route/* course pages
+ * so both carry the same quotable numbers.
+ */
+function courseBlocks(course: MarathonCourse, opts: { faq: boolean }): DocBlock[] {
+  const ft = (m: number) => Math.round(m * 3.28084);
+  const blocks: DocBlock[] = [
+    { type: "heading", level: 2, text: `${course.name} course facts` },
+    { type: "paragraph", text: course.description },
+    {
+      type: "table",
+      caption: `${course.name} at a glance`,
+      headers: ["Metric", "Value"],
+      rows: [
+        ["Location", `${course.city}, ${course.country}`],
+        ["Distance", `${course.distance} km`],
+        ["Elevation gain", `${course.elevationGain} m (${ft(course.elevationGain)} ft)`],
+        ["Elevation loss", `${course.elevationLoss} m (${ft(course.elevationLoss)} ft)`],
+        ["Start / finish elevation", `${course.startElevation} m / ${course.endElevation} m`],
+        ["Official site", course.website],
+      ],
+    },
+  ];
+
+  if (course.paceStrategy) {
+    blocks.push(
+      { type: "heading", level: 2, text: `${course.name} pacing strategy` },
+      { type: "paragraph", text: course.paceStrategy.summary },
+      {
+        type: "table",
+        caption: "Pacing by course segment (miles)",
+        headers: ["Miles", "Terrain", "Advice"],
+        rows: course.paceStrategy.segments.map((seg) => [
+          seg.miles,
+          seg.terrain,
+          seg.advice,
+        ]),
+      }
+    );
+  }
+
+  if (course.fuelingNotes) {
+    blocks.push(
+      { type: "heading", level: 2, text: "Fueling notes" },
+      { type: "paragraph", text: course.fuelingNotes }
+    );
+  }
+
+  if (course.tips?.length) {
+    blocks.push(
+      { type: "heading", level: 2, text: "Race-day tips" },
+      { type: "list", items: course.tips }
+    );
+  }
+
+  if (opts.faq && course.faq?.length) {
+    blocks.push({ type: "heading", level: 2, text: "Frequently asked questions" });
+    for (const item of course.faq) {
+      blocks.push({ type: "heading", level: 3, text: item.question });
+      blocks.push({ type: "paragraph", text: item.answer });
+    }
+  }
+
+  return blocks;
+}
+
 function seoPageBlocks(url: string): DocBlock[] {
   const page = getSeoMeta(url);
   if (!page) return [];
 
   const blocks: DocBlock[] = [
     { type: "heading", level: 1, text: page.h1 || page.title.replace(" | TrainPace", "") },
-    { type: "paragraph", text: page.description },
+    { type: "paragraph", text: getPageDescription(url) },
   ];
 
   if (page.intro) {
@@ -418,6 +666,27 @@ function seoPageBlocks(url: string): DocBlock[] {
       items: page.howTo.steps.map((s) => `${s.name}: ${s.text}`),
     });
   }
+  // Race prep pages with real course data carry it. The config's own FAQ
+  // takes precedence; otherwise the course FAQ is used.
+  const course = page.tool === "race" ? getCourse(page.previewRouteKey) : undefined;
+  const guide = page.tool === "race" && !course ? getRaceGuide(page.slug) : undefined;
+  if (guide) {
+    blocks.push(...raceGuideBlocks(guide, { faq: !page.faq?.length }));
+  }
+
+  if (course) {
+    blocks.push(...courseBlocks(course, { faq: !page.faq?.length }));
+    blocks.push({
+      type: "linkList",
+      items: [
+        {
+          href: `/preview-route/${page.previewRouteKey}`,
+          label: `${course.name} elevation profile and course map`,
+        },
+      ],
+    });
+  }
+
   if (page.faq?.length) {
     blocks.push({ type: "heading", level: 2, text: "Frequently asked questions" });
     for (const item of page.faq) {
@@ -440,6 +709,9 @@ function seoPageBlocks(url: string): DocBlock[] {
   } else if (page.tool === "fuel") {
     blocks.push({ type: "heading", level: 2, text: "Fueling reference" });
     blocks.push(fuelReferenceTable());
+  } else if (page.tool === "plan") {
+    blocks.push({ type: "heading", level: 2, text: "Plan length and phase structure" });
+    blocks.push(planStructureTable());
   }
 
   if (comparisonPaths.has(url)) {
@@ -719,7 +991,9 @@ function blogPostBlocks(url: string): DocBlock[] {
     { type: "paragraph", text: post.excerpt },
     {
       type: "paragraph",
-      text: `By ${post.author?.name || "TrainPace"} · ${post.readingTime} min read`,
+      text: `By ${post.author?.name || SITE_AUTHOR.name} · Published ${post.date}${
+        getPostUpdated(post) !== post.date ? ` · Updated ${getPostUpdated(post)}` : ""
+      } · ${post.readingTime} min read`,
     },
     ...markdownToBlocks(stripLeadingH1(post.content)),
   ];
@@ -728,51 +1002,138 @@ function blogPostBlocks(url: string): DocBlock[] {
 function previewRouteBlocks(url: string): DocBlock[] {
   const slug = url.split("/").pop()!;
   const marathon = marathonSeoData[slug];
+  const course = getCourse(slug);
+  const name = course?.name ?? marathon?.name ?? `${slug.charAt(0).toUpperCase()}${slug.slice(1)} Marathon`;
 
-  if (marathon) {
-    return [
-      {
-        type: "heading",
-        level: 1,
-        text: `${marathon.name} Elevation Profile & Course Analysis`,
-      },
-      {
-        type: "paragraph",
-        text: `Complete ${marathon.name} course analysis with ${marathon.elevation} elevation gain. Get mile-by-mile pace strategy, fueling recommendations, and race day tips. Known for: ${marathon.highlight}. Difficulty: ${marathon.difficulty}.`,
-      },
-      {
-        type: "table",
-        caption: `${marathon.name} at a glance`,
-        headers: ["Metric", "Value"],
-        rows: [
-          ["Elevation gain", marathon.elevation],
-          ["Known for", marathon.highlight],
-          ["Difficulty", marathon.difficulty],
-        ],
-      },
-      { type: "heading", level: 2, text: "What you'll find" },
-      {
-        type: "list",
-        items: [
-          "Interactive elevation profile and course map",
-          "Mile-by-mile pace strategy breakdown",
-          "Race-specific fueling recommendations",
-          "Frequently asked questions about the course",
-        ],
-      },
-    ];
-  }
-
-  const cityFormatted = slug.charAt(0).toUpperCase() + slug.slice(1);
-  return [
+  const blocks: DocBlock[] = [
     {
       type: "heading",
       level: 1,
-      text: `${cityFormatted} Marathon Elevation Profile & Course Map`,
+      text: `${name} Elevation Profile & Course Analysis`,
+    },
+    { type: "paragraph", text: getPageDescription(url) },
+  ];
+
+  if (course) {
+    blocks.push(...courseBlocks(course, { faq: true }));
+  }
+
+  const racePage = raceSeoPages.find((p) => p.previewRouteKey === slug);
+  if (racePage) {
+    blocks.push({
+      type: "linkList",
+      items: [{ href: racePage.path, label: `${name} race prep: paces and fueling` }],
+    });
+  }
+
+  return blocks;
+}
+
+function aboutBlocks(): DocBlock[] {
+  return [
+    { type: "heading", level: 1, text: "From 3:01 to 2:06: Why I Built TrainPace" },
+    {
+      type: "paragraph",
+      text: "TrainPace is built and run by Alex, a software developer and self-coached runner in Vancouver, BC. He built it during the training block that took his BMO Vancouver Half Marathon time from 3:01:00 (May 2024) to 2:06:00 (May 2025) — 55 minutes faster, after 24 weeks of structured training.",
+    },
+    {
+      type: "table",
+      caption: "The numbers",
+      headers: ["Race", "Time", "Average pace"],
+      rows: [
+        ["BMO Vancouver Half Marathon, May 2024", "3:01:00", "8:35/km (13:48/mi)"],
+        ["BMO Vancouver Half Marathon, May 2025", "2:06:00", "5:58/km (9:37/mi)"],
+      ],
+    },
+    { type: "heading", level: 2, text: "What changed" },
+    {
+      type: "list",
+      items: [
+        "One long run per week at Zone 2/3 intensity",
+        "One speed workout per week: tempo runs, intervals, and threshold work",
+        "Easy runs about 2 minutes per kilometer slower than race pace",
+        "A km-by-km race plan built from the course elevation profile",
+        "A fueling plan from the TrainPace fuel planner: it said 3 gels, and 3 would have been enough",
+      ],
+    },
+    { type: "heading", level: 2, text: "Why TrainPace exists" },
+    {
+      type: "list",
+      items: [
+        "Pace calculators were buried in ads",
+        "Switching between min/km and min/mile was a pain on every site",
+        "Strava does not offer a pace calculator in its mobile app",
+        "Elevation analysis meant staring at a static chart instead of seeing grades and climbs",
+        "There was no simple way to work out how many gels a race needs",
+      ],
     },
     {
       type: "paragraph",
-      text: `${cityFormatted} Marathon elevation profile with interactive course map. See every hill, grade percentage, and total elevation gain. Plan your pacing strategy for race day.`,
+      text: "TrainPace is for self-coached runners who want to train with data without paying for a coach. Every calculator is free, needs no account, and uses published methods: Daniels & Gilbert VDOT formulas for paces and race predictions, grade-adjusted pacing from real elevation data, and carbohydrate targets from sports-nutrition research.",
+    },
+    {
+      type: "linkList",
+      label: "Contact",
+      items: [
+        { href: "https://www.linkedin.com/in/aleexwong/", label: "Alex on LinkedIn" },
+        { href: "mailto:alex@trainpace.com", label: "alex@trainpace.com" },
+      ],
+    },
+  ];
+}
+
+function faqBlocks(): DocBlock[] {
+  const blocks: DocBlock[] = [
+    { type: "heading", level: 1, text: "Frequently Asked Questions" },
+    { type: "paragraph", text: getPageDescription("/faq") },
+  ];
+  for (const section of faqData.sections) {
+    // Section titles carry a leading emoji for the UI; drop it here.
+    const title = section.title.replace(/^[^\p{L}\p{N}]+/u, "");
+    blocks.push({ type: "heading", level: 2, text: title });
+    for (const q of section.questions) {
+      blocks.push({ type: "heading", level: 3, text: q.question });
+      blocks.push({ type: "paragraph", text: q.answer });
+    }
+  }
+  return blocks;
+}
+
+/** All FAQ entries, flattened — feeds the FAQPage structured data. */
+export function getFaqEntries(): { question: string; answer: string }[] {
+  return faqData.sections.flatMap((section) =>
+    section.questions.map((q) => ({ question: q.question, answer: q.answer }))
+  );
+}
+
+function privacyBlocks(): DocBlock[] {
+  return [
+    { type: "heading", level: 1, text: "Privacy Policy" },
+    { type: "paragraph", text: getPageDescription("/privacy") },
+    {
+      type: "list",
+      items: [
+        "The Training Pace Calculator and Fuel Planner work without an account, and no data is stored for visitors who are not signed in.",
+        "Signing in creates an account through Firebase Authentication (email address and name).",
+        "GPX files you upload while signed in are stored in Firebase Cloud Storage, and only you can access them.",
+        "Google Analytics measures how the site is used; Mapbox draws course maps; Vercel hosts the site.",
+        "TrainPace does not sell personal data or share it with advertisers. You can ask for a copy of your data or for its deletion.",
+      ],
+    },
+    {
+      type: "paragraph",
+      text: "The full policy — data collected, third-party services, security, retention, and your rights — is shown on this page in the app. Questions: alex@trainpace.com.",
+    },
+  ];
+}
+
+function termsBlocks(): DocBlock[] {
+  return [
+    { type: "heading", level: 1, text: "Terms of Service" },
+    { type: "paragraph", text: getPageDescription("/terms") },
+    {
+      type: "paragraph",
+      text: "TrainPace's calculators and plans are general training information, not medical advice. Check with a doctor before starting a new training program. The full terms — accounts, acceptable use, disclaimers, and liability — are shown on this page in the app. Questions: alex@trainpace.com.",
     },
   ];
 }
@@ -803,6 +1164,15 @@ function getContentBlocks(url: string): DocBlock[] {
       return raceIndexBlocks();
     case "/mcp":
       return mcpBlocks();
+    case "/about":
+    case "/ethos":
+      return aboutBlocks();
+    case "/faq":
+      return faqBlocks();
+    case "/privacy":
+      return privacyBlocks();
+    case "/terms":
+      return termsBlocks();
     default:
       if (url.includes("/preview-route/")) return previewRouteBlocks(url);
       return [
@@ -827,11 +1197,15 @@ export function getPageDoc(url: string): PageDoc {
   const nav = url === "/" || url === "/mcp" ? [] : toolNav(url);
   const footer = url === "/mcp" ? [] : agentFooter();
 
+  const post = blogPostsByUrl[url];
+
   return {
     path: url,
     title: getPageTitle(url),
     description: getPageDescription(url),
-    blocks: [...blocks, ...nav, ...footer],
+    canonicalPath: getCanonicalPath(url),
+    ...(post ? { published: post.date, updated: getPostUpdated(post) } : {}),
+    blocks: [...blocks, ...methodSources(url), ...nav, ...footer],
   };
 }
 
@@ -850,16 +1224,25 @@ export function getAllDocPaths(): string[] {
     "/elevation-finder",
     "/race",
     "/mcp",
+    "/about",
+    "/ethos",
+    "/faq",
+    "/privacy",
+    "/terms",
     ...getAllSeoPaths(),
-    "/preview-route/boston",
-    "/preview-route/nyc",
-    "/preview-route/chicago",
-    "/preview-route/berlin",
-    "/preview-route/london",
-    "/preview-route/tokyo",
-    "/preview-route/sydney",
-    "/preview-route/oslo",
+    // Every course with data — race pages link to all of them, and a course
+    // left out here would get the noindex app shell.
+    ...Object.keys(marathonData).map((key) => `/preview-route/${key}`),
     "/blog",
     ...blogData.posts.map((p) => `/blog/${p.slug}`),
   ];
+}
+
+/**
+ * The routes search engines and agents should index: every doc path except
+ * aliases, which canonicalize to another route. Feeds the sitemap and
+ * llms-index.json.
+ */
+export function getIndexablePaths(): string[] {
+  return getAllDocPaths().filter((p) => getCanonicalPath(p) === p);
 }

@@ -1,0 +1,67 @@
+{
+  "slug": "las-vegas-half",
+  "name": "Rock 'n' Roll Las Vegas Half Marathon",
+  "city": "Las Vegas",
+  "country": "Nevada, USA",
+  "distanceKm": 21.0975,
+  "month": "February",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Average air temperature about 18 °C (65 °F), per the race site",
+  "website": "https://www.runrocknroll.com/events/las-vegas",
+  "summary": "The Rock 'n' Roll Las Vegas Half Marathon is run in the evening on the closed Las Vegas Strip. It starts at New York-New York and finishes at the Bellagio, all on Las Vegas Boulevard. The start time is 4:30 p.m., so much of the race is run after dark.",
+  "courseHighlights": [
+    "Start on Las Vegas Boulevard at New York-New York",
+    "The whole route is on the closed Las Vegas Strip",
+    "Neon lights along the Strip at night",
+    "Finish on Las Vegas Boulevard at the Bellagio"
+  ],
+  "paceStrategy": {
+    "summary": "The course is a straight run down one road and is described as flat by HalfRuns and a USATF certification listing. Pace evenly and watch for crowding in the first miles.",
+    "segments": [
+      {
+        "section": "mile 1–4",
+        "terrain": "Flat, wide Las Vegas Boulevard",
+        "advice": "Start at goal pace or a little slower, as thousands of runners start together."
+      },
+      {
+        "section": "mile 5–10",
+        "terrain": "Flat, long straight road",
+        "advice": "Hold an even rhythm and take fuel on a schedule."
+      },
+      {
+        "section": "mile 11–13.1",
+        "terrain": "Flat, finish at the Bellagio",
+        "advice": "Speed up if you feel strong, and watch for crowds near the finish."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found on the pages we checked. Because the race starts at 4:30 p.m., eat a normal lunch and plan your gels on a time schedule.",
+  "tips": [
+    "Plan your day around the 4:30 p.m. start, with a light meal 3–4 hours before",
+    "Bring a light layer for the wait, as it cools after sunset",
+    "Walk to the start early; the Strip is closed to traffic on race day",
+    "Check the current course map, as the race says courses are subject to change"
+  ],
+  "faq": [
+    {
+      "question": "Is the Rock 'n' Roll Las Vegas Half Marathon flat?",
+      "answer": "Yes. HalfRuns rates it ultra-flat, and a USATF certification listing calls it relatively flat with minimal net elevation change. We found no official gain or loss figure."
+    },
+    {
+      "question": "Where does the Rock 'n' Roll Las Vegas Half Marathon start and finish?",
+      "answer": "It starts on Las Vegas Boulevard at New York-New York and finishes on Las Vegas Boulevard at the Bellagio."
+    },
+    {
+      "question": "When is the Rock 'n' Roll Las Vegas Half Marathon held?",
+      "answer": "It is held on a Sunday in February, with a 4:30 p.m. start."
+    }
+  ],
+  "sources": [
+    "https://www.runrocknroll.com/events/las-vegas/course-overview",
+    "https://halfruns.com/races/nevada/rock-n-roll-las-vegas-las-vegas-nv"
+  ],
+  "checked": "2026-10"
+}

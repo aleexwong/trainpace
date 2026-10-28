@@ -1,0 +1,70 @@
+{
+  "slug": "toronto-waterfront-marathon",
+  "name": "TCS Toronto Waterfront Marathon",
+  "city": "Toronto",
+  "country": "Ontario, Canada",
+  "distanceKm": 42.195,
+  "month": "October",
+  "courseType": "out-and-back",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.torontowaterfrontmarathon.com/",
+  "summary": "The TCS Toronto Waterfront Marathon is held in mid-October and is a World Athletics Elite Label race. The course runs through the downtown core and along the waterfront. It is known as a fast race, and the course records are among the fastest on Canadian soil.",
+  "courseHighlights": [
+    "Start in downtown Toronto (Yonge Street in 2025)",
+    "Queens Quay and Lake Shore Boulevard along the waterfront",
+    "Turnaround in the Beaches area",
+    "Return along Queen Street and Eastern Avenue",
+    "Finish at Queen and Bay, by Nathan Phillips Square"
+  ],
+  "paceStrategy": {
+    "summary": "The route follows the lake, so there are few turns and no big hills in the sources. Pace evenly and watch the wind off Lake Ontario.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Downtown streets, then the start of the waterfront",
+        "advice": "Start in a crowded field and run a calm first 5 km; do not weave through runners."
+      },
+      {
+        "section": "km 10–30",
+        "terrain": "Waterfront roads on Queens Quay and Lake Shore Boulevard",
+        "advice": "Hold an even pace; use other runners to block the wind if it is windy."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Return through the Beaches, Queen Street and Eastern Avenue to downtown",
+        "advice": "Keep your effort steady and save a final push for the last 2 km."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site says there are aid stations about every 3 km, with electrolyte drink and energy gels offered on the course. Take your own gels if you use a different brand.",
+  "tips": [
+    "The 2025 start moved to Yonge Street because of construction; check the current course map before race day",
+    "The 2025 Yonge Street start was narrower than the old University Avenue start, so expect a crowded first mile",
+    "Read the official event guide and the race weekend page for kit pickup, bag check and start corrals",
+    "Dress for cool October weather and wind from Lake Ontario"
+  ],
+  "faq": [
+    {
+      "question": "Is the Toronto Waterfront Marathon flat?",
+      "answer": "The route follows Lake Ontario and has a reputation as a fast, flat course. The official site does not publish an elevation number."
+    },
+    {
+      "question": "When is the Toronto Waterfront Marathon held?",
+      "answer": "It is held in October, usually on the second or third Sunday."
+    },
+    {
+      "question": "Where does the Toronto Waterfront Marathon finish?",
+      "answer": "It finishes at Queen and Bay in downtown Toronto, close to Nathan Phillips Square."
+    }
+  ],
+  "sources": [
+    "https://www.torontowaterfrontmarathon.com/",
+    "https://www.torontowaterfrontmarathon.com/event-info/",
+    "https://runningmagazine.ca/sections/runs-races/major-course-change-coming-to-tcs-toronto-waterfront-marathon/",
+    "https://en.wikipedia.org/wiki/Toronto_Waterfront_Marathon"
+  ],
+  "checked": "2026-10"
+}

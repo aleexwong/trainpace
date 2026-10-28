@@ -1,0 +1,74 @@
+{
+  "slug": "san-francisco-marathon",
+  "name": "The San Francisco Marathon",
+  "city": "San Francisco",
+  "country": "California, USA",
+  "distanceKm": 42.195,
+  "month": "July",
+  "courseType": "loop",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "About 18 °C historical race temperature, with common summer fog",
+  "website": "https://www.thesfmarathon.com/",
+  "summary": "The San Francisco Marathon is held in July. It starts and finishes on the Embarcadero near the Ferry Building and forms a loop around the city. The full marathon crosses the Golden Gate Bridge and passes through Golden Gate Park. Organisers say the course has less elevation than people expect.",
+  "courseHighlights": [
+    "Start on the Embarcadero near the Ferry Building",
+    "Climb from Aquatic Park toward Fort Mason",
+    "Golden Gate Bridge crossing, briefly into Marin County",
+    "Golden Gate Park around mile 14",
+    "Finish on the Embarcadero"
+  ],
+  "paceStrategy": {
+    "summary": "Treat this as a rolling course with some real climbs. Start easy on the waterfront and plan to run the climbs by effort. The organisers say there is less elevation than you think, but you still need to train for hills.",
+    "segments": [
+      {
+        "section": "mile 1–6",
+        "terrain": "Embarcadero and the uphill from Aquatic Park toward Fort Mason",
+        "advice": "Go out slightly slower than goal pace and run the climb by effort."
+      },
+      {
+        "section": "mile 7–13",
+        "terrain": "Golden Gate Bridge section (check the official mile-by-mile map)",
+        "advice": "Keep steady; fog and wind are possible on the bridge."
+      },
+      {
+        "section": "mile 13–18",
+        "terrain": "Golden Gate Park (around mile 14)",
+        "advice": "Settle into goal pace on the park roads."
+      },
+      {
+        "section": "mile 19–26.2",
+        "terrain": "City streets back to the Embarcadero finish",
+        "advice": "Keep your form and save a little for the last miles."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list aid-station positions, so check the official guide. In cool, foggy conditions you may drink less, but take gels about every 40 minutes. Take one before the climb from Aquatic Park to Fort Mason.",
+  "tips": [
+    "The marathon starts early on race morning, so plan your transport and layers",
+    "Summer fog is common and can make the bridge cold; bring a throwaway layer",
+    "Practise hill running in training, as the course is not flat",
+    "Check the official mile-by-mile course page, as sections change between years"
+  ],
+  "faq": [
+    {
+      "question": "Is the San Francisco Marathon hilly?",
+      "answer": "The course has hills. The organisers say it has less elevation than you think, and one listing says runners climb modest hills along the route. I found no single reliable total-climb figure, as sources differ."
+    },
+    {
+      "question": "Does the San Francisco Marathon cross the Golden Gate Bridge?",
+      "answer": "Yes. The full marathon crosses the bridge and briefly enters Marin County, according to Wikipedia."
+    },
+    {
+      "question": "When is the San Francisco Marathon held?",
+      "answer": "It is held in July."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/San_Francisco_Marathon",
+    "https://www.thesfmarathon.com/",
+    "https://marathon-index.com/races/san-francisco-marathon/course/"
+  ],
+  "checked": "2026-10"
+}

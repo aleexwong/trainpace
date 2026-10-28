@@ -83,7 +83,9 @@ export function renderMarkdown(doc: PageDoc): string {
     "---",
     `title: ${yamlString(doc.title)}`,
     `description: ${yamlString(doc.description)}`,
-    `url: ${absoluteUrl(doc.path)}`,
+    `url: ${absoluteUrl(doc.canonicalPath)}`,
+    ...(doc.published ? [`published: ${doc.published}`] : []),
+    ...(doc.updated ? [`updated: ${doc.updated}`] : []),
     "---",
   ].join("\n");
 
@@ -105,7 +107,9 @@ export function renderMarkdownSection(doc: PageDoc): string {
       : block
   );
 
-  const header = `## ${doc.title}\n\nURL: ${absoluteUrl(doc.path)}`;
+  const header = `## ${doc.title}\n\nURL: ${absoluteUrl(doc.canonicalPath)}${
+    doc.updated ? `\nUpdated: ${doc.updated}` : ""
+  }`;
   const body = demoted.map(renderBlock).join("\n\n");
 
   return `${header}\n\n${body}\n`;

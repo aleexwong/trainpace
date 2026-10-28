@@ -1,0 +1,74 @@
+{
+  "slug": "athens-marathon",
+  "name": "Athens Authentic Marathon",
+  "city": "Athens",
+  "country": "Greece",
+  "distanceKm": 42.195,
+  "month": "November",
+  "courseType": "point-to-point",
+  "terrain": "hilly",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.athensauthenticmarathon.gr/en/",
+  "summary": "The Athens Authentic Marathon follows the route from the town of Marathon to the Panathenaic Stadium. The first 10 km are flat or gently downhill. After that the road climbs, with the hardest stretch at km 30–31. The finish is inside the Panathenaic Stadium, on 170 m of track.",
+  "courseHighlights": [
+    "Start in the town of Marathon",
+    "Loop around the Tomb of the Fallen, km 4–6.2",
+    "Nea Makri, km 6–10 (flat)",
+    "Stavros junction climb, km 30–31",
+    "Finish in the Panathenaic Stadium"
+  ],
+  "paceStrategy": {
+    "summary": "Do not run hard early, even though the first 4 km are downhill. The climbs from km 11 to 31 will cost time, so run them by effort and not pace. Save energy for the steep downhill after km 31 and the flat final streets.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Downhill to flat: Marathonos Avenue, the tomb loop, Nea Makri",
+        "advice": "Run easy; do not bank time on the downhill."
+      },
+      {
+        "section": "km 11–20",
+        "terrain": "Rolling climbs, steep downhill before Rafina junction, hardest climb km 17–20",
+        "advice": "Run by effort and accept slower splits on the uphills."
+      },
+      {
+        "section": "km 20–31",
+        "terrain": "Alternating climbs; km 25, km 27–28 (Pallini) and km 30–31 (Stavros junction)",
+        "advice": "Keep effort steady; slow on climbs and do not surge."
+      },
+      {
+        "section": "km 31–42.2",
+        "terrain": "Steep descent to Agia Paraskevi, then city streets, notable downhill at km 37.5",
+        "advice": "Control your descent to protect your quads, then build to the finish."
+      }
+    ]
+  },
+  "fuelingNotes": "The official site lists 15 supply stations every 2.5 km from km 5 to km 40, with water at all stations and gels, bananas and sponges at selected ones. Take a gel just before the climbs begin around km 11 and again before km 25.",
+  "tips": [
+    "Practise hill running and downhill running; the climb runs from about km 11 to 31 and the descent after",
+    "The course is uphill from the middle, so plan a slow first half pace",
+    "Use the 2.5 km aid stations to stay hydrated",
+    "Check the official GPX file for your own pacing plan"
+  ],
+  "faq": [
+    {
+      "question": "Is the Athens Marathon hilly?",
+      "answer": "Yes. Wikipedia says the course is uphill from the 10 km mark to the 31 km mark. The official site names km 30–31 at Stavros junction as the hardest climb."
+    },
+    {
+      "question": "Where does the Athens Marathon finish?",
+      "answer": "It finishes inside the Panathenaic Stadium in Athens, after 170 m on the track."
+    },
+    {
+      "question": "When is the Athens Marathon held?",
+      "answer": "It is held in early November, usually on the second Sunday of the month."
+    }
+  ],
+  "sources": [
+    "https://www.athensauthenticmarathon.gr/en/c/agones-2-26/authentic-marathon-1/marathonios-dromos-33",
+    "https://news.germanroadraces.de/?p=67401",
+    "https://en.wikipedia.org/wiki/Athens_Marathon"
+  ],
+  "checked": "2026-10"
+}

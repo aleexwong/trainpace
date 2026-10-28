@@ -1,0 +1,68 @@
+{
+  "slug": "paris-half",
+  "name": "HOKA Semi Marathon de Paris",
+  "city": "Paris",
+  "country": "France",
+  "distanceKm": 21.0975,
+  "month": "March",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.hokasemimarathondeparis.com/fr",
+  "summary": "The HOKA Semi Marathon de Paris is the Paris Half Marathon, held in early spring. The organisers say the route changes every year. Recent editions started near the Pont de Sully, ran east to the Bois de Vincennes and returned along the Seine quays to Place de la Bastille.",
+  "courseHighlights": [
+    "Start near the Pont de Sully",
+    "Jardin des Plantes and the area around the Bibliothèque François-Mitterrand",
+    "Wide avenues of the Bois de Vincennes",
+    "Return along the Seine quays",
+    "Finish at Place de la Bastille (in recent editions)"
+  ],
+  "paceStrategy": {
+    "summary": "Marathons.com describes the course as smooth with little climbing and long straight sections. Because the route changes each year, check the current map first. Run an even pace and use the quay section to settle in.",
+    "segments": [
+      {
+        "section": "km 0–5",
+        "terrain": "City streets near the Seine and Jardin des Plantes",
+        "advice": "Start at goal pace or slightly slower; the field is large."
+      },
+      {
+        "section": "km 5–15",
+        "terrain": "Wide avenues, Bois de Vincennes",
+        "advice": "Hold an even pace on the long straight sections."
+      },
+      {
+        "section": "km 15–21.1",
+        "terrain": "Return toward the centre along the quays",
+        "advice": "Keep steady and speed up in the final 2 km."
+      }
+    ]
+  },
+  "fuelingNotes": "Check the current race guide for refreshment points and carry your own gels.",
+  "tips": [
+    "Check the current year's map, because the organisers say the course is renewed every year",
+    "Dress for a cool March morning and bring throwaway layers",
+    "Plan your travel to the start in advance, as the race is large",
+    "Arrive early to find your start group"
+  ],
+  "faq": [
+    {
+      "question": "Is the Paris Half Marathon course flat?",
+      "answer": "Marathons.com describes it as smooth, with little elevation gain and long straight sections. The route changes each year, so check the current map."
+    },
+    {
+      "question": "Where does the Paris Half Marathon finish?",
+      "answer": "In recent editions it finished at Place de la Bastille. The organisers say the route changes every year, so check the current map."
+    },
+    {
+      "question": "When is the Paris Half Marathon held?",
+      "answer": "It is held on a Sunday in March."
+    }
+  ],
+  "sources": [
+    "https://www.hokasemimarathondeparis.com/fr/preparer-mon-semi/le-parcours",
+    "https://www.marathons.com/en/events/paris-half-marathon_yTv7a"
+  ],
+  "checked": "2026-10"
+}

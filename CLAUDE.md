@@ -4,7 +4,7 @@ Guidance for Claude Code when working in the TrainPace codebase.
 
 ## Project Overview
 
-TrainPace (https://www.trainpace.com) is a React/TypeScript web app for runners: training pace calculator, VDOT calculator, training plan builder, GPX elevation analysis, AI race-fuel planner, goals tracking, personal dashboard, race poster generator, and a blog. Deployed on Vercel with 80+ prerendered SEO pages.
+TrainPace (https://trainpace.com) is a React/TypeScript web app for runners: training pace calculator, VDOT calculator, training plan builder, GPX elevation analysis, AI race-fuel planner, goals tracking, personal dashboard, race poster generator, and a blog. Deployed on Vercel with 80+ prerendered SEO pages.
 
 ## Commands
 
@@ -13,16 +13,16 @@ All commands run from `vite-project/`:
 ```bash
 npm install               # Install dependencies
 npm run dev               # Dev server at localhost:5173
-npm run build             # tsc -b + production build + Markdown mirrors
+npm run build             # tsc -b + production build + generated indexes + verify-seo
 npm run lint              # ESLint
 npm run test:e2e          # Playwright E2E tests
 npm run test:e2e:ui       # Playwright UI mode
-npm run generate-sitemap  # Regenerate sitemap.xml (run when SEO pages change)
-npm run generate-markdown # Write dist/**.md mirrors + llms-full.txt (part of `build`)
+npm run generate-markdown # Write dist/: .md mirrors, llms.txt, llms-full.txt, llms-index.json, sitemap.xml, app-shell.html (part of `build`)
+npm run verify-seo        # Check dist/: one title/description/canonical per page, www host, sitemap = indexable pages, llms.txt links resolve (part of `build`)
 npm run verify-agent-routing  # Check Accept negotiation + .md path mapping
 ```
 
-There are no unit tests — verification is `npm run build` + `npm run lint` + Playwright E2E.
+There are no unit tests — verification is `npm run build` (which runs `verify-seo`) + `npm run lint` + Playwright E2E.
 
 ## Structure
 
@@ -38,7 +38,7 @@ trainpace/
 │   │   ├── data/           # blog-posts.json, marathon-data.json, faq-data.json
 │   │   └── hooks/ types/ utils/ config/
 │   ├── e2e/                # Playwright specs + page object models (e2e/pages/)
-│   ├── scripts/            # generateSitemap.ts, generateMarkdown.ts, verifyAgentRouting.ts, testGemini.ts
+│   ├── scripts/            # generateMarkdown.ts (+ llms-intro.txt), verifySeoOutput.ts, verifyAgentRouting.ts, testGemini.ts
 │   ├── middleware.ts       # Vercel edge: Accept negotiation + agent request logging
 │   ├── docs/agent-traffic.md   # How to read AI-agent traffic in server logs
 │   └── vite.config.ts      # @ alias → ./src; prerender routes come from lib/llm/page-docs
@@ -87,9 +87,11 @@ React 18 + TypeScript 5.6, Vite 5 (PWA + prerender plugins), React Router 7, Tai
 - **New page**: component in `src/pages/` → route in `src/App.tsx` → nav in `src/components/layout/SideNav.tsx` + `layout/constants/navLinks.ts` → if it needs static generation, add the path to `getAllDocPaths()` in `src/lib/llm/page-docs.ts` (`vite.config.ts` reads that list) and give it a case in `getContentBlocks()` so it prerenders real content instead of the generic fallback.
 - **New feature**: folder in `src/features/[name]/` with barrel `index.ts`.
 - **Protect a route**: wrap with `<AuthGuard>` in `App.tsx`.
-- **New SEO page**: add config to `src/features/seo-pages/seoPages.ts` (helpers/validators in `src/lib/seo/` — `generatePageId`, `validateAllPages`). Routing and prerendering pick it up automatically; rerun `npm run generate-sitemap`.
+- **New SEO page**: add config to `src/features/seo-pages/seoPages.ts` (helpers/validators in `src/lib/seo/` — `generatePageId`, `validateAllPages`). Routing, prerendering, the sitemap, and llms.txt all pick it up automatically.
 - **Blog post**: append to `src/data/blog-posts.json`.
 - **Prerendered page copy**: edit `src/lib/llm/page-docs.ts`, not `prerender.jsx`. One block model feeds the static HTML, the `.md` mirror, and `llms-full.txt`.
+- **llms.txt**: the prose intro is `scripts/llms-intro.txt`; the link sections are generated (`src/lib/llm/indexes.ts`). There is no `public/llms.txt` or `public/sitemap.xml` — both are build output.
+- **Alias routes** (same page, two URLs — `/elevationfinder`, `/ethos`): add to `ALIAS_ROUTES` in `page-docs.ts` so the canonical points at the primary path and the alias stays out of the sitemap.
 
 ## Environment
 
@@ -143,7 +145,10 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 - The app is a PWA (Workbox) — hard-refresh or unregister the service worker when testing build output.
 - Firebase Auth is Google OAuth only; there is no email/password path.
 - Legacy `/elevationfinder` routes must keep working (redirect aliases in `App.tsx`).
-- Keep SEO titles under 60 chars and descriptions under 160; run `validateAllPages()` before shipping SEO changes.
+- Keep SEO titles at 60 chars or less and descriptions under 160; `verify-seo` reports pages over the limit (warnings, not failures). Static-page, blog and preview-route titles live in `src/lib/seo/titles.ts` and are read by **both** `page-docs.ts` (prerendered HTML) and the page's `<Helmet>`, so they can't drift apart. Never type a `<title>` string directly in a component. Generated titles go through `fitTitle()`; a blog headline over 60 chars gets a `seoTitle` in `blog-posts.json`.
+- **One host: `https://trainpace.com` (no www).** Canonicals, `og:url`, JSON-LD, sitemap and llms files all use it, and `vercel.json` 308s `www.trainpace.com` to it. ESLint fails on any `https://www.trainpace.com` string in source, and `verify-seo` fails the build if a `www.trainpace.com` URL appears in dist. Use `BASE_URL` from `src/lib/seo/types.ts`.
+- **Non-prerendered routes get `app-shell.html`** (noindex, no canonical) via the `vercel.json` rewrite, not the home page. Paths with a file extension are not rewritten, so a missing `.md`/image is a real 404. Anything that should be indexed must be in `getAllDocPaths()`.
+- Prerendered head tags carry `data-rh="true"` so React Helmet replaces them on boot instead of duplicating them. A page that omits its own Helmet canonical/description therefore loses the static one once JS runs — give every routed page a Helmet canonical.
 - `src/App.css` still carries the Vite template's `#root { text-align: center }`. It cascades into every page, so left-aligned layouts need an explicit `text-left` on their container.
 - shadcn `Slider` wraps Radix: the *thumb* is what receives focus and carries `role="slider"`. An `aria-label` on the root leaves it announced as unnamed — pass `thumbLabel` instead.
 

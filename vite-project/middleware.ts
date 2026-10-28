@@ -94,7 +94,14 @@ export default async function middleware(request: Request): Promise<Response> {
         headers: { accept: "text/plain" },
       });
 
-      if (mdResponse.ok) {
+      // A mirror is served with a markdown content type (vercel.json). Anything
+      // else — e.g. a 200 HTML fallback — is not a mirror and must not be
+      // relabelled as one.
+      const isMirror =
+        mdResponse.ok &&
+        (mdResponse.headers.get("content-type") ?? "").includes("markdown");
+
+      if (isMirror) {
         const body =
           request.method === "HEAD" ? null : await mdResponse.text();
         return new Response(body, {

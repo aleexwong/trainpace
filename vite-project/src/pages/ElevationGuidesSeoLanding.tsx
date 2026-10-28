@@ -21,18 +21,12 @@ function buildBreadcrumbJsonLd(path: string, label: string) {
       {
         "@type": "ListItem",
         position: 2,
-        name: "ElevationFinder",
-        item: "https://trainpace.com/elevationfinder",
+        name: "Elevation Finder",
+        item: "https://trainpace.com/elevation-finder",
       },
       {
         "@type": "ListItem",
         position: 3,
-        name: "Guides",
-        item: "https://trainpace.com/elevationfinder/guides",
-      },
-      {
-        "@type": "ListItem",
-        position: 4,
         name: label,
         item: getSeoUrl(path),
       },

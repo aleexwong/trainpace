@@ -1,0 +1,69 @@
+{
+  "slug": "edinburgh-half",
+  "name": "Edinburgh Half Marathon",
+  "city": "Edinburgh",
+  "country": "Scotland, UK",
+  "distanceKm": 21.0975,
+  "month": "May",
+  "courseType": "point-to-point",
+  "terrain": "net downhill",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.edinburghmarathon.com/halfmarathon",
+  "summary": "The Edinburgh Half Marathon is part of the Edinburgh Marathon Festival. It starts at Potterrow in the city centre, runs past the Royal Mile and Holyrood, then follows the coast east to finish at Pinkie School playing fields in Musselburgh. The organisers say the route descends almost 90 metres to near sea level.",
+  "courseHighlights": [
+    "Start on Potterrow, by the University of Edinburgh's McEwan Hall",
+    "Greyfriars Kirkyard, the Royal Mile and Princes Street Gardens",
+    "Scottish Parliament, Holyrood Palace and Arthur's Seat",
+    "Portobello promenade",
+    "Finish at the Pinkie School playing fields in Musselburgh"
+  ],
+  "paceStrategy": {
+    "summary": "The organisers say the route falls almost 90 metres to near sea level. The coast section is flat. Start in control so you can use the flat coastal road to run strongly.",
+    "segments": [
+      {
+        "section": "km 0–6",
+        "terrain": "Old Town and New Town streets, Royal Mile, and the descent through the city",
+        "advice": "Run slightly easier than goal pace and avoid starting too fast on the descent."
+      },
+      {
+        "section": "km 6–16",
+        "terrain": "Holyrood, Portobello promenade and flat coastal road",
+        "advice": "Settle into goal pace on the flat and keep the effort even."
+      },
+      {
+        "section": "km 16–21.1",
+        "terrain": "Flat route through Musselburgh to Prestonpans, turn, then back to Pinkie School",
+        "advice": "Hold steady, then push over the last 2 km."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found on the pages we checked. Check the current event information and carry your own gels.",
+  "tips": [
+    "Get to the early start in good time: the half marathon starts at 8:00 a.m., earlier than the marathon",
+    "Check the transport information on the race site for getting to Potterrow and home from Musselburgh",
+    "Expect coastal wind on the flat east section and dress for it",
+    "Run the opening descent under control to protect your legs for the later flat miles"
+  ],
+  "faq": [
+    {
+      "question": "Is the Edinburgh Half Marathon course flat?",
+      "answer": "It is mostly downhill. The organisers say the route has a descent of almost 90 metres to near sea level, with a flat section along the coast."
+    },
+    {
+      "question": "Where does the Edinburgh Half Marathon start and finish?",
+      "answer": "It starts on Potterrow in Edinburgh city centre and finishes at the Pinkie School playing fields in Musselburgh."
+    },
+    {
+      "question": "When is the Edinburgh Half Marathon held?",
+      "answer": "It is held on a Sunday in late May, as part of the Edinburgh Marathon Festival."
+    }
+  ],
+  "sources": [
+    "https://www.edinburghmarathon.com/halfmarathon/route-map",
+    "https://www.edinburghmarathon.com/halfmarathon",
+    "https://en.wikipedia.org/wiki/Edinburgh_Marathon"
+  ],
+  "checked": "2026-10"
+}
