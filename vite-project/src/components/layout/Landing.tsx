@@ -18,6 +18,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { comparisonLinks } from "@/features/seo-pages/seoPages";
+import bmoResults from "@/assets/about/bmo-half-marathon-2025.jpg";
 import {
   PaceLadderShot,
   VdotDialShot,
@@ -559,10 +560,10 @@ const FounderStory = () => {
             <div className="relative w-full max-w-md rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl rotate-2 hover:rotate-0 transition-all duration-500 group">
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10 opacity-60" />
               <img
-                src="/images/landing/runner.jpg"
-                alt="Runner checking their GPS watch mid-race on a rainy city street"
+                src={bmoResults}
+                alt="Alex Wong after the 2025 BMO Vancouver Half Marathon, finish time 2:06:29"
                 loading="lazy"
-                className="w-full h-[450px] object-cover"
+                className="w-full h-[450px] object-cover object-[70%_40%]"
               />
             </div>
 
