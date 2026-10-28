@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { comparisonLinks } from "@/features/seo-pages/seoPages";
-import HeroPaceDemo from "./HeroPaceDemo";
+import HeroRaceWatch from "./HeroRaceWatch";
 import DotPanel from "./DotPanel";
 import { useInView } from "@/components/feature-shots/shared";
 import {
@@ -59,38 +59,6 @@ const SectionLabel = ({
 );
 
 // --- Sections ---
-
-const Hero = () => (
-  <section className="overflow-hidden border-b border-slate-200 bg-white pt-24 pb-20 lg:pt-32 lg:pb-28">
-    <div className="mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1fr_1.05fr] lg:gap-20 lg:px-8">
-      <div className="max-w-xl">
-        <p className="mb-5 font-display text-sm text-slate-500">
-          For runners who coach themselves
-        </p>
-        <h1 className="mb-6 text-4xl font-bold leading-[1.1] tracking-tight text-slate-900 lg:text-5xl">
-          Your last race already knows{" "}
-          <span className="text-emerald-600">your next one.</span>
-        </h1>
-        <p className="mb-8 text-lg leading-relaxed text-slate-600">
-          Put in a recent race time. TrainPace turns it into a pace for every
-          run in your week, a plan up to race day, and a fueling schedule so the
-          last 10K doesn&rsquo;t fall apart.
-        </p>
-
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <ButtonLink to="/calculator">
-            Get my paces <ArrowRight className="h-4 w-4" />
-          </ButtonLink>
-          <ButtonLink to="/elevation-finder" variant="secondary">
-            Drop in a GPX file
-          </ButtonLink>
-        </div>
-      </div>
-
-      <HeroPaceDemo />
-    </div>
-  </section>
-);
 
 interface FeatureSectionProps {
   index: string;
@@ -536,7 +504,7 @@ export default function LandingPage() {
       </Helmet>
       {/* text-left: App.css still centres #root. */}
       <div className="bg-white text-left font-sans text-slate-900 antialiased">
-        <Hero />
+        <HeroRaceWatch />
 
         <FeatureSection
           id="features"

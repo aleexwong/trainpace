@@ -104,10 +104,6 @@ module.exports = {
             animationTimingFunction: "cubic-bezier(0, 0, 0.2, 1)",
           },
         },
-        "fill-x": {
-          from: { transform: "scaleX(0)" },
-          to: { transform: "scaleX(1)" },
-        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -118,7 +114,6 @@ module.exports = {
         "marquee-fast": "marquee 20s linear infinite",
         blob: "blob 7s infinite",
         "bounce-slow": "bounce-slow 3s ease-in-out infinite",
-        "fill-x": "fill-x var(--duration) linear forwards",
       },
     },
   },
