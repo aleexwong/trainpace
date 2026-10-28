@@ -1471,6 +1471,726 @@ function TopoDashboard() {
   );
 }
 
+// --- Round 3: lean in -----------------------------------------------------
+
+function useSimLoop(ms: number, key: string) {
+  const [p, setP] = useState(0.55);
+  useEffect(() => {
+    if (reduceMotion()) {
+      setP(0.55);
+      return;
+    }
+    let raf = 0;
+    const start = performance.now();
+    const tick = (now: number) => {
+      setP(((now - start) % ms) / ms);
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [ms, key]);
+  return p;
+}
+
+// Read positions off the rendered paths so dots sit exactly on the curves.
+function pointAtFrac(el: SVGPathElement | null, frac: number) {
+  if (!el) return null;
+  return el.getPointAtLength(frac * el.getTotalLength());
+}
+
+function pointAtX(el: SVGPathElement | null, x: number) {
+  if (!el) return null;
+  let lo = 0;
+  let hi = el.getTotalLength();
+  for (let i = 0; i < 22; i++) {
+    const mid = (lo + hi) / 2;
+    if (el.getPointAtLength(mid).x < x) lo = mid;
+    else hi = mid;
+  }
+  return el.getPointAtLength(lo);
+}
+
+function raceState(src: Pt[], p: number) {
+  const total = src[src.length - 1].dist;
+  const km = p * total;
+  const i = Math.max(
+    0,
+    src.findIndex(
+      (pt, j) => j < src.length - 1 && km >= pt.dist && km < src[j + 1].dist,
+    ),
+  );
+  const a = src[i];
+  const b = src[i + 1] ?? a;
+  const grade =
+    b.dist > a.dist ? ((b.ele - a.ele) / ((b.dist - a.dist) * 1000)) * 100 : 0;
+  const ele =
+    a.ele +
+    (b.ele - a.ele) * (b.dist > a.dist ? (km - a.dist) / (b.dist - a.dist) : 0);
+  const stops = FUEL.fuelStops;
+  const nextIdx = stops.findIndex((st) => st.distanceKm > km);
+  const toNext =
+    nextIdx >= 0
+      ? ((stops[nextIdx].distanceKm - km) / total) * MARATHON_S
+      : null;
+  return { total, km, grade, ele, elapsed: p * MARATHON_S, nextIdx, toNext };
+}
+
+const shortName = (k: string) =>
+  COURSES[k].name.replace(" Marathon", "").replace("New York City", "NYC");
+
+function CourseChips({
+  keys,
+  active,
+  onPick,
+  dark = true,
+}: {
+  keys: string[];
+  active: number;
+  onPick: (i: number) => void;
+  dark?: boolean;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {keys.map((k, i) => (
+        <button
+          key={k}
+          type="button"
+          onClick={() => onPick(i)}
+          className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors hover:border-emerald-400 ${
+            i === active
+              ? "border-emerald-400 bg-emerald-400 text-slate-950"
+              : dark
+                ? "border-slate-700 bg-slate-950/40 text-slate-300"
+                : "border-slate-300 bg-white text-slate-600"
+          }`}
+        >
+          {shortName(k)}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// Cycles courses once per simulated race until the visitor picks one.
+function useCourseCycle(keys: string[], ms: number) {
+  const [idx, setIdx] = useState(0);
+  const [auto, setAuto] = useState(true);
+  useEffect(() => {
+    if (!auto || reduceMotion()) return;
+    const id = window.setTimeout(
+      () => setIdx((i) => (i + 1) % keys.length),
+      ms,
+    );
+    return () => window.clearTimeout(id);
+  }, [idx, auto, keys.length, ms]);
+  return {
+    idx,
+    key: keys[idx],
+    pick: (i: number) => {
+      setAuto(false);
+      setIdx(i);
+    },
+  };
+}
+
+// J · Full-bleed run ---------------------------------------------------------
+
+const J_COURSES = ["nyc", "sydney", "big-sur", "chicago", "berlin"];
+const J_LOOP = 14000;
+
+function FullBleedRun() {
+  const { idx, key, pick } = useCourseCycle(J_COURSES, J_LOOP);
+  const c = COURSES[key];
+  const src = c.thumbnailPoints;
+  const p = useSimLoop(J_LOOP, key);
+  const st = raceState(src, p);
+
+  const route = routePath(900, 640, 50, src);
+  const BW = 1440;
+  const BH = 110;
+  const prof = profile(BW, BH, 0.14, src);
+  const routeRef = useRef<SVGPathElement>(null);
+  const profRef = useRef<SVGPathElement>(null);
+  const rp = pointAtFrac(routeRef.current, p);
+  const pp = pointAtX(profRef.current, p * BW);
+
+  return (
+    <section className="relative min-h-[820px] overflow-hidden bg-slate-950 text-white">
+      <TopoBg tint="rgb(148 163 184 / 0.07)" />
+
+      <svg
+        aria-hidden
+        viewBox="0 0 900 640"
+        className="absolute top-16 right-[-260px] h-[640px] w-[900px] max-w-none opacity-50 lg:right-[-60px] lg:opacity-100"
+      >
+        <defs>
+          <filter id="j-glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="9" />
+          </filter>
+        </defs>
+        <path
+          ref={routeRef}
+          d={route.d}
+          fill="none"
+          stroke="rgb(51 65 85)"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
+        <path
+          d={route.d}
+          pathLength={1}
+          strokeDasharray={`${p} 1`}
+          fill="none"
+          stroke="rgb(16 185 129)"
+          strokeWidth="14"
+          filter="url(#j-glow)"
+          strokeLinecap="round"
+        />
+        <path
+          d={route.d}
+          pathLength={1}
+          strokeDasharray={`${p} 1`}
+          fill="none"
+          stroke="rgb(167 243 208)"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
+        <circle
+          cx={route.start[0]}
+          cy={route.start[1]}
+          r="6"
+          fill="rgb(52 211 153)"
+        />
+        <circle
+          cx={route.end[0]}
+          cy={route.end[1]}
+          r="6"
+          fill="none"
+          stroke="white"
+          strokeWidth="2.5"
+        />
+        {rp && (
+          <g>
+            <circle cx={rp.x} cy={rp.y} r="10" fill="rgb(52 211 153 / 0.3)">
+              <animate
+                attributeName="r"
+                values="10;22;10"
+                dur="1.6s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="opacity"
+                values="0.8;0;0.8"
+                dur="1.6s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle
+              cx={rp.x}
+              cy={rp.y}
+              r="7"
+              fill="white"
+              stroke="rgb(16 185 129)"
+              strokeWidth="3"
+            />
+          </g>
+        )}
+      </svg>
+
+      <div className="relative mx-auto grid max-w-6xl gap-10 px-6 pt-28 pb-[190px] lg:grid-cols-[1.2fr_1fr]">
+        <div>
+          <div className="mb-8">
+            <CourseChips keys={J_COURSES} active={idx} onPick={pick} />
+          </div>
+          <h1 className="text-6xl font-bold leading-[0.95] tracking-tight lg:text-8xl">
+            Run it before
+            <br />
+            <span className="text-emerald-400">you race it.</span>
+          </h1>
+          <p className="mt-7 max-w-md text-lg leading-relaxed text-slate-400">
+            Pick your course. See every climb, your pace for each kilometer, and
+            the second each gel goes in.
+          </p>
+          <div className="mt-8 flex gap-3">
+            <Link
+              to="/race"
+              className={`${btn} bg-emerald-400 text-slate-950 hover:bg-emerald-300`}
+            >
+              Find my race <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/calculator"
+              className={`${btn} border border-slate-700 text-white hover:border-slate-500`}
+            >
+              Get my paces
+            </Link>
+          </div>
+        </div>
+
+        <div className="hidden items-end justify-end lg:flex">
+          <div className="w-[300px] rounded-xl border border-slate-700/80 bg-slate-950/75 p-4 backdrop-blur-md">
+            <p className="mb-3 flex items-center justify-between text-xs text-slate-400">
+              <span>{c.name}</span>
+              <span className="flex items-center gap-1.5 text-emerald-400">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />{" "}
+                live
+              </span>
+            </p>
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-3">
+              {[
+                ["Distance", `${st.km.toFixed(1)} km`],
+                ["Elapsed", fmtClock(st.elapsed)],
+                ["Grade", `${st.grade > 0 ? "+" : ""}${st.grade.toFixed(1)}%`],
+                ["Elevation", `${Math.round(st.ele)} m`],
+              ].map(([k, v]) => (
+                <div key={k}>
+                  <dt className="text-[11px] uppercase tracking-wide text-slate-500">
+                    {k}
+                  </dt>
+                  <dd className="font-display text-2xl font-bold tabular-nums">
+                    {v}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-3 flex items-center gap-2 rounded-lg bg-amber-400/10 px-3 py-2 text-sm text-amber-200">
+              <Zap className="h-4 w-4 text-amber-400" />
+              {st.toNext !== null ? (
+                <>
+                  Fuel stop {st.nextIdx + 1} in{" "}
+                  <span className="font-display font-semibold tabular-nums">
+                    {fmtClock(st.toNext)}
+                  </span>
+                </>
+              ) : (
+                "Last stretch. No more fuel."
+              )}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="absolute inset-x-0 bottom-0 border-t border-slate-800 bg-slate-950">
+        <svg
+          viewBox={`0 0 ${BW} ${BH + 26}`}
+          className="block h-[136px] w-full"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <linearGradient id="j-fill" x1="0" x2="0" y1="0" y2="1">
+              <stop
+                offset="0%"
+                stopColor="rgb(16 185 129)"
+                stopOpacity="0.45"
+              />
+              <stop offset="100%" stopColor="rgb(16 185 129)" stopOpacity="0" />
+            </linearGradient>
+            <clipPath id="j-done">
+              <rect x="0" y="0" width={p * BW} height={BH} />
+            </clipPath>
+          </defs>
+          <path d={prof.area} fill="rgb(148 163 184 / 0.07)" />
+          <path d={prof.area} fill="url(#j-fill)" clipPath="url(#j-done)" />
+          <path
+            ref={profRef}
+            d={prof.line}
+            fill="none"
+            stroke="rgb(71 85 105)"
+            strokeWidth="2"
+            vectorEffect="non-scaling-stroke"
+          />
+          <path
+            d={prof.line}
+            fill="none"
+            stroke="rgb(52 211 153)"
+            strokeWidth="2.5"
+            clipPath="url(#j-done)"
+            vectorEffect="non-scaling-stroke"
+          />
+          {FUEL.fuelStops.map((s) => {
+            const x = (s.distanceKm / st.total) * BW;
+            return (
+              <line
+                key={s.time}
+                x1={x}
+                x2={x}
+                y1={6}
+                y2={BH}
+                stroke={
+                  s.distanceKm <= st.km
+                    ? "rgb(251 191 36)"
+                    : "rgb(251 191 36 / 0.3)"
+                }
+                strokeDasharray="3 4"
+                vectorEffect="non-scaling-stroke"
+              />
+            );
+          })}
+          {pp && (
+            <line
+              x1={pp.x}
+              x2={pp.x}
+              y1={0}
+              y2={BH}
+              stroke="white"
+              strokeWidth="1.5"
+              vectorEffect="non-scaling-stroke"
+            />
+          )}
+          {[0, 10, 20, 30, 40].map((k) => (
+            <text
+              key={k}
+              x={(k / st.total) * BW + 6}
+              y={BH + 20}
+              fill="rgb(100 116 139)"
+              fontSize="12"
+            >
+              {k} km
+            </text>
+          ))}
+        </svg>
+      </div>
+    </section>
+  );
+}
+
+// K · Horizon ------------------------------------------------------------------
+
+const K_COURSES = ["big-sur", "sydney", "nyc", "tokyo"];
+const K_LOOP = 15000;
+const KW = 1440;
+const KH = 380;
+
+// Fixed vertical scale (not min–max) so flat courses look flat and Big Sur
+// looks like Big Sur.
+function horizon(src: Pt[], spanFloor = 500) {
+  const total = src[src.length - 1].dist;
+  const min = Math.min(...src.map((p) => p.ele));
+  const pts = src.map(
+    (p) =>
+      [
+        (p.dist / total) * KW,
+        KH - 40 - ((p.ele - min) / spanFloor) * (KH - 90),
+      ] as [number, number],
+  );
+  const line = smoothPath(pts);
+  return { line, area: `${line} L${KW},${KH} L0,${KH} Z` };
+}
+
+function Horizon() {
+  const { idx, key, pick } = useCourseCycle(K_COURSES, K_LOOP);
+  const c = COURSES[key];
+  const src = c.thumbnailPoints;
+  const p = useSimLoop(K_LOOP, key);
+  const st = raceState(src, p);
+  const front = horizon(src);
+  const back = horizon(
+    [...src]
+      .reverse()
+      .map((pt, _i, arr) => ({ ...pt, dist: arr[0].dist - pt.dist })),
+    380,
+  );
+  const far = horizon(
+    src.map((pt) => ({ ...pt, ele: pt.ele * 0.6 + 120 })),
+    300,
+  );
+  const frontRef = useRef<SVGPathElement>(null);
+  const rp = pointAtX(frontRef.current, p * KW);
+
+  return (
+    <section className="relative min-h-[840px] overflow-hidden bg-gradient-to-b from-slate-950 via-slate-950 to-emerald-950 text-white">
+      <TopoBg tint="rgb(148 163 184 / 0.05)" />
+      <div className="relative mx-auto max-w-5xl px-6 pt-24 text-center">
+        <div className="mb-8 flex justify-center">
+          <CourseChips keys={K_COURSES} active={idx} onPick={pick} />
+        </div>
+        <h1 className="text-6xl font-bold leading-[0.95] tracking-tight lg:text-8xl">
+          See every climb <span className="text-emerald-400">coming.</span>
+        </h1>
+        <p className="mx-auto mt-6 max-w-xl text-lg text-slate-400">
+          {c.name}: {c.elevationGain} m up, {c.elevationLoss} m down. Know where
+          it hurts, set your pace, and time every gel.
+        </p>
+        <div className="mt-8 flex justify-center gap-3">
+          <Link
+            to="/race"
+            className={`${btn} bg-emerald-400 text-slate-950 hover:bg-emerald-300`}
+          >
+            Find my race <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            to="/elevation-finder"
+            className={`${btn} border border-slate-700 text-white hover:border-slate-500`}
+          >
+            Drop in a GPX file
+          </Link>
+        </div>
+      </div>
+
+      <div className="absolute inset-x-0 bottom-0 h-[380px]">
+        <svg
+          viewBox={`0 0 ${KW} ${KH}`}
+          preserveAspectRatio="none"
+          className="absolute inset-0 h-full w-full"
+        >
+          <defs>
+            <linearGradient id="k-front" x1="0" x2="0" y1="0" y2="1">
+              <stop
+                offset="0%"
+                stopColor="rgb(16 185 129)"
+                stopOpacity="0.55"
+              />
+              <stop offset="100%" stopColor="rgb(2 44 34)" stopOpacity="1" />
+            </linearGradient>
+          </defs>
+          <path d={far.area} fill="rgb(148 163 184 / 0.06)" />
+          <path d={back.area} fill="rgb(16 185 129 / 0.12)" />
+          <path d={front.area} fill="url(#k-front)" />
+          <path
+            ref={frontRef}
+            d={front.line}
+            fill="none"
+            stroke="rgb(110 231 183)"
+            strokeWidth="2.5"
+            vectorEffect="non-scaling-stroke"
+          />
+        </svg>
+
+        {/* HTML overlay: circles stay round over the stretched SVG. */}
+        {FUEL.fuelStops.map((s) => {
+          const x = s.distanceKm / st.total;
+          const pt = pointAtX(frontRef.current, x * KW);
+          if (!pt) return null;
+          const done = s.distanceKm <= st.km;
+          return (
+            <span
+              key={s.time}
+              className={`absolute h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all ${
+                done
+                  ? "bg-amber-300 shadow-[0_0_14px_4px_rgb(251_191_36/0.6)]"
+                  : "border border-amber-300/60 bg-transparent"
+              }`}
+              style={{ left: `${x * 100}%`, top: `${(pt.y / KH) * 100}%` }}
+            />
+          );
+        })}
+
+        {rp && (
+          <div
+            className="absolute -translate-x-1/2"
+            style={{ left: `${p * 100}%`, top: `${(rp.y / KH) * 100}%` }}
+          >
+            <div className="absolute bottom-6 left-1/2 w-max -translate-x-1/2 rounded-lg border border-emerald-400/40 bg-slate-950/80 px-3 py-1.5 text-xs backdrop-blur">
+              <span className="font-display font-semibold tabular-nums text-white">
+                km {st.km.toFixed(1)}
+              </span>
+              <span className="mx-1.5 text-slate-600">·</span>
+              <span className="font-display tabular-nums text-slate-300">
+                {fmtClock(st.elapsed)}
+              </span>
+              <span className="mx-1.5 text-slate-600">·</span>
+              <span
+                className={`font-display tabular-nums ${st.grade > 0.5 ? "text-amber-300" : "text-emerald-300"}`}
+              >
+                {st.grade > 0 ? "+" : ""}
+                {st.grade.toFixed(1)}%
+              </span>
+            </div>
+            <div className="h-4 w-4 -translate-y-1/2 rounded-full border-[3px] border-emerald-400 bg-white shadow-[0_0_24px_6px_rgb(52_211_153/0.55)]" />
+          </div>
+        )}
+
+        <div className="absolute inset-x-0 bottom-3 font-display text-xs tabular-nums text-emerald-200/50">
+          {[10, 20, 30, 40].map((k) => (
+            <span
+              key={k}
+              className="absolute -translate-x-1/2"
+              style={{ left: `${(k / st.total) * 100}%` }}
+            >
+              {k} km
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// L · Race watch -----------------------------------------------------------------
+
+const L_COURSES = ["nyc", "chicago", "berlin", "sydney"];
+const L_LOOP = 16000;
+
+function RaceWatch() {
+  const { idx, key, pick } = useCourseCycle(L_COURSES, L_LOOP);
+  const c = COURSES[key];
+  const src = c.thumbnailPoints;
+  const p = useSimLoop(L_LOOP, key);
+  const st = raceState(src, p);
+  const route = routePath(220, 130, 12, src);
+  const routeRef = useRef<SVGPathElement>(null);
+  const rp = pointAtFrac(routeRef.current, p);
+  const R = 200;
+  const circ = 2 * Math.PI * R;
+
+  return (
+    <section className="relative overflow-hidden bg-black pt-24 pb-20 text-white">
+      <TopoBg tint="rgb(52 211 153 / 0.06)" />
+      <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 lg:grid-cols-[1fr_auto]">
+        <div>
+          <p className="mb-6 font-display text-sm uppercase tracking-[0.25em] text-emerald-400">
+            Race-day rehearsal
+          </p>
+          <h1 className="text-6xl font-bold leading-[0.95] tracking-tight lg:text-8xl">
+            Race day,
+            <br />
+            <span className="text-emerald-400">rehearsed.</span>
+          </h1>
+          <p className="mt-7 max-w-md text-lg leading-relaxed text-slate-400">
+            Your pace, your splits and every gel, second by second, on the
+            course you&rsquo;re actually running.
+          </p>
+          <div className="mt-8 flex gap-3">
+            <Link
+              to="/race"
+              className={`${btn} bg-emerald-400 text-slate-950 hover:bg-emerald-300`}
+            >
+              Find my race <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/calculator"
+              className={`${btn} border border-slate-700 text-white hover:border-slate-500`}
+            >
+              Get my paces
+            </Link>
+          </div>
+          <div className="mt-10">
+            <CourseChips keys={L_COURSES} active={idx} onPick={pick} />
+          </div>
+        </div>
+
+        <div className="relative mx-auto">
+          {/* side buttons */}
+          <span
+            aria-hidden
+            className="absolute top-[28%] -right-2.5 h-14 w-3 rounded-r-md bg-slate-700"
+          />
+          <span
+            aria-hidden
+            className="absolute top-[52%] -right-2.5 h-10 w-3 rounded-r-md bg-slate-800"
+          />
+          <div className="relative h-[440px] w-[440px] max-w-[88vw] rounded-full border-[14px] border-slate-800 bg-slate-950 shadow-[0_30px_80px_rgba(0,0,0,0.8),inset_0_0_40px_rgba(16,185,129,0.08)] max-sm:h-[88vw]">
+            <svg
+              viewBox="0 0 440 440"
+              className="absolute inset-[-14px] h-[calc(100%+28px)] w-[calc(100%+28px)] -rotate-90"
+            >
+              <circle
+                cx="220"
+                cy="220"
+                r={R}
+                fill="none"
+                stroke="rgb(30 41 59)"
+                strokeWidth="6"
+              />
+              <circle
+                cx="220"
+                cy="220"
+                r={R}
+                fill="none"
+                stroke="rgb(52 211 153)"
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeDasharray={`${p * circ} ${circ}`}
+              />
+              {FUEL.fuelStops.map((s) => {
+                const a = (s.distanceKm / st.total) * Math.PI * 2;
+                return (
+                  <circle
+                    key={s.time}
+                    cx={220 + Math.cos(a) * R}
+                    cy={220 + Math.sin(a) * R}
+                    r="4"
+                    fill={
+                      s.distanceKm <= st.km
+                        ? "rgb(251 191 36)"
+                        : "rgb(15 23 42)"
+                    }
+                    stroke="rgb(251 191 36)"
+                    strokeWidth="1.5"
+                  />
+                );
+              })}
+            </svg>
+
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                {c.name}
+              </p>
+              <p className="mt-1 font-display text-6xl font-bold tabular-nums max-sm:text-5xl">
+                {fmtClock(st.elapsed)}
+              </p>
+              <div className="mt-2 flex gap-6 font-display tabular-nums">
+                <span>
+                  <span className="text-2xl font-bold">{st.km.toFixed(1)}</span>
+                  <span className="ml-1 text-xs text-slate-500">km</span>
+                </span>
+                <span>
+                  <span className="text-2xl font-bold">
+                    {formatPace(MARATHON_S / 42.195)}
+                  </span>
+                  <span className="ml-1 text-xs text-slate-500">/km</span>
+                </span>
+              </div>
+              <svg viewBox="0 0 220 130" className="mt-3 h-[90px] w-[150px]">
+                <path
+                  ref={routeRef}
+                  d={route.d}
+                  fill="none"
+                  stroke="rgb(51 65 85)"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
+                <path
+                  d={route.d}
+                  pathLength={1}
+                  strokeDasharray={`${p} 1`}
+                  fill="none"
+                  stroke="rgb(52 211 153)"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
+                {rp && (
+                  <circle
+                    cx={rp.x}
+                    cy={rp.y}
+                    r="4.5"
+                    fill="white"
+                    stroke="rgb(16 185 129)"
+                    strokeWidth="2"
+                  />
+                )}
+              </svg>
+              <p className="mt-2 flex items-center gap-1.5 text-sm text-amber-300">
+                <Zap className="h-3.5 w-3.5" />
+                {st.toNext !== null ? (
+                  <>
+                    Fuel in{" "}
+                    <span className="font-display font-semibold tabular-nums">
+                      {fmtClock(st.toNext)}
+                    </span>
+                  </>
+                ) : (
+                  "Finish strong"
+                )}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 const VARIANTS: Record<string, () => JSX.Element> = {
   a: RaceDay,
   b: Editorial,
@@ -1481,6 +2201,9 @@ const VARIANTS: Record<string, () => JSX.Element> = {
   g: Poster,
   h: RaceSim,
   i: TopoDashboard,
+  j: FullBleedRun,
+  k: Horizon,
+  l: RaceWatch,
 };
 
 export default function LandingLab() {
