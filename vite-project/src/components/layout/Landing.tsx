@@ -19,6 +19,8 @@ import { Helmet } from "react-helmet-async";
 import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { comparisonLinks } from "@/features/seo-pages/seoPages";
 import bmoResults from "@/assets/about/bmo-half-marathon-2025.jpg";
+import { HeroTopo } from "./HeroTopo";
+import { useInView } from "@/components/feature-shots/shared";
 import {
   PaceLadderShot,
   VdotDialShot,
@@ -100,13 +102,8 @@ const Hero = () => {
 
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-50">
-      {/* Topo-map backdrop; the art is already empty on the left, the gradient guarantees it on narrow screens */}
-      <img
-        src="/images/landing/hero-topo.jpg"
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover object-right"
-      />
+      {/* Animated topo-map backdrop; the gradient keeps the copy column legible on narrow screens */}
+      <HeroTopo />
       <div className="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/70 to-transparent" />
       {/* Abstract Background Shapes */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
@@ -802,16 +799,32 @@ const AiAgentSection = () => {
 
 const CTA = () => {
   const navigate = useNavigate();
+  // Don't fetch the 0.7 MB loop until the section is near; the poster covers until then
+  // and permanently for reduced-motion users.
+  const { ref, inView } = useInView<HTMLElement>(0.1);
+  const playVideo =
+    inView && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   return (
-    <section className="relative py-24 bg-emerald-600 overflow-hidden">
+    <section ref={ref} className="relative py-24 bg-emerald-600 overflow-hidden">
       <img
-        src="/images/landing/cta-start-corral.jpg"
+        src="/images/landing/cta-avenue-poster.jpg"
         alt=""
         aria-hidden="true"
         loading="lazy"
         className="absolute inset-0 w-full h-full object-cover"
       />
+      {playVideo && (
+        <video
+          src="/images/landing/cta-avenue.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      )}
       <div className="absolute inset-0 bg-emerald-950/55" />
       <div className="relative max-w-4xl mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">

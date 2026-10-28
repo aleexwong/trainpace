@@ -1,0 +1,88 @@
+.tp-topo-contours {
+  fill: none;
+  stroke: #94a3b8; /* slate-400 */
+  stroke-width: 1;
+  opacity: 0.45;
+  animation: tp-topo-drift 40s ease-in-out infinite alternate;
+}
+.tp-topo-contours .tp-topo-index {
+  stroke: #10b981; /* emerald-500 */
+  stroke-width: 1.4;
+}
+@keyframes tp-topo-drift {
+  to {
+    transform: translate(-18px, 10px);
+  }
+}
+
+.tp-topo-route,
+.tp-topo-route-glow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: tp-topo-draw 2.4s cubic-bezier(0.65, 0, 0.35, 1) 0.3s forwards;
+}
+.tp-topo-route {
+  stroke: #059669; /* emerald-600 */
+  stroke-width: 4;
+}
+.tp-topo-route-glow {
+  stroke: #34d399; /* emerald-400 */
+  stroke-width: 16;
+  opacity: 0.25;
+}
+@keyframes tp-topo-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.tp-topo-marker {
+  fill: #f8fafc;
+  stroke: #059669;
+  stroke-width: 3;
+}
+.tp-topo-finish {
+  fill: #059669;
+}
+
+.tp-topo-dot {
+  fill: #047857; /* emerald-700 */
+  opacity: 0;
+  animation: tp-topo-fade 0.4s ease-out 2.6s forwards;
+}
+.tp-topo-dot-pulse {
+  fill: #10b981;
+  opacity: 0.25;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: tp-topo-pulse 1.6s ease-out infinite;
+}
+@keyframes tp-topo-fade {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes tp-topo-pulse {
+  from {
+    transform: scale(0.5);
+    opacity: 0.45;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tp-topo-contours,
+  .tp-topo-route,
+  .tp-topo-route-glow {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .tp-topo-dot {
+    display: none;
+  }
+}
