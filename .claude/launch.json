@@ -4,7 +4,7 @@
     {
       "name": "vite-project",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": ["--prefix", "vite-project", "run", "dev"],
       "port": 5173
     }
   ]
