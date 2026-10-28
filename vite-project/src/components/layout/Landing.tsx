@@ -99,6 +99,14 @@ const Hero = () => {
 
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-50">
+      {/* Course backdrop, washed out toward the copy column so text stays legible */}
+      <img
+        src="/images/landing/hero-hills.jpg"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full object-cover opacity-40"
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/80 to-slate-50/30" />
       {/* Abstract Background Shapes */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
       <div className="absolute top-0 left-0 -ml-20 -mt-20 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
@@ -551,8 +559,9 @@ const FounderStory = () => {
             <div className="relative w-full max-w-md rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl rotate-2 hover:rotate-0 transition-all duration-500 group">
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10 opacity-60" />
               <img
-                src="https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?q=80&w=1000&auto=format&fit=crop"
-                alt="Alex running"
+                src="/images/landing/runner.jpg"
+                alt="Runner mid-stride in a city half marathon at golden hour"
+                loading="lazy"
                 className="w-full h-[450px] object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
               />
             </div>
@@ -794,8 +803,16 @@ const CTA = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="py-24 bg-emerald-600">
-      <div className="max-w-4xl mx-auto px-4 text-center">
+    <section className="relative py-24 bg-emerald-600 overflow-hidden">
+      <img
+        src="/images/landing/cta-start-line.jpg"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-emerald-900/70" />
+      <div className="relative max-w-4xl mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
           Ready to Train Smarter?
         </h2>
