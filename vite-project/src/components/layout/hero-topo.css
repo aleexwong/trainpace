@@ -75,6 +75,17 @@
   }
 }
 
+/* On phones the tall section crops to the map's far-right strip, which lands the
+   route's finish behind the hero badge. Contours alone read better there. */
+@media (max-width: 767px) {
+  .tp-topo-route,
+  .tp-topo-route-glow,
+  .tp-topo-marker,
+  .tp-topo-dot {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tp-topo-contours,
   .tp-topo-route,
