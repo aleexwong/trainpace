@@ -11,14 +11,16 @@ No API key needed: drive gemini.google.com in the user's own Chrome (already sig
 
 1. **Pick the slots first.** Read the target page and list each slot with its job: aspect ratio, whether text sits on top (light or dark), and whether it's above the fold. On `Landing.tsx` the current slots are hero backdrop, founder-story photo, and CTA backdrop. Don't add images to the feature sections, which already have animated `feature-shots`.
 
-2. **Open Gemini.** Load the Chrome tools in one ToolSearch call (see the `chrome-browser` skill), call `tabs_context_mcp`, then navigate to `https://gemini.google.com/app`. Use one chat for the whole set so the style stays consistent.
+2. **Open Gemini.** Load the Chrome tools in one ToolSearch call (see the `chrome-browser` skill), call `tabs_context_mcp`, then navigate to `https://gemini.google.com/app`. **Switch the model picker from Flash to Pro** before prompting, since Flash output looked like generic stock. Use one chat for the whole set so the style stays consistent.
 
 3. **Prompt each image** by clicking the prompt box, typing, pressing Return, then waiting about 20s and taking a screenshot. Prompt template:
    > Generate an image: `<subject>`, `<angle/lighting>`, `<palette — say "light/pale so dark text can sit on top" or "dark enough that white text reads clearly">`, `<empty area if text overlays it>`, `<16:9 landscape | 4:5 portrait>`, no text, no logos, no brand marks, photorealistic.
 
-   Emerald green accents match the brand (`emerald-600`). Never depict a real person. If a slot implies one (for example "Alex running"), fix the alt text to describe the generated image.
+   Be art-directed, not generic. Name a lens or medium ("35mm documentary", "drone top-down", "topographic line art"), real conditions (rain, blue hour), and a "not stock" cue. An illustrated backdrop (topo lines with a route) suits the hero better than a washed-out photo. Emerald green accents match the brand (`emerald-600`).
 
-4. **Download.** Hover the image, then click the download icon at its top-right corner (the rightmost of three). Files land in `~/Downloads/Gemini_Generated_Image_*.jpeg`. The `<img>` in the page is a `blob:` URL, so download through the button instead of fetching the image. Check the downloads with `ls -t ~/Downloads | head` and confirm with `sips -g pixelWidth -g pixelHeight` (16:9 comes back as 2752×1536, 4:5 as 1856×2304).
+   Scroll the screenshot and inspect the whole image. Gemini often slips in a logo (shoe swoosh, bib numbers). Fix it with a follow-up in the same chat: "Same image exactly, but remove the logo on X… keep everything else identical." Never depict a real person. If a slot implies one (for example "Alex running"), fix the alt text to describe the generated image.
+
+4. **Download.** Run `find` for "download full size image buttons". It returns one ref per image in chat order, so click the ref for the image you want (coordinates break once the chat scrolls). Files land in `~/Downloads/Gemini_Generated_Image_*.jpeg`. The `<img>` in the page is a `blob:` URL, so download through the button instead of fetching the image. Check the downloads with `ls -t ~/Downloads | head` and confirm with `sips -g pixelWidth -g pixelHeight` (16:9 comes back as 2752×1536, 4:5 as 1856×2304).
 
 5. **Compress into `vite-project/public/images/<page>/`** with kebab-case names. `cwebp` isn't installed, so use `sips`:
    ```bash
