@@ -99,14 +99,14 @@ const Hero = () => {
 
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-50">
-      {/* Course backdrop, washed out toward the copy column so text stays legible */}
+      {/* Topo-map backdrop; the art is already empty on the left, the gradient guarantees it on narrow screens */}
       <img
-        src="/images/landing/hero-hills.jpg"
+        src="/images/landing/hero-topo.jpg"
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover opacity-40"
+        className="absolute inset-0 w-full h-full object-cover object-right"
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/80 to-slate-50/30" />
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/70 to-transparent" />
       {/* Abstract Background Shapes */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
       <div className="absolute top-0 left-0 -ml-20 -mt-20 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
@@ -560,9 +560,9 @@ const FounderStory = () => {
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10 opacity-60" />
               <img
                 src="/images/landing/runner.jpg"
-                alt="Runner mid-stride in a city half marathon at golden hour"
+                alt="Runner checking their GPS watch mid-race on a rainy city street"
                 loading="lazy"
-                className="w-full h-[450px] object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                className="w-full h-[450px] object-cover"
               />
             </div>
 
@@ -805,13 +805,13 @@ const CTA = () => {
   return (
     <section className="relative py-24 bg-emerald-600 overflow-hidden">
       <img
-        src="/images/landing/cta-start-line.jpg"
+        src="/images/landing/cta-start-corral.jpg"
         alt=""
         aria-hidden="true"
         loading="lazy"
         className="absolute inset-0 w-full h-full object-cover"
       />
-      <div className="absolute inset-0 bg-emerald-900/70" />
+      <div className="absolute inset-0 bg-emerald-950/55" />
       <div className="relative max-w-4xl mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
           Ready to Train Smarter?
