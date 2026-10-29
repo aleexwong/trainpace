@@ -102,7 +102,7 @@ export default function ElevationGuidesSeoLanding() {
   if (!page) return <Navigate to="/elevationfinder" replace />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-sky-50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-sky-50 dark:to-neutral-950">
       <Helmet>
         <title>{page.title}</title>
         <meta name="description" content={page.description} />
@@ -121,16 +121,16 @@ export default function ElevationGuidesSeoLanding() {
 
       <section className="px-4 sm:px-6 pt-10 pb-16">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-neutral-100">
             {page.h1}
           </h1>
-          <p className="mt-4 text-lg text-gray-700">{page.intro}</p>
+          <p className="mt-4 text-lg text-gray-700 dark:text-neutral-300">{page.intro}</p>
 
           <div className="mt-6 grid gap-2">
             {page.bullets.map((b) => (
               <div
                 key={b}
-                className="rounded-lg bg-white/70 border border-emerald-100 px-4 py-3 text-gray-800"
+                className="rounded-lg bg-white/70 dark:bg-neutral-900/70 border border-emerald-100 dark:border-emerald-900/60 px-4 py-3 text-gray-800 dark:text-neutral-200"
               >
                 {b}
               </div>
@@ -146,22 +146,22 @@ export default function ElevationGuidesSeoLanding() {
             </a>
             <a
               href="/preview-route/boston"
-              className="inline-flex justify-center rounded-lg border border-emerald-200 bg-white px-5 py-3 text-emerald-800 font-semibold hover:bg-emerald-50 transition-colors"
+              className="inline-flex justify-center rounded-lg border border-emerald-200 dark:border-emerald-900 bg-white dark:bg-neutral-900 px-5 py-3 text-emerald-800 dark:text-emerald-300 font-semibold hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"
             >
               See a Marathon Example
             </a>
           </div>
 
-          <div className="mt-8 rounded-2xl border border-emerald-100 bg-white/70 p-6">
-            <h2 className="text-xl font-semibold text-gray-900">Next step</h2>
-            <p className="mt-2 text-gray-700">
+          <div className="mt-8 rounded-2xl border border-emerald-100 dark:border-emerald-900/60 bg-white/70 dark:bg-neutral-900/70 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-neutral-100">Next step</h2>
+            <p className="mt-2 text-gray-700 dark:text-neutral-300">
               Upload your GPX route to get an interactive elevation profile,
               grade breakdown, and climb difficulty.
             </p>
             <div className="mt-4">
               <a
                 href="/elevationfinder"
-                className="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-white font-semibold hover:bg-black transition-colors"
+                className="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-white font-semibold hover:bg-black transition-colors dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
               >
                 Open ElevationFinder
               </a>

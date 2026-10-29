@@ -66,7 +66,7 @@ export function TimeInput({
 
   return (
     <div>
-      <label className="block text-sm font-semibold text-gray-700 mb-3">
+      <label className="block text-sm font-semibold text-gray-700 dark:text-neutral-300 mb-3">
         Finish Time
       </label>
 
@@ -80,13 +80,13 @@ export function TimeInput({
             value={inputs.hours}
             onChange={(e) => handleFieldChange("hours", e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full px-2 sm:px-3 py-3.5 text-center text-xl sm:text-2xl font-mono font-bold border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all bg-gray-50 focus:bg-white"
+            className="w-full px-2 sm:px-3 py-3.5 text-center text-xl sm:text-2xl font-mono font-bold border-2 border-gray-200 dark:border-neutral-800 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all bg-gray-50 dark:bg-neutral-950 focus:bg-white dark:focus:bg-neutral-900"
             aria-label="Hours"
           />
-          <p className="text-xs text-gray-400 text-center mt-1 font-medium">Hours</p>
+          <p className="text-xs text-gray-400 dark:text-neutral-500 text-center mt-1 font-medium">Hours</p>
         </div>
 
-        <span className="text-3xl font-bold text-gray-300 pb-5">:</span>
+        <span className="text-3xl font-bold text-gray-300 dark:text-neutral-600 pb-5">:</span>
 
         {/* Minutes */}
         <div className="w-20 sm:w-24">
@@ -98,13 +98,13 @@ export function TimeInput({
             value={inputs.minutes}
             onChange={(e) => handleFieldChange("minutes", e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full px-2 sm:px-3 py-3.5 text-center text-xl sm:text-2xl font-mono font-bold border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all bg-gray-50 focus:bg-white"
+            className="w-full px-2 sm:px-3 py-3.5 text-center text-xl sm:text-2xl font-mono font-bold border-2 border-gray-200 dark:border-neutral-800 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all bg-gray-50 dark:bg-neutral-950 focus:bg-white dark:focus:bg-neutral-900"
             aria-label="Minutes"
           />
-          <p className="text-xs text-gray-400 text-center mt-1 font-medium">Min</p>
+          <p className="text-xs text-gray-400 dark:text-neutral-500 text-center mt-1 font-medium">Min</p>
         </div>
 
-        <span className="text-3xl font-bold text-gray-300 pb-5">:</span>
+        <span className="text-3xl font-bold text-gray-300 dark:text-neutral-600 pb-5">:</span>
 
         {/* Seconds */}
         <div className="w-20 sm:w-24">
@@ -116,24 +116,24 @@ export function TimeInput({
             value={inputs.seconds}
             onChange={(e) => handleFieldChange("seconds", e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full px-2 sm:px-3 py-3.5 text-center text-xl sm:text-2xl font-mono font-bold border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all bg-gray-50 focus:bg-white"
+            className="w-full px-2 sm:px-3 py-3.5 text-center text-xl sm:text-2xl font-mono font-bold border-2 border-gray-200 dark:border-neutral-800 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all bg-gray-50 dark:bg-neutral-950 focus:bg-white dark:focus:bg-neutral-900"
             aria-label="Seconds"
           />
-          <p className="text-xs text-gray-400 text-center mt-1 font-medium">Sec</p>
+          <p className="text-xs text-gray-400 dark:text-neutral-500 text-center mt-1 font-medium">Sec</p>
         </div>
       </div>
 
       {error && (
-        <p className="mt-2 text-sm text-red-600 text-center">{error}</p>
+        <p className="mt-2 text-sm text-red-600 dark:text-red-400 text-center">{error}</p>
       )}
 
       {/* Live VDOT Preview */}
       {vdotPreview !== null && !error && (
         <div className="mt-3 flex justify-center">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-100 rounded-full text-sm">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/60 rounded-full text-sm">
             <Zap className="w-3.5 h-3.5 text-emerald-500" />
-            <span className="text-gray-500">Est. VDOT:</span>
-            <span className="font-bold text-emerald-600">{vdotPreview}</span>
+            <span className="text-gray-500 dark:text-neutral-400">Est. VDOT:</span>
+            <span className="font-bold text-emerald-600 dark:text-emerald-400">{vdotPreview}</span>
           </div>
         </div>
       )}

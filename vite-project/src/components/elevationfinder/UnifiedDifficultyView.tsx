@@ -28,6 +28,7 @@ import {
   computeWeightedMultiplier,
 } from "@/utils/difficulty";
 import type { DifficultyGroupData } from "@/utils/difficulty";
+import { useChartTheme } from "@/features/theme";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -72,40 +73,40 @@ const DIFFICULTY_CONFIG: Record<
     label: "Brutal Climbs",
     order: 0,
     color: {
-      bg: "bg-red-50",
-      text: "text-red-900",
-      accent: "text-red-600",
-      header: "bg-red-100 border-red-200",
+      bg: "bg-red-50 dark:bg-red-950/40",
+      text: "text-red-900 dark:text-red-200",
+      accent: "text-red-600 dark:text-red-400",
+      header: "bg-red-100 dark:bg-red-900/40 border-red-200 dark:border-red-900",
     },
   },
   hard: {
     label: "Hard Climbs",
     order: 1,
     color: {
-      bg: "bg-orange-50",
-      text: "text-orange-900",
-      accent: "text-orange-600",
-      header: "bg-orange-100 border-orange-200",
+      bg: "bg-orange-50 dark:bg-orange-950/40",
+      text: "text-orange-900 dark:text-orange-200",
+      accent: "text-orange-600 dark:text-orange-400",
+      header: "bg-orange-100 dark:bg-orange-900/40 border-orange-200 dark:border-orange-900",
     },
   },
   moderate: {
     label: "Moderate Sections",
     order: 2,
     color: {
-      bg: "bg-yellow-50",
-      text: "text-yellow-900",
-      accent: "text-yellow-600",
-      header: "bg-yellow-100 border-yellow-200",
+      bg: "bg-yellow-50 dark:bg-yellow-950/40",
+      text: "text-yellow-900 dark:text-yellow-200",
+      accent: "text-yellow-600 dark:text-yellow-400",
+      header: "bg-yellow-100 dark:bg-yellow-900/40 border-yellow-200 dark:border-yellow-900",
     },
   },
   easy: {
     label: "Easy / Flat Sections",
     order: 3,
     color: {
-      bg: "bg-green-50",
-      text: "text-green-900",
-      accent: "text-green-600",
-      header: "bg-green-100 border-green-200",
+      bg: "bg-green-50 dark:bg-green-950/40",
+      text: "text-green-900 dark:text-green-200",
+      accent: "text-green-600 dark:text-green-400",
+      header: "bg-green-100 dark:bg-green-900/40 border-green-200 dark:border-green-900",
     },
   },
 };
@@ -261,6 +262,8 @@ export function UnifiedDifficultyView({
     }));
   }, [groupedData, locale]);
 
+  const ct = useChartTheme();
+
   const chart = useMemo(() => {
     return {
       labels: chartData.map((d) => d.name),
@@ -271,13 +274,13 @@ export function UnifiedDifficultyView({
           backgroundColor: chartData.map(
             (d) => DIFFICULTY_COLORS[d.difficulty]
           ),
-          borderColor: "#ffffff",
+          borderColor: ct.surface,
           borderWidth: 2,
           hoverOffset: 10,
         },
       ],
     };
-  }, [chartData]);
+  }, [chartData, ct.surface]);
 
   const options = useMemo(
     () => ({
@@ -290,6 +293,7 @@ export function UnifiedDifficultyView({
           align: "center" as const,
           labels: {
             font: { size: 11 },
+            color: ct.label,
             padding: 12,
             usePointStyle: true,
             boxWidth: 12,
@@ -343,12 +347,12 @@ export function UnifiedDifficultyView({
         }
       },
     }),
-    [chartData, expandedGroup]
+    [chartData, expandedGroup, ct.label]
   );
 
   if (groupedData.length === 0) {
     return (
-      <div className="text-center text-gray-500 py-8">
+      <div className="text-center text-gray-500 dark:text-neutral-400 py-8">
         No segments to display
       </div>
     );
@@ -375,12 +379,12 @@ export function UnifiedDifficultyView({
       </div>
 
       {/* Donut Chart Section */}
-      <div className="w-full bg-white rounded-lg border border-gray-200 py-4 sm:py-6">
+      <div className="w-full bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 py-4 sm:py-6">
         <div className="text-center mb-4">
-          <h3 className="font-semibold text-gray-800 text-base sm:text-lg mb-1 sm:mb-2">
+          <h3 className="font-semibold text-gray-800 dark:text-neutral-200 text-base sm:text-lg mb-1 sm:mb-2">
             Race Difficulty Distribution
           </h3>
-          <p className="text-xs sm:text-sm text-gray-600">
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-neutral-400">
             Click a chart segment to jump to details
           </p>
         </div>
@@ -391,9 +395,9 @@ export function UnifiedDifficultyView({
           </div>
         </div>
 
-        <div className="text-center pt-4 border-t border-gray-200">
-          <p className="text-xs sm:text-sm text-gray-600 mb-1">Total Race Time</p>
-          <p className="text-2xl sm:text-3xl font-bold text-gray-900">
+        <div className="text-center pt-4 border-t border-gray-200 dark:border-neutral-800">
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-neutral-400 mb-1">Total Race Time</p>
+          <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-neutral-100">
             {formatTime(totalRaceTime)}
           </p>
         </div>
@@ -507,7 +511,7 @@ export function UnifiedDifficultyView({
                               isClusterExpanded ? null : clusterId
                             )
                           }
-                          className="w-full p-3 sm:p-4 bg-white hover:bg-opacity-75 transition-colors text-left"
+                          className="w-full p-3 sm:p-4 bg-white dark:bg-neutral-900 hover:bg-opacity-75 transition-colors text-left"
                           aria-expanded={isClusterExpanded}
                           aria-controls={clusterContentId}
                         >
@@ -524,7 +528,7 @@ export function UnifiedDifficultyView({
                                     { units, locale }
                                   )}
                                 </p>
-                                <p className="text-xs text-gray-600">
+                                <p className="text-xs text-gray-600 dark:text-neutral-400">
                                   {cluster.clusterLength.toFixed(1)}{" "}
                                   {units === "imperial" ? "mi" : "km"} • Avg {cluster.avgGrade.toFixed(1)}%
                                 </p>
@@ -535,7 +539,7 @@ export function UnifiedDifficultyView({
                               <p className={`font-bold ${group.color.accent} text-sm sm:text-base`}>
                                 {cluster.avgPace}
                               </p>
-                              <p className="text-xs text-gray-600">
+                              <p className="text-xs text-gray-600 dark:text-neutral-400">
                                 {formatTime(
                                   computeTotalTime(
                                     cluster.segments,
@@ -550,10 +554,10 @@ export function UnifiedDifficultyView({
                         {isClusterExpanded && (
                           <div
                             id={clusterContentId}
-                            className="px-4 pb-4 space-y-3 bg-white/50"
+                            className="px-4 pb-4 space-y-3 bg-white/50 dark:bg-neutral-900/50"
                           >
                             <div className="flex justify-between text-sm">
-                              <span className="text-gray-600">
+                              <span className="text-gray-600 dark:text-neutral-400">
                                 Elevation:{" "}
                                 {formatElevation(cluster.startElevation, {
                                   units,
@@ -565,7 +569,7 @@ export function UnifiedDifficultyView({
                                   locale,
                                 })}
                               </span>
-                              <span className="font-medium text-gray-700">
+                              <span className="font-medium text-gray-700 dark:text-neutral-300">
                                 {cluster.elevationGain > 0 ? "+" : ""}
                                 {formatElevation(cluster.elevationGain, {
                                   units,
@@ -580,11 +584,11 @@ export function UnifiedDifficultyView({
                                 {units === "imperial" ? "mile" : "km"}{" "}
                                 breakdown:
                               </p>
-                              <div className="space-y-1 pl-2 border-l border-gray-300">
+                              <div className="space-y-1 pl-2 border-l border-gray-300 dark:border-neutral-700">
                                 {cluster.segments.map((seg, sidx) => (
                                   <div
                                     key={sidx}
-                                    className="text-xs text-gray-700"
+                                    className="text-xs text-gray-700 dark:text-neutral-300"
                                   >
                                     <span className="font-medium">
                                       {units === "imperial" ? "MI" : "KM"}{" "}
@@ -603,11 +607,11 @@ export function UnifiedDifficultyView({
                             </div>
 
                             {cluster.segments[0].pacingAdvice && (
-                              <div className="p-3 bg-white rounded text-sm">
-                                <p className="font-medium text-gray-800 mb-1">
+                              <div className="p-3 bg-white dark:bg-neutral-900 rounded text-sm">
+                                <p className="font-medium text-gray-800 dark:text-neutral-200 mb-1">
                                   💡 Strategy
                                 </p>
-                                <p className="text-gray-700">
+                                <p className="text-gray-700 dark:text-neutral-300">
                                   {cluster.segments[0].pacingAdvice}
                                 </p>
                               </div>

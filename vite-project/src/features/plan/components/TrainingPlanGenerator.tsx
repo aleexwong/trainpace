@@ -35,9 +35,9 @@ function SegmentTabs({ active, onChange }: { active: Segment; onChange: (s: Segm
     <div
       role="tablist"
       aria-label="Plan view"
-      className="sticky top-16 z-30 -mx-4 px-4 py-2.5 bg-white/85 backdrop-blur-md border-b border-slate-100"
+      className="sticky top-16 z-30 -mx-4 px-4 py-2.5 bg-white/85 dark:bg-neutral-900/85 backdrop-blur-md border-b border-slate-100 dark:border-neutral-800"
     >
-      <div className="flex gap-1 rounded-full bg-slate-100 p-1">
+      <div className="flex gap-1 rounded-full bg-slate-100 dark:bg-neutral-800 p-1">
         {SEGMENT_TABS.map((tab) => {
           const selected = active === tab.id;
           return (
@@ -51,7 +51,7 @@ function SegmentTabs({ active, onChange }: { active: Segment; onChange: (s: Segm
                 "flex-1 rounded-full py-2 px-1 text-[13px] sm:text-sm font-semibold whitespace-nowrap transition-colors",
                 selected
                   ? "bg-emerald-600 text-white shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                  : "text-slate-500 dark:text-neutral-400 hover:text-slate-700 dark:hover:text-neutral-300"
               )}
             >
               {tab.label}
@@ -65,14 +65,14 @@ function SegmentTabs({ active, onChange }: { active: Segment; onChange: (s: Segm
 
 function ProgressStrip({ completed, total, pct }: { completed: number; total: number; pct: number }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm px-4 py-3 flex items-center gap-3">
-      <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+    <div className="rounded-2xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm px-4 py-3 flex items-center gap-3">
+      <div className="flex-1 h-2 rounded-full bg-slate-100 dark:bg-neutral-800 overflow-hidden">
         <div
           className="h-full rounded-full bg-emerald-500 transition-all"
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="flex-shrink-0 text-xs font-semibold text-slate-500 tabular-nums">
+      <span className="flex-shrink-0 text-xs font-semibold text-slate-500 dark:text-neutral-400 tabular-nums">
         {completed}/{total} runs · {pct}%
       </span>
     </div>
@@ -192,14 +192,14 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
           duplicate title/tagline block would just be dead scroll height. */}
       {!plan && (
         <div>
-          <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-full px-4 py-1.5 text-sm font-semibold text-emerald-700 mb-4">
+          <div className="inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/60 rounded-full px-4 py-1.5 text-sm font-semibold text-emerald-700 dark:text-emerald-300 mb-4">
             <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
             TrainPace
           </div>
-          <h1 className="text-4xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-neutral-100 tracking-tight">
             Training Plan Generator
           </h1>
-          <p className="mt-3 text-lg text-slate-600">
+          <p className="mt-3 text-lg text-slate-600 dark:text-neutral-400">
             Science-backed periodized training plans built around your race, fitness
             level, and schedule. Powered by Jack Daniels' VDOT methodology.
           </p>
@@ -207,10 +207,10 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
       )}
 
       {!plan ? (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
-          <h2 className="text-lg font-bold text-slate-900 mb-6">Build Your Plan</h2>
+        <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-slate-200 dark:border-neutral-800 shadow-sm p-8">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-neutral-100 mb-6">Build Your Plan</h2>
           {error && (
-            <div className="mb-6 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+            <div className="mb-6 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-4 py-3 text-sm text-red-700 dark:text-red-300">
               {error}
             </div>
           )}
@@ -230,7 +230,7 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
           {/* Back button */}
           <button
             onClick={reset}
-            className="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-emerald-600 transition-colors"
+            className="flex items-center gap-2 text-sm font-semibold text-slate-500 dark:text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -247,10 +247,10 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
               a time) a signed-in runner had no reachable way to save at all.
               Here it is visible on every tab and at every width. */}
           {!user ? (
-            <div className="rounded-2xl bg-emerald-50 border border-emerald-100 p-4 sm:p-5 flex items-center justify-between gap-4">
+            <div className="rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/60 p-4 sm:p-5 flex items-center justify-between gap-4">
               <div>
-                <div className="font-semibold text-emerald-800 text-sm sm:text-base">Save your plan</div>
-                <div className="hidden sm:block text-sm text-emerald-700 mt-0.5">
+                <div className="font-semibold text-emerald-800 dark:text-emerald-300 text-sm sm:text-base">Save your plan</div>
+                <div className="hidden sm:block text-sm text-emerald-700 dark:text-emerald-300 mt-0.5">
                   Sign in to save this plan to your dashboard and track your progress.
                 </div>
               </div>
@@ -263,12 +263,12 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
               </a>
             </div>
           ) : (
-            <div className="rounded-2xl bg-emerald-50 border border-emerald-100 p-4 sm:p-5 flex items-center justify-between gap-4">
+            <div className="rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/60 p-4 sm:p-5 flex items-center justify-between gap-4">
               <div>
-                <div className="font-semibold text-emerald-800 text-sm sm:text-base">
+                <div className="font-semibold text-emerald-800 dark:text-emerald-300 text-sm sm:text-base">
                   {savedId ? "Saved to your dashboard" : "Save your plan"}
                 </div>
-                <div className="hidden sm:block text-sm text-emerald-700 mt-0.5">
+                <div className="hidden sm:block text-sm text-emerald-700 dark:text-emerald-300 mt-0.5">
                   {savedId
                     ? "Your progress now syncs to your account across devices."
                     : "Keep this plan on your account and track progress as you go."}
@@ -277,7 +277,7 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
               {savedId ? (
                 <a
                   href="/dashboard"
-                  className="flex-shrink-0 rounded-xl border border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-700 font-bold px-4 sm:px-5 py-2 sm:py-2.5 text-sm transition-colors"
+                  className="flex-shrink-0 rounded-xl border border-emerald-200 dark:border-emerald-900 bg-white dark:bg-neutral-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-bold px-4 sm:px-5 py-2 sm:py-2.5 text-sm transition-colors"
                 >
                   ✓ View in dashboard
                 </a>
@@ -285,7 +285,7 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="flex-shrink-0 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold px-4 sm:px-5 py-2 sm:py-2.5 text-sm transition-colors"
+                  className="flex-shrink-0 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 dark:disabled:bg-neutral-600 disabled:cursor-not-allowed text-white font-bold px-4 sm:px-5 py-2 sm:py-2.5 text-sm transition-colors"
                 >
                   {saving ? "Saving…" : "Save to Dashboard"}
                 </button>
@@ -294,19 +294,19 @@ export function TrainingPlanGenerator({ prefillPaces, prefillGoalTime, prefillSo
           )}
 
           {saveError && (
-            <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+            <div className="rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-4 py-3 text-sm text-red-700 dark:text-red-300">
               {saveError}
             </div>
           )}
 
           {progress.error && (
-            <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+            <div className="rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-4 py-3 text-sm text-red-700 dark:text-red-300">
               {progress.error}
             </div>
           )}
 
           {editor.moveError && (
-            <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+            <div className="rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 px-4 py-3 text-sm text-red-700 dark:text-red-300">
               {editor.moveError}
             </div>
           )}

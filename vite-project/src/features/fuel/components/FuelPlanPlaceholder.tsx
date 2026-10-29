@@ -8,20 +8,20 @@ import { Utensils } from "lucide-react";
 
 export function FuelPlanPlaceholder() {
   return (
-    <Card className="bg-white shadow-lg h-full">
+    <Card className="bg-white dark:bg-neutral-900 shadow-lg h-full">
       <CardContent className="p-6 md:p-8 h-full flex flex-col">
-        <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
+        <h2 className="text-xl md:text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-6">
           Your Fuel Plan
         </h2>
         
-        <div className="flex-1 flex flex-col items-center justify-center text-center py-10 text-gray-500">
-          <div className="p-4 rounded-full bg-gray-100 mb-4">
+        <div className="flex-1 flex flex-col items-center justify-center text-center py-10 text-gray-500 dark:text-neutral-400">
+          <div className="p-4 rounded-full bg-gray-100 dark:bg-neutral-800 mb-4">
             <Utensils className="h-10 w-10 opacity-50" />
           </div>
-          <p className="text-lg font-medium text-gray-600 mb-2">
+          <p className="text-lg font-medium text-gray-600 dark:text-neutral-400 mb-2">
             No plan yet
           </p>
-          <p className="text-sm text-gray-500 max-w-xs">
+          <p className="text-sm text-gray-500 dark:text-neutral-400 max-w-xs">
             Enter your race details and click "Generate Fuel Plan" to see your personalized fueling timeline
           </p>
         </div>

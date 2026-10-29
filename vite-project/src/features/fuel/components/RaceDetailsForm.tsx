@@ -99,15 +99,15 @@ export function RaceDetailsForm({
     }
   };
   return (
-    <Card className="bg-white shadow-lg h-full">
+    <Card className="bg-white dark:bg-neutral-900 shadow-lg h-full">
       <CardContent data-testid="fuel-form" className="p-6 md:p-8 space-y-5">
-        <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">
+        <h2 className="text-xl md:text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-4">
           Race Details
         </h2>
 
         {/* Race Type - Button Pills */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-3">
+          <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-3">
             Race Type <span className="text-red-500">*</span>
           </label>
           <div className="grid grid-cols-1 min-[400px]:grid-cols-3 gap-3">
@@ -119,7 +119,7 @@ export function RaceDetailsForm({
                 className={`py-3 md:py-4 px-2 text-sm sm:text-base font-semibold rounded-xl transition-all ${
                   raceType === type
                     ? "bg-emerald-600 text-white shadow-md"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    : "bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-200 dark:hover:bg-neutral-700"
                 }`}
               >
                 {type === "10K"
@@ -135,7 +135,7 @@ export function RaceDetailsForm({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* Finish Time - Conditional based on race type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
               Target Finish Time <span className="text-red-500">*</span>
             </label>
             {raceType === "10K" ? (
@@ -146,10 +146,10 @@ export function RaceDetailsForm({
                   placeholder="Minutes (e.g. 45)"
                   value={timeMinutes}
                   onChange={(e) => setTimeMinutes(e.target.value)}
-                  className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  className="w-full px-4 py-3 text-lg border border-gray-300 dark:border-neutral-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                   min={1}
                 />
-                <span className="text-xs text-gray-500 mt-1 block">Minutes</span>
+                <span className="text-xs text-gray-500 dark:text-neutral-400 mt-1 block">Minutes</span>
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-2">
@@ -160,11 +160,11 @@ export function RaceDetailsForm({
                     placeholder="HH"
                     value={timeHours}
                     onChange={(e) => setTimeHours(e.target.value)}
-                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    className="w-full px-4 py-3 text-lg border border-gray-300 dark:border-neutral-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                     min={0}
                     max={12}
                   />
-                  <span className="text-xs text-gray-500 mt-1 block">Hours</span>
+                  <span className="text-xs text-gray-500 dark:text-neutral-400 mt-1 block">Hours</span>
                 </div>
                 <div>
                   <input
@@ -173,11 +173,11 @@ export function RaceDetailsForm({
                     placeholder="MM"
                     value={timeMinutes}
                     onChange={(e) => setTimeMinutes(e.target.value)}
-                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    className="w-full px-4 py-3 text-lg border border-gray-300 dark:border-neutral-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                     min={0}
                     max={59}
                   />
-                  <span className="text-xs text-gray-500 mt-1 block">Minutes</span>
+                  <span className="text-xs text-gray-500 dark:text-neutral-400 mt-1 block">Minutes</span>
                 </div>
               </div>
             )}
@@ -185,9 +185,9 @@ export function RaceDetailsForm({
 
           {/* Weight with inline kg/lbs toggle */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
               Weight{" "}
-              <span className="text-gray-400 text-xs">(Optional)</span>
+              <span className="text-gray-400 dark:text-neutral-500 text-xs">(Optional)</span>
             </label>
             <div className="relative">
               <input
@@ -196,7 +196,7 @@ export function RaceDetailsForm({
                 placeholder={weightUnit === "kg" ? "e.g. 68.5" : "e.g. 150"}
                 value={displayValue}
                 onChange={(e) => handleWeightChange(e.target.value)}
-                className="w-full px-4 py-3 pr-20 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-3 pr-20 text-lg border border-gray-300 dark:border-neutral-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1">
                 <button
@@ -205,7 +205,7 @@ export function RaceDetailsForm({
                   className={`px-3 py-1 text-sm font-medium rounded-lg transition-all ${
                     weightUnit === "kg"
                       ? "bg-emerald-600 text-white shadow-md"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      : "bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-200 dark:hover:bg-neutral-700"
                   }`}
                 >
                   kg
@@ -216,14 +216,14 @@ export function RaceDetailsForm({
                   className={`px-3 py-1 text-sm font-medium rounded-lg transition-all ${
                     weightUnit === "lbs"
                       ? "bg-emerald-600 text-white shadow-md"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      : "bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-200 dark:hover:bg-neutral-700"
                   }`}
                 >
                   lbs
                 </button>
               </div>
             </div>
-            <span className="text-xs text-gray-500 mt-1 block">
+            <span className="text-xs text-gray-500 dark:text-neutral-400 mt-1 block">
               Increases carb needs for heavier athletes
             </span>
           </div>
@@ -232,10 +232,10 @@ export function RaceDetailsForm({
         {/* Carbs per Hour Slider */}
         <div>
           <div className="flex justify-between mb-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300">
               Carbs per Hour
             </label>
-            <span className="text-sm font-semibold text-emerald-600">
+            <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
               {carbsPerHour}g
             </span>
           </div>
@@ -247,13 +247,13 @@ export function RaceDetailsForm({
             step={5}
             className="mt-2"
           />
-          <div className="flex justify-between text-xs text-gray-500 mt-2">
+          <div className="flex justify-between text-xs text-gray-500 dark:text-neutral-400 mt-2">
             <span>Low ({MIN_CARBS_PER_HOUR}g)</span>
             <span>Moderate (60g)</span>
             <span>High ({MAX_CARBS_PER_HOUR[raceType]}g)</span>
           </div>
           {raceType === "Full" && (
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 dark:text-neutral-400 mt-2">
               Marathon plans support up to 100g/hr — only push past 90g if
               you've trained your gut for it.
             </p>

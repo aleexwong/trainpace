@@ -19,6 +19,7 @@ import {
 } from "chart.js";
 import type { ProfilePoint } from "@/types/elevation";
 import { downsampleProfile, computeCumulativeGain } from "../utils";
+import { useChartTheme } from "@/features/theme";
 
 Chart.register(
   CategoryScale,
@@ -45,6 +46,8 @@ export function CumulativeGainChart({ points }: { points: ProfilePoint[] }) {
     );
     return reduced.map((p) => ({ distanceKm: p.distanceKm, gain: p.elevation }));
   }, [points]);
+
+  const ct = useChartTheme();
 
   const data = useMemo(
     () => ({
@@ -74,7 +77,7 @@ export function CumulativeGainChart({ points }: { points: ProfilePoint[] }) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: "rgba(17, 24, 39, 0.95)",
+          backgroundColor: ct.tooltipBg,
           displayColors: false,
           callbacks: {
             title: (items) => `Distance: ${items[0].parsed.x.toFixed(1)} km`,
@@ -85,23 +88,23 @@ export function CumulativeGainChart({ points }: { points: ProfilePoint[] }) {
       scales: {
         x: {
           type: "linear",
-          title: { display: true, text: "Distance (km)" },
-          ticks: { color: "rgba(107,114,128,1)", font: { size: 11 } },
-          grid: { color: "rgba(229,231,235,1)" },
+          title: { display: true, text: "Distance (km)", color: ct.title },
+          ticks: { color: ct.tick, font: { size: 11 } },
+          grid: { color: ct.grid },
         },
         y: {
-          title: { display: true, text: "Cumulative gain (m)" },
-          ticks: { color: "rgba(107,114,128,1)", font: { size: 11 } },
-          grid: { color: "rgba(229,231,235,1)" },
+          title: { display: true, text: "Cumulative gain (m)", color: ct.title },
+          ticks: { color: ct.tick, font: { size: 11 } },
+          grid: { color: ct.grid },
         },
       },
     }),
-    []
+    [ct]
   );
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200">
-      <h3 className="px-4 py-3 border-b border-gray-200 text-base font-semibold text-gray-800">
+    <div className="w-full bg-white dark:bg-neutral-900 rounded-lg shadow-sm border border-gray-200 dark:border-neutral-800">
+      <h3 className="px-4 py-3 border-b border-gray-200 dark:border-neutral-800 text-base font-semibold text-gray-800 dark:text-neutral-200">
         Cumulative Climbing
       </h3>
       <div className="w-full h-64 p-4">

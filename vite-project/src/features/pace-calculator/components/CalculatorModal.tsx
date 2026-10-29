@@ -15,16 +15,16 @@ const CalculatorModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild className="bg-white">
+      <DialogTrigger asChild className="bg-white dark:bg-neutral-900">
         <Button
           variant="outline"
           size="icon"
-          className="ml-2 text-emerald-600 hover:bg-emerald-50"
+          className="ml-2 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
         >
           <Info className="h-5 w-5" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md bg-emerald-50">
+      <DialogContent className="sm:max-w-md bg-emerald-50 dark:bg-emerald-950/40">
         <DialogHeader>
           <DialogTitle className="text-left">
             How does the Calculator Work? 🏃
@@ -38,7 +38,7 @@ const CalculatorModal = () => {
         <div className="space-y-4">
           <section>
             <h3 className="font-semibold mb-2">Enter Your Race Info 🥇</h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-neutral-400">
               Input your recent race time (e.g., 25 minutes for a 5K) and the
               race distance in miles or kilometers. Select whether to calculate
               pace in minutes per kilometer or per mile.
@@ -47,7 +47,7 @@ const CalculatorModal = () => {
 
           <section>
             <h3 className="font-semibold mb-2">Calculate Your Base Pace 🏎️</h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-neutral-400">
               The calculator determines your "base" pace, which is your average
               speed during the race. For example, if you ran a 10K in 50
               minutes, your base pace would be 5 minutes per kilometer.
@@ -56,11 +56,11 @@ const CalculatorModal = () => {
 
           <section>
             <h3 className="font-semibold mb-2">Adjust for Training Types 🏋️</h3>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-neutral-400">
               Training runs vary based on their purpose. The calculator adjusts
               your base pace for these common training types:
             </p>
-            <ul className="list-disc list-inside text-sm text-gray-600">
+            <ul className="list-disc list-inside text-sm text-gray-600 dark:text-neutral-400">
               <li>
                 <strong>Easy Runs:</strong> Slower pace, focusing on recovery
                 and endurance.

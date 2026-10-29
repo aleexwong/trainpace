@@ -1,6 +1,6 @@
 // Pure theme helpers, shared by ThemeProvider and mirrored by the inline
 // script in index.html (which runs before React, so it can't import this).
-// If you change THEME_STORAGE_KEY or THEMED_ROUTES, change index.html too.
+// If you change THEME_STORAGE_KEY or LIGHT_ONLY_ROUTES, change index.html too.
 
 export type ThemePreference = "system" | "light" | "dark";
 export type ResolvedTheme = "light" | "dark";
@@ -8,14 +8,16 @@ export type ResolvedTheme = "light" | "dark";
 export const THEME_STORAGE_KEY = "tp-theme";
 
 /**
- * Pages whose content has been converted to work in both themes. Only these
- * get `dark` on <html>; every other page stays light until its phase lands.
- * SiteNav and Footer follow the theme everywhere through their own wrapper.
+ * Route prefixes that stay light whatever the theme, for a page that has not
+ * been checked in dark mode yet. Every other page gets `dark` on <html>.
+ * A prefix matches the path itself and everything below it.
  */
-export const THEMED_ROUTES: readonly string[] = ["/"];
+export const LIGHT_ONLY_ROUTES: readonly string[] = [];
 
 export const isThemedRoute = (pathname: string) =>
-  THEMED_ROUTES.includes(pathname);
+  !LIGHT_ONLY_ROUTES.some(
+    (r) => pathname === r || pathname.startsWith(`${r}/`),
+  );
 
 const DARK_QUERY = "(prefers-color-scheme: dark)";
 

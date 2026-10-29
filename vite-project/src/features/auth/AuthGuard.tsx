@@ -14,7 +14,7 @@ export default function AuthGuard({ children, fallback }: AuthGuardProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
-        <div className="text-gray-500">Loading...</div>
+        <div className="text-gray-500 dark:text-neutral-400">Loading...</div>
       </div>
     );
   }

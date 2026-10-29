@@ -65,9 +65,9 @@ interface RouteStatCardProps {
 
 function RouteStatCard({ label, value }: RouteStatCardProps) {
   return (
-    <div className="rounded-2xl border border-orange-100 bg-white p-4">
-      <div className="text-xs font-semibold text-gray-500">{label}</div>
-      <div className="mt-1 text-lg font-bold text-gray-900">{value}</div>
+    <div className="rounded-2xl border border-orange-100 dark:border-orange-900/60 bg-white dark:bg-neutral-900 p-4">
+      <div className="text-xs font-semibold text-gray-500 dark:text-neutral-400">{label}</div>
+      <div className="mt-1 text-lg font-bold text-gray-900 dark:text-neutral-100">{value}</div>
     </div>
   );
 }
@@ -80,11 +80,11 @@ function TipsCard({ tips }: TipsCardProps) {
   if (tips.length === 0) return null;
 
   return (
-    <div className="rounded-2xl border border-orange-100 bg-white p-6">
-      <h3 className="text-lg font-bold text-gray-900">Quick Tips</h3>
+    <div className="rounded-2xl border border-orange-100 dark:border-orange-900/60 bg-white dark:bg-neutral-900 p-6">
+      <h3 className="text-lg font-bold text-gray-900 dark:text-neutral-100">Quick Tips</h3>
       <div className="mt-3 space-y-2">
         {tips.slice(0, 6).map((tip) => (
-          <div key={tip} className="text-gray-700">
+          <div key={tip} className="text-gray-700 dark:text-neutral-300">
             {tip}
           </div>
         ))}
@@ -99,9 +99,9 @@ interface FuelingNoteCardProps {
 
 function FuelingNoteCard({ notes }: FuelingNoteCardProps) {
   return (
-    <div className="rounded-2xl border border-orange-100 bg-white p-6">
-      <h3 className="text-lg font-bold text-gray-900">Fueling Note</h3>
-      <p className="mt-3 text-gray-700 leading-relaxed">{notes}</p>
+    <div className="rounded-2xl border border-orange-100 dark:border-orange-900/60 bg-white dark:bg-neutral-900 p-6">
+      <h3 className="text-lg font-bold text-gray-900 dark:text-neutral-100">Fueling Note</h3>
+      <p className="mt-3 text-gray-700 dark:text-neutral-300 leading-relaxed">{notes}</p>
       <div className="mt-4">
         <a
           href="/fuel"
@@ -149,7 +149,7 @@ export function RacePageTemplate({
   const faqItems = page.faq?.length ? page.faq : routeData?.faq || [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-orange-50">
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-orange-50 dark:to-neutral-950">
       {/* SEO Meta Tags */}
       <Helmet>
         <title>{meta.title}</title>
@@ -176,14 +176,14 @@ export function RacePageTemplate({
 
       {/* Breadcrumb Navigation */}
       <nav className="px-4 sm:px-6 pt-4" aria-label="Breadcrumb">
-        <ol className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+        <ol className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-neutral-400">
           {breadcrumbs.map((item, index) => (
             <li key={item.url} className="flex items-center gap-2">
-              {index > 0 && <span className="text-gray-400">/</span>}
+              {index > 0 && <span className="text-gray-400 dark:text-neutral-500">/</span>}
               {index === breadcrumbs.length - 1 ? (
-                <span className="text-gray-900 font-medium">{item.name}</span>
+                <span className="text-gray-900 dark:text-neutral-100 font-medium">{item.name}</span>
               ) : (
-                <a href={item.url} className="hover:text-gray-900 hover:underline">
+                <a href={item.url} className="hover:text-gray-900 dark:hover:text-neutral-100 hover:underline">
                   {item.name}
                 </a>
               )}
@@ -195,18 +195,18 @@ export function RacePageTemplate({
       {/* Hero Section */}
       <section className="px-4 sm:px-6 pt-10 pb-8">
         <div className="max-w-5xl mx-auto">
-          <div className="inline-flex items-center rounded-full border border-orange-200 bg-white/80 px-4 py-2 text-sm font-semibold text-orange-800">
+          <div className="inline-flex items-center rounded-full border border-orange-200 dark:border-orange-900 bg-white/80 dark:bg-neutral-900/80 px-4 py-2 text-sm font-semibold text-orange-800 dark:text-orange-300">
             Race Prep Page
           </div>
-          <h1 className="mt-4 text-4xl sm:text-5xl font-bold tracking-tight text-gray-900">
+          <h1 className="mt-4 text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-neutral-100">
             {page.h1}
           </h1>
-          <p className="mt-4 text-lg text-gray-700">{page.intro}</p>
+          <p className="mt-4 text-lg text-gray-700 dark:text-neutral-300">{page.intro}</p>
           <div className="mt-6 grid gap-2">
             {page.bullets.map((bullet) => (
               <div
                 key={bullet}
-                className="rounded-lg bg-white/70 border border-orange-100 px-4 py-3 text-gray-800"
+                className="rounded-lg bg-white/70 dark:bg-neutral-900/70 border border-orange-100 dark:border-orange-900/60 px-4 py-3 text-gray-800 dark:text-neutral-200"
               >
                 {bullet}
               </div>
@@ -219,18 +219,18 @@ export function RacePageTemplate({
       {routeData && (
         <section className="px-4 sm:px-6 pb-10">
           <div className="max-w-5xl mx-auto">
-            <div className="rounded-3xl border border-orange-100 bg-white/70 overflow-hidden">
+            <div className="rounded-3xl border border-orange-100 dark:border-orange-900/60 bg-white/70 dark:bg-neutral-900/70 overflow-hidden">
               {/* Header */}
               <div className="p-6 sm:p-8">
                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                   <div>
-                    <div className="text-sm font-semibold text-orange-800">
+                    <div className="text-sm font-semibold text-orange-800 dark:text-orange-300">
                       Featured Course Data
                     </div>
-                    <h2 className="mt-2 text-2xl sm:text-3xl font-bold text-gray-900">
+                    <h2 className="mt-2 text-2xl sm:text-3xl font-bold text-gray-900 dark:text-neutral-100">
                       {routeData.name}
                     </h2>
-                    <p className="mt-2 text-gray-700">
+                    <p className="mt-2 text-gray-700 dark:text-neutral-300">
                       {routeData.city}, {routeData.country} - {routeData.raceDate}
                     </p>
                   </div>
@@ -239,7 +239,7 @@ export function RacePageTemplate({
                     {page.previewRouteKey && (
                       <a
                         href={`/preview-route/${page.previewRouteKey}`}
-                        className="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-white font-semibold hover:bg-black transition-colors"
+                        className="inline-flex items-center rounded-lg bg-gray-900 px-4 py-2 text-white font-semibold hover:bg-black transition-colors dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200"
                       >
                         Full Course Page
                       </a>
@@ -248,14 +248,14 @@ export function RacePageTemplate({
                       href={routeData.website}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center rounded-lg border border-orange-200 bg-white px-4 py-2 text-orange-900 font-semibold hover:bg-orange-50 transition-colors"
+                      className="inline-flex items-center rounded-lg border border-orange-200 dark:border-orange-900 bg-white dark:bg-neutral-900 px-4 py-2 text-orange-900 dark:text-orange-200 font-semibold hover:bg-orange-50 dark:hover:bg-orange-950/40 transition-colors"
                     >
                       Official Site
                     </a>
                   </div>
                 </div>
 
-                <p className="mt-4 text-gray-700 leading-relaxed">
+                <p className="mt-4 text-gray-700 dark:text-neutral-300 leading-relaxed">
                   {routeData.description}
                 </p>
 
@@ -281,7 +281,7 @@ export function RacePageTemplate({
               </div>
 
               {/* Map */}
-              <div className="border-t border-orange-100 bg-white">
+              <div className="border-t border-orange-100 dark:border-orange-900/60 bg-white dark:bg-neutral-900">
                 <StaticRouteMap
                   routePoints={routeData.thumbnailPoints}
                   routeName={routeData.name}
@@ -295,7 +295,7 @@ export function RacePageTemplate({
 
               {/* Tips & Fueling Notes */}
               {(routeData.tips?.length || routeData.fuelingNotes) && (
-                <div className="p-6 sm:p-8 border-t border-orange-100">
+                <div className="p-6 sm:p-8 border-t border-orange-100 dark:border-orange-900/60">
                   <div className="grid gap-6 lg:grid-cols-2">
                     {routeData.tips?.length ? (
                       <TipsCard tips={routeData.tips} />
@@ -318,19 +318,19 @@ export function RacePageTemplate({
       {faqItems.length > 0 && (
         <section className="px-4 sm:px-6 py-12">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-neutral-100 mb-6">
               Frequently Asked Questions
             </h2>
             <div className="space-y-4">
               {faqItems.map((item, index) => (
                 <div
                   key={index}
-                  className="rounded-xl bg-white/80 border border-orange-100 p-6"
+                  className="rounded-xl bg-white/80 dark:bg-neutral-900/80 border border-orange-100 dark:border-orange-900/60 p-6"
                 >
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100">
                     {item.question}
                   </h3>
-                  <p className="mt-2 text-gray-700">{item.answer}</p>
+                  <p className="mt-2 text-gray-700 dark:text-neutral-300">{item.answer}</p>
                 </div>
               ))}
             </div>
@@ -343,52 +343,52 @@ export function RacePageTemplate({
         <div className="max-w-5xl mx-auto grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <a
             href="/calculator"
-            className="rounded-2xl border border-emerald-100 bg-white/70 p-6 hover:bg-white transition-colors"
+            className="rounded-2xl border border-emerald-100 dark:border-emerald-900/60 bg-white/70 dark:bg-neutral-900/70 p-6 hover:bg-white dark:hover:bg-neutral-900 transition-colors"
           >
-            <div className="text-sm font-semibold text-emerald-700">Pacing</div>
-            <div className="mt-2 text-lg font-bold text-gray-900">
+            <div className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Pacing</div>
+            <div className="mt-2 text-lg font-bold text-gray-900 dark:text-neutral-100">
               Training paces
             </div>
-            <p className="mt-2 text-gray-700 text-sm">
+            <p className="mt-2 text-gray-700 dark:text-neutral-300 text-sm">
               Convert any race time into Easy, Tempo, and Interval zones.
             </p>
           </a>
 
           <a
             href="/plan"
-            className="rounded-2xl border border-emerald-100 bg-white/70 p-6 hover:bg-white transition-colors"
+            className="rounded-2xl border border-emerald-100 dark:border-emerald-900/60 bg-white/70 dark:bg-neutral-900/70 p-6 hover:bg-white dark:hover:bg-neutral-900 transition-colors"
           >
-            <div className="text-sm font-semibold text-emerald-700">Training</div>
-            <div className="mt-2 text-lg font-bold text-gray-900">
+            <div className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Training</div>
+            <div className="mt-2 text-lg font-bold text-gray-900 dark:text-neutral-100">
               Training plan
             </div>
-            <p className="mt-2 text-gray-700 text-sm">
+            <p className="mt-2 text-gray-700 dark:text-neutral-300 text-sm">
               8–20 week periodized plan with daily workouts and pace zones.
             </p>
           </a>
 
           <a
             href="/fuel"
-            className="rounded-2xl border border-amber-100 bg-white/70 p-6 hover:bg-white transition-colors"
+            className="rounded-2xl border border-amber-100 dark:border-amber-900/60 bg-white/70 dark:bg-neutral-900/70 p-6 hover:bg-white dark:hover:bg-neutral-900 transition-colors"
           >
-            <div className="text-sm font-semibold text-amber-700">Fueling</div>
-            <div className="mt-2 text-lg font-bold text-gray-900">
+            <div className="text-sm font-semibold text-amber-700 dark:text-amber-300">Fueling</div>
+            <div className="mt-2 text-lg font-bold text-gray-900 dark:text-neutral-100">
               Gel schedule
             </div>
-            <p className="mt-2 text-gray-700 text-sm">
+            <p className="mt-2 text-gray-700 dark:text-neutral-300 text-sm">
               Estimate carbs/hour, total carbs, and how many gels to carry.
             </p>
           </a>
 
           <a
             href="/elevation-finder"
-            className="rounded-2xl border border-emerald-100 bg-white/70 p-6 hover:bg-white transition-colors"
+            className="rounded-2xl border border-emerald-100 dark:border-emerald-900/60 bg-white/70 dark:bg-neutral-900/70 p-6 hover:bg-white dark:hover:bg-neutral-900 transition-colors"
           >
-            <div className="text-sm font-semibold text-emerald-700">Course</div>
-            <div className="mt-2 text-lg font-bold text-gray-900">
+            <div className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Course</div>
+            <div className="mt-2 text-lg font-bold text-gray-900 dark:text-neutral-100">
               Elevation analysis
             </div>
-            <p className="mt-2 text-gray-700 text-sm">
+            <p className="mt-2 text-gray-700 dark:text-neutral-300 text-sm">
               Upload a GPX to see elevation gain, grades, and key climbs.
             </p>
           </a>

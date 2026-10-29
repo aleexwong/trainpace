@@ -46,20 +46,20 @@ export function TrainingZonesDisplay({
   compact,
 }: TrainingZonesDisplayProps) {
   return (
-    <div className={`bg-white rounded-2xl shadow-lg h-full ${compact ? "p-4" : "p-5 sm:p-8"}`}>
+    <div className={`bg-white dark:bg-neutral-900 rounded-2xl shadow-lg h-full ${compact ? "p-4" : "p-5 sm:p-8"}`}>
       {/* Header */}
       <div className={`flex items-center justify-between gap-3 ${compact ? "mb-3" : "mb-4"}`}>
         <div className={compact ? "w-full text-center" : ""}>
-          <h2 className={`font-bold text-gray-900 ${compact ? "text-lg mb-0.5" : "text-xl sm:text-2xl"}`}>
+          <h2 className={`font-bold text-gray-900 dark:text-neutral-100 ${compact ? "text-lg mb-0.5" : "text-xl sm:text-2xl"}`}>
             Training Paces
           </h2>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-gray-500 dark:text-neutral-400">
             Daniels&apos; 5 zones &middot; VDOT {vdot}
           </p>
         </div>
         {!compact && (
           <div
-            className="relative w-36 h-9 bg-emerald-100 rounded-full cursor-pointer overflow-hidden select-none"
+            className="relative w-36 h-9 bg-emerald-100 dark:bg-emerald-900/40 rounded-full cursor-pointer overflow-hidden select-none"
             onClick={onTogglePaceUnit}
           >
             <div
@@ -68,8 +68,8 @@ export function TrainingZonesDisplay({
               }`}
             />
             <div className="absolute inset-0 flex items-center">
-              <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "km" ? "text-white" : "text-emerald-700"}`}>min/km</div>
-              <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "mi" ? "text-white" : "text-emerald-700"}`}>min/mi</div>
+              <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "km" ? "text-white" : "text-emerald-700 dark:text-emerald-300"}`}>min/km</div>
+              <div className={`w-1/2 text-center text-xs font-semibold transition-colors ${paceUnit === "mi" ? "text-white" : "text-emerald-700 dark:text-emerald-300"}`}>min/mi</div>
             </div>
           </div>
         )}
@@ -96,7 +96,7 @@ export function TrainingZonesDisplay({
                   >
                     {zone.shortName}
                   </div>
-                  <h3 className="font-semibold text-gray-900 text-xs truncate">
+                  <h3 className="font-semibold text-gray-900 dark:text-neutral-100 text-xs truncate">
                     {zone.name}
                   </h3>
                 </div>
@@ -105,15 +105,15 @@ export function TrainingZonesDisplay({
                 <p className={`font-bold font-mono tabular-nums ${colors.text} text-sm leading-tight`}>
                   {pace}
                 </p>
-                <p className="text-[9px] text-gray-400 mb-1.5">{unit}</p>
+                <p className="text-[9px] text-gray-400 dark:text-neutral-500 mb-1.5">{unit}</p>
 
                 {/* Workouts — compact list */}
                 {!compact && workouts.length > 0 && (
-                  <div className="border-t border-gray-100 pt-1.5 mt-1 space-y-0.5">
+                  <div className="border-t border-gray-100 dark:border-neutral-800 pt-1.5 mt-1 space-y-0.5">
                     {workouts.map((w, i) => (
                       <div key={i} className="flex items-center gap-1">
                         <Info className={`w-2.5 h-2.5 shrink-0 ${colors.text} opacity-50`} />
-                        <p className="text-[10px] text-gray-500 truncate">{w.workout}</p>
+                        <p className="text-[10px] text-gray-500 dark:text-neutral-400 truncate">{w.workout}</p>
                       </div>
                     ))}
                   </div>

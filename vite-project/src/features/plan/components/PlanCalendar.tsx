@@ -50,13 +50,13 @@ export function PlanCalendar({ plan, onSave, saving, savedId, progress, editor, 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h3 className="text-lg font-bold text-slate-900">
+        <h3 className="text-lg font-bold text-slate-900 dark:text-neutral-100">
           {plan.totalWeeks}-Week Schedule
         </h3>
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={handleExport}
-            className="rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold px-4 py-2 text-sm transition-colors shadow-sm flex items-center gap-1.5"
+            className="rounded-xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-slate-50 dark:hover:bg-neutral-800 text-slate-700 dark:text-neutral-300 font-semibold px-4 py-2 text-sm transition-colors shadow-sm flex items-center gap-1.5"
             title="Export to Google Calendar / Apple Calendar"
           >
             {exported ? (
@@ -69,13 +69,13 @@ export function PlanCalendar({ plan, onSave, saving, savedId, progress, editor, 
             <button
               onClick={onSave}
               disabled={saving}
-              className="rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-bold px-5 py-2.5 text-sm transition-colors shadow-sm"
+              className="rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 dark:disabled:bg-neutral-600 disabled:cursor-not-allowed text-white font-bold px-5 py-2.5 text-sm transition-colors shadow-sm"
             >
               {saving ? "Saving…" : "Save to Dashboard"}
             </button>
           )}
           {savedId && (
-            <span className="text-sm text-emerald-600 font-semibold">
+            <span className="text-sm text-emerald-600 dark:text-emerald-400 font-semibold">
               ✓ Saved to your dashboard
             </span>
           )}
@@ -83,14 +83,14 @@ export function PlanCalendar({ plan, onSave, saving, savedId, progress, editor, 
       </div>
 
       {currentWeekNum !== null && (
-        <div className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-2.5 text-sm text-emerald-800 font-medium">
+        <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 px-4 py-2.5 text-sm text-emerald-800 dark:text-emerald-300 font-medium">
           📍 You are on <strong>Week {currentWeekNum}</strong> —{" "}
           {plan.weeks.find((w) => w.weekNumber === currentWeekNum)?.phase}
         </div>
       )}
 
       {editor && (
-        <p className="text-xs text-slate-400 px-1">
+        <p className="text-xs text-slate-400 dark:text-neutral-500 px-1">
           Life happens — drag a workout onto another day to reschedule it. Drop
           on an occupied day to swap the two. On touch, press and hold to pick
           one up.

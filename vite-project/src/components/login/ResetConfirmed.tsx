@@ -5,7 +5,7 @@ export default function ResetConfirmed() {
   return (
     <div className="flex flex-col items-center justify-center h-[70vh] px-4 text-center">
       <h1 className="text-2xl font-bold mb-4">Password Reset</h1>
-      <p className="text-green-600 mb-6">
+      <p className="text-green-600 dark:text-green-400 mb-6">
         ✅ Your password has been reset successfully.
       </p>
       <Link to="/login" className="text-emerald-500 hover:underline">

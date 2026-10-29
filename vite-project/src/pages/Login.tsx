@@ -89,7 +89,7 @@ export default function Login() {
   return (
     <div data-testid="login-page" className="flex flex-col items-center justify-center h-[70vh] text-center w-full px-4">
       <h1 className="text-2xl font-bold mb-4">Welcome back</h1>
-      <p className="text-gray-600 mb-6">
+      <p className="text-gray-600 dark:text-neutral-400 mb-6">
         Sign in with Google or email to get started.
       </p>
 
@@ -98,9 +98,9 @@ export default function Login() {
         <LoginButton />
 
         <div className="flex items-center w-full my-2">
-          <div className="flex-1 border-t border-gray-300"></div>
-          <span className="px-4 text-sm text-gray-500">or</span>
-          <div className="flex-1 border-t border-gray-300"></div>
+          <div className="flex-1 border-t border-gray-300 dark:border-neutral-700"></div>
+          <span className="px-4 text-sm text-gray-500 dark:text-neutral-400">or</span>
+          <div className="flex-1 border-t border-gray-300 dark:border-neutral-700"></div>
         </div>
 
         <form onSubmit={handleEmailLogin} className="w-full space-y-3">
@@ -108,7 +108,7 @@ export default function Login() {
             type="email"
             placeholder="Email"
             data-testid="login-email"
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -118,7 +118,7 @@ export default function Login() {
             type="password"
             placeholder="Password"
             data-testid="login-password"
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required

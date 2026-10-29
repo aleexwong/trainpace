@@ -22,14 +22,14 @@ export function ContextPresetButton({
       onClick={onToggle}
       className={`relative p-3 text-left border-2 rounded-lg transition-all ${
         isSelected
-          ? "bg-purple-100 border-purple-500"
-          : "bg-white border-purple-200 hover:bg-purple-50"
+          ? "bg-purple-100 dark:bg-purple-900/40 border-purple-500"
+          : "bg-white dark:bg-neutral-900 border-purple-200 dark:border-purple-900 hover:bg-purple-50 dark:hover:bg-purple-950/40"
       }`}
     >
       <div className="text-2xl mb-1">{preset.icon}</div>
-      <div className="text-xs font-medium text-gray-700">{preset.label}</div>
+      <div className="text-xs font-medium text-gray-700 dark:text-neutral-300">{preset.label}</div>
       {isSelected && (
-        <CheckCircle className="h-4 w-4 text-purple-600 absolute top-2 right-2" />
+        <CheckCircle className="h-4 w-4 text-purple-600 dark:text-purple-400 absolute top-2 right-2" />
       )}
     </button>
   );

@@ -106,13 +106,13 @@ function saveHistory(history: CalculationHistoryEntry[]) {
 }
 
 export function getVdotLevel(vdot: number): { label: string; color: string; bgColor: string } {
-  if (vdot >= 80) return { label: "Elite World Class", color: "text-purple-700", bgColor: "bg-purple-100" };
-  if (vdot >= 70) return { label: "Elite", color: "text-red-600", bgColor: "bg-red-100" };
-  if (vdot >= 60) return { label: "Advanced", color: "text-orange-600", bgColor: "bg-orange-100" };
-  if (vdot >= 50) return { label: "Competitive", color: "text-yellow-600", bgColor: "bg-yellow-100" };
-  if (vdot >= 40) return { label: "Intermediate", color: "text-blue-600", bgColor: "bg-blue-100" };
-  if (vdot >= 30) return { label: "Recreational", color: "text-emerald-600", bgColor: "bg-emerald-100" };
-  return { label: "Beginner", color: "text-gray-600", bgColor: "bg-gray-100" };
+  if (vdot >= 80) return { label: "Elite World Class", color: "text-purple-700 dark:text-purple-300", bgColor: "bg-purple-100 dark:bg-purple-900/40" };
+  if (vdot >= 70) return { label: "Elite", color: "text-red-600 dark:text-red-400", bgColor: "bg-red-100 dark:bg-red-900/40" };
+  if (vdot >= 60) return { label: "Advanced", color: "text-orange-600 dark:text-orange-400", bgColor: "bg-orange-100 dark:bg-orange-900/40" };
+  if (vdot >= 50) return { label: "Competitive", color: "text-yellow-600 dark:text-yellow-400", bgColor: "bg-yellow-100 dark:bg-yellow-900/40" };
+  if (vdot >= 40) return { label: "Intermediate", color: "text-blue-600 dark:text-blue-400", bgColor: "bg-blue-100 dark:bg-blue-900/40" };
+  if (vdot >= 30) return { label: "Recreational", color: "text-emerald-600 dark:text-emerald-400", bgColor: "bg-emerald-100 dark:bg-emerald-900/40" };
+  return { label: "Beginner", color: "text-gray-600 dark:text-neutral-400", bgColor: "bg-gray-100 dark:bg-neutral-800" };
 }
 
 export function getVdotPercentile(vdot: number): string {
@@ -140,38 +140,38 @@ export type ZoneColorClasses = {
 export function getZoneColorClasses(color: string): ZoneColorClasses {
   const colors: Record<string, ZoneColorClasses> = {
     emerald: {
-      bg: "bg-emerald-50",
-      border: "border-emerald-200",
-      text: "text-emerald-700",
-      badge: "bg-emerald-100 text-emerald-800",
+      bg: "bg-emerald-50 dark:bg-emerald-950/40",
+      border: "border-emerald-200 dark:border-emerald-900",
+      text: "text-emerald-700 dark:text-emerald-300",
+      badge: "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300",
       gradient: "from-emerald-500 to-emerald-600",
     },
     blue: {
-      bg: "bg-blue-50",
-      border: "border-blue-200",
-      text: "text-blue-700",
-      badge: "bg-blue-100 text-blue-800",
+      bg: "bg-blue-50 dark:bg-blue-950/40",
+      border: "border-blue-200 dark:border-blue-900",
+      text: "text-blue-700 dark:text-blue-300",
+      badge: "bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300",
       gradient: "from-blue-500 to-blue-600",
     },
     yellow: {
-      bg: "bg-yellow-50",
-      border: "border-yellow-200",
-      text: "text-yellow-700",
-      badge: "bg-yellow-100 text-yellow-800",
+      bg: "bg-yellow-50 dark:bg-yellow-950/40",
+      border: "border-yellow-200 dark:border-yellow-900",
+      text: "text-yellow-700 dark:text-yellow-300",
+      badge: "bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300",
       gradient: "from-yellow-500 to-yellow-600",
     },
     orange: {
-      bg: "bg-orange-50",
-      border: "border-orange-200",
-      text: "text-orange-700",
-      badge: "bg-orange-100 text-orange-800",
+      bg: "bg-orange-50 dark:bg-orange-950/40",
+      border: "border-orange-200 dark:border-orange-900",
+      text: "text-orange-700 dark:text-orange-300",
+      badge: "bg-orange-100 dark:bg-orange-900/40 text-orange-800 dark:text-orange-300",
       gradient: "from-orange-500 to-orange-600",
     },
     red: {
-      bg: "bg-red-50",
-      border: "border-red-200",
-      text: "text-red-700",
-      badge: "bg-red-100 text-red-800",
+      bg: "bg-red-50 dark:bg-red-950/40",
+      border: "border-red-200 dark:border-red-900",
+      text: "text-red-700 dark:text-red-300",
+      badge: "bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300",
       gradient: "from-red-500 to-red-600",
     },
   };

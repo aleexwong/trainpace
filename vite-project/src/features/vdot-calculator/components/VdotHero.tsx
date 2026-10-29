@@ -12,8 +12,8 @@ export function VdotHero() {
   return (
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 via-emerald-600 to-purple-700 p-6 sm:p-10 mb-8">
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/4" />
+      <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 dark:bg-neutral-900/5 rounded-full -translate-y-1/2 translate-x-1/3" />
+      <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 dark:bg-neutral-900/5 rounded-full translate-y-1/2 -translate-x-1/4" />
 
       <div className="relative z-10">
         {/* Breadcrumb */}
@@ -37,7 +37,7 @@ export function VdotHero() {
 
         {/* Title */}
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 dark:bg-neutral-900/20 rounded-xl flex items-center justify-center">
             <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-white">
@@ -53,7 +53,7 @@ export function VdotHero() {
         {/* What is VDOT expandable */}
         <button
           onClick={() => setShowInfo(!showInfo)}
-          className="inline-flex items-center gap-2 text-sm font-medium text-white/90 hover:text-white bg-white/10 hover:bg-white/20 rounded-lg px-4 py-2 transition-all"
+          className="inline-flex items-center gap-2 text-sm font-medium text-white/90 hover:text-white bg-white/10 dark:bg-neutral-900/10 hover:bg-white/20 dark:hover:bg-neutral-900/20 rounded-lg px-4 py-2 transition-all"
         >
           What is VDOT?
           <ChevronDown
@@ -62,7 +62,7 @@ export function VdotHero() {
         </button>
 
         {showInfo && (
-          <div className="mt-4 bg-white/10 backdrop-blur-sm rounded-xl p-5 text-white/90 text-sm leading-relaxed max-w-2xl">
+          <div className="mt-4 bg-white/10 dark:bg-neutral-900/10 backdrop-blur-sm rounded-xl p-5 text-white/90 text-sm leading-relaxed max-w-2xl">
             <p className="mb-3">
               VDOT is a measure of your current running fitness developed by legendary coach
               Jack Daniels. It represents your effective VO&#8322;max — how much oxygen your body

@@ -196,7 +196,7 @@ export default function RaceIndex() {
   }, [normalizedQuery]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-orange-50 px-4 sm:px-6 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-orange-50 dark:to-neutral-950 px-4 sm:px-6 py-10">
       <Helmet>
         <title>{STATIC_PAGE_TITLES["/race"]}</title>
         <meta
@@ -207,10 +207,10 @@ export default function RaceIndex() {
       </Helmet>
 
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900">
+        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-neutral-100">
           Race Prep Pages
         </h1>
-        <p className="mt-4 text-lg text-gray-700">
+        <p className="mt-4 text-lg text-gray-700 dark:text-neutral-300">
           Pick a race to get a simple plan: pacing, fueling, and course strategy.
         </p>
 
@@ -218,40 +218,40 @@ export default function RaceIndex() {
         <div ref={widgetContainerRef} className="mt-8" />
 
         {/* Search */}
-        <div className="mt-8 rounded-2xl border border-orange-100 bg-white/80 p-4 sm:p-5">
+        <div className="mt-8 rounded-2xl border border-orange-100 dark:border-orange-900/60 bg-white/80 dark:bg-neutral-900/80 p-4 sm:p-5">
           <label
             htmlFor="race-search"
-            className="block text-sm font-semibold text-gray-900 mb-2"
+            className="block text-sm font-semibold text-gray-900 dark:text-neutral-100 mb-2"
           >
             Search Races
           </label>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-neutral-500" />
             <input
               id="race-search"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Try: Boston, half marathon, Chicago..."
-              className="w-full pl-10 pr-4 py-3 border border-orange-200 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none bg-white"
+              className="w-full pl-10 pr-4 py-3 border border-orange-200 dark:border-orange-900 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none bg-white dark:bg-neutral-900"
             />
           </div>
           {isSearching && (
-            <p className="mt-2 text-xs text-gray-600">
+            <p className="mt-2 text-xs text-gray-600 dark:text-neutral-400">
               {displayedRaces.length} result{displayedRaces.length === 1 ? "" : "s"}
             </p>
           )}
         </div>
 
         {!isSearching && (
-          <div className="mt-8 rounded-3xl border border-orange-100 bg-white/70 p-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+          <div className="mt-8 rounded-3xl border border-orange-100 dark:border-orange-900/60 bg-white/70 dark:bg-neutral-900/70 p-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-neutral-100">
               Featured Course Data
             </h2>
-            <p className="mt-2 text-gray-700">
+            <p className="mt-2 text-gray-700 dark:text-neutral-300">
               These races include real course coordinates, elevation stats, and pacing/fueling notes.
             </p>
-            <p className="mt-2 text-xs text-gray-500">
+            <p className="mt-2 text-xs text-gray-500 dark:text-neutral-400">
               Featured source: {featuredSource === "firebase" ? "Firebase" : "Local fallback"}
               {featuredError ? " (Firebase read failed)" : ""}
             </p>
@@ -268,29 +268,29 @@ export default function RaceIndex() {
                   <a
                     key={previewKey}
                     href={path}
-                    className="rounded-2xl border border-orange-100 bg-white p-5 hover:bg-orange-50 transition-colors"
+                    className="rounded-2xl border border-orange-100 dark:border-orange-900/60 bg-white dark:bg-neutral-900 p-5 hover:bg-orange-50 dark:hover:bg-orange-950/40 transition-colors"
                   >
-                    <div className="text-sm font-semibold text-orange-800">Course-backed</div>
-                    <div className="mt-1 text-lg font-bold text-gray-900">{route.name}</div>
-                    <div className="mt-2 text-sm text-gray-700">
+                    <div className="text-sm font-semibold text-orange-800 dark:text-orange-300">Course-backed</div>
+                    <div className="mt-1 text-lg font-bold text-gray-900 dark:text-neutral-100">{route.name}</div>
+                    <div className="mt-2 text-sm text-gray-700 dark:text-neutral-300">
                       {route.city}, {route.country}
                     </div>
                     <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
-                      <div className="rounded-lg bg-orange-50 border border-orange-100 px-3 py-2">
-                        <div className="text-xs font-semibold text-gray-500">Km</div>
-                        <div className="font-bold text-gray-900">
+                      <div className="rounded-lg bg-orange-50 dark:bg-orange-950/40 border border-orange-100 dark:border-orange-900/60 px-3 py-2">
+                        <div className="text-xs font-semibold text-gray-500 dark:text-neutral-400">Km</div>
+                        <div className="font-bold text-gray-900 dark:text-neutral-100">
                           {formatWholeNumber(route.distance)}
                         </div>
                       </div>
-                      <div className="rounded-lg bg-orange-50 border border-orange-100 px-3 py-2">
-                        <div className="text-xs font-semibold text-gray-500">Gain</div>
-                        <div className="font-bold text-gray-900">
+                      <div className="rounded-lg bg-orange-50 dark:bg-orange-950/40 border border-orange-100 dark:border-orange-900/60 px-3 py-2">
+                        <div className="text-xs font-semibold text-gray-500 dark:text-neutral-400">Gain</div>
+                        <div className="font-bold text-gray-900 dark:text-neutral-100">
                           {formatWholeNumber(route.elevationGain)}m
                         </div>
                       </div>
-                      <div className="rounded-lg bg-orange-50 border border-orange-100 px-3 py-2">
-                        <div className="text-xs font-semibold text-gray-500">Loss</div>
-                        <div className="font-bold text-gray-900">
+                      <div className="rounded-lg bg-orange-50 dark:bg-orange-950/40 border border-orange-100 dark:border-orange-900/60 px-3 py-2">
+                        <div className="text-xs font-semibold text-gray-500 dark:text-neutral-400">Loss</div>
+                        <div className="font-bold text-gray-900 dark:text-neutral-100">
                           {formatWholeNumber(route.elevationLoss)}m
                         </div>
                       </div>
@@ -303,10 +303,10 @@ export default function RaceIndex() {
         )}
 
         <div className="mt-8 flex items-baseline justify-between gap-3">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-neutral-100">
             {isSearching ? "Search Results" : "Popular Race Prep Pages"}
           </h2>
-          <div className="text-xs text-gray-600">
+          <div className="text-xs text-gray-600 dark:text-neutral-400">
             {displayedRaces.length} page{displayedRaces.length === 1 ? "" : "s"}
           </div>
         </div>
@@ -317,28 +317,28 @@ export default function RaceIndex() {
               <a
                 key={p.slug}
                 href={p.path}
-                className="rounded-2xl border border-orange-100 bg-white/70 p-5 hover:bg-white transition-colors"
+                className="rounded-2xl border border-orange-100 dark:border-orange-900/60 bg-white/70 dark:bg-neutral-900/70 p-5 hover:bg-white dark:hover:bg-neutral-900 transition-colors"
               >
-                <div className="text-sm font-semibold text-orange-800">Race Prep</div>
-                <div className="mt-1 text-lg font-bold text-gray-900">{p.h1}</div>
-                <div className="mt-2 text-sm text-gray-700 line-clamp-2">
+                <div className="text-sm font-semibold text-orange-800 dark:text-orange-300">Race Prep</div>
+                <div className="mt-1 text-lg font-bold text-gray-900 dark:text-neutral-100">{p.h1}</div>
+                <div className="mt-2 text-sm text-gray-700 dark:text-neutral-300 line-clamp-2">
                   {p.description}
                 </div>
               </a>
             ))}
           </div>
         ) : (
-          <div className="mt-4 rounded-2xl border border-orange-100 bg-white/80 p-6 text-center">
-            <div className="text-lg font-semibold text-gray-900">No races found</div>
-            <p className="mt-1 text-sm text-gray-600">
+          <div className="mt-4 rounded-2xl border border-orange-100 dark:border-orange-900/60 bg-white/80 dark:bg-neutral-900/80 p-6 text-center">
+            <div className="text-lg font-semibold text-gray-900 dark:text-neutral-100">No races found</div>
+            <p className="mt-1 text-sm text-gray-600 dark:text-neutral-400">
               Try a city name, distance, or a major marathon.
             </p>
           </div>
         )}
 
-        <div className="mt-10 rounded-2xl border border-orange-100 bg-white/70 p-6">
-          <h2 className="text-xl font-bold text-gray-900">Want a specific race?</h2>
-          <p className="mt-2 text-gray-700">
+        <div className="mt-10 rounded-2xl border border-orange-100 dark:border-orange-900/60 bg-white/70 dark:bg-neutral-900/70 p-6">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-neutral-100">Want a specific race?</h2>
+          <p className="mt-2 text-gray-700 dark:text-neutral-300">
             If you don't see it here, try the core tools and upload a GPX for
             course analysis.
           </p>

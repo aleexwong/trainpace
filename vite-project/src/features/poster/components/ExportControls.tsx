@@ -30,7 +30,7 @@ export function ExportControls({
         {isGenerating ? "Generating..." : 'Download 8×10" Poster (300 DPI)'}
       </Button>
 
-      <div className="text-xs text-gray-500 space-y-1 mt-3">
+      <div className="text-xs text-gray-500 dark:text-neutral-400 space-y-1 mt-3">
         <div>✓ Frame your route with the map controls</div>
         <div>✓ Customize all details below</div>
         <div>✓ Download print-ready 300 DPI poster</div>

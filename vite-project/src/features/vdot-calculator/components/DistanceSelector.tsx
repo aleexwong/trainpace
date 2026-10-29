@@ -39,14 +39,14 @@ interface DistanceSelectorProps {
 export function DistanceSelector({ selectedMeters, onSelect, error }: DistanceSelectorProps) {
   return (
     <div>
-      <label className="block text-sm font-semibold text-gray-700 mb-3">
+      <label className="block text-sm font-semibold text-gray-700 dark:text-neutral-300 mb-3">
         Race Distance
       </label>
 
       <div className="space-y-2">
         {DISTANCE_GROUPS.map((group) => (
           <div key={group.label} className="flex items-center gap-2">
-            <span className="text-xs font-medium text-gray-400 uppercase tracking-wider w-20 shrink-0">
+            <span className="text-xs font-medium text-gray-400 dark:text-neutral-500 uppercase tracking-wider w-20 shrink-0">
               {group.label}
             </span>
             <div className="flex flex-wrap gap-1.5">
@@ -59,8 +59,8 @@ export function DistanceSelector({ selectedMeters, onSelect, error }: DistanceSe
                     title={DISTANCE_TOOLTIP[d.name]}
                     className={`relative px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-200 border-2 ${
                       isSelected
-                        ? "border-emerald-500 bg-emerald-50 text-emerald-700 shadow-sm"
-                        : "border-gray-100 bg-white text-gray-700 hover:border-gray-200 hover:shadow-sm"
+                        ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 shadow-sm"
+                        : "border-gray-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-gray-700 dark:text-neutral-300 hover:border-gray-200 dark:hover:border-neutral-800 hover:shadow-sm"
                     }`}
                   >
                     {isSelected && (
@@ -76,7 +76,7 @@ export function DistanceSelector({ selectedMeters, onSelect, error }: DistanceSe
       </div>
 
       {error && (
-        <p className="mt-2 text-sm text-red-600">{error}</p>
+        <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>
       )}
     </div>
   );

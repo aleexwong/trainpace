@@ -619,32 +619,32 @@ const FuelPlannerV2 = () => {
         </script>
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-purple-50 p-4 md:p-8">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-purple-50 dark:to-neutral-950 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-4xl font-bold text-gray-900">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-neutral-100">
               🏃 Fuel Planner
             </h1>
             <button
               onClick={() => setShowInfo(!showInfo)}
-              className="p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all"
+              className="p-3 rounded-full bg-white dark:bg-neutral-900 shadow-md hover:shadow-lg transition-all"
             >
-              <Info className="h-6 w-6 text-emerald-600" />
+              <Info className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
             </button>
           </div>
 
           {showInfo && (
-            <Card className="mb-8 bg-white">
+            <Card className="mb-8 bg-white dark:bg-neutral-900">
               <CardContent className="p-6">
                 <h3 className="text-xl font-semibold mb-3">
                   Why Fueling Matters ⚡
                 </h3>
-                <p className="text-gray-700 mb-2">
+                <p className="text-gray-700 dark:text-neutral-300 mb-2">
                   Your body needs carbs to perform. This tool estimates how many
                   carbs and gels you'll need.
                 </p>
-                <ul className="list-disc list-inside text-gray-600 space-y-1">
+                <ul className="list-disc list-inside text-gray-600 dark:text-neutral-400 space-y-1">
                   <li>30–60g carbs/hr for efforts over 1 hour</li>
                   <li>Gels usually contain ~25g carbs each</li>
                   <li>Proper fueling avoids energy crashes</li>
@@ -657,15 +657,15 @@ const FuelPlannerV2 = () => {
           <div className="max-w-4xl mx-auto space-y-8">
             {/* 1. Race Details Input OR Your Plan (mutually exclusive) */}
             {!result ? (
-              <Card data-testid="fuel-form" className="bg-white shadow-lg">
+              <Card data-testid="fuel-form" className="bg-white dark:bg-neutral-900 shadow-lg">
                 <CardContent className="p-8 space-y-6">
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100 mb-4">
                     Race Details
                   </h2>
 
                   {/* Race Type - Button Pills */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-3">
                       Race Type <span className="text-red-500">*</span>
                     </label>
                     <div className="grid grid-cols-1 min-[400px]:grid-cols-3 gap-3">
@@ -681,7 +681,7 @@ const FuelPlannerV2 = () => {
                           className={`py-4 px-2 text-sm sm:text-base font-semibold rounded-xl transition-all ${
                             raceType === type
                               ? "bg-emerald-600 text-white shadow-md"
-                              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                              : "bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-200 dark:hover:bg-neutral-700"
                           }`}
                         >
                           {type === "10K"
@@ -697,7 +697,7 @@ const FuelPlannerV2 = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Finish Time - Conditional based on race type */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
                         Finish Time <span className="text-red-500">*</span>
                       </label>
                       {raceType === "10K" ? (
@@ -706,7 +706,7 @@ const FuelPlannerV2 = () => {
                           placeholder="Minutes (e.g. 45)"
                           value={timeMinutes}
                           onChange={(e) => setTimeMinutes(e.target.value)}
-                          className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                          className="w-full px-4 py-3 text-lg border border-gray-300 dark:border-neutral-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                           min={1}
                         />
                       ) : (
@@ -716,7 +716,7 @@ const FuelPlannerV2 = () => {
                             placeholder="Hours"
                             value={timeHours}
                             onChange={(e) => setTimeHours(e.target.value)}
-                            className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            className="w-full px-4 py-3 text-lg border border-gray-300 dark:border-neutral-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                             min={0}
                             max={12}
                           />
@@ -725,7 +725,7 @@ const FuelPlannerV2 = () => {
                             placeholder="Minutes"
                             value={timeMinutes}
                             onChange={(e) => setTimeMinutes(e.target.value)}
-                            className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            className="w-full px-4 py-3 text-lg border border-gray-300 dark:border-neutral-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                             min={0}
                             max={59}
                           />
@@ -734,9 +734,9 @@ const FuelPlannerV2 = () => {
                     </div>
                     {/* Weight */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
                         Weight (kg){" "}
-                        <span className="text-gray-400 text-xs">
+                        <span className="text-gray-400 dark:text-neutral-500 text-xs">
                           (Optional)
                         </span>
                       </label>
@@ -745,7 +745,7 @@ const FuelPlannerV2 = () => {
                         placeholder="e.g. 68"
                         value={weight}
                         onChange={(e) => setWeight(e.target.value)}
-                        className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        className="w-full px-4 py-3 text-lg border border-gray-300 dark:border-neutral-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                         min={1}
                         max={1000}
                       />
@@ -762,10 +762,10 @@ const FuelPlannerV2 = () => {
                 </CardContent>
               </Card>
             ) : (
-              <Card data-testid="fuel-results" className="bg-white shadow-lg">
+              <Card data-testid="fuel-results" className="bg-white dark:bg-neutral-900 shadow-lg">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-semibold text-gray-900">
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100">
                       Your Plan 🔋
                     </h2>
                     <div className="flex gap-2">
@@ -778,67 +778,67 @@ const FuelPlannerV2 = () => {
                           setTimeHours("");
                           setTimeMinutes("");
                         }}
-                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                        className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-neutral-300 bg-gray-100 dark:bg-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-700 rounded-lg transition-colors"
                       >
                         ← Edit
                       </button>
                       <button
                         onClick={handleCopy}
-                        className="p-3 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors"
+                        className="p-3 rounded-full bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
                         title="Copy Plan"
                       >
-                        <Copy className="h-5 w-5 text-emerald-600" />
+                        <Copy className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                       </button>
                       <button
                         onClick={handleDownload}
-                        className="p-3 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors"
+                        className="p-3 rounded-full bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
                         title="Download Plan"
                       >
-                        <Download className="h-5 w-5 text-emerald-600" />
+                        <Download className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                       </button>
                     </div>
                   </div>
 
                   {/* Grid of metrics - 4 columns on desktop, 2 on mobile */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="p-6 bg-emerald-50 rounded-xl">
-                      <div className="text-3xl font-bold text-emerald-700">
+                    <div className="p-6 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl">
+                      <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-300">
                         {result.carbsPerHour}g
                       </div>
-                      <div className="text-sm text-gray-600 mt-1">
+                      <div className="text-sm text-gray-600 dark:text-neutral-400 mt-1">
                         Carbs/hour
                       </div>
                     </div>
 
-                    <div className="p-6 bg-emerald-50 rounded-xl">
-                      <div className="text-3xl font-bold text-emerald-700">
+                    <div className="p-6 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl">
+                      <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-300">
                         {result.totalCarbs}g
                       </div>
-                      <div className="text-sm text-gray-600 mt-1">
+                      <div className="text-sm text-gray-600 dark:text-neutral-400 mt-1">
                         Total carbs
                       </div>
                     </div>
 
-                    <div className="p-6 bg-emerald-50 rounded-xl">
-                      <div className="text-3xl font-bold text-emerald-700">
+                    <div className="p-6 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl">
+                      <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-300">
                         {result.totalCalories}
                       </div>
-                      <div className="text-sm text-gray-600 mt-1">Calories</div>
+                      <div className="text-sm text-gray-600 dark:text-neutral-400 mt-1">Calories</div>
                     </div>
 
-                    <div className="p-6 bg-emerald-50 rounded-xl">
-                      <div className="text-3xl font-bold text-emerald-700">
+                    <div className="p-6 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl">
+                      <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-300">
                         {result.gelsNeeded}
                       </div>
-                      <div className="text-sm text-gray-600 mt-1">
+                      <div className="text-sm text-gray-600 dark:text-neutral-400 mt-1">
                         {result.gelsNeeded === 0 ? "Gels (optional)" : "Gels"}
                       </div>
                     </div>
                   </div>
 
                   {/* Baseline disclaimer */}
-                  <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-                    <p className="text-xs text-emerald-800">
+                  <div className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded-lg">
+                    <p className="text-xs text-emerald-800 dark:text-emerald-300">
                       💡 <strong>Baseline estimate:</strong> You may need
                       additional fuel sources (sports drinks, chews, etc.) to
                       meet your total carb needs.
@@ -850,27 +850,27 @@ const FuelPlannerV2 = () => {
 
             {/* 2. AI Personalization (only appears after plan is shown) */}
             {result && (
-              <Card className="bg-gradient-to-br from-purple-100 to-emerald-100 border-purple-200 shadow-lg">
+              <Card className="bg-gradient-to-br from-purple-100 dark:from-neutral-950 to-emerald-100 dark:to-neutral-950 border-purple-200 dark:border-purple-900 shadow-lg">
                 <CardContent className="p-8">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <Sparkles className="h-6 w-6 text-purple-600" />
-                      <h3 className="text-xl font-semibold text-gray-900">
+                      <Sparkles className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-neutral-100">
                         AI Personalization
                       </h3>
                     </div>
                     <button
                       onClick={() => setShowPromptModal(true)}
-                      className="p-2 rounded-full bg-white hover:bg-purple-200 transition-colors"
+                      className="p-2 rounded-full bg-white dark:bg-neutral-900 hover:bg-purple-200 dark:hover:bg-purple-900/60 transition-colors"
                       title="View system prompt"
                     >
-                      <FileText className="h-5 w-5 text-purple-600" />
+                      <FileText className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                     </button>
                   </div>
 
                   {/* Beta Disclaimer */}
-                  <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-                    <p className="text-xs text-emerald-800">
+                  <div className="mb-4 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded-lg">
+                    <p className="text-xs text-emerald-800 dark:text-emerald-300">
                       <strong>Using Google Gemini (Free):</strong> We use
                       Google's free AI to personalize your plan. Google may use
                       your input to improve their models, so avoid sharing
@@ -884,7 +884,7 @@ const FuelPlannerV2 = () => {
                     <>
                       {/* Preset Buttons */}
                       <div className="mb-4">
-                        <p className="text-sm font-medium text-gray-700 mb-3">
+                        <p className="text-sm font-medium text-gray-700 dark:text-neutral-300 mb-3">
                           Quick select common scenarios:
                         </p>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -914,16 +914,16 @@ const FuelPlannerV2 = () => {
                               }}
                               className={`relative p-3 text-left border-2 rounded-lg transition-all ${
                                 selectedPresets.has(preset.id)
-                                  ? "bg-purple-100 border-purple-500"
-                                  : "bg-white border-purple-200 hover:bg-purple-50"
+                                  ? "bg-purple-100 dark:bg-purple-900/40 border-purple-500"
+                                  : "bg-white dark:bg-neutral-900 border-purple-200 dark:border-purple-900 hover:bg-purple-50 dark:hover:bg-purple-950/40"
                               }`}
                             >
                               <div className="text-2xl mb-1">{preset.icon}</div>
-                              <div className="text-xs font-medium text-gray-700">
+                              <div className="text-xs font-medium text-gray-700 dark:text-neutral-300">
                                 {preset.label}
                               </div>
                               {selectedPresets.has(preset.id) && (
-                                <CheckCircle className="h-4 w-4 text-purple-600 absolute top-2 right-2" />
+                                <CheckCircle className="h-4 w-4 text-purple-600 dark:text-purple-400 absolute top-2 right-2" />
                               )}
                             </button>
                           ))}
@@ -933,10 +933,10 @@ const FuelPlannerV2 = () => {
                       {/* Divider */}
                       <div className="relative my-4">
                         <div className="absolute inset-0 flex items-center">
-                          <div className="w-full border-t border-purple-200"></div>
+                          <div className="w-full border-t border-purple-200 dark:border-purple-900"></div>
                         </div>
                         <div className="relative flex justify-center text-sm">
-                          <span className="px-2 bg-gradient-to-br from-purple-100 to-emerald-100 text-gray-500">
+                          <span className="px-2 bg-gradient-to-br from-purple-100 dark:from-neutral-950 to-emerald-100 dark:to-neutral-950 text-gray-500 dark:text-neutral-400">
                             or write your own
                           </span>
                         </div>
@@ -952,11 +952,11 @@ const FuelPlannerV2 = () => {
                             setSelectedPresets(new Set());
                           }
                         }}
-                        className="w-full px-4 py-3 text-base border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 min-h-[120px] bg-white"
+                        className="w-full px-4 py-3 text-base border border-purple-200 dark:border-purple-900 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 min-h-[120px] bg-white dark:bg-neutral-900"
                       />
-                      <p className="text-xs text-gray-600 mt-2 mb-4">
+                      <p className="text-xs text-gray-600 dark:text-neutral-400 mt-2 mb-4">
                         {selectedPresets.size > 0 ? (
-                          <span className="text-purple-600 font-medium">
+                          <span className="text-purple-600 dark:text-purple-400 font-medium">
                             ✓ {selectedPresets.size} scenario
                             {selectedPresets.size > 1 ? "s" : ""} selected. Feel
                             free to edit!
@@ -995,8 +995,8 @@ const FuelPlannerV2 = () => {
                   ) : (
                     // AI Recommendations Flashcard or List
                     <div className="bg-gradient-to-br from-purple-600 to-emerald-600 rounded-xl p-8 text-white relative overflow-hidden">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
-                      <div className="absolute bottom-0 left-0 w-24 h-24 bg-white opacity-10 rounded-full -ml-12 -mb-12"></div>
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-white dark:bg-neutral-900 opacity-10 rounded-full -mr-16 -mt-16"></div>
+                      <div className="absolute bottom-0 left-0 w-24 h-24 bg-white dark:bg-neutral-900 opacity-10 rounded-full -ml-12 -mb-12"></div>
 
                       <div className="relative z-10">
                         {/* Header with toggle and action buttons */}
@@ -1004,7 +1004,7 @@ const FuelPlannerV2 = () => {
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => setShowAsList(!showAsList)}
-                              className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                              className="p-2 rounded-full bg-white/20 dark:bg-neutral-900/20 hover:bg-white/30 dark:hover:bg-neutral-900/30 transition-colors"
                               title={
                                 showAsList ? "Show as cards" : "Show as list"
                               }
@@ -1019,14 +1019,14 @@ const FuelPlannerV2 = () => {
                           <div className="flex items-center gap-2">
                             <button
                               onClick={handleCopyAI}
-                              className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                              className="p-2 rounded-full bg-white/20 dark:bg-neutral-900/20 hover:bg-white/30 dark:hover:bg-neutral-900/30 transition-colors"
                               title="Copy recommendations"
                             >
                               <Copy className="h-5 w-5" />
                             </button>
                             <button
                               onClick={handleDownloadAI}
-                              className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                              className="p-2 rounded-full bg-white/20 dark:bg-neutral-900/20 hover:bg-white/30 dark:hover:bg-neutral-900/30 transition-colors"
                               title="Download recommendations"
                             >
                               <Download className="h-5 w-5" />
@@ -1040,10 +1040,10 @@ const FuelPlannerV2 = () => {
                             {aiAdvice.map((advice, idx) => (
                               <div
                                 key={idx}
-                                className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20"
+                                className="bg-white/10 dark:bg-neutral-900/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 dark:border-neutral-800"
                               >
                                 <div className="flex items-start gap-3">
-                                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-sm font-bold">
+                                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-white/20 dark:bg-neutral-900/20 flex items-center justify-center text-sm font-bold">
                                     {idx + 1}
                                   </div>
                                   <div className="flex-1">
@@ -1080,7 +1080,7 @@ const FuelPlannerV2 = () => {
                             <div className="flex items-center justify-between mt-6">
                               <button
                                 onClick={prevSlide}
-                                className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors disabled:opacity-30"
+                                className="p-2 rounded-full bg-white/20 dark:bg-neutral-900/20 hover:bg-white/30 dark:hover:bg-neutral-900/30 transition-colors disabled:opacity-30"
                                 disabled={aiAdvice.length <= 1}
                               >
                                 <ChevronLeft className="h-5 w-5" />
@@ -1092,8 +1092,8 @@ const FuelPlannerV2 = () => {
                                     key={idx}
                                     className={`h-1.5 w-1.5 rounded-full transition-all ${
                                       idx === currentSlide
-                                        ? "bg-white scale-150"
-                                        : "bg-white/40"
+                                        ? "bg-white dark:bg-neutral-900 scale-150"
+                                        : "bg-white/40 dark:bg-neutral-900/40"
                                     }`}
                                   />
                                 ))}
@@ -1101,7 +1101,7 @@ const FuelPlannerV2 = () => {
 
                               <button
                                 onClick={nextSlide}
-                                className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors disabled:opacity-30"
+                                className="p-2 rounded-full bg-white/20 dark:bg-neutral-900/20 hover:bg-white/30 dark:hover:bg-neutral-900/30 transition-colors disabled:opacity-30"
                                 disabled={aiAdvice.length <= 1}
                               >
                                 <ChevronRight className="h-5 w-5" />
@@ -1111,12 +1111,12 @@ const FuelPlannerV2 = () => {
                         )}
 
                         {/* Save to Dashboard Button */}
-                        <div className="mt-6 pt-4 border-t border-white/20">
+                        <div className="mt-6 pt-4 border-t border-white/20 dark:border-neutral-800">
                           {user ? (
                             <button
                               onClick={handleSaveToDashboard}
                               disabled={isSaving || isSaved}
-                              className="w-full py-3 text-base font-semibold bg-white text-purple-600 rounded-xl hover:bg-white/90 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                              className="w-full py-3 text-base font-semibold bg-white dark:bg-neutral-900 text-purple-600 dark:text-purple-400 rounded-xl hover:bg-white/90 dark:hover:bg-neutral-900/90 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                             >
                               {isSaving ? (
                                 <>
@@ -1136,13 +1136,13 @@ const FuelPlannerV2 = () => {
                               )}
                             </button>
                           ) : (
-                            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                            <div className="bg-white/10 dark:bg-neutral-900/10 backdrop-blur-sm rounded-lg p-4 text-center">
                               <p className="text-sm text-white/90 mb-3">
                                 💾 Want to save this plan to your dashboard?
                               </p>
                               <button
                                 onClick={handleGuestSaveRedirect}
-                                className="w-full py-3 text-base font-semibold bg-white text-purple-600 rounded-xl hover:bg-white/90 transition-colors shadow-md flex items-center justify-center gap-2"
+                                className="w-full py-3 text-base font-semibold bg-white dark:bg-neutral-900 text-purple-600 dark:text-purple-400 rounded-xl hover:bg-white/90 dark:hover:bg-neutral-900/90 transition-colors shadow-md flex items-center justify-center gap-2"
                               >
                                 Sign Up to Save (Free)
                               </button>
@@ -1152,21 +1152,21 @@ const FuelPlannerV2 = () => {
 
                         {/* Feedback Section */}
                         {!feedbackGiven ? (
-                          <div className="mt-6 pt-4 border-t border-white/20">
+                          <div className="mt-6 pt-4 border-t border-white/20 dark:border-neutral-800">
                             <p className="text-sm text-center text-white/90 mb-3">
                               Were these recommendations helpful?
                             </p>
                             <div className="flex gap-3 justify-center">
                               <button
                                 onClick={() => handleFeedback(true)}
-                                className="flex-1 py-2 px-4 bg-white/20 hover:bg-white/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+                                className="flex-1 py-2 px-4 bg-white/20 dark:bg-neutral-900/20 hover:bg-white/30 dark:hover:bg-neutral-900/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium"
                               >
                                 <span className="text-lg">👍</span>
                                 Helpful
                               </button>
                               <button
                                 onClick={() => handleFeedback(false)}
-                                className="flex-1 py-2 px-4 bg-white/20 hover:bg-white/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+                                className="flex-1 py-2 px-4 bg-white/20 dark:bg-neutral-900/20 hover:bg-white/30 dark:hover:bg-neutral-900/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium"
                               >
                                 <span className="text-lg">👎</span>
                                 Not helpful
@@ -1174,7 +1174,7 @@ const FuelPlannerV2 = () => {
                             </div>
                           </div>
                         ) : (
-                          <div className="mt-6 pt-4 border-t border-white/20 text-center">
+                          <div className="mt-6 pt-4 border-t border-white/20 dark:border-neutral-800 text-center">
                             <p className="text-sm text-white/90">
                               ✨ Thanks for your feedback!
                             </p>
@@ -1193,7 +1193,7 @@ const FuelPlannerV2 = () => {
                             // Don't reset cooldown - it continues
                           }}
                           disabled={cooldownSeconds > 0}
-                          className="mt-6 w-full py-3 text-sm font-medium bg-white/10 hover:bg-white/20 rounded-xl transition-colors border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="mt-6 w-full py-3 text-sm font-medium bg-white/10 dark:bg-neutral-900/10 hover:bg-white/20 dark:hover:bg-neutral-900/20 rounded-xl transition-colors border border-white/20 dark:border-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           {cooldownSeconds > 0
                             ? `Wait ${cooldownSeconds}s to refine`
@@ -1211,21 +1211,21 @@ const FuelPlannerV2 = () => {
           <div className="mt-12 max-w-4xl mx-auto">
             <button
               onClick={() => setShowPhilosophy(!showPhilosophy)}
-              className="w-full flex items-center justify-between p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all"
+              className="w-full flex items-center justify-between p-4 bg-white dark:bg-neutral-900 rounded-xl shadow-md hover:shadow-lg transition-all"
             >
-              <span className="text-lg font-semibold text-gray-900">
+              <span className="text-lg font-semibold text-gray-900 dark:text-neutral-100">
                 Fueling Philosophy
               </span>
               {showPhilosophy ? (
-                <ChevronUp className="h-5 w-5 text-gray-600" />
+                <ChevronUp className="h-5 w-5 text-gray-600 dark:text-neutral-400" />
               ) : (
-                <ChevronDown className="h-5 w-5 text-gray-600" />
+                <ChevronDown className="h-5 w-5 text-gray-600 dark:text-neutral-400" />
               )}
             </button>
 
             {showPhilosophy && (
-              <Card className="mt-2 bg-gray-50">
-                <CardContent className="p-6 text-gray-700 space-y-3 text-left">
+              <Card className="mt-2 bg-gray-50 dark:bg-neutral-950">
+                <CardContent className="p-6 text-gray-700 dark:text-neutral-300 space-y-3 text-left">
                   <p>
                     Fuel needs depend on race distance, duration, and personal
                     tolerance.
@@ -1259,13 +1259,13 @@ const FuelPlannerV2 = () => {
           onClick={() => setShowPromptModal(false)}
         >
           <div
-            className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
+            className="bg-white dark:bg-neutral-900 rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-6 border-b border-gray-200 flex items-center justify-between bg-purple-50">
+            <div className="p-6 border-b border-gray-200 dark:border-neutral-800 flex items-center justify-between bg-purple-50 dark:bg-purple-950/40">
               <div className="flex items-center gap-2">
-                <FileText className="h-6 w-6 text-purple-600" />
-                <h3 className="text-xl font-semibold text-gray-900">
+                <FileText className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-neutral-100">
                   AI System Prompt
                 </h3>
               </div>
@@ -1298,10 +1298,10 @@ const FuelPlannerV2 = () => {
                       });
                     }
                   }}
-                  className="p-2 bg-purple-50 hover:bg-purple-100 rounded-full transition-colors"
+                  className="p-2 bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 dark:hover:bg-purple-900/40 rounded-full transition-colors"
                   title="Copy prompt"
                 >
-                  <Copy className="h-5 w-5 text-purple-600" />
+                  <Copy className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                 </button>
                 <button
                   onClick={() => {
@@ -1330,17 +1330,17 @@ const FuelPlannerV2 = () => {
                     URL.revokeObjectURL(url);
                     toast({ title: "Prompt downloaded!" });
                   }}
-                  className="p-2 bg-purple-50 hover:bg-purple-100 rounded-full transition-colors"
+                  className="p-2 bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 dark:hover:bg-purple-900/40 rounded-full transition-colors"
                   title="Download prompt"
                 >
-                  <Download className="h-5 w-5 text-purple-600" />
+                  <Download className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                 </button>
                 <button
                   onClick={() => setShowPromptModal(false)}
-                  className="p-2 bg-purple-50 hover:bg-purple-100 rounded-full transition-colors"
+                  className="p-2 bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 dark:hover:bg-purple-900/40 rounded-full transition-colors"
                 >
                   <svg
-                    className="h-5 w-5 text-purple-600"
+                    className="h-5 w-5 text-purple-600 dark:text-purple-400"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -1356,12 +1356,12 @@ const FuelPlannerV2 = () => {
               </div>
             </div>
             <div className="p-6 overflow-y-auto max-h-[calc(80vh-100px)]">
-              <div className="bg-gray-50 rounded-lg p-4 font-mono text-sm">
-                <p className="text-gray-600 mb-4 text-xs font-sans">
+              <div className="bg-gray-50 dark:bg-neutral-950 rounded-lg p-4 font-mono text-sm">
+                <p className="text-gray-600 dark:text-neutral-400 mb-4 text-xs font-sans">
                   This is the exact prompt sent to Google Gemini when you click
                   "Get Personalized Advice".
                 </p>
-                <pre className="whitespace-pre-wrap text-gray-800">
+                <pre className="whitespace-pre-wrap text-gray-800 dark:text-neutral-200">
                   {getFuelPlanPrompt(
                     {
                       raceType,
@@ -1380,8 +1380,8 @@ const FuelPlannerV2 = () => {
                   )}
                 </pre>
               </div>
-              <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-                <p className="text-xs text-emerald-800">
+              <div className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded-lg">
+                <p className="text-xs text-emerald-800 dark:text-emerald-300">
                   <strong>Note:</strong> This prompt is sent to Google Gemini's
                   API. Variables like race type, time, and your situation are
                   dynamically inserted.

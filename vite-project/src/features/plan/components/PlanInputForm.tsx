@@ -73,15 +73,15 @@ export function PlanInputForm({
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Pace calculator prefill callout */}
       {prefillPaces && (
-        <div className="rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 flex items-start gap-3">
-          <span className="text-emerald-600 mt-0.5">⚡</span>
+        <div className="rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 px-4 py-3 flex items-start gap-3">
+          <span className="text-emerald-600 dark:text-emerald-400 mt-0.5">⚡</span>
           <div className="text-sm">
-            <span className="font-semibold text-emerald-800">
+            <span className="font-semibold text-emerald-800 dark:text-emerald-300">
               {prefillSource === "vdot"
                 ? "Paces imported from your VDOT score."
                 : "Paces imported from Pace Calculator."}
             </span>
-            <span className="text-emerald-700 ml-1">
+            <span className="text-emerald-700 dark:text-emerald-300 ml-1">
               Easy {prefillPaces.easy} · Tempo {prefillPaces.tempo} · Interval {prefillPaces.interval}
             </span>
           </div>
@@ -89,7 +89,7 @@ export function PlanInputForm({
       )}
       {/* Goal Race */}
       <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-3">
+        <label className="block text-sm font-semibold text-slate-700 dark:text-neutral-300 mb-3">
           Goal Race
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -101,7 +101,7 @@ export function PlanInputForm({
               className={`rounded-xl border-2 px-4 py-3 text-sm font-semibold transition-all ${
                 goalRace === r
                   ? "border-emerald-600 bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                  : "border-slate-200 bg-white text-slate-700 hover:border-emerald-300 hover:bg-emerald-50/60"
+                  : "border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-slate-700 dark:text-neutral-300 hover:border-emerald-300 dark:hover:border-emerald-800 hover:bg-emerald-50/60 dark:hover:bg-emerald-950/40"
               }`}
             >
               {r}
@@ -112,7 +112,7 @@ export function PlanInputForm({
 
       {/* Race Date */}
       <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-3">
+        <label className="block text-sm font-semibold text-slate-700 dark:text-neutral-300 mb-3">
           Race Date
         </label>
         <div className="relative w-full sm:w-64">
@@ -132,14 +132,14 @@ export function PlanInputForm({
             min={minDateStr}
             value={raceDate}
             onChange={(e) => setRaceDate(e.target.value)}
-            className="w-full rounded-xl border-2 border-slate-200 pl-11 pr-4 py-3 text-sm font-medium text-slate-800 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all"
+            className="w-full rounded-xl border-2 border-slate-200 dark:border-neutral-800 pl-11 pr-4 py-3 text-sm font-medium text-slate-800 dark:text-neutral-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all"
           />
         </div>
       </div>
 
       {/* Fitness Level */}
       <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-3">
+        <label className="block text-sm font-semibold text-slate-700 dark:text-neutral-300 mb-3">
           Current Fitness Level
         </label>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -151,13 +151,13 @@ export function PlanInputForm({
               className={`rounded-xl border-2 px-4 py-4 text-left transition-all ${
                 fitness === value
                   ? "border-emerald-600 bg-emerald-600 shadow-md shadow-emerald-600/20"
-                  : "border-slate-200 bg-white hover:border-emerald-300 hover:bg-emerald-50/60"
+                  : "border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-emerald-300 dark:hover:border-emerald-800 hover:bg-emerald-50/60 dark:hover:bg-emerald-950/40"
               }`}
             >
-              <div className={`text-sm font-bold mb-1 ${fitness === value ? "text-white" : "text-slate-800"}`}>
+              <div className={`text-sm font-bold mb-1 ${fitness === value ? "text-white" : "text-slate-800 dark:text-neutral-200"}`}>
                 {label}
               </div>
-              <div className={`text-xs ${fitness === value ? "text-emerald-50" : "text-slate-500"}`}>{desc}</div>
+              <div className={`text-xs ${fitness === value ? "text-emerald-50" : "text-slate-500 dark:text-neutral-400"}`}>{desc}</div>
             </button>
           ))}
         </div>
@@ -165,7 +165,7 @@ export function PlanInputForm({
 
       {/* Training Days */}
       <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-3">
+        <label className="block text-sm font-semibold text-slate-700 dark:text-neutral-300 mb-3">
           Training Days
         </label>
         <div className="flex flex-wrap gap-2">
@@ -177,26 +177,26 @@ export function PlanInputForm({
               className={`w-14 h-12 rounded-xl border-2 text-sm font-bold transition-all ${
                 days.includes(day)
                   ? "border-emerald-600 bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                  : "border-slate-200 bg-white text-slate-700 hover:border-emerald-300 hover:bg-emerald-50/60"
+                  : "border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-slate-700 dark:text-neutral-300 hover:border-emerald-300 dark:hover:border-emerald-800 hover:bg-emerald-50/60 dark:hover:bg-emerald-950/40"
               }`}
             >
               {day}
             </button>
           ))}
         </div>
-        <p className="mt-2 text-xs text-slate-500">
+        <p className="mt-2 text-xs text-slate-500 dark:text-neutral-400">
           {days.length} days selected · long run assigned to last selected day
         </p>
       </div>
 
       {/* Optional Goal Time */}
       <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-1">
-          Goal Time <span className="font-normal text-slate-400">(optional)</span>
+        <label className="block text-sm font-semibold text-slate-700 dark:text-neutral-300 mb-1">
+          Goal Time <span className="font-normal text-slate-400 dark:text-neutral-500">(optional)</span>
         </label>
-        <p className="text-xs text-slate-500 mb-3">
+        <p className="text-xs text-slate-500 dark:text-neutral-400 mb-3">
           Used to label your plan. Enter via the{" "}
-          <a href="/calculator" className="text-emerald-600 hover:underline font-medium">
+          <a href="/calculator" className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium">
             Pace Calculator
           </a>{" "}
           to get zone-specific paces.
@@ -206,7 +206,7 @@ export function PlanInputForm({
           placeholder="e.g. 1:45:00"
           value={goalTime}
           onChange={(e) => setGoalTime(e.target.value)}
-          className="w-48 rounded-xl border-2 border-slate-200 px-4 py-3 text-sm font-mono font-medium text-slate-800 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all"
+          className="w-48 rounded-xl border-2 border-slate-200 dark:border-neutral-800 px-4 py-3 text-sm font-mono font-medium text-slate-800 dark:text-neutral-200 focus:outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 transition-all"
         />
       </div>
 
@@ -214,12 +214,12 @@ export function PlanInputForm({
         <button
           type="submit"
           disabled={loading || days.length < 2 || !raceDate}
-          className="w-full sm:w-auto rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-100 disabled:text-slate-400 disabled:shadow-none disabled:cursor-not-allowed text-white font-bold px-8 py-4 text-base transition-all shadow-md shadow-emerald-600/20"
+          className="w-full sm:w-auto rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-100 dark:disabled:bg-neutral-800 disabled:text-slate-400 dark:disabled:text-neutral-500 disabled:shadow-none disabled:cursor-not-allowed text-white font-bold px-8 py-4 text-base transition-all shadow-md shadow-emerald-600/20"
         >
           {loading ? "Generating…" : "Generate My Plan →"}
         </button>
         {!loading && (days.length < 2 || !raceDate) && (
-          <p className="mt-2 text-xs text-slate-400">
+          <p className="mt-2 text-xs text-slate-400 dark:text-neutral-500">
             {!raceDate
               ? "Pick a race date to continue."
               : "Select at least 2 training days to continue."}

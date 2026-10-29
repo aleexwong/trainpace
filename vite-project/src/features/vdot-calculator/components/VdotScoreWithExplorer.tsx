@@ -160,7 +160,7 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, o
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-full">
+    <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-lg overflow-hidden h-full">
       {/* Top section: gauge left, score right */}
       <div className={`bg-gradient-to-r from-emerald-600 via-emerald-600 to-purple-600 ${compact ? "p-4" : "p-6 sm:p-8"}`}>
         <div className="flex items-center gap-4">
@@ -187,10 +187,10 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, o
               )}
             </div>
             <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-              <span className="px-2 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-semibold">
+              <span className="px-2 py-0.5 rounded-full bg-white/20 dark:bg-neutral-900/20 text-white text-[10px] font-semibold">
                 {level.label}
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-white/10 text-emerald-200 text-[10px]">
+              <span className="px-2 py-0.5 rounded-full bg-white/10 dark:bg-neutral-900/10 text-emerald-200 text-[10px]">
                 {percentile}
               </span>
             </div>
@@ -202,21 +202,21 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, o
       </div>
 
       {/* What-If slider section */}
-      <div className={`${compact ? "px-4 py-3" : "px-6 py-4"} border-b border-gray-100`}>
+      <div className={`${compact ? "px-4 py-3" : "px-6 py-4"} border-b border-gray-100 dark:border-neutral-800`}>
         <div className="flex items-center justify-between mb-2">
-          <p className="text-xs font-semibold text-gray-700">What If?</p>
+          <p className="text-xs font-semibold text-gray-700 dark:text-neutral-300">What If?</p>
           {isAdjusted && (
             <button
               onClick={() => onOffsetChange(0)}
-              className="text-[10px] text-gray-400 hover:text-emerald-600 font-medium border border-gray-200 rounded-full px-2.5 py-0.5 hover:border-emerald-300 transition-colors bg-white"
+              className="text-[10px] text-gray-400 dark:text-neutral-500 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium border border-gray-200 dark:border-neutral-800 rounded-full px-2.5 py-0.5 hover:border-emerald-300 dark:hover:border-emerald-800 transition-colors bg-white dark:bg-neutral-900"
             >
               Reset
             </button>
           )}
         </div>
-        <div className="flex items-center justify-between text-[10px] text-gray-400 mb-1">
+        <div className="flex items-center justify-between text-[10px] text-gray-400 dark:text-neutral-500 mb-1">
           <span>Faster</span>
-          <span className="font-semibold text-gray-600 text-xs">
+          <span className="font-semibold text-gray-600 dark:text-neutral-400 text-xs">
             {isAdjusted ? formatOffset(offsetSeconds) : "Drag to explore"}
           </span>
           <span>Slower</span>
@@ -228,37 +228,37 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, o
           step={totalSeconds > 600 ? 10 : 5}
           value={offsetSeconds}
           onChange={(e) => onOffsetChange(parseInt(e.target.value))}
-          className="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer accent-emerald-600 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-emerald-600 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md"
+          className="w-full h-2 bg-gray-200 dark:bg-neutral-700 rounded-full appearance-none cursor-pointer accent-emerald-600 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-emerald-600 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md"
         />
 
         {/* Delta display when adjusted */}
         {isAdjusted && (
           <div className="mt-3 grid grid-cols-2 gap-2">
-            <div className="rounded-lg bg-gray-50 border border-gray-200 text-center p-2">
-              <p className="text-[9px] font-medium text-gray-400 uppercase tracking-wider">Current</p>
-              <p className="text-lg font-bold text-gray-900">{result.vdot}</p>
-              <p className="text-[10px] text-gray-500 font-mono">{formatTime(totalSeconds)}</p>
-              <p className="text-[9px] text-gray-400">{level.label}</p>
+            <div className="rounded-lg bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 text-center p-2">
+              <p className="text-[9px] font-medium text-gray-400 dark:text-neutral-500 uppercase tracking-wider">Current</p>
+              <p className="text-lg font-bold text-gray-900 dark:text-neutral-100">{result.vdot}</p>
+              <p className="text-[10px] text-gray-500 dark:text-neutral-400 font-mono">{formatTime(totalSeconds)}</p>
+              <p className="text-[9px] text-gray-400 dark:text-neutral-500">{level.label}</p>
             </div>
             <div
               className={`rounded-lg border text-center p-2 ${
                 vdotDelta > 0
-                  ? "bg-emerald-50 border-emerald-200"
+                  ? "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-900"
                   : vdotDelta < 0
-                  ? "bg-red-50 border-red-200"
-                  : "bg-emerald-50 border-emerald-200"
+                  ? "bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-900"
+                  : "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-900"
               }`}
             >
-              <p className="text-[9px] font-medium text-gray-400 uppercase tracking-wider">Target</p>
+              <p className="text-[9px] font-medium text-gray-400 dark:text-neutral-500 uppercase tracking-wider">Target</p>
               <p
                 className={`text-lg font-bold ${
-                  vdotDelta > 0 ? "text-emerald-700" : vdotDelta < 0 ? "text-red-700" : "text-blue-700"
+                  vdotDelta > 0 ? "text-emerald-700 dark:text-emerald-300" : vdotDelta < 0 ? "text-red-700 dark:text-red-300" : "text-blue-700 dark:text-blue-300"
                 }`}
               >
                 {targetVdot}
               </p>
-              <p className="text-[10px] text-gray-500 font-mono">{formatTime(targetSeconds)}</p>
-              <p className="text-[9px] text-gray-400">{targetLevel.label}</p>
+              <p className="text-[10px] text-gray-500 dark:text-neutral-400 font-mono">{formatTime(targetSeconds)}</p>
+              <p className="text-[9px] text-gray-400 dark:text-neutral-500">{targetLevel.label}</p>
             </div>
           </div>
         )}
@@ -267,10 +267,10 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, o
           <div
             className={`mt-2 flex items-center justify-center gap-1.5 p-1.5 rounded-lg text-xs font-medium ${
               vdotDelta > 0
-                ? "bg-emerald-50 text-emerald-700"
+                ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300"
                 : vdotDelta < 0
-                ? "bg-red-50 text-red-700"
-                : "bg-gray-50 text-gray-700"
+                ? "bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300"
+                : "bg-gray-50 dark:bg-neutral-950 text-gray-700 dark:text-neutral-300"
             }`}
           >
             {vdotDelta > 0 ? (
@@ -286,18 +286,18 @@ export function VdotScoreWithExplorer({ result, inputs, totalSeconds, compact, o
       </div>
 
       {/* Quick stats */}
-      <div className="grid grid-cols-3 divide-x divide-gray-100">
+      <div className="grid grid-cols-3 divide-x divide-gray-100 dark:divide-neutral-800">
         <div className="text-center p-2.5">
-          <p className="font-bold text-gray-900 text-base">{result.vo2max}</p>
-          <p className="text-[10px] text-gray-500">VO&#8322;max</p>
+          <p className="font-bold text-gray-900 dark:text-neutral-100 text-base">{result.vo2max}</p>
+          <p className="text-[10px] text-gray-500 dark:text-neutral-400">VO&#8322;max</p>
         </div>
         <div className="text-center p-2.5">
-          <p className="font-bold text-gray-900 text-base">5</p>
-          <p className="text-[10px] text-gray-500">Zones</p>
+          <p className="font-bold text-gray-900 dark:text-neutral-100 text-base">5</p>
+          <p className="text-[10px] text-gray-500 dark:text-neutral-400">Zones</p>
         </div>
         <div className="text-center p-2.5">
-          <p className="font-bold text-gray-900 text-base">9</p>
-          <p className="text-[10px] text-gray-500">Predictions</p>
+          <p className="font-bold text-gray-900 dark:text-neutral-100 text-base">9</p>
+          <p className="text-[10px] text-gray-500 dark:text-neutral-400">Predictions</p>
         </div>
       </div>
     </div>

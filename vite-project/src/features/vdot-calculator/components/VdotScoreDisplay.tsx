@@ -117,7 +117,7 @@ export function VdotScoreDisplay({ result, inputs, totalSeconds, compact }: Vdot
   const percentile = getVdotPercentile(result.vdot);
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-full">
+    <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-lg overflow-hidden h-full">
       {/* Score header */}
       <div className={`bg-gradient-to-r from-emerald-600 via-emerald-600 to-purple-600 ${compact ? "p-4" : "p-6 sm:p-8"}`}>
         <div className="flex flex-col items-center text-center">
@@ -131,10 +131,10 @@ export function VdotScoreDisplay({ result, inputs, totalSeconds, compact }: Vdot
           </div>
 
           <div className={`flex flex-wrap items-center justify-center gap-1.5 ${compact ? "mt-2" : "mt-3"}`}>
-            <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-xs font-semibold">
+            <span className="px-2.5 py-0.5 rounded-full bg-white/20 dark:bg-neutral-900/20 text-white text-xs font-semibold">
               {level.label}
             </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-emerald-200 text-xs">
+            <span className="px-2.5 py-0.5 rounded-full bg-white/10 dark:bg-neutral-900/10 text-emerald-200 text-xs">
               {percentile}
             </span>
           </div>
@@ -146,27 +146,27 @@ export function VdotScoreDisplay({ result, inputs, totalSeconds, compact }: Vdot
       </div>
 
       {/* Quick stats */}
-      <div className="grid grid-cols-3 divide-x divide-gray-100">
+      <div className="grid grid-cols-3 divide-x divide-gray-100 dark:divide-neutral-800">
         <div className={`text-center ${compact ? "p-2.5" : "p-4"}`}>
           <div className="flex justify-center mb-0.5">
             <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
           </div>
-          <p className={`font-bold text-gray-900 ${compact ? "text-base" : "text-lg sm:text-xl"}`}>{result.vo2max}</p>
-          <p className="text-[10px] text-gray-500">VO&#8322;max</p>
+          <p className={`font-bold text-gray-900 dark:text-neutral-100 ${compact ? "text-base" : "text-lg sm:text-xl"}`}>{result.vo2max}</p>
+          <p className="text-[10px] text-gray-500 dark:text-neutral-400">VO&#8322;max</p>
         </div>
         <div className={`text-center ${compact ? "p-2.5" : "p-4"}`}>
           <div className="flex justify-center mb-0.5">
             <Heart className="w-3.5 h-3.5 text-red-500" />
           </div>
-          <p className={`font-bold text-gray-900 ${compact ? "text-base" : "text-lg sm:text-xl"}`}>5</p>
-          <p className="text-[10px] text-gray-500">Zones</p>
+          <p className={`font-bold text-gray-900 dark:text-neutral-100 ${compact ? "text-base" : "text-lg sm:text-xl"}`}>5</p>
+          <p className="text-[10px] text-gray-500 dark:text-neutral-400">Zones</p>
         </div>
         <div className={`text-center ${compact ? "p-2.5" : "p-4"}`}>
           <div className="flex justify-center mb-0.5">
             <Target className="w-3.5 h-3.5 text-emerald-500" />
           </div>
-          <p className={`font-bold text-gray-900 ${compact ? "text-base" : "text-lg sm:text-xl"}`}>9</p>
-          <p className="text-[10px] text-gray-500">Predictions</p>
+          <p className={`font-bold text-gray-900 dark:text-neutral-100 ${compact ? "text-base" : "text-lg sm:text-xl"}`}>9</p>
+          <p className="text-[10px] text-gray-500 dark:text-neutral-400">Predictions</p>
         </div>
       </div>
     </div>

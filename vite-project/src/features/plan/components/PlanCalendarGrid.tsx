@@ -110,7 +110,7 @@ function WorkoutChip({ workout, done = false, pending = false, onToggle, overlay
               "flex-shrink-0 h-3.5 w-3.5 p-0 rounded-full border flex items-center justify-center transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500",
               done
                 ? "bg-emerald-600 border-emerald-600 text-white"
-                : "bg-white/80 border-slate-300 text-transparent hover:border-emerald-400",
+                : "bg-white/80 dark:bg-neutral-900/80 border-slate-300 dark:border-neutral-700 text-transparent hover:border-emerald-400",
               pending && "opacity-50 cursor-wait"
             )}
           >
@@ -186,14 +186,14 @@ function DayCellShell({ day, date, isToday, highlight = false, children, innerRe
       data-day={day}
       className={cn(
         "min-h-[64px] sm:min-h-[84px] p-1 sm:p-1.5 flex flex-col gap-1 transition-colors",
-        highlight && "bg-emerald-50 ring-1 ring-inset ring-emerald-300"
+        highlight && "bg-emerald-50 dark:bg-emerald-950/40 ring-1 ring-inset ring-emerald-300"
       )}
     >
       <div className="flex justify-end">
         <span
           className={cn(
             "inline-flex items-center justify-center h-4 min-w-4 sm:h-5 sm:min-w-5 px-1 rounded-full text-[9px] sm:text-[10px] tabular-nums leading-none",
-            isToday ? "bg-emerald-600 text-white font-bold" : "text-slate-400 font-medium"
+            isToday ? "bg-emerald-600 text-white font-bold" : "text-slate-400 dark:text-neutral-500 font-medium"
           )}
         >
           {label}
@@ -298,7 +298,7 @@ function WeekRow({ plan, week, isCurrent, isFirst, progress, editor, innerRef }:
     );
   });
 
-  const row = <div className="grid grid-cols-7 divide-x divide-slate-100">{cells}</div>;
+  const row = <div className="grid grid-cols-7 divide-x divide-slate-100 dark:divide-neutral-800">{cells}</div>;
   const activeWorkout = activeDay ? byDay.get(activeDay)?.workout : undefined;
 
   return (
@@ -307,31 +307,31 @@ function WeekRow({ plan, week, isCurrent, isFirst, progress, editor, innerRef }:
           phase dot, week number, volume, and completion at a glance. */}
       <div
         className={cn(
-          "flex items-center gap-2 px-2 sm:px-3 py-1.5 border-slate-200 text-[11px] sm:text-xs",
+          "flex items-center gap-2 px-2 sm:px-3 py-1.5 border-slate-200 dark:border-neutral-800 text-[11px] sm:text-xs",
           !isFirst && "border-t",
-          isCurrent ? "bg-emerald-50" : "bg-slate-50/60"
+          isCurrent ? "bg-emerald-50 dark:bg-emerald-950/40" : "bg-slate-50/60 dark:bg-neutral-950/60"
         )}
       >
         <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ backgroundColor: phaseMeta.bg }} />
-        <span className="font-bold text-slate-700 whitespace-nowrap">Week {week.weekNumber}</span>
-        <span className="text-slate-400 truncate">{phaseMeta.short}</span>
+        <span className="font-bold text-slate-700 dark:text-neutral-300 whitespace-nowrap">Week {week.weekNumber}</span>
+        <span className="text-slate-400 dark:text-neutral-500 truncate">{phaseMeta.short}</span>
         {isCurrent && (
           <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-600 text-white whitespace-nowrap">
             NOW
           </span>
         )}
-        <span className="ml-auto font-semibold text-emerald-600 tabular-nums whitespace-nowrap">
+        <span className="ml-auto font-semibold text-emerald-600 dark:text-emerald-400 tabular-nums whitespace-nowrap">
           {week.totalKm} km
         </span>
         {summary && summary.totalCount > 0 && (
-          <span className="text-slate-400 tabular-nums whitespace-nowrap">
+          <span className="text-slate-400 dark:text-neutral-500 tabular-nums whitespace-nowrap">
             {summary.completedCount}/{summary.totalCount}
           </span>
         )}
       </div>
 
       {!editor ? (
-        <div className="border-t border-slate-100">{row}</div>
+        <div className="border-t border-slate-100 dark:border-neutral-800">{row}</div>
       ) : (
         <DndContext
           sensors={sensors}
@@ -340,7 +340,7 @@ function WeekRow({ plan, week, isCurrent, isFirst, progress, editor, innerRef }:
           onDragEnd={handleDragEnd}
           onDragCancel={() => setActiveDay(null)}
         >
-          <div className="border-t border-slate-100">{row}</div>
+          <div className="border-t border-slate-100 dark:border-neutral-800">{row}</div>
           <DragOverlay dropAnimation={null}>
             {activeWorkout ? <WorkoutChip workout={activeWorkout} overlay /> : null}
           </DragOverlay>
@@ -361,13 +361,13 @@ interface Props {
 
 export function PlanCalendarGrid({ plan, currentWeekNum, progress, editor, currentWeekRef }: Props) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+    <div className="rounded-2xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm overflow-hidden">
       {/* Weekday header — small, uppercase, right-aligned, macOS-style */}
-      <div className="grid grid-cols-7 divide-x divide-slate-100 border-b border-slate-200 bg-white">
+      <div className="grid grid-cols-7 divide-x divide-slate-100 dark:divide-neutral-800 border-b border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
         {ALL_DAYS.map((day) => (
           <div
             key={day}
-            className="px-1.5 sm:px-2 py-1.5 text-right text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider text-slate-400"
+            className="px-1.5 sm:px-2 py-1.5 text-right text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider text-slate-400 dark:text-neutral-500"
           >
             {day}
           </div>

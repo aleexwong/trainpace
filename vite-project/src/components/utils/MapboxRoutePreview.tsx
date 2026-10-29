@@ -297,10 +297,10 @@ export function MapboxRoutePreview({
   if (!routePoints?.length) {
     return (
       <div
-        className={cn("flex items-center justify-center rounded-md bg-gray-100", className)}
+        className={cn("flex items-center justify-center rounded-md bg-gray-100 dark:bg-neutral-800", className)}
         style={{ height, width }}
       >
-        <div className="text-sm text-gray-400">No route data</div>
+        <div className="text-sm text-gray-400 dark:text-neutral-500">No route data</div>
       </div>
     );
   }
@@ -311,7 +311,7 @@ export function MapboxRoutePreview({
 
   return (
     <div
-      className={cn("relative overflow-hidden rounded-md bg-stone-50", className)}
+      className={cn("relative overflow-hidden rounded-md bg-stone-50 dark:bg-neutral-950", className)}
       style={{ height, width }}
     >
       {/*
@@ -342,7 +342,7 @@ export function MapboxRoutePreview({
         <button
           type="button"
           onClick={retry}
-          className="absolute bottom-2 right-2 z-20 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-gray-800 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
+          className="absolute bottom-2 right-2 z-20 rounded-full bg-white/90 dark:bg-neutral-900/90 px-3 py-1.5 text-xs font-semibold text-gray-800 dark:text-neutral-200 shadow-sm backdrop-blur-sm transition-colors hover:bg-white dark:hover:bg-neutral-900"
         >
           Load map
         </button>

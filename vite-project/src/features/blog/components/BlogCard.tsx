@@ -88,7 +88,7 @@ function CoverVisual({
 
   if (post.coverImage && !errored) {
     return (
-      <div className={`overflow-hidden bg-gray-100 ${className}`}>
+      <div className={`overflow-hidden bg-gray-100 dark:bg-neutral-800 ${className}`}>
         <img
           src={post.coverImage}
           alt={post.title}
@@ -129,10 +129,10 @@ export default function BlogCard({
           className="w-16 h-16 rounded-lg shrink-0"
         />
         <div className="min-w-0">
-          <h4 className="text-sm font-semibold text-gray-900 leading-snug line-clamp-2 group-hover:text-emerald-600 transition-colors">
+          <h4 className="text-sm font-semibold text-gray-900 dark:text-neutral-100 leading-snug line-clamp-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
             {post.title}
           </h4>
-          <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
+          <div className="flex items-center gap-2 mt-1 text-xs text-gray-500 dark:text-neutral-400">
             <Calendar className="w-3 h-3" />
             <span>{formatDate(post.date)}</span>
           </div>
@@ -144,7 +144,7 @@ export default function BlogCard({
   // Horizontal: image left, content right — good for dense list rows.
   if (resolved === "horizontal") {
     return (
-      <article className="group flex flex-col sm:flex-row gap-4 sm:gap-6 bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-emerald-300 hover:shadow-md transition-all duration-300">
+      <article className="group flex flex-col sm:flex-row gap-4 sm:gap-6 bg-white dark:bg-neutral-900 rounded-xl border border-gray-200 dark:border-neutral-800 overflow-hidden hover:border-emerald-300 dark:hover:border-emerald-800 hover:shadow-md transition-all duration-300">
         <Link
           to={`/blog/${post.slug}`}
           className="sm:w-56 shrink-0"
@@ -161,14 +161,14 @@ export default function BlogCard({
             </span>
           </div>
           <Link to={`/blog/${post.slug}`}>
-            <h3 className="text-lg font-bold text-gray-900 leading-snug mb-1.5 line-clamp-2 group-hover:text-emerald-600 transition-colors">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-neutral-100 leading-snug mb-1.5 line-clamp-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
               {post.title}
             </h3>
           </Link>
-          <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+          <p className="text-sm text-gray-600 dark:text-neutral-400 line-clamp-2 mb-3">
             {post.excerpt}
           </p>
-          <div className="flex items-center gap-4 text-xs text-gray-500">
+          <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-neutral-400">
             <span className="flex items-center gap-1">
               <Calendar className="w-3.5 h-3.5" />
               {formatDate(post.date)}
@@ -189,8 +189,8 @@ export default function BlogCard({
   return (
     <article
       className={`
-        group bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col
-        hover:border-emerald-300 hover:shadow-lg transition-all duration-300
+        group bg-white dark:bg-neutral-900 rounded-xl border border-gray-200 dark:border-neutral-800 overflow-hidden flex flex-col
+        hover:border-emerald-300 dark:hover:border-emerald-800 hover:shadow-lg transition-all duration-300
         ${isFeatured ? "md:col-span-2 md:grid md:grid-cols-2 md:items-stretch" : ""}
       `}
     >
@@ -213,7 +213,7 @@ export default function BlogCard({
             {categoryLabels[post.category]}
           </span>
           {post.featured && (
-            <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+            <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-300">
               Featured
             </span>
           )}
@@ -222,7 +222,7 @@ export default function BlogCard({
         <Link to={`/blog/${post.slug}`}>
           <h3
             className={`
-              font-bold text-gray-900 group-hover:text-emerald-600 transition-colors
+              font-bold text-gray-900 dark:text-neutral-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors
               ${isFeatured ? "text-2xl md:text-3xl mb-3" : "text-xl mb-2"}
             `}
           >
@@ -231,12 +231,12 @@ export default function BlogCard({
         </Link>
 
         <p
-          className={`text-gray-600 mb-4 line-clamp-2 ${isFeatured ? "text-base" : "text-sm"}`}
+          className={`text-gray-600 dark:text-neutral-400 mb-4 line-clamp-2 ${isFeatured ? "text-base" : "text-sm"}`}
         >
           {post.excerpt}
         </p>
 
-        <div className="flex items-center gap-4 text-sm text-gray-500 mt-auto">
+        <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-neutral-400 mt-auto">
           <div className="flex items-center gap-1">
             <Calendar className="w-4 h-4" />
             <span>{formatDate(post.date)}</span>
@@ -249,7 +249,7 @@ export default function BlogCard({
 
         <Link
           to={`/blog/${post.slug}`}
-          className="inline-flex items-center mt-4 text-emerald-600 font-medium hover:text-emerald-800 transition-colors"
+          className="inline-flex items-center mt-4 text-emerald-600 dark:text-emerald-400 font-medium hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
         >
           Read more
           <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />

@@ -24,7 +24,7 @@ export function FuelPlansSection({
     return (
       <div className="text-center py-12">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto"></div>
-        <p className="text-gray-600 mt-4">Loading fuel plans...</p>
+        <p className="text-gray-600 dark:text-neutral-400 mt-4">Loading fuel plans...</p>
       </div>
     );
   }
@@ -32,11 +32,11 @@ export function FuelPlansSection({
   if (fuelPlans.length === 0) {
     return (
       <div className="text-center py-12">
-        <Flame className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+        <Flame className="w-12 h-12 text-gray-400 dark:text-neutral-500 mx-auto mb-4" />
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-neutral-200 mb-4">
           No Fuel Plans Yet
         </h2>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-600 dark:text-neutral-400 mb-6">
           Create your first AI-powered fuel plan to see it here. Plans are
           automatically saved when you generate AI recommendations.
         </p>
@@ -78,11 +78,11 @@ export function FuelPlansSection({
   return (
     <>
       <div className="flex justify-between items-center mb-6">
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-gray-600 dark:text-neutral-400">
           {fuelPlans.length} fuel plan
           {fuelPlans.length !== 1 ? "s" : ""} saved
           {totalPages > 1 && (
-            <span className="text-gray-400 ml-2">
+            <span className="text-gray-400 dark:text-neutral-500 ml-2">
               • Page {currentPage} of {totalPages}
             </span>
           )}
@@ -115,8 +115,8 @@ export function FuelPlansSection({
             disabled={currentPage === 1}
             className={`flex items-center space-x-1 px-3 py-2 rounded-md transition-colors ${
               currentPage === 1
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                ? "bg-gray-100 dark:bg-neutral-800 text-gray-400 dark:text-neutral-500 cursor-not-allowed"
+                : "bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 text-gray-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800"
             }`}
             aria-label="Previous page"
           >
@@ -138,7 +138,7 @@ export function FuelPlansSection({
 
               if (showEllipsisBefore || showEllipsisAfter) {
                 return (
-                  <span key={page} className="px-2 text-gray-400">
+                  <span key={page} className="px-2 text-gray-400 dark:text-neutral-500">
                     ...
                   </span>
                 );
@@ -153,7 +153,7 @@ export function FuelPlansSection({
                   className={`w-10 h-10 rounded-md transition-colors flex items-center justify-center ${
                     page === currentPage
                       ? "bg-orange-500 text-white"
-                      : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                      : "bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 text-gray-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800"
                   }`}
                   aria-label={`Go to page ${page}`}
                   aria-current={page === currentPage ? "page" : undefined}
@@ -170,8 +170,8 @@ export function FuelPlansSection({
             disabled={currentPage === totalPages}
             className={`flex items-center space-x-1 px-3 py-2 rounded-md transition-colors ${
               currentPage === totalPages
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                ? "bg-gray-100 dark:bg-neutral-800 text-gray-400 dark:text-neutral-500 cursor-not-allowed"
+                : "bg-white dark:bg-neutral-900 border border-gray-300 dark:border-neutral-700 text-gray-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800"
             }`}
             aria-label="Next page"
           >

@@ -23,32 +23,32 @@ export function FuelPlanResults({
   onDownload,
 }: FuelPlanResultsProps) {
   return (
-    <Card data-testid="fuel-results" className="bg-white shadow-lg h-full">
+    <Card data-testid="fuel-results" className="bg-white dark:bg-neutral-900 shadow-lg h-full">
       <CardContent className="p-6 md:p-8">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl md:text-2xl font-semibold text-gray-900">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-900 dark:text-neutral-100">
             Your Fuel Plan 🔋
           </h2>
           <div className="flex gap-2">
             <button
               onClick={onEdit}
-              className="px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              className="px-3 py-2 text-sm font-medium text-gray-700 dark:text-neutral-300 bg-gray-100 dark:bg-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-700 rounded-lg transition-colors"
             >
               ← Edit
             </button>
             <button
               onClick={onCopy}
-              className="p-2 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors"
+              className="p-2 rounded-full bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
               title="Copy Plan"
             >
-              <Copy className="h-4 w-4 text-emerald-600" />
+              <Copy className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             </button>
             <button
               onClick={onDownload}
-              className="p-2 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors"
+              className="p-2 rounded-full bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
               title="Download Plan"
             >
-              <Download className="h-4 w-4 text-emerald-600" />
+              <Download className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             </button>
           </div>
         </div>
@@ -63,32 +63,32 @@ export function FuelPlanResults({
 
         {/* Grid of metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-          <div className="p-4 bg-emerald-50 rounded-xl text-center">
-            <div className="text-2xl font-bold text-emerald-700">
+          <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl text-center">
+            <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">
               {result.carbsPerHour}g
             </div>
-            <div className="text-xs text-gray-600 mt-1">Carbs/hour</div>
+            <div className="text-xs text-gray-600 dark:text-neutral-400 mt-1">Carbs/hour</div>
           </div>
 
-          <div className="p-4 bg-emerald-50 rounded-xl text-center">
-            <div className="text-2xl font-bold text-emerald-700">
+          <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl text-center">
+            <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">
               {result.totalCarbs}g
             </div>
-            <div className="text-xs text-gray-600 mt-1">Total carbs</div>
+            <div className="text-xs text-gray-600 dark:text-neutral-400 mt-1">Total carbs</div>
           </div>
 
-          <div className="p-4 bg-emerald-50 rounded-xl text-center">
-            <div className="text-2xl font-bold text-emerald-700">
+          <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl text-center">
+            <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">
               {result.totalCalories}
             </div>
-            <div className="text-xs text-gray-600 mt-1">Calories</div>
+            <div className="text-xs text-gray-600 dark:text-neutral-400 mt-1">Calories</div>
           </div>
 
-          <div className="p-4 bg-emerald-50 rounded-xl text-center">
-            <div className="text-2xl font-bold text-emerald-700">
+          <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl text-center">
+            <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">
               {result.gelsNeeded}
             </div>
-            <div className="text-xs text-gray-600 mt-1">
+            <div className="text-xs text-gray-600 dark:text-neutral-400 mt-1">
               {result.gelsNeeded === 0 ? "Gels (optional)" : "Gels"}
             </div>
           </div>
@@ -97,25 +97,25 @@ export function FuelPlanResults({
         {/* Fueling Timeline */}
         {result.fuelStops.length > 0 ? (
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-              <Clock className="h-4 w-4 text-emerald-600" />
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-neutral-300 flex items-center gap-2">
+              <Clock className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               Fueling Timeline
             </h3>
             <div className="space-y-2 max-h-[280px] overflow-y-auto pr-1">
               {result.fuelStops.map((stop, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+                  className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-neutral-950 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors"
                 >
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white text-sm font-semibold shrink-0">
                     {i + 1}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
-                      <Clock className="h-3.5 w-3.5 text-gray-500" />
+                    <div className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-neutral-100">
+                      <Clock className="h-3.5 w-3.5 text-gray-500 dark:text-neutral-400" />
                       {stop.time} • {stop.distance}
                     </div>
-                    <div className="text-sm text-gray-600 mt-1 flex items-center gap-1">
+                    <div className="text-sm text-gray-600 dark:text-neutral-400 mt-1 flex items-center gap-1">
                       <Utensils className="h-3.5 w-3.5" />
                       {stop.carbsNeeded}g — {stop.suggestion}
                     </div>
@@ -125,8 +125,8 @@ export function FuelPlanResults({
             </div>
           </div>
         ) : (
-          <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-center">
-            <p className="text-sm text-amber-800">
+          <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-center">
+            <p className="text-sm text-amber-800 dark:text-amber-300">
               ⚡ For races under 1 hour, minimal fueling is typically needed. 
               Focus on pre-race nutrition instead.
             </p>
@@ -134,18 +134,18 @@ export function FuelPlanResults({
         )}
 
         {/* Baseline disclaimer */}
-        <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-          <p className="text-xs text-emerald-800">
+        <div className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded-lg">
+          <p className="text-xs text-emerald-800 dark:text-emerald-300">
             💡 <strong>Baseline estimate:</strong> You may need additional fuel
             sources (sports drinks, chews, etc.) to meet your total carb needs.
           </p>
         </div>
 
         {/* Training Plan CTA */}
-        <div className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between gap-4">
+        <div className="mt-4 p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded-xl flex items-center justify-between gap-4">
           <div>
-            <div className="text-sm font-semibold text-emerald-800">Ready to train?</div>
-            <div className="text-xs text-emerald-700 mt-0.5">
+            <div className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Ready to train?</div>
+            <div className="text-xs text-emerald-700 dark:text-emerald-300 mt-0.5">
               Build a complete training plan with paces for every session.
             </div>
           </div>

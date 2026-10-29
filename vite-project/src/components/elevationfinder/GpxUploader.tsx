@@ -598,19 +598,19 @@ export default function GpxUploader({
       {/* Duplicate File Modal */}
       {duplicateFound && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+          <div className="bg-white dark:bg-neutral-900 rounded-lg p-6 max-w-md w-full mx-4">
             <div className="flex items-center space-x-3 mb-4">
               <FileX className="w-6 h-6 text-orange-500" />
               <h3 className="text-lg font-semibold">Duplicate File Detected</h3>
             </div>
 
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 dark:text-neutral-400 mb-4">
               You've already uploaded this file:{" "}
               <strong>{duplicateFound.filename}</strong>. You can open your
               existing copy, or upload it again as a new route.
             </p>
 
-            <div className="text-sm text-gray-500 mb-6">
+            <div className="text-sm text-gray-500 dark:text-neutral-400 mb-6">
               Previously uploaded:{" "}
               {duplicateFound.uploadedAt?.toDate?.()?.toLocaleDateString() ||
                 "Recently"}
@@ -625,13 +625,13 @@ export default function GpxUploader({
               </button>
               <button
                 onClick={() => handleDuplicateAction("upload")}
-                className="w-full bg-white text-emerald-600 border border-emerald-500 px-4 py-2 rounded-lg hover:bg-emerald-50 transition-colors"
+                className="w-full bg-white dark:bg-neutral-900 text-emerald-600 dark:text-emerald-400 border border-emerald-500 px-4 py-2 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"
               >
                 Upload Anyway
               </button>
               <button
                 onClick={() => handleDuplicateAction("cancel")}
-                className="w-full bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                className="w-full bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-700 transition-colors"
               >
                 Cancel
               </button>
@@ -642,9 +642,9 @@ export default function GpxUploader({
 
       {/* Rate Limit Warning */}
       {rateLimitExceeded && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-2">
+        <div className="mb-4 p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg flex items-center space-x-2">
           <AlertCircle className="w-4 h-4 text-red-500" />
-          <span className="text-sm text-red-700">
+          <span className="text-sm text-red-700 dark:text-red-300">
             Upload limit reached. You can upload {maxUploadsPerHour} files per
             hour and {maxUploadsPerDay} per day.
           </span>
@@ -653,9 +653,9 @@ export default function GpxUploader({
 
       {/* Auth Warning */}
       {!user && (
-        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center space-x-2">
+        <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-950/40 border border-yellow-200 dark:border-yellow-900 rounded-lg flex items-center space-x-2">
           <AlertCircle className="w-4 h-4 text-yellow-500" />
-          <span className="text-sm text-yellow-700">
+          <span className="text-sm text-yellow-700 dark:text-yellow-300">
             Please log in to upload GPX files.
           </span>
         </div>
@@ -674,8 +674,8 @@ export default function GpxUploader({
           relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300
           ${
             isDragging && !isDisabled
-              ? "border-emerald-400 bg-emerald-50 scale-105"
-              : "border-gray-300 hover:border-emerald-300 hover:bg-emerald-25"
+              ? "border-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 scale-105"
+              : "border-gray-300 dark:border-neutral-700 hover:border-emerald-300 dark:hover:border-emerald-800 hover:bg-emerald-25"
           }
           ${
             isDisabled
@@ -711,7 +711,7 @@ export default function GpxUploader({
 
           {/* Progress Bar */}
           {isUploading && (
-            <div className="w-full max-w-xs bg-gray-200 rounded-full h-2">
+            <div className="w-full max-w-xs bg-gray-200 dark:bg-neutral-700 rounded-full h-2">
               <div
                 className="bg-emerald-600 h-2 rounded-full transition-all duration-300"
                 style={{ width: `${uploadProgress}%` }}
@@ -721,10 +721,10 @@ export default function GpxUploader({
 
           {/* Text content */}
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-neutral-200">
               {isUploading ? "Processing GPX..." : "Upload Your Route"}
             </h3>
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-600 dark:text-neutral-400 text-sm">
               {isUploading
                 ? "Checking for duplicates and validating data..."
                 : "Drop your GPX file here or click to browse"}
@@ -732,7 +732,7 @@ export default function GpxUploader({
           </div>
 
           {/* Features */}
-          <div className="flex items-center space-x-6 text-xs text-gray-500">
+          <div className="flex items-center space-x-6 text-xs text-gray-500 dark:text-neutral-400">
             <div className="flex items-center space-x-1">
               <MapPin className="w-4 h-4 text-emerald-500" />
               <span>Track Analysis</span>
@@ -748,12 +748,12 @@ export default function GpxUploader({
           </div>
 
           {/* Limits info */}
-          <div className="flex flex-col items-center space-y-1 text-xs text-gray-400">
-            <div className="bg-gray-50 px-3 py-1 rounded-full">
+          <div className="flex flex-col items-center space-y-1 text-xs text-gray-400 dark:text-neutral-500">
+            <div className="bg-gray-50 dark:bg-neutral-950 px-3 py-1 rounded-full">
               Max {maxFileSize}MB • {allowedFileTypes.join(", ")} files
             </div>
             {user && (
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-gray-500 dark:text-neutral-400">
                 Today: {uploadsToday}/{maxUploadsPerDay} • This hour:{" "}
                 {uploadsThisHour}/{maxUploadsPerHour}
               </div>

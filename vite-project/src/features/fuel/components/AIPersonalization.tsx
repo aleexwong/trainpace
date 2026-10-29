@@ -120,27 +120,27 @@ export function AIPersonalization({
 
   return (
     <>
-      <Card className="bg-gradient-to-br from-purple-100 to-emerald-100 border-purple-200 shadow-lg">
+      <Card className="bg-gradient-to-br from-purple-100 dark:from-neutral-950 to-emerald-100 dark:to-neutral-950 border-purple-200 dark:border-purple-900 shadow-lg">
         <CardContent className="p-8">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-6 w-6 text-purple-600" />
-              <h3 className="text-xl font-semibold text-gray-900">
+              <Sparkles className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-neutral-100">
                 AI Personalization
               </h3>
             </div>
             <button
               onClick={() => setShowPromptModal(true)}
-              className="p-2 rounded-full bg-white hover:bg-purple-200 transition-colors"
+              className="p-2 rounded-full bg-white dark:bg-neutral-900 hover:bg-purple-200 dark:hover:bg-purple-900/60 transition-colors"
               title="View system prompt"
             >
-              <FileText className="h-5 w-5 text-purple-600" />
+              <FileText className="h-5 w-5 text-purple-600 dark:text-purple-400" />
             </button>
           </div>
 
           {/* Beta Disclaimer */}
-          <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-            <p className="text-xs text-emerald-800">
+          <div className="mb-4 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded-lg">
+            <p className="text-xs text-emerald-800 dark:text-emerald-300">
               <strong>Using Google Gemini (Free):</strong> We use Google's free
               AI to personalize your plan. Google may use your input to improve
               their models, so avoid sharing medical info or personal details.
@@ -153,7 +153,7 @@ export function AIPersonalization({
             <>
               {/* Preset Buttons */}
               <div className="mb-4">
-                <p className="text-sm font-medium text-gray-700 mb-3">
+                <p className="text-sm font-medium text-gray-700 dark:text-neutral-300 mb-3">
                   Quick select common scenarios:
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -171,10 +171,10 @@ export function AIPersonalization({
               {/* Divider */}
               <div className="relative my-4">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-purple-200"></div>
+                  <div className="w-full border-t border-purple-200 dark:border-purple-900"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-gradient-to-br from-purple-100 to-emerald-100 text-gray-500">
+                  <span className="px-2 bg-gradient-to-br from-purple-100 dark:from-neutral-950 to-emerald-100 dark:to-neutral-950 text-gray-500 dark:text-neutral-400">
                     or write your own
                   </span>
                 </div>
@@ -189,11 +189,11 @@ export function AIPersonalization({
                     setSelectedPresets(new Set());
                   }
                 }}
-                className="w-full px-4 py-3 text-base border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 min-h-[120px] bg-white"
+                className="w-full px-4 py-3 text-base border border-purple-200 dark:border-purple-900 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 min-h-[120px] bg-white dark:bg-neutral-900"
               />
-              <p className="text-xs text-gray-600 mt-2 mb-4">
+              <p className="text-xs text-gray-600 dark:text-neutral-400 mt-2 mb-4">
                 {selectedPresets.size > 0 ? (
-                  <span className="text-purple-600 font-medium">
+                  <span className="text-purple-600 dark:text-purple-400 font-medium">
                     ✓ {selectedPresets.size} scenario
                     {selectedPresets.size > 1 ? "s" : ""} selected. Feel free to
                     edit!
@@ -244,12 +244,12 @@ export function AIPersonalization({
               />
 
               {/* Save to Dashboard Section */}
-              <div className="mt-6 pt-4 border-t border-white/20">
+              <div className="mt-6 pt-4 border-t border-white/20 dark:border-neutral-800">
                 {user ? (
                   <button
                     onClick={onSave}
                     disabled={isSaving || isSaved}
-                    className="w-full py-3 text-base font-semibold bg-white text-purple-600 rounded-xl hover:bg-white/90 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full py-3 text-base font-semibold bg-white dark:bg-neutral-900 text-purple-600 dark:text-purple-400 rounded-xl hover:bg-white/90 dark:hover:bg-neutral-900/90 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {isSaving ? (
                       <>
@@ -269,13 +269,13 @@ export function AIPersonalization({
                     )}
                   </button>
                 ) : (
-                  <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center">
-                    <p className="text-sm text-gray-700 mb-3">
+                  <div className="bg-white/10 dark:bg-neutral-900/10 backdrop-blur-sm rounded-lg p-4 text-center">
+                    <p className="text-sm text-gray-700 dark:text-neutral-300 mb-3">
                       💾 Want to save this plan to your dashboard?
                     </p>
                     <button
                       onClick={onSave}
-                      className="w-full py-3 text-base font-semibold bg-white text-purple-600 rounded-xl hover:bg-white/90 transition-colors shadow-md flex items-center justify-center gap-2"
+                      className="w-full py-3 text-base font-semibold bg-white dark:bg-neutral-900 text-purple-600 dark:text-purple-400 rounded-xl hover:bg-white/90 dark:hover:bg-neutral-900/90 transition-colors shadow-md flex items-center justify-center gap-2"
                     >
                       Sign Up to Save (Free)
                     </button>
@@ -285,21 +285,21 @@ export function AIPersonalization({
 
               {/* Feedback Section */}
               {!feedbackGiven ? (
-                <div className="mt-6 pt-4 border-t border-white/20">
-                  <p className="text-sm text-center text-gray-700 mb-3">
+                <div className="mt-6 pt-4 border-t border-white/20 dark:border-neutral-800">
+                  <p className="text-sm text-center text-gray-700 dark:text-neutral-300 mb-3">
                     Were these recommendations helpful?
                   </p>
                   <div className="flex gap-3 justify-center">
                     <button
                       onClick={() => onFeedback(true)}
-                      className="flex-1 py-2 px-4 bg-white/20 hover:bg-white/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium text-gray-700"
+                      className="flex-1 py-2 px-4 bg-white/20 dark:bg-neutral-900/20 hover:bg-white/30 dark:hover:bg-neutral-900/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium text-gray-700 dark:text-neutral-300"
                     >
                       <span className="text-lg">👍</span>
                       Helpful
                     </button>
                     <button
                       onClick={() => onFeedback(false)}
-                      className="flex-1 py-2 px-4 bg-white/20 hover:bg-white/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium text-gray-700"
+                      className="flex-1 py-2 px-4 bg-white/20 dark:bg-neutral-900/20 hover:bg-white/30 dark:hover:bg-neutral-900/30 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-medium text-gray-700 dark:text-neutral-300"
                     >
                       <span className="text-lg">👎</span>
                       Not helpful
@@ -307,8 +307,8 @@ export function AIPersonalization({
                   </div>
                 </div>
               ) : (
-                <div className="mt-6 pt-4 border-t border-white/20 text-center">
-                  <p className="text-sm text-gray-700">
+                <div className="mt-6 pt-4 border-t border-white/20 dark:border-neutral-800 text-center">
+                  <p className="text-sm text-gray-700 dark:text-neutral-300">
                     ✨ Thanks for your feedback!
                   </p>
                 </div>
@@ -317,7 +317,7 @@ export function AIPersonalization({
               <button
                 onClick={handleReset}
                 disabled={cooldownSeconds > 0}
-                className="mt-6 w-full py-3 text-sm font-medium bg-white/10 hover:bg-white/20 rounded-xl transition-colors border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700"
+                className="mt-6 w-full py-3 text-sm font-medium bg-white/10 dark:bg-neutral-900/10 hover:bg-white/20 dark:hover:bg-neutral-900/20 rounded-xl transition-colors border border-white/20 dark:border-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 dark:text-neutral-300"
               >
                 {cooldownSeconds > 0
                   ? `Wait ${cooldownSeconds}s to refine`
@@ -335,22 +335,22 @@ export function AIPersonalization({
           onClick={() => setShowPromptModal(false)}
         >
           <div
-            className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
+            className="bg-white dark:bg-neutral-900 rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-6 border-b border-gray-200 flex items-center justify-between bg-purple-50">
+            <div className="p-6 border-b border-gray-200 dark:border-neutral-800 flex items-center justify-between bg-purple-50 dark:bg-purple-950/40">
               <div className="flex items-center gap-2">
-                <FileText className="h-6 w-6 text-purple-600" />
-                <h3 className="text-xl font-semibold text-gray-900">
+                <FileText className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-neutral-100">
                   AI System Prompt
                 </h3>
               </div>
               <button
                 onClick={() => setShowPromptModal(false)}
-                className="p-2 bg-purple-50 hover:bg-purple-100 rounded-full transition-colors"
+                className="p-2 bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 dark:hover:bg-purple-900/40 rounded-full transition-colors"
               >
                 <svg
-                  className="h-5 w-5 text-purple-600"
+                  className="h-5 w-5 text-purple-600 dark:text-purple-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -365,8 +365,8 @@ export function AIPersonalization({
               </button>
             </div>
             <div className="p-6 overflow-y-auto max-h-[calc(80vh-100px)]">
-              <div className="bg-gray-50 rounded-lg p-4 font-mono text-sm">
-                <pre className="whitespace-pre-wrap text-gray-800">
+              <div className="bg-gray-50 dark:bg-neutral-950 rounded-lg p-4 font-mono text-sm">
+                <pre className="whitespace-pre-wrap text-gray-800 dark:text-neutral-200">
                   {getFuelPlanPrompt(
                     planContext,
                     userContext || "[Your situation will be inserted here]"

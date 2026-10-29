@@ -6,7 +6,7 @@ import bmoResults from "@/assets/about/bmo-half-marathon-2025.jpg";
 
 export default function About() {
   return (
-    <div className="bg-white text-slate-900 min-h-screen">
+    <div className="bg-white dark:bg-neutral-900 text-slate-900 dark:text-neutral-100 min-h-screen">
       {/* /ethos renders this page too; both canonicalize to /about. */}
       <Helmet>
         <title>About TrainPace – Built by a Self-Coached Runner</title>
@@ -17,12 +17,12 @@ export default function About() {
         <link rel="canonical" href="https://trainpace.com/about" />
       </Helmet>
       {/* Hero Section */}
-      <section className="py-20 px-6 bg-gradient-to-br from-emerald-50 to-white">
+      <section className="py-20 px-6 bg-gradient-to-br from-emerald-50 dark:from-neutral-950 to-white dark:to-neutral-950">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             From 3:01 to 2:06: Why I Built TrainPace
           </h1>
-          <p className="text-xl text-slate-600 mb-8">
+          <p className="text-xl text-slate-600 dark:text-neutral-400 mb-8">
             A developer's journey from survival runner to data-driven athlete
           </p>
         </div>
@@ -36,24 +36,24 @@ export default function About() {
             <Heart className="w-8 h-8 text-red-500" />
             The First Race: May 2024
           </h2>
-          <div className="prose prose-lg max-w-none text-left">
-            <p className="text-slate-700 leading-relaxed mb-4">
+          <div className="prose prose-lg dark:prose-invert max-w-none text-left">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               I crossed the finish line of the BMO Vancouver Half Marathon in{" "}
               <strong>3:01:00</strong>. I survived, but barely.
             </p>
-            <p className="text-slate-700 leading-relaxed mb-4">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               The week that followed was brutal sore, in pain, unable to walk
               down stairs without wincing. I'd brought 10 gels with me and 2
               clunky bottles because I had no idea what I actually needed. I
               just wanted to prove I could do something hard.
             </p>
-            <p className="text-slate-700 leading-relaxed mb-4">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               As a kid, I couldn't run 6 laps under 15 minutes. Running wasn't
               something I did. But finishing that half marathon, even in pain,
               gave me something I didn't know I needed: proof that I could push
               through hard things.
             </p>
-            <p className="text-slate-700 leading-relaxed">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed">
               I wanted to come back faster. I wanted to do it right.
             </p>
           </div>
@@ -62,15 +62,15 @@ export default function About() {
         {/* The Training */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-            <TrendingUp className="w-8 h-8 text-emerald-600" />
+            <TrendingUp className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
             24 Weeks of Consistent Training
           </h2>
-          <div className="prose prose-lg max-w-none text-left">
-            <p className="text-slate-700 leading-relaxed mb-4">
+          <div className="prose prose-lg dark:prose-invert max-w-none text-left">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               I joined a local run club in Vancouver and committed to a
               structured plan:
             </p>
-            <ul className="list-disc pl-6 mb-6 text-slate-700 space-y-2 text-left">
+            <ul className="list-disc pl-6 mb-6 text-slate-700 dark:text-neutral-300 space-y-2 text-left">
               <li>
                 <strong>1 long run per week</strong> – Building endurance at
                 Zone 2/3 intensity
@@ -84,13 +84,13 @@ export default function About() {
                 hardest lesson to learn
               </li>
             </ul>
-            <p className="text-slate-700 leading-relaxed mb-4">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               The breakthrough wasn't running harder. It was{" "}
               <strong>running smarter</strong>. The group forced me to slow down
               on easy days runs that felt almost embarrassingly slow at the
               time. But that's where the adaptation happened.
             </p>
-            <p className="text-slate-700 leading-relaxed mb-4">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               I dealt with nagging knee pain (probably from skipping strength
               training), but I stayed consistent. I analyzed the BMO course
               elevation profile and planned my race strategy km by km. I used
@@ -98,7 +98,7 @@ export default function About() {
               didn't fully trust it, so I brought 5. Turns out, 3 would've been
               enough. Even I didn't believe my own math at first.
             </p>
-            <p className="text-slate-700 leading-relaxed">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed">
               Most importantly, I stopped obsessing over my watch during runs. I
               knew my zones. I trusted the process.
             </p>
@@ -108,25 +108,25 @@ export default function About() {
         {/* The Result */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-            <Timer className="w-8 h-8 text-emerald-600" />
+            <Timer className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
             The PR: May 2025
           </h2>
-          <div className="bg-emerald-50 border-l-4 border-emerald-600 p-6 mb-6">
-            <p className="text-2xl font-bold text-emerald-900 mb-2">
+          <div className="bg-emerald-50 dark:bg-emerald-950/40 border-l-4 border-emerald-600 p-6 mb-6">
+            <p className="text-2xl font-bold text-emerald-900 dark:text-emerald-200 mb-2">
               BMO Vancouver Half Marathon: 2:06:00
             </p>
-            <p className="text-emerald-700">
+            <p className="text-emerald-700 dark:text-emerald-300">
               <strong>55 minutes faster</strong> than my first attempt. A 30%
               improvement in one year.
             </p>
           </div>
-          <div className="prose prose-lg max-w-none text-left">
-            <p className="text-slate-700 leading-relaxed mb-4">
+          <div className="prose prose-lg dark:prose-invert max-w-none text-left">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               I executed the race exactly as planned. Controlled effort on the
               hills. Disciplined pacing in the early miles. Fueling on schedule.
               No bonking. No regrets.
             </p>
-            <p className="text-slate-700 leading-relaxed">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed">
               That 55-minute drop wasn't luck. It was <strong>data</strong>,{" "}
               <strong>consistency</strong>, and{" "}
               <strong>the right tools at the right time</strong>.
@@ -135,7 +135,7 @@ export default function About() {
         </div>
 
         {/* Race Results - Proof */}
-        <div className="mb-16 bg-slate-50 rounded-lg p-8">
+        <div className="mb-16 bg-slate-50 dark:bg-neutral-950 rounded-lg p-8">
           <h3 className="text-2xl font-bold mb-6 text-center">
             The Proof: Official Results
           </h3>
@@ -146,21 +146,21 @@ export default function About() {
               className="w-full md:w-1/2 rounded-lg shadow-lg"
             />
             <div className="md:w-1/2">
-              <p className="text-lg text-slate-700 mb-4">
+              <p className="text-lg text-slate-700 dark:text-neutral-300 mb-4">
                 From barely surviving my first half marathon to executing a
                 controlled, data-driven race plan the numbers don't lie.
               </p>
-              <p className="text-slate-600 mb-4">
+              <p className="text-slate-600 dark:text-neutral-400 mb-4">
                 This wasn't about luck or talent. It was about consistent
                 training, smart pacing, and using the right tools to make better
                 decisions.
               </p>
-              <p className="text-slate-600">
+              <p className="text-slate-600 dark:text-neutral-400">
                 TrainPace was built during this training cycle. Every feature
                 you see is something I used to plan, execute, and improve my own
                 racing.
               </p>
-              <p className="text-slate-700 mt-6">
+              <p className="text-slate-700 dark:text-neutral-300 mt-6">
                 A year ago, I could barely walk after finishing 21 kilometers.
                 This time, I crossed the line smiling. TrainPace was built for
                 that feeling{" "}
@@ -172,14 +172,14 @@ export default function About() {
         {/* Why I Built This */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-            <Code className="w-8 h-8 text-emerald-600" />
+            <Code className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
             Why I Built TrainPace
           </h2>
-          <div className="prose prose-lg max-w-none text-left">
-            <p className="text-slate-700 leading-relaxed mb-4">
+          <div className="prose prose-lg dark:prose-invert max-w-none text-left">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               During my training, I got frustrated with existing tools:
             </p>
-            <ul className="list-disc pl-6 mb-6 text-slate-700 space-y-2 text-left">
+            <ul className="list-disc pl-6 mb-6 text-slate-700 dark:text-neutral-300 space-y-2 text-left">
               <li>
                 <strong>Pace calculators were buried in ads</strong> – I just
                 wanted my zones without dodging clickbait
@@ -203,20 +203,20 @@ export default function About() {
                 gels do I actually need? I had to do the math myself
               </li>
             </ul>
-            <p className="text-slate-700 leading-relaxed mb-4">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               I studied computer science at BCIT and biology at UBC. I work in
               QA, but TrainPace was my test: could I build something end-to-end,
               from code to performance results? I've been learning full-stack
               development for the past three years. I wanted to prove to myself
               and future employers that I could build something real.
             </p>
-            <p className="text-slate-700 leading-relaxed mb-4">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               TrainPace started as a personal project: a clean, fast pace
               calculator without ads. Then I added the features I actually used
               elevation analysis, fueling plans, unit switching. The tools that
               helped me drop 55 minutes.
             </p>
-            <p className="text-slate-700 leading-relaxed">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed">
               I built this for runners like me: self-coached, data-driven, and
               trying to improve without spending $200/month on a coach.
             </p>
@@ -226,27 +226,27 @@ export default function About() {
         {/* Who I Am */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold mb-6">About Me</h2>
-          <div className="prose prose-lg max-w-none text-left">
-            <p className="text-slate-700 leading-relaxed mb-4">
+          <div className="prose prose-lg dark:prose-invert max-w-none text-left">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               I'm Alex, a developer and runner based in Vancouver, BC. I never
               ran as a kid, I was the teenager who couldn't run 6 laps under 15
               minutes in gym class. Running now is my way of proving to my inner
               child that hard things are possible.
             </p>
-            <p className="text-slate-700 leading-relaxed mb-4">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               I work as a QA tester by day and build side projects by night.
               TrainPace is my most ambitious project yet a full-stack
               application built with React, TypeScript, Firebase, and a lot of
               trial and error.
             </p>
-            <p className="text-slate-700 leading-relaxed mb-4">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
               I'm still training. My next goal is to run another half marathon
               and break <strong>2:00:00</strong> ideally hitting{" "}
               <strong>1:45:00</strong> if everything goes right. Every feature I
               add to TrainPace is something I'm testing in my own training
               first.
             </p>
-            <p className="text-slate-700 leading-relaxed">
+            <p className="text-slate-700 dark:text-neutral-300 leading-relaxed">
               I built this because I needed it. I'm sharing it because maybe you
               do too.
             </p>
@@ -254,31 +254,31 @@ export default function About() {
         </div>
 
         {/* The Data */}
-        <div className="mb-16 bg-slate-50 border border-slate-200 rounded-lg p-8">
+        <div className="mb-16 bg-slate-50 dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 rounded-lg p-8">
           <h3 className="text-2xl font-bold mb-4">The Numbers</h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <p className="text-sm text-slate-600 mb-1">First Half Marathon</p>
-              <p className="text-3xl font-bold text-slate-900">3:01:00</p>
-              <p className="text-sm text-slate-600">BMO Vancouver – May 2024</p>
-              <p className="text-sm text-red-600 mt-2">
+              <p className="text-sm text-slate-600 dark:text-neutral-400 mb-1">First Half Marathon</p>
+              <p className="text-3xl font-bold text-slate-900 dark:text-neutral-100">3:01:00</p>
+              <p className="text-sm text-slate-600 dark:text-neutral-400">BMO Vancouver – May 2024</p>
+              <p className="text-sm text-red-600 dark:text-red-400 mt-2">
                 Avg Pace: 8:35/km (13:48/mi)
               </p>
             </div>
             <div>
-              <p className="text-sm text-slate-600 mb-1">PR Half Marathon</p>
-              <p className="text-3xl font-bold text-emerald-600">2:06:00</p>
-              <p className="text-sm text-slate-600">BMO Vancouver – May 2025</p>
-              <p className="text-sm text-emerald-600 mt-2">
+              <p className="text-sm text-slate-600 dark:text-neutral-400 mb-1">PR Half Marathon</p>
+              <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">2:06:00</p>
+              <p className="text-sm text-slate-600 dark:text-neutral-400">BMO Vancouver – May 2025</p>
+              <p className="text-sm text-emerald-600 dark:text-emerald-400 mt-2">
                 Avg Pace: 5:58/km (9:37/mi)
               </p>
             </div>
           </div>
-          <div className="mt-6 pt-6 border-t border-slate-300">
-            <p className="text-lg font-semibold text-slate-900">
-              Time Drop: <span className="text-emerald-600">55 minutes</span>
+          <div className="mt-6 pt-6 border-t border-slate-300 dark:border-neutral-700">
+            <p className="text-lg font-semibold text-slate-900 dark:text-neutral-100">
+              Time Drop: <span className="text-emerald-600 dark:text-emerald-400">55 minutes</span>
             </p>
-            <p className="text-sm text-slate-600 mt-1">
+            <p className="text-sm text-slate-600 dark:text-neutral-400 mt-1">
               30% improvement over 24 weeks of structured training
             </p>
           </div>
@@ -295,7 +295,7 @@ export default function About() {
             <Link to="/calculator">
               <Button
                 size="lg"
-                className="bg-white text-emerald-600 hover:bg-slate-100"
+                className="bg-white dark:bg-neutral-900 text-emerald-600 dark:text-emerald-400 hover:bg-slate-100 dark:hover:bg-neutral-800"
               >
                 Try Pace Calculator
               </Button>
@@ -303,7 +303,7 @@ export default function About() {
             <Link to="/elevationfinder">
               <Button
                 size="lg"
-                className="bg-white text-emerald-600 hover:bg-slate-100"
+                className="bg-white dark:bg-neutral-900 text-emerald-600 dark:text-emerald-400 hover:bg-slate-100 dark:hover:bg-neutral-800"
               >
                 Analyze Elevation
               </Button>
@@ -313,28 +313,28 @@ export default function About() {
       </section>
 
       {/* Contact/Questions */}
-      <section className="py-12 px-6 bg-slate-50">
+      <section className="py-12 px-6 bg-slate-50 dark:bg-neutral-950">
         <div className="max-w-4xl mx-auto text-center">
           <h3 className="text-2xl font-bold mb-4">Questions or Feedback?</h3>
-          <p className="text-slate-600 mb-6">
+          <p className="text-slate-600 dark:text-neutral-400 mb-6">
             I'm always improving TrainPace based on real runner feedback. If you
             have suggestions, bug reports, or just want to share your training
             story, I'd love to hear from you.
           </p>
-          <p className="text-slate-700">
+          <p className="text-slate-700 dark:text-neutral-300">
             <strong>Want to connect?</strong> Find me on{" "}
             <a
               href="https://www.linkedin.com/in/aleexwong/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-emerald-600 hover:underline"
+              className="text-emerald-600 dark:text-emerald-400 hover:underline"
             >
               LinkedIn
             </a>{" "}
             or reach out via email at{" "}
             <a
               href="mailto:alex@trainpace.com"
-              className="text-emerald-600 hover:underline"
+              className="text-emerald-600 dark:text-emerald-400 hover:underline"
             >
               alex@trainpace.com
             </a>

@@ -28,7 +28,7 @@ export function RouteStylingForm({
             id="routeColor"
             value={posterData.routeColor}
             onChange={(e) => onUpdateField("routeColor", e.target.value)}
-            className="w-12 h-10 rounded border border-gray-300 cursor-pointer"
+            className="w-12 h-10 rounded border border-gray-300 dark:border-neutral-700 cursor-pointer"
           />
           <Input
             value={posterData.routeColor}
@@ -49,7 +49,7 @@ export function RouteStylingForm({
             id="backgroundColor"
             value={posterData.backgroundColor}
             onChange={(e) => onUpdateField("backgroundColor", e.target.value)}
-            className="w-12 h-10 rounded border border-gray-300 cursor-pointer"
+            className="w-12 h-10 rounded border border-gray-300 dark:border-neutral-700 cursor-pointer"
           />
           <Input
             value={posterData.backgroundColor}

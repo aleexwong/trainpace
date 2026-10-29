@@ -69,16 +69,16 @@ export function PaceResultsDisplay({
   };
 
   return (
-    <Card className="bg-white shadow-lg">
+    <Card className="bg-white dark:bg-neutral-900 shadow-lg">
       <CardContent className="p-4 sm:p-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3">
-          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">
+          <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-neutral-100">
             Your Training Paces 🎯
           </h2>
           <div className="flex flex-wrap items-center gap-2">
             {/* Pace Toggle */}
             <div
-              className="relative w-36 sm:w-40 h-9 sm:h-10 bg-purple-100 rounded-full cursor-pointer overflow-hidden"
+              className="relative w-36 sm:w-40 h-9 sm:h-10 bg-purple-100 dark:bg-purple-900/40 rounded-full cursor-pointer overflow-hidden"
               onClick={handlePaceToggle}
               title="Toggle pace display unit"
             >
@@ -90,14 +90,14 @@ export function PaceResultsDisplay({
               <div className="absolute inset-0 flex items-center">
                 <div
                   className={`w-1/2 text-center text-xs font-medium transition-colors ${
-                    isPaceKm ? "text-white" : "text-purple-700"
+                    isPaceKm ? "text-white" : "text-purple-700 dark:text-purple-300"
                   }`}
                 >
                   min/km
                 </div>
                 <div
                   className={`w-1/2 text-center text-xs font-medium transition-colors ${
-                    !isPaceKm ? "text-white" : "text-purple-700"
+                    !isPaceKm ? "text-white" : "text-purple-700 dark:text-purple-300"
                   }`}
                 >
                   min/mi
@@ -107,7 +107,7 @@ export function PaceResultsDisplay({
 
             {/* Terrain Toggle */}
             <div
-              className="relative w-32 sm:w-36 h-9 sm:h-10 bg-orange-100 rounded-full cursor-pointer overflow-hidden"
+              className="relative w-32 sm:w-36 h-9 sm:h-10 bg-orange-100 dark:bg-orange-900/40 rounded-full cursor-pointer overflow-hidden"
               onClick={handleTerrainToggle}
               title="Toggle terrain adjustment"
             >
@@ -119,14 +119,14 @@ export function PaceResultsDisplay({
               <div className="absolute inset-0 flex items-center">
                 <div
                   className={`w-1/2 text-center text-xs font-medium transition-colors ${
-                    terrainMode === "flat" ? "text-white" : "text-orange-700"
+                    terrainMode === "flat" ? "text-white" : "text-orange-700 dark:text-orange-300"
                   }`}
                 >
                   Flat
                 </div>
                 <div
                   className={`w-1/2 text-center text-xs font-medium transition-colors ${
-                    terrainMode === "hilly" ? "text-white" : "text-orange-700"
+                    terrainMode === "hilly" ? "text-white" : "text-orange-700 dark:text-orange-300"
                   }`}
                 >
                   Hilly
@@ -137,28 +137,28 @@ export function PaceResultsDisplay({
             {/* Action Buttons */}
             <button
               onClick={onEdit}
-              className="px-3 sm:px- py-1.5 sm:py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+              className="px-3 sm:px- py-1.5 sm:py-2 text-sm font-medium text-gray-700 dark:text-neutral-300 bg-gray-100 dark:bg-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-700 rounded-lg transition-colors"
             >
               ← Edit
             </button>
             <button
               onClick={onCopy}
-              className="p-1.5 sm:p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition-colors"
+              className="p-1.5 sm:p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
               title="Copy Plan"
             >
-              <Copy className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
+              <Copy className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600 dark:text-emerald-400" />
             </button>
             <button
               onClick={onDownload}
-              className="p-1.5 sm:p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition-colors"
+              className="p-1.5 sm:p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-colors"
               title="Download Plan"
             >
-              <Download className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
+              <Download className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600 dark:text-emerald-400" />
             </button>
             {onShare && (
               <button
                 onClick={onShare}
-                className="px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 transition-colors"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium rounded-lg bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 transition-colors"
                 title="Copy share link"
               >
                 {shareCopied ? "✓ Copied!" : "Share"}
@@ -170,9 +170,9 @@ export function PaceResultsDisplay({
                 disabled={isSaving || isSaved}
                 className={`px-3 sm:px-4 py-1.5 sm:py-2 text-sm font-medium rounded-lg transition-all flex items-center gap-1.5 ${
                   isSaved
-                    ? "bg-green-100 text-green-700 cursor-not-allowed"
+                    ? "bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 cursor-not-allowed"
                     : isSaving
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    ? "bg-gray-100 dark:bg-neutral-800 text-gray-400 dark:text-neutral-500 cursor-not-allowed"
                     : "bg-gradient-to-r from-purple-600 to-emerald-600 text-white hover:from-purple-700 hover:to-emerald-700 shadow-md hover:shadow-lg"
                 }`}
                 title={isSaved ? "Saved!" : "Save to Dashboard"}
@@ -187,11 +187,11 @@ export function PaceResultsDisplay({
         </div>
 
         {/* Race Summary */}
-        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-emerald-50 rounded-xl">
-          <p className="text-xs sm:text-sm text-emerald-800">
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl">
+          <p className="text-xs sm:text-sm text-emerald-800 dark:text-emerald-300">
             <strong>Race:</strong> {raceDistance} in {raceTime}
             {terrainMode === "hilly" && (
-              <span className="ml-2 px-2 py-0.5 bg-orange-200 text-orange-800 rounded text-xs font-semibold">
+              <span className="ml-2 px-2 py-0.5 bg-orange-200 dark:bg-orange-900/60 text-orange-800 dark:text-orange-300 rounded text-xs font-semibold">
                 ⛰️ Hilly Terrain (+30s/{paceType.toLowerCase() === "km" ? "km" : "mi"})
               </span>
             )}
@@ -211,20 +211,20 @@ export function PaceResultsDisplay({
                   key={key}
                   className={`flex md:block items-center justify-between p-3 md:p-5 rounded-lg md:rounded-xl border transition-all ${
                     terrainMode === "hilly"
-                      ? "bg-gradient-to-r md:bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-100 hover:border-orange-200 md:hover:shadow-md"
-                      : "bg-gradient-to-r md:bg-gradient-to-br from-emerald-50 to-purple-50 border-emerald-100 hover:border-emerald-200 md:hover:shadow-md"
+                      ? "bg-gradient-to-r md:bg-gradient-to-br from-orange-50 dark:from-neutral-950 to-yellow-50 dark:to-neutral-950 border-orange-100 dark:border-orange-900/60 hover:border-orange-200 dark:hover:border-orange-900 md:hover:shadow-md"
+                      : "bg-gradient-to-r md:bg-gradient-to-br from-emerald-50 dark:from-neutral-950 to-purple-50 dark:to-neutral-950 border-emerald-100 dark:border-emerald-900/60 hover:border-emerald-200 dark:hover:border-emerald-900 md:hover:shadow-md"
                   }`}
                 >
                   <div className="flex-1 md:flex-none min-w-0 md:min-w-full">
-                    <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 capitalize truncate md:whitespace-normal md:mb-2">
+                    <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-neutral-100 capitalize truncate md:whitespace-normal md:mb-2">
                       {displayName}
                     </h3>
-                    <p className="text-xs md:text-sm text-gray-600 truncate md:whitespace-normal md:mb-3">
+                    <p className="text-xs md:text-sm text-gray-600 dark:text-neutral-400 truncate md:whitespace-normal md:mb-3">
                       {PACE_DESCRIPTIONS[key]}
                     </p>
                   </div>
                   <div className={`text-base sm:text-lg md:text-2xl font-bold ml-3 md:ml-0 whitespace-nowrap ${
-                    terrainMode === "hilly" ? "text-orange-700" : "text-emerald-700"
+                    terrainMode === "hilly" ? "text-orange-700 dark:text-orange-300" : "text-emerald-700 dark:text-emerald-300"
                   }`}>
                     {adjustedValue}
                   </div>
@@ -235,16 +235,16 @@ export function PaceResultsDisplay({
 
         {/* Heart Rate Zones Section */}
         {results.heartRateZones && (
-          <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+          <div className="mt-6 p-4 bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 rounded-xl">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100 mb-3 flex items-center gap-2">
               ❤️ Heart Rate Zones
-              <span className="text-sm font-normal text-gray-600">
+              <span className="text-sm font-normal text-gray-600 dark:text-neutral-400">
                 (Max HR: {results.heartRateZones.maxHR} bpm)
               </span>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="text-gray-400 cursor-help text-base">ⓘ</span>
+                    <span className="text-gray-400 dark:text-neutral-500 cursor-help text-base">ⓘ</span>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Calculated using the formula: Max HR = 220 - age</p>
@@ -253,27 +253,27 @@ export function PaceResultsDisplay({
               </TooltipProvider>
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="p-3 bg-white rounded-lg">
-                <p className="text-sm font-medium text-gray-700">Easy Pace</p>
-                <p className="text-base font-semibold text-green-700">
+              <div className="p-3 bg-white dark:bg-neutral-900 rounded-lg">
+                <p className="text-sm font-medium text-gray-700 dark:text-neutral-300">Easy Pace</p>
+                <p className="text-base font-semibold text-green-700 dark:text-green-300">
                   {results.heartRateZones.easyZone}
                 </p>
               </div>
-              <div className="p-3 bg-white rounded-lg">
-                <p className="text-sm font-medium text-gray-700">Tempo Pace</p>
-                <p className="text-base font-semibold text-yellow-700">
+              <div className="p-3 bg-white dark:bg-neutral-900 rounded-lg">
+                <p className="text-sm font-medium text-gray-700 dark:text-neutral-300">Tempo Pace</p>
+                <p className="text-base font-semibold text-yellow-700 dark:text-yellow-300">
                   {results.heartRateZones.tempoZone}
                 </p>
               </div>
-              <div className="p-3 bg-white rounded-lg">
-                <p className="text-sm font-medium text-gray-700">Intervals</p>
-                <p className="text-base font-semibold text-orange-700">
+              <div className="p-3 bg-white dark:bg-neutral-900 rounded-lg">
+                <p className="text-sm font-medium text-gray-700 dark:text-neutral-300">Intervals</p>
+                <p className="text-base font-semibold text-orange-700 dark:text-orange-300">
                   {results.heartRateZones.intervalZone}
                 </p>
               </div>
-              <div className="p-3 bg-white rounded-lg">
-                <p className="text-sm font-medium text-gray-700">Maximum Effort</p>
-                <p className="text-base font-semibold text-red-700">
+              <div className="p-3 bg-white dark:bg-neutral-900 rounded-lg">
+                <p className="text-sm font-medium text-gray-700 dark:text-neutral-300">Maximum Effort</p>
+                <p className="text-base font-semibold text-red-700 dark:text-red-300">
                   {results.heartRateZones.maximumZone}
                 </p>
               </div>
@@ -284,17 +284,17 @@ export function PaceResultsDisplay({
         {/* Pace Adjustments Section */}
         {results.adjustments?.weather && (
           <div className="mt-6">
-            <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2">
+            <div className="p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-xl">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100 mb-2 flex items-center gap-2">
                 🌡️ Weather Adjustment
               </h3>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-gray-700 dark:text-neutral-300">
                 {results.adjustments.weather.message}
               </p>
               {results.adjustments.weather.adjustedEasyPace && (
-                <div className="mt-2 p-2 bg-white rounded-lg">
-                  <p className="text-xs text-gray-600">Adjusted Easy Pace:</p>
-                  <p className="text-base font-semibold text-red-700">
+                <div className="mt-2 p-2 bg-white dark:bg-neutral-900 rounded-lg">
+                  <p className="text-xs text-gray-600 dark:text-neutral-400">Adjusted Easy Pace:</p>
+                  <p className="text-base font-semibold text-red-700 dark:text-red-300">
                     {results.adjustments.weather.adjustedEasyPace}
                   </p>
                 </div>
@@ -304,8 +304,8 @@ export function PaceResultsDisplay({
         )}
 
         {/* Info Box */}
-        <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <p className="text-xs sm:text-sm text-yellow-800">
+        <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-yellow-50 dark:bg-yellow-950/40 border border-yellow-200 dark:border-yellow-900 rounded-lg">
+          <p className="text-xs sm:text-sm text-yellow-800 dark:text-yellow-300">
             💡 <strong>Training Tip:</strong> These paces are guidelines based
             on your race performance. Use the toggles above to switch between pace units
             (min/km or min/mi) and terrain types (flat or hilly). Hilly terrain adds ~30s
@@ -329,10 +329,10 @@ function TrainingPlanCta({ results }: { results: PaceResults }) {
   });
 
   return (
-    <div className="mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between gap-4">
+    <div className="mt-4 p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded-xl flex items-center justify-between gap-4">
       <div>
-        <div className="text-sm font-semibold text-emerald-800">Ready to train?</div>
-        <div className="text-xs text-emerald-700 mt-0.5">
+        <div className="text-sm font-semibold text-emerald-800 dark:text-emerald-300">Ready to train?</div>
+        <div className="text-xs text-emerald-700 dark:text-emerald-300 mt-0.5">
           Build a full training plan using these paces.
         </div>
       </div>

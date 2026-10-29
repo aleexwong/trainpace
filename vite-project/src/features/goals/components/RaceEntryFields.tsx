@@ -73,7 +73,7 @@ export function RaceEntryFields({
           id={`${idPrefix}-distance`}
           value={value.distanceMeters || ""}
           onChange={handleDistance}
-          className="mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+          className="mt-1 w-full rounded-md border border-gray-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
         >
           <option value="" disabled>
             Select a distance
@@ -97,7 +97,7 @@ export function RaceEntryFields({
             onChange={handleTime("hours")}
             className="text-center"
           />
-          <span className="text-gray-400">:</span>
+          <span className="text-gray-400 dark:text-neutral-500">:</span>
           <Input
             aria-label="minutes"
             inputMode="numeric"
@@ -106,7 +106,7 @@ export function RaceEntryFields({
             onChange={handleTime("minutes")}
             className="text-center"
           />
-          <span className="text-gray-400">:</span>
+          <span className="text-gray-400 dark:text-neutral-500">:</span>
           <Input
             aria-label="seconds"
             inputMode="numeric"
@@ -119,9 +119,9 @@ export function RaceEntryFields({
       </div>
 
       {liveVdot != null && level && (
-        <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
+        <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 dark:bg-emerald-950/40 px-3 py-1 text-sm font-medium text-emerald-700 dark:text-emerald-300">
           <span>⚡ VDOT {liveVdot}</span>
-          <span className="text-gray-400">·</span>
+          <span className="text-gray-400 dark:text-neutral-500">·</span>
           <span className={level.color}>{level.label}</span>
         </div>
       )}

@@ -72,7 +72,7 @@ export function PosterGenerator({
           <Trophy className="w-5 h-5" />
           Course Poster Generator
         </CardTitle>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600 dark:text-neutral-400">
           Create your custom race poster with live preview and full
           customization
         </p>

@@ -9,14 +9,14 @@ function VolumeChart({ weeks }: { weeks: TrainingWeek[] }) {
   return (
     <div>
       <div className="flex items-baseline justify-between mb-3">
-        <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+        <div className="text-xs font-semibold text-slate-500 dark:text-neutral-400 uppercase tracking-wide">
           Weekly Volume
         </div>
-        <div className="text-xs text-slate-400">{weeks.length} weeks</div>
+        <div className="text-xs text-slate-400 dark:text-neutral-500">{weeks.length} weeks</div>
       </div>
       <div className="relative h-28 sm:h-32 pt-5">
         <div
-          className="absolute top-0 text-[9px] font-bold uppercase tracking-wide text-emerald-600 whitespace-nowrap"
+          className="absolute top-0 text-[9px] font-bold uppercase tracking-wide text-emerald-600 dark:text-emerald-400 whitespace-nowrap"
           style={{ left: `${((peakIdx + 0.5) / weeks.length) * 100}%`, transform: "translateX(-50%)" }}
         >
           Peak
@@ -41,7 +41,7 @@ function VolumeChart({ weeks }: { weeks: TrainingWeek[] }) {
           })}
         </div>
       </div>
-      <div className="flex justify-between mt-2 text-[10px] font-mono text-slate-400">
+      <div className="flex justify-between mt-2 text-[10px] font-mono text-slate-400 dark:text-neutral-500">
         <span>Wk 1</span>
         <span>Wk {weeks.length}</span>
       </div>
@@ -64,8 +64,8 @@ export function PlanStats({ plan }: Props) {
   return (
     <div className="space-y-4">
       {/* ── Phase timeline (full) ────────────────────────────────────── */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
-        <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
+      <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-slate-200 dark:border-neutral-800 shadow-sm p-5 sm:p-6">
+        <div className="text-xs font-semibold text-slate-500 dark:text-neutral-400 uppercase tracking-wide mb-3">
           Plan Structure
         </div>
         <div className="flex h-3 rounded-full overflow-hidden">
@@ -95,8 +95,8 @@ export function PlanStats({ plan }: Props) {
             >
               {seg.count >= 2 && (
                 <>
-                  <div className="truncate text-xs font-bold text-slate-800">{seg.phase}</div>
-                  <div className="text-[10px] font-mono text-slate-400">
+                  <div className="truncate text-xs font-bold text-slate-800 dark:text-neutral-200">{seg.phase}</div>
+                  <div className="text-[10px] font-mono text-slate-400 dark:text-neutral-500">
                     Wk {seg.startWeek}–{seg.endWeek}
                   </div>
                 </>
@@ -110,34 +110,34 @@ export function PlanStats({ plan }: Props) {
           {segments.map((seg) => (
             <div
               key={`legend-${seg.phase}-${seg.startWeek}`}
-              className="flex items-center gap-1.5 text-xs text-slate-600"
+              className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-neutral-400"
             >
               <span
                 className="h-2 w-2 rounded-full flex-shrink-0"
                 style={{ backgroundColor: PHASE_META[seg.phase].bg }}
               />
               {seg.phase}
-              <span className="text-slate-400">({seg.count}w)</span>
+              <span className="text-slate-400 dark:text-neutral-500">({seg.count}w)</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* ── Weekly volume ────────────────────────────────────────────── */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
+      <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-slate-200 dark:border-neutral-800 shadow-sm p-5 sm:p-6">
         <VolumeChart weeks={plan.weeks} />
       </div>
 
       {/* ── Pace zones ───────────────────────────────────────────────── */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6">
-        <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
+      <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-slate-200 dark:border-neutral-800 shadow-sm p-5 sm:p-6">
+        <div className="text-xs font-semibold text-slate-500 dark:text-neutral-400 uppercase tracking-wide mb-3">
           Training Paces
         </div>
         <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
           {PACE_ZONE_ORDER.map(({ key, label, bg, text }) => (
             <div
               key={key}
-              className="rounded-xl overflow-hidden border border-slate-100 flex"
+              className="rounded-xl overflow-hidden border border-slate-100 dark:border-neutral-800 flex"
             >
               <div className="w-1.5 flex-shrink-0" style={{ backgroundColor: bg }} />
               <div
@@ -149,11 +149,11 @@ export function PlanStats({ plan }: Props) {
                   style={{ color: text }}
                 >
                   {plan.paces[key]}
-                  <span className="ml-0.5 text-[10px] font-semibold text-slate-400">
+                  <span className="ml-0.5 text-[10px] font-semibold text-slate-400 dark:text-neutral-500">
                     /km
                   </span>
                 </div>
-                <div className="mt-0.5 text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                <div className="mt-0.5 text-[10px] sm:text-xs font-semibold text-slate-500 dark:text-neutral-400 uppercase tracking-wide">
                   {label}
                 </div>
               </div>

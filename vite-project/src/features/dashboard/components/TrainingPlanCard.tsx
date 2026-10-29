@@ -38,18 +38,18 @@ export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
   }, {});
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-slate-200 dark:border-neutral-800 shadow-sm overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-4 p-5">
         {/* Icon */}
-        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center">
-          <Flag className="w-5 h-5 text-emerald-600" />
+        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center">
+          <Flag className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
         </div>
 
         {/* Info */}
         <div className="flex-1 min-w-0">
-          <div className="font-semibold text-slate-900 truncate">{plan.name}</div>
-          <div className="flex items-center gap-3 mt-0.5 text-sm text-slate-500">
+          <div className="font-semibold text-slate-900 dark:text-neutral-100 truncate">{plan.name}</div>
+          <div className="flex items-center gap-3 mt-0.5 text-sm text-slate-500 dark:text-neutral-400">
             <span className="flex items-center gap-1">
               <Calendar className="w-3.5 h-3.5" />
               {raceDate}
@@ -59,7 +59,7 @@ export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
             {weeksRemaining !== null && (
               <>
                 <span>·</span>
-                <span className="text-emerald-600 font-medium">{weeksRemaining}w to go</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-medium">{weeksRemaining}w to go</span>
               </>
             )}
             {progress.planProgress.totalCount > 0 && (
@@ -72,7 +72,7 @@ export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
             )}
           </div>
           {progress.planProgress.totalCount > 0 && (
-            <div className="mt-2 h-1 max-w-xs rounded-full bg-slate-100 overflow-hidden">
+            <div className="mt-2 h-1 max-w-xs rounded-full bg-slate-100 dark:bg-neutral-800 overflow-hidden">
               <div
                 className="h-full rounded-full bg-emerald-500 transition-all"
                 style={{ width: `${progress.planProgress.pct}%` }}
@@ -87,13 +87,13 @@ export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
             <>
               <button
                 onClick={() => { onDelete(plan.id!); setConfirming(false); }}
-                className="text-xs font-semibold text-red-600 hover:text-red-700 px-3 py-1.5 rounded-lg border border-red-200 hover:bg-red-50 transition-colors"
+                className="text-xs font-semibold text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 px-3 py-1.5 rounded-lg border border-red-200 dark:border-red-900 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors"
               >
                 Confirm delete
               </button>
               <button
                 onClick={() => setConfirming(false)}
-                className="text-xs text-slate-500 hover:text-slate-700 px-2 py-1.5"
+                className="text-xs text-slate-500 dark:text-neutral-400 hover:text-slate-700 dark:hover:text-neutral-300 px-2 py-1.5"
               >
                 Cancel
               </button>
@@ -102,14 +102,14 @@ export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
             <>
               <button
                 onClick={() => exportPlanAsIcal(plan)}
-                className="p-2 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                className="p-2 text-slate-400 dark:text-neutral-500 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 rounded-lg transition-colors"
                 title="Export to Calendar (.ics)"
               >
                 <Download className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setConfirming(true)}
-                className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                className="p-2 text-slate-400 dark:text-neutral-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-lg transition-colors"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -117,7 +117,7 @@ export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
           )}
           <button
             onClick={() => setExpanded((o) => !o)}
-            className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-2 text-slate-400 dark:text-neutral-500 hover:text-slate-600 dark:hover:text-neutral-400 hover:bg-slate-100 dark:hover:bg-neutral-800 rounded-lg transition-colors"
           >
             {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
           </button>
@@ -126,10 +126,10 @@ export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
 
       {/* Expanded detail */}
       {expanded && (
-        <div className="border-t border-slate-100 p-5 space-y-4">
+        <div className="border-t border-slate-100 dark:border-neutral-800 p-5 space-y-4">
           {/* Phase bar */}
           <div>
-            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+            <div className="text-xs font-semibold text-slate-500 dark:text-neutral-400 uppercase tracking-wide mb-2">
               Plan Structure
             </div>
             <div className="flex rounded-lg overflow-hidden h-6">
@@ -141,7 +141,7 @@ export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
                     backgroundColor: phaseColor(phase as Parameters<typeof phaseColor>[0]),
                   }}
                   title={`${phase}: ${count}w`}
-                  className="flex items-center justify-center text-xs font-bold text-slate-700 overflow-hidden"
+                  className="flex items-center justify-center text-xs font-bold text-slate-700 dark:text-neutral-300 overflow-hidden"
                 >
                   {count >= 2 ? phase.split(" ")[0] : ""}
                 </div>
@@ -151,14 +151,14 @@ export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
 
           {/* Paces */}
           <div>
-            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">
+            <div className="text-xs font-semibold text-slate-500 dark:text-neutral-400 uppercase tracking-wide mb-2">
               Training Paces (min/km)
             </div>
             <div className="flex flex-wrap gap-2">
               {(Object.entries(plan.paces) as [string, string][]).map(([zone, pace]) => (
-                <div key={zone} className="bg-emerald-50 border border-emerald-100 rounded-lg px-3 py-1.5 text-center">
-                  <div className="text-sm font-bold text-emerald-700 font-mono">{pace}</div>
-                  <div className="text-xs text-slate-500 capitalize">{zone}</div>
+                <div key={zone} className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/60 rounded-lg px-3 py-1.5 text-center">
+                  <div className="text-sm font-bold text-emerald-700 dark:text-emerald-300 font-mono">{pace}</div>
+                  <div className="text-xs text-slate-500 dark:text-neutral-400 capitalize">{zone}</div>
                 </div>
               ))}
             </div>
@@ -166,7 +166,7 @@ export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
 
           {/* Full weekly schedule */}
           <div>
-            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">
+            <div className="text-xs font-semibold text-slate-500 dark:text-neutral-400 uppercase tracking-wide mb-3">
               Weekly Schedule
             </div>
             <div className="space-y-2 max-h-[600px] overflow-y-auto pr-1">
@@ -184,10 +184,10 @@ export function TrainingPlanCard({ plan, onDelete, userId }: Props) {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 pt-1 border-t border-slate-100">
+          <div className="flex items-center gap-3 pt-1 border-t border-slate-100 dark:border-neutral-800">
             <a
               href="/plan"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
             >
               Build a new plan →
             </a>

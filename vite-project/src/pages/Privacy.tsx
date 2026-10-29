@@ -17,7 +17,7 @@ export default function Privacy() {
 
       <div className="max-w-4xl mx-auto px-6 py-8">
         <h1 className="text-3xl font-bold mb-2">Privacy Policy</h1>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-600 dark:text-neutral-400 mb-6">
           Last updated:{" "}
           {new Date().toLocaleDateString("en-US", {
             year: "numeric",
@@ -29,13 +29,13 @@ export default function Privacy() {
         <div className="max-w-none">
           <section className="mb-6">
             <h2 className="text-xl font-semibold mb-3">Introduction</h2>
-            <p className="text-gray-700 leading-normal mb-2">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal mb-2">
               TrainPace ("we," "us," or "our") is committed to protecting your
               privacy. This Privacy Policy explains how we collect, use,
               disclose, and safeguard your information when you use our website
               and services at trainpace.com (the "Service").
             </p>
-            <p className="text-gray-700 leading-normal">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal">
               By using TrainPace, you agree to the collection and use of
               information in accordance with this policy. If you do not agree
               with our policies and practices, please do not use our Service.
@@ -50,10 +50,10 @@ export default function Privacy() {
             <h3 className="text-lg font-semibold mb-2 mt-4">
               Personal Information
             </h3>
-            <p className="text-gray-700 leading-normal mb-2">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal mb-2">
               When you create an account, we collect:
             </p>
-            <ul className="list-disc list-inside text-gray-700 mb-4 space-y-2">
+            <ul className="list-disc list-inside text-gray-700 dark:text-neutral-300 mb-4 space-y-2">
               <li>
                 <strong>Email address</strong> - For account authentication and
                 communication
@@ -69,11 +69,11 @@ export default function Privacy() {
             </ul>
 
             <h3 className="text-lg font-semibold mb-2 mt-4">Usage Data</h3>
-            <p className="text-gray-700 leading-normal mb-2">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal mb-2">
               We automatically collect certain information when you use
               TrainPace:
             </p>
-            <ul className="list-disc list-inside text-gray-700 mb-4 space-y-2">
+            <ul className="list-disc list-inside text-gray-700 dark:text-neutral-300 mb-4 space-y-2">
               <li>
                 <strong>Device information</strong> - Browser type, operating
                 system, device type
@@ -95,10 +95,10 @@ export default function Privacy() {
             <h3 className="text-lg font-semibold mb-2 mt-4">
               GPX Files and Route Data
             </h3>
-            <p className="text-gray-700 leading-normal mb-2">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal mb-2">
               When you upload GPX files to ElevationFinder:
             </p>
-            <ul className="list-disc list-inside text-gray-700 mb-4 space-y-2">
+            <ul className="list-disc list-inside text-gray-700 dark:text-neutral-300 mb-4 space-y-2">
               <li>
                 <strong>GPX file content</strong> - Stored securely in Firebase
                 Cloud Storage
@@ -112,7 +112,7 @@ export default function Privacy() {
                 from GPX files
               </li>
             </ul>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-gray-700 dark:text-neutral-300 leading-relaxed">
               Note: You can use the Training Pace Calculator and Fuel Planner{" "}
               <strong>without creating an account</strong>. No data is stored
               for unauthenticated users.
@@ -123,10 +123,10 @@ export default function Privacy() {
             <h2 className="text-xl font-semibold mb-3">
               How We Use Your Information
             </h2>
-            <p className="text-gray-700 leading-normal mb-2">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal mb-2">
               We use the information we collect to:
             </p>
-            <ul className="list-disc list-inside text-gray-700 mb-4 space-y-2">
+            <ul className="list-disc list-inside text-gray-700 dark:text-neutral-300 mb-4 space-y-2">
               <li>Provide, maintain, and improve the Service</li>
               <li>Authenticate your account and manage user sessions</li>
               <li>
@@ -145,7 +145,7 @@ export default function Privacy() {
                 threats
               </li>
             </ul>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-gray-700 dark:text-neutral-300 leading-relaxed">
               <strong>We do NOT:</strong> Sell your personal information, share
               your data with third-party advertisers, or use your information
               for marketing purposes without consent.
@@ -154,7 +154,7 @@ export default function Privacy() {
 
           <section className="mb-6">
             <h2 className="text-xl font-semibold mb-3">Third-Party Services</h2>
-            <p className="text-gray-700 leading-normal mb-2">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal mb-2">
               TrainPace uses the following third-party services that may collect
               information:
             </p>
@@ -164,7 +164,7 @@ export default function Privacy() {
                 <h3 className="text-lg font-semibold mb-1">
                   Firebase (Google)
                 </h3>
-                <p className="text-gray-700 leading-normal">
+                <p className="text-gray-700 dark:text-neutral-300 leading-normal">
                   We use Firebase Authentication for account management and
                   Firebase Cloud Storage for GPX file storage. Firebase is
                   governed by Google's Privacy Policy.
@@ -173,7 +173,7 @@ export default function Privacy() {
 
               <div>
                 <h3 className="text-lg font-semibold mb-1">Google Analytics</h3>
-                <p className="text-gray-700 leading-normal">
+                <p className="text-gray-700 dark:text-neutral-300 leading-normal">
                   We use Google Analytics to understand how users interact with
                   TrainPace. Google Analytics may collect cookies and usage
                   data. You can opt out using the Google Analytics Opt-out
@@ -183,7 +183,7 @@ export default function Privacy() {
 
               <div>
                 <h3 className="text-lg font-semibold mb-1">Mapbox</h3>
-                <p className="text-gray-700 leading-normal">
+                <p className="text-gray-700 dark:text-neutral-300 leading-normal">
                   We use Mapbox to display interactive maps in ElevationFinder.
                   Mapbox may collect location data from GPX files you upload.
                 </p>
@@ -191,7 +191,7 @@ export default function Privacy() {
 
               <div>
                 <h3 className="text-lg font-semibold mb-1">Vercel</h3>
-                <p className="text-gray-700 leading-normal">
+                <p className="text-gray-700 dark:text-neutral-300 leading-normal">
                   TrainPace is hosted on Vercel. Server logs may include IP
                   addresses and request metadata.
                 </p>
@@ -201,11 +201,11 @@ export default function Privacy() {
 
           <section className="mb-6">
             <h2 className="text-xl font-semibold mb-3">Data Security</h2>
-            <p className="text-gray-700 leading-normal mb-2">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal mb-2">
               We take data security seriously and implement industry-standard
               measures to protect your information:
             </p>
-            <ul className="list-disc list-inside text-gray-700 mb-4 space-y-2">
+            <ul className="list-disc list-inside text-gray-700 dark:text-neutral-300 mb-4 space-y-2">
               <li>
                 <strong>Encryption</strong> - All data transmitted to/from
                 TrainPace is encrypted using HTTPS/TLS
@@ -223,7 +223,7 @@ export default function Privacy() {
                 uploaded GPX files and saved routes
               </li>
             </ul>
-            <p className="text-gray-700 leading-normal">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal">
               However, no method of transmission over the internet is 100%
               secure. While we strive to protect your data, we cannot guarantee
               absolute security.
@@ -232,10 +232,10 @@ export default function Privacy() {
 
           <section className="mb-6">
             <h2 className="text-xl font-semibold mb-3">Your Data Rights</h2>
-            <p className="text-gray-700 leading-normal mb-2">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal mb-2">
               You have the following rights regarding your personal data:
             </p>
-            <ul className="list-disc list-inside text-gray-700 mb-4 space-y-2">
+            <ul className="list-disc list-inside text-gray-700 dark:text-neutral-300 mb-4 space-y-2">
               <li>
                 <strong>Access</strong> - Request a copy of your personal data
               </li>
@@ -255,11 +255,11 @@ export default function Privacy() {
                 this may affect functionality)
               </li>
             </ul>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-gray-700 dark:text-neutral-300 leading-relaxed">
               To exercise any of these rights, please contact us at{" "}
               <a
                 href="mailto:alex@trainpace.com"
-                className="text-emerald-600 hover:underline"
+                className="text-emerald-600 dark:text-emerald-400 hover:underline"
               >
                 alex@trainpace.com
               </a>
@@ -269,11 +269,11 @@ export default function Privacy() {
 
           <section className="mb-6">
             <h2 className="text-xl font-semibold mb-3">Data Retention</h2>
-            <p className="text-gray-700 leading-normal mb-2">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal mb-2">
               We retain your data for as long as your account is active or as
               needed to provide services:
             </p>
-            <ul className="list-disc list-inside text-gray-700 mb-4 space-y-2">
+            <ul className="list-disc list-inside text-gray-700 dark:text-neutral-300 mb-4 space-y-2">
               <li>
                 <strong>Account data</strong> - Retained until you request
                 deletion
@@ -287,7 +287,7 @@ export default function Privacy() {
                 may be retained for analysis
               </li>
             </ul>
-            <p className="text-gray-700 leading-normal">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal">
               If you delete your account, we will delete your personal
               information and GPX files within 30 days, except where required by
               law to retain certain data.
@@ -296,7 +296,7 @@ export default function Privacy() {
 
           <section className="mb-6">
             <h2 className="text-xl font-semibold mb-3">Children's Privacy</h2>
-            <p className="text-gray-700 leading-normal">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal">
               TrainPace is not intended for children under 13 years of age. We
               do not knowingly collect personal information from children under
               13. If we discover that we have collected data from a child under
@@ -304,7 +304,7 @@ export default function Privacy() {
               collected information from a child, please contact us at{" "}
               <a
                 href="mailto:alex@trainpace.com"
-                className="text-emerald-600 hover:underline"
+                className="text-emerald-600 dark:text-emerald-400 hover:underline"
               >
                 alex@trainpace.com
               </a>
@@ -314,7 +314,7 @@ export default function Privacy() {
 
           <section className="mb-6">
             <h2 className="text-xl font-semibold mb-3">International Users</h2>
-            <p className="text-gray-700 leading-normal">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal">
               TrainPace is hosted in the United States. If you are accessing the
               Service from outside the U.S., please be aware that your
               information may be transferred to, stored, and processed in the
@@ -327,16 +327,16 @@ export default function Privacy() {
             <h2 className="text-xl font-semibold mb-3">
               Changes to This Privacy Policy
             </h2>
-            <p className="text-gray-700 leading-normal mb-2">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal mb-2">
               We may update this Privacy Policy from time to time. When we make
               changes, we will:
             </p>
-            <ul className="list-disc list-inside text-gray-700 mb-4 space-y-2">
+            <ul className="list-disc list-inside text-gray-700 dark:text-neutral-300 mb-4 space-y-2">
               <li>Update the "Last updated" date at the top of this page</li>
               <li>Notify you via email if the changes are significant</li>
               <li>Post a notice on the TrainPace homepage</li>
             </ul>
-            <p className="text-gray-700 leading-normal">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal">
               Your continued use of TrainPace after changes are posted
               constitutes acceptance of the updated Privacy Policy.
             </p>
@@ -344,25 +344,25 @@ export default function Privacy() {
 
           <section className="mb-6">
             <h2 className="text-xl font-semibold mb-3">Contact Us</h2>
-            <p className="text-gray-700 leading-normal mb-3">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal mb-3">
               If you have questions about this Privacy Policy or how we handle
               your data, please contact us:
             </p>
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <p className="text-gray-700 mb-2">
+            <div className="bg-gray-50 dark:bg-neutral-950 p-6 rounded-lg">
+              <p className="text-gray-700 dark:text-neutral-300 mb-2">
                 <strong>Email:</strong>{" "}
                 <a
                   href="mailto:alex@trainpace.com"
-                  className="text-emerald-600 hover:underline"
+                  className="text-emerald-600 dark:text-emerald-400 hover:underline"
                 >
                   alex@trainpace.com
                 </a>
               </p>
-              <p className="text-gray-700">
+              <p className="text-gray-700 dark:text-neutral-300">
                 <strong>Website:</strong>{" "}
                 <a
                   href="https://trainpace.com"
-                  className="text-emerald-600 hover:underline"
+                  className="text-emerald-600 dark:text-emerald-400 hover:underline"
                 >
                   trainpace.com
                 </a>
@@ -370,11 +370,11 @@ export default function Privacy() {
             </div>
           </section>
 
-          <section className="mb-6 bg-emerald-50 p-4 rounded-lg">
+          <section className="mb-6 bg-emerald-50 dark:bg-emerald-950/40 p-4 rounded-lg">
             <h2 className="text-xl font-semibold mb-2">
               Our Commitment to Privacy
             </h2>
-            <p className="text-gray-700 leading-normal">
+            <p className="text-gray-700 dark:text-neutral-300 leading-normal">
               TrainPace was built by a runner for runners. We respect your
               privacy and are committed to transparency. We will{" "}
               <strong>never</strong> sell your data, show ads, or misuse your
@@ -383,8 +383,8 @@ export default function Privacy() {
             </p>
           </section>
 
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <Link to="/" className="text-emerald-600 hover:underline font-medium">
+          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-neutral-800">
+            <Link to="/" className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium">
               ← Back to TrainPace Home
             </Link>
           </div>

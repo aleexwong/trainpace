@@ -33,12 +33,12 @@ interface VdotLevel {
 }
 
 function getVdotLevelLocal(vdot: number): VdotLevel {
-  if (vdot >= 70) return { label: "Elite",         color: "text-red-600",     bg: "bg-red-50 border-red-200"     };
-  if (vdot >= 60) return { label: "Advanced",      color: "text-orange-600",  bg: "bg-orange-50 border-orange-200" };
-  if (vdot >= 50) return { label: "Competitive",   color: "text-yellow-600",  bg: "bg-yellow-50 border-yellow-200" };
-  if (vdot >= 40) return { label: "Intermediate",  color: "text-blue-600",    bg: "bg-blue-50 border-blue-200"   };
-  if (vdot >= 30) return { label: "Recreational",  color: "text-emerald-600", bg: "bg-emerald-50 border-emerald-200" };
-  return             { label: "Beginner",       color: "text-gray-600",    bg: "bg-gray-50 border-gray-200"   };
+  if (vdot >= 70) return { label: "Elite",         color: "text-red-600 dark:text-red-400",     bg: "bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-900"     };
+  if (vdot >= 60) return { label: "Advanced",      color: "text-orange-600 dark:text-orange-400",  bg: "bg-orange-50 dark:bg-orange-950/40 border-orange-200 dark:border-orange-900" };
+  if (vdot >= 50) return { label: "Competitive",   color: "text-yellow-600 dark:text-yellow-400",  bg: "bg-yellow-50 dark:bg-yellow-950/40 border-yellow-200 dark:border-yellow-900" };
+  if (vdot >= 40) return { label: "Intermediate",  color: "text-blue-600 dark:text-blue-400",    bg: "bg-blue-50 dark:bg-blue-950/40 border-blue-200 dark:border-blue-900"   };
+  if (vdot >= 30) return { label: "Recreational",  color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-900" };
+  return             { label: "Beginner",       color: "text-gray-600 dark:text-neutral-400",    bg: "bg-gray-50 dark:bg-neutral-950 border-gray-200 dark:border-neutral-800"   };
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -136,13 +136,13 @@ export function RaceDetailsForm({
   // ── Render ──────────────────────────────────────────────────────────────────
 
   return (
-    <Card className="bg-white shadow-lg">
+    <Card className="bg-white dark:bg-neutral-900 shadow-lg">
       <CardContent className="p-6 md:p-8 space-y-7">
-        <h2 className="text-2xl font-semibold text-gray-900">Race Details</h2>
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-neutral-100">Race Details</h2>
 
         {/* ── 1. Distance presets ── */}
         <div className="space-y-3">
-          <label className="block text-sm font-medium text-gray-700">Distance</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300">Distance</label>
 
           <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
             {PRESET_DISTANCES.map((preset) => {
@@ -155,7 +155,7 @@ export function RaceDetailsForm({
                   className={`py-3 px-2 text-sm font-semibold rounded-xl transition-all hover:scale-105 ${
                     isSelected
                       ? "bg-emerald-600 text-white shadow-md"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      : "bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-200 dark:hover:bg-neutral-700"
                   }`}
                 >
                   {preset.name}
@@ -165,7 +165,7 @@ export function RaceDetailsForm({
           </div>
 
           {/* Custom distance + unit toggle */}
-          <p className="text-xs text-gray-400">or enter a custom distance</p>
+          <p className="text-xs text-gray-400 dark:text-neutral-500">or enter a custom distance</p>
           <div className="flex items-center gap-2">
             <input
               type="number"
@@ -179,12 +179,12 @@ export function RaceDetailsForm({
               value={inputs.distance}
               onChange={onInputChange}
               className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 ${
-                errors.distance ? "border-red-500" : "border-gray-300"
+                errors.distance ? "border-red-500" : "border-gray-300 dark:border-neutral-700"
               }`}
             />
             <button
               type="button"
-              className="relative w-32 h-10 bg-emerald-100 rounded-full cursor-pointer overflow-hidden flex-shrink-0"
+              className="relative w-32 h-10 bg-emerald-100 dark:bg-emerald-900/40 rounded-full cursor-pointer overflow-hidden flex-shrink-0"
               onClick={handleUnitToggle}
             >
               <div
@@ -193,8 +193,8 @@ export function RaceDetailsForm({
                 }`}
               />
               <div className="absolute inset-0 flex items-center">
-                <div className={`w-1/2 text-center text-sm font-medium transition-colors ${isKm ? "text-white" : "text-emerald-700"}`}>KM</div>
-                <div className={`w-1/2 text-center text-sm font-medium transition-colors ${!isKm ? "text-white" : "text-emerald-700"}`}>MI</div>
+                <div className={`w-1/2 text-center text-sm font-medium transition-colors ${isKm ? "text-white" : "text-emerald-700 dark:text-emerald-300"}`}>KM</div>
+                <div className={`w-1/2 text-center text-sm font-medium transition-colors ${!isKm ? "text-white" : "text-emerald-700 dark:text-emerald-300"}`}>MI</div>
               </div>
             </button>
           </div>
@@ -204,7 +204,7 @@ export function RaceDetailsForm({
         {/* ── 2. Suggested finishing times (contextual) ── */}
         {suggestedTimes.length > 0 && (
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300">
               Common finishing times
             </label>
             <div className="flex flex-wrap gap-2">
@@ -217,7 +217,7 @@ export function RaceDetailsForm({
                     className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium border transition-all ${
                       isActive
                         ? "bg-emerald-600 text-white border-emerald-600 shadow"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-emerald-400 hover:text-emerald-600"
+                        : "bg-white dark:bg-neutral-900 text-gray-700 dark:text-neutral-300 border-gray-200 dark:border-neutral-800 hover:border-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-400"
                     }`}
                   >
                     {s.label}
@@ -230,7 +230,7 @@ export function RaceDetailsForm({
 
         {/* ── 3. Time input (HH : MM : SS) ── */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
+          <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300">
             Finish Time <span className="text-red-500">*</span>
           </label>
 
@@ -247,10 +247,10 @@ export function RaceDetailsForm({
               onChange={onInputChange}
               onKeyUp={(e) => handleTimeKeyUp(e, "hours")}
               className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
-                errors.time ? "border-red-500" : "border-gray-300"
+                errors.time ? "border-red-500" : "border-gray-300 dark:border-neutral-700"
               }`}
             />
-            <span className="text-gray-400 font-medium text-xl select-none">:</span>
+            <span className="text-gray-400 dark:text-neutral-500 font-medium text-xl select-none">:</span>
             <input
               ref={minutesRef}
               type="number"
@@ -264,10 +264,10 @@ export function RaceDetailsForm({
               onChange={onInputChange}
               onKeyUp={(e) => handleTimeKeyUp(e, "minutes")}
               className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
-                errors.time ? "border-red-500" : "border-gray-300"
+                errors.time ? "border-red-500" : "border-gray-300 dark:border-neutral-700"
               }`}
             />
-            <span className="text-gray-400 font-medium text-xl select-none">:</span>
+            <span className="text-gray-400 dark:text-neutral-500 font-medium text-xl select-none">:</span>
             <input
               ref={secondsRef}
               type="number"
@@ -280,7 +280,7 @@ export function RaceDetailsForm({
               value={inputs.seconds}
               onChange={onInputChange}
               className={`flex-1 px-4 py-3 text-lg border rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center ${
-                errors.time ? "border-red-500" : "border-gray-300"
+                errors.time ? "border-red-500" : "border-gray-300 dark:border-neutral-700"
               }`}
             />
           </div>
@@ -289,10 +289,10 @@ export function RaceDetailsForm({
 
         {/* ── 4. Fine-tune slider (preset distances only, after time is entered) ── */}
         {sliderRange && hasValidTime && !errors.time && (
-          <div className="bg-gray-50 rounded-2xl p-4 space-y-3 border border-gray-100">
-            <div className="flex items-center justify-between text-xs text-gray-500">
+          <div className="bg-gray-50 dark:bg-neutral-950 rounded-2xl p-4 space-y-3 border border-gray-100 dark:border-neutral-800">
+            <div className="flex items-center justify-between text-xs text-gray-500 dark:text-neutral-400">
               <span>Faster</span>
-              <span className="font-semibold text-gray-800 text-sm tabular-nums">
+              <span className="font-semibold text-gray-800 dark:text-neutral-200 text-sm tabular-nums">
                 {fmtSeconds(currentTimeSeconds)}
               </span>
               <span>Slower</span>
@@ -311,7 +311,7 @@ export function RaceDetailsForm({
                 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md"
             />
 
-            <div className="flex justify-between text-[11px] text-gray-400 tabular-nums">
+            <div className="flex justify-between text-[11px] text-gray-400 dark:text-neutral-500 tabular-nums">
               <span>{fmtSeconds(sliderRange.min)}</span>
               <span>{fmtSeconds(sliderRange.max)}</span>
             </div>
@@ -332,20 +332,20 @@ export function RaceDetailsForm({
         )}
 
         {/* ── 6. Optional adjustments ── */}
-        <div className="pt-4 border-t border-gray-100 space-y-4">
-          <p className="text-sm font-semibold text-gray-900">
+        <div className="pt-4 border-t border-gray-100 dark:border-neutral-800 space-y-4">
+          <p className="text-sm font-semibold text-gray-900 dark:text-neutral-100">
             Optional{" "}
-            <span className="font-normal text-gray-400 text-xs">for more personalised results</span>
+            <span className="font-normal text-gray-400 dark:text-neutral-500 text-xs">for more personalised results</span>
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
                 Age{" "}
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <span className="text-gray-400 cursor-help">ⓘ</span>
+                      <span className="text-gray-400 dark:text-neutral-500 cursor-help">ⓘ</span>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>For heart rate zone calculations</p>
@@ -362,17 +362,17 @@ export function RaceDetailsForm({
                 max="100"
                 value={inputs.age}
                 onChange={onInputChange}
-                className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-3 text-lg border border-gray-300 dark:border-neutral-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
                 Temperature (°F){" "}
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <span className="text-gray-400 cursor-help">ⓘ</span>
+                      <span className="text-gray-400 dark:text-neutral-500 cursor-help">ⓘ</span>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Adjusts pace for hot weather (80°F+)</p>
@@ -389,7 +389,7 @@ export function RaceDetailsForm({
                 max="130"
                 value={inputs.temperature}
                 onChange={onInputChange}
-                className="w-full px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                className="w-full px-4 py-3 text-lg border border-gray-300 dark:border-neutral-700 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
               />
             </div>
           </div>

@@ -29,8 +29,8 @@ function StackedBar({ title, items }: { title: string; items: BarSegment[] }) {
   const visible = items.filter((i) => i.pct > 0);
   return (
     <div>
-      <h4 className="text-sm font-medium text-gray-700 mb-2">{title}</h4>
-      <div className="flex w-full h-5 rounded-full overflow-hidden bg-gray-100">
+      <h4 className="text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">{title}</h4>
+      <div className="flex w-full h-5 rounded-full overflow-hidden bg-gray-100 dark:bg-neutral-800">
         {visible.map((i) => (
           <div
             key={i.key}
@@ -40,12 +40,12 @@ function StackedBar({ title, items }: { title: string; items: BarSegment[] }) {
           />
         ))}
       </div>
-      <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-gray-600">
+      <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-gray-600 dark:text-neutral-400">
         {visible.map((i) => (
           <div key={i.key} className="flex items-center gap-2">
             <span className={`w-2.5 h-2.5 rounded-sm shrink-0 ${i.color}`} />
             <span className="truncate">{i.label}</span>
-            <span className="ml-auto font-medium text-gray-800">
+            <span className="ml-auto font-medium text-gray-800 dark:text-neutral-200">
               {i.display}
             </span>
           </div>
@@ -135,8 +135,8 @@ export function TerrainBreakdown({
   }, [segments, basePaceMinPerKm]);
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200">
-      <h3 className="px-4 py-3 border-b border-gray-200 text-base font-semibold text-gray-800">
+    <div className="w-full bg-white dark:bg-neutral-900 rounded-lg shadow-sm border border-gray-200 dark:border-neutral-800">
+      <h3 className="px-4 py-3 border-b border-gray-200 dark:border-neutral-800 text-base font-semibold text-gray-800 dark:text-neutral-200">
         Terrain & Effort
       </h3>
       <div className="p-4 space-y-5">

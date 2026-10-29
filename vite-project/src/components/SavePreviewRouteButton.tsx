@@ -144,7 +144,7 @@ export function SavePreviewRouteButton({
   if (checking) {
     return (
       <div
-        className={`inline-flex items-center space-x-2 rounded-lg border border-gray-300 ${sizeClasses[size]} ${className}`}
+        className={`inline-flex items-center space-x-2 rounded-lg border border-gray-300 dark:border-neutral-700 ${sizeClasses[size]} ${className}`}
       >
         <Loader2 className={`${iconSizes[size]} animate-spin`} />
         <span>Loading...</span>
@@ -161,8 +161,8 @@ export function SavePreviewRouteButton({
         ${loading ? "opacity-75 cursor-not-allowed" : ""}
         ${
           isSaved
-            ? "bg-emerald-100 text-emerald-700 border border-emerald-200 hover:bg-emerald-200"
-            : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400"
+            ? "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-900 hover:bg-emerald-200 dark:hover:bg-emerald-900/60"
+            : "bg-white dark:bg-neutral-900 text-gray-700 dark:text-neutral-300 border border-gray-300 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-800 hover:border-gray-400 dark:hover:border-neutral-600"
         }
         ${className}`}
       title={isSaved ? "Remove from dashboard" : "Save to dashboard"}

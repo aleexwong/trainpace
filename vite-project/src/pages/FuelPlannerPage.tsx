@@ -15,7 +15,7 @@ export default function FuelPlannerPage() {
   // Wait for the profile before mounting (prefill is applied on mount only).
   if (user && loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-500">
+      <div className="min-h-screen flex items-center justify-center text-gray-500 dark:text-neutral-400">
         Loading…
       </div>
     );

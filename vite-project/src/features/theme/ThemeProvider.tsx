@@ -18,7 +18,7 @@ import {
 } from "./theme";
 
 // Must sit inside <BrowserRouter>: whether <html> gets `dark` depends on the
-// route (see THEMED_ROUTES). index.html sets the same class before React
+// route (see LIGHT_ONLY_ROUTES). index.html sets the same class before React
 // loads; this keeps it in sync after that.
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();

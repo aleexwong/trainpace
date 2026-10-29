@@ -118,7 +118,7 @@ export default function BlogList() {
   };
 
   return (
-    <div className="bg-gray-50 text-gray-900 min-h-screen">
+    <div className="bg-gray-50 dark:bg-neutral-950 text-gray-900 dark:text-neutral-100 min-h-screen">
       <Helmet>
         <title>{STATIC_PAGE_TITLES["/blog"]}</title>
         <meta
@@ -130,16 +130,16 @@ export default function BlogList() {
       </Helmet>
 
       {/* Masthead */}
-      <section className="bg-white border-b border-gray-200">
+      <section className="bg-white dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-800">
         <div className="max-w-6xl mx-auto px-6 py-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-sm font-medium mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-sm font-medium mb-4">
             <BookOpen className="w-4 h-4" aria-hidden="true" />
             The TrainPace Blog
           </div>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-3">
             Run Smarter, Race Better
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-neutral-400 max-w-2xl mx-auto">
             Training tips, race strategy, and nutrition advice — written by
             runners, backed by the science.
           </p>
@@ -147,12 +147,12 @@ export default function BlogList() {
       </section>
 
       {/* Sticky filter bar */}
-      <section className="sticky top-16 z-40 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm">
+      <section className="sticky top-16 z-40 bg-white/95 dark:bg-neutral-900/95 backdrop-blur border-b border-gray-200 dark:border-neutral-800 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-3">
           <div className="flex flex-col lg:flex-row lg:items-center gap-3">
             <div className="relative flex-1">
               <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-neutral-500"
                 aria-hidden="true"
               />
               <input
@@ -161,14 +161,14 @@ export default function BlogList() {
                 placeholder="Search articles..."
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                className="w-full pl-10 pr-10 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
               />
               {searchInput && (
                 <button
                   type="button"
                   onClick={clearSearch}
                   aria-label="Clear search"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-neutral-500 hover:text-gray-600 dark:hover:text-neutral-400"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -180,8 +180,8 @@ export default function BlogList() {
                 onClick={() => setCategory("all")}
                 className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
                   selectedCategory === "all"
-                    ? "bg-gray-900 text-white border-gray-900"
-                    : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
+                    ? "bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-neutral-900 dark:border-white"
+                    : "bg-white dark:bg-neutral-900 text-gray-600 dark:text-neutral-400 border-gray-200 dark:border-neutral-800 hover:border-gray-300 dark:hover:border-neutral-700"
                 }`}
               >
                 All
@@ -193,7 +193,7 @@ export default function BlogList() {
                   className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
                     selectedCategory === category
                       ? `${categoryColors[category]} border-transparent`
-                      : "bg-white text-gray-600 border-gray-200 hover:border-gray-300"
+                      : "bg-white dark:bg-neutral-900 text-gray-600 dark:text-neutral-400 border-gray-200 dark:border-neutral-800 hover:border-gray-300 dark:hover:border-neutral-700"
                   }`}
                 >
                   {categoryLabels[category]}
@@ -226,7 +226,7 @@ export default function BlogList() {
               {isFiltering && (
                 <button
                   onClick={clearAllFilters}
-                  className="text-sm text-emerald-600 hover:text-emerald-800 whitespace-nowrap"
+                  className="text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 whitespace-nowrap"
                 >
                   Clear filters
                 </button>
@@ -250,18 +250,18 @@ export default function BlogList() {
                     >
                       Load more articles
                     </Button>
-                    <p className="text-sm text-gray-500 mt-3">
+                    <p className="text-sm text-gray-500 dark:text-neutral-400 mt-3">
                       Showing {visiblePosts.length} of {gridPosts.length}
                     </p>
                   </div>
                 )}
               </>
             ) : (
-              <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
-                <p className="text-lg font-medium text-gray-700">
+              <div className="text-center py-16 bg-white dark:bg-neutral-900 rounded-xl border border-gray-200 dark:border-neutral-800">
+                <p className="text-lg font-medium text-gray-700 dark:text-neutral-300">
                   No articles found.
                 </p>
-                <p className="mt-2 text-gray-500">
+                <p className="mt-2 text-gray-500 dark:text-neutral-400">
                   Try a different search or category.
                 </p>
                 <Button onClick={clearAllFilters} className="mt-6">
@@ -290,13 +290,13 @@ export default function BlogList() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/calculator"
-              className="inline-flex items-center justify-center px-6 py-3 bg-white text-emerald-600 rounded-lg font-medium hover:bg-emerald-50 transition-colors"
+              className="inline-flex items-center justify-center px-6 py-3 bg-white dark:bg-neutral-900 text-emerald-600 dark:text-emerald-400 rounded-lg font-medium hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"
             >
               Pace Calculator
             </Link>
             <Link
               to="/fuel"
-              className="inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white rounded-lg font-medium hover:bg-white/10 transition-colors"
+              className="inline-flex items-center justify-center px-6 py-3 border-2 border-white dark:border-neutral-800 text-white rounded-lg font-medium hover:bg-white/10 dark:hover:bg-neutral-900/10 transition-colors"
             >
               Fuel Planner
             </Link>

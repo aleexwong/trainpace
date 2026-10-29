@@ -32,7 +32,7 @@ function Tile({
   label,
   value,
   sub,
-  accent = "text-gray-900",
+  accent = "text-gray-900 dark:text-neutral-100",
 }: {
   icon: React.ReactNode;
   label: string;
@@ -41,15 +41,15 @@ function Tile({
   accent?: string;
 }) {
   return (
-    <div className="bg-white p-4 rounded-lg shadow-sm border flex flex-col">
-      <div className="flex items-center gap-2 mb-1 text-gray-600">
+    <div className="bg-white dark:bg-neutral-900 p-4 rounded-lg shadow-sm border flex flex-col">
+      <div className="flex items-center gap-2 mb-1 text-gray-600 dark:text-neutral-400">
         {icon}
         <span className="text-xs font-medium uppercase tracking-wide">
           {label}
         </span>
       </div>
       <span className={`text-xl sm:text-2xl font-bold ${accent}`}>{value}</span>
-      {sub && <span className="text-xs text-gray-500 mt-0.5">{sub}</span>}
+      {sub && <span className="text-xs text-gray-500 dark:text-neutral-400 mt-0.5">{sub}</span>}
     </div>
   );
 }
@@ -89,7 +89,7 @@ export function MetricTiles({
         label="Est. Time"
         value={formatTime(estimatedTotalTime)}
         sub={`at ${formatPace(1, basePaceMinPerKm)} base`}
-        accent="text-purple-600"
+        accent="text-purple-600 dark:text-purple-400"
       />
       <Tile
         icon={<Gauge className="w-4 h-4 text-emerald-500" />}
@@ -101,19 +101,19 @@ export function MetricTiles({
         icon={<Activity className="w-4 h-4 text-amber-500" />}
         label="Difficulty"
         value={insights.difficultyRating}
-        accent="text-amber-600"
+        accent="text-amber-600 dark:text-amber-400"
       />
       <Tile
-        icon={<TrendingUp className="w-4 h-4 text-green-600" />}
+        icon={<TrendingUp className="w-4 h-4 text-green-600 dark:text-green-400" />}
         label="Elevation Gain"
         value={`+${formatElevation(insights.totalElevationGain)}`}
-        accent="text-green-700"
+        accent="text-green-700 dark:text-green-300"
       />
       <Tile
-        icon={<TrendingDown className="w-4 h-4 text-sky-600" />}
+        icon={<TrendingDown className="w-4 h-4 text-sky-600 dark:text-sky-400" />}
         label="Elevation Loss"
         value={`−${formatElevation(insights.totalElevationLoss)}`}
-        accent="text-sky-700"
+        accent="text-sky-700 dark:text-sky-300"
       />
       <Tile
         icon={<TrendingUp className="w-4 h-4 text-red-500" />}
@@ -130,7 +130,7 @@ export function MetricTiles({
               } km`
             : undefined
         }
-        accent="text-red-600"
+        accent="text-red-600 dark:text-red-400"
       />
       <Tile
         icon={<TrendingDown className="w-4 h-4 text-orange-500" />}
@@ -147,7 +147,7 @@ export function MetricTiles({
               } km`
             : undefined
         }
-        accent="text-orange-600"
+        accent="text-orange-600 dark:text-orange-400"
       />
     </div>
   );

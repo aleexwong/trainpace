@@ -19,10 +19,10 @@ const WORKOUTS = [
     zoneIndex: 0,
     icon: Wind,
     colors: {
-      bg: "bg-emerald-50",
-      border: "border-emerald-200",
-      icon: "text-emerald-600",
-      pace: "text-emerald-700",
+      bg: "bg-emerald-50 dark:bg-emerald-950/40",
+      border: "border-emerald-200 dark:border-emerald-900",
+      icon: "text-emerald-600 dark:text-emerald-400",
+      pace: "text-emerald-700 dark:text-emerald-300",
     },
   },
   {
@@ -31,10 +31,10 @@ const WORKOUTS = [
     zoneIndex: 2,
     icon: Clock,
     colors: {
-      bg: "bg-yellow-50",
-      border: "border-yellow-200",
-      icon: "text-yellow-600",
-      pace: "text-yellow-700",
+      bg: "bg-yellow-50 dark:bg-yellow-950/40",
+      border: "border-yellow-200 dark:border-yellow-900",
+      icon: "text-yellow-600 dark:text-yellow-400",
+      pace: "text-yellow-700 dark:text-yellow-300",
     },
   },
   {
@@ -43,10 +43,10 @@ const WORKOUTS = [
     zoneIndex: 3,
     icon: Repeat,
     colors: {
-      bg: "bg-orange-50",
-      border: "border-orange-200",
-      icon: "text-orange-600",
-      pace: "text-orange-700",
+      bg: "bg-orange-50 dark:bg-orange-950/40",
+      border: "border-orange-200 dark:border-orange-900",
+      icon: "text-orange-600 dark:text-orange-400",
+      pace: "text-orange-700 dark:text-orange-300",
     },
   },
   {
@@ -55,21 +55,21 @@ const WORKOUTS = [
     zoneIndex: 4,
     icon: Zap,
     colors: {
-      bg: "bg-red-50",
-      border: "border-red-200",
-      icon: "text-red-600",
-      pace: "text-red-700",
+      bg: "bg-red-50 dark:bg-red-950/40",
+      border: "border-red-200 dark:border-red-900",
+      icon: "text-red-600 dark:text-red-400",
+      pace: "text-red-700 dark:text-red-300",
     },
   },
 ];
 
 export function SampleWorkouts({ zones, paceUnit, compact }: SampleWorkoutsProps) {
   return (
-    <div className={`bg-white rounded-2xl shadow-lg h-full ${compact ? "p-4" : "p-5 sm:p-8"}`}>
-      <h2 className={`font-bold text-gray-900 ${compact ? "text-lg mb-0.5" : "text-xl sm:text-2xl mb-1"}`}>
+    <div className={`bg-white dark:bg-neutral-900 rounded-2xl shadow-lg h-full ${compact ? "p-4" : "p-5 sm:p-8"}`}>
+      <h2 className={`font-bold text-gray-900 dark:text-neutral-100 ${compact ? "text-lg mb-0.5" : "text-xl sm:text-2xl mb-1"}`}>
         Sample Workouts
       </h2>
-      <p className={`text-gray-500 ${compact ? "text-xs mb-3" : "text-sm mb-6"}`}>
+      <p className={`text-gray-500 dark:text-neutral-400 ${compact ? "text-xs mb-3" : "text-sm mb-6"}`}>
         Key sessions at your personalized paces
       </p>
 
@@ -95,15 +95,15 @@ export function SampleWorkouts({ zones, paceUnit, compact }: SampleWorkoutsProps
                 <div className="flex-1 min-w-0">
                   <div className={compact ? "flex items-center gap-1.5 mb-0.5" : ""}>
                     {compact && <Icon className={`w-3.5 h-3.5 ${workout.colors.icon}`} />}
-                    <h3 className={`font-semibold text-gray-900 ${compact ? "text-xs" : "text-sm"}`}>
+                    <h3 className={`font-semibold text-gray-900 dark:text-neutral-100 ${compact ? "text-xs" : "text-sm"}`}>
                       {workout.title}
                     </h3>
                   </div>
                   {!compact && (
-                    <p className="text-xs text-gray-500 mt-0.5">{workout.description}</p>
+                    <p className="text-xs text-gray-500 dark:text-neutral-400 mt-0.5">{workout.description}</p>
                   )}
                   <p className={`font-bold font-mono ${workout.colors.pace} ${compact ? "text-sm mt-0.5" : "text-base mt-2"}`}>
-                    {pace} <span className={`font-normal text-gray-400 ${compact ? "text-[10px]" : "text-xs"}`}>{unit}</span>
+                    {pace} <span className={`font-normal text-gray-400 dark:text-neutral-500 ${compact ? "text-[10px]" : "text-xs"}`}>{unit}</span>
                   </p>
                 </div>
               </div>

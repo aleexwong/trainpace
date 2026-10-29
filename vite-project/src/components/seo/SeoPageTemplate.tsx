@@ -67,11 +67,11 @@ export interface SeoPageTemplateProps {
 // =============================================================================
 
 const GRADIENT_VARIANTS: Record<string, string> = {
-  blue: 'from-emerald-50 via-white to-emerald-50',
-  orange: 'from-stone-50 via-white to-orange-50',
-  green: 'from-emerald-50 via-white to-teal-50',
-  purple: 'from-purple-50 via-white to-pink-50',
-  neutral: 'from-gray-50 via-white to-slate-50',
+  blue: 'from-emerald-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-emerald-50 dark:to-neutral-950',
+  orange: 'from-stone-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-orange-50 dark:to-neutral-950',
+  green: 'from-emerald-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-teal-50 dark:to-neutral-950',
+  purple: 'from-purple-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-pink-50 dark:to-neutral-950',
+  neutral: 'from-gray-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-slate-50 dark:to-neutral-950',
 };
 
 const TOOL_VARIANTS: Record<SeoToolType, string> = {
@@ -84,12 +84,12 @@ const TOOL_VARIANTS: Record<SeoToolType, string> = {
 };
 
 const TOOL_COLORS: Record<SeoToolType, { border: string; bg: string; text: string }> = {
-  pace: { border: 'border-emerald-100', bg: 'bg-emerald-700', text: 'text-emerald-700' },
-  fuel: { border: 'border-orange-100', bg: 'bg-amber-700', text: 'text-orange-800' },
-  elevation: { border: 'border-emerald-100', bg: 'bg-emerald-700', text: 'text-emerald-700' },
-  race: { border: 'border-orange-100', bg: 'bg-gray-900', text: 'text-orange-800' },
-  blog: { border: 'border-purple-100', bg: 'bg-purple-700', text: 'text-purple-700' },
-  plan: { border: 'border-emerald-100', bg: 'bg-emerald-700', text: 'text-emerald-700' },
+  pace: { border: 'border-emerald-100 dark:border-emerald-900/60', bg: 'bg-emerald-700', text: 'text-emerald-700 dark:text-emerald-300' },
+  fuel: { border: 'border-orange-100 dark:border-orange-900/60', bg: 'bg-amber-700', text: 'text-orange-800 dark:text-orange-300' },
+  elevation: { border: 'border-emerald-100 dark:border-emerald-900/60', bg: 'bg-emerald-700', text: 'text-emerald-700 dark:text-emerald-300' },
+  race: { border: 'border-orange-100 dark:border-orange-900/60', bg: 'bg-gray-900 dark:bg-neutral-700', text: 'text-orange-800 dark:text-orange-300' },
+  blog: { border: 'border-purple-100 dark:border-purple-900/60', bg: 'bg-purple-700', text: 'text-purple-700 dark:text-purple-300' },
+  plan: { border: 'border-emerald-100 dark:border-emerald-900/60', bg: 'bg-emerald-700', text: 'text-emerald-700 dark:text-emerald-300' },
 };
 
 // =============================================================================
@@ -108,17 +108,17 @@ function HeroSection({ page, colors, customContent }: HeroSectionProps) {
       <div className="max-w-4xl mx-auto">
         {customContent || (
           <>
-            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-neutral-100">
               {page.h1}
             </h1>
-            <p className="mt-4 text-lg text-gray-700">{page.intro}</p>
+            <p className="mt-4 text-lg text-gray-700 dark:text-neutral-300">{page.intro}</p>
 
             {page.bullets.length > 0 && (
               <div className="mt-6 grid gap-2">
                 {page.bullets.map((bullet) => (
                   <div
                     key={bullet}
-                    className={`rounded-lg bg-white/70 ${colors.border} border px-4 py-3 text-gray-800`}
+                    className={`rounded-lg bg-white/70 dark:bg-neutral-900/70 ${colors.border} border px-4 py-3 text-gray-800 dark:text-neutral-200`}
                   >
                     {bullet}
                   </div>
@@ -152,19 +152,19 @@ function FaqSection({ faq, colors }: FaqSectionProps) {
   return (
     <section className="px-4 sm:px-6 py-12">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-neutral-100 mb-6">
           Frequently Asked Questions
         </h2>
         <div className="space-y-4">
           {faq.map((item, index) => (
             <div
               key={index}
-              className={`rounded-xl bg-white/80 ${colors.border} border p-6`}
+              className={`rounded-xl bg-white/80 dark:bg-neutral-900/80 ${colors.border} border p-6`}
             >
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100">
                 {item.question}
               </h3>
-              <p className="mt-2 text-gray-700">{item.answer}</p>
+              <p className="mt-2 text-gray-700 dark:text-neutral-300">{item.answer}</p>
             </div>
           ))}
         </div>
@@ -185,17 +185,17 @@ function RelatedPagesSection({
   if (relatedPages.length === 0) return null;
 
   return (
-    <section className="px-4 sm:px-6 py-12 bg-gray-50/50">
+    <section className="px-4 sm:px-6 py-12 bg-gray-50/50 dark:bg-neutral-950/50">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-xl font-bold text-gray-900 mb-4">{title}</h2>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-neutral-100 mb-4">{title}</h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {relatedPages.map((link) => (
             <a
               key={link.pageId}
               href={link.path}
-              className="rounded-lg bg-white border border-gray-200 p-4 hover:border-gray-300 hover:shadow-sm transition-all"
+              className="rounded-lg bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 p-4 hover:border-gray-300 dark:hover:border-neutral-700 hover:shadow-sm transition-all"
             >
-              <span className="font-medium text-gray-900">
+              <span className="font-medium text-gray-900 dark:text-neutral-100">
                 {link.anchor || link.title}
               </span>
             </a>
@@ -218,7 +218,7 @@ function CrossToolLinksSection({ currentTool }: CrossToolLinksSectionProps) {
       title: 'Pacing',
       subtitle: 'Get your training paces',
       description: 'Convert any race time into Easy, Tempo, Threshold, and Interval zones.',
-      colors: { border: 'border-emerald-100', text: 'text-emerald-700' },
+      colors: { border: 'border-emerald-100 dark:border-emerald-900/60', text: 'text-emerald-700 dark:text-emerald-300' },
     },
     {
       tool: 'fuel' as const,
@@ -226,7 +226,7 @@ function CrossToolLinksSection({ currentTool }: CrossToolLinksSectionProps) {
       title: 'Fueling',
       subtitle: 'Build a gel schedule',
       description: 'Estimate carbs/hour, total carbs, and how many gels to carry.',
-      colors: { border: 'border-amber-100', text: 'text-amber-700' },
+      colors: { border: 'border-amber-100 dark:border-amber-900/60', text: 'text-amber-700 dark:text-amber-300' },
     },
     {
       tool: 'elevation' as const,
@@ -234,7 +234,7 @@ function CrossToolLinksSection({ currentTool }: CrossToolLinksSectionProps) {
       title: 'Elevation',
       subtitle: 'Analyze hills & grades',
       description: 'Upload a GPX to see elevation gain, grades, and key climbs.',
-      colors: { border: 'border-emerald-100', text: 'text-emerald-700' },
+      colors: { border: 'border-emerald-100 dark:border-emerald-900/60', text: 'text-emerald-700 dark:text-emerald-300' },
     },
     {
       tool: 'plan' as const,
@@ -242,7 +242,7 @@ function CrossToolLinksSection({ currentTool }: CrossToolLinksSectionProps) {
       title: 'Training Plan',
       subtitle: 'Build a training plan',
       description: '8–20 week periodized plans for 5K to Marathon with daily workouts.',
-      colors: { border: 'border-emerald-100', text: 'text-emerald-700' },
+      colors: { border: 'border-emerald-100 dark:border-emerald-900/60', text: 'text-emerald-700 dark:text-emerald-300' },
     },
   ];
 
@@ -255,15 +255,15 @@ function CrossToolLinksSection({ currentTool }: CrossToolLinksSectionProps) {
           <a
             key={tool.tool}
             href={tool.href}
-            className={`rounded-2xl ${tool.colors.border} border bg-white/70 p-6 hover:bg-white transition-colors`}
+            className={`rounded-2xl ${tool.colors.border} border bg-white/70 dark:bg-neutral-900/70 p-6 hover:bg-white dark:hover:bg-neutral-900 transition-colors`}
           >
             <div className={`text-sm font-semibold ${tool.colors.text}`}>
               {tool.title}
             </div>
-            <div className="mt-2 text-lg font-bold text-gray-900">
+            <div className="mt-2 text-lg font-bold text-gray-900 dark:text-neutral-100">
               {tool.subtitle}
             </div>
-            <p className="mt-2 text-gray-700">{tool.description}</p>
+            <p className="mt-2 text-gray-700 dark:text-neutral-300">{tool.description}</p>
           </a>
         ))}
       </div>
@@ -278,14 +278,14 @@ interface BreadcrumbNavProps {
 function BreadcrumbNav({ items }: BreadcrumbNavProps) {
   return (
     <nav className="px-4 sm:px-6 pt-4" aria-label="Breadcrumb">
-      <ol className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
+      <ol className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-neutral-400">
         {items.map((item, index) => (
           <li key={item.url} className="flex items-center gap-2">
-            {index > 0 && <span className="text-gray-400">/</span>}
+            {index > 0 && <span className="text-gray-400 dark:text-neutral-500">/</span>}
             {index === items.length - 1 ? (
-              <span className="text-gray-900 font-medium">{item.name}</span>
+              <span className="text-gray-900 dark:text-neutral-100 font-medium">{item.name}</span>
             ) : (
-              <a href={item.url} className="hover:text-gray-900 hover:underline">
+              <a href={item.url} className="hover:text-gray-900 dark:hover:text-neutral-100 hover:underline">
                 {item.name}
               </a>
             )}

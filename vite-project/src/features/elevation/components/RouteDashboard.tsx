@@ -155,7 +155,7 @@ export function RouteDashboard({
             height="100%"
             width="100%"
             showStartEnd
-            className="border border-gray-200 min-h-[20rem]"
+            className="border border-gray-200 dark:border-neutral-800 min-h-[20rem]"
             lineColor="#059669"
             lineWidth={3}
             maxZoom={16}
@@ -189,7 +189,7 @@ export function RouteDashboard({
       />
 
       {loading && (
-        <div className="text-center text-sm text-gray-500">Updating analysis…</div>
+        <div className="text-center text-sm text-gray-500 dark:text-neutral-400">Updating analysis…</div>
       )}
 
       {segments.length > 0 && (

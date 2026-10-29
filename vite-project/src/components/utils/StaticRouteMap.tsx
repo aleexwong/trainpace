@@ -165,11 +165,11 @@ export function StaticRouteMap({
   return (
     <div
       ref={containerRef}
-      className={cn("relative overflow-hidden rounded-md bg-stone-50", className)}
+      className={cn("relative overflow-hidden rounded-md bg-stone-50 dark:bg-neutral-950", className)}
       style={{ height, width }}
     >
       {!hasPoints ? (
-        <div className="flex h-full w-full items-center justify-center bg-gray-100 text-sm text-gray-400">
+        <div className="flex h-full w-full items-center justify-center bg-gray-100 dark:bg-neutral-800 text-sm text-gray-400 dark:text-neutral-500">
           No route data
         </div>
       ) : live ? (
@@ -187,7 +187,7 @@ export function StaticRouteMap({
           <button
             type="button"
             onClick={goStatic}
-            className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-gray-800 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
+            className="absolute right-2 top-2 z-10 inline-flex items-center gap-1 rounded-full bg-white/90 dark:bg-neutral-900/90 px-3 py-1.5 text-xs font-semibold text-gray-800 dark:text-neutral-200 shadow-sm backdrop-blur-sm transition-colors hover:bg-white dark:hover:bg-neutral-900"
           >
             <X className="h-3.5 w-3.5" />
             Close map
@@ -218,7 +218,7 @@ export function StaticRouteMap({
         <button
           type="button"
           onClick={retry}
-          className="absolute bottom-2 right-2 z-10 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-gray-800 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
+          className="absolute bottom-2 right-2 z-10 rounded-full bg-white/90 dark:bg-neutral-900/90 px-3 py-1.5 text-xs font-semibold text-gray-800 dark:text-neutral-200 shadow-sm backdrop-blur-sm transition-colors hover:bg-white dark:hover:bg-neutral-900"
         >
           Load map
         </button>
@@ -228,7 +228,7 @@ export function StaticRouteMap({
         <button
           type="button"
           onClick={goLive}
-          className="absolute bottom-2 right-2 z-10 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-gray-800 shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
+          className="absolute bottom-2 right-2 z-10 inline-flex items-center gap-1.5 rounded-full bg-white/90 dark:bg-neutral-900/90 px-3 py-1.5 text-xs font-semibold text-gray-800 dark:text-neutral-200 shadow-sm backdrop-blur-sm transition-colors hover:bg-white dark:hover:bg-neutral-900"
         >
           <MapIcon className="h-3.5 w-3.5" />
           Explore map

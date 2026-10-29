@@ -77,21 +77,21 @@ function FAQAccordionItem({
   onToggle: () => void;
 }) {
   return (
-    <div className="border-b border-gray-200 last:border-b-0">
+    <div className="border-b border-gray-200 dark:border-neutral-800 last:border-b-0">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between py-4 text-left bg-white hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center justify-between py-4 text-left bg-white dark:bg-neutral-900 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors"
       >
-        <span className="font-medium text-gray-900 pr-4">{item.question}</span>
+        <span className="font-medium text-gray-900 dark:text-neutral-100 pr-4">{item.question}</span>
         {isOpen ? (
-          <ChevronUp className="w-5 h-5 text-gray-500 flex-shrink-0" />
+          <ChevronUp className="w-5 h-5 text-gray-500 dark:text-neutral-400 flex-shrink-0" />
         ) : (
-          <ChevronDown className="w-5 h-5 text-gray-500 flex-shrink-0" />
+          <ChevronDown className="w-5 h-5 text-gray-500 dark:text-neutral-400 flex-shrink-0" />
         )}
       </button>
       {isOpen && (
-        <div className="pb-4 pr-8 bg-white">
-          <p className="text-gray-600 leading-relaxed">{item.answer}</p>
+        <div className="pb-4 pr-8 bg-white dark:bg-neutral-900">
+          <p className="text-gray-600 dark:text-neutral-400 leading-relaxed">{item.answer}</p>
         </div>
       )}
     </div>
@@ -309,74 +309,74 @@ export default function PreviewRoute() {
 
       {/* Breadcrumb */}
       <nav className="text-sm mb-4" aria-label="Breadcrumb">
-        <ol className="flex items-center space-x-2 text-gray-500">
+        <ol className="flex items-center space-x-2 text-gray-500 dark:text-neutral-400">
           <li>
-            <Link to="/" className="hover:text-emerald-600">
+            <Link to="/" className="hover:text-emerald-600 dark:hover:text-emerald-400">
               Home
             </Link>
           </li>
           <li>/</li>
           <li>
-            <span className="text-gray-900">{route.name}</span>
+            <span className="text-gray-900 dark:text-neutral-100">{route.name}</span>
           </li>
         </ol>
       </nav>
 
       {/* Route Header */}
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">{route.name}</h1>
-        <p className="text-xl text-gray-600 mb-4">
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-neutral-100 mb-2">{route.name}</h1>
+        <p className="text-xl text-gray-600 dark:text-neutral-400 mb-4">
           {route.city}, {route.country}
         </p>
 
         {/* Key Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 p-4">
             <div className="flex items-center space-x-2 mb-1">
               <MapPin className="w-4 h-4 text-emerald-500" />
-              <span className="text-sm text-gray-500">Distance</span>
+              <span className="text-sm text-gray-500 dark:text-neutral-400">Distance</span>
             </div>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-gray-900 dark:text-neutral-100">
               {(routeStats.distanceKm ?? route.distance).toFixed(1)}km
             </p>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 p-4">
             <div className="flex items-center space-x-2 mb-1">
               <Activity className="w-4 h-4 text-green-500" />
-              <span className="text-sm text-gray-500">Elevation Gain</span>
+              <span className="text-sm text-gray-500 dark:text-neutral-400">Elevation Gain</span>
             </div>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-gray-900 dark:text-neutral-100">
               {Math.round(routeStats.elevationGain ?? route.elevationGain)}m
             </p>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 p-4">
             <div className="flex items-center space-x-2 mb-1">
               <Activity className="w-4 h-4 text-red-500" />
-              <span className="text-sm text-gray-500">Elevation Loss</span>
+              <span className="text-sm text-gray-500 dark:text-neutral-400">Elevation Loss</span>
             </div>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-gray-900 dark:text-neutral-100">
               {Math.round(routeStats.elevationLoss ?? route.elevationLoss)}m
             </p>
           </div>
 
-          <div className="bg-white rounded-lg border border-gray-200 p-4">
+          <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 p-4">
             <div className="flex items-center space-x-2 mb-1">
               <Calendar className="w-4 h-4 text-purple-500" />
-              <span className="text-sm text-gray-500">Race Date</span>
+              <span className="text-sm text-gray-500 dark:text-neutral-400">Race Date</span>
             </div>
-            <p className="text-lg font-bold text-gray-900">{route.raceDate}</p>
+            <p className="text-lg font-bold text-gray-900 dark:text-neutral-100">{route.raceDate}</p>
           </div>
         </div>
       </div>
 
       {/* Route Map */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-neutral-100 mb-4">
           Course Profile
         </h2>
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden relative z-0">
+        <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 overflow-hidden relative z-0">
           <StaticRouteMap
             routePoints={
               firebaseThumbPoints.length
@@ -392,30 +392,30 @@ export default function PreviewRoute() {
             alt={`${route.name} course map — ${route.city}, ${route.country}`}
           />
           {loadingPoints && (
-            <div className="p-3 text-sm text-gray-500">
+            <div className="p-3 text-sm text-gray-500 dark:text-neutral-400">
               Loading latest route preview…
             </div>
           )}
           {loadError && (
-            <div className="p-3 text-sm text-red-600">{loadError}</div>
+            <div className="p-3 text-sm text-red-600 dark:text-red-400">{loadError}</div>
           )}
         </div>
       </div>
 
       {/* Route Description & Tips */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">
+        <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 p-6">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-neutral-100 mb-4">
             Course Description
           </h3>
-          <p className="text-gray-700 leading-relaxed">{route.description}</p>
+          <p className="text-gray-700 dark:text-neutral-300 leading-relaxed">{route.description}</p>
 
           <div className="mt-6">
             <a
               href={route.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center space-x-2 text-emerald-600 hover:text-emerald-700 transition-colors"
+              className="inline-flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
             >
               <span>Official Race Website</span>
               <svg
@@ -435,15 +435,15 @@ export default function PreviewRoute() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">
+        <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 p-6">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-neutral-100 mb-4">
             Training Tips
           </h3>
           <ul className="space-y-3">
             {route.tips.map((tip, index) => (
               <li key={index} className="flex items-start space-x-3">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-                <span className="text-gray-700">{tip}</span>
+                <span className="text-gray-700 dark:text-neutral-300">{tip}</span>
               </li>
             ))}
           </ul>
@@ -452,49 +452,49 @@ export default function PreviewRoute() {
 
       {/* Pace Strategy Section */}
       {route.paceStrategy && (
-        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+        <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 p-6 mb-8">
           <div className="flex items-center space-x-3 mb-4">
-            <TrendingUp className="w-6 h-6 text-emerald-600" />
-            <h3 className="text-xl font-bold text-gray-900">Pace Strategy</h3>
-            <span className="px-3 py-1 bg-emerald-100 text-emerald-800 text-sm font-medium rounded-full capitalize">
+            <TrendingUp className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+            <h3 className="text-xl font-bold text-gray-900 dark:text-neutral-100">Pace Strategy</h3>
+            <span className="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 text-sm font-medium rounded-full capitalize">
               {route.paceStrategy.type.replace("-", " ")}
             </span>
           </div>
 
-          <p className="text-gray-700 mb-6 leading-relaxed">
+          <p className="text-gray-700 dark:text-neutral-300 mb-6 leading-relaxed">
             {route.paceStrategy.summary}
           </p>
 
           <div className="space-y-4">
-            <h4 className="font-semibold text-gray-900">
+            <h4 className="font-semibold text-gray-900 dark:text-neutral-100">
               Mile-by-Mile Breakdown
             </h4>
             <div className="grid gap-3">
               {route.paceStrategy.segments.map((segment, index) => (
                 <div
                   key={index}
-                  className="flex flex-col sm:flex-row sm:items-start gap-2 p-4 bg-gray-50 rounded-lg"
+                  className="flex flex-col sm:flex-row sm:items-start gap-2 p-4 bg-gray-50 dark:bg-neutral-950 rounded-lg"
                 >
                   <div className="flex items-center gap-2 sm:w-32 flex-shrink-0">
-                    <span className="font-bold text-emerald-600">
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
                       Miles {segment.miles}
                     </span>
                   </div>
                   <div className="flex-1">
-                    <span className="text-sm font-medium text-gray-500 block mb-1">
+                    <span className="text-sm font-medium text-gray-500 dark:text-neutral-400 block mb-1">
                       {segment.terrain}
                     </span>
-                    <span className="text-gray-700">{segment.advice}</span>
+                    <span className="text-gray-700 dark:text-neutral-300">{segment.advice}</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-neutral-800">
             <Link
               to="/calculator"
-              className="inline-flex items-center space-x-2 text-emerald-600 hover:text-emerald-700 font-medium"
+              className="inline-flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium"
             >
               <Zap className="w-4 h-4" />
               <span>Calculate your personalized training paces →</span>
@@ -505,21 +505,21 @@ export default function PreviewRoute() {
 
       {/* Fueling Notes Section */}
       {route.fuelingNotes && (
-        <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-lg border border-orange-200 p-6 mb-8">
+        <div className="bg-gradient-to-r from-orange-50 dark:from-neutral-950 to-yellow-50 dark:to-neutral-950 rounded-lg border border-orange-200 dark:border-orange-900 p-6 mb-8">
           <div className="flex items-center space-x-3 mb-4">
-            <Utensils className="w-6 h-6 text-orange-600" />
-            <h3 className="text-xl font-bold text-gray-900">
+            <Utensils className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+            <h3 className="text-xl font-bold text-gray-900 dark:text-neutral-100">
               Race Day Fueling
             </h3>
           </div>
 
-          <p className="text-gray-700 leading-relaxed mb-4">
+          <p className="text-gray-700 dark:text-neutral-300 leading-relaxed mb-4">
             {route.fuelingNotes}
           </p>
 
           <Link
             to="/fuel"
-            className="inline-flex items-center space-x-2 text-orange-600 hover:text-orange-700 font-medium"
+            className="inline-flex items-center space-x-2 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 font-medium"
           >
             <span>Create your personalized fuel plan →</span>
           </Link>
@@ -527,25 +527,25 @@ export default function PreviewRoute() {
       )}
 
       {/* Elevation Profile Summary */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
-        <h3 className="text-xl font-bold text-gray-900 mb-4">
+      <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 p-6 mb-8">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-neutral-100 mb-4">
           Elevation Summary
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
-            <p className="text-3xl font-bold text-green-600">
+            <p className="text-3xl font-bold text-green-600 dark:text-green-400">
               {Math.round(routeStats.startElevation ?? route.startElevation)}m
             </p>
-            <p className="text-sm text-gray-500 mt-1">Start Elevation</p>
+            <p className="text-sm text-gray-500 dark:text-neutral-400 mt-1">Start Elevation</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold text-emerald-600">
+            <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
               {Math.round(routeStats.endElevation ?? route.endElevation)}m
             </p>
-            <p className="text-sm text-gray-500 mt-1">Finish Elevation</p>
+            <p className="text-sm text-gray-500 dark:text-neutral-400 mt-1">Finish Elevation</p>
           </div>
           <div className="text-center">
-            <p className="text-3xl font-bold text-purple-600">
+            <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">
               {(routeStats.startElevation ?? route.startElevation) >
               (routeStats.endElevation ?? route.endElevation)
                 ? "-"
@@ -556,18 +556,18 @@ export default function PreviewRoute() {
               )}
               m
             </p>
-            <p className="text-sm text-gray-500 mt-1">Net Elevation Change</p>
+            <p className="text-sm text-gray-500 dark:text-neutral-400 mt-1">Net Elevation Change</p>
           </div>
         </div>
       </div>
 
       {/* FAQ Section */}
       {route.faq && route.faq.length > 0 && (
-        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">
+        <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-neutral-800 p-6 mb-8">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-neutral-100 mb-4">
             Frequently Asked Questions about {route.name}
           </h3>
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-gray-200 dark:divide-neutral-800">
             {route.faq.map((item, index) => (
               <FAQAccordionItem
                 key={index}
@@ -583,11 +583,11 @@ export default function PreviewRoute() {
       )}
 
       {/* Call to Action */}
-      <div className="bg-emerald-50 rounded-lg border border-emerald-200 p-6 text-center">
-        <h3 className="text-xl font-bold text-gray-900 mb-2">
+      <div className="bg-emerald-50 dark:bg-emerald-950/40 rounded-lg border border-emerald-200 dark:border-emerald-900 p-6 text-center">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-neutral-100 mb-2">
           Ready to Train for {route.name}?
         </h3>
-        <p className="text-gray-600 mb-4">
+        <p className="text-gray-600 dark:text-neutral-400 mb-4">
           Use our training tools to prepare for this incredible marathon course.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -630,7 +630,7 @@ export default function PreviewRoute() {
           </Link>
           <Link
             to="/fuel"
-            className="bg-white text-emerald-600 px-6 py-3 rounded-lg border border-emerald-600 hover:bg-emerald-50 transition-colors"
+            className="bg-white dark:bg-neutral-900 text-emerald-600 dark:text-emerald-400 px-6 py-3 rounded-lg border border-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"
           >
             Fuel Planner
           </Link>

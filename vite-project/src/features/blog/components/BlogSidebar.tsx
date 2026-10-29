@@ -25,9 +25,9 @@ export default function BlogSidebar({
   return (
     <aside className="space-y-8">
       {/* Categories */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-gray-900 mb-4">
-          <Layers className="w-4 h-4 text-emerald-600" />
+      <div className="bg-white dark:bg-neutral-900 rounded-xl border border-gray-200 dark:border-neutral-800 p-5">
+        <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-gray-900 dark:text-neutral-100 mb-4">
+          <Layers className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
           Categories
         </h3>
         <ul className="space-y-1">
@@ -36,8 +36,8 @@ export default function BlogSidebar({
               to="/blog"
               className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
                 activeCategory === "all" || activeCategory === undefined
-                  ? "bg-emerald-50 text-emerald-700 font-semibold"
-                  : "text-gray-700 hover:bg-gray-50"
+                  ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-semibold"
+                  : "text-gray-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800"
               }`}
             >
               <span>All Articles</span>
@@ -49,8 +49,8 @@ export default function BlogSidebar({
                 to={`/blog?category=${category}`}
                 className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
                   activeCategory === category
-                    ? "bg-emerald-50 text-emerald-700 font-semibold"
-                    : "text-gray-700 hover:bg-gray-50"
+                    ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 font-semibold"
+                    : "text-gray-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800"
                 }`}
               >
                 <span>{categoryLabels[category]}</span>
@@ -66,12 +66,12 @@ export default function BlogSidebar({
       </div>
 
       {/* Popular posts */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-gray-900 mb-4">
+      <div className="bg-white dark:bg-neutral-900 rounded-xl border border-gray-200 dark:border-neutral-800 p-5">
+        <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-gray-900 dark:text-neutral-100 mb-4">
           <Flame className="w-4 h-4 text-orange-500" />
           Popular Reads
         </h3>
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-gray-100 dark:divide-neutral-800">
           {popular.map((post) => (
             <BlogCard key={post.slug} post={post} variant="compact" />
           ))}
@@ -79,9 +79,9 @@ export default function BlogSidebar({
       </div>
 
       {/* Tags */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-gray-900 mb-4">
-          <Hash className="w-4 h-4 text-emerald-600" />
+      <div className="bg-white dark:bg-neutral-900 rounded-xl border border-gray-200 dark:border-neutral-800 p-5">
+        <h3 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-gray-900 dark:text-neutral-100 mb-4">
+          <Hash className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
           Browse by Topic
         </h3>
         <div className="flex flex-wrap gap-2">
@@ -89,7 +89,7 @@ export default function BlogSidebar({
             <Link
               key={tag}
               to={`/blog?search=${encodeURIComponent(tag)}`}
-              className="px-3 py-1 bg-gray-50 border border-gray-200 rounded-full text-xs text-gray-700 hover:border-emerald-300 hover:text-emerald-600 transition-all"
+              className="px-3 py-1 bg-gray-50 dark:bg-neutral-950 border border-gray-200 dark:border-neutral-800 rounded-full text-xs text-gray-700 dark:text-neutral-300 hover:border-emerald-300 dark:hover:border-emerald-800 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all"
             >
               {tag}
             </Link>
@@ -107,7 +107,7 @@ export default function BlogSidebar({
         </p>
         <Link
           to="/calculator"
-          className="inline-flex items-center justify-center w-full px-4 py-2 bg-white text-emerald-700 rounded-lg text-sm font-semibold hover:bg-emerald-50 transition-colors"
+          className="inline-flex items-center justify-center w-full px-4 py-2 bg-white dark:bg-neutral-900 text-emerald-700 dark:text-emerald-300 rounded-lg text-sm font-semibold hover:bg-emerald-50 dark:hover:bg-emerald-950/40 transition-colors"
         >
           Open Pace Calculator
         </Link>

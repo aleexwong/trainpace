@@ -32,7 +32,7 @@ export function TemplateSelector({
               ${
                 selectedTemplate === actualIndex
                   ? "border-emerald-500 ring-2 ring-emerald-200 scale-105"
-                  : "border-gray-200 hover:border-gray-300"
+                  : "border-gray-200 dark:border-neutral-800 hover:border-gray-300 dark:hover:border-neutral-700"
               }
             `}
             style={{ backgroundColor: template.bg }}

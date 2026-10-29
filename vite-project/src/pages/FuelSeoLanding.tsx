@@ -99,7 +99,7 @@ export default function FuelSeoLanding() {
   if (!page) return <Navigate to="/fuel" replace />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-rose-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-rose-50 dark:to-neutral-950">
       <Helmet>
         <title>{page.title}</title>
         <meta name="description" content={page.description} />
@@ -118,15 +118,15 @@ export default function FuelSeoLanding() {
 
       <section className="px-4 sm:px-6 pt-10 pb-8">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-neutral-100">
             {page.h1}
           </h1>
-          <p className="mt-4 text-lg text-gray-700">{page.intro}</p>
+          <p className="mt-4 text-lg text-gray-700 dark:text-neutral-300">{page.intro}</p>
           <div className="mt-6 grid gap-2">
             {page.bullets.map((b) => (
               <div
                 key={b}
-                className="rounded-lg bg-white/70 border border-amber-100 px-4 py-3 text-gray-800"
+                className="rounded-lg bg-white/70 dark:bg-neutral-900/70 border border-amber-100 dark:border-amber-900/60 px-4 py-3 text-gray-800 dark:text-neutral-200"
               >
                 {b}
               </div>

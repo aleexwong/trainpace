@@ -70,7 +70,7 @@ export default function PlanSeoLanding() {
   if (!page) return <Navigate to="/plan" replace />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-teal-50 dark:to-neutral-950">
       <Helmet>
         <title>{page.title}</title>
         <meta name="description" content={page.description} />
@@ -85,28 +85,28 @@ export default function PlanSeoLanding() {
 
       {/* Breadcrumb */}
       <nav className="px-4 sm:px-6 pt-4" aria-label="Breadcrumb">
-        <ol className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
-          <li><a href="/" className="hover:text-gray-900 hover:underline">Home</a></li>
-          <li className="text-gray-400">/</li>
-          <li><a href="/plan" className="hover:text-gray-900 hover:underline">Training Plan</a></li>
-          <li className="text-gray-400">/</li>
-          <li className="text-gray-900 font-medium">{page.h1}</li>
+        <ol className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-neutral-400">
+          <li><a href="/" className="hover:text-gray-900 dark:hover:text-neutral-100 hover:underline">Home</a></li>
+          <li className="text-gray-400 dark:text-neutral-500">/</li>
+          <li><a href="/plan" className="hover:text-gray-900 dark:hover:text-neutral-100 hover:underline">Training Plan</a></li>
+          <li className="text-gray-400 dark:text-neutral-500">/</li>
+          <li className="text-gray-900 dark:text-neutral-100 font-medium">{page.h1}</li>
         </ol>
       </nav>
 
       {/* Hero */}
       <section className="px-4 sm:px-6 pt-10 pb-8">
         <div className="max-w-4xl mx-auto">
-          <div className="inline-flex items-center rounded-full border border-emerald-200 bg-white/80 px-4 py-2 text-sm font-semibold text-emerald-800">
+          <div className="inline-flex items-center rounded-full border border-emerald-200 dark:border-emerald-900 bg-white/80 dark:bg-neutral-900/80 px-4 py-2 text-sm font-semibold text-emerald-800 dark:text-emerald-300">
             Free Training Plan Generator
           </div>
-          <h1 className="mt-4 text-4xl sm:text-5xl font-bold tracking-tight text-gray-900">
+          <h1 className="mt-4 text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-neutral-100">
             {page.h1}
           </h1>
-          <p className="mt-4 text-lg text-gray-700">{page.intro}</p>
+          <p className="mt-4 text-lg text-gray-700 dark:text-neutral-300">{page.intro}</p>
           <div className="mt-6 grid gap-2">
             {page.bullets.map((bullet) => (
-              <div key={bullet} className="rounded-lg bg-white/70 border border-emerald-100 px-4 py-3 text-gray-800">
+              <div key={bullet} className="rounded-lg bg-white/70 dark:bg-neutral-900/70 border border-emerald-100 dark:border-emerald-900/60 px-4 py-3 text-gray-800 dark:text-neutral-200">
                 {bullet}
               </div>
             ))}
@@ -123,14 +123,14 @@ export default function PlanSeoLanding() {
 
       {/* FAQ */}
       {page.faq && page.faq.length > 0 && (
-        <section className="px-4 sm:px-6 py-12 bg-white/50">
+        <section className="px-4 sm:px-6 py-12 bg-white/50 dark:bg-neutral-900/50">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-neutral-100 mb-6">Frequently Asked Questions</h2>
             <div className="space-y-4">
               {page.faq.map((item, i) => (
-                <div key={i} className="rounded-xl bg-white border border-emerald-100 p-6">
-                  <h3 className="text-lg font-semibold text-gray-900">{item.question}</h3>
-                  <p className="mt-2 text-gray-700">{item.answer}</p>
+                <div key={i} className="rounded-xl bg-white dark:bg-neutral-900 border border-emerald-100 dark:border-emerald-900/60 p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-neutral-100">{item.question}</h3>
+                  <p className="mt-2 text-gray-700 dark:text-neutral-300">{item.answer}</p>
                 </div>
               ))}
             </div>
@@ -141,25 +141,25 @@ export default function PlanSeoLanding() {
       {/* Cross-tool links */}
       <section className="px-4 sm:px-6 pb-16">
         <div className="max-w-5xl mx-auto grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <a href="/calculator" className="rounded-2xl border border-emerald-100 bg-white/70 p-6 hover:bg-white transition-colors">
-            <div className="text-sm font-semibold text-emerald-700">Pacing</div>
-            <div className="mt-2 text-lg font-bold text-gray-900">Training paces</div>
-            <p className="mt-2 text-gray-700 text-sm">Convert any race time into Easy, Tempo, and Interval zones.</p>
+          <a href="/calculator" className="rounded-2xl border border-emerald-100 dark:border-emerald-900/60 bg-white/70 dark:bg-neutral-900/70 p-6 hover:bg-white dark:hover:bg-neutral-900 transition-colors">
+            <div className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Pacing</div>
+            <div className="mt-2 text-lg font-bold text-gray-900 dark:text-neutral-100">Training paces</div>
+            <p className="mt-2 text-gray-700 dark:text-neutral-300 text-sm">Convert any race time into Easy, Tempo, and Interval zones.</p>
           </a>
-          <a href="/vdot" className="rounded-2xl border border-emerald-100 bg-white/70 p-6 hover:bg-white transition-colors">
-            <div className="text-sm font-semibold text-emerald-700">VDOT</div>
-            <div className="mt-2 text-lg font-bold text-gray-900">VDOT score</div>
-            <p className="mt-2 text-gray-700 text-sm">Get your VDOT score and predict finish times for any race distance.</p>
+          <a href="/vdot" className="rounded-2xl border border-emerald-100 dark:border-emerald-900/60 bg-white/70 dark:bg-neutral-900/70 p-6 hover:bg-white dark:hover:bg-neutral-900 transition-colors">
+            <div className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">VDOT</div>
+            <div className="mt-2 text-lg font-bold text-gray-900 dark:text-neutral-100">VDOT score</div>
+            <p className="mt-2 text-gray-700 dark:text-neutral-300 text-sm">Get your VDOT score and predict finish times for any race distance.</p>
           </a>
-          <a href="/fuel" className="rounded-2xl border border-amber-100 bg-white/70 p-6 hover:bg-white transition-colors">
-            <div className="text-sm font-semibold text-amber-700">Fueling</div>
-            <div className="mt-2 text-lg font-bold text-gray-900">Gel schedule</div>
-            <p className="mt-2 text-gray-700 text-sm">Estimate carbs/hour, total carbs, and how many gels to carry.</p>
+          <a href="/fuel" className="rounded-2xl border border-amber-100 dark:border-amber-900/60 bg-white/70 dark:bg-neutral-900/70 p-6 hover:bg-white dark:hover:bg-neutral-900 transition-colors">
+            <div className="text-sm font-semibold text-amber-700 dark:text-amber-300">Fueling</div>
+            <div className="mt-2 text-lg font-bold text-gray-900 dark:text-neutral-100">Gel schedule</div>
+            <p className="mt-2 text-gray-700 dark:text-neutral-300 text-sm">Estimate carbs/hour, total carbs, and how many gels to carry.</p>
           </a>
-          <a href="/elevation-finder" className="rounded-2xl border border-emerald-100 bg-white/70 p-6 hover:bg-white transition-colors">
-            <div className="text-sm font-semibold text-emerald-700">Course</div>
-            <div className="mt-2 text-lg font-bold text-gray-900">Elevation analysis</div>
-            <p className="mt-2 text-gray-700 text-sm">Upload a GPX to see elevation gain, grades, and key climbs.</p>
+          <a href="/elevation-finder" className="rounded-2xl border border-emerald-100 dark:border-emerald-900/60 bg-white/70 dark:bg-neutral-900/70 p-6 hover:bg-white dark:hover:bg-neutral-900 transition-colors">
+            <div className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Course</div>
+            <div className="mt-2 text-lg font-bold text-gray-900 dark:text-neutral-100">Elevation analysis</div>
+            <p className="mt-2 text-gray-700 dark:text-neutral-300 text-sm">Upload a GPX to see elevation gain, grades, and key climbs.</p>
           </a>
         </div>
       </section>

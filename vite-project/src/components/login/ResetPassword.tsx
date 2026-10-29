@@ -48,16 +48,16 @@ export default function ResetPassword() {
 
       {sent ? (
         <div className="space-y-3">
-          <p className="text-green-600">
+          <p className="text-green-600 dark:text-green-400">
             ✅ Password reset email sent!
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-neutral-400">
             Check your inbox and spam folder for the reset link.
           </p>
         </div>
       ) : (
         <>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-neutral-400 mb-6">
             Enter your email to receive reset instructions.
           </p>
 
@@ -65,7 +65,7 @@ export default function ResetPassword() {
             <input
               type="email"
               placeholder="Email"
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-neutral-700 rounded focus:outline-none focus:ring-2 focus:ring-emerald-400"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required

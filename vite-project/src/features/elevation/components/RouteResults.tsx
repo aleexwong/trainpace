@@ -27,12 +27,12 @@ export function RouteResults({
   return (
     <>
       {/* Route Summary */}
-      <Card className="bg-white shadow-sm">
+      <Card className="bg-white dark:bg-neutral-900 shadow-sm">
         <CardContent className="p-4">
-          <h3 className="font-semibold text-gray-800 mb-2">Route Summary</h3>
+          <h3 className="font-semibold text-gray-800 dark:text-neutral-200 mb-2">Route Summary</h3>
           <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-sm">
             <div>
-              <span className="text-gray-600">Distance:</span>
+              <span className="text-gray-600 dark:text-neutral-400">Distance:</span>
               <span className="font-medium ml-2">
                 {Number.isFinite(analysisData.totalDistanceKm) &&
                 analysisData.totalDistanceKm >= 0
@@ -42,7 +42,7 @@ export function RouteResults({
               </span>
             </div>
             <div>
-              <span className="text-gray-600">Elevation Gain:</span>
+              <span className="text-gray-600 dark:text-neutral-400">Elevation Gain:</span>
               <span className="font-medium ml-2">
                 {Number.isFinite(analysisData.elevationGain) &&
                 analysisData.elevationGain >= 0
@@ -52,21 +52,21 @@ export function RouteResults({
               </span>
             </div>
             <div>
-              <span className="text-gray-600">Data Points:</span>
+              <span className="text-gray-600 dark:text-neutral-400">Data Points:</span>
               <span className="font-medium ml-2">
                 {analysisData.metadata.pointCount}
               </span>
             </div>
             <div>
-              <span className="text-gray-600">Elevation Data:</span>
+              <span className="text-gray-600 dark:text-neutral-400">Elevation Data:</span>
               <span className="font-medium ml-2">
                 {analysisData.metadata.hasElevationData ? "Yes" : "No"}
               </span>
             </div>
           </div>
 
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="flex justify-end items-center text-xs text-gray-500">
+          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-neutral-800">
+            <div className="flex justify-end items-center text-xs text-gray-500 dark:text-neutral-400">
               * all values are approximates
             </div>
           </div>

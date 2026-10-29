@@ -139,19 +139,21 @@ Verify font changes by measuring rendered metrics in a browser, not by reading t
 
 ## Theming (light / dark)
 
-Phase 1 of dark mode is in: nav, footer, page shell and the homepage. Tool pages are converted one by one in later phases.
+The whole site supports light and dark mode: nav, footer, homepage and every tool page.
 
 - **Mechanism** — `src/features/theme/`: `ThemeProvider` (in `main.tsx`, inside `BrowserRouter`), `useTheme()` → `{ preference: "system" | "light" | "dark", resolved, setPreference }`, and `ThemeToggle` (in `SiteNav`). The choice lives in localStorage under `tp-theme` (no key = `system`), and `system` follows the OS live.
-- **Where `dark` goes** — on `<html>`, but **only on routes listed in `THEMED_ROUTES`** (`src/features/theme/theme.ts`). Every other page stays light, so unconverted components never end up on a dark background. `SiteNav` and `Footer` are converted, so they wrap themselves in their own `.dark` element and follow the theme on every page.
-- **No flash** — an inline script in `index.html` sets the class before React loads. It copies the storage key and the route list from `theme.ts` by hand, so **change both together**. Every prerendered page and `app-shell.html` keep the script.
-- **Converting a page (later phases):**
-  1. Give every light colour a `dark:` partner. Dark mode uses **neutral** greys (no blue tint): white and `slate-50` become `neutral-950` and `neutral-900`; `slate-900` text becomes `white`; `slate-600` becomes `neutral-400`; borders `slate-200` become `neutral-800`. You can also use the shadcn tokens (`bg-background`, `text-foreground`, `bg-card`, `border-border`, `text-muted-foreground`), which `index.css` sets to neutral values in dark mode.
-  2. Keep colour scarce in dark mode. Emerald (`emerald-400`) is for things you can click (links, buttons) and the one key number. Decorative labels, tints, dot grids and big headline stats go grey. No gradient glows.
-  3. Add the route to `THEMED_ROUTES` **and** to the array in the `index.html` script.
-  4. Check it at 1440 and 390 px in both themes with the `verify-in-browser` skill.
+- **Where `dark` goes** — on `<html>`, on every route except the prefixes in `LIGHT_ONLY_ROUTES` (`src/features/theme/theme.ts`, empty today). Use that list as an escape hatch for a new page that hasn't been checked in dark mode yet. `SiteNav` and `Footer` wrap themselves in their own `.dark` element, so they follow the theme even on a light-only page.
+- **No flash** — an inline script in `index.html` sets the class before React loads. It copies the storage key and the light-only list from `theme.ts` by hand, so **change both together**. Every prerendered page and `app-shell.html` keep the script.
+- **Making a component theme-aware:**
+  1. Give every light colour a `dark:` partner. Dark mode uses **neutral** greys (no blue tint): white cards become `neutral-900`, `gray/slate-50` page backgrounds become `neutral-950`, `gray/slate-100` fills become `neutral-800`, `*-900`/`*-800` text becomes `neutral-100`/`neutral-200`, `*-600`/`*-500` text becomes `neutral-400`, `*-200` borders become `neutral-800`. Hover fills go one step *lighter* (`dark:hover:bg-neutral-800`). Coloured tints get muted: `bg-blue-50` → `dark:bg-blue-950/40`, `text-blue-700` → `dark:text-blue-300`, `border-blue-200` → `dark:border-blue-900`. Light gradient stops collapse to flat `neutral-950`. Saturated fills (`bg-emerald-600 text-white`) stay as they are. You can also use the shadcn tokens (`bg-background`, `text-foreground`, `bg-card`, `border-border`, `text-muted-foreground`), which `index.css` sets to neutral values in dark mode.
+  2. Dark buttons in light mode (`bg-gray-900 text-white`) invert: `dark:bg-white dark:text-neutral-900`. Surfaces that are dark in *both* themes (a fake terminal, a code block, the race-watch hero, the founder card, the CTA band) keep their light-mode text colours and only get neutral `dark:` backgrounds and borders.
+  3. `prose` blocks need `dark:prose-invert`.
+  4. Keep colour scarce in dark mode. Emerald (`emerald-400`) is for things you can click and the one key number. Decorative labels, tints, dot grids and big headline stats go grey. No gradient glows.
+  5. Chart.js colours are set in JavaScript, so `dark:` can't reach them. Take axis, grid, tooltip and surface colours from `useChartTheme()` and add the result to the options memo's dependencies.
+  6. Check it at 1440 and 390 px in both themes with the `verify-in-browser` skill. Light mode should not change at all, so a before/after pixel diff of the light screenshots is a quick proof.
 - **Plain CSS files** (like `feature-shots.css`) — re-tune their custom properties under `.dark .scope { … }`, with greys at zero chroma (`oklch(L 0 0)`). Do not duplicate rules. Look for elements that put white text on a token that flips to light in dark mode (`--ink`, `--accent-deep`); they need their own dark fill.
-- **Surfaces that stay dark in both themes** (the race-watch hero, the founder card, the CTA band) keep their slate classes for light mode. In dark mode they only get neutral `dark:` variants, so they don't look blue next to the neutral sections. The hero is pure black and needs none.
 - **Bare `<button>` rule** — `index.css` still has the Vite template's `button { background … }`. It now follows the theme (`:where(.dark) button`), not the OS. `:where()` keeps it at element weight. A plain `.dark button` would beat every `bg-*` utility.
+- **Not checked yet** — the signed-in dashboard and settings (Google login only). Onboarding and the signed-out states were checked.
 
 ## Gotchas
 

@@ -232,10 +232,10 @@ export default function DashboardV2() {
     return (
       <div className="max-w-4xl mx-auto p-6">
         <div className="text-center py-12">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-neutral-200 mb-4">
             Sign In Required
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-neutral-400">
             Please sign in to view your uploaded routes.
           </p>
         </div>
@@ -255,8 +255,8 @@ export default function DashboardV2() {
 
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">My Dashboard</h1>
-        <p className="text-gray-600">Manage your routes and fuel plans</p>
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-neutral-200 mb-2">My Dashboard</h1>
+        <p className="text-gray-600 dark:text-neutral-400">Manage your routes and fuel plans</p>
       </div>
 
       {/* Goal greeting / onboarding prompt */}
@@ -266,7 +266,7 @@ export default function DashboardV2() {
       <div className="mb-6">
         <SearchBar value={searchQuery} onChange={setSearchQuery} />
         {hasActiveSearch && (
-          <div className="mt-3 text-sm text-gray-600">
+          <div className="mt-3 text-sm text-gray-600 dark:text-neutral-400">
             Found <span className="font-semibold">{totalResults}</span> result
             {totalResults !== 1 ? "s" : ""} across all tabs
           </div>
@@ -275,13 +275,13 @@ export default function DashboardV2() {
 
       {/* Tabs */}
       <div className="mb-6">
-        <div className="flex gap-2 bg-gray-100 p-1 rounded-lg inline-flex">
+        <div className="flex gap-2 bg-gray-100 dark:bg-neutral-800 p-1 rounded-lg inline-flex">
           <button
             onClick={() => setActiveTab("routes")}
             className={`px-4 py-2 rounded-md font-medium transition-all ${
               activeTab === "routes"
-                ? "bg-emerald-600 text-black hover:text-emerald-600 hover:bg-emerald-50"
-                : "bg-white text-emerald-600 shadow-sm hover:bg-white hover:text-emerald-600"
+                ? "bg-emerald-600 text-black dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
+                : "bg-white dark:bg-neutral-900 text-emerald-600 dark:text-emerald-400 shadow-sm hover:bg-white dark:hover:bg-neutral-900 hover:text-emerald-600 dark:hover:text-emerald-400"
             }`}
           >
             Routes ({hasActiveSearch ? filteredRoutes.length : routes.length})
@@ -290,8 +290,8 @@ export default function DashboardV2() {
             onClick={() => setActiveTab("pace-plans")}
             className={`px-4 py-2 rounded-md font-medium transition-all ${
               activeTab === "pace-plans"
-                ? "bg-purple-600 text-black hover:text-purple-600 hover:bg-purple-50"
-                : "bg-white text-purple-600 shadow-sm hover:bg-white hover:text-purple-600"
+                ? "bg-purple-600 text-black dark:text-white hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/40"
+                : "bg-white dark:bg-neutral-900 text-purple-600 dark:text-purple-400 shadow-sm hover:bg-white dark:hover:bg-neutral-900 hover:text-purple-600 dark:hover:text-purple-400"
             }`}
           >
             Pace Plans ({hasActiveSearch ? filteredPacePlans.length : pacePlans.length})
@@ -300,8 +300,8 @@ export default function DashboardV2() {
             onClick={() => setActiveTab("fuel-plans")}
             className={`px-4 py-2 rounded-md font-medium transition-all ${
               activeTab === "fuel-plans"
-                ? "bg-orange-600 text-black hover:text-orange-600 hover:bg-orange-50"
-                : "bg-white text-orange-600 shadow-sm hover:bg-white hover:text-orange-600"
+                ? "bg-orange-600 text-black dark:text-white hover:text-orange-600 dark:hover:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950/40"
+                : "bg-white dark:bg-neutral-900 text-orange-600 dark:text-orange-400 shadow-sm hover:bg-white dark:hover:bg-neutral-900 hover:text-orange-600 dark:hover:text-orange-400"
             }`}
           >
             Fuel Plans ({hasActiveSearch ? filteredFuelPlans.length : fuelPlans.length})
@@ -311,7 +311,7 @@ export default function DashboardV2() {
             className={`px-4 py-2 rounded-md font-medium transition-all ${
               activeTab === "training-plans"
                 ? "bg-emerald-600 text-white"
-                : "bg-white text-emerald-600 shadow-sm hover:bg-white hover:text-emerald-600"
+                : "bg-white dark:bg-neutral-900 text-emerald-600 dark:text-emerald-400 shadow-sm hover:bg-white dark:hover:bg-neutral-900 hover:text-emerald-600 dark:hover:text-emerald-400"
             }`}
           >
             Training Plans ({hasActiveSearch ? filteredTrainingPlans.length : trainingPlans.length})
@@ -321,8 +321,8 @@ export default function DashboardV2() {
 
       {/* Error State */}
       {routesError && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-          <p className="text-red-700">{routesError}</p>
+        <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg p-4 mb-6">
+          <p className="text-red-700 dark:text-red-300">{routesError}</p>
         </div>
       )}
 

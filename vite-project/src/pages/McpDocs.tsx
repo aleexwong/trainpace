@@ -168,13 +168,13 @@ function CopyButton({
   return (
     <button
       onClick={copy}
-      className={`flex items-center gap-1.5 text-sm text-slate-500 hover:text-emerald-600 transition-colors shrink-0 ${className}`}
+      className={`flex items-center gap-1.5 text-sm text-slate-500 dark:text-neutral-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors shrink-0 ${className}`}
       aria-label={`Copy ${label}`}
     >
       {copied ? (
         <>
-          <Check className="w-4 h-4 text-emerald-600" />
-          <span className="text-emerald-600">Copied</span>
+          <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+          <span className="text-emerald-600 dark:text-emerald-400">Copied</span>
         </>
       ) : (
         <>
@@ -249,8 +249,8 @@ function AnimatedTerminal() {
 
   return (
     <div ref={ref} className="mb-4">
-      <div className="rounded-xl overflow-hidden border border-slate-700/60 bg-slate-900 shadow-lg">
-        <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800/90 border-b border-slate-700/60">
+      <div className="rounded-xl overflow-hidden border border-slate-700/60 bg-slate-900 shadow-lg dark:border-neutral-800 dark:bg-neutral-900">
+        <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800/90 border-b border-slate-700/60 dark:bg-neutral-800 dark:border-neutral-800">
           <span className="w-3 h-3 rounded-full bg-red-400/80" />
           <span className="w-3 h-3 rounded-full bg-amber-400/80" />
           <span className="w-3 h-3 rounded-full bg-emerald-400/80" />
@@ -319,10 +319,10 @@ function CopyBlock({ label, code }: { label: string; code: string }) {
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between mb-2">
-        <p className="text-sm font-medium text-slate-700">{label}</p>
+        <p className="text-sm font-medium text-slate-700 dark:text-neutral-300">{label}</p>
         <CopyButton text={code} label={label} />
       </div>
-      <pre className="bg-slate-900 text-slate-100 rounded-lg p-4 overflow-auto max-h-96 text-left text-sm leading-relaxed">
+      <pre className="bg-slate-900 dark:bg-neutral-900 dark:ring-1 dark:ring-neutral-800 text-slate-100 rounded-lg p-4 overflow-auto max-h-96 text-left text-sm leading-relaxed">
         <code>{code}</code>
       </pre>
     </div>
@@ -341,14 +341,14 @@ function SetupCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm mb-6">
+    <div className="bg-white dark:bg-neutral-900 rounded-lg border border-slate-200 dark:border-neutral-800 p-6 shadow-sm mb-6">
       <div className="flex items-center gap-3 mb-4">
-        <div className="bg-emerald-100 rounded-lg p-2.5 shrink-0">
-          <Icon className="w-6 h-6 text-emerald-600" />
+        <div className="bg-emerald-100 dark:bg-emerald-900/40 rounded-lg p-2.5 shrink-0">
+          <Icon className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
         </div>
-        <h3 className="text-xl font-bold text-slate-900">{title}</h3>
+        <h3 className="text-xl font-bold text-slate-900 dark:text-neutral-100">{title}</h3>
         {badge && (
-          <span className="text-xs font-medium bg-slate-100 text-slate-600 rounded-full px-2.5 py-1">
+          <span className="text-xs font-medium bg-slate-100 dark:bg-neutral-800 text-slate-600 dark:text-neutral-400 rounded-full px-2.5 py-1">
             {badge}
           </span>
         )}
@@ -360,7 +360,7 @@ function SetupCard({
 
 export default function McpDocs() {
   return (
-    <div className="bg-white text-slate-900 min-h-screen text-left">
+    <div className="bg-white dark:bg-neutral-900 text-slate-900 dark:text-neutral-100 min-h-screen text-left">
       <Helmet>
         <title>{STATIC_PAGE_TITLES["/mcp"]}</title>
         <meta
@@ -371,22 +371,22 @@ export default function McpDocs() {
       </Helmet>
 
       {/* Hero */}
-      <section className="py-20 px-6 bg-gradient-to-br from-emerald-50 to-white">
+      <section className="py-20 px-6 bg-gradient-to-br from-emerald-50 dark:from-neutral-950 to-white dark:to-neutral-950">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
+          <div className="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
             <Bot className="w-4 h-4" />
             For AI assistants & agents
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Use TrainPace from Your AI Assistant
           </h1>
-          <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-600 dark:text-neutral-400 mb-8 max-w-2xl mx-auto">
             TrainPace runs a free, public{" "}
             <a
               href="https://modelcontextprotocol.io"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-emerald-600 hover:underline"
+              className="text-emerald-600 dark:text-emerald-400 hover:underline"
             >
               Model Context Protocol
             </a>{" "}
@@ -394,26 +394,26 @@ export default function McpDocs() {
             questions in plain English — the agent calls the same math that
             powers this site.
           </p>
-          <div className="inline-flex flex-wrap items-center justify-center gap-3 max-w-full bg-white border border-emerald-200 rounded-lg px-4 sm:px-6 py-3 shadow-sm">
-            <code className="text-emerald-700 font-mono text-sm md:text-base break-all">
+          <div className="inline-flex flex-wrap items-center justify-center gap-3 max-w-full bg-white dark:bg-neutral-900 border border-emerald-200 dark:border-emerald-900 rounded-lg px-4 sm:px-6 py-3 shadow-sm">
+            <code className="text-emerald-700 dark:text-emerald-300 font-mono text-sm md:text-base break-all">
               {MCP_URL}
             </code>
             <CopyButton text={MCP_URL} label="server URL" />
           </div>
-          <p className="text-sm text-slate-500 mt-4">
+          <p className="text-sm text-slate-500 dark:text-neutral-400 mt-4">
             Streamable HTTP · No account or API key required
           </p>
         </div>
       </section>
 
       {/* Setup, step by step */}
-      <section className="py-16 px-6 bg-slate-50">
+      <section className="py-16 px-6 bg-slate-50 dark:bg-neutral-950">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold mb-4 flex items-center gap-3">
-            <Zap className="w-8 h-8 text-emerald-600" />
+            <Zap className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
             Connect Your Assistant
           </h2>
-          <p className="text-lg text-slate-600 mb-10">
+          <p className="text-lg text-slate-600 dark:text-neutral-400 mb-10">
             Pick your client below — each takes about a minute. Once connected,
             just ask training questions; the assistant discovers the tools on
             its own.
@@ -424,7 +424,7 @@ export default function McpDocs() {
             title="Claude.ai & Claude Desktop"
             badge="no code"
           >
-            <ol className="list-decimal pl-6 space-y-3 text-slate-700 mb-5">
+            <ol className="list-decimal pl-6 space-y-3 text-slate-700 dark:text-neutral-300 mb-5">
               <li>
                 Open <strong>Settings → Connectors</strong> (on claude.ai it's
                 under your profile menu; custom connectors require a paid
@@ -449,11 +449,11 @@ export default function McpDocs() {
           </SetupCard>
 
           <SetupCard icon={Terminal} title="Claude Code" badge="terminal">
-            <p className="text-slate-700 mb-4">
+            <p className="text-slate-700 dark:text-neutral-300 mb-4">
               One command and you're connected — this is the whole setup:
             </p>
             <AnimatedTerminal />
-            <p className="text-slate-700 text-sm">
+            <p className="text-slate-700 dark:text-neutral-300 text-sm">
               Then start a session and ask away.
             </p>
           </SetupCard>
@@ -463,7 +463,7 @@ export default function McpDocs() {
             title="Cursor, Windsurf & other MCP clients"
             badge="config file"
           >
-            <p className="text-slate-700 mb-4">
+            <p className="text-slate-700 dark:text-neutral-300 mb-4">
               Add this to your client's MCP config —{" "}
               <code className="font-mono">.cursor/mcp.json</code> in Cursor,{" "}
               <code className="font-mono">mcp_config.json</code> in Windsurf,
@@ -477,7 +477,7 @@ export default function McpDocs() {
             title="Any other agent — just paste this"
             badge="zero setup"
           >
-            <p className="text-slate-700 mb-4">
+            <p className="text-slate-700 dark:text-neutral-300 mb-4">
               Can't edit settings, or using an agent that manages its own
               tools? Paste this whole block as your first message. Agents that
               can register MCP servers will connect themselves; the rest still
@@ -491,7 +491,7 @@ export default function McpDocs() {
       {/* Starter prompts */}
       <section className="py-16 px-6 max-w-4xl mx-auto">
         <h2 className="text-3xl font-bold mb-4">Starter Prompts</h2>
-        <p className="text-lg text-slate-600 mb-8">
+        <p className="text-lg text-slate-600 dark:text-neutral-400 mb-8">
           Copy one of these into your connected assistant to see the tools in
           action.
         </p>
@@ -499,13 +499,13 @@ export default function McpDocs() {
           {STARTER_PROMPTS.map((item) => (
             <div
               key={item.label}
-              className="bg-slate-50 border border-slate-200 rounded-lg p-5"
+              className="bg-slate-50 dark:bg-neutral-950 border border-slate-200 dark:border-neutral-800 rounded-lg p-5"
             >
               <div className="flex items-center justify-between gap-4 mb-2">
-                <p className="font-semibold text-slate-900">{item.label}</p>
+                <p className="font-semibold text-slate-900 dark:text-neutral-100">{item.label}</p>
                 <CopyButton text={item.prompt} label={`${item.label} prompt`} />
               </div>
-              <p className="text-slate-600 text-sm whitespace-pre-line">
+              <p className="text-slate-600 dark:text-neutral-400 text-sm whitespace-pre-line">
                 {item.prompt}
               </p>
             </div>
@@ -514,12 +514,12 @@ export default function McpDocs() {
       </section>
 
       {/* Tools */}
-      <section className="py-16 px-6 bg-slate-50">
+      <section className="py-16 px-6 bg-slate-50 dark:bg-neutral-950">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold mb-4 text-center">
             What Your Agent Can Do
           </h2>
-          <p className="text-lg text-slate-600 text-center mb-12 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 dark:text-neutral-400 text-center mb-12 max-w-2xl mx-auto">
             Five tools, discovered automatically when a client connects. Every
             one runs the exact same math as the calculators on trainpace.com.
           </p>
@@ -528,18 +528,18 @@ export default function McpDocs() {
             {TOOLS.map((tool) => (
               <div
                 key={tool.name}
-                className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm"
+                className="bg-white dark:bg-neutral-900 rounded-lg border border-slate-200 dark:border-neutral-800 p-6 shadow-sm"
               >
                 <div className="flex items-start gap-4">
-                  <div className="bg-emerald-100 rounded-lg p-2.5 shrink-0">
-                    <tool.icon className="w-6 h-6 text-emerald-600" />
+                  <div className="bg-emerald-100 dark:bg-emerald-900/40 rounded-lg p-2.5 shrink-0">
+                    <tool.icon className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-mono font-semibold text-slate-900 mb-2 break-words">
+                    <h3 className="font-mono font-semibold text-slate-900 dark:text-neutral-100 mb-2 break-words">
                       {tool.name}
                     </h3>
-                    <p className="text-slate-700 mb-3">{tool.summary}</p>
-                    <p className="text-sm text-slate-500 italic">
+                    <p className="text-slate-700 dark:text-neutral-300 mb-3">{tool.summary}</p>
+                    <p className="text-sm text-slate-500 dark:text-neutral-400 italic">
                       “{tool.example}”
                     </p>
                   </div>
@@ -553,20 +553,20 @@ export default function McpDocs() {
       {/* Why */}
       <section className="py-16 px-6 max-w-4xl mx-auto">
         <h2 className="text-3xl font-bold mb-6">Why an MCP Server?</h2>
-        <div className="prose prose-lg max-w-none text-left">
-          <p className="text-slate-700 leading-relaxed mb-4">
+        <div className="prose prose-lg dark:prose-invert max-w-none text-left">
+          <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
             Runners increasingly plan training by talking to an AI assistant.
             Generic models are good at conversation but improvise the numbers —
             paces, fueling, and plan structure deserve real formulas, not
             plausible-sounding guesses.
           </p>
-          <p className="text-slate-700 leading-relaxed mb-4">
+          <p className="text-slate-700 dark:text-neutral-300 leading-relaxed mb-4">
             The TrainPace MCP server gives your assistant the deterministic
             math: Daniels &amp; Gilbert VDOT, grade-adjusted pacing from real
             elevation data, and sports-science fueling targets. Your agent does
             the conversation; TrainPace does the calculation.
           </p>
-          <p className="text-slate-600 text-sm">
+          <p className="text-slate-600 dark:text-neutral-400 text-sm">
             The server is stateless and anonymous — nothing you send is tied to
             an account, and route files are analyzed in memory, not stored.
             Requests are rate-limited per IP to keep the service free for
@@ -587,7 +587,7 @@ export default function McpDocs() {
             <Link to="/calculator">
               <Button
                 size="lg"
-                className="bg-white text-emerald-600 hover:bg-slate-100"
+                className="bg-white dark:bg-neutral-900 text-emerald-600 dark:text-emerald-400 hover:bg-slate-100 dark:hover:bg-neutral-800"
               >
                 Pace Calculator
               </Button>
@@ -595,7 +595,7 @@ export default function McpDocs() {
             <Link to="/plan">
               <Button
                 size="lg"
-                className="bg-white text-emerald-600 hover:bg-slate-100"
+                className="bg-white dark:bg-neutral-900 text-emerald-600 dark:text-emerald-400 hover:bg-slate-100 dark:hover:bg-neutral-800"
               >
                 Training Plan Builder
               </Button>
@@ -603,7 +603,7 @@ export default function McpDocs() {
             <Link to="/elevation-finder">
               <Button
                 size="lg"
-                className="bg-white text-emerald-600 hover:bg-slate-100"
+                className="bg-white dark:bg-neutral-900 text-emerald-600 dark:text-emerald-400 hover:bg-slate-100 dark:hover:bg-neutral-800"
               >
                 Elevation Finder
               </Button>

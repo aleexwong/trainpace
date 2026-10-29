@@ -189,7 +189,7 @@ export default function ElevationPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         <div className="text-center py-12">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto"></div>
-          <p className="text-gray-600 mt-4">Redirecting...</p>
+          <p className="text-gray-600 dark:text-neutral-400 mt-4">Redirecting...</p>
         </div>
       </div>
     );
@@ -254,12 +254,12 @@ export default function ElevationPage() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         {/* Header */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-emerald-700 text-center">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-emerald-700 dark:text-emerald-300 text-center">
           <a
             href="/elevationfinder"
             aria-label="ElevationFinder - Analyze Your GPX Files"
             title="ElevationFinder - Analyze Your GPX Files"
-            className="no-underline text-emerald-700 font-bold hover:text-emerald-800 transition-colors"
+            className="no-underline text-emerald-700 dark:text-emerald-300 font-bold hover:text-emerald-800 dark:hover:text-emerald-300 transition-colors"
           >
             ElevationFinder
           </a>
@@ -333,8 +333,8 @@ export default function ElevationPage() {
 
         {/* Error Display */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-red-700 font-medium">Error: {error}</p>
+          <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg p-4">
+            <p className="text-red-700 dark:text-red-300 font-medium">Error: {error}</p>
           </div>
         )}
 
@@ -342,7 +342,7 @@ export default function ElevationPage() {
         {loading && !analysisData && (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-500 mx-auto"></div>
-            <p className="text-gray-600 mt-4">Analyzing elevation profile…</p>
+            <p className="text-gray-600 dark:text-neutral-400 mt-4">Analyzing elevation profile…</p>
           </div>
         )}
 
@@ -381,7 +381,7 @@ export default function ElevationPage() {
         {import.meta.env.MODE === "development" &&
           urlDocId &&
           analysisData?.cacheOptimization && (
-            <details className="bg-gray-50 border rounded p-4">
+            <details className="bg-gray-50 dark:bg-neutral-950 border rounded p-4">
               <summary className="cursor-pointer font-medium text-sm">
                 🔧 Cache Debug Info
               </summary>

@@ -90,7 +90,7 @@ export function RouteSketch({
       className={cn(
         // Column layout rather than an overlaid note: the note takes its own
         // row so it can never sit on top of the start/finish markers.
-        "relative flex h-full w-full flex-col bg-stone-50 text-center",
+        "relative flex h-full w-full flex-col bg-stone-50 dark:bg-neutral-950 text-center",
         className
       )}
     >
@@ -120,13 +120,13 @@ export function RouteSketch({
           )}
         </svg>
       ) : (
-        <div className="flex min-h-0 w-full flex-1 items-center justify-center text-sm text-gray-400">
+        <div className="flex min-h-0 w-full flex-1 items-center justify-center text-sm text-gray-400 dark:text-neutral-500">
           No route data
         </div>
       )}
 
       {note && (
-        <div className="shrink-0 border-t border-stone-200 bg-white px-3 py-2 text-xs text-gray-600">
+        <div className="shrink-0 border-t border-stone-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-3 py-2 text-xs text-gray-600 dark:text-neutral-400">
           {note}
         </div>
       )}

@@ -47,17 +47,17 @@ export function PlanOverview({ plan }: Props) {
             <span className="font-display text-4xl sm:text-5xl font-bold text-emerald-300 tabular-nums tracking-tight">
               {goalTime}
             </span>
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-neutral-500">
               Goal Time
             </span>
           </div>
         ) : (
-          <div className="mt-1 text-sm font-medium text-slate-300 capitalize">
+          <div className="mt-1 text-sm font-medium text-slate-300 dark:text-neutral-600 capitalize">
             {plan.fitnessLevel} fitness plan
           </div>
         )}
 
-        <p className="mt-3 text-sm text-slate-300">
+        <p className="mt-3 text-sm text-slate-300 dark:text-neutral-600">
           Race day{" "}
           <span className="font-semibold text-white">{raceDateLabel}</span>
           {" · "}
@@ -75,13 +75,13 @@ export function PlanOverview({ plan }: Props) {
           ].map(({ label, value, unit }) => (
             <div
               key={label}
-              className="rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm px-2 py-3 sm:px-4 sm:py-4 text-center"
+              className="rounded-2xl bg-white/5 dark:bg-neutral-900/5 border border-white/10 dark:border-neutral-800 backdrop-blur-sm px-2 py-3 sm:px-4 sm:py-4 text-center"
             >
               <div className="font-display text-xl sm:text-3xl font-bold text-white tabular-nums">
                 {value}
-                {unit && <span className="ml-0.5 text-xs sm:text-sm font-semibold text-slate-400">{unit}</span>}
+                {unit && <span className="ml-0.5 text-xs sm:text-sm font-semibold text-slate-400 dark:text-neutral-500">{unit}</span>}
               </div>
-              <div className="mt-1 text-[9px] sm:text-xs font-semibold uppercase tracking-wide text-slate-400">
+              <div className="mt-1 text-[9px] sm:text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-neutral-500">
                 {label}
               </div>
             </div>

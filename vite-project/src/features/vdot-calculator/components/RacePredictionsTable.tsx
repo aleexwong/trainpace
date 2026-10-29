@@ -15,11 +15,11 @@ export function RacePredictionsTable({ predictions, inputDistanceName, compact }
   const maxTime = Math.max(...predictions.map((p) => p.timeSeconds));
 
   return (
-    <div className={`bg-white rounded-2xl shadow-lg h-full ${compact ? "p-4" : "p-5 sm:p-8"}`}>
-      <h2 className={`font-bold text-gray-900 text-center ${compact ? "text-lg mb-0.5" : "text-xl sm:text-2xl mb-1"}`}>
+    <div className={`bg-white dark:bg-neutral-900 rounded-2xl shadow-lg h-full ${compact ? "p-4" : "p-5 sm:p-8"}`}>
+      <h2 className={`font-bold text-gray-900 dark:text-neutral-100 text-center ${compact ? "text-lg mb-0.5" : "text-xl sm:text-2xl mb-1"}`}>
         Race Equivalency
       </h2>
-      <p className={`text-gray-500 text-center ${compact ? "text-xs mb-3" : "text-sm mb-6"}`}>
+      <p className={`text-gray-500 dark:text-neutral-400 text-center ${compact ? "text-xs mb-3" : "text-sm mb-6"}`}>
         Predicted finish times across all distances
       </p>
 
@@ -33,10 +33,10 @@ export function RacePredictionsTable({ predictions, inputDistanceName, compact }
             </colgroup>
           )}
           <thead>
-            <tr className="border-b-2 border-gray-200">
-              <th className={`text-left font-semibold text-gray-700 ${compact ? "py-2 px-2 text-xs" : "py-3 px-4"}`}>Distance</th>
-              <th className={`text-center font-semibold text-gray-700 ${compact ? "py-2 px-2 text-xs" : "py-3 px-4"}`}>Time</th>
-              <th className={`text-right font-semibold text-gray-700 ${compact ? "py-2 px-2 text-xs" : "py-3 px-4"}`}>Pace</th>
+            <tr className="border-b-2 border-gray-200 dark:border-neutral-800">
+              <th className={`text-left font-semibold text-gray-700 dark:text-neutral-300 ${compact ? "py-2 px-2 text-xs" : "py-3 px-4"}`}>Distance</th>
+              <th className={`text-center font-semibold text-gray-700 dark:text-neutral-300 ${compact ? "py-2 px-2 text-xs" : "py-3 px-4"}`}>Time</th>
+              <th className={`text-right font-semibold text-gray-700 dark:text-neutral-300 ${compact ? "py-2 px-2 text-xs" : "py-3 px-4"}`}>Pace</th>
             </tr>
           </thead>
           <tbody>
@@ -47,8 +47,8 @@ export function RacePredictionsTable({ predictions, inputDistanceName, compact }
               return (
                 <tr
                   key={prediction.name}
-                  className={`border-b border-gray-50 transition-colors hover:bg-gray-50 ${
-                    isInput ? "bg-emerald-50/70" : ""
+                  className={`border-b border-gray-50 dark:border-neutral-800 transition-colors hover:bg-gray-50 dark:hover:bg-neutral-800 ${
+                    isInput ? "bg-emerald-50/70 dark:bg-emerald-950/40" : ""
                   }`}
                 >
                   <td className={compact ? "py-1.5 px-2" : "py-3 px-4"}>
@@ -56,11 +56,11 @@ export function RacePredictionsTable({ predictions, inputDistanceName, compact }
                       {isInput && (
                         <span className="w-1 h-5 bg-emerald-500 rounded-full shrink-0" />
                       )}
-                      <span className={`font-medium ${compact ? "text-xs" : "text-sm"} ${isInput ? "text-emerald-700" : "text-gray-900"}`}>
+                      <span className={`font-medium ${compact ? "text-xs" : "text-sm"} ${isInput ? "text-emerald-700 dark:text-emerald-300" : "text-gray-900 dark:text-neutral-100"}`}>
                         {prediction.name}
                       </span>
                       {isInput && !compact && (
-                        <span className="text-[10px] font-semibold text-emerald-500 bg-emerald-100 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-semibold text-emerald-500 bg-emerald-100 dark:bg-emerald-900/40 px-1.5 py-0.5 rounded">
                           YOUR RACE
                         </span>
                       )}
@@ -68,16 +68,16 @@ export function RacePredictionsTable({ predictions, inputDistanceName, compact }
                   </td>
                   <td className={`${compact ? "py-1.5 px-2 text-center" : "py-3 px-4"}`}>
                     <div className={`flex items-center gap-2 ${compact ? "justify-center" : ""}`}>
-                      <span className={`font-mono font-semibold ${compact ? "text-xs" : "text-sm min-w-[80px]"} ${isInput ? "text-emerald-700" : "text-gray-900"}`}>
+                      <span className={`font-mono font-semibold ${compact ? "text-xs" : "text-sm min-w-[80px]"} ${isInput ? "text-emerald-700 dark:text-emerald-300" : "text-gray-900 dark:text-neutral-100"}`}>
                         {prediction.time}
                       </span>
                       {!compact && (
-                        <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="flex-1 h-2 bg-gray-100 dark:bg-neutral-800 rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all duration-500 ${
                               isInput
                                 ? "bg-gradient-to-r from-emerald-400 to-emerald-500"
-                                : "bg-gradient-to-r from-gray-200 to-gray-300"
+                                : "bg-gradient-to-r from-gray-200 dark:from-neutral-900 to-gray-300"
                             }`}
                             style={{ width: `${barWidth}%` }}
                           />
@@ -85,7 +85,7 @@ export function RacePredictionsTable({ predictions, inputDistanceName, compact }
                       )}
                     </div>
                   </td>
-                  <td className={`text-right text-gray-500 font-mono ${compact ? "py-1.5 px-2 text-[11px]" : "py-3 px-4 text-xs"}`}>
+                  <td className={`text-right text-gray-500 dark:text-neutral-400 font-mono ${compact ? "py-1.5 px-2 text-[11px]" : "py-3 px-4 text-xs"}`}>
                     {prediction.pace}
                   </td>
                 </tr>

@@ -112,7 +112,7 @@ export function RaceInputForm({
                   className={`w-4/5 ${errors.distance ? "border-red-500" : ""}`}
                 />
                 <div
-                  className="relative w-40 h-10 bg-emerald-100 rounded-full cursor-pointer overflow-hidden"
+                  className="relative w-40 h-10 bg-emerald-100 dark:bg-emerald-900/40 rounded-full cursor-pointer overflow-hidden"
                   onClick={handleUnitToggle}
                 >
                   {/* Sliding Indicator */}
@@ -125,14 +125,14 @@ export function RaceInputForm({
                   <div className="absolute inset-0 flex items-center">
                     <div
                       className={`w-1/2 text-center font-medium transition-colors ${
-                        isKm ? "text-white" : "text-emerald-700"
+                        isKm ? "text-white" : "text-emerald-700 dark:text-emerald-300"
                       }`}
                     >
                       KM
                     </div>
                     <div
                       className={`w-1/2 text-center font-medium transition-colors ${
-                        !isKm ? "text-white" : "text-emerald-700"
+                        !isKm ? "text-white" : "text-emerald-700 dark:text-emerald-300"
                       }`}
                     >
                       MI
@@ -163,7 +163,7 @@ export function RaceInputForm({
                       errors.time ? "border-red-500" : ""
                     }`}
                   />
-                  <Clock className="absolute right-3 top-2.5 h-4 w-4 text-gray-400" />
+                  <Clock className="absolute right-3 top-2.5 h-4 w-4 text-gray-400 dark:text-neutral-500" />
                 </div>
                 <span>:</span>
                 <Input
@@ -205,7 +205,7 @@ export function RaceInputForm({
               value={inputs.paceType}
               onChange={onInputChange}
               name="paceType"
-              className="w-1/2 border rounded-md p-2 bg-white"
+              className="w-1/2 border rounded-md p-2 bg-white dark:bg-neutral-900"
             >
               <option value="km">min/km</option>
               <option value="Miles">min/mile</option>

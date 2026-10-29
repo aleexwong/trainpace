@@ -31,28 +31,28 @@ export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+    <div className="bg-white dark:bg-neutral-900 rounded-lg shadow-sm border border-gray-200 dark:border-neutral-800 p-4 hover:shadow-md transition-shadow">
       {/* Header */}
       <div className="flex justify-between items-start mb-3">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-semibold text-gray-800">
+            <h3 className="font-semibold text-gray-800 dark:text-neutral-200">
               {plan.raceType} {plan.raceType !== "10K" && "Marathon"}
             </h3>
             {plan.aiRecommendations && plan.aiRecommendations.length > 0 && (
-              <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded flex items-center gap-1">
+              <span className="text-xs bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 px-2 py-1 rounded flex items-center gap-1">
                 <Flame className="w-3 h-3" />
                 AI Enhanced
               </span>
             )}
           </div>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-neutral-400">
             {formatDate(plan.createdAt)} • {formatTime(plan.finishTime)}
           </p>
         </div>
         <button
           onClick={() => onDelete(plan.id)}
-          className="text-gray-400 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          className="text-gray-400 dark:text-neutral-500 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-gray-100 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
           title="Delete fuel plan"
           aria-label="Delete fuel plan"
         >
@@ -61,20 +61,20 @@ export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
       </div>
 
       {/* Quick Stats Grid */}
-      <div className="grid grid-cols-3 gap-2 text-sm mb-3 bg-orange-50 p-3 rounded-lg">
+      <div className="grid grid-cols-3 gap-2 text-sm mb-3 bg-orange-50 dark:bg-orange-950/40 p-3 rounded-lg">
         <div className="text-center">
-          <div className="text-xs text-gray-600 mb-1">Carbs/hr</div>
-          <div className="font-bold text-orange-600">
+          <div className="text-xs text-gray-600 dark:text-neutral-400 mb-1">Carbs/hr</div>
+          <div className="font-bold text-orange-600 dark:text-orange-400">
             {plan.carbsPerHour}g
           </div>
         </div>
         <div className="text-center">
-          <div className="text-xs text-gray-600 mb-1">Gels</div>
-          <div className="font-bold text-orange-600">{plan.gelsNeeded}</div>
+          <div className="text-xs text-gray-600 dark:text-neutral-400 mb-1">Gels</div>
+          <div className="font-bold text-orange-600 dark:text-orange-400">{plan.gelsNeeded}</div>
         </div>
         <div className="text-center">
-          <div className="text-xs text-gray-600 mb-1">Calories</div>
-          <div className="font-bold text-orange-600">
+          <div className="text-xs text-gray-600 dark:text-neutral-400 mb-1">Calories</div>
+          <div className="font-bold text-orange-600 dark:text-orange-400">
             {plan.totalCalories}
           </div>
         </div>
@@ -85,7 +85,7 @@ export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
         <div className="mb-3">
           <button
             onClick={() => setExpanded(!expanded)}
-            className="w-full text-sm text-purple-600 hover:text-purple-700 flex items-center justify-between bg-purple-50 p-2 rounded-lg"
+            className="w-full text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 flex items-center justify-between bg-purple-50 dark:bg-purple-950/40 p-2 rounded-lg"
           >
             <span className="font-medium">
               {plan.aiRecommendations.length} AI Recommendation
@@ -99,14 +99,14 @@ export function FuelPlanCard({ plan, onDelete, onCopy }: FuelPlanCardProps) {
           </button>
 
           {expanded && (
-            <div className="mt-2 space-y-2 bg-purple-50 p-3 rounded-lg border border-purple-100">
+            <div className="mt-2 space-y-2 bg-purple-50 dark:bg-purple-950/40 p-3 rounded-lg border border-purple-100 dark:border-purple-900/60">
               {plan.aiRecommendations.map((rec, idx) => (
                 <div key={idx} className="text-sm">
-                  <p className="font-semibold text-gray-800 mb-1">
+                  <p className="font-semibold text-gray-800 dark:text-neutral-200 mb-1">
                     {idx + 1}. {rec.headline}
                   </p>
                   {rec.detail && (
-                    <p className="text-gray-600 text-xs leading-relaxed pl-4">
+                    <p className="text-gray-600 dark:text-neutral-400 text-xs leading-relaxed pl-4">
                       {rec.detail}
                     </p>
                   )}

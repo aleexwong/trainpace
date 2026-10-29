@@ -94,7 +94,7 @@ export default function FAQ() {
   };
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen">
+    <div className="bg-white dark:bg-neutral-900 text-gray-900 dark:text-neutral-100 min-h-screen">
       <Helmet>
         <title>{STATIC_PAGE_TITLES["/faq"]}</title>
         <meta
@@ -106,23 +106,23 @@ export default function FAQ() {
       </Helmet>
 
       {/* Header */}
-      <section className="py-12 px-6 text-center bg-emerald-50">
+      <section className="py-12 px-6 text-center bg-emerald-50 dark:bg-emerald-950/40">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
             Frequently Asked Questions
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-gray-600 dark:text-neutral-400">
             Everything you need to know about TrainPace and ElevationFinder
           </p>
         </div>
       </section>
 
       {/* Quick Jump Navigation */}
-      <section className="sticky top-[71px] z-40 bg-white border-b border-gray-200 shadow-sm">
+      <section className="sticky top-[71px] z-40 bg-white dark:bg-neutral-900 border-b border-gray-200 dark:border-neutral-800 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center gap-2 mb-3">
-            <Hash className="w-5 h-5 text-emerald-600" />
-            <span className="text-sm font-semibold text-gray-700">
+            <Hash className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            <span className="text-sm font-semibold text-gray-700 dark:text-neutral-300">
               Jump to:
             </span>
           </div>
@@ -142,7 +142,7 @@ export default function FAQ() {
                     ${
                       isActive
                         ? "bg-emerald-600 text-white shadow-md"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow"
+                        : "bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300 hover:bg-gray-200 dark:hover:bg-neutral-700 hover:shadow"
                     }
                   `}
                 >
@@ -156,13 +156,13 @@ export default function FAQ() {
           <div className="md:hidden relative">
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg flex items-center justify-between hover:border-emerald-300 transition-colors"
+              className="w-full px-4 py-3 bg-white dark:bg-neutral-900 border-2 border-gray-200 dark:border-neutral-800 rounded-lg flex items-center justify-between hover:border-emerald-300 dark:hover:border-emerald-800 transition-colors"
             >
-              <span className="text-sm font-medium text-gray-700">
+              <span className="text-sm font-medium text-gray-700 dark:text-neutral-300">
                 {getActiveSectionTitle()}
               </span>
               <ChevronDown
-                className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
+                className={`w-5 h-5 text-gray-500 dark:text-neutral-400 transition-transform duration-200 ${
                   isDropdownOpen ? "rotate-180" : ""
                 }`}
               />
@@ -177,7 +177,7 @@ export default function FAQ() {
                 />
 
                 {/* Dropdown menu */}
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-96 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-lg shadow-lg z-20 max-h-96 overflow-y-auto">
                   {faqData.sections.map((section, index) => {
                     const sectionId = getSectionId(section.title);
                     const isActive = activeSection === sectionId;
@@ -190,8 +190,8 @@ export default function FAQ() {
                           w-full px-4 py-3 text-left text-sm font-medium transition-colors
                           ${
                             isActive
-                              ? "bg-emerald-50 text-emerald-700 border-l-4 border-emerald-600"
-                              : "bg-white text-gray-700 hover:bg-gray-50 border-l-4 border-transparent"
+                              ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border-l-4 border-emerald-600"
+                              : "bg-white dark:bg-neutral-900 text-gray-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800 border-l-4 border-transparent"
                           }
                         `}
                       >
@@ -219,10 +219,10 @@ export default function FAQ() {
             >
               {/* Section Header */}
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold mb-2 text-gray-900">
+                <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-neutral-100">
                   {section.title}
                 </h2>
-                <p className="text-gray-600 text-lg">{section.description}</p>
+                <p className="text-gray-600 dark:text-neutral-400 text-lg">{section.description}</p>
               </div>
 
               <FAQAccordion items={section.questions} />
@@ -232,11 +232,11 @@ export default function FAQ() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 text-center bg-gradient-to-r from-emerald-50 to-emerald-50">
+      <section className="py-20 text-center bg-gradient-to-r from-emerald-50 dark:from-neutral-950 to-emerald-50 dark:to-neutral-950">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-4xl mb-4">❓</div>
           <h2 className="text-3xl font-bold mb-4">Still have questions?</h2>
-          <p className="text-gray-700 mb-8 text-lg">
+          <p className="text-gray-700 dark:text-neutral-300 mb-8 text-lg">
             Can't find what you're looking for? We're here to help!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -251,7 +251,7 @@ export default function FAQ() {
             </a>
             <a
               href="/calculator"
-              className="inline-flex items-center px-6 py-3 border-2 border-emerald-600 text-emerald-600 rounded-lg hover:bg-emerald-600 hover:text-white transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
+              className="inline-flex items-center px-6 py-3 border-2 border-emerald-600 text-emerald-600 dark:text-emerald-400 rounded-lg hover:bg-emerald-600 hover:text-white transition-all duration-200 hover:shadow-lg transform hover:-translate-y-0.5"
             >
               <span className="mr-2">🧮</span>
               Try the Calculator

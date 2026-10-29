@@ -12,9 +12,9 @@ interface FactProps {
 
 function Fact({ label, value }: FactProps) {
   return (
-    <div className="rounded-2xl border border-orange-100 bg-white p-4">
-      <div className="text-xs font-semibold text-gray-500">{label}</div>
-      <div className="mt-1 font-bold text-gray-900">{value}</div>
+    <div className="rounded-2xl border border-orange-100 dark:border-orange-900/60 bg-white dark:bg-neutral-900 p-4">
+      <div className="text-xs font-semibold text-gray-500 dark:text-neutral-400">{label}</div>
+      <div className="mt-1 font-bold text-gray-900 dark:text-neutral-100">{value}</div>
     </div>
   );
 }
@@ -36,14 +36,14 @@ export function RaceGuideSection({ guide }: RaceGuideSectionProps) {
   return (
     <section className="px-4 sm:px-6 pb-10 text-left">
       <div className="max-w-5xl mx-auto space-y-6">
-        <div className="rounded-3xl border border-orange-100 bg-white/70 p-6 sm:p-8">
+        <div className="rounded-3xl border border-orange-100 dark:border-orange-900/60 bg-white/70 dark:bg-neutral-900/70 p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
-              <div className="text-sm font-semibold text-orange-800">Course Guide</div>
-              <h2 className="mt-2 text-2xl sm:text-3xl font-bold text-gray-900">
+              <div className="text-sm font-semibold text-orange-800 dark:text-orange-300">Course Guide</div>
+              <h2 className="mt-2 text-2xl sm:text-3xl font-bold text-gray-900 dark:text-neutral-100">
                 {guide.name}
               </h2>
-              <p className="mt-2 text-gray-700">
+              <p className="mt-2 text-gray-700 dark:text-neutral-300">
                 {guide.city}, {guide.country} · usually {guide.month}
               </p>
             </div>
@@ -51,13 +51,13 @@ export function RaceGuideSection({ guide }: RaceGuideSectionProps) {
               href={guide.website}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center self-start rounded-lg border border-orange-200 bg-white px-4 py-2 text-orange-900 font-semibold hover:bg-orange-50 transition-colors"
+              className="inline-flex items-center self-start rounded-lg border border-orange-200 dark:border-orange-900 bg-white dark:bg-neutral-900 px-4 py-2 text-orange-900 dark:text-orange-200 font-semibold hover:bg-orange-50 dark:hover:bg-orange-950/40 transition-colors"
             >
               Official Site
             </a>
           </div>
 
-          <p className="mt-4 text-gray-700 leading-relaxed">{guide.summary}</p>
+          <p className="mt-4 text-gray-700 dark:text-neutral-300 leading-relaxed">{guide.summary}</p>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <Fact label="Distance" value={distanceLabel(guide)} />
@@ -74,7 +74,7 @@ export function RaceGuideSection({ guide }: RaceGuideSectionProps) {
               {guide.courseHighlights.map((h) => (
                 <li
                   key={h}
-                  className="rounded-lg bg-white border border-orange-100 px-4 py-3 text-gray-800"
+                  className="rounded-lg bg-white dark:bg-neutral-900 border border-orange-100 dark:border-orange-900/60 px-4 py-3 text-gray-800 dark:text-neutral-200"
                 >
                   {h}
                 </li>
@@ -83,37 +83,37 @@ export function RaceGuideSection({ guide }: RaceGuideSectionProps) {
           )}
         </div>
 
-        <div className="rounded-3xl border border-orange-100 bg-white/70 p-6 sm:p-8">
-          <h2 className="text-2xl font-bold text-gray-900">Pacing Strategy</h2>
-          <p className="mt-3 text-gray-700 leading-relaxed">{guide.paceStrategy.summary}</p>
+        <div className="rounded-3xl border border-orange-100 dark:border-orange-900/60 bg-white/70 dark:bg-neutral-900/70 p-6 sm:p-8">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-neutral-100">Pacing Strategy</h2>
+          <p className="mt-3 text-gray-700 dark:text-neutral-300 leading-relaxed">{guide.paceStrategy.summary}</p>
           <div className="mt-5 space-y-3">
             {guide.paceStrategy.segments.map((seg) => (
               <div
                 key={seg.section}
-                className="rounded-2xl border border-orange-100 bg-white p-4 sm:flex sm:gap-4"
+                className="rounded-2xl border border-orange-100 dark:border-orange-900/60 bg-white dark:bg-neutral-900 p-4 sm:flex sm:gap-4"
               >
                 <div className="sm:w-40 shrink-0">
-                  <div className="font-bold text-gray-900">{seg.section}</div>
-                  <div className="text-sm text-orange-800">{seg.terrain}</div>
+                  <div className="font-bold text-gray-900 dark:text-neutral-100">{seg.section}</div>
+                  <div className="text-sm text-orange-800 dark:text-orange-300">{seg.terrain}</div>
                 </div>
-                <p className="mt-1 sm:mt-0 text-gray-700">{seg.advice}</p>
+                <p className="mt-1 sm:mt-0 text-gray-700 dark:text-neutral-300">{seg.advice}</p>
               </div>
             ))}
           </div>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-2xl border border-orange-100 bg-white p-6">
-            <h3 className="text-lg font-bold text-gray-900">Race-Day Tips</h3>
-            <ul className="mt-3 space-y-2 list-disc pl-5 text-gray-700">
+          <div className="rounded-2xl border border-orange-100 dark:border-orange-900/60 bg-white dark:bg-neutral-900 p-6">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-neutral-100">Race-Day Tips</h3>
+            <ul className="mt-3 space-y-2 list-disc pl-5 text-gray-700 dark:text-neutral-300">
               {guide.tips.map((t) => (
                 <li key={t}>{t}</li>
               ))}
             </ul>
           </div>
-          <div className="rounded-2xl border border-orange-100 bg-white p-6">
-            <h3 className="text-lg font-bold text-gray-900">Fueling Note</h3>
-            <p className="mt-3 text-gray-700 leading-relaxed">{guide.fuelingNotes}</p>
+          <div className="rounded-2xl border border-orange-100 dark:border-orange-900/60 bg-white dark:bg-neutral-900 p-6">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-neutral-100">Fueling Note</h3>
+            <p className="mt-3 text-gray-700 dark:text-neutral-300 leading-relaxed">{guide.fuelingNotes}</p>
             <a
               href="/fuel"
               className="mt-4 inline-flex items-center rounded-lg bg-amber-700 px-4 py-2 text-white font-semibold hover:bg-amber-800 transition-colors"
@@ -125,24 +125,24 @@ export function RaceGuideSection({ guide }: RaceGuideSectionProps) {
 
         {guide.faq.length > 0 && (
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-neutral-100 mb-4">
               Frequently Asked Questions
             </h2>
             <div className="space-y-3">
               {guide.faq.map((item) => (
                 <div
                   key={item.question}
-                  className="rounded-xl bg-white/80 border border-orange-100 p-5"
+                  className="rounded-xl bg-white/80 dark:bg-neutral-900/80 border border-orange-100 dark:border-orange-900/60 p-5"
                 >
-                  <h3 className="font-semibold text-gray-900">{item.question}</h3>
-                  <p className="mt-2 text-gray-700">{item.answer}</p>
+                  <h3 className="font-semibold text-gray-900 dark:text-neutral-100">{item.question}</h3>
+                  <p className="mt-2 text-gray-700 dark:text-neutral-300">{item.answer}</p>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 dark:text-neutral-400">
           Facts checked {guide.checked}. Race details change from year to year, so confirm
           with the official site before race day. Sources:{" "}
           {guide.sources.map((src, i) => (
@@ -152,7 +152,7 @@ export function RaceGuideSection({ guide }: RaceGuideSectionProps) {
                 href={src}
                 target="_blank"
                 rel="noreferrer"
-                className="underline hover:text-gray-700 break-all"
+                className="underline hover:text-gray-700 dark:hover:text-neutral-300 break-all"
               >
                 {src.replace(/^https?:\/\//, "").replace(/\/$/, "")}
               </a>

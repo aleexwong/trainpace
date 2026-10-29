@@ -107,7 +107,7 @@ export default function CalculatorSeoLanding() {
     otherComparisons.length < comparisonLinks.length && otherComparisons.length > 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-emerald-50 dark:to-neutral-950">
       <Helmet>
         <title>{page.title}</title>
         <meta name="description" content={page.description} />
@@ -126,15 +126,15 @@ export default function CalculatorSeoLanding() {
 
       <section className="px-4 sm:px-6 pt-10 pb-8">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 dark:text-neutral-100">
             {page.h1}
           </h1>
-          <p className="mt-4 text-lg text-gray-700">{page.intro}</p>
+          <p className="mt-4 text-lg text-gray-700 dark:text-neutral-300">{page.intro}</p>
           <div className="mt-6 grid gap-2">
             {page.bullets.map((b) => (
               <div
                 key={b}
-                className="rounded-lg bg-white/70 border border-emerald-100 px-4 py-3 text-gray-800"
+                className="rounded-lg bg-white/70 dark:bg-neutral-900/70 border border-emerald-100 dark:border-emerald-900/60 px-4 py-3 text-gray-800 dark:text-neutral-200"
               >
                 {b}
               </div>
@@ -167,7 +167,7 @@ export default function CalculatorSeoLanding() {
       {showComparisons && (
         <section className="px-4 sm:px-6 pb-16">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-neutral-100">
               Compare TrainPace with other apps
             </h2>
             <div className="mt-4 grid gap-2 sm:grid-cols-2">
@@ -175,7 +175,7 @@ export default function CalculatorSeoLanding() {
                 <a
                   key={c.slug}
                   href={c.path}
-                  className="rounded-lg bg-white/70 border border-emerald-100 px-4 py-3 text-emerald-800 font-medium hover:bg-white hover:border-emerald-300 transition-colors"
+                  className="rounded-lg bg-white/70 dark:bg-neutral-900/70 border border-emerald-100 dark:border-emerald-900/60 px-4 py-3 text-emerald-800 dark:text-emerald-300 font-medium hover:bg-white dark:hover:bg-neutral-900 hover:border-emerald-300 dark:hover:border-emerald-800 transition-colors"
                 >
                   {c.label}
                 </a>

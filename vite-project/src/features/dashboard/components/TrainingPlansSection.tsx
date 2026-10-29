@@ -35,7 +35,7 @@ export function TrainingPlansSection({ plans, allPlans, loading, onDeletePlan, u
     return (
       <div className="space-y-3">
         {[1, 2].map((i) => (
-          <div key={i} className="bg-white rounded-2xl border border-slate-200 h-20 animate-pulse" />
+          <div key={i} className="bg-white dark:bg-neutral-900 rounded-2xl border border-slate-200 dark:border-neutral-800 h-20 animate-pulse" />
         ))}
       </div>
     );
@@ -43,10 +43,10 @@ export function TrainingPlansSection({ plans, allPlans, loading, onDeletePlan, u
 
   if (plans.length === 0) {
     return (
-      <div className="text-center py-16 bg-white rounded-2xl border border-slate-200">
+      <div className="text-center py-16 bg-white dark:bg-neutral-900 rounded-2xl border border-slate-200 dark:border-neutral-800">
         <div className="text-4xl mb-4">🏃</div>
-        <h3 className="text-lg font-semibold text-slate-700 mb-2">No training plans yet</h3>
-        <p className="text-slate-500 mb-6 text-sm max-w-xs mx-auto">
+        <h3 className="text-lg font-semibold text-slate-700 dark:text-neutral-300 mb-2">No training plans yet</h3>
+        <p className="text-slate-500 dark:text-neutral-400 mb-6 text-sm max-w-xs mx-auto">
           Generate a personalized training plan based on your goal race and fitness level.
         </p>
         <Link

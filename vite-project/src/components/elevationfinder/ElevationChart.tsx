@@ -15,6 +15,7 @@ import { useState, useRef, useMemo, memo } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { downsampleProfile } from "@/features/elevation/utils";
+import { useChartTheme } from "@/features/theme";
 
 Chart.register(
   CategoryScale,
@@ -159,6 +160,8 @@ export function ElevationChart({
     return result;
   }, [chartPoints]);
 
+  const ct = useChartTheme();
+
   const data = useMemo(
     () => ({
       datasets: [
@@ -178,13 +181,13 @@ export function ElevationChart({
           pointRadius: 0,
           pointHoverRadius: 6,
           pointHoverBackgroundColor: "rgba(59, 130, 246, 1)",
-          pointHoverBorderColor: "rgba(255, 255, 255, 1)",
+          pointHoverBorderColor: ct.surface,
           pointHoverBorderWidth: 2,
           borderWidth: 3,
         },
       ],
     }),
-    [chartPoints, grades, filename]
+    [chartPoints, grades, filename, ct.surface]
   );
 
   const options: ChartOptions<"line"> = useMemo(
@@ -221,11 +224,11 @@ export function ElevationChart({
               size: 12,
               weight: "bold",
             },
-            color: "rgba(55, 65, 81, 1)", // Gray-700
+            color: ct.label,
           },
         },
         tooltip: {
-          backgroundColor: "rgba(17, 24, 39, 0.95)", // Gray-900 with transparency
+          backgroundColor: ct.tooltipBg,
           titleColor: "rgba(255, 255, 255, 1)",
           bodyColor: "rgba(255, 255, 255, 1)",
           borderColor: "rgba(59, 130, 246, 1)",
@@ -253,7 +256,7 @@ export function ElevationChart({
           title: {
             display: true,
             text: "Distance (km)",
-            color: "rgba(75, 85, 99, 1)", // Gray-600
+            color: ct.title,
             font: {
               size: 14,
               weight: "bold",
@@ -261,52 +264,52 @@ export function ElevationChart({
           },
           ticks: {
             stepSize: 1.0,
-            color: "rgba(107, 114, 128, 1)", // Gray-500
+            color: ct.tick,
             font: {
               size: 11,
             },
           },
           grid: {
-            color: "rgba(229, 231, 235, 1)", // Gray-200
+            color: ct.grid,
             lineWidth: 1,
           },
           border: {
-            color: "rgba(209, 213, 219, 1)", // Gray-300
+            color: ct.axis,
           },
         },
         y: {
           title: {
             display: true,
             text: "Elevation (m)",
-            color: "rgba(75, 85, 99, 1)", // Gray-600
+            color: ct.title,
             font: {
               size: 14,
               weight: "bold",
             },
           },
           ticks: {
-            color: "rgba(107, 114, 128, 1)", // Gray-500
+            color: ct.tick,
             font: {
               size: 11,
             },
           },
           grid: {
-            color: "rgba(229, 231, 235, 1)", // Gray-200
+            color: ct.grid,
             lineWidth: 1,
           },
           border: {
-            color: "rgba(209, 213, 219, 1)", // Gray-300
+            color: ct.axis,
           },
         },
       },
     }),
-    [grades, chartPoints, onHoverDistance]
+    [grades, chartPoints, onHoverDistance, ct]
   );
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="w-full bg-white dark:bg-neutral-900 rounded-lg shadow-sm border border-gray-200 dark:border-neutral-800">
       {/* Editable filename header */}
-      <div className="px-4 py-3 border-b border-gray-200">
+      <div className="px-4 py-3 border-b border-gray-200 dark:border-neutral-800">
         {isEditing ? (
           <div className="flex items-center gap-2">
             <input
@@ -327,13 +330,13 @@ export function ElevationChart({
           </div>
         ) : (
           <div className="flex items-center gap-2">
-            <h3 className="text-lg font-semibold text-gray-800">
+            <h3 className="text-lg font-semibold text-gray-800 dark:text-neutral-200">
               {filename ? filename.replace(".gpx", "") : "Elevation Profile"}
             </h3>
             {isOwner && docId && (
               <button
                 onClick={handleEdit}
-                className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                className="p-1 text-gray-400 dark:text-neutral-500 hover:text-gray-600 dark:hover:text-neutral-400 transition-colors"
                 title="Edit filename"
               >
                 <PencilIcon className="w-4 h-4" />
@@ -358,10 +361,10 @@ export function ElevationChart({
 
       {/* Grade legend */}
       <div className="px-4 pb-4">
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-gray-700">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs text-gray-700 dark:text-neutral-300">
           <div className="flex items-center gap-2">
             <div
-              className="w-12 sm:w-16 h-4 rounded border border-gray-300 shrink-0"
+              className="w-12 sm:w-16 h-4 rounded border border-gray-300 dark:border-neutral-700 shrink-0"
               style={{
                 background:
                   "linear-gradient(to right, rgb(34, 197, 94), rgb(154, 205, 50))",
@@ -371,14 +374,14 @@ export function ElevationChart({
           </div>
           <div className="flex items-center gap-2">
             <div
-              className="w-4 h-4 rounded border border-gray-300 shrink-0"
+              className="w-4 h-4 rounded border border-gray-300 dark:border-neutral-700 shrink-0"
               style={{ backgroundColor: "rgb(100, 116, 139)" }}
             />
             <span className="font-medium whitespace-nowrap">Flat</span>
           </div>
           <div className="flex items-center gap-2">
             <div
-              className="w-12 sm:w-16 h-4 rounded border border-gray-300 shrink-0"
+              className="w-12 sm:w-16 h-4 rounded border border-gray-300 dark:border-neutral-700 shrink-0"
               style={{
                 background:
                   "linear-gradient(to right, rgb(234, 179, 8), rgb(220, 38, 38))",

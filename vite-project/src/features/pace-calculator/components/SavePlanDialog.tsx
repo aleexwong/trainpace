@@ -45,16 +45,16 @@ export function SavePlanDialog({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-md w-full shadow-xl">
+      <div className="bg-white dark:bg-neutral-900 rounded-lg max-w-md w-full shadow-xl">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-neutral-800">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-neutral-100">
             Save Training Plan
           </h2>
           <button
             onClick={handleClose}
             disabled={isSaving}
-            className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50"
+            className="text-gray-400 dark:text-neutral-500 hover:text-gray-600 dark:hover:text-neutral-400 transition-colors disabled:opacity-50"
           >
             <X className="w-5 h-5" />
           </button>
@@ -63,77 +63,77 @@ export function SavePlanDialog({
         {/* Content */}
         <div className="p-6 space-y-4">
           {/* Race Info */}
-          <div className="bg-emerald-50 p-3 rounded-lg border border-emerald-100">
-            <p className="text-sm text-emerald-900">
+          <div className="bg-emerald-50 dark:bg-emerald-950/40 p-3 rounded-lg border border-emerald-100 dark:border-emerald-900/60">
+            <p className="text-sm text-emerald-900 dark:text-emerald-200">
               <strong>Race:</strong> {raceDistance} in {raceTime}
             </p>
           </div>
 
           {/* Plan Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
               <Tag className="w-4 h-4 inline mr-1" />
-              Plan Name <span className="text-gray-400">(optional)</span>
+              Plan Name <span className="text-gray-400 dark:text-neutral-500">(optional)</span>
             </label>
             <input
               type="text"
               value={planName}
               onChange={(e) => setPlanName(e.target.value)}
               placeholder="e.g., Boston 2025, Fall PR Attempt"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-neutral-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               disabled={isSaving}
               maxLength={50}
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-neutral-400 mt-1">
               Give your plan a memorable name
             </p>
           </div>
 
           {/* Race Date */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
               <Calendar className="w-4 h-4 inline mr-1" />
-              Race Date <span className="text-gray-400">(optional)</span>
+              Race Date <span className="text-gray-400 dark:text-neutral-500">(optional)</span>
             </label>
             <input
               type="date"
               value={raceDate}
               onChange={(e) => setRaceDate(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-neutral-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               disabled={isSaving}
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-neutral-400 mt-1">
               When is your target race?
             </p>
           </div>
 
           {/* Notes */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
               <FileText className="w-4 h-4 inline mr-1" />
-              Notes <span className="text-gray-400">(optional)</span>
+              Notes <span className="text-gray-400 dark:text-neutral-500">(optional)</span>
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="e.g., Focus on negative splits, adjust for weather"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-neutral-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
               rows={3}
               disabled={isSaving}
               maxLength={200}
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-neutral-400 mt-1">
               Add any training notes or context
             </p>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="flex gap-3 p-6 border-t border-gray-200">
+        <div className="flex gap-3 p-6 border-t border-gray-200 dark:border-neutral-800">
           <button
             onClick={handleClose}
             disabled={isSaving}
-            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-4 py-2 border border-gray-300 dark:border-neutral-700 text-gray-700 dark:text-neutral-300 rounded-md hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Cancel
           </button>

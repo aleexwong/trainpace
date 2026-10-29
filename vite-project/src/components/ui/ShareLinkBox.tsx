@@ -43,7 +43,7 @@ export function ShareLinkBox({ path, docId, className }: ShareLinkBoxProps) {
         "Check out this elevation profile on TrainPace!"
       )}`,
       icon: Twitter,
-      className: "hover:bg-emerald-50 hover:text-emerald-600",
+      className: "hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-600 dark:hover:text-emerald-400",
     },
     {
       name: "Facebook",
@@ -51,7 +51,7 @@ export function ShareLinkBox({ path, docId, className }: ShareLinkBoxProps) {
         shareUrl
       )}`,
       icon: Facebook,
-      className: "hover:bg-emerald-50 hover:text-emerald-600",
+      className: "hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-600 dark:hover:text-emerald-400",
     },
   ];
 
@@ -62,7 +62,7 @@ export function ShareLinkBox({ path, docId, className }: ShareLinkBoxProps) {
           type="text"
           value={shareUrl}
           readOnly
-          className="flex-1 text-sm bg-white overflow-x-auto whitespace-nowrap"
+          className="flex-1 text-sm bg-white dark:bg-neutral-900 overflow-x-auto whitespace-nowrap"
         />
         <Button onClick={handleCopy} size="sm" className="shrink-0">
           <Copy className="h-4 w-4 sm:mr-1" />

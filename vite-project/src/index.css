@@ -56,7 +56,8 @@ button:focus-visible {
 }
 
 /* `dark` is set on <html> by index.html and ThemeProvider, only on pages
-   converted to dark mode (THEMED_ROUTES in src/features/theme/theme.ts). */
+   that are not on the light-only list (LIGHT_ONLY_ROUTES in
+   src/features/theme/theme.ts). */
 :root.dark {
   color-scheme: dark;
   color: hsl(var(--foreground));

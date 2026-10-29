@@ -94,15 +94,15 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+      <div className="bg-white dark:bg-neutral-900 rounded-lg shadow-sm border border-gray-200 dark:border-neutral-800 overflow-hidden hover:shadow-md transition-shadow">
         {/* Route Header */}
         <div className="p-4 pb-0">
           {/* Migration Notice */}
           {needsMigration && (
-            <div className="mb-3 bg-yellow-50 border border-yellow-200 rounded-lg p-2">
+            <div className="mb-3 bg-yellow-50 dark:bg-yellow-950/40 border border-yellow-200 dark:border-yellow-900 rounded-lg p-2">
               <div className="flex items-center space-x-2">
-                <AlertTriangle className="w-4 h-4 text-yellow-600" />
-                <p className="text-xs text-yellow-800">
+                <AlertTriangle className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
+                <p className="text-xs text-yellow-800 dark:text-yellow-300">
                   This bookmark uses an older format. It will still work but may
                   need updating.
                 </p>
@@ -113,26 +113,26 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
           <div className="flex justify-between items-start mb-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-center space-x-2 mb-1">
-                <h3 className="font-semibold text-gray-800 truncate">
+                <h3 className="font-semibold text-gray-800 dark:text-neutral-200 truncate">
                   {route.metadata?.routeName || route.filename}
                 </h3>
                 {isBookmarked && (
                   <Bookmark className="w-4 h-4 text-purple-500 flex-shrink-0" />
                 )}
               </div>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-neutral-400">
                 {isBookmarked ? "Bookmarked" : "Uploaded"} •{" "}
                 {formatDate(route.uploadedAt || route.savedAt)}
               </p>
               {isBookmarked && route.previewData && (
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-gray-400 dark:text-neutral-500 mt-1">
                   {String(route.previewData.city)}, {String(route.previewData.country)}
                 </p>
               )}
             </div>
             <button
               onClick={() => setDeleteConfirm(true)}
-              className="text-gray-400 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              className="text-gray-400 dark:text-neutral-500 hover:text-red-500 transition-colors ml-2 bg-transparent rounded-full p-1 hover:bg-gray-100 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
               title={isBookmarked ? "Remove bookmark" : "Delete route"}
               aria-label={isBookmarked ? "Remove bookmark" : "Delete route"}
             >
@@ -150,13 +150,13 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
               lineColor={isBookmarked ? "#8b5cf6" : "#059669"}
               height="225px"
               showStartEnd={true}
-              className="border border-gray-200"
+              className="border border-gray-200 dark:border-neutral-800"
             />
           ) : (
-            <div className="h-32 bg-gray-100 rounded-md border border-gray-200 flex items-center justify-center">
+            <div className="h-32 bg-gray-100 dark:bg-neutral-800 rounded-md border border-gray-200 dark:border-neutral-800 flex items-center justify-center">
               <div className="text-center">
-                <MapPin className="w-6 h-6 text-gray-400 mx-auto mb-1" />
-                <div className="text-xs text-gray-500">
+                <MapPin className="w-6 h-6 text-gray-400 dark:text-neutral-500 mx-auto mb-1" />
+                <div className="text-xs text-gray-500 dark:text-neutral-400">
                   {route.thumbnailPoints?.length > 0
                     ? "Preview unavailable"
                     : "No route data"}
@@ -179,19 +179,19 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="flex items-center space-x-2">
               <MapPin className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-              <span className="text-gray-600 truncate">
+              <span className="text-gray-600 dark:text-neutral-400 truncate">
                 {route.metadata?.totalDistance?.toFixed(1) || "0"} km
               </span>
             </div>
             <div className="flex items-center space-x-2">
               <Activity className="w-4 h-4 text-green-500 flex-shrink-0" />
-              <span className="text-gray-600 truncate">
+              <span className="text-gray-600 dark:text-neutral-400 truncate">
                 {route.metadata?.elevationGain?.toFixed(0) || "0"} m
               </span>
             </div>
             <div className="flex items-center space-x-2 col-span-2">
-              <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
-              <span className="text-gray-500 text-xs truncate">
+              <Calendar className="w-4 h-4 text-gray-400 dark:text-neutral-500 flex-shrink-0" />
+              <span className="text-gray-500 dark:text-neutral-400 text-xs truncate">
                 {route.metadata?.pointCount || 0} data points
               </span>
             </div>
@@ -217,7 +217,7 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
             {route.type === "uploaded" && onEditSlug && (
               <button
                 onClick={openEditUrl}
-                className="text-sm py-2 px-3 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center space-x-1"
+                className="text-sm py-2 px-3 rounded-md border border-gray-300 dark:border-neutral-700 text-gray-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors flex items-center justify-center space-x-1"
                 title="Edit shareable URL"
                 aria-label="Edit shareable URL"
               >
@@ -232,19 +232,19 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
       {/* Edit URL Modal */}
       {editingUrl && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+          <div className="bg-white dark:bg-neutral-900 p-6 rounded-lg max-w-md w-full mx-4">
             <div className="flex items-center space-x-2 mb-2">
-              <Link2 className="w-5 h-5 text-emerald-600" />
+              <Link2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               <h3 className="text-lg font-semibold">Edit Shareable URL</h3>
             </div>
-            <p className="text-gray-600 text-sm mb-4">
+            <p className="text-gray-600 dark:text-neutral-400 text-sm mb-4">
               Choose a friendly URL for this route. The short code at the end
               keeps existing shared links working.
             </p>
 
             <label
               htmlFor={`slug-${route.id}`}
-              className="block text-xs font-medium text-gray-500 mb-1"
+              className="block text-xs font-medium text-gray-500 dark:text-neutral-400 mb-1"
             >
               URL slug
             </label>
@@ -259,12 +259,12 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
               }}
               placeholder="boston-marathon"
               autoFocus
-              className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full border border-gray-300 dark:border-neutral-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
 
-            <div className="mt-2 text-xs text-gray-500 break-all">
+            <div className="mt-2 text-xs text-gray-500 dark:text-neutral-400 break-all">
               Preview:{" "}
-              <span className="text-gray-700">
+              <span className="text-gray-700 dark:text-neutral-300">
                 trainpace.com/elevationfinder/{previewPath}
               </span>
             </div>
@@ -273,7 +273,7 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
               <button
                 onClick={() => setEditingUrl(false)}
                 disabled={savingSlug}
-                className="px-4 py-2 bg-white text-black rounded outline-none border border-gray-300 hover:bg-gray-100 disabled:opacity-50"
+                className="px-4 py-2 bg-white dark:bg-neutral-900 text-black dark:text-white rounded outline-none border border-gray-300 dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -292,9 +292,9 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+          <div className="bg-white dark:bg-neutral-900 p-6 rounded-lg max-w-md w-full mx-4">
             <h3 className="text-lg font-semibold mb-2">Delete Route</h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 dark:text-neutral-400 mb-4">
               Are you sure you want to delete "
               {route.metadata?.routeName || route.filename || "Unknown Route"}"?
               This action cannot be undone.
@@ -308,7 +308,7 @@ export function RouteCard({ route, onDelete, onEditSlug }: RouteCardProps) {
               </button>
               <button
                 onClick={() => setDeleteConfirm(false)}
-                className="px-4 py-2 bg-white text-black rounded hover:text-gray-800 outline-none border border-gray-300 hover:bg-gray-100"
+                className="px-4 py-2 bg-white dark:bg-neutral-900 text-black dark:text-white rounded hover:text-gray-800 dark:hover:text-neutral-200 outline-none border border-gray-300 dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800"
               >
                 Cancel
               </button>

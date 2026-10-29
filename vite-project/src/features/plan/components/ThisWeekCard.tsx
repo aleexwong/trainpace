@@ -53,20 +53,20 @@ export function ThisWeekCard({
 
   if (afterRace) {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-50 to-white shadow-sm p-6 sm:p-8 text-center">
+      <div className="rounded-2xl border border-slate-200 dark:border-neutral-800 bg-gradient-to-br from-emerald-50 dark:from-neutral-950 to-white dark:to-neutral-950 shadow-sm p-6 sm:p-8 text-center">
         <div className="text-4xl mb-2" aria-hidden="true">
           🎉
         </div>
-        <h3 className="font-display text-xl font-bold text-slate-900">Plan complete!</h3>
-        <p className="mt-1 text-sm text-slate-600">
+        <h3 className="font-display text-xl font-bold text-slate-900 dark:text-neutral-100">Plan complete!</h3>
+        <p className="mt-1 text-sm text-slate-600 dark:text-neutral-400">
           {plan.goalRace} — you crossed the finish line on your training.
         </p>
         {planProgress.totalCount > 0 && (
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-1.5">
-            <span className="font-display text-sm font-bold text-emerald-700 tabular-nums">
+          <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-100 dark:bg-emerald-900/40 px-4 py-1.5">
+            <span className="font-display text-sm font-bold text-emerald-700 dark:text-emerald-300 tabular-nums">
               {planProgress.completedCount}/{planProgress.totalCount} runs completed
             </span>
-            <span className="text-xs font-semibold text-emerald-600">({planProgress.pct}%)</span>
+            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">({planProgress.pct}%)</span>
           </div>
         )}
       </div>
@@ -94,7 +94,7 @@ export function ThisWeekCard({
   );
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm p-4 sm:p-6">
+    <div className="rounded-2xl border border-slate-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm p-4 sm:p-6">
       {/* Header */}
       <div className="flex items-center justify-between gap-3 flex-wrap mb-3 sm:mb-4">
         <div className="flex items-center gap-2 flex-wrap">
@@ -104,17 +104,17 @@ export function ThisWeekCard({
           >
             {phaseMeta.short}
           </span>
-          <h3 className="font-display text-base sm:text-lg font-bold text-slate-900">
+          <h3 className="font-display text-base sm:text-lg font-bold text-slate-900 dark:text-neutral-100">
             {beforeStart ? `Week 1 Preview` : `Week ${week.weekNumber} · This Week`}
           </h3>
         </div>
         {beforeStart ? (
-          <span className="text-xs font-semibold text-slate-500">
+          <span className="text-xs font-semibold text-slate-500 dark:text-neutral-400">
             Starts in {daysUntilStart} day{daysUntilStart === 1 ? "" : "s"}
           </span>
         ) : (
           wp.totalCount > 0 && (
-            <span className="text-xs font-semibold text-slate-500 tabular-nums">
+            <span className="text-xs font-semibold text-slate-500 dark:text-neutral-400 tabular-nums">
               {wp.completedCount}/{wp.totalCount} runs · {wp.pct}%
             </span>
           )
@@ -122,7 +122,7 @@ export function ThisWeekCard({
       </div>
 
       {!beforeStart && wp.totalCount > 0 && (
-        <div className="h-1.5 rounded-full bg-slate-100 overflow-hidden mb-3 sm:mb-5">
+        <div className="h-1.5 rounded-full bg-slate-100 dark:bg-neutral-800 overflow-hidden mb-3 sm:mb-5">
           <div
             className="h-full rounded-full bg-emerald-500 transition-all"
             style={{ width: `${wp.pct}%` }}
@@ -132,7 +132,7 @@ export function ThisWeekCard({
 
       {/* Next run — highlighted */}
       {highlighted && highlightedMeta && (
-        <div className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-3 sm:p-4 mb-3 sm:mb-4">
+        <div className="rounded-xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50/60 dark:bg-emerald-950/40 p-3 sm:p-4 mb-3 sm:mb-4">
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-3 min-w-0">
               <span
@@ -144,17 +144,17 @@ export function ThisWeekCard({
               <div className="min-w-0">
                 <div className="flex items-baseline gap-1.5 font-display tabular-nums">
                   {highlighted.workout.distanceKm !== undefined && highlighted.workout.distanceKm > 0 && (
-                    <span className="text-base font-bold text-slate-900">
+                    <span className="text-base font-bold text-slate-900 dark:text-neutral-100">
                       {highlighted.workout.distanceKm} km
                     </span>
                   )}
                   {highlighted.workout.paceZone && (
-                    <span className="text-xs font-semibold text-emerald-700">
+                    <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">
                       @ {highlighted.workout.paceZone} pace
                     </span>
                   )}
                 </div>
-                <div className="text-xs text-slate-500 mt-0.5">
+                <div className="text-xs text-slate-500 dark:text-neutral-400 mt-0.5">
                   Next up · {formatRealDate(highlighted.date)}
                 </div>
               </div>
@@ -188,7 +188,7 @@ export function ThisWeekCard({
                 key={day}
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-2.5 py-1.5 sm:py-2 transition-colors",
-                  done ? "bg-emerald-50/60" : "hover:bg-slate-50"
+                  done ? "bg-emerald-50/60 dark:bg-emerald-950/40" : "hover:bg-slate-50 dark:hover:bg-neutral-800"
                 )}
               >
                 <button
@@ -201,7 +201,7 @@ export function ThisWeekCard({
                     "flex-shrink-0 h-5 w-5 p-0 rounded-full border flex items-center justify-center transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-1",
                     done
                       ? "bg-emerald-600 border-emerald-600 text-white"
-                      : "bg-white border-slate-300 text-transparent hover:border-emerald-400",
+                      : "bg-white dark:bg-neutral-900 border-slate-300 dark:border-neutral-700 text-transparent hover:border-emerald-400",
                     pendingToggle && "opacity-50 cursor-wait"
                   )}
                 >
@@ -216,7 +216,7 @@ export function ThisWeekCard({
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </button>
-                <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400 w-8 flex-shrink-0">
+                <span className="text-[10px] font-bold uppercase tracking-wide text-slate-400 dark:text-neutral-500 w-8 flex-shrink-0">
                   {day}
                 </span>
                 <span
@@ -226,7 +226,7 @@ export function ThisWeekCard({
                   {workout.label}
                 </span>
                 {workout.distanceKm !== undefined && workout.distanceKm > 0 && (
-                  <span className="text-xs font-semibold text-slate-500 tabular-nums ml-auto flex-shrink-0">
+                  <span className="text-xs font-semibold text-slate-500 dark:text-neutral-400 tabular-nums ml-auto flex-shrink-0">
                     {workout.distanceKm} km
                   </span>
                 )}

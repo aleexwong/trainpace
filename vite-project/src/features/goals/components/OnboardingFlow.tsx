@@ -131,7 +131,7 @@ export function OnboardingFlow() {
   const skip = () => navigate("/dashboard");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-purple-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 dark:from-neutral-950 via-white dark:via-neutral-950 to-purple-50 dark:to-neutral-950 p-4 md:p-8">
       <Helmet>
         <title>Set Your Goals | TrainPace</title>
         <meta name="robots" content="noindex" />
@@ -139,10 +139,10 @@ export function OnboardingFlow() {
 
       <div className="max-w-xl mx-auto">
         <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-neutral-100">
             🎯 Let's set your goals
           </h1>
-          <p className="mt-2 text-gray-600">
+          <p className="mt-2 text-gray-600 dark:text-neutral-400">
             Tell us where you are and where you're headed — we'll personalize
             every tool to match.
           </p>
@@ -154,23 +154,23 @@ export function OnboardingFlow() {
             <div
               key={n}
               className={`h-2 w-10 rounded-full ${
-                step >= n ? "bg-emerald-600" : "bg-gray-200"
+                step >= n ? "bg-emerald-600" : "bg-gray-200 dark:bg-neutral-700"
               }`}
             />
           ))}
         </div>
 
-        <Card className="bg-white">
+        <Card className="bg-white dark:bg-neutral-900">
           <CardContent className="p-6">
             {loading && user ? (
-              <p className="text-center text-gray-500">Loading…</p>
+              <p className="text-center text-gray-500 dark:text-neutral-400">Loading…</p>
             ) : step === 1 ? (
               <div className="space-y-5">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-neutral-100">
                     Your recent race
                   </h2>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-neutral-400">
                     A recent result tells us your current fitness.
                   </p>
                 </div>
@@ -194,10 +194,10 @@ export function OnboardingFlow() {
             ) : step === 2 ? (
               <div className="space-y-5">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-neutral-100">
                     Your goal race
                   </h2>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-neutral-400">
                     The race you're training toward.
                   </p>
                 </div>
@@ -207,7 +207,7 @@ export function OnboardingFlow() {
                   idPrefix="goal"
                 />
                 {feasibility && (
-                  <p className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+                  <p className="rounded-md bg-emerald-50 dark:bg-emerald-950/40 px-3 py-2 text-sm text-emerald-700 dark:text-emerald-300">
                     Your current fitness predicts about{" "}
                     <strong>{feasibility}</strong> for {goal.distanceName}.
                   </p>
@@ -227,10 +227,10 @@ export function OnboardingFlow() {
             ) : (
               <div className="space-y-5">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-neutral-100">
                     Where should your goal show up?
                   </h2>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-neutral-400">
                     All on by default — uncheck anything you'd rather keep blank.
                   </p>
                 </div>
@@ -238,19 +238,19 @@ export function OnboardingFlow() {
                   {ALL_INTEGRATIONS.map((key) => (
                     <label
                       key={key}
-                      className="flex cursor-pointer items-start gap-3 rounded-lg border border-gray-200 p-3 hover:bg-gray-50"
+                      className="flex cursor-pointer items-start gap-3 rounded-lg border border-gray-200 dark:border-neutral-800 p-3 hover:bg-gray-50 dark:hover:bg-neutral-800"
                     >
                       <input
                         type="checkbox"
                         checked={enabled.includes(key)}
                         onChange={() => toggleIntegration(key)}
-                        className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                        className="mt-1 h-4 w-4 rounded border-gray-300 dark:border-neutral-700 text-emerald-600 dark:text-emerald-400 focus:ring-emerald-500"
                       />
                       <span>
-                        <span className="block font-medium text-gray-900">
+                        <span className="block font-medium text-gray-900 dark:text-neutral-100">
                           {INTEGRATION_LABELS[key].label}
                         </span>
-                        <span className="block text-sm text-gray-600">
+                        <span className="block text-sm text-gray-600 dark:text-neutral-400">
                           {INTEGRATION_LABELS[key].description}
                         </span>
                       </span>

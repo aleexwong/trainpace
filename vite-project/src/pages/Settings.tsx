@@ -175,9 +175,9 @@ const Settings: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-neutral-900 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600 mb-4">
+          <p className="text-gray-600 dark:text-neutral-400 mb-4">
             Please sign in to access settings
           </p>
           <Button onClick={() => navigate("/login")}>Sign In</Button>
@@ -187,28 +187,28 @@ const Settings: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-neutral-900">
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-          <p className="text-gray-600">Manage your account and preferences</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-neutral-100 mb-2">Settings</h1>
+          <p className="text-gray-600 dark:text-neutral-400">Manage your account and preferences</p>
         </div>
 
         {/* Account Information Card */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-lg p-6 mb-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-neutral-100 mb-4">
             Account Information
           </h2>
           <div className="space-y-3">
-            <div className="flex items-center justify-between py-2 border-b border-gray-100">
-              <span className="font-medium text-gray-700">Name</span>
+            <div className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-neutral-800">
+              <span className="font-medium text-gray-700 dark:text-neutral-300">Name</span>
               {editingName ? (
                 <div className="flex items-center gap-2">
                   <input
                     type="text"
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
-                    className="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    className="px-2 py-1 border border-gray-300 dark:border-neutral-700 rounded text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                     placeholder="Enter your name"
                     maxLength={50}
                   />
@@ -235,27 +235,27 @@ const Settings: React.FC = () => {
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-900">
+                  <span className="text-gray-900 dark:text-neutral-100">
                     {user.displayName || "No name set"}
                   </span>
                   <Button
                     variant="outline"
                     onClick={() => setEditingName(true)}
                     size="sm"
-                    className="text-xs hover:text-emerald-600"
+                    className="text-xs hover:text-emerald-600 dark:hover:text-emerald-400"
                   >
                     Edit
                   </Button>
                 </div>
               )}
             </div>
-            <div className="flex items-center justify-between py-2 border-b border-gray-100">
-              <span className="font-medium text-gray-700">Email</span>
-              <span className="text-gray-900">{user.email}</span>
+            <div className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-neutral-800">
+              <span className="font-medium text-gray-700 dark:text-neutral-300">Email</span>
+              <span className="text-gray-900 dark:text-neutral-100">{user.email}</span>
             </div>
             <div className="flex items-center justify-between py-2">
-              <span className="font-medium text-gray-700">Sign-in method</span>
-              <span className="text-gray-900 flex items-center">
+              <span className="font-medium text-gray-700 dark:text-neutral-300">Sign-in method</span>
+              <span className="text-gray-900 dark:text-neutral-100 flex items-center">
                 {isGoogleUser ? (
                   <>
                     <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
@@ -290,15 +290,15 @@ const Settings: React.FC = () => {
         <GoalsSettingsCard />
 
         {/* Security Actions */}
-        <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Security</h2>
+        <div className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-lg p-6 mb-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-neutral-100 mb-4">Security</h2>
           <div className="space-y-4">
             {/* Password Reset - only for email/password users */}
             {!isGoogleUser && (
-              <div className="flex items-center justify-between py-3 border-b border-gray-100">
+              <div className="flex items-center justify-between py-3 border-b border-gray-100 dark:border-neutral-800">
                 <div>
-                  <h3 className="font-medium text-gray-900">Password</h3>
-                  <p className="text-sm text-gray-600">
+                  <h3 className="font-medium text-gray-900 dark:text-neutral-100">Password</h3>
+                  <p className="text-sm text-gray-600 dark:text-neutral-400">
                     Send a password reset email to your account
                   </p>
                 </div>
@@ -306,7 +306,7 @@ const Settings: React.FC = () => {
                   variant="outline"
                   onClick={handlePasswordReset}
                   disabled={isLoading}
-                  className="hover:text-emerald-600"
+                  className="hover:text-emerald-600 dark:hover:text-emerald-400"
                 >
                   {isLoading ? "Sending..." : "Reset Password"}
                 </Button>
@@ -316,15 +316,15 @@ const Settings: React.FC = () => {
             {/* Sign Out */}
             <div className="flex items-center justify-between py-3">
               <div>
-                <h3 className="font-medium text-gray-900">Log out</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="font-medium text-gray-900 dark:text-neutral-100">Log out</h3>
+                <p className="text-sm text-gray-600 dark:text-neutral-400">
                   Log out of your current session
                 </p>
               </div>
               <Button
                 variant="outline"
                 onClick={handleSignOut}
-                className="hover:text-gray-600"
+                className="hover:text-gray-600 dark:hover:text-neutral-400"
               >
                 Log Out
               </Button>
@@ -333,34 +333,34 @@ const Settings: React.FC = () => {
         </div>
 
         {/* Danger Zone */}
-        <div className="bg-white border border-red-200 rounded-lg p-6 shadow-sm">
-          <h2 className="text-xl font-semibold text-red-600 mb-4">
+        <div className="bg-white dark:bg-neutral-900 border border-red-200 dark:border-red-900 rounded-lg p-6 shadow-sm">
+          <h2 className="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
             Danger Zone
           </h2>
 
           {!showDeleteConfirm ? (
             <div className="flex items-center justify-between py-3">
               <div>
-                <h3 className="font-medium text-gray-900">Delete Account</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="font-medium text-gray-900 dark:text-neutral-100">Delete Account</h3>
+                <p className="text-sm text-gray-600 dark:text-neutral-400">
                   Permanently delete your account and all data
                 </p>
               </div>
               <Button
                 variant="outline"
                 onClick={() => setShowDeleteConfirm(true)}
-                className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+                className="border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 hover:text-red-700 dark:hover:text-red-300"
               >
                 Delete Account
               </Button>
             </div>
           ) : (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-lg p-4">
               <div className="mb-4">
-                <h3 className="font-medium text-red-800 mb-2">
+                <h3 className="font-medium text-red-800 dark:text-red-300 mb-2">
                   Are you absolutely sure?
                 </h3>
-                <p className="text-sm text-red-700">
+                <p className="text-sm text-red-700 dark:text-red-300">
                   This action cannot be undone. This will permanently delete
                   your account and remove all your data from our servers.
                 </p>
@@ -369,7 +369,7 @@ const Settings: React.FC = () => {
               {/* Password input for email/password users */}
               {!isGoogleUser && (
                 <div className="mb-4">
-                  <label className="block text-sm font-medium text-red-700 mb-2">
+                  <label className="block text-sm font-medium text-red-700 dark:text-red-300 mb-2">
                     Enter your password to confirm
                   </label>
                   <input
@@ -377,7 +377,7 @@ const Settings: React.FC = () => {
                     placeholder="Password"
                     value={deletePassword}
                     onChange={(e) => setDeletePassword(e.target.value)}
-                    className="w-full px-3 py-2 border border-red-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                    className="w-full px-3 py-2 border border-red-300 dark:border-red-800 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
                   />
                 </div>
               )}
@@ -396,7 +396,7 @@ const Settings: React.FC = () => {
                     setShowDeleteConfirm(false);
                     setDeletePassword("");
                   }}
-                  className="text-gray-600 hover:text-gray-700"
+                  className="text-gray-600 dark:text-neutral-400 hover:text-gray-700 dark:hover:text-neutral-300"
                 >
                   Cancel
                 </Button>
@@ -410,8 +410,8 @@ const Settings: React.FC = () => {
           <div
             className={`fixed bottom-4 right-4 p-4 rounded-lg shadow-lg z-50 ${
               messageType === "success"
-                ? "bg-green-50 border border-green-200 text-green-800"
-                : "bg-red-50 border border-red-200 text-red-800"
+                ? "bg-green-50 dark:bg-green-950/40 border border-green-200 dark:border-green-900 text-green-800 dark:text-green-300"
+                : "bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-800 dark:text-red-300"
             }`}
           >
             <div className="flex items-center">

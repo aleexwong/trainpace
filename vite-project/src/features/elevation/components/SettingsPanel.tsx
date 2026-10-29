@@ -42,19 +42,19 @@ export function SettingsPanel({
   return (
     <AuthGuard
       fallback={
-        <div className="bg-white rounded-lg shadow-sm border p-4 text-center text-sm text-gray-500">
+        <div className="bg-white dark:bg-neutral-900 rounded-lg shadow-sm border p-4 text-center text-sm text-gray-500 dark:text-neutral-400">
           Log in to customize pace and grade settings.
         </div>
       }
     >
-    <div className="bg-white rounded-lg shadow-sm border p-4">
-      <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-        <Settings className="w-4 h-4 text-gray-500" />
+    <div className="bg-white dark:bg-neutral-900 rounded-lg shadow-sm border p-4">
+      <h3 className="font-semibold text-gray-800 dark:text-neutral-200 mb-3 flex items-center gap-2">
+        <Settings className="w-4 h-4 text-gray-500 dark:text-neutral-400" />
         Adjust Analysis
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
             Base Pace: {formatPace(1, basePace)}
           </label>
           <input
@@ -70,7 +70,7 @@ export function SettingsPanel({
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-neutral-300 mb-2">
             Grade Threshold: {gradeThreshold}%
           </label>
           <input
@@ -84,7 +84,7 @@ export function SettingsPanel({
             onTouchEnd={handleRelease}
             className="w-full"
           />
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 dark:text-neutral-400 mt-1">
             For segment difficulty classification
           </p>
         </div>
