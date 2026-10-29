@@ -138,11 +138,11 @@ export default function HeroRaceWatch() {
   const runner = el ? el.getPointAtLength(p * el.getTotalLength()) : null;
 
   return (
-    // -mt-[72px] tucks the black under MainLayout's fixed header (main has
-    // pt-[72px] but the header is ~61px), so no white strip shows between them.
+    // -mt-16 pulls the black up under SiteNav's fixed h-16 bar (main has pt-16),
+    // so the hero and the dark nav read as one surface.
     <section
       ref={sectionRef}
-      className="relative -mt-[72px] overflow-hidden bg-black pt-[168px] pb-20 text-white lg:pt-[184px] lg:pb-24"
+      className="relative -mt-16 overflow-hidden bg-black pt-40 pb-20 text-white lg:pt-44 lg:pb-24"
     >
       <Contours />
       <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1fr_auto] lg:px-8">

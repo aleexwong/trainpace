@@ -147,7 +147,7 @@ export default function BlogList() {
       </section>
 
       {/* Sticky filter bar */}
-      <section className="sticky top-[72px] z-40 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm">
+      <section className="sticky top-16 z-40 bg-white/95 backdrop-blur border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-3">
           <div className="flex flex-col lg:flex-row lg:items-center gap-3">
             <div className="relative flex-1">

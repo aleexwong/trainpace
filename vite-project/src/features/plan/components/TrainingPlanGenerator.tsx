@@ -35,7 +35,7 @@ function SegmentTabs({ active, onChange }: { active: Segment; onChange: (s: Segm
     <div
       role="tablist"
       aria-label="Plan view"
-      className="sticky top-[72px] z-30 -mx-4 px-4 py-2.5 bg-white/85 backdrop-blur-md border-b border-slate-100"
+      className="sticky top-16 z-30 -mx-4 px-4 py-2.5 bg-white/85 backdrop-blur-md border-b border-slate-100"
     >
       <div className="flex gap-1 rounded-full bg-slate-100 p-1">
         {SEGMENT_TABS.map((tab) => {

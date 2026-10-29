@@ -84,7 +84,7 @@ React 18 + TypeScript 5.6, Vite 5 (PWA + prerender plugins), React Router 7, Tai
 
 ## Common Tasks
 
-- **New page**: component in `src/pages/` → route in `src/App.tsx` → nav in `src/components/layout/SideNav.tsx` + `layout/constants/navLinks.ts` → if it needs static generation, add the path to `getAllDocPaths()` in `src/lib/llm/page-docs.ts` (`vite.config.ts` reads that list) and give it a case in `getContentBlocks()` so it prerenders real content instead of the generic fallback.
+- **New page**: component in `src/pages/` → route in `src/App.tsx` → nav: add it to a group in `NAV_GROUPS` (`src/components/layout/constants/navLinks.ts`), which `SiteNav.tsx` renders on desktop and phones → if it needs static generation, add the path to `getAllDocPaths()` in `src/lib/llm/page-docs.ts` (`vite.config.ts` reads that list) and give it a case in `getContentBlocks()` so it prerenders real content instead of the generic fallback.
 - **New feature**: folder in `src/features/[name]/` with barrel `index.ts`.
 - **Protect a route**: wrap with `<AuthGuard>` in `App.tsx`.
 - **New SEO page**: add config to `src/features/seo-pages/seoPages.ts` (helpers/validators in `src/lib/seo/` — `generatePageId`, `validateAllPages`). Routing, prerendering, the sitemap, and llms.txt all pick it up automatically.
