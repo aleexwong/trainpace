@@ -68,7 +68,7 @@ export const marathonSeoData: Record<
   },
   nyc: {
     name: "NYC Marathon",
-    elevation: "234m",
+    elevation: "218m",
     highlight: "Five Boroughs",
     difficulty: "Moderate-Hard",
   },
@@ -92,7 +92,7 @@ export const marathonSeoData: Record<
   },
   tokyo: {
     name: "Tokyo Marathon",
-    elevation: "198m",
+    elevation: "34m",
     highlight: "Cultural Experience",
     difficulty: "Moderate",
   },
