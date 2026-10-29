@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   X,
 } from "lucide-react";
+import { ThemeToggle, useTheme } from "@/features/theme";
 import { NAV_GROUPS, POPULAR_COURSES } from "./constants/navLinks";
 
 // Watch bezel with a progress arc: the same mark as the race-watch hero.
@@ -29,7 +30,7 @@ function LogoMark({ className = "" }: { className?: string }) {
       <path
         d="M12 3 A9 9 0 0 1 20.6 14.6"
         fill="none"
-        stroke="rgb(52 211 153)"
+        className="stroke-emerald-500 dark:stroke-emerald-400"
         strokeWidth="3"
         strokeLinecap="round"
       />
@@ -38,7 +39,18 @@ function LogoMark({ className = "" }: { className?: string }) {
 }
 
 const focusRing =
-  "focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:ring-offset-2 focus-visible:ring-offset-black";
+  "focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-emerald-400 dark:focus-visible:ring-offset-black";
+
+// Quiet nav text: tabs, "Log in", Dashboard.
+const navText =
+  "text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white";
+const activeText = "text-emerald-700 dark:text-emerald-300";
+// Rows in the account menu.
+const menuRow =
+  "flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-white/5";
+// Outlined buttons in the phone menu.
+const sheetOutline =
+  "inline-flex items-center justify-center rounded-md border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-900 dark:border-white/15 dark:text-white";
 
 // index.css still styles bare <button>s (background, purple hover border),
 // so every button here sets its own background and border.
@@ -52,6 +64,7 @@ interface SiteNavProps {
 
 export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
   const location = useLocation();
+  const { resolved } = useTheme();
   const panelId = useId();
   const [open, setOpen] = useState<string | null>(null);
   const [accountOpen, setAccountOpen] = useState(false);
@@ -138,22 +151,24 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
     .toUpperCase();
 
   return (
-    <>
+    // The nav is theme-aware on every page, even ones whose content is not
+    // converted yet (where <html> has no `dark`), so it scopes its own class.
+    <div className={resolved === "dark" ? "dark contents" : "contents"}>
       <header
         ref={headerRef}
-        className={`fixed inset-x-0 top-0 z-50 text-left text-white transition-[transform,background-color] duration-300 ${
+        className={`fixed inset-x-0 top-0 z-50 text-left text-slate-900 transition-[transform,background-color] duration-300 dark:text-white ${
           hidden && !sheetOpen ? "-translate-y-full" : "translate-y-0"
         } ${
           open || scrolled
-            ? "border-b border-white/10 bg-black/90 backdrop-blur-xl"
-            : "border-b border-white/5 bg-black"
+            ? "border-b border-slate-200 bg-white dark:border-white/10 dark:bg-black/90 dark:backdrop-blur-xl"
+            : "border-b border-slate-200 bg-white dark:border-white/5 dark:bg-black"
         }`}
         onMouseLeave={closeSoon}
       >
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
           <Link
             to="/"
-            className={`flex items-center gap-2 rounded-md font-display text-lg font-bold text-white ${focusRing}`}
+            className={`flex items-center gap-2 rounded-md font-display text-lg font-bold ${focusRing}`}
           >
             <LogoMark className="h-6 w-6" />
             TrainPace
@@ -179,10 +194,10 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                       }
                       className={`${bareButton} ${focusRing} flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                         isOpen
-                          ? "bg-white/10 text-white"
+                          ? "bg-slate-100 text-slate-900 dark:bg-white/10 dark:text-white"
                           : groupActive(g.label)
-                            ? "text-emerald-300"
-                            : "text-slate-300 hover:text-white"
+                            ? activeText
+                            : navText
                       }`}
                     >
                       {g.label}
@@ -195,16 +210,19 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
               })}
             </ul>
 
-            <span aria-hidden className="mx-3 h-5 w-px bg-white/15" />
+            <span
+              aria-hidden
+              className="mx-3 h-5 w-px bg-slate-200 dark:bg-white/15"
+            />
+
+            <ThemeToggle className="mr-2" />
 
             {user ? (
               <div className="relative flex items-center gap-1">
                 <Link
                   to="/dashboard"
                   className={`${focusRing} rounded-md px-3 py-2 text-sm font-medium ${
-                    isActive("/dashboard")
-                      ? "text-emerald-300"
-                      : "text-slate-300 hover:text-white"
+                    isActive("/dashboard") ? activeText : navText
                   }`}
                 >
                   Dashboard
@@ -217,35 +235,31 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                     setOpen(null);
                     setAccountOpen((v) => !v);
                   }}
-                  className={`${focusRing} flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/10 text-sm font-semibold text-white hover:border-white/30`}
+                  className={`${focusRing} flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-slate-100 p-0 text-sm font-semibold text-slate-900 hover:border-slate-300 dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:border-white/30`}
                 >
                   {initial}
                 </button>
                 {accountOpen && (
-                  <div className="absolute top-11 right-0 w-56 overflow-hidden rounded-xl border border-white/10 bg-slate-950 py-1 shadow-2xl">
+                  <div className="absolute top-11 right-0 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-2xl dark:border-white/10 dark:bg-slate-950">
                     <p className="truncate px-4 py-2 text-xs text-slate-500">
                       {user.email}
                     </p>
-                    <Link
-                      to="/dashboard"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-slate-200 hover:bg-white/5"
-                    >
-                      <LayoutDashboard className="h-4 w-4 text-slate-500" />{" "}
+                    <Link to="/dashboard" className={menuRow}>
+                      <LayoutDashboard className="h-4 w-4 text-slate-400 dark:text-slate-500" />{" "}
                       Dashboard
                     </Link>
-                    <Link
-                      to="/settings"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-slate-200 hover:bg-white/5"
-                    >
-                      <Settings className="h-4 w-4 text-slate-500" /> Settings
+                    <Link to="/settings" className={menuRow}>
+                      <Settings className="h-4 w-4 text-slate-400 dark:text-slate-500" />{" "}
+                      Settings
                     </Link>
                     <button
                       type="button"
                       onClick={onLogout}
                       disabled={authLoading}
-                      className={`${bareButton} flex w-full items-center gap-2 rounded-none px-4 py-2 text-left text-sm text-slate-200 hover:bg-white/5`}
+                      className={`${bareButton} ${menuRow} w-full rounded-none text-left`}
                     >
-                      <LogOut className="h-4 w-4 text-slate-500" /> Log out
+                      <LogOut className="h-4 w-4 text-slate-400 dark:text-slate-500" />{" "}
+                      Log out
                     </button>
                   </div>
                 )}
@@ -254,7 +268,7 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
               <div className="flex items-center gap-1">
                 <Link
                   to="/login"
-                  className={`${focusRing} rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:text-white`}
+                  className={`${focusRing} ${navText} rounded-md px-3 py-2 text-sm font-medium`}
                 >
                   Log in
                 </Link>
@@ -273,7 +287,7 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
             aria-label="Open menu"
             aria-expanded={sheetOpen}
             onClick={() => setSheetOpen(true)}
-            className={`${bareButton} ${focusRing} rounded-md p-2 text-white md:hidden`}
+            className={`${bareButton} ${focusRing} rounded-md p-2 md:hidden`}
           >
             <Menu className="h-6 w-6" />
           </button>
@@ -284,7 +298,7 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
           <div
             id={panelId}
             onMouseEnter={() => window.clearTimeout(closeTimer.current)}
-            className="hidden border-t border-white/10 md:block"
+            className="hidden border-t border-slate-200 md:block dark:border-white/10"
           >
             <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto] gap-10 px-4 py-6 sm:px-6 lg:px-8">
               <ul className="grid grid-cols-3 gap-2">
@@ -292,16 +306,16 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                   <li key={it.to}>
                     <Link
                       to={it.to}
-                      className={`${focusRing} group flex gap-3 rounded-xl p-3 transition-colors hover:bg-white/5`}
+                      className={`${focusRing} group flex gap-3 rounded-xl p-3 transition-colors hover:bg-slate-50 dark:hover:bg-white/5`}
                     >
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-400/10 text-emerald-300 transition-colors group-hover:bg-emerald-400 group-hover:text-slate-950">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 transition-colors group-hover:bg-emerald-400 group-hover:text-slate-950 dark:bg-emerald-400/10 dark:text-emerald-300">
                         <it.icon className="h-5 w-5" />
                       </span>
                       <span>
-                        <span className="block text-sm font-semibold text-white">
+                        <span className="block text-sm font-semibold text-slate-900 dark:text-white">
                           {it.label}
                         </span>
-                        <span className="block text-sm text-slate-400">
+                        <span className="block text-sm text-slate-500 dark:text-slate-400">
                           {it.desc}
                         </span>
                       </span>
@@ -310,7 +324,7 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                 ))}
               </ul>
               {activeGroup.label === "Race" && (
-                <div className="w-56 border-l border-white/10 pl-8">
+                <div className="w-56 border-l border-slate-200 pl-8 dark:border-white/10">
                   <p className="mb-2 text-xs uppercase tracking-[0.15em] text-slate-500">
                     Course previews
                   </p>
@@ -319,7 +333,7 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                       <li key={c.slug}>
                         <Link
                           to={`/preview-route/${c.slug}`}
-                          className={`${focusRing} block rounded-md px-2 py-1 text-sm text-slate-300 hover:bg-white/5 hover:text-white`}
+                          className={`${focusRing} block rounded-md px-2 py-1 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white`}
                         >
                           {c.name}
                         </Link>
@@ -339,12 +353,12 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
-          className="fixed inset-0 z-[60] overflow-y-auto bg-black px-4 pb-10 text-left text-white md:hidden"
+          className="fixed inset-0 z-[60] overflow-y-auto bg-white px-4 pb-10 text-left text-slate-900 md:hidden dark:bg-black dark:text-white"
         >
           <div className="flex h-16 items-center justify-between">
             <Link
               to="/"
-              className="flex items-center gap-2 font-display text-lg font-bold text-white"
+              className="flex items-center gap-2 font-display text-lg font-bold"
             >
               <LogoMark className="h-6 w-6" />
               TrainPace
@@ -353,7 +367,7 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
               type="button"
               aria-label="Close menu"
               onClick={() => setSheetOpen(false)}
-              className={`${bareButton} ${focusRing} rounded-md p-2 text-white`}
+              className={`${bareButton} ${focusRing} rounded-md p-2`}
             >
               <X className="h-6 w-6" />
             </button>
@@ -364,16 +378,16 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
               <h2 className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-slate-500">
                 {g.label}
               </h2>
-              <ul className="divide-y divide-white/5 rounded-xl border border-white/10">
+              <ul className="divide-y divide-slate-100 rounded-xl border border-slate-200 dark:divide-white/5 dark:border-white/10">
                 {g.items.map((it) => (
                   <li key={it.to}>
                     <Link
                       to={it.to}
-                      className={`flex items-center gap-3 px-4 py-3.5 ${isActive(it.to) ? "text-emerald-300" : "text-white"}`}
+                      className={`flex items-center gap-3 px-4 py-3.5 ${isActive(it.to) ? activeText : "text-slate-900 dark:text-white"}`}
                     >
-                      <it.icon className="h-5 w-5 text-emerald-300" />
+                      <it.icon className="h-5 w-5 text-emerald-600 dark:text-emerald-300" />
                       <span className="flex-1 font-medium">{it.label}</span>
-                      <ChevronRight className="h-4 w-4 text-slate-600" />
+                      <ChevronRight className="h-4 w-4 text-slate-400 dark:text-slate-600" />
                     </Link>
                   </li>
                 ))}
@@ -390,12 +404,19 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                 <Link
                   key={c.slug}
                   to={`/preview-route/${c.slug}`}
-                  className="rounded-full border border-white/10 px-3 py-1.5 text-sm text-slate-300"
+                  className="rounded-full border border-slate-200 px-3 py-1.5 text-sm text-slate-600 dark:border-white/10 dark:text-slate-300"
                 >
                   {c.name.replace(" Marathon", "")}
                 </Link>
               ))}
             </div>
+          </section>
+
+          <section className="mt-6">
+            <h2 className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-slate-500">
+              Theme
+            </h2>
+            <ThemeToggle variant="full" />
           </section>
 
           <div className="mt-8 grid grid-cols-2 gap-3">
@@ -407,27 +428,21 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                 >
                   Dashboard
                 </Link>
-                <Link
-                  to="/settings"
-                  className="inline-flex items-center justify-center rounded-md border border-white/15 px-4 py-2.5 text-sm font-semibold text-white"
-                >
+                <Link to="/settings" className={sheetOutline}>
                   Settings
                 </Link>
                 <button
                   type="button"
                   onClick={onLogout}
                   disabled={authLoading}
-                  className="col-span-2 rounded-md border border-white/15 bg-transparent px-4 py-2.5 text-sm font-semibold text-white hover:border-white/30"
+                  className={`${sheetOutline} col-span-2 bg-transparent hover:border-slate-400 dark:hover:border-white/30`}
                 >
                   Log out
                 </button>
               </>
             ) : (
               <>
-                <Link
-                  to="/login"
-                  className="inline-flex items-center justify-center rounded-md border border-white/15 px-4 py-2.5 text-sm font-semibold text-white"
-                >
+                <Link to="/login" className={sheetOutline}>
                   Log in
                 </Link>
                 <Link
@@ -441,6 +456,6 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

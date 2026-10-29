@@ -46,10 +46,18 @@ const ButtonLink = ({
 );
 
 const SectionLabel = ({ children }: { children: ReactNode }) => (
-  <p className="mb-4 font-display text-sm font-medium text-emerald-700">
+  <p className="mb-4 font-display text-sm font-medium text-emerald-700 dark:text-emerald-400">
     {children}
   </p>
 );
+
+// Repeated colour pairs for the light sections. Dark mode swaps white and
+// slate-50 for slate-950 and slate-900; see "Theming" in CLAUDE.md.
+const HEADING = "text-slate-900 dark:text-white";
+const BODY = "text-slate-600 dark:text-slate-400";
+const RULE = "border-slate-200 dark:border-slate-800";
+const TEXT_LINK =
+  "inline-flex items-center gap-2 font-semibold text-emerald-700 hover:text-emerald-900 dark:text-emerald-400 dark:hover:text-emerald-300";
 
 // The one real sequence on the page: how a runner gets from picking a race
 // to a plan. Each step opens the tool that does it.
@@ -81,36 +89,36 @@ const FLOW_STEPS = [
 ];
 
 const RaceFlow = () => (
-  <section className="border-b border-slate-200 bg-white py-20 lg:py-24">
+  <section
+    className={`border-b bg-white py-20 lg:py-24 dark:bg-slate-950 ${RULE}`}
+  >
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <SectionLabel>How it works</SectionLabel>
-      <h2 className="mb-12 max-w-2xl text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
+      <h2
+        className={`mb-12 max-w-2xl text-3xl font-bold tracking-tight lg:text-4xl ${HEADING}`}
+      >
         Four steps from a race on your calendar to a plan you can run.
       </h2>
       <ol className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
         {FLOW_STEPS.map((step, i) => (
-          <li
-            key={step.title}
-            className="relative border-t-2 border-slate-200 pt-6"
-          >
+          <li key={step.title} className={`relative border-t-2 pt-6 ${RULE}`}>
             {/* A course marker on the line, like the fuel stops on the watch. */}
             <span
               aria-hidden
-              className={`absolute -top-[7px] left-0 h-3 w-3 rounded-full border-2 border-white ${
-                i === FLOW_STEPS.length - 1 ? "bg-emerald-600" : "bg-slate-900"
+              className={`absolute -top-[7px] left-0 h-3 w-3 rounded-full border-2 border-white dark:border-slate-950 ${
+                i === FLOW_STEPS.length - 1
+                  ? "bg-emerald-600 dark:bg-emerald-400"
+                  : "bg-slate-900 dark:bg-slate-300"
               }`}
             />
-            <p className="mb-2 font-display text-sm font-semibold tabular-nums text-emerald-700">
+            <p className="mb-2 font-display text-sm font-semibold tabular-nums text-emerald-700 dark:text-emerald-400">
               Step {i + 1}
             </p>
-            <h3 className="mb-2 text-xl font-bold text-slate-900">
+            <h3 className={`mb-2 text-xl font-bold ${HEADING}`}>
               {step.title}
             </h3>
-            <p className="mb-4 leading-relaxed text-slate-600">{step.text}</p>
-            <Link
-              to={step.to}
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-900"
-            >
+            <p className={`mb-4 leading-relaxed ${BODY}`}>{step.text}</p>
+            <Link to={step.to} className={`${TEXT_LINK} gap-1.5 text-sm`}>
               {step.cta} <ArrowRight className="h-4 w-4" />
             </Link>
           </li>
@@ -151,8 +159,10 @@ const FeatureSection = ({
 }: FeatureSectionProps) => (
   <section
     id={id}
-    className={`overflow-hidden border-b border-slate-200 py-20 lg:py-28 ${
-      Number(index) % 2 === 1 ? "bg-slate-50" : "bg-white"
+    className={`overflow-hidden border-b py-20 lg:py-28 ${RULE} ${
+      Number(index) % 2 === 1
+        ? "bg-slate-50 dark:bg-slate-900"
+        : "bg-white dark:bg-slate-950"
     }`}
   >
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -163,18 +173,16 @@ const FeatureSection = ({
       >
         <div className="flex-1">
           <SectionLabel>{label}</SectionLabel>
-          <h2 className="mb-4 text-3xl font-bold tracking-tight text-slate-900">
+          <h2 className={`mb-4 text-3xl font-bold tracking-tight ${HEADING}`}>
             {title}
           </h2>
-          <p className="mb-6 text-lg leading-relaxed text-slate-600">
-            {subtitle}
-          </p>
+          <p className={`mb-6 text-lg leading-relaxed ${BODY}`}>{subtitle}</p>
 
-          <ul className="mb-8 border-t border-slate-200">
+          <ul className={`mb-8 border-t ${RULE}`}>
             {features.map((feature) => (
               <li
                 key={feature}
-                className="border-b border-slate-200 py-2.5 text-slate-700"
+                className={`border-b py-2.5 text-slate-700 dark:text-slate-300 ${RULE}`}
               >
                 {feature}
               </li>
@@ -182,16 +190,13 @@ const FeatureSection = ({
           </ul>
 
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <Link
-              to={ctaRoute}
-              className="inline-flex items-center gap-2 font-semibold text-emerald-700 hover:text-emerald-900"
-            >
+            <Link to={ctaRoute} className={TEXT_LINK}>
               {cta} <ArrowRight className="h-4 w-4" />
             </Link>
             {more && (
               <Link
                 to={more.route}
-                className="text-sm text-slate-500 underline-offset-4 hover:text-slate-900 hover:underline"
+                className="text-sm text-slate-500 underline-offset-4 hover:text-slate-900 hover:underline dark:text-slate-400 dark:hover:text-white"
               >
                 {more.label}
               </Link>
@@ -221,7 +226,7 @@ const FounderStory = () => {
   return (
     <section
       id="story"
-      className="overflow-hidden bg-slate-900 py-20 text-white lg:py-28"
+      className="overflow-hidden bg-slate-900 py-20 text-white lg:py-28 dark:border-y dark:border-slate-800"
     >
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
         <div>
@@ -307,26 +312,25 @@ const FounderStory = () => {
 };
 
 const AiAgentSection = () => (
-  <section className="overflow-hidden border-b border-slate-200 bg-white py-20 lg:py-28">
+  <section
+    className={`overflow-hidden border-b bg-white py-20 lg:py-28 dark:bg-slate-950 ${RULE}`}
+  >
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
         <div className="flex-1">
           <SectionLabel>Use with AI</SectionLabel>
-          <h2 className="mb-4 text-3xl font-bold tracking-tight text-slate-900">
+          <h2 className={`mb-4 text-3xl font-bold tracking-tight ${HEADING}`}>
             Your chatbot is bad at pace math. Fix that.
           </h2>
-          <p className="mb-6 text-lg leading-relaxed text-slate-600">
+          <p className={`mb-6 text-lg leading-relaxed ${BODY}`}>
             Ask a chatbot for your threshold pace and you&rsquo;ll often get a
             guess. Connect TrainPace as an MCP server and Claude, ChatGPT or any
             MCP client uses these calculators instead. Free, no API key.
           </p>
-          <code className="mb-8 block w-fit rounded border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-sm text-slate-700">
+          <code className="mb-8 block w-fit rounded border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-sm text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
             https://api.trainpace.com/api/mcp
           </code>
-          <Link
-            to="/mcp"
-            className="inline-flex items-center gap-2 font-semibold text-emerald-700 hover:text-emerald-900"
-          >
+          <Link to="/mcp" className={TEXT_LINK}>
             Setup instructions <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
@@ -367,19 +371,21 @@ const COMPARISON_ROWS = [
 ];
 
 const Comparison = () => (
-  <section className="border-b border-slate-200 bg-white py-20 lg:py-28">
+  <section
+    className={`border-b bg-white py-20 lg:py-28 dark:bg-slate-950 ${RULE}`}
+  >
     <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-      <h2 className="mb-8 text-3xl font-bold tracking-tight text-slate-900">
+      <h2 className={`mb-8 text-3xl font-bold tracking-tight ${HEADING}`}>
         How it stacks up
       </h2>
-      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5">
+      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/30">
         <table className="w-full text-left text-sm">
-          <thead className="bg-slate-50 text-xs text-slate-500">
+          <thead className="bg-slate-50 text-xs text-slate-500 dark:bg-slate-800/50 dark:text-slate-400">
             <tr>
               <th scope="col" className="px-4 py-3 font-medium" />
               <th
                 scope="col"
-                className="bg-emerald-50 px-4 py-3 font-semibold text-emerald-800"
+                className="bg-emerald-50 px-4 py-3 font-semibold text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-300"
               >
                 TrainPace
               </th>
@@ -388,19 +394,23 @@ const Comparison = () => (
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200">
+          <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
             {COMPARISON_ROWS.map((row) => (
               <tr key={row.feature}>
                 <th
                   scope="row"
-                  className="px-4 py-3.5 font-medium text-slate-900"
+                  className={`px-4 py-3.5 font-medium ${HEADING}`}
                 >
                   {row.feature}
                 </th>
-                <td className="bg-emerald-50/50 px-4 py-3.5 font-medium text-slate-900">
+                <td
+                  className={`bg-emerald-50/50 px-4 py-3.5 font-medium dark:bg-emerald-400/5 ${HEADING}`}
+                >
                   {row.trainpace}
                 </td>
-                <td className="px-4 py-3.5 text-slate-500">{row.typical}</td>
+                <td className="px-4 py-3.5 text-slate-500 dark:text-slate-400">
+                  {row.typical}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -408,7 +418,7 @@ const Comparison = () => (
       </div>
       {comparisonLinks.length > 0 && (
         <div className="mt-6">
-          <p className="mb-3 text-sm text-slate-500">
+          <p className="mb-3 text-sm text-slate-500 dark:text-slate-400">
             Side-by-side comparisons:
           </p>
           <div className="flex flex-wrap gap-2">
@@ -416,7 +426,7 @@ const Comparison = () => (
               <Link
                 key={c.slug}
                 to={c.path}
-                className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900"
+                className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900 dark:border-slate-800 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white"
               >
                 {c.label}
               </Link>
@@ -452,22 +462,24 @@ const FAQS = [
 ];
 
 const FAQ = () => (
-  <section className="bg-slate-50 py-20 lg:py-28">
+  <section className="bg-slate-50 py-20 lg:py-28 dark:bg-slate-900">
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <h2 className="mb-8 text-3xl font-bold tracking-tight text-slate-900">
+      <h2 className={`mb-8 text-3xl font-bold tracking-tight ${HEADING}`}>
         Questions
       </h2>
       <div className="space-y-3">
         {FAQS.map((faq) => (
           <details
             key={faq.q}
-            className="group rounded-xl border border-slate-200 bg-white px-5 shadow-sm transition-colors open:border-emerald-200"
+            className="group rounded-xl border border-slate-200 bg-white px-5 shadow-sm transition-colors open:border-emerald-200 dark:border-slate-800 dark:bg-slate-950 dark:open:border-emerald-800"
           >
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium text-slate-900">
+            <summary
+              className={`flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium ${HEADING}`}
+            >
               <span>{faq.q}</span>
-              <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180" />
+              <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180 dark:text-slate-500" />
             </summary>
-            <p className="pb-4 leading-relaxed text-slate-600">{faq.a}</p>
+            <p className={`pb-4 leading-relaxed ${BODY}`}>{faq.a}</p>
           </details>
         ))}
       </div>
@@ -477,7 +489,7 @@ const FAQ = () => (
 
 const CTA = () => (
   <section
-    className="bg-slate-900 py-20 lg:py-24"
+    className="bg-slate-900 py-20 lg:py-24 dark:bg-black"
     style={{
       backgroundImage:
         "radial-gradient(rgb(52 211 153 / 0.14) 1px, transparent 1px)",
@@ -565,7 +577,7 @@ export default function LandingPage() {
         </script>
       </Helmet>
       {/* text-left: App.css still centres #root. */}
-      <div className="bg-white text-left font-sans text-slate-900 antialiased">
+      <div className="bg-white text-left font-sans text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
         <HeroRaceWatch />
         <RaceFlow />
 

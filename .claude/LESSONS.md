@@ -251,3 +251,33 @@ returned 200 with the *home page's* HTML and canonical. Nothing failed; it only
 showed up by fetching the live site with curl.
 → **Rule:** verify SEO/agent changes against the built `dist/` and the live
 site, not the code. `npm run verify-seo` now fails the build on the known cases.
+
+---
+
+## Session: dark mode, phase 1 (branch `claude/dark-mode`)
+
+**Wrote `.dark button { background: … }` and it would have beaten every
+Tailwind `bg-*` class inside a dark subtree.** `.dark button` is (0,1,1) and a
+utility is (0,1,0), so the emerald CTA, the course pills and the theme toggle
+would all have turned #1a1a1a. Caught on re-reading, not in a screenshot.
+→ **Rule:** a global element rule scoped under a class must use `:where(.x) el`
+so it stays at element weight. Check specificity before adding any
+ancestor-scoped base style.
+
+**A translucent light bar (`bg-white/90`) over the black hero rendered grey.**
+It looked fine in dark mode (black over black), so only the light-mode
+screenshot of the open menu showed it.
+→ **Rule:** a translucent surface takes the colour of whatever is behind it.
+Check it over the darkest and the lightest section in both themes.
+
+**Measured "no flash" on the dev server and got a misleading result.** With the
+app JS blocked, `body` was transparent, because Vite dev injects CSS from JS.
+Only `vite preview` of the build (where CSS is a `<link>`) shows the real
+first paint.
+→ **Rule:** check first-paint behaviour against the production build, never
+against `npm run dev`.
+
+**Playwright `clip` outside the viewport silently returns the wrong area**
+unless `fullPage: true` is set. The "hero edge" crop showed only black, which
+looked like a missing element.
+

@@ -4,6 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Theme before first paint, so a dark-mode visitor never sees a white
+         flash. Mirrors src/features/theme/theme.ts (storage key + the routes
+         that are converted to dark mode); keep the two in sync. -->
+    <script>
+      (function () {
+        var p = null;
+        try {
+          p = localStorage.getItem("tp-theme");
+        } catch (e) {}
+        var dark =
+          p === "dark" ||
+          (p !== "light" &&
+            !!window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches);
+        if (dark && ["/"].indexOf(location.pathname) !== -1) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+
     <!-- Favicon and Icons -->
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />

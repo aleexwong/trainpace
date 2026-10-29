@@ -2,10 +2,12 @@
 // for the hero demo, the feature shots and the founder card on the landing
 // page. The parent must be `relative`; the card after it needs `relative` too
 // so it stacks above the panel.
+// `light` follows the site theme (it sits on sections that turn dark);
+// `dark` is for sections that are dark in both themes, like the founder card.
 
 const TONES = {
   light: {
-    panel: "bg-emerald-50",
+    panel: "bg-emerald-50 dark:bg-slate-800/60",
     dots: "radial-gradient(rgb(16 185 129 / 0.18) 1px, transparent 1px)",
   },
   dark: {

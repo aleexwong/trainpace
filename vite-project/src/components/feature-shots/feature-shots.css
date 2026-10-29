@@ -49,6 +49,46 @@
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+/* Dark theme: the same tokens, re-tuned. `.dark` sits on <html> (converted
+   pages) or on a wrapper; see "Theming" in CLAUDE.md. Ink flips to light,
+   the panel to deep slate, and the pace ramp runs the other way, so the
+   hardest zone is still the most prominent. */
+.dark .tpfs {
+  --panel: oklch(0.19 0.02 262);
+  --ink: oklch(0.96 0.004 260);
+  --ink-2: oklch(0.79 0.01 260);
+  --ink-3: oklch(0.66 0.012 260);
+  --ink-4: oklch(0.5 0.014 260);
+  --line: oklch(0.3 0.018 262);
+  --line-2: oklch(0.26 0.018 262);
+  --fog: oklch(0.235 0.02 262);
+
+  /* Mid-tone accent: white icons still sit on it (.fp-stn, .fp-row .ic). */
+  --accent: oklch(0.64 0.1 165);
+  --accent-deep: oklch(0.8 0.1 165); /* text colour on the dark panel */
+  --accent-bright: oklch(0.78 0.12 165);
+  --accent-soft: oklch(0.3 0.05 165);
+  --clay: oklch(0.74 0.08 48);
+  --clay-soft: oklch(0.3 0.04 48);
+
+  --z1: oklch(0.42 0.05 165);
+  --z2: oklch(0.51 0.07 165);
+  --z3: oklch(0.6 0.088 165);
+  --z4: oklch(0.69 0.095 165);
+  --z5: oklch(0.78 0.1 165);
+
+  --sh-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+  --sh-md: 0 1px 2px rgb(0 0 0 / 0.3), 0 16px 34px -20px rgb(0 0 0 / 0.8);
+}
+/* These two use an ink or accent-deep background under white text; in dark
+   mode those tokens are light, so they get their own fill. */
+.dark .tpfs .el-tip {
+  background: oklch(0.32 0.02 262);
+}
+.dark .tpfs .ac-user {
+  background: oklch(0.45 0.075 165);
+}
+
 .tpfs h1,
 .tpfs h2,
 .tpfs h3 {

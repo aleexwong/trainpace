@@ -390,6 +390,13 @@ export default function HeroRaceWatch() {
           </p>
         </figure>
       </div>
+      {/* The hero stays black in both themes. An emerald "start line" on its
+          lower edge makes the cut into the next section deliberate: against
+          white in light mode, against slate-950 in dark mode. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent"
+      />
     </section>
   );
 }

@@ -7,12 +7,9 @@
   line-height: 1.5;
   font-weight: 400;
 
-  /* color-scheme: light dark; */
   color-scheme: light;
   color: #213547;
   background-color: #ffffff;
-  /* color: rgba(255, 255, 255, 0.87);
-  background-color: #242424; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -46,7 +43,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #f9f9f9;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -58,14 +55,19 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* `dark` is set on <html> by index.html and ThemeProvider, only on pages
+   converted to dark mode (THEMED_ROUTES in src/features/theme/theme.ts). */
+:root.dark {
+  color-scheme: dark;
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
+}
+/* The bare-button rule above is a Vite-template leftover that unconverted
+   components still lean on. It used to switch on the OS setting; it now
+   follows the site theme, so a light page never gets dark buttons.
+   :where() keeps it at plain `button` weight, so utility classes still win. */
+:where(.dark) button {
+  background-color: #1a1a1a;
 }
 
 @layer base {
@@ -96,26 +98,27 @@ button:focus-visible {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+  /* Slate, not neutral grey, to match the landing's dark surfaces. */
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 229 84% 5%; /* slate-950 */
+    --foreground: 210 40% 98%; /* slate-50 */
+    --card: 222 47% 11%; /* slate-900 */
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 158 64% 52%; /* emerald-400 */
+    --primary-foreground: 229 84% 5%;
+    --secondary: 217 33% 17%; /* slate-800 */
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%; /* slate-400 */
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 158 64% 52%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;

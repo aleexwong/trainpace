@@ -29,7 +29,7 @@ export default function MainLayout() {
   };
 
   return (
-    <div className="bg-white text-gray-900 min-h-screen flex flex-col">
+    <div className="bg-white text-gray-900 min-h-screen flex flex-col dark:bg-slate-950 dark:text-slate-100">
       <SiteNav user={user} authLoading={loading} onLogout={handleLogout} />
 
       {/* pt-16 matches SiteNav's fixed h-16 bar. */}
@@ -38,7 +38,7 @@ export default function MainLayout() {
           fallback={
             <div className="flex items-center justify-center py-32">
               <div
-                className="h-8 w-8 animate-spin rounded-full border-2 border-gray-200 border-t-emerald-600"
+                className="h-8 w-8 animate-spin rounded-full border-2 border-gray-200 border-t-emerald-600 dark:border-slate-700 dark:border-t-emerald-400"
                 role="status"
                 aria-label="Loading"
               />
