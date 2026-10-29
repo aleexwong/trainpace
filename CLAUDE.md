@@ -145,11 +145,12 @@ Phase 1 of dark mode is in: nav, footer, page shell and the homepage. Tool pages
 - **Where `dark` goes** — on `<html>`, but **only on routes listed in `THEMED_ROUTES`** (`src/features/theme/theme.ts`). Every other page stays light, so unconverted components never end up on a dark background. `SiteNav` and `Footer` are converted, so they wrap themselves in their own `.dark` element and follow the theme on every page.
 - **No flash** — an inline script in `index.html` sets the class before React loads. It copies the storage key and the route list from `theme.ts` by hand, so **change both together**. Every prerendered page and `app-shell.html` keep the script.
 - **Converting a page (later phases):**
-  1. Give every light colour a `dark:` partner. White and `slate-50` become `slate-950` and `slate-900`; `slate-900` text becomes `white`; `slate-600` becomes `slate-400`; borders `slate-200` become `slate-800`; the `emerald-700` accent becomes `emerald-400`. You can also use the shadcn tokens (`bg-background`, `text-foreground`, `bg-card`, `border-border`, `text-muted-foreground`), which `index.css` sets to slate values in dark mode.
-  2. Add the route to `THEMED_ROUTES` **and** to the array in the `index.html` script.
-  3. Check it at 1440 and 390 px in both themes with the `verify-in-browser` skill.
-- **Plain CSS files** (like `feature-shots.css`) — re-tune their custom properties under `.dark .scope { … }`. Do not duplicate rules. Look for elements that put white text on a token that flips to light in dark mode (`--ink`, `--accent-deep`); they need their own dark fill.
-- **Surfaces that stay dark in both themes** (the race-watch hero, the founder card, the CTA band) keep their plain dark classes and get no `dark:` variants.
+  1. Give every light colour a `dark:` partner. Dark mode uses **neutral** greys (no blue tint): white and `slate-50` become `neutral-950` and `neutral-900`; `slate-900` text becomes `white`; `slate-600` becomes `neutral-400`; borders `slate-200` become `neutral-800`. You can also use the shadcn tokens (`bg-background`, `text-foreground`, `bg-card`, `border-border`, `text-muted-foreground`), which `index.css` sets to neutral values in dark mode.
+  2. Keep colour scarce in dark mode. Emerald (`emerald-400`) is for things you can click (links, buttons) and the one key number. Decorative labels, tints, dot grids and big headline stats go grey. No gradient glows.
+  3. Add the route to `THEMED_ROUTES` **and** to the array in the `index.html` script.
+  4. Check it at 1440 and 390 px in both themes with the `verify-in-browser` skill.
+- **Plain CSS files** (like `feature-shots.css`) — re-tune their custom properties under `.dark .scope { … }`, with greys at zero chroma (`oklch(L 0 0)`). Do not duplicate rules. Look for elements that put white text on a token that flips to light in dark mode (`--ink`, `--accent-deep`); they need their own dark fill.
+- **Surfaces that stay dark in both themes** (the race-watch hero, the founder card, the CTA band) keep their slate classes for light mode. In dark mode they only get neutral `dark:` variants, so they don't look blue next to the neutral sections. The hero is pure black and needs none.
 - **Bare `<button>` rule** — `index.css` still has the Vite template's `button { background … }`. It now follows the theme (`:where(.dark) button`), not the OS. `:where()` keeps it at element weight. A plain `.dark button` would beat every `bg-*` utility.
 
 ## Gotchas

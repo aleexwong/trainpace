@@ -43,11 +43,11 @@ const focusRing =
 
 // Quiet nav text: tabs, "Log in", Dashboard.
 const navText =
-  "text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white";
+  "text-slate-600 hover:text-slate-900 dark:text-neutral-300 dark:hover:text-white";
 const activeText = "text-emerald-700 dark:text-emerald-300";
 // Rows in the account menu.
 const menuRow =
-  "flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-white/5";
+  "flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-neutral-200 dark:hover:bg-white/5";
 // Outlined buttons in the phone menu.
 const sheetOutline =
   "inline-flex items-center justify-center rounded-md border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-900 dark:border-white/15 dark:text-white";
@@ -240,16 +240,16 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                   {initial}
                 </button>
                 {accountOpen && (
-                  <div className="absolute top-11 right-0 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-2xl dark:border-white/10 dark:bg-slate-950">
+                  <div className="absolute top-11 right-0 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-2xl dark:border-white/10 dark:bg-neutral-950">
                     <p className="truncate px-4 py-2 text-xs text-slate-500">
                       {user.email}
                     </p>
                     <Link to="/dashboard" className={menuRow}>
-                      <LayoutDashboard className="h-4 w-4 text-slate-400 dark:text-slate-500" />{" "}
+                      <LayoutDashboard className="h-4 w-4 text-slate-400 dark:text-neutral-500" />{" "}
                       Dashboard
                     </Link>
                     <Link to="/settings" className={menuRow}>
-                      <Settings className="h-4 w-4 text-slate-400 dark:text-slate-500" />{" "}
+                      <Settings className="h-4 w-4 text-slate-400 dark:text-neutral-500" />{" "}
                       Settings
                     </Link>
                     <button
@@ -258,7 +258,7 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                       disabled={authLoading}
                       className={`${bareButton} ${menuRow} w-full rounded-none text-left`}
                     >
-                      <LogOut className="h-4 w-4 text-slate-400 dark:text-slate-500" />{" "}
+                      <LogOut className="h-4 w-4 text-slate-400 dark:text-neutral-500" />{" "}
                       Log out
                     </button>
                   </div>
@@ -315,7 +315,7 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                         <span className="block text-sm font-semibold text-slate-900 dark:text-white">
                           {it.label}
                         </span>
-                        <span className="block text-sm text-slate-500 dark:text-slate-400">
+                        <span className="block text-sm text-slate-500 dark:text-neutral-400">
                           {it.desc}
                         </span>
                       </span>
@@ -333,7 +333,7 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                       <li key={c.slug}>
                         <Link
                           to={`/preview-route/${c.slug}`}
-                          className={`${focusRing} block rounded-md px-2 py-1 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white`}
+                          className={`${focusRing} block rounded-md px-2 py-1 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-neutral-300 dark:hover:bg-white/5 dark:hover:text-white`}
                         >
                           {c.name}
                         </Link>
@@ -387,7 +387,7 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                     >
                       <it.icon className="h-5 w-5 text-emerald-600 dark:text-emerald-300" />
                       <span className="flex-1 font-medium">{it.label}</span>
-                      <ChevronRight className="h-4 w-4 text-slate-400 dark:text-slate-600" />
+                      <ChevronRight className="h-4 w-4 text-slate-400 dark:text-neutral-600" />
                     </Link>
                   </li>
                 ))}
@@ -404,7 +404,7 @@ export default function SiteNav({ user, authLoading, onLogout }: SiteNavProps) {
                 <Link
                   key={c.slug}
                   to={`/preview-route/${c.slug}`}
-                  className="rounded-full border border-slate-200 px-3 py-1.5 text-sm text-slate-600 dark:border-white/10 dark:text-slate-300"
+                  className="rounded-full border border-slate-200 px-3 py-1.5 text-sm text-slate-600 dark:border-white/10 dark:text-neutral-300"
                 >
                   {c.name.replace(" Marathon", "")}
                 </Link>

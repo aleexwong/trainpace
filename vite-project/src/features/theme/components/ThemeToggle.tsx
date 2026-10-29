@@ -59,7 +59,7 @@ export function ThemeToggle({
                 : "rounded-lg px-3 py-2.5 text-sm",
               pressed
                 ? "bg-white text-slate-900 shadow-sm dark:bg-white/15 dark:text-white"
-                : "bg-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white",
+                : "bg-transparent text-slate-500 hover:text-slate-900 dark:text-neutral-400 dark:hover:text-white",
             )}
           >
             <Icon className={compact ? "h-3.5 w-3.5" : "h-4 w-4"} aria-hidden />

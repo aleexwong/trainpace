@@ -46,16 +46,16 @@ const ButtonLink = ({
 );
 
 const SectionLabel = ({ children }: { children: ReactNode }) => (
-  <p className="mb-4 font-display text-sm font-medium text-emerald-700 dark:text-emerald-400">
+  <p className="mb-4 font-display text-sm font-medium text-emerald-700 dark:text-neutral-400">
     {children}
   </p>
 );
 
 // Repeated colour pairs for the light sections. Dark mode swaps white and
-// slate-50 for slate-950 and slate-900; see "Theming" in CLAUDE.md.
+// slate-50 for neutral-950 and neutral-900; see "Theming" in CLAUDE.md.
 const HEADING = "text-slate-900 dark:text-white";
-const BODY = "text-slate-600 dark:text-slate-400";
-const RULE = "border-slate-200 dark:border-slate-800";
+const BODY = "text-slate-600 dark:text-neutral-400";
+const RULE = "border-slate-200 dark:border-neutral-800";
 const TEXT_LINK =
   "inline-flex items-center gap-2 font-semibold text-emerald-700 hover:text-emerald-900 dark:text-emerald-400 dark:hover:text-emerald-300";
 
@@ -90,7 +90,7 @@ const FLOW_STEPS = [
 
 const RaceFlow = () => (
   <section
-    className={`border-b bg-white py-20 lg:py-24 dark:bg-slate-950 ${RULE}`}
+    className={`border-b bg-white py-20 lg:py-24 dark:bg-neutral-950 ${RULE}`}
   >
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <SectionLabel>How it works</SectionLabel>
@@ -105,13 +105,13 @@ const RaceFlow = () => (
             {/* A course marker on the line, like the fuel stops on the watch. */}
             <span
               aria-hidden
-              className={`absolute -top-[7px] left-0 h-3 w-3 rounded-full border-2 border-white dark:border-slate-950 ${
+              className={`absolute -top-[7px] left-0 h-3 w-3 rounded-full border-2 border-white dark:border-neutral-950 ${
                 i === FLOW_STEPS.length - 1
                   ? "bg-emerald-600 dark:bg-emerald-400"
-                  : "bg-slate-900 dark:bg-slate-300"
+                  : "bg-slate-900 dark:bg-neutral-300"
               }`}
             />
-            <p className="mb-2 font-display text-sm font-semibold tabular-nums text-emerald-700 dark:text-emerald-400">
+            <p className="mb-2 font-display text-sm font-semibold tabular-nums text-emerald-700 dark:text-neutral-500">
               Step {i + 1}
             </p>
             <h3 className={`mb-2 text-xl font-bold ${HEADING}`}>
@@ -161,8 +161,8 @@ const FeatureSection = ({
     id={id}
     className={`overflow-hidden border-b py-20 lg:py-28 ${RULE} ${
       Number(index) % 2 === 1
-        ? "bg-slate-50 dark:bg-slate-900"
-        : "bg-white dark:bg-slate-950"
+        ? "bg-slate-50 dark:bg-neutral-900"
+        : "bg-white dark:bg-neutral-950"
     }`}
   >
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -182,7 +182,7 @@ const FeatureSection = ({
             {features.map((feature) => (
               <li
                 key={feature}
-                className={`border-b py-2.5 text-slate-700 dark:text-slate-300 ${RULE}`}
+                className={`border-b py-2.5 text-slate-700 dark:text-neutral-300 ${RULE}`}
               >
                 {feature}
               </li>
@@ -196,7 +196,7 @@ const FeatureSection = ({
             {more && (
               <Link
                 to={more.route}
-                className="text-sm text-slate-500 underline-offset-4 hover:text-slate-900 hover:underline dark:text-slate-400 dark:hover:text-white"
+                className="text-sm text-slate-500 underline-offset-4 hover:text-slate-900 hover:underline dark:text-neutral-400 dark:hover:text-white"
               >
                 {more.label}
               </Link>
@@ -226,11 +226,11 @@ const FounderStory = () => {
   return (
     <section
       id="story"
-      className="overflow-hidden bg-slate-900 py-20 text-white lg:py-28 dark:border-y dark:border-slate-800"
+      className="overflow-hidden bg-slate-900 py-20 text-white lg:py-28 dark:border-y dark:border-neutral-800 dark:bg-neutral-900"
     >
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
         <div>
-          <p className="mb-4 font-display text-sm text-emerald-400">
+          <p className="mb-4 font-display text-sm text-emerald-400 dark:text-neutral-400">
             From the founder
           </p>
           <h2 className="mb-6 text-3xl font-bold tracking-tight">
@@ -258,7 +258,7 @@ const FounderStory = () => {
 
         <div ref={ref} className="relative">
           <DotPanel tone="dark" />
-          <div className="relative rounded-xl border border-slate-700 bg-slate-900 p-6 shadow-2xl shadow-black/40 sm:p-8">
+          <div className="relative rounded-xl border border-slate-700 bg-slate-900 p-6 shadow-2xl shadow-black/40 sm:p-8 dark:border-neutral-700 dark:bg-neutral-900">
             <p className="mb-6 text-sm text-slate-400">
               BMO Vancouver Half Marathon
             </p>
@@ -280,10 +280,12 @@ const FounderStory = () => {
                       </span>
                     </dd>
                   </div>
-                  <div className="h-3 rounded-full bg-slate-800">
+                  <div className="h-3 rounded-full bg-slate-800 dark:bg-neutral-800">
                     <div
                       className={`h-full rounded-full transition-[width] duration-1000 ease-out motion-reduce:transition-none ${
-                        i === 0 ? "bg-slate-600" : "bg-emerald-500"
+                        i === 0
+                          ? "bg-slate-600 dark:bg-neutral-600"
+                          : "bg-emerald-500"
                       }`}
                       style={{
                         width: inView
@@ -296,7 +298,7 @@ const FounderStory = () => {
                 </div>
               ))}
             </dl>
-            <div className="mt-8 flex items-baseline justify-between border-t border-slate-800 pt-5">
+            <div className="mt-8 flex items-baseline justify-between border-t border-slate-800 pt-5 dark:border-neutral-800">
               <span className="text-sm text-slate-400">
                 Same course, one year
               </span>
@@ -313,7 +315,7 @@ const FounderStory = () => {
 
 const AiAgentSection = () => (
   <section
-    className={`overflow-hidden border-b bg-white py-20 lg:py-28 dark:bg-slate-950 ${RULE}`}
+    className={`overflow-hidden border-b bg-white py-20 lg:py-28 dark:bg-neutral-950 ${RULE}`}
   >
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
@@ -327,7 +329,7 @@ const AiAgentSection = () => (
             guess. Connect TrainPace as an MCP server and Claude, ChatGPT or any
             MCP client uses these calculators instead. Free, no API key.
           </p>
-          <code className="mb-8 block w-fit rounded border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-sm text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
+          <code className="mb-8 block w-fit rounded border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-sm text-slate-700 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-300">
             https://api.trainpace.com/api/mcp
           </code>
           <Link to="/mcp" className={TEXT_LINK}>
@@ -372,20 +374,20 @@ const COMPARISON_ROWS = [
 
 const Comparison = () => (
   <section
-    className={`border-b bg-white py-20 lg:py-28 dark:bg-slate-950 ${RULE}`}
+    className={`border-b bg-white py-20 lg:py-28 dark:bg-neutral-950 ${RULE}`}
   >
     <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
       <h2 className={`mb-8 text-3xl font-bold tracking-tight ${HEADING}`}>
         How it stacks up
       </h2>
-      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/30">
+      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5 dark:border-neutral-800 dark:bg-neutral-900 dark:shadow-black/30">
         <table className="w-full text-left text-sm">
-          <thead className="bg-slate-50 text-xs text-slate-500 dark:bg-slate-800/50 dark:text-slate-400">
+          <thead className="bg-slate-50 text-xs text-slate-500 dark:bg-neutral-800/50 dark:text-neutral-400">
             <tr>
               <th scope="col" className="px-4 py-3 font-medium" />
               <th
                 scope="col"
-                className="bg-emerald-50 px-4 py-3 font-semibold text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-300"
+                className="bg-emerald-50 px-4 py-3 font-semibold text-emerald-800 dark:bg-white/5 dark:text-white"
               >
                 TrainPace
               </th>
@@ -394,7 +396,7 @@ const Comparison = () => (
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+          <tbody className="divide-y divide-slate-200 dark:divide-neutral-800">
             {COMPARISON_ROWS.map((row) => (
               <tr key={row.feature}>
                 <th
@@ -404,11 +406,11 @@ const Comparison = () => (
                   {row.feature}
                 </th>
                 <td
-                  className={`bg-emerald-50/50 px-4 py-3.5 font-medium dark:bg-emerald-400/5 ${HEADING}`}
+                  className={`bg-emerald-50/50 px-4 py-3.5 font-medium dark:bg-white/[0.03] ${HEADING}`}
                 >
                   {row.trainpace}
                 </td>
-                <td className="px-4 py-3.5 text-slate-500 dark:text-slate-400">
+                <td className="px-4 py-3.5 text-slate-500 dark:text-neutral-400">
                   {row.typical}
                 </td>
               </tr>
@@ -418,7 +420,7 @@ const Comparison = () => (
       </div>
       {comparisonLinks.length > 0 && (
         <div className="mt-6">
-          <p className="mb-3 text-sm text-slate-500 dark:text-slate-400">
+          <p className="mb-3 text-sm text-slate-500 dark:text-neutral-400">
             Side-by-side comparisons:
           </p>
           <div className="flex flex-wrap gap-2">
@@ -426,7 +428,7 @@ const Comparison = () => (
               <Link
                 key={c.slug}
                 to={c.path}
-                className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900 dark:border-slate-800 dark:text-slate-300 dark:hover:border-slate-600 dark:hover:text-white"
+                className="rounded-md border border-slate-200 px-3 py-1.5 text-sm text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900 dark:border-neutral-800 dark:text-neutral-300 dark:hover:border-neutral-600 dark:hover:text-white"
               >
                 {c.label}
               </Link>
@@ -462,7 +464,7 @@ const FAQS = [
 ];
 
 const FAQ = () => (
-  <section className="bg-slate-50 py-20 lg:py-28 dark:bg-slate-900">
+  <section className="bg-slate-50 py-20 lg:py-28 dark:bg-neutral-900">
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
       <h2 className={`mb-8 text-3xl font-bold tracking-tight ${HEADING}`}>
         Questions
@@ -471,13 +473,13 @@ const FAQ = () => (
         {FAQS.map((faq) => (
           <details
             key={faq.q}
-            className="group rounded-xl border border-slate-200 bg-white px-5 shadow-sm transition-colors open:border-emerald-200 dark:border-slate-800 dark:bg-slate-950 dark:open:border-emerald-800"
+            className="group rounded-xl border border-slate-200 bg-white px-5 shadow-sm transition-colors open:border-emerald-200 dark:border-neutral-800 dark:bg-neutral-950 dark:open:border-neutral-700"
           >
             <summary
               className={`flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-medium ${HEADING}`}
             >
               <span>{faq.q}</span>
-              <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180 dark:text-slate-500" />
+              <ChevronDown className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-open:rotate-180 dark:text-neutral-500" />
             </summary>
             <p className={`pb-4 leading-relaxed ${BODY}`}>{faq.a}</p>
           </details>
@@ -489,12 +491,8 @@ const FAQ = () => (
 
 const CTA = () => (
   <section
-    className="bg-slate-900 py-20 lg:py-24 dark:bg-black"
-    style={{
-      backgroundImage:
-        "radial-gradient(rgb(52 211 153 / 0.14) 1px, transparent 1px)",
-      backgroundSize: "16px 16px",
-    }}
+    // Emerald dot grid in light mode, plain grey dots in dark mode.
+    className="bg-slate-900 py-20 [background-image:radial-gradient(rgb(52_211_153/0.14)_1px,transparent_1px)] [background-size:16px_16px] lg:py-24 dark:bg-black dark:[background-image:radial-gradient(rgb(255_255_255/0.07)_1px,transparent_1px)]"
   >
     <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
       <div>
@@ -577,7 +575,7 @@ export default function LandingPage() {
         </script>
       </Helmet>
       {/* text-left: App.css still centres #root. */}
-      <div className="bg-white text-left font-sans text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+      <div className="bg-white text-left font-sans text-slate-900 antialiased dark:bg-neutral-950 dark:text-neutral-100">
         <HeroRaceWatch />
         <RaceFlow />
 

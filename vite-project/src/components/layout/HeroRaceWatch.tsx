@@ -139,10 +139,12 @@ export default function HeroRaceWatch() {
 
   return (
     // -mt-16 pulls the black up under SiteNav's fixed h-16 bar (main has pt-16),
-    // so the hero and the dark nav read as one surface.
+    // so the hero and the dark nav read as one surface. It stays black in
+    // both themes; the plain bottom border marks the edge against the
+    // near-black first section in dark mode.
     <section
       ref={sectionRef}
-      className="relative -mt-16 overflow-hidden bg-black pt-40 pb-20 text-white lg:pt-44 lg:pb-24"
+      className="relative -mt-16 overflow-hidden border-b border-white/10 bg-black pt-40 pb-20 text-white lg:pt-44 lg:pb-24"
     >
       <Contours />
       <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1fr_auto] lg:px-8">
@@ -390,13 +392,6 @@ export default function HeroRaceWatch() {
           </p>
         </figure>
       </div>
-      {/* The hero stays black in both themes. An emerald "start line" on its
-          lower edge makes the cut into the next section deliberate: against
-          white in light mode, against slate-950 in dark mode. */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-emerald-400 to-transparent"
-      />
     </section>
   );
 }

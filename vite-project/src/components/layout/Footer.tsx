@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import { useTheme } from "@/features/theme";
 
 const linkClass =
-  "text-slate-600 hover:text-emerald-600 transition-colors text-sm dark:text-slate-400 dark:hover:text-emerald-400";
+  "text-slate-600 hover:text-emerald-600 transition-colors text-sm dark:text-neutral-400 dark:hover:text-emerald-400";
 const headingClass = "font-semibold text-slate-900 mb-4 dark:text-white";
 const statClass =
-  "text-3xl md:text-4xl font-bold text-emerald-600 dark:text-emerald-400";
-const mutedClass = "text-sm text-slate-600 dark:text-slate-400";
+  "text-3xl md:text-4xl font-bold text-emerald-600 dark:text-white";
+const mutedClass = "text-sm text-slate-600 dark:text-neutral-400";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -16,10 +16,10 @@ const Footer = () => {
     // Theme-aware on every page, like SiteNav: it scopes its own `dark`
     // class because <html> only gets one on converted pages.
     <div className={resolved === "dark" ? "dark mt-auto" : "mt-auto"}>
-      <footer className="bg-slate-50 border-t border-slate-200 dark:bg-slate-950 dark:border-slate-800">
+      <footer className="bg-slate-50 border-t border-slate-200 dark:bg-neutral-950 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto px-6 py-12">
           {/* Stats Section */}
-          <div className="max-w-5xl mx-auto mb-12 pb-8 border-b border-slate-200 dark:border-slate-800">
+          <div className="max-w-5xl mx-auto mb-12 pb-8 border-b border-slate-200 dark:border-neutral-800">
             <div className="grid md:grid-cols-3 gap-8 text-center">
               <div>
                 <div className={statClass}>Always Free</div>
@@ -151,13 +151,13 @@ const Footer = () => {
           </div>
 
           {/* Bottom Bar */}
-          <div className="pt-8 border-t border-slate-200 dark:border-slate-800">
+          <div className="pt-8 border-t border-slate-200 dark:border-neutral-800">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className={`${mutedClass} text-center md:text-left`}>
                 Built by a{" "}
                 <Link
                   to="/about"
-                  className="text-slate-900 hover:text-emerald-600 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 rounded dark:text-white dark:hover:text-emerald-400 dark:focus:ring-offset-slate-950"
+                  className="text-slate-900 hover:text-emerald-600 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 rounded dark:text-white dark:hover:text-emerald-400 dark:focus:ring-offset-neutral-950"
                   aria-label="Read about the TrainPace story"
                 >
                   runner
@@ -195,7 +195,7 @@ const Footer = () => {
 
           {/* Optional: Tagline/Mission */}
           <div className="mt-6 text-center">
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-slate-500 dark:text-neutral-400">
               Science-backed training tools. No ads. Free to start.
             </p>
           </div>

@@ -2,18 +2,16 @@
 // for the hero demo, the feature shots and the founder card on the landing
 // page. The parent must be `relative`; the card after it needs `relative` too
 // so it stacks above the panel.
-// `light` follows the site theme (it sits on sections that turn dark);
-// `dark` is for sections that are dark in both themes, like the founder card.
+// `light` sits on sections that turn dark with the theme; `dark` is for
+// sections that are dark in both themes, like the founder card. In dark mode
+// both drop the emerald for plain grey dots.
+
+const DARK_THEME =
+  "dark:bg-neutral-800/50 dark:[background-image:radial-gradient(rgb(255_255_255/0.07)_1px,transparent_1px)]";
 
 const TONES = {
-  light: {
-    panel: "bg-emerald-50 dark:bg-slate-800/60",
-    dots: "radial-gradient(rgb(16 185 129 / 0.18) 1px, transparent 1px)",
-  },
-  dark: {
-    panel: "bg-slate-800/60",
-    dots: "radial-gradient(rgb(52 211 153 / 0.16) 1px, transparent 1px)",
-  },
+  light: `bg-emerald-50 [background-image:radial-gradient(rgb(16_185_129/0.18)_1px,transparent_1px)] ${DARK_THEME}`,
+  dark: `bg-slate-800/60 [background-image:radial-gradient(rgb(52_211_153/0.16)_1px,transparent_1px)] ${DARK_THEME}`,
 };
 
 export default function DotPanel({
@@ -24,8 +22,7 @@ export default function DotPanel({
   return (
     <div
       aria-hidden
-      className={`absolute -inset-4 rounded-2xl sm:-inset-6 ${TONES[tone].panel}`}
-      style={{ backgroundImage: TONES[tone].dots, backgroundSize: "16px 16px" }}
+      className={`absolute -inset-4 rounded-2xl [background-size:16px_16px] sm:-inset-6 ${TONES[tone]}`}
     />
   );
 }
