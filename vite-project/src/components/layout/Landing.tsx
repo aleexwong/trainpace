@@ -45,17 +45,79 @@ const ButtonLink = ({
   </Link>
 );
 
-const SectionLabel = ({
-  index,
-  children,
-}: {
-  index: string;
-  children: ReactNode;
-}) => (
-  <p className="mb-4 flex items-baseline gap-3 font-display text-sm text-slate-500">
-    <span className="tabular-nums text-emerald-700">{index}</span>
-    <span>{children}</span>
+const SectionLabel = ({ children }: { children: ReactNode }) => (
+  <p className="mb-4 font-display text-sm font-medium text-emerald-700">
+    {children}
   </p>
+);
+
+// The one real sequence on the page: how a runner gets from picking a race
+// to a plan. Each step opens the tool that does it.
+const FLOW_STEPS = [
+  {
+    title: "Pick your race",
+    text: "Choose from 90+ race guides, or upload the GPX file for your own course.",
+    cta: "Find my race",
+    to: "/race",
+  },
+  {
+    title: "Know the course",
+    text: "See every climb, how steep each section gets, and where the race gets hard.",
+    cta: "See a course",
+    to: "/elevation-finder",
+  },
+  {
+    title: "Set your fitness",
+    text: "Put in one recent race time. You get your VDOT and a pace for every kind of run.",
+    cta: "Get my paces",
+    to: "/calculator",
+  },
+  {
+    title: "Leave with a plan",
+    text: "A week-by-week training plan to race day, and a fuel schedule for the race itself.",
+    cta: "Build my plan",
+    to: "/plan",
+  },
+];
+
+const RaceFlow = () => (
+  <section className="border-b border-slate-200 bg-white py-20 lg:py-24">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <SectionLabel>How it works</SectionLabel>
+      <h2 className="mb-12 max-w-2xl text-3xl font-bold tracking-tight text-slate-900 lg:text-4xl">
+        Four steps from a race on your calendar to a plan you can run.
+      </h2>
+      <ol className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+        {FLOW_STEPS.map((step, i) => (
+          <li
+            key={step.title}
+            className="relative border-t-2 border-slate-200 pt-6"
+          >
+            {/* A course marker on the line, like the fuel stops on the watch. */}
+            <span
+              aria-hidden
+              className={`absolute -top-[7px] left-0 h-3 w-3 rounded-full border-2 border-white ${
+                i === FLOW_STEPS.length - 1 ? "bg-emerald-600" : "bg-slate-900"
+              }`}
+            />
+            <p className="mb-2 font-display text-sm font-semibold tabular-nums text-emerald-700">
+              Step {i + 1}
+            </p>
+            <h3 className="mb-2 text-xl font-bold text-slate-900">
+              {step.title}
+            </h3>
+            <p className="mb-4 leading-relaxed text-slate-600">{step.text}</p>
+            <Link
+              to={step.to}
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-900"
+            >
+              {step.cta} <ArrowRight className="h-4 w-4" />
+            </Link>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
 );
 
 // --- Sections ---
@@ -100,7 +162,7 @@ const FeatureSection = ({
         }`}
       >
         <div className="flex-1">
-          <SectionLabel index={index}>{label}</SectionLabel>
+          <SectionLabel>{label}</SectionLabel>
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-slate-900">
             {title}
           </h2>
@@ -249,7 +311,7 @@ const AiAgentSection = () => (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
         <div className="flex-1">
-          <SectionLabel index="06">MCP server</SectionLabel>
+          <SectionLabel>Use with AI</SectionLabel>
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-slate-900">
             Your chatbot is bad at pace math. Fix that.
           </h2>
@@ -505,11 +567,12 @@ export default function LandingPage() {
       {/* text-left: App.css still centres #root. */}
       <div className="bg-white text-left font-sans text-slate-900 antialiased">
         <HeroRaceWatch />
+        <RaceFlow />
 
         <FeatureSection
           id="features"
           index="01"
-          label="Pace calculator"
+          label="Pace"
           title="Your easy runs are too fast."
           subtitle="Most people's are. Then the hard days feel flat and nobody can say why. Put in a recent race and get a pace range for every kind of run, from the slow Sunday long run to 400 m repeats."
           shot={PaceLadderShot}
@@ -524,7 +587,7 @@ export default function LandingPage() {
 
         <FeatureSection
           index="02"
-          label="VDOT calculator"
+          label="VDOT"
           title="What your 10K says about your marathon."
           subtitle="VDOT is Jack Daniels' fitness score. One race gives you the number, and the number predicts your time at nine distances. Use it to check whether that goal time is ambitious or just wishful."
           shot={VdotDialShot}
@@ -540,7 +603,7 @@ export default function LandingPage() {
 
         <FeatureSection
           index="03"
-          label="Elevation finder"
+          label="Course"
           title="Know where the hills are before your legs do."
           subtitle="Drop in a GPX file from your watch, Strava or the race website. See every climb, how steep it gets, and how hard the whole course is. Then decide where to push and where to hold back."
           shot={ElevationShot}
@@ -556,7 +619,7 @@ export default function LandingPage() {
 
         <FeatureSection
           index="04"
-          label="Fuel planner"
+          label="Fuel"
           title="The wall is a fueling problem."
           subtitle="Run out of carbs and no amount of fitness will save you. Put in your distance, goal time and weight to get a carbs-per-hour target and a time for every gel."
           shot={FuelStationsShot}
@@ -572,7 +635,7 @@ export default function LandingPage() {
 
         <FeatureSection
           index="05"
-          label="Training plans"
+          label="Plan"
           title="Every run has a pace. Even the easy ones."
           subtitle="Give it a race date, your experience and the days you can run. You get a week-by-week plan from base miles to taper, with a target pace on every session."
           shot={TrainingPlanShot}
