@@ -1,6 +1,6 @@
 // src/pages/PreviewRoute.tsx
 import { useParams, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import {
   MapPin,
   Activity,
@@ -20,6 +20,12 @@ import { db } from "../lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { getCurrentDocumentId } from "../config/routes";
 import marathonData from "@/data/marathon-data.json";
+import type { ProfilePoint } from "@/types/elevation";
+
+// Chart.js is the heaviest thing on this page; load it after the map and copy.
+const CourseElevationChart = lazy(
+  () => import("@/features/elevation/components/CourseElevationChart")
+);
 
 interface PaceSegment {
   miles: string;
@@ -103,6 +109,7 @@ export default function PreviewRoute() {
   const [firebaseThumbPoints, setFirebaseThumbPoints] = useState<
     Array<{ lat: number; lng: number; ele?: number }>
   >([]);
+  const [firebaseProfile, setFirebaseProfile] = useState<ProfilePoint[]>([]);
   const [loadingPoints, setLoadingPoints] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [routeStats, setRouteStats] = useState<{
@@ -121,6 +128,9 @@ export default function PreviewRoute() {
   useEffect(() => {
     if (!route) return;
     let cancelled = false;
+    // Drop the previous course's data so it never shows under this one.
+    setFirebaseThumbPoints([]);
+    setFirebaseProfile([]);
     const load = async () => {
       try {
         setLoadingPoints(true);
@@ -152,6 +162,7 @@ export default function PreviewRoute() {
             nextStats.elevationLoss = staticData.totalElevationLoss;
           const profile: Array<{ distanceKm: number; elevation: number }> =
             staticData.elevationProfile || [];
+          if (!cancelled && profile.length > 1) setFirebaseProfile(profile);
           if (profile.length > 0) {
             nextStats.startElevation = Math.round(profile[0].elevation);
             nextStats.endElevation = Math.round(
@@ -188,6 +199,20 @@ export default function PreviewRoute() {
       cancelled = true;
     };
   }, [route?.slug]);
+
+  // Bundled fallback until (or unless) the uploaded GPX's full profile loads.
+  const bundledProfile = useMemo<ProfilePoint[]>(
+    () =>
+      (route?.thumbnailPoints ?? []).flatMap((p) =>
+        typeof p.dist === "number"
+          ? [{ distanceKm: p.dist, elevation: p.ele }]
+          : []
+      ),
+    [route]
+  );
+  const elevationProfile = firebaseProfile.length
+    ? firebaseProfile
+    : bundledProfile;
 
   if (!slug || !route) {
     return <Navigate to="/" replace />;
@@ -400,6 +425,19 @@ export default function PreviewRoute() {
             <div className="p-3 text-sm text-red-600">{loadError}</div>
           )}
         </div>
+        {elevationProfile.length > 1 && (
+          <div className="mt-4 bg-white rounded-lg border border-gray-200">
+            <h3 className="px-4 py-3 border-b border-gray-200 text-base font-semibold text-gray-800">
+              Elevation Profile
+            </h3>
+            <Suspense fallback={<div className="h-64 sm:h-72" />}>
+              <CourseElevationChart
+                points={elevationProfile}
+                courseName={route.name}
+              />
+            </Suspense>
+          </div>
+        )}
       </div>
 
       {/* Route Description & Tips */}
