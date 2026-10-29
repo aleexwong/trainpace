@@ -34,8 +34,14 @@ const COURSES = marathonData as unknown as Record<string, Course>;
 // Boston is left out: its bundled elevation points are known to be wrong.
 const COURSE_KEYS = ["nyc", "chicago", "berlin", "sydney"];
 const LOOP_MS = 16000;
-const R = 200;
-const CIRC = 2 * Math.PI * R;
+// Geometry of public/images/landing/race-watch-*.webp, measured on the
+// square crop (0–1000 units): the glass is centred, the printed tick ring's
+// inner edge sits at ~330, so the progress ring goes just inside it.
+const FACE_C = 500;
+const RING_R = 292;
+const RING_CIRC = 2 * Math.PI * RING_R;
+const SCREEN_R_PCT = 26; // live content circle, % of the image width
+const GLASS_R_PCT = 31; // reflection over the whole glass
 
 const shortName = (key: string) =>
   COURSES[key].name.replace(" Marathon", "").replace("New York City", "NYC");
@@ -197,124 +203,187 @@ export default function HeroRaceWatch() {
             with a 50:00 10K: {formatTime(FINISH_S)} finish at {PACE} per
             kilometer, with {FUEL.fuelStops.length} fuel stops.
           </figcaption>
-          <div aria-hidden>
-            <span className="absolute top-[28%] -right-2.5 h-14 w-3 rounded-r-md bg-slate-700" />
-            <span className="absolute top-[52%] -right-2.5 h-10 w-3 rounded-r-md bg-slate-800" />
-            <div
-              className="relative rounded-full border-[14px] border-slate-800 bg-slate-950 shadow-[0_30px_80px_rgba(0,0,0,0.8),inset_0_0_40px_rgba(16,185,129,0.08)]"
-              style={{ width: 440, maxWidth: "86vw", aspectRatio: "1 / 1" }}
+          {/* Photo of the watch hardware (Gemini, unbranded) with the live
+              display laid over its blank screen. Positions are in % of the
+              square image and type sizes in cqw, so it scales as one piece. */}
+          <div
+            aria-hidden
+            className="relative [container-type:inline-size]"
+            style={{ width: 600, maxWidth: "92vw", aspectRatio: "1 / 1" }}
+          >
+            <img
+              src="/images/landing/race-watch-800.webp"
+              srcSet="/images/landing/race-watch-480.webp 480w, /images/landing/race-watch-800.webp 800w, /images/landing/race-watch-1200.webp 1200w"
+              sizes="(max-width: 640px) 92vw, 600px"
+              width={1200}
+              height={1200}
+              alt=""
+              className="absolute inset-0 h-full w-full select-none"
+              style={{
+                maskImage:
+                  "linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)",
+              }}
+              draggable={false}
+            />
+
+            {/* Progress ring and fuel stops, just inside the printed tick ring. */}
+            <svg
+              viewBox="0 0 1000 1000"
+              className="absolute inset-0 h-full w-full"
             >
-              <svg
-                viewBox="0 0 440 440"
-                className="absolute inset-[-14px] h-[calc(100%+28px)] w-[calc(100%+28px)] -rotate-90"
-              >
+              <g transform={`rotate(-90 ${FACE_C} ${FACE_C})`}>
                 <circle
-                  cx="220"
-                  cy="220"
-                  r={R}
+                  cx={FACE_C}
+                  cy={FACE_C}
+                  r={RING_R}
                   fill="none"
-                  stroke="rgb(30 41 59)"
-                  strokeWidth="6"
+                  stroke="rgb(30 41 59 / 0.9)"
+                  strokeWidth="9"
                 />
                 <circle
-                  cx="220"
-                  cy="220"
-                  r={R}
+                  cx={FACE_C}
+                  cy={FACE_C}
+                  r={RING_R}
                   fill="none"
                   stroke="rgb(52 211 153)"
-                  strokeWidth="6"
+                  strokeWidth="9"
                   strokeLinecap="round"
-                  strokeDasharray={`${p * CIRC} ${CIRC}`}
+                  strokeDasharray={`${p * RING_CIRC} ${RING_CIRC}`}
                 />
                 {FUEL.fuelStops.map((s) => {
                   const a = (s.distanceKm / st.total) * Math.PI * 2;
                   return (
                     <circle
                       key={s.time}
-                      cx={220 + Math.cos(a) * R}
-                      cy={220 + Math.sin(a) * R}
-                      r="4"
+                      cx={FACE_C + Math.cos(a) * RING_R}
+                      cy={FACE_C + Math.sin(a) * RING_R}
+                      r="7"
                       fill={
                         s.distanceKm <= st.km
                           ? "rgb(251 191 36)"
                           : "rgb(15 23 42)"
                       }
                       stroke="rgb(251 191 36)"
-                      strokeWidth="1.5"
+                      strokeWidth="2.5"
                     />
                   );
                 })}
-              </svg>
+              </g>
+            </svg>
 
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
-                  {course.name}
-                </p>
-                <p
-                  className="mt-1 font-display font-bold leading-none tabular-nums"
-                  style={{ fontSize: "min(60px, 12vw)" }}
-                >
-                  {formatTime(st.elapsed)}
-                </p>
-                <div className="mt-2 flex gap-6 font-display tabular-nums">
-                  <span>
-                    <span className="text-2xl font-bold">
-                      {st.km.toFixed(1)}
-                    </span>
-                    <span className="ml-1 text-xs text-slate-500">km</span>
+            {/* Screen content, a circle inside the ring. */}
+            <div
+              className="absolute flex flex-col items-center justify-center rounded-full text-center"
+              style={{
+                left: `${50 - SCREEN_R_PCT}%`,
+                top: `${50 - SCREEN_R_PCT}%`,
+                width: `${SCREEN_R_PCT * 2}%`,
+                height: `${SCREEN_R_PCT * 2}%`,
+                background:
+                  "radial-gradient(circle, rgb(16 185 129 / 0.07), transparent 70%)",
+              }}
+            >
+              <p
+                className="font-medium uppercase tracking-[0.2em] text-slate-300"
+                style={{ fontSize: "1.8cqw" }}
+              >
+                {shortName(key)}
+              </p>
+              <p
+                className="mt-[0.6cqw] font-display font-bold leading-none tabular-nums"
+                style={{ fontSize: "9.5cqw" }}
+              >
+                {formatTime(st.elapsed)}
+              </p>
+              <div className="mt-[1cqw] flex gap-[4cqw] font-display tabular-nums">
+                <span>
+                  <span className="font-bold" style={{ fontSize: "3.8cqw" }}>
+                    {st.km.toFixed(1)}
                   </span>
-                  <span>
-                    <span className="text-2xl font-bold">{PACE}</span>
-                    <span className="ml-1 text-xs text-slate-500">/km</span>
+                  <span
+                    className="ml-[0.6cqw] text-slate-500"
+                    style={{ fontSize: "1.9cqw" }}
+                  >
+                    km
                   </span>
-                </div>
-                <svg
-                  viewBox="0 0 220 130"
-                  className="mt-3 h-[90px] w-[150px] max-sm:h-[70px] max-sm:w-[120px]"
-                >
-                  <path
-                    ref={routeRef}
-                    d={route}
-                    fill="none"
-                    stroke="rgb(51 65 85)"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d={route}
-                    pathLength={1}
-                    strokeDasharray={`${p} 1`}
-                    fill="none"
-                    stroke="rgb(52 211 153)"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                  {runner && (
-                    <circle
-                      cx={runner.x}
-                      cy={runner.y}
-                      r="4.5"
-                      fill="white"
-                      stroke="rgb(16 185 129)"
-                      strokeWidth="2"
-                    />
-                  )}
-                </svg>
-                <p className="mt-2 flex items-center gap-1.5 text-sm text-amber-300">
-                  <Zap className="h-3.5 w-3.5" />
-                  {st.toNext !== null ? (
-                    <>
-                      Fuel in{" "}
-                      <span className="font-display font-semibold tabular-nums">
-                        {formatTime(st.toNext)}
-                      </span>
-                    </>
-                  ) : (
-                    "Finish strong"
-                  )}
-                </p>
+                </span>
+                <span>
+                  <span className="font-bold" style={{ fontSize: "3.8cqw" }}>
+                    {PACE}
+                  </span>
+                  <span
+                    className="ml-[0.6cqw] text-slate-500"
+                    style={{ fontSize: "1.9cqw" }}
+                  >
+                    /km
+                  </span>
+                </span>
               </div>
+              <svg
+                viewBox="0 0 220 130"
+                className="mt-[1.5cqw]"
+                style={{ width: "24cqw", height: "14cqw" }}
+              >
+                <path
+                  ref={routeRef}
+                  d={route}
+                  fill="none"
+                  stroke="rgb(51 65 85)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
+                <path
+                  d={route}
+                  pathLength={1}
+                  strokeDasharray={`${p} 1`}
+                  fill="none"
+                  stroke="rgb(52 211 153)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
+                {runner && (
+                  <circle
+                    cx={runner.x}
+                    cy={runner.y}
+                    r="5.5"
+                    fill="white"
+                    stroke="rgb(16 185 129)"
+                    strokeWidth="2.5"
+                  />
+                )}
+              </svg>
+              <p
+                className="mt-[1.2cqw] flex items-center gap-[0.8cqw] text-amber-300"
+                style={{ fontSize: "2.3cqw" }}
+              >
+                <Zap style={{ width: "2.2cqw", height: "2.2cqw" }} />
+                {st.toNext !== null ? (
+                  <>
+                    Fuel in{" "}
+                    <span className="font-display font-semibold tabular-nums">
+                      {formatTime(st.toNext)}
+                    </span>
+                  </>
+                ) : (
+                  "Finish strong"
+                )}
+              </p>
             </div>
+
+            {/* Glass reflection over the display, so the numbers sit under it. */}
+            <div
+              className="pointer-events-none absolute rounded-full"
+              style={{
+                left: `${50 - GLASS_R_PCT}%`,
+                top: `${50 - GLASS_R_PCT}%`,
+                width: `${GLASS_R_PCT * 2}%`,
+                height: `${GLASS_R_PCT * 2}%`,
+                background:
+                  "linear-gradient(135deg, rgb(255 255 255 / 0.09) 0%, rgb(255 255 255 / 0.04) 44%, transparent 45%)",
+              }}
+            />
           </div>
           <p className="mt-6 text-center text-xs text-slate-500">
             Example runner: 50:00 10K, even pace.
