@@ -9,6 +9,7 @@
 import { useMemo } from "react";
 import type { Segment, RouteInsights, ChallengeRating } from "@/types/elevation";
 import { computeTotalTime, formatTime } from "@/utils/difficulty";
+import { terrainDistances } from "@/features/elevation/utils";
 
 interface TerrainBreakdownProps {
   insights: RouteInsights;
@@ -81,32 +82,45 @@ export function TerrainBreakdown({
   segments,
   basePaceMinPerKm,
 }: TerrainBreakdownProps) {
-  const totalDist = insights.totalDistance || 1;
+  // Prefer the segments' real lengths: the API's per-type totals count a
+  // short final split as a full one, so they can exceed the route distance.
+  const terrain =
+    segments.length > 0
+      ? terrainDistances(segments)
+      : {
+          uphill: insights.uphillDistance,
+          flat: insights.flatDistance,
+          downhill: insights.downhillDistance,
+        };
+  const totalDist =
+    segments.length > 0
+      ? terrain.uphill + terrain.flat + terrain.downhill || 1
+      : insights.totalDistance || 1;
 
   const terrainItems: BarSegment[] = [
     {
       key: "uphill",
       label: "Uphill",
-      value: insights.uphillDistance,
-      pct: (insights.uphillDistance / totalDist) * 100,
+      value: terrain.uphill,
+      pct: (terrain.uphill / totalDist) * 100,
       color: "bg-red-500",
-      display: `${insights.uphillDistance.toFixed(1)} km`,
+      display: `${terrain.uphill.toFixed(2)} km`,
     },
     {
       key: "flat",
       label: "Flat",
-      value: insights.flatDistance,
-      pct: (insights.flatDistance / totalDist) * 100,
+      value: terrain.flat,
+      pct: (terrain.flat / totalDist) * 100,
       color: "bg-gray-400",
-      display: `${insights.flatDistance.toFixed(1)} km`,
+      display: `${terrain.flat.toFixed(2)} km`,
     },
     {
       key: "downhill",
       label: "Downhill",
-      value: insights.downhillDistance,
-      pct: (insights.downhillDistance / totalDist) * 100,
+      value: terrain.downhill,
+      pct: (terrain.downhill / totalDist) * 100,
       color: "bg-green-500",
-      display: `${insights.downhillDistance.toFixed(1)} km`,
+      display: `${terrain.downhill.toFixed(2)} km`,
     },
   ];
 

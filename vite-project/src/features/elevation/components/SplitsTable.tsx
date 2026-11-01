@@ -17,6 +17,7 @@ import type {
   RacePosition,
 } from "@/types/elevation";
 import { formatTime, formatPace } from "@/utils/difficulty";
+import { formatSplitKm } from "../utils";
 
 interface SplitsTableProps {
   segments: Segment[];
@@ -111,8 +112,8 @@ export function SplitsTable({ segments, basePaceMinPerKm }: SplitsTableProps) {
                     <td className="px-4 py-2">
                       <div className="flex items-center gap-2 font-medium text-gray-800">
                         <TypeIcon type={seg.type} />
-                        KM {seg.startDistance.toFixed(0)}–
-                        {seg.endDistance.toFixed(0)}
+                        KM {formatSplitKm(seg.startDistance)}–
+                        {formatSplitKm(seg.endDistance)}
                       </div>
                     </td>
                     <td className="px-4 py-2 text-gray-700">
@@ -174,7 +175,7 @@ export function SplitsTable({ segments, basePaceMinPerKm }: SplitsTableProps) {
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2 font-medium text-gray-800">
                   <TypeIcon type={seg.type} />
-                  KM {seg.startDistance.toFixed(0)}–{seg.endDistance.toFixed(0)}
+                  KM {formatSplitKm(seg.startDistance)}–{formatSplitKm(seg.endDistance)}
                 </div>
                 <div className="text-right">
                   <div className="font-bold text-gray-800">
