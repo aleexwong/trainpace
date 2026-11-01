@@ -40,6 +40,7 @@ const DashboardV2 = lazy(() => import("./pages/DashboardV2"));
 const VdotCalculatorPage = lazy(() => import("./pages/VdotCalculatorPage"));
 const Onboarding = lazy(() => import("./pages/Onboarding"));
 const TrainingPlanPage = lazy(() => import("./pages/TrainingPlanPage"));
+const RaceSimPage = lazy(() => import("./pages/RaceSimPage"));
 const BlogList = lazy(() =>
   import("./features/blog").then((m) => ({ default: m.BlogList }))
 );
@@ -65,6 +66,7 @@ function App() {
           <Route path="/fuel/:seoSlug" element={<FuelSeoLanding />} />
           <Route path="/vdot" element={<VdotCalculatorPage />} />
           <Route path="/plan" element={<TrainingPlanPage />} />
+          <Route path="/simulate" element={<RaceSimPage />} />
           <Route path="/plan/:seoSlug" element={<PlanSeoLanding />} />
           <Route path="/race" element={<RaceIndex />} />
           <Route path="/race/:raceSlug" element={<RaceSeoLanding />} />
