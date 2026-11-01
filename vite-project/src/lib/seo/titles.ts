@@ -28,6 +28,7 @@ export const STATIC_PAGE_TITLES = {
   "/calculator": "Running Pace Calculator – VDOT Training Zones | TrainPace",
   "/vdot": "VDOT Calculator – Fitness Score & Race Times | TrainPace",
   "/plan": "Training Plan Builder – Free 5K to Marathon | TrainPace",
+  "/simulate": "Marathon Race Simulator – Pacing by Elevation | TrainPace",
   "/fuel": "Marathon Fuel Calculator – How Many Gels? | TrainPace",
   "/elevation-finder": "GPX Elevation Profile Viewer & Analyzer | TrainPace",
   "/race": "Race Prep Pages – Pacing, Fueling, Elevation | TrainPace",
@@ -38,6 +39,10 @@ export const STATIC_PAGE_TITLES = {
   "/privacy": "Privacy Policy | TrainPace",
   "/terms": "Terms of Service | TrainPace",
 } as const;
+
+/** Shared by the prerendered page and the simulator's <Helmet>. */
+export const SIMULATE_DESCRIPTION =
+  "Split-by-split marathon pacing for 15 major courses. Set a goal time and get even-effort splits adjusted for every hill on the course.";
 
 /** `seoTitle` overrides `title` for posts whose headline is too long on its own. */
 export function blogPostTitle(post: { title: string; seoTitle?: string }): string {
