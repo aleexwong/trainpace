@@ -11,17 +11,15 @@
  */
 
 import { MAPBOX_GL_VERSION } from "./config";
+import type { MapboxGl } from "./gl-types";
 
 declare global {
   interface Window {
-    // GL JS has no bundled types when loaded from the CDN.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mapboxgl: any;
+    // Loaded from the CDN, so it arrives untyped; gl-types.ts declares the
+    // subset we call.
+    mapboxgl: MapboxGl | undefined;
   }
 }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type MapboxGl = any;
 
 let loadPromise: Promise<MapboxGl> | null = null;
 
