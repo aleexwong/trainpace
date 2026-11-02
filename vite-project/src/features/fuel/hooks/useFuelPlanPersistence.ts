@@ -9,7 +9,7 @@ import { db } from "@/lib/firebase";
 import { useAuth } from "@/features/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import ReactGA from "react-ga4";
+import { trackEvent } from "@/lib/analytics";
 import type {
   RaceType,
   FuelPlanResult,
@@ -58,7 +58,7 @@ export function useFuelPlanPersistence(): UseFuelPlanPersistenceReturn {
 
       sessionStorage.setItem("pending_fuel_plan", JSON.stringify(planData));
 
-      ReactGA.event({
+      trackEvent({
         category: "Fuel Planner",
         action: "Guest Save Redirect",
         label: params.raceType,
@@ -102,7 +102,7 @@ export function useFuelPlanPersistence(): UseFuelPlanPersistenceReturn {
           description: "Your fuel plan is now in your dashboard.",
         });
 
-        ReactGA.event({
+        trackEvent({
           category: "Fuel Planner",
           action: "Saved Plan to Dashboard",
           label: params.raceType,

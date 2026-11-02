@@ -118,7 +118,16 @@ export function calculateTrainingPaces(
 
   // Calculate Yasso 800s
   const raceTimeMinutes = raceTimeSeconds / 60;
-  const pacePerKm = raceTimeMinutes / raceDistance;
+  // raceDistance arrives in the caller's units, but the marathon constant
+  // below is in km — so a race entered in miles was divided by a mile count
+  // and then multiplied by a km distance, projecting a marathon time out by
+  // the 1.609 mile/km factor. The same 10K run entered as 10 km and as
+  // 6.2 miles gave Yasso targets of 2:48 and 4:32. Normalise to km first.
+  // A plain factor is used rather than convertDistance(), which snaps to
+  // common race distances and rounds — lossy, and wrong for this maths.
+  const raceDistanceKm =
+    units === "miles" ? raceDistance * 1.609344 : raceDistance;
+  const pacePerKm = raceTimeMinutes / raceDistanceKm;
   const marathonDistance = 42.195;
   const projectedMarathonTime = pacePerKm * marathonDistance;
 
