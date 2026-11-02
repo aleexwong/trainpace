@@ -114,7 +114,7 @@ function renderBlock(block) {
 function renderDoc(doc) {
   return React.createElement(
     "div",
-    null,
+    { "data-prerender": true },
     doc.blocks.map((block) => renderBlock(block))
   );
 }

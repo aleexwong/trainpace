@@ -52,7 +52,15 @@ export function useRoutes(userId: string | undefined) {
           filename: data.filename,
           safeFilename: data.safeFilename,
           uploadedAt: data.uploadedAt,
-          metadata: data.metadata,
+          // Upload-time gain sums every GPS wiggle; once the route has been
+          // analysed, show the analysis figure so the dashboard and the
+          // results page agree.
+          metadata: {
+            ...data.metadata,
+            elevationGain:
+              data.staticRouteData?.totalElevationGain ??
+              data.metadata?.elevationGain,
+          },
           thumbnailPoints: data.thumbnailPoints || [],
           slug: data.slug,
           shortId: data.shortId,

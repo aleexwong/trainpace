@@ -1,2 +1,8 @@
 # HyperFrames video project directories
 trainpace-*/
+
+# Isolated git worktrees created for subagents. These are full checkouts of
+# the repo inside the repo — a single session produced about 1GB of them — and
+# must never be committed. Note this ignores only the worktrees directory:
+# the rest of .claude/ (skills, agent definitions, LESSONS.md) is tracked.
+.claude/worktrees/

@@ -89,3 +89,31 @@ export function computeCumulativeGain<T extends ProfileLike>(
     return { distanceKm: p.distanceKm, gain: running };
   });
 }
+
+/**
+ * Format a split boundary in km without collapsing half-km splits:
+ * 0.5 → "0.5", 1 → "1", 3.41 → "3.41". `toFixed(0)` turned 0–0.5 and
+ * 0.5–1.0 into "0–1" and "1–1", so labels repeated.
+ */
+export function formatSplitKm(km: number): string {
+  return String(Math.round(km * 100) / 100);
+}
+
+type TerrainSegment = {
+  startDistance: number;
+  endDistance: number;
+  type: "uphill" | "downhill" | "flat";
+};
+
+/**
+ * Uphill / flat / downhill distance summed from each segment's real length,
+ * so the three always add up to the route distance (a short final split
+ * counts as its actual length, not a full segment).
+ */
+export function terrainDistances(segments: TerrainSegment[]) {
+  const totals = { uphill: 0, flat: 0, downhill: 0 };
+  for (const s of segments) {
+    totals[s.type] += Math.max(0, s.endDistance - s.startDistance);
+  }
+  return totals;
+}
