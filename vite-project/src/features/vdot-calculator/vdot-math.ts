@@ -42,6 +42,14 @@ export function calculateVdot(
   distanceMeters: number,
   timeSeconds: number
 ): number {
+  // Nonsense input used to produce a plausible-looking finite number rather
+  // than an obviously bad one: a negative time returned about -2.85, and a
+  // zero distance about -4.83 (the -4.60 constant term in oxygenCost). A
+  // negative VDOT silently poisons every pace and prediction derived from it,
+  // so reject it at the door instead.
+  if (!Number.isFinite(distanceMeters) || !Number.isFinite(timeSeconds)) return NaN;
+  if (distanceMeters <= 0 || timeSeconds <= 0) return NaN;
+
   const timeMinutes = timeSeconds / 60;
   const velocity = distanceMeters / timeMinutes; // meters per minute
 
@@ -150,7 +158,10 @@ export function velocityToPacePerMile(velocity: number): number {
  * @returns Formatted string (HH:MM:SS or MM:SS or M:SS)
  */
 export function formatTime(totalSeconds: number): string {
-  const rounded = Math.round(totalSeconds);
+  // JS keeps the dividend's sign through %, so a negative input formatted as
+  // "-1:-5" rather than anything readable. Clamp at zero: a negative duration
+  // has no sensible rendering, and a broken string is worse than 0:00.
+  const rounded = Math.max(0, Math.round(totalSeconds)) || 0;
   const hours = Math.floor(rounded / 3600);
   const minutes = Math.floor((rounded % 3600) / 60);
   const seconds = rounded % 60;
@@ -169,7 +180,8 @@ export function formatTime(totalSeconds: number): string {
  * @returns Formatted pace string
  */
 export function formatPace(paceSeconds: number): string {
-  const rounded = Math.round(paceSeconds);
+  // Same sign problem as formatTime: "-1:-5" for a negative pace.
+  const rounded = Math.max(0, Math.round(paceSeconds)) || 0;
   const minutes = Math.floor(rounded / 60);
   const seconds = rounded % 60;
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;

@@ -335,10 +335,11 @@ describe("formatTime", () => {
     expect(formatTime(3599.6)).toBe("1:00:00");
   });
 
-  it.fails(
-    "BUG (vdot-math.ts:152-164): negative durations should be rejected or normalized, not produce a malformed string. " +
-      "formatTime(-5) currently returns '-1:-5' (negative hours-derived minutes concatenated with a bare negative " +
-      "seconds value) because Math.floor/`%` on a negative number in JS does not behave like a magnitude split. " +
+  // Regression guard: formatTime used to return "-1:-5" for a negative input,
+  // because JS keeps the dividend's sign through % so Math.floor and % do not
+  // split a negative number into a magnitude. Now clamped at zero.
+  it(
+    "normalizes a negative duration to zero rather than emitting a malformed string. " +
       "Expressing the correct expectation here: a negative duration should format as if it were zero, or throw.",
     () => {
       expect(formatTime(-5)).toBe("0:00");
@@ -368,10 +369,9 @@ describe("formatPace", () => {
     expect(formatPace(90.4)).toBe("1:30"); // rounds to 90 -> 1:30
   });
 
-  it.fails(
-    "BUG (vdot-math.ts:171-176): negative paces produce a malformed string for the same reason as formatTime " +
-      "(JS `%` retains the dividend's sign). formatPace(-5) currently returns '-1:-5' instead of throwing or " +
-      "normalizing to zero.",
+  // Regression guard: same sign problem as formatTime.
+  it(
+    "normalizes a negative pace to zero rather than emitting a malformed string",
     () => {
       expect(formatPace(-5)).toBe("0:00");
     }
@@ -383,10 +383,11 @@ describe("calculateVdot - edge cases", () => {
     expect(Number.isFinite(calculateVdot(5000, 0))).toBe(false);
   });
 
-  it.fails(
-    "BUG (vdot-math.ts:41-52): negative time should be invalid input (throw, NaN, or non-finite), but the " +
-      "function silently returns a finite, negative pseudo-VDOT (~-2.85 for a 5K in -20:00) because negative " +
-      "velocity and negative timeMinutes both flow through the polynomial/exponential formulas without any " +
+  // Regression guard: a negative time used to return a finite ~-2.85 rather
+  // than anything obviously invalid, and a negative VDOT silently poisons
+  // every pace and prediction derived from it.
+  it(
+    "rejects a negative race time instead of returning a plausible negative VDOT. " +
       "domain check. A negative VDOT is never a real physiological value.",
     () => {
       const vdot = calculateVdot(5000, -1200);
@@ -395,10 +396,10 @@ describe("calculateVdot - edge cases", () => {
     }
   );
 
-  it.fails(
-    "BUG (vdot-math.ts:41-52): zero distance should be invalid input, but the function silently returns a " +
-      "finite, negative pseudo-VDOT (~-4.83) rather than throwing or returning something clearly non-finite, " +
-      "because velocity=0 still produces a valid-looking (negative) oxygenCost via the -4.6 constant term.",
+  // Regression guard: zero distance used to return a finite ~-4.83 via the
+  // -4.60 constant term in oxygenCost.
+  it(
+    "rejects a zero distance instead of returning a plausible negative VDOT",
     () => {
       const vdot = calculateVdot(0, 1200);
       const isThrownOrNonFinite = !Number.isFinite(vdot);
