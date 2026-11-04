@@ -1,0 +1,73 @@
+{
+  "slug": "honolulu-marathon",
+  "name": "JAL Honolulu Marathon",
+  "city": "Honolulu",
+  "country": "Hawaii, USA",
+  "distanceKm": 42.195,
+  "month": "December",
+  "courseType": "out-and-back",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "18–27 °C",
+  "website": "https://www.honolulumarathon.org/",
+  "summary": "The JAL Honolulu Marathon is held on the second Sunday of December. It starts at Ala Moana Beach Park, runs through downtown and Waikiki, then goes around Diamond Head and out to Hawaii Kai and back. It finishes at Kapiolani Park. There is no time limit.",
+  "courseHighlights": [
+    "Start on Ala Moana Boulevard by Ala Moana Beach Park",
+    "Aloha Tower, Chinatown and Iolani Palace, miles 2–3",
+    "Waikiki and Kalakaua Avenue, mile 5",
+    "Diamond Head, miles 6–9 and again near mile 24",
+    "Finish at Kapiolani Park"
+  ],
+  "paceStrategy": {
+    "summary": "The race starts early and warms up quickly. The official course page mentions short climbs near Diamond Head and steep side roads near Niu Valley, so expect some rises. Start slowly and drink often in the warm, humid air.",
+    "segments": [
+      {
+        "section": "mile 1–5",
+        "terrain": "Harbor, downtown and Waikiki",
+        "advice": "Start easy; it is crowded and warm."
+      },
+      {
+        "section": "mile 6–9",
+        "terrain": "Around the Honolulu Zoo and Kapiolani Park, then up and around Diamond Head",
+        "advice": "Run the climbs by effort."
+      },
+      {
+        "section": "mile 10–19",
+        "terrain": "Kalanianaole Highway, Niu Valley, then the Hawaii Kai loop",
+        "advice": "Settle into a steady pace and drink at every station."
+      },
+      {
+        "section": "mile 20–26.2",
+        "terrain": "Return along Kalanianaole Highway, Kahala, Diamond Head again, then Waikiki to the finish",
+        "advice": "Expect heat and the Diamond Head rise near mile 24; save some energy."
+      }
+    ]
+  },
+  "fuelingNotes": "The official page does not list aid stations. In warm, humid conditions, drink at every aid station and take gels with water. Plan a gel before the first Diamond Head climb around mile 6.",
+  "tips": [
+    "The race starts early in the morning, so plan transport and a warm-up",
+    "Temperatures rise from about 18 °C to 27 °C, so dress light",
+    "Diamond Head is passed twice (miles 6–9 and near mile 24)",
+    "There is no time limit, so you can finish at your own pace"
+  ],
+  "faq": [
+    {
+      "question": "Is the Honolulu Marathon hilly?",
+      "answer": "It is relatively hilly for a marathon. The official page mentions short uphill grades near Diamond Head and steep side roads in the Niu Valley area."
+    },
+    {
+      "question": "Where does the Honolulu Marathon start and finish?",
+      "answer": "It starts next to Ala Moana Beach Park and finishes near the Kapiolani Park Bandstand."
+    },
+    {
+      "question": "When is the Honolulu Marathon held?",
+      "answer": "It is held on the second Sunday of December."
+    }
+  ],
+  "sources": [
+    "https://www.honolulumarathon.org/key-information/course-description",
+    "https://en.wikipedia.org/wiki/Honolulu_Marathon"
+  ],
+  "checked": "2026-10"
+}

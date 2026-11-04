@@ -33,20 +33,26 @@
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --spring: cubic-bezier(0.34, 1.4, 0.5, 1);
-  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+  /* Reserved for genuinely code-like text (tool names, server handles in the
+     agent shot). Numeric readouts use --display + tabular-nums instead: the
+     old stack resolved to the generic monospace off macOS, which reads as a
+     third typeface and runs wide enough to truncate the plan cards. */
+  --mono: ui-monospace, "SF Mono", Menlo, "Cascadia Mono", "Segoe UI Mono",
+    Consolas, "Roboto Mono", "JetBrains Mono", "DejaVu Sans Mono", monospace;
+  --display: "Space Grotesk", system-ui, sans-serif;
   --sh-sm: 0 1px 2px color-mix(in oklch, var(--ink) 6%, transparent);
   --sh-md: 0 1px 2px color-mix(in oklch, var(--ink) 5%, transparent),
     0 16px 34px -20px color-mix(in oklch, var(--ink) 30%, transparent);
 
   color: var(--ink);
-  font-family: "DM Sans", sans-serif;
+  font-family: "DM Sans", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 .tpfs h1,
 .tpfs h2,
 .tpfs h3 {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--display);
   letter-spacing: -0.025em;
 }
 
@@ -102,11 +108,11 @@
   color: var(--accent-deep);
 }
 .tpfs .mono {
-  font-family: var(--mono);
+  font-family: var(--display);
   font-variant-numeric: tabular-nums;
 }
 .tpfs .numeral {
-  font-family: "Space Grotesk";
+  font-family: var(--display);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.03em;
 }
@@ -201,7 +207,8 @@
   transform: scale(1.3);
 }
 .tpfs .pl-pace {
-  font-family: var(--mono);
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
   font-weight: 600;
   font-size: 0.94rem;
   color: var(--ink);
@@ -302,7 +309,7 @@
   justify-content: center;
 }
 .tpfs .vd-center .score {
-  font-family: "Space Grotesk";
+  font-family: var(--display);
   font-weight: 700;
   font-size: 3.4rem;
   line-height: 0.9;
@@ -337,7 +344,7 @@
   background: var(--accent);
 }
 .tpfs .vd-title {
-  font-family: "Space Grotesk";
+  font-family: var(--display);
   font-weight: 600;
   font-size: 1.02rem;
   margin-bottom: 8px;
@@ -385,7 +392,8 @@
   white-space: nowrap;
 }
 .tpfs .vd-pred .t {
-  font-family: var(--mono);
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
   font-weight: 600;
   font-size: 1rem;
   color: var(--ink);
@@ -409,7 +417,7 @@
   flex-wrap: wrap;
 }
 .tpfs .el-name {
-  font-family: "Space Grotesk";
+  font-family: var(--display);
   font-weight: 600;
   font-size: 1.02rem;
 }
@@ -522,7 +530,8 @@
   opacity: 1;
 }
 .tpfs .el-tip .mi {
-  font-family: var(--mono);
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
   font-weight: 600;
 }
 .tpfs .el-tip .row {
@@ -560,7 +569,7 @@
   color: var(--ink-4);
 }
 .tpfs .el-stat .v {
-  font-family: "Space Grotesk";
+  font-family: var(--display);
   font-weight: 700;
   font-size: 1.5rem;
   margin-top: 3px;
@@ -602,7 +611,7 @@
   gap: 8px;
 }
 .tpfs .fp-num .n {
-  font-family: "Space Grotesk";
+  font-family: var(--display);
   font-weight: 700;
   font-size: 3.2rem;
   line-height: 0.9;
@@ -981,7 +990,7 @@
   }
 }
 .tpfs .ac-zrow .v {
-  font-family: var(--mono);
+  font-family: var(--display);
   font-variant-numeric: tabular-nums;
   font-size: 0.72rem;
   color: var(--ink);
@@ -1011,7 +1020,7 @@
 }
 .tpfs .ac-stat b {
   display: block;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: var(--display);
   font-size: 1rem;
   color: var(--ink);
   letter-spacing: -0.02em;
@@ -1068,7 +1077,7 @@
   flex-wrap: wrap;
 }
 .tpfs .tp-title {
-  font-family: "Space Grotesk";
+  font-family: var(--display);
   font-weight: 600;
   font-size: 1.05rem;
 }
@@ -1142,7 +1151,8 @@
 .tpfs .tp-phase-meta .wk {
   font-size: 0.64rem;
   color: var(--ink-4);
-  font-family: var(--mono);
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
 }
 @container stage (min-width: 640px) {
   .tpfs .tp-phase-meta .name {
@@ -1214,7 +1224,8 @@
   font-size: 0.7rem;
   color: var(--ink-3);
   margin-top: 3px;
-  font-family: var(--mono);
+  font-family: var(--display);
+  font-variant-numeric: tabular-nums;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

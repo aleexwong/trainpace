@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { Search } from "lucide-react";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -197,7 +198,7 @@ export default function RaceIndex() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-white to-orange-50 px-4 sm:px-6 py-10">
       <Helmet>
-        <title>Race Prep Pages - Pacing, Fueling, Elevation | TrainPace</title>
+        <title>{STATIC_PAGE_TITLES["/race"]}</title>
         <meta
           name="description"
           content="Race prep pages for popular running events. Get pacing targets, fueling basics, and course elevation strategy using TrainPace free tools."

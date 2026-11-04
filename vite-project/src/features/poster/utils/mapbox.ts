@@ -1,47 +1,9 @@
 /**
  * Poster Feature - Mapbox Utilities
+ *
+ * GL JS loading and request metering are shared app-wide (@/lib/mapbox); this
+ * module keeps only the poster-specific viewport maths.
  */
-
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mapboxgl: any;
-  }
-}
-
-// Load Mapbox GL JS dynamically
-let mapboxLoaded = false;
-let mapboxLoadPromise: Promise<void> | null = null;
-
-export const loadMapbox = (): Promise<void> => {
-  if (mapboxLoaded) return Promise.resolve();
-  if (mapboxLoadPromise) return mapboxLoadPromise;
-
-  mapboxLoadPromise = new Promise((resolve, reject) => {
-    if (window.mapboxgl) {
-      mapboxLoaded = true;
-      resolve();
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js";
-    script.onload = () => {
-      mapboxLoaded = true;
-      resolve();
-    };
-    script.onerror = reject;
-
-    const link = document.createElement("link");
-    link.href = "https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css";
-    link.rel = "stylesheet";
-
-    document.head.appendChild(link);
-    document.head.appendChild(script);
-  });
-
-  return mapboxLoadPromise;
-};
 
 /**
  * Calculate zoom level for given bounds and container dimensions

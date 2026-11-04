@@ -5,20 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Favicon and Icons -->
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Train Pace" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Display / brand fonts for animated feature shots -->
+    <!-- Brand fonts: DM Sans (body) + Space Grotesk (headings).
+         The DM Sans `1,...` axis loads the real italic face — `font-synthesis: none`
+         in index.css means dropping it leaves italic text rendering upright. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Space+Grotesk:wght@400..700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Prerendered page copy (prerender.jsx) is classless text for crawlers.
+         Hide it so JS visitors don't see it flash before React replaces #root;
+         no-JS visitors still get it via the noscript override. -->
+    <style>#root > [data-prerender] { visibility: hidden; }</style>
+    <noscript><style>#root > [data-prerender] { visibility: visible; }</style></noscript>
 
     <!-- SEO tags are injected by prerender.jsx during build -->
   </head>

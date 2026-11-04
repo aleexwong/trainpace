@@ -24,7 +24,7 @@ import type {
 
 // ── Plan length by race & fitness ──────────────────────────────────────────
 
-const PLAN_WEEKS: Record<GoalRace, Record<FitnessLevel, number>> = {
+export const PLAN_WEEKS: Record<GoalRace, Record<FitnessLevel, number>> = {
   "5K": { beginner: 8, intermediate: 10, advanced: 12 },
   "10K": { beginner: 10, intermediate: 12, advanced: 14 },
   "Half Marathon": { beginner: 12, intermediate: 14, advanced: 16 },
@@ -33,7 +33,7 @@ const PLAN_WEEKS: Record<GoalRace, Record<FitnessLevel, number>> = {
 
 // ── Phase allocation (fractions of total weeks) ───────────────────────────
 
-function buildPhaseMap(
+export function buildPhaseMap(
   totalWeeks: number,
   race: GoalRace
 ): { phase: TrainingPhase; weeks: number }[] {
@@ -425,6 +425,7 @@ export function generateTrainingPlan(inputs: PlanGeneratorInputs): TrainingPlan 
     : `${raceName} Plan — ${capitalize(currentFitness)}`;
 
   return {
+    id: newPlanId(),
     name,
     goalRace,
     raceDate,
@@ -436,6 +437,21 @@ export function generateTrainingPlan(inputs: PlanGeneratorInputs): TrainingPlan 
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────
+
+/**
+ * Client-minted Firestore document id, assigned at generation time so a plan
+ * has a stable identity before it is ever saved. This is what makes saving
+ * idempotent: the plan always writes to `user_training_plans/{plan.id}`, so
+ * clicking Save twice (or an auto-save racing a manual one after sign-in)
+ * updates one doc instead of creating duplicates.
+ */
+export function newPlanId(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  // Non-secure-context / older-runtime fallback (prerender, embedded webviews).
+  return `plan_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
 
 function capitalize(s: string) {
   return s.charAt(0).toUpperCase() + s.slice(1);

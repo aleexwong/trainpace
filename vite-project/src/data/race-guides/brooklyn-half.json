@@ -1,0 +1,78 @@
+{
+  "slug": "brooklyn-half",
+  "name": "RBC Brooklyn Half",
+  "city": "Brooklyn, New York City",
+  "country": "New York, USA",
+  "distanceKm": 21.0975,
+  "month": "May",
+  "courseType": "point-to-point",
+  "terrain": "net downhill",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.nyrr.org/",
+  "summary": "The RBC Brooklyn Half is run by New York Road Runners and started in 1983. It goes from Prospect Park to the Coney Island Boardwalk. Wikipedia describes it as the largest half marathon in the United States by number of runners.",
+  "courseHighlights": [
+    "Start on Washington Avenue next to the Brooklyn Botanic Garden",
+    "A full loop of Prospect Park, counterclockwise",
+    "About 5.5 miles south on Ocean Parkway",
+    "Surf Avenue in Coney Island",
+    "Finish on the wooden Coney Island Boardwalk"
+  ],
+  "paceStrategy": {
+    "summary": "The hills are in Prospect Park, mostly uphill on the east side at miles 4–5 and mostly downhill on the west side at miles 6–7. Ocean Parkway is flat and wide. Hold back in the park and use the flat road to run faster.",
+    "segments": [
+      {
+        "section": "mile 1–4",
+        "terrain": "Washington Avenue, Grand Army Plaza and the start of the park loop",
+        "advice": "Run a little slower than goal pace and stay patient in the crowd."
+      },
+      {
+        "section": "mile 4–5",
+        "terrain": "East side of Prospect Park, mostly uphill",
+        "advice": "Run by effort and accept a slower mile."
+      },
+      {
+        "section": "mile 6–7",
+        "terrain": "West side of Prospect Park, mostly downhill",
+        "advice": "Let the pace rise a little without pounding your legs."
+      },
+      {
+        "section": "mile 7–12",
+        "terrain": "Ocean Parkway, predominantly flat",
+        "advice": "Settle into goal pace here and build if you feel strong."
+      },
+      {
+        "section": "mile 12–13.1",
+        "terrain": "Surf Avenue, then the Coney Island Boardwalk",
+        "advice": "Keep a steady effort; the last 200 metres are on wood slats."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found in the sources we checked. Take a gel before the park hills if you use them, and check the current race guide for water points.",
+  "tips": [
+    "Practise running easy on hills so you reach Ocean Parkway with fresh legs",
+    "Plan for warm, humid conditions; Wikipedia notes two runners died in 2022 and 2025 from heat and exertion, so drink and slow down if you feel unwell",
+    "The race is point to point, so plan how you will get home from Coney Island",
+    "Check the NYRR race page each year for the current route and start details"
+  ],
+  "faq": [
+    {
+      "question": "Is the Brooklyn Half course flat?",
+      "answer": "Only after Prospect Park. The park section (about the first 7 miles) holds the climbs. Ocean Parkway, about 5.5 miles, is predominantly flat."
+    },
+    {
+      "question": "Where does the Brooklyn Half finish?",
+      "answer": "It finishes on the Coney Island Boardwalk. Runners join the boardwalk at W 10th Street, and the last 200 metres are on its wood surface."
+    },
+    {
+      "question": "When is the Brooklyn Half held?",
+      "answer": "It is usually held on the third Saturday in May."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Brooklyn_Half_Marathon",
+    "https://runnersconnect.net/race-guides/rbc-brooklyn-half-pace-calculator/"
+  ],
+  "checked": "2026-10"
+}

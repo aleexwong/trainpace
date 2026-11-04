@@ -5,8 +5,10 @@
 
 import { useRef, useEffect, useState, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { consumeMapboxBudget, loadMapboxGl } from "@/lib/mapbox";
+import type { MapboxMap, MapboxMarker } from "@/lib/mapbox/gl-types";
 import { type GpxPoint, type PosterData, MAPBOX_TOKEN } from "../types";
-import { loadMapbox, calculateZoom, calculateCenter } from "../utils/mapbox";
+import { calculateZoom, calculateCenter } from "../utils/mapbox";
 
 interface UseMapboxProps {
   containerRef: React.RefObject<HTMLDivElement>;
@@ -18,8 +20,7 @@ interface UseMapboxProps {
 
 interface UseMapboxReturn {
   mapReady: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  mapRef: React.MutableRefObject<any>;
+  mapRef: React.MutableRefObject<MapboxMap | null>;
   getMapCanvas: () => HTMLCanvasElement | null;
   waitForMapReady: () => Promise<void>;
 }
@@ -31,10 +32,8 @@ export function useMapbox({
   posterData,
   onMapUpdate,
 }: UseMapboxProps): UseMapboxReturn {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const mapRef = useRef<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const markersRef = useRef<any[]>([]);
+  const mapRef = useRef<MapboxMap | null>(null);
+  const markersRef = useRef<MapboxMarker[]>([]);
   const { toast } = useToast();
 
   const [mapReady, setMapReady] = useState(false);
@@ -57,16 +56,32 @@ export function useMapbox({
   useEffect(() => {
     if (!containerRef.current || !MAPBOX_TOKEN || !displayPoints.length) return;
 
+    let cancelled = false;
+
     const initializeMap = async () => {
       try {
-        await loadMapbox();
+        const mapboxgl = await loadMapboxGl();
+        if (cancelled) return;
+
+        // The poster map is a full GL session like any other, so it takes a
+        // slot from the shared budget. Spent here rather than at the top of
+        // the effect so a mount that is torn down first costs nothing.
+        const decision = consumeMapboxBudget("gl-session");
+        if (!decision.allowed) {
+          toast({
+            title: "Map paused",
+            description:
+              "Too many map loads in a short window. Wait a moment and try again.",
+            variant: "destructive",
+          });
+          return;
+        }
 
         if (mapRef.current) {
           mapRef.current.remove();
           mapRef.current = null;
         }
 
-        const mapboxgl = window.mapboxgl;
         mapboxgl.accessToken = MAPBOX_TOKEN;
 
         // Calculate center and proper zoom from bounds
@@ -104,9 +119,13 @@ export function useMapbox({
           preserveDrawingBuffer: true, // CRITICAL for canvas export
         });
 
-        mapRef.current.on("load", () => {
+        // Captured once: the cleanup below nulls mapRef.current, and these
+        // handlers fire asynchronously after that.
+        const map = mapRef.current;
+
+        map.on("load", () => {
           // Add route line
-          mapRef.current.addSource("route", {
+          map.addSource("route", {
             type: "geojson",
             data: {
               type: "Feature",
@@ -118,7 +137,7 @@ export function useMapbox({
             },
           });
 
-          mapRef.current.addLayer({
+          map.addLayer({
             id: "route",
             type: "line",
             source: "route",
@@ -137,7 +156,7 @@ export function useMapbox({
         });
 
         // Set up move end listener
-        mapRef.current.on("moveend", () => {
+        map.on("moveend", () => {
           onMapUpdate?.();
         });
       } catch (error) {
@@ -149,6 +168,7 @@ export function useMapbox({
     initializeMap();
 
     return () => {
+      cancelled = true;
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
@@ -159,8 +179,9 @@ export function useMapbox({
   // Update map style when template changes
   useEffect(() => {
     if (!mapRef.current || !mapReady) return;
+    const map = mapRef.current;
 
-    const currentStyle = mapRef.current.getStyle();
+    const currentStyle = map.getStyle();
     const currentStyleUrl = currentStyle?.sprite
       ?.split("/styles/")[1]
       ?.split("/")[0];
@@ -176,21 +197,21 @@ export function useMapbox({
     // Only reload style if it actually changed
     if (currentStyleUrl !== newStyleUrl) {
       console.log("🔄 Style changing to:", currentMapStyle);
-      mapRef.current.setStyle(currentMapStyle);
+      map.setStyle(currentMapStyle);
 
       // Re-add route after style loads
-      mapRef.current.once("styledata", () => {
+      map.once("styledata", () => {
         console.log(
           "🎨 Style loaded, re-adding route with color:",
           posterData.routeColor
         );
 
-        if (mapRef.current.getSource("route")) {
-          mapRef.current.removeLayer("route");
-          mapRef.current.removeSource("route");
+        if (map.getSource("route")) {
+          map.removeLayer("route");
+          map.removeSource("route");
         }
 
-        mapRef.current.addSource("route", {
+        map.addSource("route", {
           type: "geojson",
           data: {
             type: "Feature",
@@ -202,7 +223,7 @@ export function useMapbox({
           },
         });
 
-        mapRef.current.addLayer({
+        map.addLayer({
           id: "route",
           type: "line",
           source: "route",
@@ -219,9 +240,9 @@ export function useMapbox({
         console.log("✅ Route layer added after style change");
 
         // Wait for idle to ensure everything is rendered
-        mapRef.current.once("idle", () => {
+        map.once("idle", () => {
           console.log("✅ Map idle after style change");
-          mapRef.current.fire("moveend");
+          map.fire("moveend");
         });
       });
     } else {
@@ -237,26 +258,27 @@ export function useMapbox({
       console.log("⏳ Color update blocked: map not ready");
       return;
     }
+    const map = mapRef.current;
 
     // Short delay to ensure style change effect completed if triggered
     const timer = setTimeout(() => {
       // Wait for style to be fully loaded before updating paint properties
-      if (!mapRef.current.isStyleLoaded()) {
+      if (!map.isStyleLoaded()) {
         console.log("⏳ Style not loaded, skipping color update");
         return;
       }
 
       // Check if layer exists before updating
-      if (mapRef.current.getLayer("route")) {
+      if (map.getLayer("route")) {
         console.log("🎨 Updating route color to:", posterData.routeColor);
-        mapRef.current.setPaintProperty(
+        map.setPaintProperty(
           "route",
           "line-color",
           posterData.routeColor
         );
 
         // Force a repaint to ensure the color change is visible
-        mapRef.current.triggerRepaint();
+        map.triggerRepaint();
       } else {
         console.log("⚠️ Route layer not found for color update");
       }

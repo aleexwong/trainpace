@@ -1,0 +1,70 @@
+{
+  "slug": "richmond-marathon",
+  "name": "Allianz Richmond Marathon",
+  "city": "Richmond",
+  "country": "Virginia, USA",
+  "distanceKm": 42.195,
+  "month": "November",
+  "courseType": "point-to-point",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://richmondmarathon.org/",
+  "summary": "The Allianz Richmond Marathon is held in mid-November and is known for its downhill finish. It starts at 6th and Broad Streets downtown and finishes at Brown's Island on the James River. The course passes Monument Avenue and Riverside Drive.",
+  "courseHighlights": [
+    "Start at 6th and Broad Streets",
+    "Virginia Commonwealth University area and Monument Avenue",
+    "Riverside Drive, running along the waterfront",
+    "Street art, river views and parks",
+    "Downhill finish at Brown's Island, with a party on the riverfront"
+  ],
+  "paceStrategy": {
+    "summary": "Runner reviews describe rolling hills, with a tough climb up to Forest Hill after the first bridge. Pace the first 9 to 10 miles with care and save energy for the downhill finish.",
+    "segments": [
+      {
+        "section": "mile 1–10",
+        "terrain": "Downtown, VCU area and Monument Avenue, then the first bridge and climb up to Forest Hill (runner reviews)",
+        "advice": "Hold goal pace or slightly slower and stay controlled on the climb."
+      },
+      {
+        "section": "mile 10–20",
+        "terrain": "Riverside Drive and rolling roads",
+        "advice": "Keep an even effort and use the fun zones for energy."
+      },
+      {
+        "section": "mile 20–26.2",
+        "terrain": "Return downtown towards the river",
+        "advice": "Save energy for the downhill finish and be careful on the final descent."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site mentions junk food stops, wet washcloths and pickle juice on the course. Check the course map page for aid-station locations.",
+  "tips": [
+    "Be careful on the downhill finish: a reviewer notes that some runners fell near the end",
+    "The finish area is crowded, so agree on a meeting point with friends",
+    "Registration is limited and the marathon has sold out; check the official site for the current status",
+    "The weather can be warm for November, so dress in layers you can remove"
+  ],
+  "faq": [
+    {
+      "question": "Is the Richmond Marathon flat?",
+      "answer": "No. Runner reviews describe rolling hills, and the official site stresses the downhill finish. No official elevation number was found."
+    },
+    {
+      "question": "When is the Richmond Marathon held?",
+      "answer": "It is held on a Saturday in mid-November."
+    },
+    {
+      "question": "Where does the Richmond Marathon finish?",
+      "answer": "It finishes at Brown's Island on the James River, near 5th and Tredegar Streets."
+    }
+  ],
+  "sources": [
+    "https://www.richmondmarathon.org/race-weekend/course-information/",
+    "https://richmondmarathon.org/races/marathon/",
+    "https://en.wikipedia.org/wiki/Richmond_Marathon",
+    "https://raceraves.com/races/allianz-richmond-marathon/"
+  ],
+  "checked": "2026-10"
+}

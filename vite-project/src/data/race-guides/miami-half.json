@@ -1,0 +1,69 @@
+{
+  "slug": "miami-half",
+  "name": "Life Time Miami Half Marathon",
+  "city": "Miami",
+  "country": "Florida, USA",
+  "distanceKm": 21.0975,
+  "month": "January",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.themiamimarathon.com/half-marathon/",
+  "summary": "The Life Time Miami Half Marathon is run with the Miami Marathon on the same course until a breakaway point, then finishes at the same line at Bayfront Park. The organisers call it an almost all-flat course across Miami and Miami Beach, with views of the city and the ocean. The only rises are a few bridges.",
+  "courseHighlights": [
+    "Start at 601 Biscayne Boulevard, in front of the Kaseya Center",
+    "MacArthur Causeway bridge a quarter mile into the race",
+    "Miami Beach and ocean views",
+    "Venetian Causeway on the way back to the mainland",
+    "Finish at Bayfront Park"
+  ],
+  "paceStrategy": {
+    "summary": "The race site says Miami and Miami Beach are at sea level with no noticeable elevation changes, except for a few bridges. Keep an even pace and take it easy up the bridges, where the climb comes early.",
+    "segments": [
+      {
+        "section": "mile 0–3",
+        "terrain": "Biscayne Boulevard, MacArthur Causeway bridge and the approach to Miami Beach",
+        "advice": "Go up the first bridge at an easy effort and hold back from the opening crowd."
+      },
+      {
+        "section": "mile 3–8",
+        "terrain": "Flat Miami Beach streets",
+        "advice": "Settle into goal pace and take fuel near mile 7."
+      },
+      {
+        "section": "mile 8–13.1",
+        "terrain": "Venetian Causeway with a small final rise, then flat mainland to Bayfront Park",
+        "advice": "Keep steady over the causeway and push over the last mile."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site says aid stations start at mile 1.5 and appear about every mile, with water and Gatorade Endurance. Neversecond gels are at aid station F (about mile 7).",
+  "tips": [
+    "Use the aid station at about mile 7 if you take Neversecond gels",
+    "Take note of the 'watch your step' list on the race site, including a narrow on-ramp near mile 0.2 and a sharp right turn near mile 3.6",
+    "Check the course map for the breakaway point where the half marathon separates from the marathon",
+    "If you signed up for the full marathon but drop to the half, you receive a half marathon finisher's medal"
+  ],
+  "faq": [
+    {
+      "question": "Is the Miami Half Marathon flat?",
+      "answer": "Almost. The race site calls it almost all-flat. Miami and Miami Beach are at sea level, and a few bridges give very slight inclines."
+    },
+    {
+      "question": "Where does the Miami Half Marathon start and finish?",
+      "answer": "It starts at 601 Biscayne Blvd in front of the Kaseya Center and finishes at Bayfront Park, the same finish as the marathon."
+    },
+    {
+      "question": "When is the Miami Half Marathon held?",
+      "answer": "It is held on a Sunday in January."
+    }
+  ],
+  "sources": [
+    "https://www.themiamimarathon.com/half-marathon-course/",
+    "https://www.themiamimarathon.com/aid-stations/",
+    "https://www.themiamimarathon.com/course/"
+  ],
+  "checked": "2026-10"
+}

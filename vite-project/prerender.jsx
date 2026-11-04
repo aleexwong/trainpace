@@ -1,881 +1,497 @@
 import React from "react";
 import { renderToString } from "react-dom/server";
 
-import {
-  calculatorSeoPages,
-  comparisonLinks,
-  elevationGuideSeoPages,
-  fuelSeoPages,
-  raceSeoPages,
-} from "./src/features/seo-pages/seoPages";
 import blogData from "./src/data/blog-posts.json";
-import { stripLeadingH1 } from "./src/features/blog/utils";
+import {
+  getPageDoc,
+  getPageTitle,
+  getPageDescription,
+  getSeoPage,
+  getBlogPost,
+  getPostUpdated,
+  getCanonicalPath,
+  getCourse,
+  getRaceGuide,
+  getFaqEntries,
+  BLOG_LIST_DESCRIPTION,
+  SITE_AUTHOR,
+} from "./src/lib/llm/page-docs";
+import { markdownPathForRoute } from "./src/lib/llm/markdown";
+import { BASE_URL } from "./src/lib/seo/types";
+import { generateSchemaGraph } from "./src/lib/seo/schema-generators";
 
-// Blog posts keyed by their public URL, for prerendered SEO content.
-const blogPostsByUrl = Object.fromEntries(
-  blogData.posts.map((p) => [`/blog/${p.slug}`, p])
-);
+// Page content lives in src/lib/llm/page-docs.ts as a structured block model,
+// shared with the Markdown generator (scripts/generateMarkdown.ts) so the
+// static HTML a crawler reads and the .md an agent fetches never diverge.
+// This file only turns those blocks into React elements and builds <head>.
 
-const BLOG_LIST_TITLE =
-  "Running Blog - Training Tips, Race Strategy & Nutrition | TrainPace";
-const BLOG_LIST_DESCRIPTION =
-  "Expert running advice for marathoners and distance runners. Training tips, race strategy guides, nutrition planning, and more from TrainPace.";
-
-// Strip inline markdown (bold/italic/code/links) down to readable text. The static
-// HTML only needs crawlable prose — the live app renders the rich version.
-function stripInlineMarkdown(text) {
-  // All patterns use negated character classes (no nested/backref quantifiers)
-  // so they run in linear time — no catastrophic backtracking on odd input.
-  return text
-    .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1") // images -> alt
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1") // links -> text
-    .replace(/`([^`]+)`/g, "$1") // inline code
-    .replace(/\*\*([^*]+)\*\*/g, "$1") // bold **
-    .replace(/__([^_]+)__/g, "$1") // bold __
-    .replace(/\*([^*]+)\*/g, "$1") // italic *
-    .replace(/_([^_]+)_/g, "$1") // italic _
-    .trim();
+let keyCounter = 0;
+function nextKey() {
+  return `b${keyCounter++}`;
 }
 
-// Convert a markdown string into a flat list of React block elements. Handles the
-// subset used by the blog: headings, lists, blockquotes, tables, and paragraphs.
-function markdownToReactBlocks(markdown) {
-  const lines = markdown.split("\n");
-  const blocks = [];
-  let key = 0;
-  let paragraph = [];
-  let list = null; // { ordered, items: [] }
+function renderBlock(block) {
+  switch (block.type) {
+    case "heading":
+      return React.createElement(`h${block.level}`, { key: nextKey() }, block.text);
 
-  const flushParagraph = () => {
-    if (paragraph.length) {
-      blocks.push(
-        React.createElement("p", { key: key++ }, stripInlineMarkdown(paragraph.join(" ")))
+    case "paragraph":
+      return React.createElement("p", { key: nextKey() }, block.text);
+
+    case "list":
+      return React.createElement(
+        block.ordered ? "ol" : "ul",
+        { key: nextKey() },
+        block.items.map((item, i) =>
+          React.createElement("li", { key: i }, item)
+        )
       );
-      paragraph = [];
-    }
-  };
-  const flushList = () => {
-    if (list) {
-      blocks.push(
+
+    case "linkList":
+      return React.createElement(
+        "nav",
+        { key: nextKey(), ...(block.label ? { "aria-label": block.label } : {}) },
         React.createElement(
-          list.ordered ? "ol" : "ul",
-          { key: key++ },
-          list.items.map((it, i) =>
-            React.createElement("li", { key: i }, stripInlineMarkdown(it))
+          "ul",
+          null,
+          block.items.map((item, i) =>
+            React.createElement(
+              "li",
+              { key: i },
+              React.createElement("a", { href: item.href }, item.label),
+              item.note ? ` — ${item.note}` : null
+            )
           )
         )
       );
-      list = null;
-    }
-  };
 
-  for (const raw of lines) {
-    const line = raw.trimEnd();
-    const trimmed = line.trim();
-
-    if (trimmed === "") {
-      flushParagraph();
-      flushList();
-      continue;
-    }
-    // Skip table rows / separators — not worth rendering for SEO text
-    if (/^\|.*\|$/.test(trimmed)) {
-      flushParagraph();
-      flushList();
-      continue;
-    }
-    const heading = /^(#{1,6})\s+(.*)$/.exec(trimmed);
-    if (heading) {
-      flushParagraph();
-      flushList();
-      const level = Math.min(heading[1].length, 3);
-      const tag = level <= 1 ? "h2" : `h${level}`;
-      blocks.push(
-        React.createElement(tag, { key: key++ }, stripInlineMarkdown(heading[2]))
-      );
-      continue;
-    }
-    const ordered = /^\d+\.\s+(.*)$/.exec(trimmed);
-    const unordered = /^[-*]\s+(.*)$/.exec(trimmed);
-    if (ordered || unordered) {
-      flushParagraph();
-      const item = (ordered ? ordered[1] : unordered[1]);
-      const isOrdered = !!ordered;
-      if (!list || list.ordered !== isOrdered) {
-        flushList();
-        list = { ordered: isOrdered, items: [] };
-      }
-      list.items.push(item);
-      continue;
-    }
-    if (/^>\s?/.test(trimmed)) {
-      flushParagraph();
-      flushList();
-      blocks.push(
+    case "table":
+      return React.createElement(
+        "table",
+        { key: nextKey() },
+        block.caption
+          ? React.createElement("caption", null, block.caption)
+          : null,
         React.createElement(
-          "blockquote",
-          { key: key++ },
-          stripInlineMarkdown(trimmed.replace(/^>\s?/, ""))
+          "thead",
+          null,
+          React.createElement(
+            "tr",
+            null,
+            block.headers.map((h, i) =>
+              React.createElement("th", { key: i, scope: "col" }, h)
+            )
+          )
+        ),
+        React.createElement(
+          "tbody",
+          null,
+          block.rows.map((row, r) =>
+            React.createElement(
+              "tr",
+              { key: r },
+              row.map((cell, c) => React.createElement("td", { key: c }, cell))
+            )
+          )
         )
       );
-      continue;
-    }
-    flushList();
-    paragraph.push(trimmed);
-  }
-  flushParagraph();
-  flushList();
-  return blocks;
-}
 
-// Marathon-specific SEO data (defined first so all functions can use it)
-const marathonSeoData = {
-  boston: {
-    name: "Boston Marathon",
-    elevation: "156m",
-    highlight: "Heartbreak Hill",
-    difficulty: "Challenging",
-  },
-  nyc: {
-    name: "NYC Marathon",
-    elevation: "234m",
-    highlight: "Five Boroughs",
-    difficulty: "Moderate-Hard",
-  },
-  chicago: {
-    name: "Chicago Marathon",
-    elevation: "89m",
-    highlight: "Flat & Fast",
-    difficulty: "Easy (PR Course)",
-  },
-  berlin: {
-    name: "Berlin Marathon",
-    elevation: "67m",
-    highlight: "World Records",
-    difficulty: "Easy (Fastest Course)",
-  },
-  london: {
-    name: "London Marathon",
-    elevation: "145m",
-    highlight: "Tower Bridge",
-    difficulty: "Moderate",
-  },
-  tokyo: {
-    name: "Tokyo Marathon",
-    elevation: "198m",
-    highlight: "Cultural Experience",
-    difficulty: "Moderate",
-  },
-  sydney: {
-    name: "Sydney Marathon",
-    elevation: "234m",
-    highlight: "Harbour Bridge",
-    difficulty: "Moderate-Hard",
-  },
-};
+    case "code":
+      return React.createElement(
+        "pre",
+        { key: nextKey() },
+        React.createElement("code", null, block.text)
+      );
 
-// Programmatic SEO routes (generated from the same config the app uses)
-const seoRouteMeta = Object.fromEntries(
-  [
-    ...calculatorSeoPages,
-    ...fuelSeoPages,
-    ...elevationGuideSeoPages,
-    ...raceSeoPages,
-  ].map((p) => [p.path, { title: p.title, description: p.description }])
-);
+    case "quote":
+      return React.createElement("blockquote", { key: nextKey() }, block.text);
 
-function getSeoMeta(url) {
-  return seoRouteMeta[url];
-}
-
-function getBreadcrumbForUrl(url, pageTitle) {
-  const homeItem = {
-    "@type": "ListItem",
-    position: 1,
-    name: "TrainPace",
-    item: "https://trainpace.com/",
-  };
-
-  if (url.startsWith("/calculator/")) {
-    return {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        homeItem,
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "Pace Calculator",
-          item: "https://trainpace.com/calculator",
-        },
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: pageTitle,
-          item: `https://trainpace.com${url}`,
-        },
-      ],
-    };
-  }
-
-  if (url.startsWith("/fuel/")) {
-    return {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        homeItem,
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "Fuel Planner",
-          item: "https://trainpace.com/fuel",
-        },
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: pageTitle,
-          item: `https://trainpace.com${url}`,
-        },
-      ],
-    };
-  }
-
-  if (url.startsWith("/elevationfinder/guides/")) {
-    return {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        homeItem,
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "ElevationFinder",
-          item: "https://trainpace.com/elevationfinder",
-        },
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: "Guides",
-          item: "https://trainpace.com/elevationfinder/guides",
-        },
-        {
-          "@type": "ListItem",
-          position: 4,
-          name: pageTitle,
-          item: `https://trainpace.com${url}`,
-        },
-      ],
-    };
-  }
-
-  if (url.startsWith("/race/")) {
-    return {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        homeItem,
-        {
-          "@type": "ListItem",
-          position: 2,
-          name: "Race Prep",
-          item: "https://trainpace.com/race",
-        },
-        {
-          "@type": "ListItem",
-          position: 3,
-          name: pageTitle,
-          item: `https://trainpace.com${url}`,
-        },
-      ],
-    };
-  }
-
-  return null;
-}
-
-function getPageTitle(url) {
-  const seoMeta = getSeoMeta(url);
-  if (seoMeta?.title) return seoMeta.title;
-
-  if (url === "/blog") return BLOG_LIST_TITLE;
-  const blogPost = blogPostsByUrl[url];
-  if (blogPost) return `${blogPost.title} | TrainPace Blog`;
-
-  switch (url) {
-    case "/":
-      return "TrainPace – Free Running Pace Calculator & Race Day Tools";
-    case "/calculator":
-      return "Running Pace Calculator – VDOT Training Zones, Easy to Tempo Pace | TrainPace";
-    case "/fuel":
-      return "Marathon Fuel Calculator – How Many Gels & When to Take Them | TrainPace";
-    case "/elevationfinder":
-      return "GPX Elevation Profile Viewer – Free Route Analysis & Climb Stats | TrainPace";
-    case "/race":
-      return "Race Prep Pages – Pacing, Fueling, Elevation Strategy | TrainPace";
-    case "/mcp":
-      return "MCP Server - TrainPace Tools for AI Agents";
     default:
-      if (url.includes("/preview-route/")) {
-        const slug = url.split("/").pop();
-        const marathon = marathonSeoData[slug];
-        if (marathon) {
-          return `${marathon.name} Elevation Profile – Course Map, Hills & Pace Strategy | TrainPace`;
-        }
-        const cityFormatted = slug.charAt(0).toUpperCase() + slug.slice(1);
-        return `${cityFormatted} Marathon Elevation Profile – Course Map & Hill Analysis | TrainPace`;
-      }
-      return "TrainPace – Free Running Tools";
+      return null;
   }
 }
 
-function getPageDescription(url) {
-  const seoMeta = getSeoMeta(url);
-  if (seoMeta?.description) return seoMeta.description;
-
-  if (url === "/blog") return BLOG_LIST_DESCRIPTION;
-  const blogPost = blogPostsByUrl[url];
-  if (blogPost) return blogPost.excerpt;
-
-  switch (url) {
-    case "/":
-      return "Free running calculator for training paces, race fueling, and GPX elevation analysis. Get VDOT-based pace zones, plan how many gels to carry, and preview marathon course profiles.";
-    case "/calculator":
-      return "Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s, race predictor for 5K to marathon, and printable pace charts.";
-    case "/fuel":
-      return "Calculate exactly how many gels you need for your marathon or half marathon. Get a personalized fueling schedule with 60-90g/hr carb targets, timing recommendations, and avoid hitting the wall.";
-    case "/elevationfinder":
-      return "Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty on an interactive map. Analyze marathon courses before race day.";
-    case "/race":
-      return "Race prep pages for popular running events. Use TrainPace to plan pacing, fueling, and course strategy with free calculators and GPX elevation analysis.";
-    case "/mcp":
-      return "Connect any AI assistant to TrainPace's free public MCP server: training paces, VDOT, race plans, fueling strategy, and GPX route analysis as agent tools.";
-    default:
-      if (url.includes("/preview-route/")) {
-        const slug = url.split("/").pop();
-        const marathon = marathonSeoData[slug];
-        if (marathon) {
-          return `${marathon.name} elevation profile with ${marathon.elevation} gain. Course analysis, mile-by-mile pace strategy, and fueling tips. Known for: ${marathon.highlight}. Difficulty: ${marathon.difficulty}.`;
-        }
-        const cityFormatted = slug.charAt(0).toUpperCase() + slug.slice(1);
-        return `${cityFormatted} Marathon elevation profile with interactive course map. See every hill, grade percentage, and total elevation gain. Plan your pacing strategy for race day.`;
-      }
-      return "Free running tools: pace calculator with VDOT zones, marathon fuel planner, and GPX elevation analyzer. No signup required.";
-  }
-}
-
-// Paths of the competitor-comparison pages, for static internal linking.
-const comparisonPaths = new Set(comparisonLinks.map((c) => c.path));
-
-// A crawlable list of comparison-page links, excluding the current path.
-function comparisonNav(currentPath) {
-  const others = comparisonLinks.filter((c) => c.path !== currentPath);
-  if (!others.length) return null;
+function renderDoc(doc) {
   return React.createElement(
-    "nav",
-    { "aria-label": "Compare TrainPace with other apps" },
-    React.createElement("h2", null, "Compare TrainPace with other apps"),
-    React.createElement(
-      "ul",
-      null,
-      others.map((c) =>
-        React.createElement(
-          "li",
-          { key: c.path },
-          React.createElement("a", { href: c.path }, c.label)
-        )
-      )
-    )
+    "div",
+    { "data-prerender": true },
+    doc.blocks.map((block) => renderBlock(block))
   );
 }
 
-// Helper function to get page content for prerendering
-function getPageContent(url) {
-  // Blog list: heading + description + a crawlable list of every post.
+// ── Structured data ────────────────────────────────────────────────────────
+//
+// Emitted into the static HTML so crawlers and AI answer engines that do not
+// run JavaScript still get it. Each page gets one @graph. Site-wide entities
+// (Organization, WebSite, the author) carry stable @ids so every page refers
+// to the same nodes instead of redefining them.
+
+const abs = (p) => (p === "/" ? `${BASE_URL}/` : `${BASE_URL}${p}`);
+
+const ORG_ID = `${BASE_URL}/#organization`;
+const WEBSITE_ID = `${BASE_URL}/#website`;
+const AUTHOR_ID = `${BASE_URL}/about#author`;
+const DEFAULT_OG_IMAGE = `${BASE_URL}/landing-page-2025.png`;
+
+const organization = {
+  "@type": "Organization",
+  "@id": ORG_ID,
+  name: "TrainPace",
+  url: abs("/"),
+  logo: {
+    "@type": "ImageObject",
+    url: `${BASE_URL}/android-chrome-512x512.png`,
+    width: 512,
+    height: 512,
+  },
+  email: "alex@trainpace.com",
+  founder: { "@id": AUTHOR_ID },
+  description:
+    "Free running-training tools: pace calculator, VDOT calculator, training plan builder, race fuel planner, and GPX elevation analysis.",
+};
+
+const author = {
+  "@type": "Person",
+  "@id": AUTHOR_ID,
+  name: SITE_AUTHOR.name,
+  url: abs(SITE_AUTHOR.url),
+  jobTitle: SITE_AUTHOR.jobTitle,
+  sameAs: [...SITE_AUTHOR.sameAs],
+};
+
+const website = {
+  "@type": "WebSite",
+  "@id": WEBSITE_ID,
+  name: "TrainPace",
+  url: abs("/"),
+  inLanguage: "en",
+  publisher: { "@id": ORG_ID },
+};
+
+/** The free web tools, described once and referenced from their pages. */
+const TOOL_APPS = {
+  "/calculator": {
+    name: "TrainPace Running Pace Calculator",
+    featureList: [
+      "Easy, marathon, threshold, interval, and repetition paces from a race result",
+      "Race time predictions from 5K to marathon",
+      "min/km and min/mile",
+    ],
+  },
+  "/vdot": {
+    name: "TrainPace VDOT Calculator",
+    featureList: [
+      "VDOT score from any race result (Daniels & Gilbert formula)",
+      "Equivalent race times from 1500m to marathon",
+      "Daniels training zones",
+    ],
+  },
+  "/plan": {
+    name: "TrainPace Training Plan Builder",
+    featureList: [
+      "Periodized 5K, 10K, half marathon, and marathon plans",
+      "Base, development, sharpening, and taper phases",
+      "Calendar export",
+    ],
+  },
+  "/fuel": {
+    name: "TrainPace Race Fuel Planner",
+    featureList: [
+      "Carbohydrate target per hour by distance and finish time",
+      "Gel count and fuel-stop timeline",
+    ],
+  },
+  "/elevation-finder": {
+    name: "TrainPace Elevation Finder",
+    featureList: [
+      "GPX elevation profile and course map",
+      "Climb detection and grade analysis",
+      "Grade-adjusted pacing",
+    ],
+  },
+};
+
+function webApplication(url) {
+  const app = TOOL_APPS[url];
+  return {
+    "@type": "WebApplication",
+    "@id": `${abs(url)}#app`,
+    name: app.name,
+    description: getPageDescription(url),
+    url: abs(url),
+    applicationCategory: "HealthApplication",
+    applicationSubCategory: "Running",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    featureList: app.featureList,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    publisher: { "@id": ORG_ID },
+  };
+}
+
+function webPage(url, type = "WebPage", extra = {}) {
+  return {
+    "@type": type,
+    "@id": `${abs(url)}#webpage`,
+    url: abs(url),
+    name: getPageTitle(url),
+    description: getPageDescription(url),
+    inLanguage: "en",
+    isPartOf: { "@id": WEBSITE_ID },
+    publisher: { "@id": ORG_ID },
+    ...extra,
+  };
+}
+
+function breadcrumb(trail) {
+  return {
+    "@type": "BreadcrumbList",
+    itemListElement: [{ name: "TrainPace", path: "/" }, ...trail].map(
+      (item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.name,
+        item: abs(item.path),
+      })
+    ),
+  };
+}
+
+function faqPage(url, entries) {
+  return {
+    "@type": "FAQPage",
+    "@id": `${abs(url)}#faq`,
+    mainEntity: entries.map((e) => ({
+      "@type": "Question",
+      name: e.question,
+      acceptedAnswer: { "@type": "Answer", text: e.answer },
+    })),
+  };
+}
+
+/** Drop the per-node @context the shared generators add; the graph has one. */
+function stripContext(node) {
+  // eslint-disable-next-line no-unused-vars
+  const { "@context": _ctx, ...rest } = node;
+  return rest;
+}
+
+/** Nodes for one route. Site-wide nodes are added by getStructuredData. */
+function getPageNodes(url) {
+  if (url === "/") {
+    return [webPage("/", "WebPage", { about: { "@id": ORG_ID } }), author];
+  }
+
+  if (TOOL_APPS[url]) {
+    return [
+      webApplication(url),
+      webPage(url, "WebPage", { mainEntity: { "@id": `${abs(url)}#app` } }),
+      breadcrumb([{ name: TOOL_APPS[url].name.replace("TrainPace ", ""), path: url }]),
+    ];
+  }
+
   if (url === "/blog") {
-    return React.createElement(
-      "div",
-      null,
-      React.createElement("h1", null, "Run Smarter, Race Better"),
-      React.createElement("p", null, BLOG_LIST_DESCRIPTION),
-      React.createElement(
-        "ul",
-        null,
-        blogData.posts.map((p) =>
-          React.createElement(
-            "li",
-            { key: p.slug },
-            React.createElement("a", { href: `/blog/${p.slug}` }, p.title),
-            " — ",
-            p.excerpt
-          )
-        )
-      )
-    );
+    return [
+      {
+        "@type": "Blog",
+        "@id": `${abs("/blog")}#blog`,
+        name: "TrainPace Blog",
+        description: BLOG_LIST_DESCRIPTION,
+        url: abs("/blog"),
+        publisher: { "@id": ORG_ID },
+        blogPost: blogData.posts.slice(0, 10).map((p) => ({
+          "@type": "BlogPosting",
+          headline: p.title,
+          url: abs(`/blog/${p.slug}`),
+          datePublished: p.date,
+        })),
+      },
+      breadcrumb([{ name: "Blog", path: "/blog" }]),
+    ];
   }
 
-  // Blog post: full article body (leading H1 stripped — the header owns the H1).
-  const blogPost = blogPostsByUrl[url];
+  const blogPost = getBlogPost(url);
   if (blogPost) {
-    return React.createElement(
-      "article",
-      null,
-      React.createElement("h1", null, blogPost.title),
-      React.createElement("p", null, blogPost.excerpt),
-      React.createElement(
-        "p",
-        null,
-        `By ${blogPost.author?.name || "TrainPace"} · ${blogPost.readingTime} min read`
-      ),
-      ...markdownToReactBlocks(stripLeadingH1(blogPost.content))
-    );
+    const image = blogImage(blogPost);
+    return [
+      {
+        "@type": "BlogPosting",
+        "@id": `${abs(url)}#article`,
+        headline: blogPost.title,
+        description: blogPost.excerpt,
+        url: abs(url),
+        image: image ? abs(image) : DEFAULT_OG_IMAGE,
+        datePublished: blogPost.date,
+        dateModified: getPostUpdated(blogPost),
+        inLanguage: "en",
+        author: { "@id": AUTHOR_ID },
+        publisher: { "@id": ORG_ID },
+        mainEntityOfPage: abs(url),
+        articleSection: blogPost.category,
+        keywords: (blogPost.tags || []).join(", "),
+        wordCount: blogPost.content.split(/\s+/).length,
+      },
+      author,
+      breadcrumb([
+        { name: "Blog", path: "/blog" },
+        { name: blogPost.title, path: url },
+      ]),
+    ];
   }
 
-  const seoMeta = getSeoMeta(url);
-  if (seoMeta) {
-    return React.createElement(
-      "div",
-      null,
-      React.createElement("h1", null, seoMeta.title.replace(" | TrainPace", "")),
-      React.createElement("p", null, seoMeta.description),
-      React.createElement(
-        "p",
-        null,
-        "Open the tool to calculate personalized paces, fueling, or elevation insights."
-      ),
-      comparisonPaths.has(url) ? comparisonNav(url) : null
-    );
+  const seoPage = getSeoPage(url);
+  if (seoPage) {
+    // Same generator the React page uses, so static and hydrated JSON-LD agree.
+    const nodes = generateSchemaGraph({
+      ...seoPage,
+      description: getPageDescription(url),
+    })["@graph"].map(stripContext);
+    const isRace = seoPage.tool === "race";
+    const raceFaq =
+      (isRace && getCourse(seoPage.previewRouteKey)?.faq) ||
+      (isRace && getRaceGuide(seoPage.slug)?.faq) ||
+      [];
+    if (!seoPage.faq?.length && raceFaq.length) {
+      nodes.push(faqPage(url, raceFaq));
+    }
+    return nodes;
+  }
+
+  if (url.startsWith("/preview-route/")) {
+    const course = getCourse(url.split("/").pop());
+    return [
+      webPage(url),
+      breadcrumb([
+        { name: "Race Prep", path: "/race" },
+        { name: course?.name ?? getPageTitle(url), path: url },
+      ]),
+      ...(course?.faq?.length ? [faqPage(url, course.faq)] : []),
+    ];
   }
 
   switch (url) {
-    case "/":
-      return React.createElement(
-        "div",
-        null,
-        React.createElement("h1", null, "TrainPace – Free Running Pace Calculator & Race Day Tools"),
-        React.createElement(
-          "p",
-          null,
-          "Free running calculator for training paces, race fueling, and GPX elevation analysis. Get VDOT-based pace zones, plan how many gels to carry, and preview marathon course profiles."
-        ),
-        comparisonNav(null)
-      );
-    case "/calculator":
-      return React.createElement(
-        "div",
-        null,
-        React.createElement("h1", null, "Running Pace Calculator – VDOT Training Zones"),
-        React.createElement(
-          "p",
-          null,
-          "Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s, race predictor for 5K to marathon, and printable pace charts."
-        )
-      );
-    case "/fuel":
-      return React.createElement(
-        "div",
-        null,
-        React.createElement("h1", null, "Marathon Fuel Calculator – How Many Gels Do You Need?"),
-        React.createElement(
-          "p",
-          null,
-          "Calculate exactly how many gels you need for your marathon or half marathon. Get a personalized fueling schedule with 60-90g/hr carb targets, timing recommendations, and avoid hitting the wall."
-        )
-      );
-    case "/elevationfinder":
-      return React.createElement(
-        "div",
-        null,
-        React.createElement("h1", null, "GPX Elevation Profile Viewer – Free Route Analysis"),
-        React.createElement(
-          "p",
-          null,
-          "Free GPX elevation profile viewer. Upload any route to see elevation gain, grade percentages, and climb difficulty on an interactive map. Analyze marathon courses before race day."
-        )
-      );
     case "/race":
-      return React.createElement(
-        "div",
-        null,
-        React.createElement("h1", null, "Race Prep Pages"),
-        React.createElement(
-          "p",
-          null,
-          "Browse race-specific prep pages for pacing, fueling, and course strategy."
-        )
-      );
+      return [webPage(url, "CollectionPage"), breadcrumb([{ name: "Race Prep", path: url }])];
     case "/mcp":
-      return React.createElement(
-        "div",
-        null,
-        React.createElement("h1", null, "Use TrainPace from Your AI Assistant"),
-        React.createElement(
-          "p",
-          null,
-          "TrainPace runs a free, public Model Context Protocol (MCP) server at https://api.trainpace.com/api/mcp — Streamable HTTP, no account or API key required. Connect Claude, ChatGPT, or any MCP client and ask training questions in plain English; the agent calls the same math that powers this site."
-        ),
-        React.createElement("h2", null, "Available Tools"),
-        React.createElement(
-          "ul",
-          null,
-          React.createElement(
-            "li",
-            null,
-            "calculate_training_paces — training paces (easy, tempo, interval, speed, long run, Yasso 800s) from a recent race result, plus heart-rate zones and hot-weather adjustments."
-          ),
-          React.createElement(
-            "li",
-            null,
-            "calculate_vdot — VDOT fitness score (Daniels & Gilbert formula) with training zones and equivalent race-time predictions for 5K through marathon."
-          ),
-          React.createElement(
-            "li",
-            null,
-            "generate_training_plan — a periodized week-by-week plan for 5K to marathon, sized to fitness level and available run days."
-          ),
-          React.createElement(
-            "li",
-            null,
-            "calculate_fuel_plan — carbs per hour, total gels, and a fuel-stop timeline for a 10K, half, or full marathon."
-          ),
-          React.createElement(
-            "li",
-            null,
-            "analyze_route — GPX route analysis: distance, elevation gain, climbs, split-by-split grade-adjusted pacing, and weather impact."
-          )
-        ),
-        React.createElement("h2", null, "How to Connect"),
-        React.createElement(
-          "ul",
-          null,
-          React.createElement(
-            "li",
-            null,
-            "Claude.ai / Claude Desktop: Settings → Connectors → Add custom connector. Name it trainpace and paste the server URL — no login step."
-          ),
-          React.createElement(
-            "li",
-            null,
-            "Claude Code: claude mcp add --transport http trainpace https://api.trainpace.com/api/mcp"
-          ),
-          React.createElement(
-            "li",
-            null,
-            "Cursor, Windsurf, and other MCP clients: add the server URL to your client's MCP config file as an HTTP server named trainpace."
-          ),
-          React.createElement(
-            "li",
-            null,
-            "Any other agent: paste the agent briefing from this page as your first message — it describes the server URL and every tool so the agent can connect or defer correctly."
-          )
-        )
-      );
+      return [webPage(url, "TechArticle"), breadcrumb([{ name: "MCP Server", path: url }])];
+    case "/about":
+    case "/ethos":
+      return [
+        webPage("/about", "AboutPage", { mainEntity: { "@id": AUTHOR_ID } }),
+        author,
+        breadcrumb([{ name: "About", path: "/about" }]),
+      ];
+    case "/faq":
+      return [
+        webPage(url),
+        faqPage(url, getFaqEntries()),
+        breadcrumb([{ name: "FAQ", path: url }]),
+      ];
     default:
-      if (url.includes("/preview-route/")) {
-        const slug = url.split("/").pop();
-        const marathon = marathonSeoData[slug];
-        if (marathon) {
-          return React.createElement(
-            "div",
-            null,
-            React.createElement("h1", null, `${marathon.name} Elevation Profile & Course Analysis`),
-            React.createElement(
-              "p",
-              null,
-              `Complete ${marathon.name} course analysis with ${marathon.elevation} elevation gain. Get mile-by-mile pace strategy, fueling recommendations, and race day tips. Known for: ${marathon.highlight}. Difficulty: ${marathon.difficulty}.`
-            ),
-            React.createElement("h2", null, "What You'll Find"),
-            React.createElement(
-              "ul",
-              null,
-              React.createElement("li", null, "Interactive elevation profile and course map"),
-              React.createElement("li", null, "Mile-by-mile pace strategy breakdown"),
-              React.createElement("li", null, "Race-specific fueling recommendations"),
-              React.createElement("li", null, "Frequently asked questions about the course")
-            )
-          );
-        }
-        const cityFormatted = slug.charAt(0).toUpperCase() + slug.slice(1);
-        return React.createElement(
-          "div",
-          null,
-          React.createElement("h1", null, `${cityFormatted} Marathon Elevation Profile & Course Map`),
-          React.createElement(
-            "p",
-            null,
-            `${cityFormatted} Marathon elevation profile with interactive course map. See every hill, grade percentage, and total elevation gain. Plan your pacing strategy for race day.`
-          )
-        );
-      }
-      return React.createElement(
-        "div",
-        null,
-        React.createElement("h1", null, "TrainPace – Free Running Tools"),
-        React.createElement("p", null, "Free running tools: pace calculator with VDOT zones, marathon fuel planner, and GPX elevation analyzer. No signup required.")
-      );
+      return [webPage(url)];
   }
 }
 
-// Helper function to get structured data
 function getStructuredData(url) {
-  if (url === "/blog") {
-    return {
-      "@context": "https://schema.org",
-      "@type": "Blog",
-      name: "TrainPace Blog",
-      description: BLOG_LIST_DESCRIPTION,
-      url: "https://trainpace.com/blog",
-      publisher: {
-        "@type": "Organization",
-        name: "TrainPace",
-        url: "https://trainpace.com",
-      },
-      blogPost: blogData.posts.slice(0, 10).map((p) => ({
-        "@type": "BlogPosting",
-        headline: p.title,
-        description: p.excerpt,
-        datePublished: p.date,
-        url: `https://trainpace.com/blog/${p.slug}`,
-        author: { "@type": "Person", name: p.author?.name || "TrainPace" },
-      })),
-    };
-  }
-
-  const blogPost = blogPostsByUrl[url];
-  if (blogPost) {
-    return {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "BlogPosting",
-          headline: blogPost.title,
-          description: blogPost.excerpt,
-          ...(blogPost.coverImage ? { image: blogPost.coverImage } : {}),
-          datePublished: blogPost.date,
-          dateModified: blogPost.date,
-          author: {
-            "@type": "Person",
-            name: blogPost.author?.name || "TrainPace",
-          },
-          publisher: {
-            "@type": "Organization",
-            name: "TrainPace",
-            url: "https://trainpace.com",
-          },
-          mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id": `https://trainpace.com${url}`,
-          },
-          keywords: (blogPost.tags || []).join(", "),
-        },
-        {
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            {
-              "@type": "ListItem",
-              position: 1,
-              name: "TrainPace",
-              item: "https://trainpace.com/",
-            },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: "Blog",
-              item: "https://trainpace.com/blog",
-            },
-            {
-              "@type": "ListItem",
-              position: 3,
-              name: blogPost.title,
-              item: `https://trainpace.com${url}`,
-            },
-          ],
-        },
-      ],
-    };
-  }
-
-  const seoMeta = getSeoMeta(url);
-  if (seoMeta) {
-    const breadcrumb = getBreadcrumbForUrl(url, seoMeta.title);
-
-    return {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "WebPage",
-          name: seoMeta.title,
-          description: seoMeta.description,
-          url: `https://trainpace.com${url}`,
-          isPartOf: {
-            "@type": "WebSite",
-            name: "TrainPace",
-            url: "https://trainpace.com/",
-          },
-        },
-        ...(breadcrumb ? [breadcrumb] : []),
-      ],
-    };
-  }
-
-  const baseSchema = {
+  return {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: getPageTitle(url),
-    description: getPageDescription(url),
-    url: `https://trainpace.com${url}`,
-    applicationCategory: "HealthApplication",
-    operatingSystem: "Any",
-    browserRequirements: "Requires JavaScript",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
+    "@graph": [organization, website, ...getPageNodes(url)],
   };
-
-  if (url === "/") {
-    return {
-      ...baseSchema,
-      "@type": "WebSite",
-      potentialAction: {
-        "@type": "SearchAction",
-        target: {
-          "@type": "EntryPoint",
-          urlTemplate: "https://trainpace.com/calculator",
-        },
-      },
-    };
-  }
-
-  return baseSchema;
 }
+
+/** A post's cover image path, if it has one. */
+function blogImage(post) {
+  return post.coverImage || null;
+}
+
+// ── Prerender entry ────────────────────────────────────────────────────────
+
+/**
+ * Head tags React Helmet also manages carry `data-rh`, so when the app boots,
+ * Helmet replaces them instead of adding a second description, canonical, and
+ * set of Open Graph tags next to them.
+ */
+const managed = (type, props) => ({
+  type,
+  props: { ...props, "data-rh": "true" },
+});
+
+/**
+ * Pages whose React component emits no JSON-LD of its own. Helmet deletes
+ * every `data-rh` script it does not re-emit, so on these pages the static
+ * graph is left unmarked — otherwise it would vanish as soon as the app boots
+ * and a rendering crawler would see no structured data at all. Everywhere
+ * else it stays marked so the client version replaces it rather than
+ * duplicating it (two FAQPage blocks is a Search Console error).
+ */
+const STATIC_ONLY_JSONLD = new Set(["/about", "/ethos", "/privacy", "/terms", "/mcp", "/race"]);
 
 export async function prerender(data) {
-  try {
-    // Generate just the content for the #root div, not a full HTML document
-    const html = renderToString(
-      React.createElement("div", null, getPageContent(data.url))
+  keyCounter = 0;
+  const url = data.url;
+
+  // Errors are not caught: a page that fails to render must fail the build,
+  // not ship as an empty "Loading..." shell that crawlers then index.
+  const html = renderToString(renderDoc(getPageDoc(url)));
+
+  // Blog posts are articles, not the site app — reflect that in OG tags.
+  const blogPost = getBlogPost(url);
+  const ogType = blogPost ? "article" : "website";
+  const coverImage = blogPost ? blogImage(blogPost) : null;
+  const ogImage = coverImage ? abs(coverImage) : DEFAULT_OG_IMAGE;
+
+  const title = getPageTitle(url);
+  const description = getPageDescription(url);
+  const canonical = abs(getCanonicalPath(url));
+
+  const elements = [
+    managed("meta", { name: "description", content: description }),
+    managed("link", { rel: "canonical", href: canonical }),
+    // Open Graph
+    managed("meta", { property: "og:site_name", content: "TrainPace" }),
+    managed("meta", { property: "og:title", content: title }),
+    managed("meta", { property: "og:description", content: description }),
+    managed("meta", { property: "og:image", content: ogImage }),
+    managed("meta", { property: "og:url", content: canonical }),
+    managed("meta", { property: "og:type", content: ogType }),
+    // Twitter Card
+    managed("meta", { name: "twitter:card", content: "summary_large_image" }),
+    managed("meta", { name: "twitter:title", content: title }),
+    managed("meta", { name: "twitter:description", content: description }),
+    managed("meta", { name: "twitter:image", content: ogImage }),
+    // Markdown mirror of this page, for agents that prefer plain text.
+    // Paired with Accept: text/markdown content negotiation in middleware.ts.
+    {
+      type: "link",
+      props: {
+        rel: "alternate",
+        type: "text/markdown",
+        href: abs(markdownPathForRoute(url)),
+        title: `${title} (Markdown)`,
+      },
+    },
+    STATIC_ONLY_JSONLD.has(url)
+      ? { type: "script", props: { type: "application/ld+json" } }
+      : managed("script", { type: "application/ld+json" }),
+  ];
+
+  if (blogPost) {
+    elements.push(
+      managed("meta", { property: "article:published_time", content: blogPost.date }),
+      managed("meta", { property: "article:modified_time", content: getPostUpdated(blogPost) }),
+      managed("meta", { name: "author", content: blogPost.author?.name || SITE_AUTHOR.name })
     );
-
-    // Blog posts are articles, not the site app — reflect that in OG tags.
-    const blogPost = blogPostsByUrl[data.url];
-    const ogType = blogPost ? "article" : "website";
-    const ogImage =
-      blogPost && blogPost.coverImage
-        ? `https://trainpace.com${blogPost.coverImage}`
-        : "https://trainpace.com/landing-page-2025.png";
-
-    return {
-      html,
-      head: {
-        title: getPageTitle(data.url),
-        elements: new Set([
-          {
-            type: "meta",
-            props: {
-              name: "description",
-              content: getPageDescription(data.url),
-            },
-          },
-          {
-            type: "meta",
-            props: {
-              name: "viewport",
-              content: "width=device-width, initial-scale=1",
-            },
-          },
-          // Open Graph tags
-          {
-            type: "meta",
-            props: {
-              property: "og:title",
-              content: getPageTitle(data.url),
-            },
-          },
-          {
-            type: "meta",
-            props: {
-              property: "og:description",
-              content: getPageDescription(data.url),
-            },
-          },
-          {
-            type: "meta",
-            props: {
-              property: "og:image",
-              content: ogImage,
-            },
-          },
-          {
-            type: "meta",
-            props: {
-              property: "og:url",
-              content: `https://trainpace.com${data.url}`,
-            },
-          },
-          {
-            type: "meta",
-            props: {
-              property: "og:type",
-              content: ogType,
-            },
-          },
-          // Twitter Card tags
-          {
-            type: "meta",
-            props: {
-              name: "twitter:card",
-              content: "summary_large_image",
-            },
-          },
-          {
-            type: "meta",
-            props: {
-              name: "twitter:title",
-              content: getPageTitle(data.url),
-            },
-          },
-          {
-            type: "meta",
-            props: {
-              name: "twitter:description",
-              content: getPageDescription(data.url),
-            },
-          },
-          {
-            type: "meta",
-            props: {
-              name: "twitter:image",
-              content: ogImage,
-            },
-          },
-          // Canonical URL
-          {
-            type: "link",
-            props: {
-              rel: "canonical",
-              href: `https://trainpace.com${data.url}`,
-            },
-          },
-          {
-            type: "script",
-            props: {
-              type: "application/ld+json",
-            },
-            children: JSON.stringify(getStructuredData(data.url)),
-          },
-        ]),
-      },
-    };
-  } catch (error) {
-    console.error("Prerender error for", data.url, error);
-    // Return minimal HTML on error
-    return {
-      html: "<div>Loading...</div>",
-      head: {
-        title: "TrainPace",
-        elements: new Set(),
-      },
-    };
   }
+
+  // The JSON-LD script needs its body; attach it to the element built above.
+  const ldScript = elements.find(
+    (el) => el.type === "script" && el.props.type === "application/ld+json"
+  );
+  ldScript.children = JSON.stringify(getStructuredData(url));
+
+  return {
+    html,
+    head: { title, elements: new Set(elements) },
+  };
 }

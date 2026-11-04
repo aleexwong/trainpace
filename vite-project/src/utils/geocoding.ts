@@ -3,6 +3,8 @@
  * Uses free Nominatim API first, falls back to Mapbox if needed
  */
 
+import { consumeMapboxBudget } from "@/lib/mapbox";
+
 type GpxPoint = { lat: number; lng: number; ele?: number };
 
 interface GeocodeResult {
@@ -219,6 +221,15 @@ export async function getCityFromRouteMapbox(
     if (cached) {
       console.log("💾 Cache hit for location:", cached.city, "(Mapbox)");
       return cached;
+    }
+
+    // Billed per lookup like any other Mapbox call, so it takes a slot from
+    // the shared budget (src/lib/mapbox). The cache above already absorbs
+    // repeats of the same coordinate; this catches the runaway case.
+    const decision = consumeMapboxBudget("geocoding");
+    if (!decision.allowed) {
+      console.warn("Mapbox geocoding skipped: request budget exhausted");
+      return { city: null, country: null, source: "fallback" };
     }
 
     // Mapbox reverse geocoding API

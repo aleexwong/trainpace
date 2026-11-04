@@ -1,0 +1,74 @@
+{
+  "slug": "houston-marathon",
+  "name": "Chevron Houston Marathon",
+  "city": "Houston",
+  "country": "Texas, USA",
+  "distanceKm": 42.195,
+  "month": "January",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": 66,
+  "elevationLossM": 67,
+  "typicalWeather": "About 3–7 °C at the start, rising to about 16–21 °C",
+  "website": "https://www.chevronhoustonmarathon.com/",
+  "summary": "The Chevron Houston Marathon is held in January and is described as a fast, flat course. It starts downtown near Congress Street and finishes at the George R. Brown Convention Center. The route passes Kirby Drive, West University, the Galleria and Memorial Park before Allen Parkway and Buffalo Bayou Park.",
+  "courseHighlights": [
+    "Start downtown, miles 0–6 along Washington Avenue",
+    "Kirby Drive, West University and the Galleria",
+    "Memorial Drive and Memorial Park Land Bridge tunnels, about mile 20.5",
+    "Allen Parkway and Buffalo Bayou Park rollers, miles 23–24",
+    "Finish at the George R. Brown Convention Center"
+  ],
+  "paceStrategy": {
+    "summary": "Run even splits on the flat first 20 miles. A guide calls Allen Parkway and Buffalo Bayou Park the hilliest part of an otherwise flat course, with the main climbs around miles 23–24. Save energy for these small rollers.",
+    "segments": [
+      {
+        "section": "mile 1–6",
+        "terrain": "Downtown and Washington Avenue",
+        "advice": "Start at goal pace and stay relaxed."
+      },
+      {
+        "section": "mile 7–19",
+        "terrain": "Kirby Drive, West University, Galleria, Tanglewood",
+        "advice": "Hold steady even pace."
+      },
+      {
+        "section": "mile 20–22",
+        "terrain": "Memorial Drive and Memorial Park",
+        "advice": "Stay controlled; the course turns toward downtown."
+      },
+      {
+        "section": "mile 23–26.2",
+        "terrain": "Allen Parkway and Buffalo Bayou Park rollers",
+        "advice": "Run the rollers by effort and use the crowds for a lift."
+      }
+    ]
+  },
+  "fuelingNotes": "The official course page lists refuelling stations with water and Gatorade Endurance every 1.5 miles from mile 2. Take a gel at mile 5 and mile 12, and one before the rollers at mile 22.",
+  "tips": [
+    "The race starts before sunrise, so dress for a cold start",
+    "Temperatures climb during the race, so plan to shed layers",
+    "The Allen Parkway and Buffalo Bayou rollers come late, so do not spend too much early",
+    "Aid stations are every 1.5 miles from mile 2"
+  ],
+  "faq": [
+    {
+      "question": "Is the Houston Marathon flat?",
+      "answer": "Yes, mostly. A 2025 guide gives about 217 ft of ascent and 220 ft of descent, and calls Allen Parkway and Buffalo Bayou Park the hilliest section."
+    },
+    {
+      "question": "Where does the Houston Marathon start and finish?",
+      "answer": "It starts downtown near Congress Street and finishes at the George R. Brown Convention Center."
+    },
+    {
+      "question": "When is the Houston Marathon held?",
+      "answer": "It is held in January, on the third Sunday."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Houston_Marathon",
+    "https://www.chevronhoustonmarathon.com/course/",
+    "https://runready.substack.com/p/the-2025-chevron-houston-marathon"
+  ],
+  "checked": "2026-10"
+}

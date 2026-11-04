@@ -211,6 +211,22 @@ function yAt(xVB: number) {
 }
 const ftAt = (y: number) => Math.round((200 - y) * 2.4 + 30);
 
+const TIP_EDGE_GAP = 10;
+
+// Keep a tooltip centred at `xPx` (in .el-chartwrap coordinates) fully inside
+// the surrounding .stage, which is overflow:hidden. Falls back to centring when
+// the stage is narrower than the tooltip.
+function clampTipX(xPx: number, tipW: number, wrap: HTMLElement) {
+  const stage = wrap.closest(".stage");
+  if (!stage) return xPx;
+  const wrapRect = wrap.getBoundingClientRect();
+  const stageRect = stage.getBoundingClientRect();
+  const half = tipW / 2 + TIP_EDGE_GAP;
+  const min = stageRect.left - wrapRect.left + half;
+  const max = stageRect.right - wrapRect.left - half;
+  return min > max ? (min + max) / 2 : Math.min(Math.max(xPx, min), max);
+}
+
 export function ElevationShot() {
   const { ref, inView } = useInView<HTMLDivElement>();
   const pathRef = useRef<SVGPathElement>(null);
@@ -251,7 +267,10 @@ export function ElevationShot() {
       "</b> ft</span><span>grade <b>" +
       gtxt +
       "</b></span></div>";
-    tip.style.left = xPx + "px";
+    // The tip is centred on the cursor, so near either end of the profile its
+    // outer half runs past the stage, which clips it. Slide it back inside —
+    // there's no arrow tying it to the cursor, so the shift reads as nothing.
+    tip.style.left = clampTipX(xPx, tip.offsetWidth, wrap) + "px";
     tip.style.top = yPx + "px";
     tip.classList.add("show");
   }, []);

@@ -1,0 +1,68 @@
+{
+  "slug": "philadelphia-half-marathon",
+  "name": "Dietz & Watson Philadelphia Half Marathon",
+  "city": "Philadelphia",
+  "country": "Pennsylvania, USA",
+  "distanceKm": 21.0975,
+  "month": "November",
+  "courseType": "loop",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.philadelphiamarathon.com/",
+  "summary": "The Dietz & Watson Philadelphia Half Marathon is part of Philadelphia Marathon Weekend in November. It starts on the Benjamin Franklin Parkway, runs through Old City, Center City, University City and Fairmount Park, and finishes in front of the Philadelphia Museum of Art. The first miles are flat and the middle miles have three climbs.",
+  "courseHighlights": [
+    "Start at 22nd Street and the Benjamin Franklin Parkway",
+    "Old City and Center City streets",
+    "Schuylkill River crossing into University City",
+    "Girard Avenue Bridge and Reservoir Drive in Fairmount Park",
+    "Kelly Drive past Boathouse Row to the finish at the Philadelphia Museum of Art"
+  ],
+  "paceStrategy": {
+    "summary": "A runner's guide describes fast, flat miles at the start, then three climbs from about mile 7.25 to mile 10.5, then a mostly downhill and flat finish. Bank no time early. Keep energy for the climbs in University City.",
+    "segments": [
+      {
+        "section": "mile 1–7",
+        "terrain": "Flat streets through Center City and Old City",
+        "advice": "Run goal pace or a touch slower and stay relaxed."
+      },
+      {
+        "section": "mile 7–10.5",
+        "terrain": "Three climbs on Walnut Street, 34th Street and 33rd Street",
+        "advice": "Run by effort, not pace, and use the downhill by the zoo to recover."
+      },
+      {
+        "section": "mile 10.5–13.1",
+        "terrain": "Fairmount Park, Reservoir Drive and Kelly Drive, mostly downhill and flat",
+        "advice": "Build pace on the downhill, then hold steady over the last small rise by Boathouse Row."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found on the pages we checked. Take a gel before the first climb at about mile 7 if you use them.",
+  "tips": [
+    "Allow time to get through the secure area before the start; the start is on the Parkway near the Museum of Art",
+    "Bring throwaway layers for the start corrals, because November mornings can be cold and wet",
+    "Practise on hills of 1–2 minutes, because three climbs come between miles 7 and 10.5",
+    "Run the first 7 flat miles at an even pace so you still have energy for the climbs"
+  ],
+  "faq": [
+    {
+      "question": "Is the Philadelphia Half Marathon course flat?",
+      "answer": "The first 7 miles and last 2.5 miles are mostly flat or downhill, but a runner's guide describes three significant climbs between about mile 7.25 and mile 10.5. We found no official elevation figures."
+    },
+    {
+      "question": "Where does the Philadelphia Half Marathon start and finish?",
+      "answer": "It starts at 22nd Street and the Benjamin Franklin Parkway and finishes in front of the Philadelphia Museum of Art."
+    },
+    {
+      "question": "When is the Philadelphia Half Marathon held?",
+      "answer": "It is held in November, as part of Philadelphia Marathon Weekend."
+    }
+  ],
+  "sources": [
+    "https://www.philadelphiamarathon.com/races/half-marathon",
+    "https://allthingsrunning.substack.com/p/philadelphia-half-marathon"
+  ],
+  "checked": "2026-10"
+}

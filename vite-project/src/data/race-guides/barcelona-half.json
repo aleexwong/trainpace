@@ -1,0 +1,69 @@
+{
+  "slug": "barcelona-half",
+  "name": "Hyundai Mitja Marató Barcelona by Brooks",
+  "city": "Barcelona",
+  "country": "Spain",
+  "distanceKm": 21.0975,
+  "month": "February",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.mitjamarato.barcelona/",
+  "summary": "The Barcelona Half Marathon (Mitja Marató de Barcelona) is a fully urban race through the heart and coast of the city. Barcelona's tourism site calls it flat, fast and monumental. A men's world record of 56:42 was set here in 2025.",
+  "courseHighlights": [
+    "Start at Passeig Picasso, near Parc de la Ciutadella",
+    "Passeig de Colom and the old port area",
+    "Paral·lel and Gran Via through the Eixample",
+    "Diagonal toward the Besòs river and Fòrum",
+    "Finish on Passeig Pujades, near Port Olímpic and the beach"
+  ],
+  "paceStrategy": {
+    "summary": "The course is described as flat and fast, so aim for an even pace. The race uses staggered starts based on your expected pace, so line up in your own group and avoid starting too fast.",
+    "segments": [
+      {
+        "section": "km 0–5",
+        "terrain": "Flat city streets from Passeig Picasso to the port area",
+        "advice": "Run at goal pace or slightly slower and avoid weaving."
+      },
+      {
+        "section": "km 5–15",
+        "terrain": "Flat avenues: Paral·lel, Gran Via and Diagonal",
+        "advice": "Hold an even pace and drink at the stations."
+      },
+      {
+        "section": "km 15–21.1",
+        "terrain": "Flat coastal road toward Port Olímpic",
+        "advice": "Keep steady and speed up only in the final 2 km."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found on the pages we checked. Check the current race guide and carry your own gels.",
+  "tips": [
+    "Line up in the start group that matches the pace you gave when you registered",
+    "Pace groups run from 1:20 to 2:05, so pick one that matches your goal",
+    "Check the current race guide for the exact route, because details can change from year to year",
+    "Dress for a cool February morning and plan a warm layer for the wait"
+  ],
+  "faq": [
+    {
+      "question": "Is the Barcelona Half Marathon flat?",
+      "answer": "Yes. Barcelona's tourism site calls it a flat, fast and monumental half marathon. We found no official climb figure."
+    },
+    {
+      "question": "Where does the Barcelona Half Marathon start and finish?",
+      "answer": "It starts at Passeig Picasso and finishes on Passeig Pujades, near Parc de la Ciutadella."
+    },
+    {
+      "question": "When is the Barcelona Half Marathon held?",
+      "answer": "It is held on a Sunday in February."
+    }
+  ],
+  "sources": [
+    "https://www.mitjamarato.barcelona/soc-corredor-a/recorregut/",
+    "https://en.wikipedia.org/wiki/Barcelona_Half_Marathon",
+    "https://thisisbarcelona.com/ca/agenda/hyundai-mitja-marato-barcelona-by-brooks"
+  ],
+  "checked": "2026-10"
+}

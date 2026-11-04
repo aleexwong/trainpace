@@ -16,7 +16,11 @@ import { type ButtonHTMLAttributes, type ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { comparisonLinks } from "@/features/seo-pages/seoPages";
+import bmoResults from "@/assets/about/bmo-half-marathon-2025.jpg";
+import { HeroTopo } from "./HeroTopo";
+import { useInView } from "@/components/feature-shots/shared";
 import {
   PaceLadderShot,
   VdotDialShot,
@@ -98,6 +102,9 @@ const Hero = () => {
 
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-50">
+      {/* Animated topo-map backdrop; the gradient keeps the copy column legible on narrow screens */}
+      <HeroTopo />
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-50 via-slate-50/70 to-transparent" />
       {/* Abstract Background Shapes */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
       <div className="absolute top-0 left-0 -ml-20 -mt-20 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
@@ -112,7 +119,9 @@ const Hero = () => {
                 Made for runners by a runner
               </span>
             </div>
-            <h1 className="text-4xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
+            {/* font-bold, not extrabold: Space Grotesk tops out at 700 and
+                font-synthesis is off, so 800 silently renders as 700 anyway. */}
+            <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 tracking-tight leading-[1.1] mb-6">
               Train Smarter. <br />
               <span className="text-emerald-600">Race Faster.</span>
             </h1>
@@ -548,9 +557,10 @@ const FounderStory = () => {
             <div className="relative w-full max-w-md rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl rotate-2 hover:rotate-0 transition-all duration-500 group">
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-10 opacity-60" />
               <img
-                src="https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?q=80&w=1000&auto=format&fit=crop"
-                alt="Alex running"
-                className="w-full h-[450px] object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                src={bmoResults}
+                alt="Alex Wong after the 2025 BMO Vancouver Half Marathon, finish time 2:06:29"
+                loading="lazy"
+                className="w-full h-[450px] object-cover object-[70%_40%]"
               />
             </div>
 
@@ -789,10 +799,34 @@ const AiAgentSection = () => {
 
 const CTA = () => {
   const navigate = useNavigate();
+  // Don't fetch the 0.7 MB loop until the section is near; the poster covers until then
+  // and permanently for reduced-motion users.
+  const { ref, inView } = useInView<HTMLElement>(0.1);
+  const playVideo =
+    inView && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   return (
-    <section className="py-24 bg-emerald-600">
-      <div className="max-w-4xl mx-auto px-4 text-center">
+    <section ref={ref} className="relative py-24 bg-emerald-600 overflow-hidden">
+      <img
+        src="/images/landing/cta-avenue-poster.jpg"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      {playVideo && (
+        <video
+          src="/images/landing/cta-avenue.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      )}
+      <div className="absolute inset-0 bg-emerald-950/55" />
+      <div className="relative max-w-4xl mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
           Ready to Train Smarter?
         </h2>
@@ -831,7 +865,7 @@ export default function LandingPage() {
   return (
     <>
       <Helmet>
-        <title>TrainPace – Free VDOT Running Calculator & Training Tools</title>
+        <title>{STATIC_PAGE_TITLES["/"]}</title>
         <meta
           name="description"
           content="Free VDOT running calculator, elevation analysis, and marathon fuel planner. Get science-based training paces from Jack Daniels' formula. No account needed."
