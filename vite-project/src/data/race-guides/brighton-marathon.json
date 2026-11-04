@@ -1,0 +1,79 @@
+{
+  "slug": "brighton-marathon",
+  "name": "Brighton Marathon",
+  "city": "Brighton",
+  "country": "England, UK",
+  "distanceKm": 42.195,
+  "month": "April",
+  "courseType": "out-and-back",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.brightonmarathonweekend.co.uk/",
+  "summary": "The Brighton Marathon was first held in 2010 and is run in April. It starts at Preston Park, runs along the seafront to an Ovingdean U-turn and returns through Hove. The finish is on Hove Lawns.",
+  "courseHighlights": [
+    "Start in Preston Park",
+    "Theatre Royal and the Royal Pavilion",
+    "Marine Drive clifftop road to the Ovingdean U-turn",
+    "Volk's Electric Railway out-and-back section",
+    "Hove Promenade, beach huts at mile 25, finish at Hove Lawns"
+  ],
+  "paceStrategy": {
+    "summary": "The organisers say the four main climbs come at miles 1, 7, 9 and 11, so the rest of the race is easier. Control the early miles and keep energy for Hove.",
+    "segments": [
+      {
+        "section": "mile 1–6",
+        "terrain": "City centre, a short climb at mile 1 and broadly flat roads",
+        "advice": "Start steady; do not run the first climb too fast."
+      },
+      {
+        "section": "mile 7–13",
+        "terrain": "Clifftop rolling section on Marine Drive to the Ovingdean U-turn",
+        "advice": "Run by effort on the rises and take in the sea views."
+      },
+      {
+        "section": "mile 14–19",
+        "terrain": "Aquarium Junction and the Volk's Railway out-and-back, flat",
+        "advice": "Settle back to goal pace in the loudest part of the course."
+      },
+      {
+        "section": "mile 20–23",
+        "terrain": "Hove, Grand Avenue and Church Road",
+        "advice": "This is where it gets tough; keep form and use the local support."
+      },
+      {
+        "section": "mile 23–26.2",
+        "terrain": "Kingsway and Hove Promenade to the finish at Hove Lawns",
+        "advice": "Hold your pace and push over the last miles."
+      }
+    ]
+  },
+  "fuelingNotes": "The official course page lists water at miles 2, 4, 6, 8, 10, 12.5, 14, 16, 18, 20, 22 and 24, HIGH5 Zero at miles 7, 15, 21 and 23, and HIGH5 Energy Gel at miles 15 and 21.",
+  "tips": [
+    "Use the water refill points at miles 4, 7.5, 12, 16.5 and 20 if you carry a bottle",
+    "The surface is tarmac with a 200 m section of block paving at mile 4.5",
+    "The Disability Support Hub is at mile 15",
+    "On the seafront you pass Brighton Pier, the i360, the Grand Hotel and the Peace Statue, so expect crowds there"
+  ],
+  "faq": [
+    {
+      "question": "Is the Brighton Marathon flat?",
+      "answer": "No. The organisers describe a rolling course with four main climbs at miles 1, 7, 9 and 11."
+    },
+    {
+      "question": "When is the Brighton Marathon held?",
+      "answer": "It is held in April, on a Sunday."
+    },
+    {
+      "question": "Where does the Brighton Marathon finish?",
+      "answer": "It finishes on Hove Lawns, after the course passes Hove Promenade."
+    }
+  ],
+  "sources": [
+    "https://brightonmarathonweekend.co.uk/events/brighton-marathon/the-course",
+    "https://www.brightonmarathonweekend.co.uk/",
+    "https://en.wikipedia.org/wiki/Brighton_Marathon"
+  ],
+  "checked": "2026-10"
+}

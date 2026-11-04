@@ -7,6 +7,7 @@ interface RoutesSectionProps {
   routes: RouteMetadata[];
   loading: boolean;
   onDeleteRoute: (routeId: string, routeType: "uploaded" | "bookmarked") => void;
+  onEditSlug?: (routeId: string, newSlug: string) => Promise<void>;
 }
 
 const ROUTES_PER_PAGE = 6; // 2 rows of 3 cards max - keeps WebGL contexts low
@@ -15,6 +16,7 @@ export function RoutesSection({
   routes,
   loading,
   onDeleteRoute,
+  onEditSlug,
 }: RoutesSectionProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -94,7 +96,12 @@ export function RoutesSection({
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {currentRoutes.map((route) => (
-          <RouteCard key={route.id} route={route} onDelete={onDeleteRoute} />
+          <RouteCard
+            key={route.id}
+            route={route}
+            onDelete={onDeleteRoute}
+            onEditSlug={onEditSlug}
+          />
         ))}
       </div>
 

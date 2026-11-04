@@ -1,0 +1,70 @@
+{
+  "slug": "buenos-aires-marathon",
+  "name": "Maratón Internacional de Buenos Aires",
+  "city": "Buenos Aires",
+  "country": "Argentina",
+  "distanceKm": 42.195,
+  "month": "September",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.maratondebuenosaires.com/",
+  "summary": "The Buenos Aires Marathon has been held since 1984 and is organised by Asociación Ñandú. The organisers call it the fastest marathon in Latin America. The course starts and finishes in Palermo and passes many of the city's landmarks.",
+  "courseHighlights": [
+    "Start and finish at Avenida Figueroa Alcorta and Dorrego, near the Bosques de Palermo",
+    "River Plate stadium in the north of the city",
+    "Obelisk and Teatro Colón in the city centre",
+    "Plaza de Mayo and the Casa Rosada",
+    "La Boca and Puerto Madero"
+  ],
+  "paceStrategy": {
+    "summary": "The course is flat with long straight sections and few turns, so an even pace is realistic. Start at goal pace and avoid going out fast in the cool early morning.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Flat, northern leg from Palermo",
+        "advice": "Settle into goal pace and do not chase the crowd."
+      },
+      {
+        "section": "km 10–30",
+        "terrain": "Flat city streets through the centre, Plaza de Mayo and La Boca",
+        "advice": "Keep an even pace; the landmarks and crowds make it easy to speed up by mistake."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Flat return towards Palermo",
+        "advice": "Hold your pace and push in the last 5 km if you feel strong."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station list was found in the sources, so check the official race guide. Plan to take gels at regular intervals, for example every 30 to 40 minutes.",
+  "tips": [
+    "The race starts at 7:00, so plan your journey to Palermo in advance",
+    "Pick up your kit at the expo in Parque Sarmiento, which is open on the Friday and Saturday before the race",
+    "The Buenos Aires Herald reports live music along the route, so you may not need headphones",
+    "Bring a warm layer for the early start; the race starts at 7:00"
+  ],
+  "faq": [
+    {
+      "question": "Is the Buenos Aires Marathon course flat?",
+      "answer": "Yes. The Buenos Aires Herald calls it a flat course, and the organisers describe it as the fastest marathon in Latin America."
+    },
+    {
+      "question": "When is the Buenos Aires Marathon held?",
+      "answer": "It is held in September, on a Sunday. Older sources say October, but recent editions were in September."
+    },
+    {
+      "question": "Where does the Buenos Aires Marathon start?",
+      "answer": "It starts and finishes at Avenida Figueroa Alcorta and Dorrego in Palermo, at 7:00 in the morning."
+    }
+  ],
+  "sources": [
+    "https://www.maratondebuenosaires.com/maraton-de-buenos-aires-42k.html",
+    "https://en.wikipedia.org/wiki/Buenos_Aires_Marathon",
+    "https://buenosairesherald.com/society/the-buenos-aires-marathon-latin-americas-fastest-42k-is-this-weekend",
+    "https://www.finishers.com/en/course/marathon-de-buenos-aires"
+  ],
+  "checked": "2026-10"
+}

@@ -1,0 +1,69 @@
+{
+  "slug": "rotterdam-half",
+  "name": "Rotterdam Half Marathon",
+  "city": "Rotterdam",
+  "country": "Netherlands",
+  "distanceKm": 21.0975,
+  "month": "September",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.rotterdamhalf.nl/",
+  "summary": "The Rotterdam Half Marathon is a new race that was first held in September 2026. It starts at the Maassilo in Rotterdam-Zuid and finishes inside Rotterdam Ahoy. The route goes through Katendrecht, the port area and the Zuiderpark, and the organisers call it fast, flat and officially certified.",
+  "courseHighlights": [
+    "Start at the Maassilo",
+    "Loop through Katendrecht, past the SS Rotterdam",
+    "Port area: Brielselaan, Sluisjesdijk and the Waalhaven",
+    "Zuiderpark in the last kilometres",
+    "Finish inside Rotterdam Ahoy"
+  ],
+  "paceStrategy": {
+    "summary": "The course is flat with long straight roads in the port area, so an even pace is realistic. The harbour can be windy, so be ready to share the work with other runners.",
+    "segments": [
+      {
+        "section": "km 0–5",
+        "terrain": "Maassilo start and loop around Katendrecht",
+        "advice": "Run calmly in the busy opening kilometres."
+      },
+      {
+        "section": "km 5–15",
+        "terrain": "Port area, Waalhaven quays",
+        "advice": "Hold goal pace and use groups if there is wind."
+      },
+      {
+        "section": "km 15–21.1",
+        "terrain": "Wielewaal, Zuiderpark and finish in Ahoy",
+        "advice": "Keep your pace steady, then push over the last kilometre."
+      }
+    ]
+  },
+  "fuelingNotes": "For a half marathon you may need only one gel around km 8 to 10. Check the official FAQ page for aid-station details.",
+  "tips": [
+    "The course PDF map is on the official site",
+    "Finish celebrations are held inside Rotterdam Ahoy",
+    "Bag drop is at Ahoy but the start is at the Maassilo, so check the official FAQ for how to get to the start",
+    "The race sold out quickly in its first year, and the organisers now offer a waiting list for the next one"
+  ],
+  "faq": [
+    {
+      "question": "Is the Rotterdam Half Marathon flat?",
+      "answer": "Yes. The organisers describe the course as fast, flat and officially certified."
+    },
+    {
+      "question": "When is the Rotterdam Half Marathon held?",
+      "answer": "The first edition was in September; check the official site for the next date."
+    },
+    {
+      "question": "Where does the Rotterdam Half Marathon finish?",
+      "answer": "It finishes inside Rotterdam Ahoy."
+    }
+  ],
+  "sources": [
+    "https://www.rotterdamhalf.nl/",
+    "https://www.ahoy.nl/en/events/sports/rotterdam-half-marathon",
+    "https://rotterdamstyle.com/events/rotterdam-half-marathon-event-details-and-route"
+  ],
+  "checked": "2026-10"
+}

@@ -1,0 +1,74 @@
+{
+  "slug": "florence-marathon",
+  "name": "Estra Firenze Marathon",
+  "city": "Florence",
+  "country": "Italy",
+  "distanceKm": 42.195,
+  "month": "November",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "About 8 °C at the start, with a real chance of rain (third-party guide)",
+  "website": "https://www.firenzemarathon.it/en/",
+  "summary": "The Firenze Marathon is held in late November. The 2025 route started and finished in Piazza Duomo, ran through the Cascine park, crossed the Arno several times and passed Ponte Vecchio, Piazza Santa Croce and the Luigi Ridolfi stadium. The finish is in Piazza Duomo – Piazza San Giovanni.",
+  "courseHighlights": [
+    "Start in Piazza Duomo at 8:30",
+    "Cascine park, the city's green lung, between km 5 and 20",
+    "Ponte Vecchio and Palazzo Pitti",
+    "Halfway point on Ponte San Niccolò and Piazza Santa Croce",
+    "Finish in Piazza Duomo – Piazza San Giovanni"
+  ],
+  "paceStrategy": {
+    "summary": "The course is essentially flat, with Arno bridge crossings and one notable rise: the Affrico overpass shortly before km 35. Run an even first half and save energy for km 30 to 40.",
+    "segments": [
+      {
+        "section": "km 0–5",
+        "terrain": "Historic centre from Piazza Duomo to the Fortezza da Basso",
+        "advice": "Start steady; the streets are narrow and busy."
+      },
+      {
+        "section": "km 5–20",
+        "terrain": "Cascine park and Arno bridges, including Ponte Vecchio",
+        "advice": "Hold goal pace on the park paths, which are flat."
+      },
+      {
+        "section": "km 20–30",
+        "terrain": "Halfway at Ponte San Niccolò, Santa Croce, then the athletics stadium",
+        "advice": "Stay relaxed; the route runs on the track in the stadium."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Affrico overpass near km 35, then the historic centre to Piazza Duomo",
+        "advice": "Run the overpass by effort, then speed up on the flat final kilometres."
+      }
+    ]
+  },
+  "fuelingNotes": "The official site says refreshment points are on the route; check the current map for exact places. Plan a gel before the Affrico overpass near km 35 if you want energy for it.",
+  "tips": [
+    "Expect cold, damp weather in late November and bring warm clothes to the start",
+    "Cobblestones in the historic centre and park paths in the Cascine need careful footing, especially when wet",
+    "The route changes in some years, so check the current official map before race day",
+    "Piazza Duomo is the meeting point for the start; arrive well before 8:30"
+  ],
+  "faq": [
+    {
+      "question": "Is the Florence Marathon flat?",
+      "answer": "Largely. A third-party guide describes it as effectively flat, and the official 2025 route description names the Affrico overpass near km 35 as one of the most demanding parts."
+    },
+    {
+      "question": "When is the Florence Marathon held?",
+      "answer": "It is held on a Sunday in late November."
+    },
+    {
+      "question": "Where does the Florence Marathon start and finish?",
+      "answer": "In the 2025 edition it started in Piazza Duomo and finished in Piazza Duomo – Piazza San Giovanni. Older courses finished in Piazza Santa Croce."
+    }
+  ],
+  "sources": [
+    "https://www.firenzemarathon.it/en/41st-estra-firenze-marathon-the-charm-of-a-route-that-tells-art-and-history/",
+    "https://en.wikipedia.org/wiki/Florence_Marathon",
+    "https://fatmarathoner.com/estra-firenze-marathon/"
+  ],
+  "checked": "2026-10"
+}

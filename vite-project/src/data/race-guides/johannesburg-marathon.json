@@ -1,0 +1,75 @@
+{
+  "slug": "johannesburg-marathon",
+  "name": "Johannesburg City Marathon",
+  "city": "Johannesburg",
+  "country": "South Africa",
+  "distanceKm": 42.195,
+  "month": "March",
+  "courseType": "out-and-back",
+  "terrain": "hilly",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.facebook.com/JackieGibsonMarathon/",
+  "summary": "The Johannesburg City Marathon is run by the Johannesburg Harriers Athletics Club and was formerly called the Jackie Gibson Marathon. It starts and finishes at the Klipriviersberg Recreation Centre in Kibler Park, south of the city. Part of the route runs on the M1 highway, which is closed to traffic for the race.",
+  "courseHighlights": [
+    "Start and finish at Klipriviersberg Recreation Centre, Kibler Park",
+    "Closed M1 highway section with views of the city and Gold Reef City",
+    "Nelson Mandela Bridge in Braamfontein",
+    "Constitution Hill, the high point of the course at 1,788 m above sea level, just before the 25 km mark"
+  ],
+  "paceStrategy": {
+    "summary": "The first kilometres are gentle and mostly downhill, so it is easy to start too fast. The long climb onto the R82 and M1 and the climb at Constitution Hill cost time, so run them by effort, not by pace.",
+    "segments": [
+      {
+        "section": "km 0–4",
+        "terrain": "Gentle, mostly downhill through Kibler Park",
+        "advice": "Start a little slower than goal pace and save your legs for the climb."
+      },
+      {
+        "section": "km 4–13",
+        "terrain": "Climb onto the R82 and M1 highway",
+        "advice": "The toughest hill of the day is here, about 180 m of climbing over four kilometres; shorten your stride and keep the effort steady."
+      },
+      {
+        "section": "km 13–25",
+        "terrain": "Closed highway and city centre, with Constitution Hill near km 25",
+        "advice": "Expect to slow down on the Constitution Hill climb and aim to keep your effort even."
+      },
+      {
+        "section": "km 25–42.2",
+        "terrain": "Return towards Kibler Park",
+        "advice": "Check your fuel and fluids early, then use any downhill sections to find your rhythm again."
+      }
+    ]
+  },
+  "fuelingNotes": "A 2024 race report says the first 4 km are easy and the big climb begins soon after, so take a gel before the climb onto the R82. Do not rely only on aid stations; check the official race guide for their positions.",
+  "tips": [
+    "Johannesburg is high above sea level (the course peaks at 1,788 m), so run by effort and not by pace if you live at sea level",
+    "The closed M1 highway section has less to look at than city streets, so be ready to stay focused",
+    "The race is an official Comrades Marathon qualifier, so check the qualifying rules if that is your goal",
+    "Check the access notes before race day: a race report says the M1 South was closed from 3 am, so some runners had to use another road to reach the start"
+  ],
+  "faq": [
+    {
+      "question": "Is the Johannesburg City Marathon flat?",
+      "answer": "No. A 2024 race report describes a 180 m climb over four kilometres after about km 4, and a running guide says Constitution Hill takes the course to 1,788 m above sea level just before 25 km."
+    },
+    {
+      "question": "Where does the Johannesburg City Marathon start and finish?",
+      "answer": "Both start and finish are at the Klipriviersberg Recreation Centre in Kibler Park, south of central Johannesburg."
+    },
+    {
+      "question": "When is the Johannesburg City Marathon held?",
+      "answer": "It is usually held on a Sunday in March."
+    }
+  ],
+  "sources": [
+    "https://joburg.org.za/media_/Newsroom/Pages/2025-News-Articles/Joburg-City-Marathon-A-race-through-the-heart-of-Gauteng.aspx",
+    "https://runningmann.co.za/2024/05/23/johannesburg-city-marathon-up-in-the-dumps/",
+    "https://runningmann.co.za/2025/12/04/complete-2026-marathon-calendar/",
+    "https://www.citizen.co.za/southern-courier/news-headlines/2025/11/18/get-ready-joz-for-2026-johannesburg-city-marathon/",
+    "https://www.gauteng.net/whats-on-g/johannesburg-city-marathon-2026/"
+  ],
+  "checked": "2026-10"
+}

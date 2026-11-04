@@ -88,9 +88,13 @@ export function useFileUpload({
 
       setOriginalGpxText(gpxText);
 
-      // Update URL immediately after upload to enable sharing
-      if (docId) {
-        window.history.replaceState(null, "", `/elevationfinder/${docId}`);
+      // Update URL immediately after upload to enable sharing. Prefer the
+      // pretty /elevationfinder/{slug}-{shortId} path; fall back to the raw
+      // doc id only if the uploader didn't provide one.
+      const shareablePath =
+        displayUrl || (docId ? `/elevationfinder/${docId}` : null);
+      if (shareablePath) {
+        window.history.replaceState(null, "", shareablePath);
       }
 
       try {

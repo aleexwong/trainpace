@@ -1,0 +1,74 @@
+{
+  "slug": "cleveland-marathon",
+  "name": "University Hospitals Cleveland Marathon",
+  "city": "Cleveland",
+  "country": "Ohio, USA",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.clevelandmarathon.com/",
+  "summary": "The Cleveland Marathon started in 1978 and is held in May. It starts and finishes on St. Clair Avenue NE at Mall B in downtown. The route goes through Ohio City, Gordon Square, Edgewater and Lakewood, and includes long flat stretches.",
+  "courseHighlights": [
+    "Start and finish on St. Clair Avenue NE at Mall B",
+    "Hingetown, Ohio City and Gordon Square",
+    "Long flat stretches from Lake Avenue to West Boulevard, then Edgewater",
+    "Turnaround at West 115th into Lakewood",
+    "Two-mile Shoreway section, then a last mile on Detroit Avenue"
+  ],
+  "paceStrategy": {
+    "summary": "The official page highlights long flat stretches, so even pacing works well. There is a Shoreway section on the way back and the course is subject to change because of construction.",
+    "segments": [
+      {
+        "section": "mile 1–8",
+        "terrain": "Downtown into Hingetown, Ohio City and Gordon Square",
+        "advice": "Start calmly; city streets are busy."
+      },
+      {
+        "section": "mile 8–18",
+        "terrain": "Long flat stretches from Lake Avenue to West Boulevard and through Edgewater",
+        "advice": "Hold goal pace on the flat roads."
+      },
+      {
+        "section": "mile 18–24",
+        "terrain": "Lakewood streets, turnaround at West 115th, two-mile Shoreway section",
+        "advice": "Stay steady; the Shoreway is a quiet, open road."
+      },
+      {
+        "section": "mile 24–26.2",
+        "terrain": "Detroit Avenue through Ohio City and Hingetown to downtown",
+        "advice": "Use the crowds and finish strong."
+      }
+    ]
+  },
+  "fuelingNotes": "The official page lists 17 water stops, with Gatorade and Gu on the course and e-Gel at three of the stops. Check the course maps page for exact positions.",
+  "tips": [
+    "The marathon starts early on the Sunday of race weekend",
+    "The page warns that GPS distances may be off, because bridges create false elevation spikes",
+    "Gear check is at Mall B, near the start",
+    "Courses are subject to change because of construction, so check the official map"
+  ],
+  "faq": [
+    {
+      "question": "Is the Cleveland Marathon flat?",
+      "answer": "The official page describes long flat stretches, but also warns that the course changes with construction. It does not publish a total elevation figure."
+    },
+    {
+      "question": "When is the Cleveland Marathon held?",
+      "answer": "It is held on a Sunday in May."
+    },
+    {
+      "question": "Where does the Cleveland Marathon start and finish?",
+      "answer": "Both are on St. Clair Avenue NE at Mall B in downtown Cleveland."
+    }
+  ],
+  "sources": [
+    "https://www.clevelandmarathon.com/races/marathon.aspx",
+    "https://www.clevelandmarathon.com/runners/course-maps-water-stops.aspx",
+    "https://www.clevelandmarathon.com/"
+  ],
+  "checked": "2026-10"
+}

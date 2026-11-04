@@ -1,4 +1,7 @@
-import blogData from "@/data/blog-posts.json";
+// Relative rather than the @/ alias: this module is reachable from
+// vite.config.ts (via src/lib/llm/page-docs.ts), and Vite bundles its own
+// config before resolve.alias is in effect, so an aliased import fails there.
+import blogData from "../../data/blog-posts.json";
 import { BlogPost, BlogCategory } from "./types";
 
 // Type assertion for imported JSON data

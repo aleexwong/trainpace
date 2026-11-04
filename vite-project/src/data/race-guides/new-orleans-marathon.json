@@ -1,0 +1,74 @@
+{
+  "slug": "new-orleans-marathon",
+  "name": "New Orleans Marathon",
+  "city": "New Orleans",
+  "country": "Louisiana, USA",
+  "distanceKm": 42.195,
+  "month": "November",
+  "courseType": "multi-lap",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://runsignup.com/Race/runNewOrleans/Page/Race-Day",
+  "summary": "The New Orleans Marathon starts at the New Orleans Museum of Art in City Park and finishes on Roosevelt Mall. The marathon is a double loop around City Park, Lakeshore Drive and Bayou St. John. The race site says it is run on one of the fastest road courses in the world for net elevation.",
+  "courseHighlights": [
+    "Start at the New Orleans Museum of Art in City Park",
+    "Lakeshore Drive, with a U-turn at the eastern end",
+    "Bayou St. John bridge underpass",
+    "Two laps of the loop",
+    "Finish on Roosevelt Mall"
+  ],
+  "paceStrategy": {
+    "summary": "The course is two laps of the same loop, so you will see the route twice. The race site calls the course fast for net elevation, so even pacing should work.",
+    "segments": [
+      {
+        "section": "mile 1–8",
+        "terrain": "City Park roads and Lakeshore Drive",
+        "advice": "Start at goal pace and settle into a rhythm."
+      },
+      {
+        "section": "mile 8–13.1",
+        "terrain": "Bayou St. John and the return to the start area",
+        "advice": "Keep your effort steady as you finish the first lap."
+      },
+      {
+        "section": "mile 13.1–20",
+        "terrain": "Second lap, same roads",
+        "advice": "Resist the urge to speed up on familiar roads."
+      },
+      {
+        "section": "mile 20–26.2",
+        "terrain": "End of lap two and the finish on Roosevelt Mall",
+        "advice": "Hold form; the finish line is on Roosevelt Mall."
+      }
+    ]
+  },
+  "fuelingNotes": "The pages I read do not list aid-station positions; check the official race day information and the athlete guide. On a two-lap course you can plan your fuelling to repeat on the second lap.",
+  "tips": [
+    "The marathon starts at the New Orleans Museum of Art in City Park",
+    "The official page lists a cut-off point near the start of lap two, so check the timing rules",
+    "The post-race area is on Roosevelt Mall, close to Tad Gormley Stadium",
+    "Read the current athlete guide on the race website for the latest logistics"
+  ],
+  "faq": [
+    {
+      "question": "Is the New Orleans Marathon flat?",
+      "answer": "The race site says it is run on one of the fastest road courses in the world for net elevation. The pages I read did not give a number."
+    },
+    {
+      "question": "When is the New Orleans Marathon held?",
+      "answer": "It is held on a Saturday in November. Check the official site for the current date."
+    },
+    {
+      "question": "Where does the New Orleans Marathon start and finish?",
+      "answer": "It starts at the New Orleans Museum of Art in City Park and finishes on Roosevelt Mall."
+    }
+  ],
+  "sources": [
+    "https://runsignup.com/Race/runNewOrleans/Page/Race-Day",
+    "https://runsignup.com/Race/runNewOrleans/Page/MarathonRaceCourse",
+    "https://runsignup.com/Race/runNewOrleans/Page/Training"
+  ],
+  "checked": "2026-10"
+}

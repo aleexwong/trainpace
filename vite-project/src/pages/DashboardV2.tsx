@@ -18,6 +18,7 @@ import {
   deleteFuelPlan,
   deletePacePlan,
   updatePacePlan,
+  updateRouteSlug,
   copyFuelPlanToClipboard,
   copyPacePlanToClipboard,
   DashboardTab,
@@ -39,6 +40,7 @@ export default function DashboardV2() {
     loading: routesLoading,
     error: routesError,
     removeRoute,
+    updateRoute,
   } = useRoutes(user?.uid);
 
   const {
@@ -99,6 +101,32 @@ export default function DashboardV2() {
         description: "Failed to delete route",
         variant: "destructive",
       });
+    }
+  };
+
+  const handleEditSlug = async (routeId: string, newSlug: string) => {
+    if (!user) return;
+
+    try {
+      const { slug, shortId, displayUrl } = await updateRouteSlug(
+        user.uid,
+        routeId,
+        newSlug
+      );
+      updateRoute(routeId, { slug, shortId, displayUrl });
+      toast({
+        title: "URL updated",
+        description: "Your route's shareable link has been updated.",
+      });
+    } catch (err) {
+      console.error("Slug update failed:", err);
+      toast({
+        title: "Update failed",
+        description:
+          err instanceof Error ? err.message : "Failed to update the URL",
+        variant: "destructive",
+      });
+      throw err; // Let the card keep its dialog open on failure
     }
   };
 
@@ -304,6 +332,7 @@ export default function DashboardV2() {
           routes={filteredRoutes}
           loading={routesLoading}
           onDeleteRoute={handleDeleteRoute}
+          onEditSlug={handleEditSlug}
         />
       )}
 

@@ -1,0 +1,74 @@
+{
+  "slug": "cape-town-marathon",
+  "name": "Sanlam Cape Town Marathon",
+  "city": "Cape Town",
+  "country": "South Africa",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "loop",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://capetownmarathon.com/",
+  "summary": "The Sanlam Cape Town Marathon is held in May. It starts and finishes in Green Point near the stadium. The course goes through the city centre, Woodstock, Salt River and Mowbray to the southern suburbs, then returns and runs along the Sea Point promenade. It moved to May to avoid spring winds.",
+  "courseHighlights": [
+    "Start in Green Point near Cape Town Stadium",
+    "V&A Waterfront, City Hall and the Castle of Good Hope",
+    "Woodstock, Salt River and Mowbray",
+    "Rondebosch Common and the University of Cape Town area",
+    "Finish on the lawns beside the stadium on Vlei Road"
+  ],
+  "paceStrategy": {
+    "summary": "The first 8 km are wide with a mild downhill bias, so do not surge. Rises come at about km 14–18 near Rondebosch Common and the main climb at km 24–27 near the University of Cape Town. Wind on the Sea Point promenade is the main late obstacle.",
+    "segments": [
+      {
+        "section": "km 0–8",
+        "terrain": "Green Point to the Foreshore, wide roads with a mild downhill bias",
+        "advice": "Run at goal pace and do not surge."
+      },
+      {
+        "section": "km 8–24",
+        "terrain": "Woodstock, Mowbray and a gradual climb toward Rondebosch Common",
+        "advice": "Run the rises by effort."
+      },
+      {
+        "section": "km 24–29",
+        "terrain": "Main climb through the University of Cape Town corridor, then downhill",
+        "advice": "Keep effort steady and recover on the downhill."
+      },
+      {
+        "section": "km 29–42.2",
+        "terrain": "Sea Point promenade (flat, windy) then Mouille Point and the finish",
+        "advice": "Run by effort into any wind and push over the last 3 km."
+      }
+    ]
+  },
+  "fuelingNotes": "A guide says water is in sachets with Powerade at every station and Coca-Cola from km 25, and that there are no gels on the course. Carry your own gels and take one before the main climb around km 24.",
+  "tips": [
+    "Carry your own gels; there are none on the course",
+    "Wind is the main risk: the 2025 race was cancelled by strong wind",
+    "Two start lines were used in 2026, in the stadium area and at Beach Road, Mouille Point",
+    "Check the official site for the current route, as it changes between years"
+  ],
+  "faq": [
+    {
+      "question": "Is the Cape Town Marathon hilly?",
+      "answer": "It has two main rises: a gradual climb toward Rondebosch Common and a sustained climb through the University of Cape Town area. No reliable total-climb figure was found."
+    },
+    {
+      "question": "Why did the Cape Town Marathon move to May?",
+      "answer": "A race guide says it moved to avoid Cape Town's spring winds."
+    },
+    {
+      "question": "When is the Cape Town Marathon held?",
+      "answer": "It is held in May."
+    }
+  ],
+  "sources": [
+    "https://capetownmarathon.com/",
+    "https://marathonhandbook.com/a-mile-by-mile-breakdown-of-the-cape-town-marathon-course/",
+    "https://en.wikipedia.org/wiki/Cape_Town_Marathon"
+  ],
+  "checked": "2026-10"
+}
