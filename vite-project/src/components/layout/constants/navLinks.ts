@@ -8,4 +8,5 @@ export interface NavLinkItem {
     { label: 'Dashboard', path: '/dashboard' },
     { label: 'Races', path: '/races' },
     { label: 'Fuel Planner', path: '/fuel' },
+    { label: 'Race Day Conditions', path: '/conditions' },
   ];
