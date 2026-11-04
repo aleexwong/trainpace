@@ -3,12 +3,14 @@
  */
 
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
+import { BASE_URL } from "@/lib/seo/types";
+import { CONDITIONS_DESCRIPTION } from "../seo";
 
-const TITLE = "Heat & Altitude Pace Calculator | TrainPace";
-const DESCRIPTION =
-  "See how heat, humidity, and altitude change your race time. Enter your goal and the forecast to get an adjusted finish time, race-day pace, and re-targeted training paces.";
-const URL = "https://www.trainpace.com/conditions";
-const IMAGE = "https://trainpace.com/landing-page-2025.png";
+const TITLE = STATIC_PAGE_TITLES["/conditions"];
+const DESCRIPTION = CONDITIONS_DESCRIPTION;
+const URL = `${BASE_URL}/conditions`;
+const IMAGE = `${BASE_URL}/landing-page-2025.png`;
 
 export function ConditionsSeoHead() {
   return (
@@ -50,7 +52,7 @@ export function ConditionsSeoHead() {
                   "@type": "ListItem",
                   position: 1,
                   name: "Home",
-                  item: "https://trainpace.com/",
+                  item: `${BASE_URL}/`,
                 },
                 {
                   "@type": "ListItem",

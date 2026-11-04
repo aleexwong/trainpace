@@ -32,7 +32,7 @@ import {
   velocityToPacePerKm,
   velocityToPacePerMile,
   trainingVelocity,
-} from "@/features/vdot-calculator/vdot-math";
+} from "../vdot-calculator/vdot-math";
 import type {
   ConditionsInput,
   ConditionsResult,

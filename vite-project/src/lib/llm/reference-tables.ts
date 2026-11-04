@@ -22,6 +22,7 @@ import {
   formatPace,
 } from "../../features/vdot-calculator/vdot-math";
 import { calculateFuelPlan } from "../../features/fuel/fuel-math";
+import { calculateConditions } from "../../features/conditions/conditions-math";
 import type { RaceType } from "../../features/fuel/types";
 import { PLAN_WEEKS, buildPhaseMap } from "../../features/plan/plan-math";
 import type { GoalRace, FitnessLevel } from "../../features/plan/types";
@@ -125,6 +126,57 @@ export function equivalentRaceTimeTable(): DocTable {
     caption: "Equivalent race times at the same VDOT",
     headers: ["VDOT", "5K", "10K", "Half marathon", "Marathon"],
     rows,
+  };
+}
+
+// ── Race-day conditions ────────────────────────────────────────────────────
+
+const CONDITION_SAMPLES = [
+  { label: "5K in 25:00", meters: M_5K, seconds: 25 * 60 },
+  { label: "Half in 1:45:00", meters: M_HALF, seconds: 105 * 60 },
+  { label: "Marathon in 3:30:00", meters: M_MARATHON, seconds: 210 * 60 },
+];
+
+function adjustedTime(
+  sample: (typeof CONDITION_SAMPLES)[number],
+  tempC: number,
+  humidity: number,
+  altitudeMeters: number
+): string {
+  const result = calculateConditions({
+    distanceMeters: sample.meters,
+    goalTimeSeconds: sample.seconds,
+    tempC,
+    humidity,
+    altitudeMeters,
+    acclimatised: false,
+  });
+  return result ? formatTime(result.adjustedTimeSeconds) : "–";
+}
+
+/** Expected finish times as temperature rises, at sea level and 60% humidity. */
+export function conditionsHeatTable(): DocTable {
+  return {
+    type: "table",
+    caption: "Expected finish time by temperature (60% humidity, sea level)",
+    headers: ["Temperature", ...CONDITION_SAMPLES.map((s) => s.label)],
+    rows: [10, 15, 20, 25, 30].map((tempC) => [
+      `${tempC}°C / ${Math.round(tempC * 1.8 + 32)}°F`,
+      ...CONDITION_SAMPLES.map((s) => adjustedTime(s, tempC, 60, 0)),
+    ]),
+  };
+}
+
+/** Expected finish times by race altitude, in cool weather, not acclimatised. */
+export function conditionsAltitudeTable(): DocTable {
+  return {
+    type: "table",
+    caption: "Expected finish time by altitude (10°C, 50% humidity, not acclimatised)",
+    headers: ["Altitude", ...CONDITION_SAMPLES.map((s) => s.label)],
+    rows: [0, 1000, 1600, 2400].map((m) => [
+      `${m.toLocaleString("en-US")} m / ${Math.round(m * 3.28084).toLocaleString("en-US")} ft`,
+      ...CONDITION_SAMPLES.map((s) => adjustedTime(s, 10, 50, m)),
+    ]),
   };
 }
 
