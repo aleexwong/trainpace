@@ -1,0 +1,68 @@
+{
+  "slug": "cairns-half",
+  "name": "McDonald's Half Marathon (7Cairns Marathon Festival)",
+  "city": "Cairns",
+  "country": "Queensland, Australia",
+  "distanceKm": 21.0975,
+  "month": "July",
+  "courseType": "multi-lap",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.cairnsmarathon.com.au/mcdonalds-half-marathon",
+  "summary": "The McDonald's Half Marathon is the most popular distance at the 7Cairns Marathon Festival. Runners do two laps of a flat, fast course on the Cairns Esplanade and wide city streets. The start and finish are both at Fogarty Park.",
+  "courseHighlights": [
+    "Start and finish at Fogarty Park",
+    "The Cairns Esplanade waterfront",
+    "The Esplanade lagoon",
+    "Two laps of the course on wide Cairns streets"
+  ],
+  "paceStrategy": {
+    "summary": "The organisers call the course flat and fast. Because it is two laps, you can check your pace against the first lap. Start at an even pace and aim to run the second lap as fast as the first.",
+    "segments": [
+      {
+        "section": "km 0–5",
+        "terrain": "Flat Esplanade and city streets, start from Fogarty Park",
+        "advice": "Start at goal pace or slightly slower; it is a very early start."
+      },
+      {
+        "section": "km 5–15",
+        "terrain": "Flat; laps one and two of the waterfront course",
+        "advice": "Hold an even pace and take a drink at each aid station."
+      },
+      {
+        "section": "km 15–21.1",
+        "terrain": "Flat; finish lap back to Fogarty Park",
+        "advice": "Keep steady, then speed up over the last 2 km."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site says there are aid stations along the course and refreshments at the finish, but it does not list their positions in the text we checked. Check the current race guide and carry your own gels.",
+  "tips": [
+    "The half marathon starts at 5:45 a.m. with the marathon, so plan your travel and warm-up the day before",
+    "Expect warm, humid air in the tropics even in the early morning",
+    "Pacers are offered for finishing times from 1:24 to 2:10 in the most recent list",
+    "Because the course has two laps, keep your pace consistent from lap one to lap two"
+  ],
+  "faq": [
+    {
+      "question": "Is the Cairns Half Marathon flat?",
+      "answer": "Yes. The organisers describe it as flat and fast. We found no official climb figure."
+    },
+    {
+      "question": "Where does the Cairns Half Marathon start and finish?",
+      "answer": "Both are at Fogarty Park in Cairns. The course covers two laps of the Esplanade and wide city streets."
+    },
+    {
+      "question": "When is the Cairns Half Marathon held?",
+      "answer": "It is held on a Sunday in July, as part of the 7Cairns Marathon Festival."
+    }
+  ],
+  "sources": [
+    "https://www.cairnsmarathon.com.au/mcdonalds-half-marathon",
+    "https://www.cairnsmarathon.com.au/",
+    "https://marathon-index.com/races/cairns-marathon/course"
+  ],
+  "checked": "2026-10"
+}

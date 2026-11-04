@@ -59,7 +59,7 @@ check("trailing slash", markdownPathFor("/calculator/"), "/calculator.md");
 
 // Every generated route must map identically in both implementations.
 const mismatched = getAllDocPaths().filter((r) => markdownPathFor(r) !== markdownPathForRoute(r));
-check("all 245 routes map identically", mismatched, []);
+check(`all ${getAllDocPaths().length} routes map identically`, mismatched, []);
 
 console.log(fail === 0 ? "\nALL PASS" : `\n${fail} FAILURES`);
 process.exit(fail === 0 ? 0 : 1);

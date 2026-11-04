@@ -1,0 +1,69 @@
+{
+  "slug": "san-antonio-half",
+  "name": "San Antonio Marathon Half Marathon",
+  "city": "San Antonio",
+  "country": "Texas, USA",
+  "distanceKm": 21.0975,
+  "month": "December",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Five-year average of about 11 °C at the start and 19 °C in the afternoon (52 °F and 67 °F), per HalfRuns",
+  "website": "https://www.sanantoniomarathon.com/",
+  "summary": "The San Antonio Marathon half marathon is run by San Antonio Sports and replaced the Rock 'n' Roll San Antonio event after its last race in December 2024. Both the half and the full marathon start and finish at Hemisfair. In 2025 organisers said the courses pass historic landmarks including The Alamo and Fort Sam Houston.",
+  "courseHighlights": [
+    "Start and finish at Hemisfair",
+    "Historic landmarks including The Alamo",
+    "Fort Sam Houston",
+    "USATF-certified course",
+    "Finish line festival at Hemisfair"
+  ],
+  "paceStrategy": {
+    "summary": "HalfRuns rates the course ultra-flat. The race site gives no elevation figures, so check the current course map. Run an even pace and plan your fuel around the single gel station.",
+    "segments": [
+      {
+        "section": "mile 1–4",
+        "terrain": "Downtown streets near Hemisfair",
+        "advice": "Start at goal pace or slightly slower while the field spreads."
+      },
+      {
+        "section": "mile 5–10",
+        "terrain": "City streets past historic landmarks",
+        "advice": "Hold an even pace and use the water and electrolyte stations."
+      },
+      {
+        "section": "mile 11–13.1",
+        "terrain": "Return to Hemisfair",
+        "advice": "Keep steady, then lift the effort over the final mile."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site lists 8 water stations and 4 electrolyte stations, plus 1 gel station on the half marathon course. Carry extra gels if you plan to take more than one.",
+  "tips": [
+    "Carry your own gels, because the course has only 1 gel station",
+    "Check the current course map, as courses may be modified",
+    "Plan for a 7:15 a.m. start from Hemisfair",
+    "Dress for a cool December start; HalfRuns shows an average low of 52 °F"
+  ],
+  "faq": [
+    {
+      "question": "Is the San Antonio Half Marathon flat?",
+      "answer": "HalfRuns rates it ultra-flat. The official site gives no elevation figures, so we do not give a number."
+    },
+    {
+      "question": "Where does the San Antonio Half Marathon start and finish?",
+      "answer": "Both are at Hemisfair in downtown San Antonio."
+    },
+    {
+      "question": "When is the San Antonio Half Marathon held?",
+      "answer": "It is held on a Sunday in early December, as part of San Antonio Marathon weekend."
+    }
+  ],
+  "sources": [
+    "https://sanantoniomarathon.com/?p=1181",
+    "https://www.tpr.org/arts-culture/2025-04-09/new-san-antonio-marathon-unveils-its-2025-courses-for-half-and-full-runs",
+    "https://halfruns.com/races/texas/2026-san-antonio-marathon-san-antonio-tx"
+  ],
+  "checked": "2026-10"
+}

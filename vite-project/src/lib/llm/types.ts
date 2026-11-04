@@ -80,5 +80,10 @@ export interface PageDoc {
   title: string;
   /** Meta description — also the Markdown front-matter description. */
   description: string;
+  /** Canonical route path; differs from `path` only for alias routes. */
+  canonicalPath: string;
+  /** ISO dates, set only where they are real (blog posts). */
+  published?: string;
+  updated?: string;
   blocks: DocBlock[];
 }

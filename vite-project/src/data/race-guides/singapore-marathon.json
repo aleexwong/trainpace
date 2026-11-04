@@ -1,0 +1,75 @@
+{
+  "slug": "singapore-marathon",
+  "name": "Standard Chartered Singapore Marathon",
+  "city": "Singapore",
+  "country": "Singapore",
+  "distanceKm": 42.195,
+  "month": "December",
+  "courseType": "out-and-back",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.singaporemarathon.com/",
+  "summary": "The Standard Chartered Singapore Marathon is held in early December. The 2025 marathon started at the F1 Pit Building and finished at the Padang. The organisers redesigned the course to remove West Coast Highway and Sheares Avenue and make it flatter.",
+  "courseHighlights": [
+    "Start at the F1 Pit Building",
+    "National Stadium and the Singapore Sports Hub",
+    "Gardens by the Bay and Marina Barrage",
+    "East Coast Park out to the Laguna Flyover",
+    "Finish at the Padang"
+  ],
+  "paceStrategy": {
+    "summary": "Start before dawn and pace for heat and humidity. The organisers call the 2025 course flatter, but there is no elevation figure, so run by effort. The course goes out to the Laguna Flyover and back, so you can plan the return.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Flat city streets: Republic Avenue, Suntec City, the Esplanade",
+        "advice": "Start easy; the early cool hours help."
+      },
+      {
+        "section": "km 10–25",
+        "terrain": "Sports Hub, Gardens by the Bay, then towards East Coast Park",
+        "advice": "Hold goal pace on the park paths and roads."
+      },
+      {
+        "section": "km 25–35",
+        "terrain": "Out to the Laguna Flyover, then back towards the city",
+        "advice": "Stay steady on the return."
+      },
+      {
+        "section": "km 35–42.2",
+        "terrain": "Back past Fullerton Hotel and Victoria Theatre to the Padang",
+        "advice": "Push in the last 2 km towards the finish."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list aid-station positions, so check the runner guide. Singapore is hot and humid, so drink at every station, and take gels with water at regular intervals.",
+  "tips": [
+    "The marathon starts very early in the morning, so plan transport",
+    "Start pens are by finish time; line up in your assigned pen",
+    "Heat and humidity are the main challenge, so practise drinking while running",
+    "Route changes happen often, so check the latest course map"
+  ],
+  "faq": [
+    {
+      "question": "Is the Singapore Marathon flat?",
+      "answer": "The organisers say the 2025 course is flatter after removing West Coast Highway and Sheares Avenue. No elevation figures are given."
+    },
+    {
+      "question": "Where does the Singapore Marathon finish?",
+      "answer": "The 2025 marathon finished at the Padang. Earlier years used other finishes, including the National Stadium and Anderson Bridge."
+    },
+    {
+      "question": "When is the Singapore Marathon held?",
+      "answer": "It is held in early December."
+    }
+  ],
+  "sources": [
+    "https://www.singaporemarathon.com/?p=3625",
+    "https://www.singaporemarathon.com/wp-content/uploads/2025/11/SCSM2025-General-RIG.pdf",
+    "https://marathonguide.com/pressreleases/runners-at-standard-chartered-singapore-marathon-to-take-on-fresh-race-route-showcasing-iconic-singapore-sights-with-enhanced-finish-experience-at-national-stadium/",
+    "https://www.singaporemarathon.com/"
+  ],
+  "checked": "2026-10"
+}

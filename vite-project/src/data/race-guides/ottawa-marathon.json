@@ -1,0 +1,69 @@
+{
+  "slug": "ottawa-marathon",
+  "name": "Tamarack Ottawa International Marathon",
+  "city": "Ottawa",
+  "country": "Ontario, Canada",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.runottawa.ca/",
+  "summary": "The Tamarack Ottawa International Marathon is the main race of Ottawa Race Weekend, held in late May since 1975. It is a certified Boston Marathon qualifying course and a World Athletics Elite Label race. The marathon starts at Ottawa City Hall.",
+  "courseHighlights": [
+    "Start at Ottawa City Hall on Laurier Avenue West",
+    "Interactive course map with elevation profiles on the official site",
+    "Routes have used the bridges between Ottawa and Gatineau",
+    "Certified Boston Marathon qualifying course"
+  ],
+  "paceStrategy": {
+    "summary": "Organisers describe the recent course as flat, so even pacing should work. The course has changed over the years, so check the current map for bridges and exposed sections before you plan splits.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Downtown start, flat",
+        "advice": "Start at goal pace or slightly slower; the 7:00 start can be cool."
+      },
+      {
+        "section": "km 10–30",
+        "terrain": "Long, mostly flat middle section",
+        "advice": "Keep a steady rhythm and drink at each aid station."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Return towards the finish",
+        "advice": "Use the official elevation profile to find any small rises, then save energy for them."
+      }
+    ]
+  },
+  "fuelingNotes": "The official page lists Xact Nutrition and Hydration on course. Check the course map and the participant guide for aid-station positions.",
+  "tips": [
+    "Read the interactive course map before race day: it shows road closures and the elevation profile",
+    "The start is at Ottawa City Hall at 7:00",
+    "Late May can be warm, so plan fluids and a hat",
+    "The route has changed in some years (for example after a bridge closure forced changes), so re-check the map each year"
+  ],
+  "faq": [
+    {
+      "question": "Is the Ottawa Marathon course flat?",
+      "answer": "Organisers and event listings describe a flat, fast course. Use the interactive map on the official site to see the elevation profile for the current route."
+    },
+    {
+      "question": "When is the Ottawa Marathon held?",
+      "answer": "It is held on a Sunday in late May, as part of Ottawa Race Weekend."
+    },
+    {
+      "question": "Where does the Ottawa Marathon start?",
+      "answer": "It starts at Ottawa City Hall, 110 Laurier Avenue West."
+    }
+  ],
+  "sources": [
+    "https://www.runottawa.ca/?p=4718",
+    "https://www.runottawa.ca/",
+    "https://en.wikipedia.org/wiki/Ottawa_Race_Weekend",
+    "https://www.613today.ca/events/2026-05-23-ottawa-race-weekend"
+  ],
+  "checked": "2026-10"
+}

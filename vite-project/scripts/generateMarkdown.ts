@@ -18,7 +18,12 @@
 import fs from "fs";
 import path from "path";
 
-import { getAllDocPaths, getPageDoc } from "../src/lib/llm/page-docs";
+import {
+  getAllDocPaths,
+  getIndexablePaths,
+  getPageDoc,
+} from "../src/lib/llm/page-docs";
+import { buildLlmsTxt, buildSitemapXml } from "../src/lib/llm/indexes";
 import {
   renderMarkdown,
   renderMarkdownSection,
@@ -55,6 +60,30 @@ function buildLlmsFullTxt(paths: string[]): string {
   return `${header}${sections.join("\n---\n\n")}`;
 }
 
+/**
+ * The HTML served for every route that is not prerendered (dashboard, auth,
+ * shared routes, unknown URLs). It is the prerendered home page with the
+ * home page's content, canonical, and structured data stripped, plus
+ * `noindex` — otherwise every such URL would be a duplicate of "/" in the
+ * index. vercel.json rewrites unmatched paths here.
+ */
+function writeAppShell() {
+  const home = fs.readFileSync(path.join(OUT_DIR, "index.html"), "utf8");
+  const shell = home
+    // Tags React Helmet manages (description, canonical, OG, JSON-LD).
+    .replace(/<(meta|link)\b[^>]*\bdata-rh="true"[^>]*>\s*/g, "")
+    .replace(/<script\b[^>]*\bdata-rh="true"[^>]*>[\s\S]*?<\/script>\s*/g, "")
+    .replace(/<link\b[^>]*type="text\/markdown"[^>]*>\s*/g, "")
+    .replace(/<title>[\s\S]*?<\/title>/, '<title>TrainPace</title>\n    <meta name="robots" content="noindex">')
+    // #root is the last element in <body>: everything up to its closing tag.
+    .replace(/<div id="root">[\s\S]*<\/div>(?=\s*<\/body>)/, '<div id="root"></div>');
+
+  if (shell.includes("canonical") || !shell.includes('<div id="root"></div>')) {
+    throw new Error("app-shell.html: failed to strip the home page content");
+  }
+  writeFile("/app-shell.html", shell);
+}
+
 function main() {
   if (!fs.existsSync(OUT_DIR)) {
     throw new Error(
@@ -63,6 +92,9 @@ function main() {
   }
 
   const paths = getAllDocPaths();
+  // Aliases still get a .md file (so negotiation works on either URL) but are
+  // left out of the indexes, which list each page once.
+  const indexable = getIndexablePaths();
   const seen = new Set<string>();
   let written = 0;
 
@@ -77,7 +109,15 @@ function main() {
     written++;
   }
 
-  writeFile("/llms-full.txt", buildLlmsFullTxt(paths));
+  writeFile("/llms-full.txt", buildLlmsFullTxt(indexable));
+  writeFile("/sitemap.xml", buildSitemapXml());
+  writeFile(
+    "/llms.txt",
+    buildLlmsTxt(
+      fs.readFileSync(path.resolve(process.cwd(), "scripts/llms-intro.txt"), "utf8")
+    )
+  );
+  writeAppShell();
 
   // A machine-readable index of every Markdown mirror, so an agent can
   // enumerate the site in one request instead of crawling for .md files.
@@ -89,7 +129,7 @@ function main() {
         generated: new Date().toISOString().slice(0, 10),
         mcp: "https://api.trainpace.com/api/mcp",
         full: absoluteUrl("/llms-full.txt"),
-        pages: paths.map((route) => {
+        pages: indexable.map((route) => {
           const doc = getPageDoc(route);
           return {
             url: absoluteUrl(route),
@@ -106,7 +146,7 @@ function main() {
 
   // eslint-disable-next-line no-console
   console.log(
-    `Wrote ${written} Markdown mirrors + llms-full.txt + llms-index.json to ${OUT_DIR}`
+    `Wrote ${written} Markdown mirrors + llms.txt + llms-full.txt + llms-index.json + sitemap.xml + app-shell.html to ${OUT_DIR}`
   );
 }
 

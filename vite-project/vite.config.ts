@@ -33,6 +33,20 @@ export default defineConfig({
   },
   build: {
     minify: "esbuild",
+    rollupOptions: {
+      output: {
+        // React is shared by the app and prerender.jsx. Left to itself, Rollup
+        // puts it in the prerender chunk, so every page in the browser had to
+        // download that chunk — and with it all the build-only page copy
+        // (page-docs, blog text, race guides). A separate vendor chunk keeps
+        // the prerender chunk out of the browser entirely.
+        manualChunks(id) {
+          if (/[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/.test(id)) {
+            return "react-vendor";
+          }
+        },
+      },
+    },
   },
   esbuild: {
     drop: process.env.NODE_ENV === "production" ? ["console", "debugger"] : [],

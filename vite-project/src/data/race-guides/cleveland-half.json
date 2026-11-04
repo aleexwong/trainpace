@@ -1,0 +1,69 @@
+{
+  "slug": "cleveland-half",
+  "name": "Cleveland Marathon Half Marathon",
+  "city": "Cleveland",
+  "country": "Ohio, USA",
+  "distanceKm": 21.0975,
+  "month": "May",
+  "courseType": "loop",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Five-year average of about 11 °C at the start and 19 °C in the afternoon (51 °F and 67 °F), per HalfRuns",
+  "website": "https://www.clevelandmarathon.com/races/half-marathon.aspx",
+  "summary": "The Cleveland Marathon half marathon is the most popular event of the Cleveland Marathon weekend in May. It follows the first half of the marathon course through downtown, with views of Lake Erie, and finishes at St. Clair Avenue Northeast at Mall B. The course is USATF-certified.",
+  "courseHighlights": [
+    "Start and finish at St. Clair Avenue Northeast at Mall B",
+    "Views of downtown Cleveland and its landmarks",
+    "Neighbourhoods such as Hingetown, Ohio City and Gordon Square (on the marathon route)",
+    "Flat stretches from Lake Avenue to West Boulevard (on the marathon route)",
+    "Views of Lake Erie"
+  ],
+  "paceStrategy": {
+    "summary": "The half follows the first half of the marathon course. The marathon page names long, flat sections on its route and HalfRuns rates the course as rolling hills. Run by effort, and use the flat sections to settle into goal pace.",
+    "segments": [
+      {
+        "section": "mile 1–4",
+        "terrain": "Downtown streets and first neighbourhoods",
+        "advice": "Start slightly slower than goal pace as the crowd spreads."
+      },
+      {
+        "section": "mile 5–10",
+        "terrain": "Neighbourhood streets and flatter sections",
+        "advice": "Settle into goal pace on the flat sections and run the small rises by effort."
+      },
+      {
+        "section": "mile 11–13.1",
+        "terrain": "Return toward the finish at Mall B",
+        "advice": "Keep steady, then lift the effort over the final mile."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site lists 7 water stations with a first aid station at each one. e-Gel electrolyte gel is at water stops 4 and 9, subject to change.",
+  "tips": [
+    "Use the water stops at 4 and 9 if you plan to take e-Gel from the course",
+    "Check the turn-by-turn and elevation links on the race site; the site warns bridges show false elevation on GPS",
+    "Check the current course map, which may have minor changes for construction",
+    "Dress for a cool May morning; HalfRuns shows about 11 °C at the start"
+  ],
+  "faq": [
+    {
+      "question": "Is the Cleveland Half Marathon course flat?",
+      "answer": "Not fully. HalfRuns rates it as rolling hills, though the race site names long, flat sections on the marathon route. We found no official elevation figures."
+    },
+    {
+      "question": "Where does the Cleveland Half Marathon start and finish?",
+      "answer": "Both start and finish are at St. Clair Avenue Northeast at Mall B in downtown Cleveland."
+    },
+    {
+      "question": "When is the Cleveland Half Marathon held?",
+      "answer": "It is held on a Sunday in May, at 7:00 a.m."
+    }
+  ],
+  "sources": [
+    "https://www.clevelandmarathon.com/races/half-marathon.aspx",
+    "https://www.clevelandmarathon.com/races/marathon.aspx",
+    "https://halfruns.com/races/ohio/union-home-mortgage-cleveland-marathon-cleveland-oh"
+  ],
+  "checked": "2026-10"
+}

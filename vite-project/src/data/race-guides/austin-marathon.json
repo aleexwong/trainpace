@@ -1,0 +1,75 @@
+{
+  "slug": "austin-marathon",
+  "name": "Austin Marathon",
+  "city": "Austin",
+  "country": "Texas, USA",
+  "distanceKm": 42.195,
+  "month": "February",
+  "courseType": "loop",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://youraustinmarathon.com/",
+  "summary": "The Austin Marathon is held in February. It starts at 2nd Street and Congress Avenue and finishes at 9th and Congress, in front of the Texas State Capitol. The course passes South Congress, East Austin, Hyde Park and the University of Texas campus. The official site says it has rolling hills.",
+  "courseHighlights": [
+    "Start at 2nd Street and Congress Avenue",
+    "South Congress (SoCo) in the early miles",
+    "East Austin and historic Hyde Park",
+    "University of Texas campus, running up Guadalupe Street",
+    "Finish at 9th and Congress in front of the Capitol"
+  ],
+  "paceStrategy": {
+    "summary": "The official site warns of rolling hills, with the most noticeable changes around miles 10 to 13. Start steady, run the hills by effort, and save energy for the later miles. The marathon and half marathon share the course until mile 12.",
+    "segments": [
+      {
+        "section": "mile 1–9",
+        "terrain": "Downtown and South Congress",
+        "advice": "Start at goal pace or slightly slower; the crowds are dense."
+      },
+      {
+        "section": "mile 10–13",
+        "terrain": "Rolling hills, the most noticeable climbs",
+        "advice": "Run by effort and do not push on the rises."
+      },
+      {
+        "section": "mile 13–20",
+        "terrain": "Marathon continues east, then north through the UT campus",
+        "advice": "Settle back to goal pace."
+      },
+      {
+        "section": "mile 21–26.2",
+        "terrain": "Return toward the Capitol and Congress Avenue",
+        "advice": "Keep form and push over the final mile."
+      }
+    ]
+  },
+  "fuelingNotes": "The official course page lists 22 aid stations (miles 1, 3, 5, 7 and every mile from 8 to 25) with water and electrolyte drink. Gels are offered at miles 9.5 and 19.5, so plan your own gels around these.",
+  "tips": [
+    "Train on hills, as the official site advises, because the middle miles roll",
+    "The race starts at 7:00 am, so plan transport to downtown",
+    "Aid stations at miles 3 and 5 and 12–25 are on one side of the road only",
+    "The marathon and half marathon split at mile 12; follow the marathon signs"
+  ],
+  "faq": [
+    {
+      "question": "Is the Austin Marathon hilly?",
+      "answer": "It has rolling hills. The official site says the most noticeable elevation changes come around miles 10 to 13. It gives no total-climb figure."
+    },
+    {
+      "question": "Where does the Austin Marathon start and finish?",
+      "answer": "It starts at 2nd and Congress and finishes at 9th and Congress, in front of the Texas State Capitol."
+    },
+    {
+      "question": "When is the Austin Marathon held?",
+      "answer": "It is held in February. Recent editions started at 7:00 am."
+    }
+  ],
+  "sources": [
+    "https://youraustinmarathon.com/",
+    "https://youraustinmarathon.com/course/",
+    "https://youraustinmarathon.com/your-guide-to-the-austin-marathon-course/",
+    "https://en.wikipedia.org/wiki/Austin_Marathon"
+  ],
+  "checked": "2026-10"
+}

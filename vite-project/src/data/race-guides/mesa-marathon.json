@@ -1,0 +1,67 @@
+{
+  "slug": "mesa-marathon",
+  "name": "Mesa Marathon",
+  "city": "Mesa",
+  "country": "Arizona, USA",
+  "distanceKm": 42.195,
+  "month": "February",
+  "courseType": "point-to-point",
+  "terrain": "net downhill",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://mesamarathon.com/",
+  "summary": "The Mesa Marathon, formerly the Mesa-Phoenix Marathon, is a USATF certified Boston qualifier held in February. It starts below the large white Phoenix sign on Usery Mountain and finishes at Riverview Park in Mesa. The race site says the course has nearly 1,000 feet (about 300 m) of net elevation loss.",
+  "courseHighlights": [
+    "Start below the white Phoenix sign on Usery Mountain",
+    "Start south on North Usery Pass Road with views of the Phoenix Valley",
+    "Desert scenery that changes to city streets in Mesa",
+    "Finish at Riverview Park, with thousands of parking spaces nearby"
+  ],
+  "paceStrategy": {
+    "summary": "The net downhill makes fast times possible, but a steady downhill can damage the quads. Keep the early miles controlled and save strength for the last 10K.",
+    "segments": [
+      {
+        "section": "mile 1–6",
+        "terrain": "Desert road on North Usery Pass Road heading south",
+        "advice": "Start controlled; downhill pace feels easy but costs energy later."
+      },
+      {
+        "section": "mile 6–20",
+        "terrain": "Roads through Mesa",
+        "advice": "Hold goal pace and take water at the frequent aid stations."
+      },
+      {
+        "section": "mile 20–26.2",
+        "terrain": "City streets towards Riverview Park",
+        "advice": "Keep your form; the finish is flat compared with the start."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site lists 14 aid stations at miles 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 22, 23, 24 and the finish. Plan a gel every 4 to 5 miles between them.",
+  "tips": [
+    "The marathon starts early in the morning, so plan transport to the start in the dark",
+    "A net downhill course asks a lot of the quads; train with some downhill running",
+    "Finisher medals (the Bird) go to those who finish within 6.5 hours",
+    "Runners who do the Phoenix Marathon and the Mesa Marathon can earn the Desert Double medal"
+  ],
+  "faq": [
+    {
+      "question": "Is the Mesa Marathon downhill?",
+      "answer": "Yes. The race site says nearly 1,000 feet (about 300 m) of net elevation loss, which is a fast net downhill course."
+    },
+    {
+      "question": "When is the Mesa Marathon held?",
+      "answer": "It is held on a Saturday in February."
+    },
+    {
+      "question": "Where does the Mesa Marathon start and finish?",
+      "answer": "It starts below the large white Phoenix sign on Usery Mountain and finishes at Riverview Park in Mesa."
+    }
+  ],
+  "sources": [
+    "https://mesamarathon.com/info?tab=course",
+    "https://mesamarathon.com/"
+  ],
+  "checked": "2026-10"
+}

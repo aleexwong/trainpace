@@ -1,0 +1,69 @@
+{
+  "slug": "philadelphia-marathon",
+  "name": "Philadelphia Marathon",
+  "city": "Philadelphia",
+  "country": "Pennsylvania, USA",
+  "distanceKm": 42.195,
+  "month": "November",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.philadelphiamarathon.com/",
+  "summary": "The Philadelphia Marathon is held on the Sunday before Thanksgiving in November. It starts at 22nd Street and the Benjamin Franklin Parkway and finishes toward the steps of the Philadelphia Museum of Art. Wikipedia calls it relatively flat, with a high point of about 148 feet. The course goes through the historic district, Fairmount Park, the Schuylkill River and Manayunk.",
+  "courseHighlights": [
+    "Start at 22nd Street and the Benjamin Franklin Parkway",
+    "Historic district, Old City and Penn's Landing",
+    "University City",
+    "Fairmount Park and the Schuylkill River",
+    "Finish heading toward the Philadelphia Museum of Art steps"
+  ],
+  "paceStrategy": {
+    "summary": "The course is described as relatively flat, so even splits should work. Use the first miles to settle, and expect crowds in University City and Manayunk. Save energy for the final miles back to the Art Museum.",
+    "segments": [
+      {
+        "section": "mile 1–10",
+        "terrain": "City streets, historic district and University City",
+        "advice": "Start at or just under goal pace and avoid weaving."
+      },
+      {
+        "section": "mile 11–20",
+        "terrain": "Fairmount Park, the river and Manayunk",
+        "advice": "Hold steady effort on the park roads."
+      },
+      {
+        "section": "mile 21–26.2",
+        "terrain": "Return along Kelly Drive toward the Art Museum",
+        "advice": "Keep form and push in the last mile."
+      }
+    ]
+  },
+  "fuelingNotes": "The official page lists hydration stations at roughly miles 2.9, 5.1, 7.1, 8.3, 10.2, 11.8, 13.5, 15.3, 17.8, 18.9, 19.8, 21.3, 22.3 and 24.6, serving water and a lemon-lime electrolyte drink. Gels are offered near miles 10 and 19 and about mile 22.4.",
+  "tips": [
+    "The race starts at 7:00 am, so plan travel to the Parkway",
+    "Crowds cheer in University City and Manayunk, so use them as lifts",
+    "Cold weather is possible in late November, so bring a throwaway layer",
+    "The race is USATF sanctioned and course-certified; check the official site for the latest details"
+  ],
+  "faq": [
+    {
+      "question": "Is the Philadelphia Marathon flat?",
+      "answer": "Wikipedia calls it relatively flat, with a highest point of about 148 feet. The official page does not give elevation figures."
+    },
+    {
+      "question": "Where does the Philadelphia Marathon start and finish?",
+      "answer": "It starts at 22nd Street and the Benjamin Franklin Parkway and finishes toward the steps of the Philadelphia Museum of Art."
+    },
+    {
+      "question": "When is the Philadelphia Marathon held?",
+      "answer": "It is held in November, on the Sunday before Thanksgiving."
+    }
+  ],
+  "sources": [
+    "https://www.philadelphiamarathon.com/races/marathon/",
+    "https://en.wikipedia.org/wiki/Philadelphia_Marathon",
+    "https://www.philadelphiamarathon.com/"
+  ],
+  "checked": "2026-10"
+}

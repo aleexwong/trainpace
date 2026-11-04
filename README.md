@@ -1,6 +1,6 @@
 # TrainPace
 
-**Live:** [www.trainpace.com](https://www.trainpace.com)
+**Live:** [trainpace.com](https://trainpace.com)
 
 [![E2E](https://github.com/aleexwong/trainpace/actions/workflows/e2e.yml/badge.svg)](https://github.com/aleexwong/trainpace/actions/workflows/e2e.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-blue?logo=typescript)](https://www.typescriptlang.org/)

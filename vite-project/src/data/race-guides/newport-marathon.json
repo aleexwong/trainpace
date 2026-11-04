@@ -1,0 +1,68 @@
+{
+  "slug": "newport-marathon",
+  "name": "Amica Newport Marathon",
+  "city": "Newport",
+  "country": "Rhode Island, USA",
+  "distanceKm": 42.195,
+  "month": "October",
+  "courseType": "loop",
+  "terrain": "rolling",
+  "elevationGainM": 258,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.newportmarathon.com/",
+  "summary": "The Amica Newport Marathon in Rhode Island starts and finishes at Easton's Beach. It is USATF certified and passes the Atlantic coast and the Bellevue Avenue mansions. The official course page lists 847 ft (258 m) of climbing and rolling hills, mostly in the second half.",
+  "courseHighlights": [
+    "Start and finish at Easton's Beach",
+    "Atlantic coastline",
+    "Bellevue Avenue mansions",
+    "Rural roads in Middletown in the second half",
+    "Beachside finish"
+  ],
+  "paceStrategy": {
+    "summary": "The course is rolling, with a lowest point of 3 ft and a high point of 105 ft above sea level. The second half has more rolling hills on Middletown's rural roads, so run the first half steadily.",
+    "segments": [
+      {
+        "section": "mile 1–8",
+        "terrain": "Coast and city roads near Easton's Beach",
+        "advice": "Start at goal pace and settle in."
+      },
+      {
+        "section": "mile 8–15",
+        "terrain": "Newport sights including the mansions",
+        "advice": "Hold an even effort."
+      },
+      {
+        "section": "mile 15–26.2",
+        "terrain": "Rolling hills, especially on Middletown's rural roads",
+        "advice": "Run the hills by effort and expect to slow slightly."
+      }
+    ]
+  },
+  "fuelingNotes": "The official page lists water, Gatorade and restrooms about every 2 miles, with bananas, GU gels, candy and medical stations at select marathon aid stations. Digital clocks stand every 5 miles.",
+  "tips": [
+    "Use the digital clocks every 5 miles to check your pace",
+    "Both the marathon and half marathon start and finish at Easton's Beach",
+    "Read the course map PDF and turn-by-turn directions before race day",
+    "Train on rolling hills for the second half"
+  ],
+  "faq": [
+    {
+      "question": "How hilly is the Newport Marathon?",
+      "answer": "The official course page lists 847 ft (258 m) of total climbing with rolling hills, mostly in the second half."
+    },
+    {
+      "question": "When is the Newport Marathon held?",
+      "answer": "It is held on a Sunday in October."
+    },
+    {
+      "question": "Where does the Newport Marathon start and finish?",
+      "answer": "Both are at Easton's Beach in Newport, Rhode Island."
+    }
+  ],
+  "sources": [
+    "https://newportmarathon.com/course",
+    "https://www.newportmarathon.com/"
+  ],
+  "checked": "2026-10"
+}
