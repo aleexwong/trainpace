@@ -17,15 +17,18 @@ import {
   FormItem,
   FormLabel,
   FormControl,
+  FormDescription,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+const MIN_PASSWORD_LENGTH = 12;
+
 const registerSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(MIN_PASSWORD_LENGTH, `Password must be at least ${MIN_PASSWORD_LENGTH} characters`),
 });
 
 // Helper to get friendly error messages
@@ -38,7 +41,7 @@ const getAuthErrorMessage = (code: string): string => {
     case "auth/operation-not-allowed":
       return "Email/password accounts are not enabled. Contact support.";
     case "auth/weak-password":
-      return "Password is too weak. Use at least 6 characters.";
+      return `Password is too weak. Use at least ${MIN_PASSWORD_LENGTH} characters.`;
     case "auth/network-request-failed":
       return "Network error. Check your connection and try again.";
     case "auth/too-many-requests":
@@ -64,6 +67,8 @@ export default function Register() {
       password: "",
     },
   });
+
+  const passwordMeetsMinimum = form.watch("password").length >= MIN_PASSWORD_LENGTH;
 
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
     try {
@@ -113,7 +118,7 @@ export default function Register() {
   };
 
   return (
-    <div data-testid="register-page" className="flex flex-col items-center justify-center h-[70vh] px-4">
+    <div data-testid="register-page" className="flex flex-col items-center justify-center min-h-[70vh] px-4 py-8">
       <h1 className="text-2xl font-bold mb-4">Create an Account</h1>
       <p className="text-gray-600 mb-6">
         Sign up to save your fuel plans and track your routes.
@@ -180,6 +185,26 @@ export default function Register() {
                 <FormControl>
                   <Input type="password" placeholder="••••••••" {...field} />
                 </FormControl>
+                <FormDescription
+                  role="status"
+                  aria-live="polite"
+                  aria-atomic="true"
+                  className={`flex items-center gap-2 rounded-md border px-3 py-2 text-sm ${
+                    passwordMeetsMinimum
+                      ? "border-green-600 bg-green-50 text-green-800"
+                      : "border-border bg-muted/50 text-muted-foreground"
+                  }`}
+                >
+                  <span aria-hidden="true" className="text-base leading-none">
+                    {passwordMeetsMinimum ? "✓" : "○"}
+                  </span>
+                  <span>
+                    At least {MIN_PASSWORD_LENGTH} characters
+                    <span className="sr-only">
+                      {passwordMeetsMinimum ? " — requirement met" : " — requirement not met"}
+                    </span>
+                  </span>
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
