@@ -17,6 +17,7 @@ import {
   FormItem,
   FormLabel,
   FormControl,
+  FormDescription,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -180,6 +181,7 @@ export default function Register() {
                 <FormControl>
                   <Input type="password" placeholder="••••••••" {...field} />
                 </FormControl>
+                <FormDescription>At least 12 characters.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
