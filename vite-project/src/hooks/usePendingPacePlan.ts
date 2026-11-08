@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import { useAuth } from "@/features/auth/AuthContext";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase";
 import { toast } from "@/hooks/use-toast";
 import ReactGA from "react-ga4";
 
@@ -34,6 +32,16 @@ export function usePendingPacePlan() {
         const totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
         // Save to Firestore
+        // Firebase is imported here rather than at module scope. These hooks
+        // are pulled in by the pace calculator, which renders on prerendered
+        // SEO landing pages — a static import put the whole SDK on those
+        // pages, where nobody is signed in and nothing is ever saved.
+        const [{ collection, addDoc, serverTimestamp }, { db }] =
+          await Promise.all([
+            import("firebase/firestore"),
+            import("@/lib/firebase"),
+          ]);
+
         await addDoc(collection(db, "user_pace_plans"), {
           userId: user.uid,
           distance: parseFloat(inputs.distance),

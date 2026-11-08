@@ -133,6 +133,12 @@ export default function About() {
             <img
               src={bmoResults}
               alt="BMO Vancouver Half Marathon 2025 official race results"
+              /* Intrinsic dimensions reserve the aspect ratio before the
+                 image decodes, so surrounding text does not jump. */
+              width={1080}
+              height={1920}
+              loading="lazy"
+              decoding="async"
               className="w-full md:w-1/2 rounded-lg shadow-lg"
             />
             <div className="md:w-1/2">

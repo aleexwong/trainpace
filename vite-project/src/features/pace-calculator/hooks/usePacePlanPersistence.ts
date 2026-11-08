@@ -4,8 +4,6 @@
  */
 
 import { useState, useCallback } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase";
 import { useAuth } from "@/features/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -75,6 +73,16 @@ export function usePacePlanPersistence(): UsePacePlanPersistenceReturn {
         const minutes = inputs.minutes ? parseInt(inputs.minutes, 10) : 0;
         const seconds = inputs.seconds ? parseInt(inputs.seconds, 10) : 0;
         const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+        // Firebase is imported here rather than at module scope. These hooks
+        // are pulled in by the pace calculator, which renders on prerendered
+        // SEO landing pages — a static import put the whole SDK on those
+        // pages, where nobody is signed in and nothing is ever saved.
+        const [{ collection, addDoc, serverTimestamp }, { db }] =
+          await Promise.all([
+            import("firebase/firestore"),
+            import("@/lib/firebase"),
+          ]);
 
         await addDoc(collection(db, "user_pace_plans"), {
           userId: user.uid,

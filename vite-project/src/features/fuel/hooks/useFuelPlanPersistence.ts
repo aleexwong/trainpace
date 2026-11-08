@@ -4,8 +4,6 @@
  */
 
 import { useState, useCallback } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase";
 import { useAuth } from "@/features/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -79,6 +77,16 @@ export function useFuelPlanPersistence(): UseFuelPlanPersistenceReturn {
       setIsSaving(true);
 
       try {
+        // Firebase is imported here rather than at module scope. These hooks
+        // are pulled in by the fuel planner, which renders on prerendered SEO
+        // landing pages — a static import put the whole SDK on those pages,
+        // where nobody is signed in and nothing is ever saved.
+        const [{ collection, addDoc, serverTimestamp }, { db }] =
+          await Promise.all([
+            import("firebase/firestore"),
+            import("@/lib/firebase"),
+          ]);
+
         await addDoc(collection(db, "user_fuel_plans"), {
           userId: user.uid,
           raceType: params.raceType,
