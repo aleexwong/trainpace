@@ -6,6 +6,7 @@ import { PaceCalculatorV2 } from "@/features/pace-calculator";
 import {
   calculatorSeoPageMap,
   comparisonLinks,
+  paceGuideLinks,
   getSeoUrl,
 } from "@/features/seo-pages/seoPages";
 
@@ -161,6 +162,45 @@ export default function CalculatorSeoLanding() {
                 : undefined
             }
           />
+        </div>
+      </section>
+
+      <section className="px-4 sm:px-6 pb-16">
+        <div className="max-w-4xl mx-auto text-left space-y-8">
+          {page.howTo && (
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">{page.howTo.name}</h2>
+              <p className="mt-3 text-gray-700">{page.howTo.description}</p>
+              <ol className="mt-4 list-decimal pl-6 space-y-3 text-gray-700">
+                {page.howTo.steps.map((step) => (
+                  <li key={step.name}><strong>{step.name}:</strong> {step.text}</li>
+                ))}
+              </ol>
+            </div>
+          )}
+          {!!page.faq?.length && (
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Frequently asked questions</h2>
+              <div className="mt-4 space-y-5">
+                {page.faq.map((item) => (
+                  <div key={item.question}>
+                    <h3 className="text-lg font-semibold text-gray-900">{item.question}</h3>
+                    <p className="mt-2 text-gray-700">{item.answer}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          <nav aria-label="Pacing guides">
+            <h2 className="text-2xl font-bold text-gray-900">More pacing guides</h2>
+            <ul className="mt-4 space-y-2">
+              {paceGuideLinks.filter((guide) => guide.href !== page.path).map((guide) => (
+                <li key={guide.href}>
+                  <a href={guide.href} className="text-emerald-800 underline hover:text-emerald-950">{guide.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </section>
 

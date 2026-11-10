@@ -14,6 +14,7 @@
 import {
   calculatorSeoPages,
   comparisonLinks,
+  paceGuideLinks,
   elevationGuideSeoPages,
   fuelSeoPages,
   raceSeoPages,
@@ -706,6 +707,8 @@ function seoPageBlocks(url: string): DocBlock[] {
   if (page.tool === "pace") {
     blocks.push({ type: "heading", level: 2, text: "Training pace reference" });
     blocks.push(trainingPaceTable("km"));
+    blocks.push({ type: "heading", level: 2, text: "More pacing guides" });
+    blocks.push({ type: "linkList", items: paceGuideLinks.filter((guide) => guide.href !== url) });
   } else if (page.tool === "fuel") {
     blocks.push({ type: "heading", level: 2, text: "Fueling reference" });
     blocks.push(fuelReferenceTable());

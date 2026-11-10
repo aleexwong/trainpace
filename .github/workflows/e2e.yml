@@ -56,7 +56,12 @@ jobs:
         run: npx playwright install-deps chromium
 
       - name: Run E2E tests
-        run: npx playwright test
+        # SEO E2E checks inspect prerendered HTML and generated discovery files.
+        # Build first so a clean checkout has production output to validate.
+        # The existing dev-server browser tests still run unchanged.
+        run: |
+          npm run build
+          npx playwright test
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
