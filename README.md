@@ -42,6 +42,8 @@ These are the parts worth reading if you are judging the code, not the running a
 
 **Testing and CI.** Playwright end-to-end specs with page-object models cover auth, the fuel planner, the training plan and race plan flows. GitHub Actions runs them on every push to `main` and every PR. Verification is `npm run build` (which includes `tsc -b`) + `npm run lint` + Playwright.
 
+**State machines.** The [state-machine inventory](vite-project/docs/state-machines.md) maps implicit workflows, resource lifecycles, and UI modes to their source, distinguishes older implementations, and records transition gaps for follow-up fixes.
+
 **Type safety throughout.** TypeScript strict mode, Zod schemas behind React Hook Form, and runtime validation on anything parsed from a GPX file or an external API.
 
 ---
