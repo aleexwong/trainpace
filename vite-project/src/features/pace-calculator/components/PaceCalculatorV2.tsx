@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { usePendingPacePlan } from "@/hooks/usePendingPacePlan";
-import ReactGA from "react-ga4";
+import { trackEvent } from "@/lib/analytics";
 import { calculateVdot } from "@/features/vdot-calculator/vdot-math";
 
 import type { PaceInputs, PaceResults, FormErrors, PaceUnit } from "../types";
@@ -103,7 +103,7 @@ export function PaceCalculatorV2({
         description: "Your training paces have been calculated.",
         duration: 3000,
       });
-      ReactGA.event({
+      trackEvent({
         category: "Pace Calculator",
         action: "Calculated Paces",
         label: `${inputs.distance}${inputs.units} (suggested time)`,
@@ -127,12 +127,16 @@ export function PaceCalculatorV2({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Track page view
-  ReactGA.event({
-    category: "Pace Calculator",
-    action: "Page View",
-    label: "User opened the Pace Calculator",
-  });
+  // Track page view. This must stay inside a mount-only useEffect: called
+  // straight from the component body it fired on every render, so a single
+  // visit logged one "Page View" per keystroke in the form.
+  useEffect(() => {
+    trackEvent({
+      category: "Pace Calculator",
+      action: "Page View",
+      label: "User opened the Pace Calculator",
+    });
+  }, []);
 
   // ── Handlers ────────────────────────────────────────────────────────────────
 
@@ -210,7 +214,7 @@ export function PaceCalculatorV2({
           duration: 3000,
         });
 
-        ReactGA.event({
+        trackEvent({
           category: "Pace Calculator",
           action: "Calculated Paces",
           label: `${inputs.distance}${inputs.units}`,
@@ -234,7 +238,7 @@ export function PaceCalculatorV2({
 
   const handlePaceTypeChange = (newPaceType: PaceUnit) => {
     setInputs((prev) => ({ ...prev, paceType: newPaceType }));
-    ReactGA.event({
+    trackEvent({
       category: "Pace Calculator",
       action: "Changed Pace Type",
       label: newPaceType,
@@ -255,7 +259,7 @@ export function PaceCalculatorV2({
     try {
       await navigator.clipboard.writeText(text);
       toast({ title: "Copied to clipboard! 📋" });
-      ReactGA.event({ category: "Pace Calculator", action: "Copied Plan" });
+      trackEvent({ category: "Pace Calculator", action: "Copied Plan" });
     } catch {
       toast({ title: "Failed to copy", variant: "destructive" });
     }
@@ -281,7 +285,7 @@ export function PaceCalculatorV2({
     URL.revokeObjectURL(url);
 
     toast({ title: "Download started! 💾" });
-    ReactGA.event({ category: "Pace Calculator", action: "Downloaded Plan" });
+    trackEvent({ category: "Pace Calculator", action: "Downloaded Plan" });
   };
 
   const handleSave = async () => {

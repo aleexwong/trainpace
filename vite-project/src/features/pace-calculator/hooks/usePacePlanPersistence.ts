@@ -9,7 +9,7 @@ import { db } from "@/lib/firebase";
 import { useAuth } from "@/features/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import ReactGA from "react-ga4";
+import { trackEvent } from "@/lib/analytics";
 import type { PaceInputs, PaceResults } from "../types";
 
 interface SavePlanParams {
@@ -47,7 +47,7 @@ export function usePacePlanPersistence(): UsePacePlanPersistenceReturn {
 
       sessionStorage.setItem("pending_pace_plan", JSON.stringify(planData));
 
-      ReactGA.event({
+      trackEvent({
         category: "Pace Calculator",
         action: "Guest Save Redirect",
         label: `${params.inputs.distance}${params.inputs.units}`,
@@ -108,7 +108,7 @@ export function usePacePlanPersistence(): UsePacePlanPersistenceReturn {
           description: "Your pace plan is now in your dashboard.",
         });
 
-        ReactGA.event({
+        trackEvent({
           category: "Pace Calculator",
           action: "Saved Plan to Dashboard",
           label: `${inputs.distance}${inputs.units}`,

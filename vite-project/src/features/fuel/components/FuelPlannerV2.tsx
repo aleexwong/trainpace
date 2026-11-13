@@ -3,14 +3,14 @@
  * 2-panel layout: side-by-side on desktop, stacked/conditional on mobile
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { Card, CardContent } from "@/components/ui/card";
 import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { usePendingFuelPlan } from "@/hooks/usePendingFuelPlan";
-import ReactGA from "react-ga4";
+import { trackEvent } from "@/lib/analytics";
 import { type FuelPlanContext } from "@/services/gemini";
 
 // Feature imports
@@ -45,12 +45,16 @@ export function FuelPlannerV2({
   // Handle auto-save of pending plan after signup
   usePendingFuelPlan();
 
-  // Track page view
-  ReactGA.event({
-    category: "Fuel Planner",
-    action: "Page View",
-    label: "User opened the Fuel Planner V2",
-  });
+  // Track page view. This must stay inside a mount-only useEffect: called
+  // straight from the component body it fired on every render, so a single
+  // visit logged one "Page View" per keystroke in the form.
+  useEffect(() => {
+    trackEvent({
+      category: "Fuel Planner",
+      action: "Page View",
+      label: "User opened the Fuel Planner V2",
+    });
+  }, []);
 
   // Form state
   const [raceType, setRaceType] = useState<RaceType>(
@@ -130,7 +134,7 @@ export function FuelPlannerV2({
     if (calculationResult) {
       setResult(calculationResult);
 
-      ReactGA.event({
+      trackEvent({
         category: "Fuel Planner",
         action: "Calculated Fuel Plan",
         label: raceType,
@@ -174,7 +178,7 @@ export function FuelPlannerV2({
       await navigator.clipboard.writeText(text);
       toast({ title: "Copied to clipboard!" });
 
-      ReactGA.event({
+      trackEvent({
         category: "Fuel Planner",
         action: "Copied Plan",
         label: raceType,
@@ -216,7 +220,7 @@ export function FuelPlannerV2({
 
     toast({ title: "Download started!" });
 
-    ReactGA.event({
+    trackEvent({
       category: "Fuel Planner",
       action: "Downloaded Plan",
       label: raceType,
@@ -226,7 +230,7 @@ export function FuelPlannerV2({
   const handleFeedback = (helpful: boolean) => {
     setFeedbackGiven(true);
 
-    ReactGA.event({
+    trackEvent({
       category: "Fuel Planner",
       action: helpful ? "AI Feedback - Helpful" : "AI Feedback - Not Helpful",
       label: raceType,
