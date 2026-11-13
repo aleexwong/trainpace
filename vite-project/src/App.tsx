@@ -38,6 +38,7 @@ const About = lazy(() => import("./pages/About"));
 const McpDocs = lazy(() => import("./pages/McpDocs"));
 const DashboardV2 = lazy(() => import("./pages/DashboardV2"));
 const VdotCalculatorPage = lazy(() => import("./pages/VdotCalculatorPage"));
+const ConditionsCalculatorPage = lazy(() => import("./pages/ConditionsCalculatorPage"));
 const Onboarding = lazy(() => import("./pages/Onboarding"));
 const TrainingPlanPage = lazy(() => import("./pages/TrainingPlanPage"));
 const BlogList = lazy(() =>
@@ -64,6 +65,7 @@ function App() {
           <Route path="/fuel" element={<FuelPlannerPage />} />
           <Route path="/fuel/:seoSlug" element={<FuelSeoLanding />} />
           <Route path="/vdot" element={<VdotCalculatorPage />} />
+          <Route path="/conditions" element={<ConditionsCalculatorPage />} />
           <Route path="/plan" element={<TrainingPlanPage />} />
           <Route path="/plan/:seoSlug" element={<PlanSeoLanding />} />
           <Route path="/race" element={<RaceIndex />} />

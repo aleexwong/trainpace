@@ -11,6 +11,7 @@ export default function SideNav() {
     { href: "/", label: "Home" },
     { href: "/calculator", label: "Calculator" },
     { href: "/vdot", label: "VDOT Calculator" },
+    { href: "/conditions", label: "Race Day Conditions" },
     { href: "/fuel", label: "Fuel Planner" },
     { href: "/elevation-finder", label: "Elevation Finder" },
     { href: "/plan", label: "Training Plan" },
