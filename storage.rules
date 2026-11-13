@@ -1,0 +1,24 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // GPX uploads — public read; authenticated users can only write files
+    // prefixed with their own UID (matches generateSafeFilename output).
+    match /gpx_files/{filename} {
+      allow read: if true;
+      // create/update: validate size and content-type (request.resource is populated)
+      allow create, update: if request.auth != null
+        && filename.matches(request.auth.uid + '_.*')
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('application/.*gpx.*|text/xml|application/xml');
+      // delete: request.resource is null, so size/type checks must be omitted
+      allow delete: if request.auth != null
+        && filename.matches(request.auth.uid + '_.*');
+    }
+
+    // Deny everything else by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
