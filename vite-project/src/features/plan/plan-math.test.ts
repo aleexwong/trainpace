@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   PLAN_WEEKS,
   buildPhaseMap,
@@ -17,6 +17,13 @@ import type {
   WorkoutType,
   PlanGeneratorInputs,
 } from "./types";
+
+beforeEach(() => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date(2026, 10, 16, 12));
+});
+
+afterEach(() => vi.useRealTimers());
 
 const RACES: GoalRace[] = ["5K", "10K", "Half Marathon", "Marathon"];
 const LEVELS: FitnessLevel[] = ["beginner", "intermediate", "advanced"];
@@ -166,13 +173,19 @@ describe("generateTrainingPlan — structure", () => {
     }
   });
 
-  it("gives every week exactly one day per available training day", () => {
+  it("keeps selected training days before race week and ends on the race day", () => {
     for (const [race, level] of ALL_COMBOS) {
       for (const days of [["Mon", "Wed", "Fri"] as RunDay[], DEFAULT_DAYS, ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as RunDay[]]) {
         const plan = generateTrainingPlan(makeInputs(race, level, { availableDays: days }));
-        for (const week of plan.weeks) {
-          expect(week.days).toHaveLength(days.length);
+        for (const week of plan.weeks.slice(0, -1)) {
+          expect(week.days.map(({ day }) => day)).toEqual(days);
         }
+
+        // The fixture race falls on Tuesday, whether Tuesday was selected or not.
+        const raceWeek = plan.weeks.at(-1)!;
+        expect(raceWeek.days.map(({ day }) => day)).toEqual(["Mon", "Tue"]);
+        expect(raceWeek.days.filter(({ workout }) => workout.type === "race")).toHaveLength(1);
+        expect(raceWeek.days.at(-1)?.workout.type).toBe("race");
       }
     }
   });
@@ -312,10 +325,6 @@ describe("generateTrainingPlan — long run", () => {
 describe("weeksUntilRace", () => {
   const NOW = new Date("2026-09-11T00:00:00Z");
 
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
   it("returns 1 when the race is exactly 7 days away", () => {
     vi.useFakeTimers();
     vi.setSystemTime(NOW);
@@ -364,22 +373,24 @@ describe("newPlanId", () => {
 });
 
 describe("generateTrainingPlan — edge cases", () => {
-  it("still generates a full-length plan when the race date is already in the past", () => {
-    const plan = generateTrainingPlan(makeInputs("10K", "intermediate", { raceDate: "2020-01-01" }));
-    expect(plan.totalWeeks).toBe(PLAN_WEEKS["10K"].intermediate);
-    expect(plan.weeks).toHaveLength(PLAN_WEEKS["10K"].intermediate);
-  });
+  it.each(["2020-01-01", "2026-11-17"])(
+    "rejects a race date with fewer than four weeks of lead time (%s)",
+    (raceDate) => {
+      expect(() => generateTrainingPlan(makeInputs("10K", "intermediate", { raceDate })))
+        .toThrow("Race date must be at least 4 weeks away.");
+    },
+  );
 
-  it("still generates a full-length plan when the race is only a day away (shorter than the plan itself)", () => {
-    // The generator does not use raceDate to size or truncate the plan — it always
-    // builds the full PLAN_WEEKS[race][level] schedule regardless of how much real
-    // calendar time is actually left. Documented here as current behavior, not
-    // necessarily a bug: callers are expected to check weeksUntilRace() themselves
-    // before offering a plan this long.
-    const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
-    const plan = generateTrainingPlan(makeInputs("Marathon", "advanced", { raceDate: tomorrow }));
-    expect(plan.totalWeeks).toBe(PLAN_WEEKS.Marathon.advanced);
-    expect(plan.weeks).toHaveLength(PLAN_WEEKS.Marathon.advanced);
+  it("fits a plan into the six calendar weeks available before race day", () => {
+    const plan = generateTrainingPlan(makeInputs("Half Marathon", "intermediate", {
+      raceDate: "2026-12-27",
+    }));
+    expect(plan.totalWeeks).toBe(6);
+    expect(plan.weeks).toHaveLength(6);
+    expect(plan.weeks.at(-1)?.days.at(-1)).toMatchObject({
+      day: "Sun",
+      workout: { type: "race" },
+    });
   });
 
   it("throws for a GoalRace outside the known set rather than silently producing a broken plan", () => {

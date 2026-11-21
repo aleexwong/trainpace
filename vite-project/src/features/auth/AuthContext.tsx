@@ -16,14 +16,15 @@ const AuthContext = createContext<AuthContextValue>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  // Tracks the previously-identified uid so we only reset() on a real logout
-  // transition, not on every anonymous page load (which would fragment
-  // anonymous distinct_ids).
+  // Keep anonymous journeys intact and reset identity on logout or account switches.
   const prevUidRef = useRef<string | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        if (prevUidRef.current && prevUidRef.current !== user.uid) {
+          posthog.reset();
+        }
         // Stitch the anonymous journey to this user and unlock signup-conversion
         // + cross-session tracking in PostHog.
         posthog.identify(user.uid, {
