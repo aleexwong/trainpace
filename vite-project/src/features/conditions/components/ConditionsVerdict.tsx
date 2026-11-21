@@ -116,7 +116,7 @@ export function ConditionsVerdict({
             </div>
             <p className="text-sm text-gray-500 mt-1">
               {noPenalty ? (
-                <>Your goal of {formatTime(result.goalTimeSeconds)} stands.</>
+                <>Estimated time matches your reference goal.</>
               ) : (
                 <>
                   Goal was{" "}
@@ -243,6 +243,10 @@ export function ConditionsVerdict({
       <div className="flex gap-2.5 p-4 sm:px-7 border-t border-gray-100">
         <Info className={cn("w-4 h-4 flex-shrink-0 mt-0.5", styles.text)} />
         <p className="text-sm text-gray-600 leading-relaxed">{result.advice}</p>
+        <p className="text-xs text-gray-600">
+          The heat band estimates pace impact from temperature and dew point.
+          Check race-organizer guidance and local heat alerts for safety decisions.
+        </p>
       </div>
     </div>
   );

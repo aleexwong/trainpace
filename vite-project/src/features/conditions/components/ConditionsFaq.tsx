@@ -68,16 +68,19 @@ export function ConditionsFaq() {
 
       <section className="space-y-2">
         <h3 className="text-sm font-semibold text-gray-900">
-          How to race it
+          How to use the estimate
         </h3>
         <p className="text-sm text-gray-600 leading-relaxed">
-          The single biggest mistake in a hot race is going out at the original
-          goal pace and hoping. Heat penalties are not linear: a runner who
-          banks time early pays it back with interest, because once core
-          temperature is elevated you cannot recover it mid-race. Start at the
-          adjusted pace, take fluid early rather than when you feel thirsty, and
-          pour water on your head and forearms &mdash; skin cooling buys real
-          time. Then reassess at halfway, when you know what kind of day it is.
+          Use the adjusted time to plan how much your pace may change. Follow
+          your race organizer&rsquo;s instructions and local heat alerts when
+          deciding whether to run. If you feel faint or weak, stop exercising
+          and move somewhere cool.{" "}
+          <a
+            className="underline"
+            href="https://www.cdc.gov/extreme-heat/risk-factors/extreme-heat-and-athletes.html"
+          >
+            CDC guidance for athletes in extreme heat
+          </a>
         </p>
       </section>
 
@@ -86,12 +89,12 @@ export function ConditionsFaq() {
           How accurate is this?
         </h3>
         <p className="text-sm text-gray-600 leading-relaxed">
-          It&rsquo;s a well-supported estimate of the <em>typical</em> response,
-          not a promise. Individual heat tolerance varies widely, and runners who
-          have trained through a hot summer handle the same conditions better
-          than someone stepping off a plane from a cold climate. Sun exposure,
-          wind, and a shaded versus open course all shift the number too. Treat
-          the adjusted time as a realistic target band, not a split to defend.
+          Heat tolerance varies by runner. This pace model uses air temperature
+          and dew point. Sun and wind also affect heat stress, and race organizers
+          may use wet-bulb globe temperature to guide event decisions.{" "}
+          <a className="underline" href="https://www.weather.gov/tsa/wbgt">
+            National Weather Service explanation of wet-bulb globe temperature
+          </a>
         </p>
       </section>
 

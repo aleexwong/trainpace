@@ -214,60 +214,60 @@ const BANDS: ReadonlyArray<readonly [maxSum: number, spec: BandSpec]> = [
     100,
     {
       band: "ideal",
-      label: "Ideal",
+      label: "Minimal impact",
       color: "emerald",
       advice:
-        "Prime racing conditions. Run your goal pace as planned — cooling is not a limiter today.",
+        "The model estimates little or no slowdown from temperature and humidity.",
     },
   ],
   [
     130,
     {
       band: "mild",
-      label: "Mild",
+      label: "Low impact",
       color: "lime",
       advice:
-        "Noticeable but manageable. Drink to thirst, and expect the last third to feel slightly harder than usual.",
+        "The model estimates a small pacing adjustment for temperature and humidity.",
     },
   ],
   [
     150,
     {
       band: "moderate",
-      label: "Moderate",
+      label: "Moderate impact",
       color: "yellow",
       advice:
-        "Start at the adjusted pace, not your goal pace. Take fluid at every station and pour water over your head and forearms.",
+        "The model estimates a noticeable slowdown. Use the result as a planning estimate.",
     },
   ],
   [
     170,
     {
       band: "hard",
-      label: "Hard",
+      label: "High impact",
       color: "orange",
       advice:
-        "Race by effort, not by watch. Go out slower than the adjusted pace and reassess at halfway — a positive split here is very costly.",
+        "The model estimates a large slowdown. Check event guidance before making a pacing plan.",
     },
   ],
   [
     180,
     {
       band: "severe",
-      label: "Severe",
+      label: "Very high impact",
       color: "red",
       advice:
-        "Treat time goals as off the table. Prioritise finishing safely: walk aid stations, use ice, and stop if you get chills or stop sweating.",
+        "Temperature and humidity suggest a very large slowdown. Check event guidance and local heat alerts before deciding whether to run.",
     },
   ],
 ];
 
 const DANGEROUS_SPEC: BandSpec = {
   band: "dangerous",
-  label: "Dangerous",
+  label: "Extreme impact",
   color: "rose",
   advice:
-    "These conditions carry a real risk of heat illness. Races are often shortened or cancelled at this level — consider not racing, and never push through dizziness, confusion, or chills.",
+    "Temperature and humidity suggest an extreme slowdown. Follow event and local heat guidance over any pace estimate.",
 };
 
 export function heatRiskBand(sum: number): BandSpec {
@@ -303,7 +303,10 @@ export function calculateConditions(
     !isFinite(distanceMeters) ||
     distanceMeters <= 0 ||
     !isFinite(goalTimeSeconds) ||
-    goalTimeSeconds <= 0
+    goalTimeSeconds <= 0 ||
+    !Number.isFinite(tempC) ||
+    !Number.isFinite(humidity) ||
+    !Number.isFinite(altitudeMeters)
   ) {
     return null;
   }
