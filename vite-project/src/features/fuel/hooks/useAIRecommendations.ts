@@ -6,7 +6,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { refineFuelPlan, type FuelPlanContext } from "@/services/gemini";
 import { useToast } from "@/hooks/use-toast";
-import ReactGA from "react-ga4";
+import { trackEvent } from "@/lib/analytics";
 import {
   type AIRecommendation,
   type RaceType,
@@ -65,7 +65,7 @@ export function useAIRecommendations({
             setCooldownSeconds(AI_COOLDOWN_SECONDS);
             toast({ title: "✨ AI recommendations generated!" });
 
-            ReactGA.event({
+            trackEvent({
               category: "Fuel Planner",
               action: "AI Refinement Success",
               label: raceType,
@@ -83,7 +83,7 @@ export function useAIRecommendations({
             variant: "destructive",
           });
 
-          ReactGA.event({
+          trackEvent({
             category: "Fuel Planner",
             action: "AI Refinement Failed",
             label: response.error || "Unknown error",
@@ -96,7 +96,7 @@ export function useAIRecommendations({
           variant: "destructive",
         });
 
-        ReactGA.event({
+        trackEvent({
           category: "Fuel Planner",
           action: "AI Refinement Error",
           label: error instanceof Error ? error.message : "Unknown error",

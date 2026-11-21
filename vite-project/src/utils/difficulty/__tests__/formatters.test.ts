@@ -82,7 +82,12 @@ describe("formatDistance", () => {
 describe("formatElevation", () => {
   it("should format metric elevation without decimals", () => {
     expect(formatElevation(100)).toBe("100m");
-    expect(formatElevation(1234.5)).toBe("1235m");
+    // formatElevation goes through Intl.NumberFormat, which groups thousands.
+    // The old expectation of "1235m" only holds on a Node build without full
+    // ICU; on any normal runtime en-US formats this as "1,235m". Grouping is
+    // the intended display (the locale test above relies on the same Intl
+    // behaviour for de-DE), so the expectation was stale, not the code.
+    expect(formatElevation(1234.5)).toBe("1,235m");
   });
 
   it("should format imperial elevation", () => {

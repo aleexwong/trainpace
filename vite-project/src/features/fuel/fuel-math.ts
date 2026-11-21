@@ -28,8 +28,12 @@ import {
  * Format time in minutes to H:MM string
  */
 export function formatFuelTime(minutes: number): string {
-  const hrs = Math.floor(minutes / 60);
-  const mins = Math.round(minutes % 60);
+  // Round to whole minutes FIRST, then split. Rounding the remainder
+  // independently of the hours lets a value like 59.6 round its remainder up
+  // to 60 without carrying, printing "0:60" (and 119.7 printing "1:60").
+  const total = Math.max(0, Math.round(minutes));
+  const hrs = Math.floor(total / 60);
+  const mins = total % 60;
   return `${hrs}:${mins.toString().padStart(2, "0")}`;
 }
 
@@ -160,7 +164,10 @@ export function resolveCarbsPerHour(params: {
     carbsPerHour = raceBaseline;
   }
 
-  return Math.min(carbsPerHour, raceMax);
+  // Clamp both ends. The upper bound keeps a weight-based or custom target
+  // inside what a gut can absorb; the lower bound stops a nonsensical custom
+  // value (a negative slider reading) becoming a negative carbs/hour target.
+  return Math.min(Math.max(carbsPerHour, 0), raceMax);
 }
 
 /**
@@ -173,7 +180,9 @@ export function resolveGelsNeeded(
   if (raceType === "10K") {
     return durationHours >= MIN_10K_TIME_FOR_GEL ? 1 : 0;
   }
-  return Math.min(Math.ceil(durationHours * GELS_PER_HOUR), MAX_GELS);
+  // Math.ceil on a negative duration yields a negative gel count, which then
+  // propagates into calculateFuelPlan's totals. Floor at zero.
+  return Math.min(Math.max(Math.ceil(durationHours * GELS_PER_HOUR), 0), MAX_GELS);
 }
 
 /**
@@ -194,7 +203,11 @@ export function calculateFuelPlan(params: {
     customCarbsPerHour,
   });
 
-  const durationHours = finishTimeMin / 60;
+  // A negative finish time is nonsense input, but left unguarded it flowed
+  // straight through into negative totals and a negative gel count. Floor the
+  // duration so every downstream number stays physically meaningful;
+  // generateFuelStops already rejects it separately and returns no stops.
+  const durationHours = Math.max(0, finishTimeMin) / 60;
   const totalCarbs = Math.round(durationHours * carbsPerHour);
   const totalCalories = totalCarbs * CALORIES_PER_GRAM_CARB;
   const gelsNeeded = resolveGelsNeeded(raceType, durationHours);
