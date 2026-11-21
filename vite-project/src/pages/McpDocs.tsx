@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import posthog from "posthog-js";
+import "./mcp-docs.css";
 import { Button } from "@/components/ui/button";
 import { useInView } from "@/components/feature-shots/shared";
 import {
+  ArrowRight,
   Bot,
   Check,
   Copy,
@@ -108,6 +110,7 @@ const TOOLS = [
   {
     icon: Gauge,
     name: "calculate_training_paces",
+    hue: 165,
     summary:
       "Training paces (easy, tempo, interval, speed, long run, Yasso 800s) from a recent race result — plus heart-rate zones and hot-weather adjustments.",
     example: "What should my easy pace be if I ran a 48:30 10K?",
@@ -115,6 +118,7 @@ const TOOLS = [
   {
     icon: Activity,
     name: "calculate_vdot",
+    hue: 220,
     summary:
       "VDOT fitness score (Daniels & Gilbert formula) with training zones and equivalent race-time predictions for 5K through marathon.",
     example: "I ran a 1:45 half marathon — what marathon time does that predict?",
@@ -122,6 +126,7 @@ const TOOLS = [
   {
     icon: CalendarRange,
     name: "generate_training_plan",
+    hue: 265,
     summary:
       "A periodized week-by-week plan (base, development, sharpening, taper) for 5K to marathon, sized to your fitness level and available run days.",
     example:
@@ -130,6 +135,7 @@ const TOOLS = [
   {
     icon: Fuel,
     name: "calculate_fuel_plan",
+    hue: 65,
     summary:
       "Carbs per hour, total gels, and a front-loaded fuel-stop timeline for a 10K, half, or full marathon.",
     example: "How should I fuel a 3:45 marathon? I weigh 70kg.",
@@ -137,6 +143,7 @@ const TOOLS = [
   {
     icon: Mountain,
     name: "analyze_route",
+    hue: 150,
     summary:
       "GPX route analysis: distance, elevation gain, climb categorization, split-by-split grade-adjusted pacing, and race-day weather impact.",
     example: "Here's my race GPX — where are the hard climbs and how should I pace them?",
@@ -152,36 +159,40 @@ function CopyButton({
   label: string;
   className?: string;
 }) {
-  const [copied, setCopied] = useState(false);
+  const [status, setStatus] = useState<"idle" | "copied" | "failed">("idle");
+  const resetTimer = useRef<number>();
+  useEffect(() => () => window.clearTimeout(resetTimer.current), []);
+  const copied = status === "copied";
 
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      window.clearTimeout(resetTimer.current);
+      setStatus("copied");
+      resetTimer.current = window.setTimeout(() => setStatus("idle"), 2000);
       posthog.capture("mcp_docs_copy", { item: label });
     } catch {
-      // Clipboard unavailable (e.g. non-secure context) — nothing to do
+      window.clearTimeout(resetTimer.current);
+      setStatus("failed");
     }
   };
 
   return (
     <button
+      type="button"
       onClick={copy}
-      className={`flex items-center gap-1.5 text-sm text-slate-500 hover:text-emerald-600 transition-colors shrink-0 ${className}`}
+      className={`mcp-copy ${className}`}
       aria-label={`Copy ${label}`}
+      data-copied={copied}
     >
-      {copied ? (
-        <>
-          <Check className="w-4 h-4 text-emerald-600" />
-          <span className="text-emerald-600">Copied</span>
-        </>
-      ) : (
-        <>
-          <Copy className="w-4 h-4" />
-          Copy
-        </>
-      )}
+      <span className="mcp-copy-icons" aria-hidden="true">
+        <Copy strokeWidth={2} />
+        <Check strokeWidth={2} />
+      </span>
+      {copied ? "Copied" : "Copy"}
+      <span className="sr-only" role="status">
+        {copied ? `${label} copied` : status === "failed" ? "Clipboard unavailable. Select the text to copy it manually." : ""}
+      </span>
     </button>
   );
 }
@@ -249,8 +260,8 @@ function AnimatedTerminal() {
 
   return (
     <div ref={ref} className="mb-4">
-      <div className="rounded-xl overflow-hidden border border-slate-700/60 bg-slate-900 shadow-lg">
-        <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800/90 border-b border-slate-700/60">
+      <div className="mcp-terminal">
+        <div className="flex items-center gap-2 px-4 py-2.5 bg-white/5 border-b border-white/10">
           <span className="w-3 h-3 rounded-full bg-red-400/80" />
           <span className="w-3 h-3 rounded-full bg-amber-400/80" />
           <span className="w-3 h-3 rounded-full bg-emerald-400/80" />
@@ -317,12 +328,12 @@ function AnimatedTerminal() {
 
 function CopyBlock({ label, code }: { label: string; code: string }) {
   return (
-    <div className="mb-6">
+    <div className="mcp-code-block">
       <div className="flex items-center justify-between mb-2">
         <p className="text-sm font-medium text-slate-700">{label}</p>
         <CopyButton text={code} label={label} />
       </div>
-      <pre className="bg-slate-900 text-slate-100 rounded-lg p-4 overflow-auto max-h-96 text-left text-sm leading-relaxed">
+      <pre className="mcp-terminal text-slate-100 p-4 overflow-auto max-h-96 text-left text-sm leading-relaxed">
         <code>{code}</code>
       </pre>
     </div>
@@ -341,10 +352,10 @@ function SetupCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm mb-6">
+    <div className="mcp-setup-card">
       <div className="flex items-center gap-3 mb-4">
         <div className="bg-emerald-100 rounded-lg p-2.5 shrink-0">
-          <Icon className="w-6 h-6 text-emerald-600" />
+          <Icon className="w-5 h-5 text-emerald-700" strokeWidth={2.25} aria-hidden="true" />
         </div>
         <h3 className="text-xl font-bold text-slate-900">{title}</h3>
         {badge && (
@@ -360,7 +371,7 @@ function SetupCard({
 
 export default function McpDocs() {
   return (
-    <div className="bg-white text-slate-900 min-h-screen text-left">
+    <div className="mcp-docs text-left">
       <Helmet>
         <title>{STATIC_PAGE_TITLES["/mcp"]}</title>
         <meta
@@ -370,45 +381,51 @@ export default function McpDocs() {
         <link rel="canonical" href="https://trainpace.com/mcp" />
       </Helmet>
 
-      {/* Hero */}
-      <section className="py-20 px-6 bg-gradient-to-br from-emerald-50 to-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
-            <Bot className="w-4 h-4" />
-            For AI assistants & agents
+      <section className="mcp-hero">
+        <div className="mcp-hero-art" aria-hidden="true" />
+        <div className="mcp-container mcp-hero-grid">
+          <div>
+            <p className="mcp-eyebrow"><Bot size={16} aria-hidden="true" /> TrainPace MCP</p>
+            <h1>TrainPace for your <span>AI assistant.</span></h1>
+            <p className="mcp-hero-description">
+              Connect Claude, ChatGPT, or another{" "}
+              <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener noreferrer">MCP client</a>
+              {" "}to the calculators that power TrainPace. Ask about paces,
+              plans, fueling, or your next race course.
+            </p>
+            <div className="mcp-hero-actions">
+              <a className="mcp-primary-link" href="#connect">
+                Connect your assistant <ArrowRight size={17} strokeWidth={2.25} aria-hidden="true" />
+              </a>
+              <a className="mcp-secondary-link" href="#tools">Explore the tools</a>
+            </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Use TrainPace from Your AI Assistant
-          </h1>
-          <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
-            TrainPace runs a free, public{" "}
-            <a
-              href="https://modelcontextprotocol.io"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-emerald-600 hover:underline"
-            >
-              Model Context Protocol
-            </a>{" "}
-            server. Connect Claude, ChatGPT, or any MCP client and ask training
-            questions in plain English — the agent calls the same math that
-            powers this site.
-          </p>
-          <div className="inline-flex flex-wrap items-center justify-center gap-3 max-w-full bg-white border border-emerald-200 rounded-lg px-4 sm:px-6 py-3 shadow-sm">
-            <code className="text-emerald-700 font-mono text-sm md:text-base break-all">
-              {MCP_URL}
-            </code>
-            <CopyButton text={MCP_URL} label="server URL" />
+          <div className="mcp-endpoint">
+            <div className="mcp-endpoint-heading">
+              <Terminal size={19} strokeWidth={2.25} aria-hidden="true" />
+              <h2>Server endpoint</h2>
+            </div>
+            <div className="mcp-endpoint-code">
+              <code>{MCP_URL}</code>
+              <CopyButton text={MCP_URL} label="server URL" />
+            </div>
+            <p>Streamable HTTP · No account or API key needed</p>
           </div>
-          <p className="text-sm text-slate-500 mt-4">
-            Streamable HTTP · No account or API key required
-          </p>
         </div>
       </section>
 
+      <nav aria-label="On this page" className="mcp-jump-nav">
+        <div className="mcp-container">
+          <a href="#connect">Setup</a>
+          <a href="#prompts">Starter prompts</a>
+          <a href="#tools">Tools</a>
+          <a href="#about-mcp">About the server</a>
+        </div>
+      </nav>
+
       {/* Setup, step by step */}
-      <section className="py-16 px-6 bg-slate-50">
-        <div className="max-w-4xl mx-auto">
+      <section id="connect" className="mcp-section mcp-section-tint">
+        <div className="mcp-container">
           <h2 className="text-3xl font-bold mb-4 flex items-center gap-3">
             <Zap className="w-8 h-8 text-emerald-600" />
             Connect Your Assistant
@@ -419,87 +436,89 @@ export default function McpDocs() {
             its own.
           </p>
 
-          <SetupCard
-            icon={MonitorSmartphone}
-            title="Claude.ai & Claude Desktop"
-            badge="no code"
-          >
-            <ol className="list-decimal pl-6 space-y-3 text-slate-700 mb-5">
-              <li>
-                Open <strong>Settings → Connectors</strong> (on claude.ai it's
-                under your profile menu; custom connectors require a paid
-                plan).
-              </li>
-              <li>
-                Click <strong>Add custom connector</strong>.
-              </li>
-              <li>
-                Name it <strong>trainpace</strong> and paste the server URL
-                below, then click <strong>Add</strong>. There's no login step —
-                it connects instantly.
-              </li>
-              <li>
-                In a new chat, open the <strong>search &amp; tools</strong>{" "}
-                menu (sliders icon) and make sure <strong>trainpace</strong> is
-                enabled.
-              </li>
-              <li>Ask a training question — try a starter prompt below.</li>
-            </ol>
-            <CopyBlock label="Server URL" code={MCP_URL} />
-          </SetupCard>
+          <div className="mcp-setup-grid">
+            <SetupCard
+              icon={MonitorSmartphone}
+              title="Claude.ai & Claude Desktop"
+              badge="no code"
+            >
+              <ol className="list-decimal pl-6 space-y-3 text-slate-700 mb-5">
+                <li>
+                  Open <strong>Settings → Connectors</strong> (on claude.ai it's
+                  under your profile menu; custom connectors require a paid
+                  plan).
+                </li>
+                <li>
+                  Click <strong>Add custom connector</strong>.
+                </li>
+                <li>
+                  Name it <strong>trainpace</strong> and paste the server URL
+                  below, then click <strong>Add</strong>. There's no login step —
+                  it connects instantly.
+                </li>
+                <li>
+                  In a new chat, open the <strong>search &amp; tools</strong>{" "}
+                  menu (sliders icon) and make sure <strong>trainpace</strong> is
+                  enabled.
+                </li>
+                <li>Ask a training question — try a starter prompt below.</li>
+              </ol>
+              <CopyBlock label="Server URL" code={MCP_URL} />
+            </SetupCard>
 
-          <SetupCard icon={Terminal} title="Claude Code" badge="terminal">
-            <p className="text-slate-700 mb-4">
-              One command and you're connected — this is the whole setup:
-            </p>
-            <AnimatedTerminal />
-            <p className="text-slate-700 text-sm">
-              Then start a session and ask away.
-            </p>
-          </SetupCard>
+            <SetupCard icon={Terminal} title="Claude Code" badge="terminal">
+              <p className="text-slate-700 mb-4">
+                One command and you're connected — this is the whole setup:
+              </p>
+              <AnimatedTerminal />
+              <p className="text-slate-700 text-sm">
+                Then start a session and ask away.
+              </p>
+            </SetupCard>
 
-          <SetupCard
-            icon={Blocks}
-            title="Cursor, Windsurf & other MCP clients"
-            badge="config file"
-          >
-            <p className="text-slate-700 mb-4">
-              Add this to your client's MCP config —{" "}
-              <code className="font-mono">.cursor/mcp.json</code> in Cursor,{" "}
-              <code className="font-mono">mcp_config.json</code> in Windsurf,
-              or the equivalent for your tool — then reload:
-            </p>
-            <CopyBlock label="MCP config JSON" code={JSON_CONFIG} />
-          </SetupCard>
+            <SetupCard
+              icon={Blocks}
+              title="Cursor, Windsurf & other MCP clients"
+              badge="config file"
+            >
+              <p className="text-slate-700 mb-4">
+                Add this to your client's MCP config —{" "}
+                <code className="font-mono">.cursor/mcp.json</code> in Cursor,{" "}
+                <code className="font-mono">mcp_config.json</code> in Windsurf,
+                or the equivalent for your tool — then reload:
+              </p>
+              <CopyBlock label="MCP config JSON" code={JSON_CONFIG} />
+            </SetupCard>
 
-          <SetupCard
-            icon={MessageSquareText}
-            title="Any other agent — just paste this"
-            badge="zero setup"
-          >
-            <p className="text-slate-700 mb-4">
-              Can't edit settings, or using an agent that manages its own
-              tools? Paste this whole block as your first message. Agents that
-              can register MCP servers will connect themselves; the rest still
-              learn exactly which tools exist and when to use them.
-            </p>
-            <CopyBlock label="Agent briefing (paste as your first message)" code={AGENT_PROMPT} />
-          </SetupCard>
+            <SetupCard
+              icon={MessageSquareText}
+              title="Any other agent — just paste this"
+              badge="zero setup"
+            >
+              <p className="text-slate-700 mb-4">
+                Can't edit settings, or using an agent that manages its own
+                tools? Paste this whole block as your first message. Agents that
+                can register MCP servers will connect themselves; the rest still
+                learn exactly which tools exist and when to use them.
+              </p>
+              <CopyBlock label="Agent briefing (paste as your first message)" code={AGENT_PROMPT} />
+            </SetupCard>
+          </div>
         </div>
       </section>
 
       {/* Starter prompts */}
-      <section className="py-16 px-6 max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold mb-4">Starter Prompts</h2>
+      <section id="prompts" className="mcp-section mcp-container">
+        <h2 className="text-3xl font-bold mb-4">Starter prompts</h2>
         <p className="text-lg text-slate-600 mb-8">
           Copy one of these into your connected assistant to see the tools in
           action.
         </p>
-        <div className="space-y-4">
+        <div className="mcp-prompt-grid">
           {STARTER_PROMPTS.map((item) => (
             <div
               key={item.label}
-              className="bg-slate-50 border border-slate-200 rounded-lg p-5"
+              className="mcp-prompt"
             >
               <div className="flex items-center justify-between gap-4 mb-2">
                 <p className="font-semibold text-slate-900">{item.label}</p>
@@ -514,8 +533,8 @@ export default function McpDocs() {
       </section>
 
       {/* Tools */}
-      <section className="py-16 px-6 bg-slate-50">
-        <div className="max-w-4xl mx-auto">
+      <section id="tools" className="mcp-section mcp-section-tint">
+        <div className="mcp-container">
           <h2 className="text-3xl font-bold mb-4 text-center">
             What Your Agent Can Do
           </h2>
@@ -524,15 +543,18 @@ export default function McpDocs() {
             one runs the exact same math as the calculators on trainpace.com.
           </p>
 
-          <div className="space-y-6">
+          <div className="mcp-tool-grid">
             {TOOLS.map((tool) => (
               <div
                 key={tool.name}
-                className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm"
+                className="mcp-tool"
               >
                 <div className="flex items-start gap-4">
-                  <div className="bg-emerald-100 rounded-lg p-2.5 shrink-0">
-                    <tool.icon className="w-6 h-6 text-emerald-600" />
+                  <div
+                    className="mcp-tool-icon"
+                    style={{ color: `oklch(0.42 0.085 ${tool.hue})`, backgroundColor: `oklch(0.94 0.035 ${tool.hue})` }}
+                  >
+                    <tool.icon className="w-5 h-5" strokeWidth={2.25} aria-hidden="true" />
                   </div>
                   <div className="min-w-0">
                     <h3 className="font-mono font-semibold text-slate-900 mb-2 break-words">
@@ -551,7 +573,7 @@ export default function McpDocs() {
       </section>
 
       {/* Why */}
-      <section className="py-16 px-6 max-w-4xl mx-auto">
+      <section id="about-mcp" className="mcp-section mcp-container">
         <h2 className="text-3xl font-bold mb-6">Why an MCP Server?</h2>
         <div className="prose prose-lg max-w-none text-left">
           <p className="text-slate-700 leading-relaxed mb-4">
@@ -576,38 +598,23 @@ export default function McpDocs() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 px-6 max-w-4xl mx-auto">
-        <div className="text-center bg-gradient-to-br from-emerald-600 to-emerald-800 text-white rounded-lg p-12">
+      <section className="mcp-section mcp-container">
+        <div className="mcp-cta text-center text-white">
           <h2 className="text-3xl font-bold mb-4">Prefer to Click Around?</h2>
           <p className="text-lg mb-8 text-emerald-100">
             Every tool the MCP server exposes is also a free calculator on this
             site — no AI required.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/calculator">
-              <Button
-                size="lg"
-                className="bg-white text-emerald-600 hover:bg-slate-100"
-              >
-                Pace Calculator
-              </Button>
-            </Link>
-            <Link to="/plan">
-              <Button
-                size="lg"
-                className="bg-white text-emerald-600 hover:bg-slate-100"
-              >
-                Training Plan Builder
-              </Button>
-            </Link>
-            <Link to="/elevation-finder">
-              <Button
-                size="lg"
-                className="bg-white text-emerald-600 hover:bg-slate-100"
-              >
-                Elevation Finder
-              </Button>
-            </Link>
+            <Button asChild size="lg" className="bg-white text-emerald-800 hover:bg-slate-100">
+              <Link to="/calculator">Pace Calculator</Link>
+            </Button>
+            <Button asChild size="lg" className="bg-white text-emerald-800 hover:bg-slate-100">
+              <Link to="/plan">Training Plan Builder</Link>
+            </Button>
+            <Button asChild size="lg" className="bg-white text-emerald-800 hover:bg-slate-100">
+              <Link to="/elevation-finder">Elevation Finder</Link>
+            </Button>
           </div>
         </div>
       </section>
