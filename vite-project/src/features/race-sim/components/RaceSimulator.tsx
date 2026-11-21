@@ -490,8 +490,10 @@ export default function RaceSimulator() {
               </div>
               <div className="text-xs text-muted-foreground mt-0.5">
                 {result.courseDifficultyFactorPercent > 0
-                  ? `+${result.courseDifficultyFactorPercent}% harder`
-                  : `${result.courseDifficultyFactorPercent}% easier`} than flat
+                  ? `+${result.courseDifficultyFactorPercent}% slower than flat`
+                  : result.courseDifficultyFactorPercent < 0
+                    ? `${Math.abs(result.courseDifficultyFactorPercent)}% faster than flat`
+                    : "Same time as flat at equal effort"}
               </div>
             </div>
             <div className="rounded-lg border border-border bg-card p-4">
@@ -790,7 +792,7 @@ export default function RaceSimulator() {
           </table>
         </div>
         <p className="text-xs text-muted-foreground mt-2">
-          Penalty = fitness required above a flat marathon equivalent. Negative = net downhill advantage.
+          Penalty estimates how much longer the course takes at the same effort as a flat marathon. Negative values indicate a faster course.
         </p>
       </div>
     </div>

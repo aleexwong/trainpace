@@ -148,9 +148,7 @@ export function simulate(
 
   // Flat-equivalent time: what flat-race fitness this course requires.
   const flatEquivMarathonTimeSeconds = flatEquivPace * distanceKm;
-  const courseDifficultyFactorPercent = Math.round(
-    ((flatEquivMarathonTimeSeconds - goalTimeSeconds) / goalTimeSeconds) * 100
-  );
+  const courseDifficultyFactorPercent = difficultyPercent(totalFlatEquivKm, distanceKm);
 
   return {
     goalTimeSeconds,
@@ -184,9 +182,13 @@ export function formatPace(secPerKm: number): string {
   return `${m}:${String(sec).padStart(2, "0")} /km`;
 }
 
-// Pre-compute course difficulty factor for ranking purposes.
-// Uses a 4:00:00 reference goal — the GAP factors are geometry-based
-// so relative rankings hold regardless of target time.
+// Compare times at the same effort: hilly distance expressed as flat effort
+// divided by the actual race distance gives the course-to-flat time ratio.
+function difficultyPercent(flatEquivalentKm: number, distanceKm: number): number {
+  const percent = Math.round((flatEquivalentKm / distanceKm - 1) * 100);
+  return percent === 0 ? 0 : percent;
+}
+
 function totalFlatEquivKmForPoints(points: { dist: number; ele: number }[]): number {
   let total = 0;
   for (let i = 1; i < points.length; i++) {
@@ -201,13 +203,10 @@ function totalFlatEquivKmForPoints(points: { dist: number; ele: number }[]): num
 // Pre-compute course difficulty factor for ranking purposes.
 // Uses a 4:00:00 reference goal — the GAP factors are geometry-based
 // so relative rankings hold regardless of target time.
-export function courseDifficultyFactor(points: { dist: number; ele: number }[]): number {
-  const REF_GOAL = 14400; // 4:00:00
-  if (points.length < 2) return 0;
-  const totalFlatEquivKm = totalFlatEquivKmForPoints(points);
-  const flatEquivPace = REF_GOAL / totalFlatEquivKm;
-  const flatEquivMarathonTime = flatEquivPace * 42.195;
-  return Math.round(((flatEquivMarathonTime - REF_GOAL) / REF_GOAL) * 100);
+export function courseDifficultyFactor(points: CoursePoint[]): number {
+  const marathonPoints = slicePointsToDistance(points, MARATHON_DIST);
+  if (marathonPoints.length < 2) return 0;
+  return difficultyPercent(totalFlatEquivKmForPoints(marathonPoints), MARATHON_DIST);
 }
 
 // Given flat-equivalent fitness time and course points, compute the
