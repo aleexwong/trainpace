@@ -146,3 +146,20 @@ test.describe("Training Plan Generator", () => {
     await expect(page.locator("text=Training Paces").first()).toBeVisible({ timeout: 5000 });
   });
 });
+
+
+test("shortens a plan to the time remaining and anchors race day to its date", async ({ page }) => {
+  await page.clock.setFixedTime(new Date("2026-11-10T18:00:00Z"));
+  await page.goto("/plan");
+  await page.getByRole("button", { name: /Half Marathon/i }).first().click();
+  await page.locator('input[type="date"]').fill("2026-12-22");
+  await page.getByRole("button", { name: /Generate My Plan/i }).click();
+  await expect(page.getByRole("button", { name: /Start over/i })).toBeVisible();
+  const draft = await page.evaluate(() => JSON.parse(localStorage.getItem("trainpace_plan_draft")!));
+  expect(draft.totalWeeks).toBe(6);
+  const finalWeek = draft.weeks[draft.weeks.length - 1];
+  expect(finalWeek.days.filter((day: { workout: { type: string } }) => day.workout.type === "race"))
+    .toEqual([expect.objectContaining({ day: "Tue" })]);
+  expect(finalWeek.days.every((day: { day: string }) => ["Mon", "Tue"].includes(day.day))).toBe(true);
+  await expect(page.locator('[data-week="6"] [data-day="Tue"]')).toContainText("Race Day");
+});
