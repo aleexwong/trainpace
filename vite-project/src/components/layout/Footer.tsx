@@ -82,6 +82,14 @@ const Footer = () => {
                   Training Plan Generator
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/simulate"
+                  className="text-slate-600 hover:text-emerald-600 transition-colors text-sm"
+                >
+                  Race Simulator
+                </Link>
+              </li>
             </ul>
           </div>
 

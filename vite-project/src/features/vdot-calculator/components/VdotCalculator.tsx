@@ -344,6 +344,16 @@ export function VdotCalculator({ initialInputs, autoCalculate }: VdotCalculatorP
                       <p className="text-sm text-gray-600">Marathon course previews &amp; tips</p>
                     </div>
                   </Link>
+                  <Link
+                    to="/simulate"
+                    className="flex items-center gap-3 p-3 rounded-xl bg-blue-50 border border-blue-100 hover:border-blue-300 hover:shadow-sm transition-all"
+                  >
+                    <span className="text-2xl">&#128200;</span>
+                    <div>
+                      <p className="font-medium text-gray-900">Race Simulator</p>
+                      <p className="text-sm text-gray-600">Split-by-split plan for any course</p>
+                    </div>
+                  </Link>
                 </div>
               </CardContent>
             </Card>

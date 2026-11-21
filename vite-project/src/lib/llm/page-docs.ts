@@ -42,6 +42,7 @@ import {
 } from "./reference-tables";
 import type { DocBlock, PageDoc } from "./types";
 import {
+  SIMULATE_DESCRIPTION,
   STATIC_PAGE_TITLES,
   blogPostTitle,
   previewRouteTitle,
@@ -348,6 +349,8 @@ export function getPageDescription(url: string): string {
       return "Free VDOT calculator (Daniels & Gilbert formula). Turn a race result into a VDOT score, training zones, and equivalent times from 5K to marathon.";
     case "/plan":
       return "Free periodized running plans for 5K to marathon: week-by-week base, development, sharpening, and taper phases sized to your fitness.";
+    case "/simulate":
+      return SIMULATE_DESCRIPTION;
     case "/fuel":
       return "How many gels you need for a marathon or half: a fueling schedule with 60-90 g/hr carb targets and timing, so you don't hit the wall.";
     case "/elevationfinder":
@@ -422,6 +425,11 @@ function toolNav(currentPath: string): DocBlock[] {
       href: "/plan",
       label: "Training Plan Builder",
       note: "week-by-week 5K to marathon plans",
+    },
+    {
+      href: "/simulate",
+      label: "Race Simulator",
+      note: "elevation-adjusted splits for major marathons",
     },
     {
       href: "/fuel",
@@ -802,6 +810,29 @@ function planBlocks(): DocBlock[] {
   ];
 }
 
+function simulateBlocks(): DocBlock[] {
+  const courses = Object.values(
+    marathonData as Record<string, { name: string; slug?: string }>
+  );
+  return [
+    {
+      type: "heading",
+      level: 1,
+      text: "Race Simulator – Marathon Pacing Adjusted for Elevation",
+    },
+    {
+      type: "paragraph",
+      text: "Pick a course and a goal time to get a split-by-split pacing plan. Each segment's pace is adjusted for its grade so the effort stays even: slower on the climbs, faster on the descents, with the same finish time. Choose a full or half marathon, and km or mile splits.",
+    },
+    {
+      type: "paragraph",
+      text: "The grade adjustment uses the Minetti et al. (2002) energy cost of running on slopes. The simulator also checks the goal against your VDOT, so you can see whether it is realistic for your current fitness.",
+    },
+    { type: "heading", level: 2, text: "Courses you can simulate" },
+    { type: "list", items: courses.map((c) => c.name) },
+  ];
+}
+
 function fuelBlocks(): DocBlock[] {
   return [
     {
@@ -1158,6 +1189,8 @@ function getContentBlocks(url: string): DocBlock[] {
       return vdotBlocks();
     case "/plan":
       return planBlocks();
+    case "/simulate":
+      return simulateBlocks();
     case "/fuel":
       return fuelBlocks();
     case "/elevationfinder":
@@ -1223,6 +1256,7 @@ export function getAllDocPaths(): string[] {
     "/vdot",
     "/fuel",
     "/plan",
+    "/simulate",
     "/elevationfinder",
     "/elevation-finder",
     "/race",
