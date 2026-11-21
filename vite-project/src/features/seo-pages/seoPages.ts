@@ -1721,17 +1721,17 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'trainpace-vs-vdot-o2',
     tool: 'pace',
     path: '/calculator/trainpace-vs-vdot-o2',
-    title: 'TrainPace vs VDOT O2 - Free VDOT Paces | TrainPace',
+    title: 'TrainPace vs VDOT O2 | TrainPace',
     description:
-      'TrainPace vs VDOT O2 compared. TrainPace is a free VDOT calculator for training paces and race predictions - no app or subscription needed.',
+      'Compare the free VDOT calculators from TrainPace and V.O2, and see how their training, pacing, and coaching tools differ.',
     h1: 'TrainPace vs. VDOT O2',
     intro:
-      "VDOT O2 is Jack Daniels' official app, with his full plan library and workouts behind a subscription. TrainPace is a free web VDOT calculator that gives the same style of training paces and race predictions with no app or login.",
+      "V.O2 offers a free VDOT calculator and paid training and coaching services. TrainPace offers free VDOT paces and race predictions in the browser, with no app download or login.",
     bullets: [
-      'TrainPace is free with no app or subscription; VDOT O2 is a paid app',
+      'Both offer a free VDOT calculator; V.O2 also offers paid training and coaching',
       "Both use Jack Daniels' VDOT system to set training paces",
-      'VDOT O2 adds the official Daniels plan library, workouts, and coaching',
-      'TrainPace adds GPX course pacing and an AI fuel planner VDOT O2 does not',
+      'V.O2 offers structured workouts and coaching through its training services',
+      'TrainPace also offers GPX course pacing and a race fuel planner',
       'Enter a recent race time to get Easy, Tempo, Threshold, and Interval paces free',
     ],
     cta: { href: '/vdot', label: 'Open the Free VDOT Calculator' },
@@ -1739,7 +1739,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
       {
         question: 'Is TrainPace a free alternative to VDOT O2?',
         answer:
-          'Yes. TrainPace calculates VDOT-based training paces and race-time predictions for free, with no app download or subscription. VDOT O2 is the official paid Daniels app.',
+          'Yes. Both offer free VDOT calculations. TrainPace runs in your browser without a login, while V.O2 also offers paid training and coaching.',
       },
       {
         question: 'Does TrainPace use the same VDOT system as VDOT O2?',
@@ -1749,7 +1749,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
       {
         question: 'What does VDOT O2 do that TrainPace does not?',
         answer:
-          "VDOT O2 offers Jack Daniels' official training plan library, structured workouts, plan tracking, and coaching inside a paid app. TrainPace focuses on free paces, plans, course pacing, and fueling.",
+          "V.O2 offers paid training and coaching services with structured workouts. TrainPace offers self-serve tools for paces, plans, course pacing, and fueling.",
       },
       {
         question: 'Can I get Daniels-style paces without paying?',
@@ -2877,6 +2877,11 @@ export const comparisonSeoSlugs = [
   'trainpace-vs-trainingpeaks',
   'free-trainingpeaks-alternative',
   'strava-vs-trainpace-for-training',
+  'trainpace-vs-vdot-o2',
+  'trainpace-vs-mcmillan-running-calculator',
+  'trainpace-vs-garmin-coach',
+  'trainpace-vs-nike-run-club',
+  'trainpace-vs-final-surge',
 ] as const;
 
 export interface ComparisonLink {

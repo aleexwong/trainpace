@@ -125,13 +125,13 @@ Required fields and content rules:
 
 ## 10. Follow-on
 
-**Batch 2 — shipped.** A second set of comparison pages was added using the same config-only PSEO
+**Batch 2.** A second set of comparison pages was added using the same config-only PSEO
 pattern, extending coverage from paid-app competitors into calculators, device ecosystems, and
 training-log platforms:
 
 | Slug | Competitor angle | CTA target |
 |------|------------------|-----------|
-| `trainpace-vs-vdot-o2` | Official paid Jack Daniels VDOT app | `/vdot` |
+| `trainpace-vs-vdot-o2` | Free VDOT calculator with paid training and coaching | `/vdot` |
 | `trainpace-vs-mcmillan-running-calculator` | Respected free/paid pace calculator + plans | `/calculator` |
 | `trainpace-vs-garmin-coach` | Free but device-locked adaptive plans | `/plan` |
 | `trainpace-vs-nike-run-club` | Free audio-guided app + basic plans | `/plan` |
