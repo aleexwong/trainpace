@@ -1,3 +1,4 @@
+import { calculateVdot, formatTime, predictRaceTime } from "@/features/vdot-calculator/vdot-math";
 import {
   Activity,
   Map,
@@ -31,6 +32,9 @@ import {
 } from "@/components/feature-shots";
 
 // Animated, interactive product shots keyed by the FeatureSection badge.
+const exampleVdot = calculateVdot(10_000, 50 * 60);
+const exampleHalfMarathon = formatTime(predictRaceTime(exampleVdot, 21_097.5));
+
 const FEATURE_SHOTS: Record<string, () => JSX.Element> = {
   "Pace Calculator": PaceLadderShot,
   "VDOT Calculator": VdotDialShot,
@@ -925,7 +929,7 @@ export default function LandingPage() {
         subtitle="Use the proven Daniels Running Formula to calculate your VDOT fitness score. Get equivalent race predictions from 800m to the marathon and training paces for all 5 Daniels zones."
         icon={Activity}
         features={[
-          "VDOT score with fitness level rating",
+          `Example: a 50:00 10K gives a VDOT of ${exampleVdot.toFixed(1)} and predicts a ${exampleHalfMarathon} half marathon.`,
           "Race time predictions across 9 distances",
           "Easy, Marathon, Threshold, Interval & Repetition paces",
           "Based on Jack Daniels' Running Formula",
