@@ -22,6 +22,8 @@ import type {
   PlanPaces,
 } from "./types";
 
+import { DAY_OFFSET, raceDateNoon, todayNoon, weekStartMonday } from "./utils/planSchedule";
+
 // ── Plan length by race & fitness ──────────────────────────────────────────
 
 export const PLAN_WEEKS: Record<GoalRace, Record<FitnessLevel, number>> = {
@@ -351,7 +353,7 @@ function weeklyFocus(phase: TrainingPhase, weekNum: number): string {
 
 // ── Main plan generator ────────────────────────────────────────────────────
 
-export function generateTrainingPlan(inputs: PlanGeneratorInputs): TrainingPlan {
+export function generateTrainingPlan(inputs: PlanGeneratorInputs, now: Date = new Date()): TrainingPlan {
   const {
     goalRace,
     raceDate,
@@ -361,7 +363,19 @@ export function generateTrainingPlan(inputs: PlanGeneratorInputs): TrainingPlan 
     paceResults,
   } = inputs;
 
-  const totalWeeks = PLAN_WEEKS[goalRace][currentFitness];
+  if (!Number.isFinite(raceDateNoon(raceDate).getTime()) || weeksUntilRace(raceDate, now) < 4) {
+    throw new Error("Race date must be at least 4 weeks away.");
+  }
+  // Use whole calendar weeks beginning no earlier than today. Starting at the
+  // next Monday avoids assigning already-missed workouts in a partial week.
+  const firstMonday = todayNoon(now);
+  firstMonday.setDate(firstMonday.getDate() + (8 - firstMonday.getDay()) % 7);
+  const raceMonday = weekStartMonday(raceDate, 1, 1);
+  const calendarDay = (date: Date) => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+  const availableWeeks = Math.round((calendarDay(raceMonday) - calendarDay(firstMonday)) / (7 * 86400000)) + 1;
+  const totalWeeks = Math.min(PLAN_WEEKS[goalRace][currentFitness], availableWeeks);
+  const sortedDays = [...new Set(availableDays)].sort((a, b) => DAY_OFFSET[a] - DAY_OFFSET[b]);
+  const raceDay = (Object.keys(DAY_OFFSET) as RunDay[])[(raceDateNoon(raceDate).getDay() + 6) % 7];
   const phases = buildPhaseMap(totalWeeks, goalRace);
 
   const baseKm = BASE_VOLUME_KM[goalRace][currentFitness];
@@ -380,13 +394,13 @@ export function generateTrainingPlan(inputs: PlanGeneratorInputs): TrainingPlan 
       let weeklyKm: number;
       if (phase === "Taper") {
         const taperFraction = pw === 0 ? 0.65 : 0.45;
-        weeklyKm = Math.round(peakKm * taperFraction);
+        weeklyKm = Math.round(Math.max(baseKm, ...weeks.map((week) => week.totalKm)) * taperFraction);
       } else if (phase === "Race Week") {
         weeklyKm = Math.round(peakKm * 0.3);
       } else {
         // 10% rule progression, capped at peak
         const progressFraction =
-          (globalWeek - 1) / (totalWeeks - phases.filter((p) => p.phase === "Taper" || p.phase === "Race Week").reduce((s, p) => s + p.weeks, 0) - 1);
+          (globalWeek - 1) / Math.max(1, PLAN_WEEKS[goalRace][currentFitness] - phases.filter((p) => p.phase === "Taper" || p.phase === "Race Week").reduce((s, p) => s + p.weeks, 0) - 1);
         weeklyKm = Math.round(baseKm + (peakKm - baseKm) * Math.min(progressFraction, 1));
 
         // Every 4th week is a recovery week (drop to 80% of previous)
@@ -395,7 +409,12 @@ export function generateTrainingPlan(inputs: PlanGeneratorInputs): TrainingPlan 
         }
       }
 
-      const days = getWorkoutsForPhase(phase, weeklyKm, availableDays);
+      // Race day is mandatory even when it is not a preferred training day.
+      // Only schedule preparation workouts before it; the plan ends at the race.
+      const scheduledDays = phase === "Race Week"
+        ? [...sortedDays.filter((day) => DAY_OFFSET[day] < DAY_OFFSET[raceDay]), raceDay]
+        : sortedDays;
+      const days = getWorkoutsForPhase(phase, weeklyKm, scheduledDays);
 
       weeks.push({
         weekNumber: globalWeek,
@@ -494,10 +513,11 @@ function defaultPaces(level: FitnessLevel): PlanPaces {
   return defaults[level];
 }
 
-export function weeksUntilRace(raceDate: string): number {
-  const now = new Date();
-  const race = new Date(raceDate);
-  const diff = race.getTime() - now.getTime();
+export function weeksUntilRace(raceDate: string, now: Date = new Date()): number {
+  const race = raceDateNoon(raceDate);
+  const today = todayNoon(now);
+  const diff = Date.UTC(race.getFullYear(), race.getMonth(), race.getDate())
+    - Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
   return Math.max(0, Math.ceil(diff / (7 * 24 * 60 * 60 * 1000)));
 }
 

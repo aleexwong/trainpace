@@ -107,19 +107,22 @@ export function exportPlanAsIcal(plan: TrainingPlan): void {
     const weekMonday = getWeekStartMonday(raceDate, week.weekNumber, plan.totalWeeks);
 
     for (const day of week.days) {
-      if (day.workout.type === "rest") continue;
+      if (day.workout.type === "rest" || day.workout.type === "race") continue;
       lines.push(buildEvent(day, weekMonday, week, planId, plan.name));
     }
   }
 
   // Add the race day as an all-day event
   const raceDateStr = `${raceDate.getUTCFullYear()}${String(raceDate.getUTCMonth() + 1).padStart(2, "0")}${String(raceDate.getUTCDate()).padStart(2, "0")}`;
+  const raceEnd = new Date(raceDate);
+  raceEnd.setUTCDate(raceEnd.getUTCDate() + 1);
+  const raceEndDateStr = `${raceEnd.getUTCFullYear()}${String(raceEnd.getUTCMonth() + 1).padStart(2, "0")}${String(raceEnd.getUTCDate()).padStart(2, "0")}`;
   lines.push(
     "BEGIN:VEVENT",
     `UID:trainpace-${planId}-raceday@trainpace.com`,
     `DTSTAMP:${formatIcalDate(new Date())}`,
     `DTSTART;VALUE=DATE:${raceDateStr}`,
-    `DTEND;VALUE=DATE:${raceDateStr}`,
+    `DTEND;VALUE=DATE:${raceEndDateStr}`,
     `SUMMARY:🏁 ${escapeIcal(plan.goalRace)} — Race Day!`,
     `DESCRIPTION:${escapeIcal(`${plan.goalRace} race day. Trained with TrainPace. Good luck!`)}`,
     "CATEGORIES:Race,Running",
