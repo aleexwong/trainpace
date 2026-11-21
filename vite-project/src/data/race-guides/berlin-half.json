@@ -1,0 +1,67 @@
+{
+  "slug": "berlin-half",
+  "name": "Generali Berliner Halbmarathon",
+  "city": "Berlin",
+  "country": "Germany",
+  "distanceKm": 21.0975,
+  "month": "April",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.generali-berliner-halbmarathon.de/",
+  "summary": "The Generali Berliner Halbmarathon (Berlin Half Marathon) is an early-spring road race organised by SCC EVENTS. The organisers describe the course as flat. It starts with a view of the Victory Column (Siegessäule) and finishes at the Brandenburg Gate.",
+  "courseHighlights": [
+    "Start with a view of the Siegessäule (Victory Column)",
+    "A route across the city centre passing many Berlin landmarks",
+    "About 40 bands and cheering points along the route",
+    "Finish at the Brandenburg Gate"
+  ],
+  "paceStrategy": {
+    "summary": "The organisers describe the course as flat, so an even pace is the main plan. Use the six refreshment points to take on fluid and fuel at planned times.",
+    "segments": [
+      {
+        "section": "km 0–5",
+        "terrain": "Flat city streets after the start near the Siegessäule",
+        "advice": "Run goal pace or slightly slower while the field spreads out."
+      },
+      {
+        "section": "km 5–15",
+        "terrain": "Flat route across the capital",
+        "advice": "Hold an even rhythm and take fuel at the km 12.3 gel point if you use it."
+      },
+      {
+        "section": "km 15–21.1",
+        "terrain": "Flat run to the Brandenburg Gate",
+        "advice": "Keep steady and speed up in the final 2 km."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site lists six refreshment points: km 5 (water, tea, Maurten drink mix), km 9.8 (water, tea), km 12.3 (Maurten gel, no water), km 14.1 (water, tea, banana), km 17.5 (water, tea, drink mix, banana) and km 19.5 (water). The list is labelled for 2024, so check the current year.",
+  "tips": [
+    "Check the current refreshment list; the one on the race site is labelled 2024",
+    "The km 12.3 gel point has no water, so carry a few sips or take water first",
+    "Read the danger-spot information on the race site before race day",
+    "Dress for early spring: the race is held in April"
+  ],
+  "faq": [
+    {
+      "question": "Is the Berlin Half Marathon flat?",
+      "answer": "Yes. The organisers describe the course as flat. They show an elevation graph on the race site but we found no total climb figure."
+    },
+    {
+      "question": "Where does the Berlin Half Marathon finish?",
+      "answer": "At the Brandenburg Gate. The start has a view of the Siegessäule (Victory Column)."
+    },
+    {
+      "question": "When is the Berlin Half Marathon held?",
+      "answer": "It is held in early spring, usually on a Sunday in April."
+    }
+  ],
+  "sources": [
+    "https://www.generali-berliner-halbmarathon.de/das-rennen/strecke",
+    "https://en.wikipedia.org/wiki/Berlin_Half_Marathon"
+  ],
+  "checked": "2026-10"
+}

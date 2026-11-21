@@ -16,6 +16,7 @@
 
 import type { SeoPageConfig } from '../../lib/seo';
 import { generatePageId, BASE_URL } from '../../lib/seo';
+import { racePrepTitle } from '../../lib/seo/titles';
 
 // Re-export the old types for backward compatibility
 export type { SeoPageConfig } from './types';
@@ -33,6 +34,187 @@ function withBaseUrl(path: string): string {
 // =============================================================================
 
 export const calculatorSeoPages: SeoPageConfig[] = [
+  {
+    id: generatePageId('pace', 'recovery-run-pace'),
+    slug: 'recovery-run-pace',
+    tool: 'pace',
+    path: '/calculator/recovery-run-pace',
+    title: 'Recovery Run Pace Guide - Run Easy | TrainPace',
+    description:
+      'Find a sensible recovery-run pace from your current race fitness. Learn the talk test, when to slow down, and how recovery runs differ from easy runs.',
+    h1: 'Recovery Run Pace Guide',
+    intro:
+      'A recovery run is a short, low-stress run between demanding sessions, not another fitness test. Use your current race result to estimate an easy training range, then let comfortable breathing and tired legs decide whether to go slower or rest.',
+    bullets: [
+      'Start at the slower end of your easy range; recovery pace is not a separate zone calculated by this tool.',
+      'You should be able to speak in full sentences without straining. Slow down or walk if you cannot.',
+      'Heat, hills, poor sleep, and accumulated fatigue can make your usual easy pace too demanding.',
+      'Rest instead if running worsens pain or changes your stride. A recovery run is optional, not a mileage obligation.',
+    ],
+    cta: { href: '/calculator', label: 'Find Your Easy Training Range' },
+    faq: [
+      {
+        question: 'How slow should a recovery run be?',
+        answer:
+          'Slow enough to feel relaxed throughout, often at the slower end of your easy range or below it. There is no universal number of seconds to add to race pace; current fatigue and conditions matter more than hitting a target.',
+      },
+      {
+        question: 'What is the difference between an easy run and a recovery run?',
+        answer:
+          'Both use comfortable aerobic effort. An easy run builds general endurance; a recovery run prioritizes keeping stress low after a harder day, so it is usually shorter and may be slower.',
+      },
+      {
+        question: 'Should I run or rest after intervals?',
+        answer:
+          'Either can fit a training plan. Choose rest if you are unusually tired, ill, or sore enough to alter your stride. If you run, keep it short and conversational rather than trying to make up distance.',
+      },
+    ],
+    howTo: {
+      name: 'How to choose a recovery-run pace',
+      description: 'Use the calculator as a starting point, then adjust by effort.',
+      steps: [
+        { name: 'Use current fitness', text: 'Enter a recent race distance and finish time, not a future goal time.' },
+        { name: 'Check the easy range', text: 'Start near its slower end and keep your breathing comfortable.' },
+        { name: 'Adjust or rest', text: 'Slow down for fatigue, hills, or heat, and stop if pain changes your stride.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', '400m-interval-pace'),
+    slug: '400m-interval-pace',
+    tool: 'pace',
+    path: '/calculator/400m-interval-pace',
+    title: '400m Interval Pace - Track Split Guide | TrainPace',
+    description:
+      'Convert running pace into 400m track splits with worked examples. Choose controlled interval effort from current fitness, not an all-out sprint.',
+    h1: '400m Interval Pace and Track Splits',
+    intro:
+      'A 400m repetition is one lap in lane one of a standard outdoor track. Its target time depends on the workout: 400m at 5K effort is different from a fast repetition with full recovery. Use training zones as context, not as a reason to sprint every lap.',
+    bullets: [
+      'To convert min/km to a 400m split, first convert the pace to seconds and multiply by 0.4.',
+      'At 4:00/km, 400m takes 96 seconds (1:36); at 5:00/km, it takes 120 seconds (2:00).',
+      'For mile pace, multiply seconds per mile by 400 / 1609.344. At 8:00/mile, a 400m lap is about 1:59.',
+      'Keep repetitions repeatable and follow the recovery specified by your workout. Short rests and full recoveries create different sessions.',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Your Interval Training Pace' },
+    faq: [
+      {
+        question: 'How do I calculate my 400m split from pace per km?',
+        answer:
+          'Convert minutes and seconds to total seconds, then multiply by 0.4. For 4:30/km: 270 seconds × 0.4 = 108 seconds, or 1:48 per 400m.',
+      },
+      {
+        question: 'Is a 400m lap the same as a quarter mile?',
+        answer:
+          'No. A quarter mile is 402.336m, slightly longer than 400m. Use the actual repetition distance for your splits, especially when comparing track times with mile-pace targets.',
+      },
+      {
+        question: 'Should I run every 400m repetition at maximum speed?',
+        answer:
+          'No. For aerobic intervals, the aim is controlled, repeatable work. Sprint sessions are a different workout. Warm up first and choose effort, repetitions, and recovery appropriate to your experience and plan.',
+      },
+    ],
+    howTo: {
+      name: 'How to work out 400m interval splits',
+      description: 'Choose the effort before converting it to a lap time.',
+      steps: [
+        { name: 'Estimate training zones', text: 'Enter a recent race result to see training paces based on current fitness.' },
+        { name: 'Match the workout', text: 'Use the pace prescribed by your session rather than automatically choosing the fastest zone.' },
+        { name: 'Convert the split', text: 'Multiply seconds per kilometre by 0.4, then convert the result back to minutes and seconds.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', '800m-interval-pace'),
+    slug: '800m-interval-pace',
+    tool: 'pace',
+    path: '/calculator/800m-interval-pace',
+    title: '800m Interval Pace - Two-Lap Split Guide | TrainPace',
+    description:
+      'Work out 800m interval times from pace per km or mile. See two-lap examples, pacing advice, and why Yasso 800s do not guarantee a marathon time.',
+    h1: '800m Interval Pace and Two-Lap Splits',
+    intro:
+      'An 800m repetition covers two laps in lane one of a standard outdoor track. These longer repetitions make a rushed first lap costly: choose a workout-appropriate pace you can hold evenly, rather than treating the first 400m as a sprint.',
+    bullets: [
+      'Convert seconds per kilometre to an 800m time by multiplying by 0.8.',
+      'At 4:30/km, run 800m in 3:36 with 1:48 laps. At 5:00/km, the split is 4:00 with 2:00 laps.',
+      'For mile pace, multiply seconds per mile by 800 / 1609.344. At 8:00/mile, 800m takes about 3:59.',
+      'The appropriate pace depends on the session and recovery. An 800m race effort is not a sustainable target for repeated aerobic intervals.',
+    ],
+    cta: { href: '/calculator', label: 'Find Training Paces for Your 800m Repeats' },
+    faq: [
+      {
+        question: 'How do I convert min/km to an 800m interval time?',
+        answer:
+          'Convert the pace to seconds and multiply by 0.8. For 4:15/km, 255 × 0.8 = 204 seconds, or 3:24 per 800m. Even laps would be 1:42 each.',
+      },
+      {
+        question: 'Do Yasso 800s predict my marathon time?',
+        answer:
+          'They are a workout, not a reliable standalone prediction. Running 800m repeats in 3:30 does not guarantee a 3:30 marathon. Long-run endurance, weekly training, fueling, weather, and the course all affect marathon performance.',
+      },
+      {
+        question: 'How much recovery should I take between 800m repeats?',
+        answer:
+          'Follow the purpose of the session and your plan. Short jog recoveries make the work more continuous; longer recoveries allow faster repetitions. If you cannot hold controlled, consistent splits, reduce the pace or number of repeats rather than forcing the workout.',
+      },
+    ],
+    howTo: {
+      name: 'How to pace 800m repetitions',
+      description: 'Turn a training pace into a controlled two-lap effort.',
+      steps: [
+        { name: 'Choose the effort', text: 'Use a recent race result and your workout instructions to select an appropriate training pace.' },
+        { name: 'Calculate the target', text: 'Multiply seconds per kilometre by 0.8 for the full repetition and by 0.4 for each lap.' },
+        { name: 'Run evenly', text: 'Check the first lap, avoid banking time, and keep the prescribed recovery between repetitions.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'negative-split-marathon'),
+    slug: 'negative-split-marathon',
+    tool: 'pace',
+    path: '/calculator/negative-split-marathon',
+    title: 'Negative Split Marathon Pacing Guide | TrainPace',
+    description:
+      'Plan a negative-split marathon with a worked 4-hour example. Learn first-half targets, second-half pacing, and when hills or heat make even effort better.',
+    h1: 'Negative Split Marathon Pacing Guide',
+    intro:
+      'A negative split means running the second half faster than the first. For a marathon, aim for a small, realistic difference rather than a slow first half followed by a desperate catch-up. The calculator below estimates training paces; use the worked example here to plan race splits.',
+    bullets: [
+      'For a 4:00 marathon with a two-minute difference between halves, run the first half in 2:01 and the second in 1:59.',
+      'Those half-marathon splits average about 5:44/km then 5:38/km (9:14/mile then 9:05/mile), rounded to the nearest second.',
+      'Calculate the first half as (goal time + split difference) / 2 and the second as (goal time - split difference) / 2.',
+      'On a hilly course or in rising heat, even effort can be more sensible than forcing a faster second half. Keep fueling consistent from early in the race.',
+    ],
+    cta: { href: '/calculator', label: 'Check Your Marathon Training Paces' },
+    initialInputs: { distance: '42.195' },
+    faq: [
+      {
+        question: 'What is a negative split in a marathon?',
+        answer:
+          'It means your second 21.0975km is faster than your first. For example, 2:01 followed by 1:59 gives a 4:00 finish and a two-minute negative split.',
+      },
+      {
+        question: 'Does a two-minute negative split mean starting two minutes slower than halfway?',
+        answer:
+          'No. The difference is between the two halves. For a 4:00 goal, shift one minute from the second half to the first: 2:01 plus 1:59, not 2:02 plus 1:58.',
+      },
+      {
+        question: 'Is a negative split always the best marathon strategy?',
+        answer:
+          'No. Even pacing can also work well, and course elevation, wind, heat, fitness, and fueling change the best approach. Avoid chasing a planned split when the effort is clearly too high.',
+      },
+    ],
+    howTo: {
+      name: 'How to plan a small negative split',
+      description: 'Set realistic half-marathon checkpoints without banking time early.',
+      steps: [
+        { name: 'Choose a realistic finish time', text: 'Base it on recent races and marathon-specific training, not only an aspirational goal.' },
+        { name: 'Divide the halves', text: 'Add the desired difference to the goal time and divide by two for the first half; subtract it and divide by two for the second.' },
+        { name: 'Adjust for the course', text: 'Check the elevation profile and conditions, then prioritize sustainable effort and early fueling.' },
+      ],
+    },
+  },
   {
     id: generatePageId('pace', '5k-pace-calculator'),
     slug: '5k-pace-calculator',
@@ -125,7 +307,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'half-marathon-pace-calculator',
     tool: 'pace',
     path: '/calculator/half-marathon-pace-calculator',
-    title: 'Half Marathon Pace Calculator - Race Pace + Training Zones | TrainPace',
+    title: 'Half Marathon Pace Calculator - Race Pace + Training Zones',
     description:
       'Free half marathon pace calculator. Use your 13.1 finish time to estimate race pace and get VDOT-based training paces for easy, tempo, and threshold runs.',
     h1: 'Half Marathon Pace Calculator',
@@ -166,7 +348,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'marathon-pace-calculator',
     tool: 'pace',
     path: '/calculator/marathon-pace-calculator',
-    title: 'Marathon Pace Calculator - Training Paces + Race Strategy | TrainPace',
+    title: 'Marathon Pace Calculator - Training Paces + Race Strategy',
     description:
       'Free marathon pace calculator. Convert your marathon time to min/km or min/mile and get VDOT-style training paces for easy, tempo, threshold, and interval runs.',
     h1: 'Marathon Pace Calculator',
@@ -207,7 +389,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'vdot-calculator',
     tool: 'pace',
     path: '/calculator/vdot-calculator',
-    title: 'VDOT Calculator - Convert Race Times to Training Paces | TrainPace',
+    title: 'VDOT Calculator - Convert Race Times to Training Paces',
     description:
       'Free VDOT calculator. Convert any race time (5K to marathon) into VDOT-based training paces for easy runs, tempo, threshold, and intervals.',
     h1: 'VDOT Calculator (Training Paces)',
@@ -247,7 +429,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'easy-pace-calculator',
     tool: 'pace',
     path: '/calculator/easy-pace-calculator',
-    title: 'Easy Run Pace Calculator - Find Your Conversational Pace | TrainPace',
+    title: 'Easy Run Pace Calculator - Find Your Conversational Pace',
     description:
       'Easy run pace calculator. Use your race time to find a conversational easy pace range for aerobic base building and recovery runs.',
     h1: 'Easy Run Pace Calculator',
@@ -275,7 +457,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'tempo-pace-calculator',
     tool: 'pace',
     path: '/calculator/tempo-pace-calculator',
-    title: 'Tempo Run Pace Calculator - Lactate Threshold Workouts | TrainPace',
+    title: 'Tempo Run Pace Calculator - Lactate Threshold Workouts',
     description:
       'Tempo pace calculator. Convert your race time to a tempo pace for steady-state threshold workouts and controlled hard runs.',
     h1: 'Tempo Run Pace Calculator',
@@ -331,7 +513,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'mile-pace-calculator',
     tool: 'pace',
     path: '/calculator/mile-pace-calculator',
-    title: 'Mile Pace Calculator - Convert Time to Pace (min/mile) | TrainPace',
+    title: 'Mile Pace Calculator - Convert Time to Pace (min/mile)',
     description:
       'Free mile pace calculator. Convert a 1-mile time into training paces and see how it relates to longer race performances.',
     h1: 'Mile Pace Calculator',
@@ -350,7 +532,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: '8k-pace-calculator',
     tool: 'pace',
     path: '/calculator/8k-pace-calculator',
-    title: '8K Pace Calculator - Training Paces from an 8K Time | TrainPace',
+    title: '8K Pace Calculator - Training Paces from an 8K Time',
     description:
       '8K pace calculator. Enter your 8K time to generate VDOT-style training paces for easy runs, tempo, threshold, and intervals.',
     h1: '8K Pace Calculator',
@@ -388,7 +570,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: '20k-pace-calculator',
     tool: 'pace',
     path: '/calculator/20k-pace-calculator',
-    title: '20K Pace Calculator - Training Zones and Race Pace | TrainPace',
+    title: '20K Pace Calculator - Training Zones and Race Pace',
     description:
       '20K pace calculator. Use a 20K time to estimate half marathon pacing and generate VDOT-style training paces.',
     h1: '20K Pace Calculator',
@@ -407,7 +589,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: '30k-pace-calculator',
     tool: 'pace',
     path: '/calculator/30k-pace-calculator',
-    title: '30K Pace Calculator - Marathon Training Pace Targets | TrainPace',
+    title: '30K Pace Calculator - Marathon Training Pace Targets',
     description:
       '30K pace calculator. Convert a 30K time into marathon training paces and long-run targets (min/km or min/mile).',
     h1: '30K Pace Calculator',
@@ -444,7 +626,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-20-5k-pace',
     tool: 'pace',
     path: '/calculator/sub-20-5k-pace',
-    title: 'Sub-20 5K Pace - Required Pace and Training Zones | TrainPace',
+    title: 'Sub-20 5K Pace - Required Pace and Training Zones',
     description:
       'Sub-20 5K pace guide. See the pace required to break 20 minutes and generate training paces to build toward the goal.',
     h1: 'Sub-20 5K Pace',
@@ -462,7 +644,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-90-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-90-half-marathon-pace',
-    title: 'Sub-90 Half Marathon Pace - Required Pace and Training Zones | TrainPace',
+    title: 'Sub-90 Half Marathon Pace - Required Pace and Training Zones',
     description:
       'Sub-90 half marathon pace guide. See the required pace to break 1:30 and generate training paces to support the goal.',
     h1: 'Sub-90 Half Marathon Pace',
@@ -480,7 +662,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-4-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-4-marathon-pace',
-    title: 'Sub-4 Marathon Pace - Required Pace and Training Zones | TrainPace',
+    title: 'Sub-4 Marathon Pace - Required Pace and Training Zones',
     description:
       'Sub-4 marathon pace guide. See the pace needed to break 4 hours and generate training paces for long runs, tempo, and threshold workouts.',
     h1: 'Sub-4 Marathon Pace',
@@ -502,7 +684,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-3-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-3-marathon-pace',
-    title: 'Sub-3 Hour Marathon Pace - Training Plan + Pace Chart | TrainPace',
+    title: 'Sub-3 Hour Marathon Pace - Training Plan + Pace Chart',
     description:
       'Sub-3 marathon pace guide. Required pace is 4:16/km (6:52/mi). Get training zones, workout targets, and pacing strategy to break 3 hours.',
     h1: 'Sub-3 Hour Marathon Pace',
@@ -549,7 +731,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-3-15-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-3-15-marathon-pace',
-    title: 'Sub-3:15 Marathon Pace - Required Pace + Training Zones | TrainPace',
+    title: 'Sub-3:15 Marathon Pace - Required Pace + Training Zones',
     description:
       'Sub-3:15 marathon pace guide. Required pace is 4:37/km (7:26/mi). Get training zones and workout targets to break 3 hours 15 minutes.',
     h1: 'Sub-3:15 Marathon Pace',
@@ -596,7 +778,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-3-30-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-3-30-marathon-pace',
-    title: 'Sub-3:30 Marathon Pace - Required Pace + Training Zones | TrainPace',
+    title: 'Sub-3:30 Marathon Pace - Required Pace + Training Zones',
     description:
       'Sub-3:30 marathon pace guide. Required pace is 4:59/km (8:02/mi). Get training zones and pacing strategy to break 3 hours 30 minutes.',
     h1: 'Sub-3:30 Marathon Pace',
@@ -643,7 +825,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-3-45-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-3-45-marathon-pace',
-    title: 'Sub-3:45 Marathon Pace - Required Pace + Training Zones | TrainPace',
+    title: 'Sub-3:45 Marathon Pace - Required Pace + Training Zones',
     description:
       'Sub-3:45 marathon pace guide. Required pace is 5:20/km (8:35/mi). Get training zones and strategy to break 3 hours 45 minutes.',
     h1: 'Sub-3:45 Marathon Pace',
@@ -685,7 +867,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-4-30-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-4-30-marathon-pace',
-    title: 'Sub-4:30 Marathon Pace - Required Pace + Training Zones | TrainPace',
+    title: 'Sub-4:30 Marathon Pace - Required Pace + Training Zones',
     description:
       'Sub-4:30 marathon pace guide. Required pace is 6:24/km (10:18/mi). Training zones and pacing strategy for your first or fastest marathon.',
     h1: 'Sub-4:30 Marathon Pace',
@@ -727,7 +909,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-5-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-5-marathon-pace',
-    title: 'Sub-5 Hour Marathon Pace - Required Pace + Training Plan | TrainPace',
+    title: 'Sub-5 Hour Marathon Pace - Required Pace + Training Plan',
     description:
       'Sub-5 marathon pace guide. Required pace is 7:07/km (11:27/mi). Training zones and tips to break 5 hours in your marathon.',
     h1: 'Sub-5 Hour Marathon Pace',
@@ -778,7 +960,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-1-20-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-1-20-half-marathon-pace',
-    title: 'Sub-1:20 Half Marathon Pace - Training Zones + Strategy | TrainPace',
+    title: 'Sub-1:20 Half Marathon Pace - Training Zones + Strategy',
     description:
       'Sub-1:20 half marathon pace guide. Required pace is 3:47/km (6:06/mi). Training zones and race strategy for elite amateur half marathon.',
     h1: 'Sub-1:20 Half Marathon Pace',
@@ -819,7 +1001,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-1-30-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-1-30-half-marathon-pace',
-    title: 'Sub-1:30 Half Marathon Pace - Training Zones + Plan | TrainPace',
+    title: 'Sub-1:30 Half Marathon Pace - Training Zones + Plan',
     description:
       'Sub-1:30 half marathon pace guide. Required pace is 4:16/km (6:52/mi). Get training zones and race strategy to break 90 minutes.',
     h1: 'Sub-1:30 Half Marathon Pace',
@@ -866,7 +1048,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-1-45-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-1-45-half-marathon-pace',
-    title: 'Sub-1:45 Half Marathon Pace - Training Zones + Strategy | TrainPace',
+    title: 'Sub-1:45 Half Marathon Pace - Training Zones + Strategy',
     description:
       'Sub-1:45 half marathon pace guide. Required pace is 4:58/km (8:00/mi). Training zones and tips to break 1 hour 45 minutes.',
     h1: 'Sub-1:45 Half Marathon Pace',
@@ -908,7 +1090,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-2-hour-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-2-hour-half-marathon-pace',
-    title: 'Sub-2 Hour Half Marathon Pace - Training Plan + Tips | TrainPace',
+    title: 'Sub-2 Hour Half Marathon Pace - Training Plan + Tips',
     description:
       'Sub-2 hour half marathon pace guide. Required pace is 5:41/km (9:09/mi). Training zones and strategy to break 2 hours.',
     h1: 'Sub-2 Hour Half Marathon Pace',
@@ -955,7 +1137,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-2-15-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-2-15-half-marathon-pace',
-    title: 'Sub-2:15 Half Marathon Pace - Training Zones + Tips | TrainPace',
+    title: 'Sub-2:15 Half Marathon Pace - Training Zones + Tips',
     description:
       'Sub-2:15 half marathon pace guide. Required pace is 6:24/km (10:18/mi). Training zones for intermediate half marathon runners.',
     h1: 'Sub-2:15 Half Marathon Pace',
@@ -997,7 +1179,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-2-30-half-marathon-pace',
     tool: 'pace',
     path: '/calculator/sub-2-30-half-marathon-pace',
-    title: 'Sub-2:30 Half Marathon Pace - Training Plan + Tips | TrainPace',
+    title: 'Sub-2:30 Half Marathon Pace - Training Plan + Tips',
     description:
       'Sub-2:30 half marathon pace guide. Required pace is 7:07/km (11:27/mi). Training tips for completing your first half marathon strong.',
     h1: 'Sub-2:30 Half Marathon Pace',
@@ -1173,7 +1355,7 @@ export const calculatorSeoPages: SeoPageConfig[] = [
     slug: 'sub-40-10k-pace',
     tool: 'pace',
     path: '/calculator/sub-40-10k-pace',
-    title: 'Sub-40 Minute 10K Pace - Training Plan + Workouts | TrainPace',
+    title: 'Sub-40 Minute 10K Pace - Training Plan + Workouts',
     description:
       'Sub-40 10K pace guide. Required pace is 4:00/km (6:26/mi). Training zones and workouts to break 40 minutes.',
     h1: 'Sub-40 Minute 10K Pace',
@@ -1546,8 +1728,8 @@ function makeRacePage(
     slug,
     tool: 'race',
     path: `/race/${slug}`,
-    title: `${raceName} Race Prep - Pace, Fueling, and Course Strategy | TrainPace`,
-    description: `${raceName} race prep: set training paces from your goal time, build a fueling plan, and analyze the course elevation. Free running tools for self-coached runners.`,
+    title: racePrepTitle(raceName),
+    description: `${raceName} race prep: training paces for your goal time, a race-day fueling plan, and course elevation analysis. Free, no signup.`,
     h1: `${raceName} Race Prep`,
     intro:
       `Use TrainPace to plan a simple, repeatable strategy for ${raceName}: pacing targets, fueling basics, and course/elevation awareness.`,
@@ -1649,14 +1831,10 @@ export const raceSeoPages: SeoPageConfig[] = [
   makeRacePage('Venice Marathon', 'venice-marathon'),
   makeRacePage('Florence Marathon', 'florence-marathon'),
   makeRacePage('Naples Marathon', 'naples-marathon'),
-  makeRacePage('Brussels Marathon', 'brussels-marathon'),
   makeRacePage('Bruges Marathon', 'bruges-marathon'),
   makeRacePage('Rotterdam Half Marathon', 'rotterdam-half'),
   makeRacePage('New Orleans Marathon', 'new-orleans-marathon'),
-  makeRacePage('Savannah Marathon', 'savannah-marathon'),
-  makeRacePage('Charleston Marathon', 'charleston-marathon'),
   makeRacePage('Nashville Marathon', 'nashville-marathon'),
-  makeRacePage('Atlanta Marathon', 'atlanta-marathon'),
   makeRacePage('Phoenix Marathon', 'phoenix-marathon'),
   makeRacePage('Mesa Marathon', 'mesa-marathon'),
   makeRacePage('Tucson Marathon', 'tucson-marathon'),
@@ -1667,7 +1845,6 @@ export const raceSeoPages: SeoPageConfig[] = [
   makeRacePage('Pittsburgh Marathon', 'pittsburgh-marathon'),
   makeRacePage('Richmond Marathon', 'richmond-marathon'),
   makeRacePage('Newport Marathon', 'newport-marathon'),
-  makeRacePage('Providence Marathon', 'providence-marathon'),
   makeRacePage('Salt Lake City Marathon', 'salt-lake-city-marathon'),
   makeRacePage('Denver Colfax Marathon', 'denver-colfax-marathon'),
 
@@ -1679,7 +1856,11 @@ export const raceSeoPages: SeoPageConfig[] = [
   makeRacePage('Philadelphia Half Marathon', 'philadelphia-half-marathon'),
   makeRacePage('Chicago Half Marathon', 'chicago-half-marathon'),
   makeRacePage('San Francisco Half Marathon', 'san-francisco-half-marathon'),
-  makeRacePage('RBC Brooklyn Half', 'rbc-brooklyn-half'),
+  // Same race as 'brooklyn-half': kept so the URL works, canonical to that page.
+  {
+    ...makeRacePage('RBC Brooklyn Half', 'rbc-brooklyn-half'),
+    canonicalUrl: getSeoUrl('/race/brooklyn-half'),
+  },
   makeRacePage('Rock n Roll Las Vegas Half', 'las-vegas-half'),
   makeRacePage('Rock n Roll Nashville Half', 'nashville-half'),
   makeRacePage('Rock n Roll San Diego Half', 'san-diego-half'),
@@ -1689,7 +1870,6 @@ export const raceSeoPages: SeoPageConfig[] = [
   makeRacePage('Paris Half Marathon', 'paris-half'),
   makeRacePage('Berlin Half Marathon', 'berlin-half'),
   makeRacePage('Lisbon Half Marathon', 'lisbon-half'),
-  makeRacePage('Dublin Half Marathon', 'dublin-half'),
   makeRacePage('Edinburgh Half Marathon', 'edinburgh-half'),
   makeRacePage('Amsterdam Half Marathon', 'amsterdam-half'),
   makeRacePage('Valencia Half Marathon', 'valencia-half'),
@@ -1697,13 +1877,10 @@ export const raceSeoPages: SeoPageConfig[] = [
   makeRacePage('Pittsburgh Half Marathon', 'pittsburgh-half'),
   makeRacePage('Richmond Half Marathon', 'richmond-half'),
   makeRacePage('Cleveland Half Marathon', 'cleveland-half'),
-  makeRacePage('Denver Half Marathon', 'denver-half'),
   makeRacePage('San Jose Half Marathon', 'san-jose-half'),
   makeRacePage('San Antonio Half Marathon', 'san-antonio-half'),
   makeRacePage('New Orleans Half Marathon', 'new-orleans-half'),
   makeRacePage('Miami Half Marathon', 'miami-half'),
-  makeRacePage('Seattle Half Marathon', 'seattle-half'),
-  makeRacePage('Portland Half Marathon', 'portland-half'),
 
   // Common race distances + events
   makeRacePage('Local 5K', '5k'),
@@ -1722,7 +1899,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'marathon-fueling-plan',
     tool: 'fuel',
     path: '/fuel/marathon-fueling-plan',
-    title: 'Marathon Fueling Plan Calculator - Gels, Carbs/Hour, Timing | TrainPace',
+    title: 'Marathon Fueling Plan Calculator - Gels, Carbs/Hour, Timing',
     description:
       'Build a marathon fueling plan in minutes. Calculate carbs per hour, total carbs, gels needed, and a simple timing schedule to avoid hitting the wall.',
     h1: 'Marathon Fueling Plan Calculator',
@@ -1762,7 +1939,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'half-marathon-fueling-plan',
     tool: 'fuel',
     path: '/fuel/half-marathon-fueling-plan',
-    title: 'Half Marathon Fueling Plan - How Many Gels + Timing | TrainPace',
+    title: 'Half Marathon Fueling Plan - How Many Gels + Timing',
     description:
       'Half marathon fueling plan calculator. Estimate gels needed, carbs/hour targets, and a simple schedule based on your finish time and preferences.',
     h1: 'Half Marathon Fueling Plan Calculator',
@@ -1870,7 +2047,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'carbs-per-hour-running',
     tool: 'fuel',
     path: '/fuel/carbs-per-hour-running',
-    title: 'Carbs Per Hour for Running - Marathon & Half Calculator | TrainPace',
+    title: 'Carbs Per Hour for Running - Marathon & Half Calculator',
     description:
       'Carbs per hour running calculator. Estimate a realistic carb target for marathon or half marathon fueling (60-90g/hr) based on your finish time.',
     h1: 'Carbs Per Hour for Running',
@@ -1938,7 +2115,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'avoid-hitting-the-wall',
     tool: 'fuel',
     path: '/fuel/avoid-hitting-the-wall',
-    title: 'How to Avoid Hitting the Wall in a Marathon (Fuel Plan) | TrainPace',
+    title: 'Avoid Hitting the Wall in a Marathon - Fuel Plan | TrainPace',
     description:
       'Avoid hitting the wall with a simple marathon fuel plan. Estimate carbs/hour, gels needed, and a timing schedule you can execute on race day.',
     h1: 'Avoid Hitting the Wall (Marathon Fuel Plan)',
@@ -1973,7 +2150,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'carb-loading-for-marathon',
     tool: 'fuel',
     path: '/fuel/carb-loading-for-marathon',
-    title: 'Carb Loading for a Marathon - Simple Plan + Calculator | TrainPace',
+    title: 'Carb Loading for a Marathon - Simple Plan + Calculator',
     description:
       'Carb loading for a marathon made simple. Estimate race-day carb needs with the fuel planner, then practice a basic carb-loading approach.',
     h1: 'Carb Loading for a Marathon',
@@ -1991,7 +2168,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'marathon-hydration-plan',
     tool: 'fuel',
     path: '/fuel/marathon-hydration-plan',
-    title: 'Marathon Hydration Plan - Water, Electrolytes, and Gels | TrainPace',
+    title: 'Marathon Hydration Plan - Water, Electrolytes, and Gels',
     description:
       'Marathon hydration plan basics. Pair gels with water, use aid stations strategically, and keep hydration simple to support carb intake.',
     h1: 'Marathon Hydration Plan',
@@ -2009,7 +2186,7 @@ export const fuelSeoPages: SeoPageConfig[] = [
     slug: 'fueling-for-hilly-marathon',
     tool: 'fuel',
     path: '/fuel/fueling-for-hilly-marathon',
-    title: 'Fueling for a Hilly Marathon - Carbs/Hour + Timing | TrainPace',
+    title: 'Fueling for a Hilly Marathon - Carbs/Hour + Timing',
     description:
       'Fueling for a hilly marathon. Keep carbs consistent even when pace varies with climbs. Build a gel schedule based on time, not miles.',
     h1: 'Fueling for a Hilly Marathon',
@@ -2212,7 +2389,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'gpx-elevation-profile-analyzer',
     tool: 'elevation',
     path: '/elevationfinder/guides/gpx-elevation-profile-analyzer',
-    title: 'GPX Elevation Profile Analyzer - Free Route Viewer | TrainPace',
+    title: 'GPX Elevation Profile Analyzer - Free Route Viewer',
     description:
       'GPX elevation profile analyzer. Upload a GPX file to view elevation gain/loss, grade, and climb difficulty with an interactive map.',
     h1: 'GPX Elevation Profile Analyzer',
@@ -2240,7 +2417,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'elevation-gain-calculator',
     tool: 'elevation',
     path: '/elevationfinder/guides/elevation-gain-calculator',
-    title: 'Elevation Gain Calculator (From GPX) - Running Routes | TrainPace',
+    title: 'Elevation Gain Calculator (From GPX) - Running Routes',
     description:
       'Elevation gain calculator for running routes. Upload a GPX file to calculate total ascent/descent and see where the climbs happen.',
     h1: 'Elevation Gain Calculator (From GPX)',
@@ -2288,7 +2465,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'route-difficulty-calculator',
     tool: 'elevation',
     path: '/elevationfinder/guides/route-difficulty-calculator',
-    title: 'Route Difficulty Calculator - Hills, Grades, and Climb Stats | TrainPace',
+    title: 'Route Difficulty Calculator - Hills, Grades, and Climb Stats',
     description:
       'Route difficulty calculator. Upload a GPX to break down grade, climbs, and hard segments so you can plan pacing for hilly courses.',
     h1: 'Route Difficulty Calculator',
@@ -2306,7 +2483,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'strava-gpx-analyzer',
     tool: 'elevation',
     path: '/elevationfinder/guides/strava-gpx-analyzer',
-    title: 'Strava GPX Analyzer - Elevation Profile + Route Insights | TrainPace',
+    title: 'Strava GPX Analyzer - Elevation Profile + Route Insights',
     description:
       'Strava GPX analyzer. Export your Strava route as GPX and upload to view elevation profile, total gain, and grade breakdown.',
     h1: 'Strava GPX Analyzer',
@@ -2324,7 +2501,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'hilly-course-pacing',
     tool: 'elevation',
     path: '/elevationfinder/guides/hilly-course-pacing',
-    title: 'Hilly Course Pacing Strategy - Use Elevation to Plan Effort | TrainPace',
+    title: 'Hilly Course Pacing Strategy - Use Elevation to Plan Effort',
     description:
       'Hilly course pacing strategy. Learn how to use elevation profiles and grade breakdowns to adjust effort on climbs and run smart on descents.',
     h1: 'Hilly Course Pacing Strategy',
@@ -2342,7 +2519,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'marathon-course-elevation',
     tool: 'elevation',
     path: '/elevationfinder/guides/marathon-course-elevation',
-    title: 'Marathon Course Elevation - Analyze Any Course with GPX | TrainPace',
+    title: 'Marathon Course Elevation - Analyze Any Course with GPX',
     description:
       'Analyze marathon course elevation with a GPX file. View elevation profile, total climb, grade %, and identify the key hills that affect pacing.',
     h1: 'Marathon Course Elevation Analysis',
@@ -2360,7 +2537,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'grade-percentage-calculator',
     tool: 'elevation',
     path: '/elevationfinder/guides/grade-percentage-calculator',
-    title: 'Grade Percentage Calculator - Running Hills Explained | TrainPace',
+    title: 'Grade Percentage Calculator - Running Hills Explained',
     description:
       'Grade percentage calculator for running. Learn what grade % means, how to spot steep climbs, and why grade matters more than total elevation gain.',
     h1: 'Grade Percentage Calculator (Running)',
@@ -2378,7 +2555,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'garmin-gpx-analyzer',
     tool: 'elevation',
     path: '/elevationfinder/guides/garmin-gpx-analyzer',
-    title: 'Garmin GPX Analyzer - Elevation Profile and Climb Stats | TrainPace',
+    title: 'Garmin GPX Analyzer - Elevation Profile and Climb Stats',
     description:
       'Garmin GPX analyzer. Export a GPX from Garmin Connect and upload it to view elevation profile, total gain, grade %, and tough segments.',
     h1: 'Garmin GPX Analyzer',
@@ -2396,7 +2573,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'coros-gpx-analyzer',
     tool: 'elevation',
     path: '/elevationfinder/guides/coros-gpx-analyzer',
-    title: 'COROS GPX Analyzer - Elevation Profile and Grade Breakdown | TrainPace',
+    title: 'COROS GPX Analyzer - Elevation Profile and Grade Breakdown',
     description:
       'COROS GPX analyzer. Upload a GPX from COROS to see elevation gain, loss, grade %, and route difficulty on an interactive map.',
     h1: 'COROS GPX Analyzer',
@@ -2414,7 +2591,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'trail-running-elevation',
     tool: 'elevation',
     path: '/elevationfinder/guides/trail-running-elevation',
-    title: 'Trail Running Elevation - Analyze Climbs and Descents with GPX | TrainPace',
+    title: 'Trail Running Elevation - Climbs and Descents from GPX',
     description:
       'Trail running elevation analysis. Upload a GPX to see climbs, descents, grades, and where the toughest sections land on the route.',
     h1: 'Trail Running Elevation Analysis',
@@ -2432,7 +2609,7 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
     slug: 'hill-repeats-planning',
     tool: 'elevation',
     path: '/elevationfinder/guides/hill-repeats-planning',
-    title: 'Hill Repeats Planning - Find the Right Hill (Grade + Length) | TrainPace',
+    title: 'Hill Repeats Planning - Find the Right Hill (Grade + Length)',
     description:
       'Plan hill repeats by choosing the right hill. Use GPX analysis to identify grade %, climb length, and repeat-friendly segments.',
     h1: 'Hill Repeats Planning',
@@ -2454,6 +2631,17 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
 export const calculatorSeoPageMap = new Map(
   calculatorSeoPages.map((p) => [p.slug, p])
 );
+
+/** Practical guides linked from every calculator landing page. */
+export const paceGuideLinks = [
+  'recovery-run-pace',
+  '400m-interval-pace',
+  '800m-interval-pace',
+  'negative-split-marathon',
+].map((slug) => {
+  const page = calculatorSeoPageMap.get(slug)!;
+  return { href: page.path, label: page.h1 };
+});
 export const fuelSeoPageMap = new Map(fuelSeoPages.map((p) => [p.slug, p]));
 export const elevationGuideSeoPageMap = new Map(
   elevationGuideSeoPages.map((p) => [p.slug, p])
@@ -2651,7 +2839,7 @@ export const planSeoPages: SeoPageConfig[] = [
     slug: 'marathon-training-plan-beginners',
     tool: 'plan',
     path: '/plan/marathon-training-plan-beginners',
-    title: 'Marathon Training Plan for Beginners | Free Generator | TrainPace',
+    title: 'Marathon Training Plan for Beginners | Free Generator',
     description: 'Free beginner marathon training plan. 20-week periodized schedule with easy progression from base to race day. Export to Google Calendar.',
     h1: 'Beginner Marathon Training Plan',
     intro: 'Running your first marathon? A 20-week plan with gradual progression, conservative mileage build, and structured recovery is your foundation. Here\'s how to get to the start line healthy.',

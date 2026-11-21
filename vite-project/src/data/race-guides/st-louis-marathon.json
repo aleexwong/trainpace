@@ -1,0 +1,69 @@
+{
+  "slug": "st-louis-marathon",
+  "name": "St. Louis Marathon",
+  "city": "St. Louis",
+  "country": "Missouri, USA",
+  "distanceKm": 42.195,
+  "month": "April",
+  "courseType": "point-to-point",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://gostlouis.org/races/st-louis-marathon/",
+  "summary": "The St. Louis Marathon (earlier called the GO! St. Louis Marathon) is held in April. It starts downtown. A race listing says the course tours the Gateway Arch, Soulard, Tower Grove Park, Forest Park and other landmarks.",
+  "courseHighlights": [
+    "Start downtown",
+    "Gateway Arch and Soulard",
+    "Anheuser-Busch Brewery and Tower Grove Park",
+    "Forest Park",
+    "Finish festival outside CITYPARK next to Union Station"
+  ],
+  "paceStrategy": {
+    "summary": "Race listings and a runner recap describe rolling hills, with frequent climbs in and after Forest Park. Run the early miles calmly and keep energy for the later hills.",
+    "segments": [
+      {
+        "section": "mile 1–8",
+        "terrain": "Downtown, Soulard and the Anheuser-Busch area, with a hill on Olive Street",
+        "advice": "Run controlled; a runner recap names a climb called Holy Hill around miles 6 to 8."
+      },
+      {
+        "section": "mile 8–18",
+        "terrain": "Forest Park area, where a runner recap reports frequent hills",
+        "advice": "Run by effort and keep a steady rhythm."
+      },
+      {
+        "section": "mile 18–26.2",
+        "terrain": "Return towards downtown",
+        "advice": "Take fluids and fuel on time; the recap says hills continue after mile 22."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site does not list aid stations in the text I read; check the official course map. Take a gel before the Forest Park hills, around mile 7.",
+  "tips": [
+    "The course is subject to change; check the interactive map on the official page",
+    "The marathon starts early on a Saturday morning",
+    "The finish festival is outside CITYPARK, close to Union Station",
+    "Include rolling-hill runs in training"
+  ],
+  "faq": [
+    {
+      "question": "Is the St. Louis Marathon hilly?",
+      "answer": "It is rolling. Race listings call it largely flat with some rolling hills, while a runner recap describes frequent hills in the middle and late miles. Listings disagree on the total climb, so no number is given here."
+    },
+    {
+      "question": "When is the St. Louis Marathon held?",
+      "answer": "It is held in April, on a Saturday."
+    },
+    {
+      "question": "Where does the St. Louis Marathon finish?",
+      "answer": "The official page places the finish festival outside CITYPARK, next to Union Station."
+    }
+  ],
+  "sources": [
+    "https://gostlouis.org/races/st-louis-marathon/",
+    "https://sunriserunco.com/race/greater-st-louis-marathon/",
+    "https://www.marathontrainingacademy.com/race-recap-go-st-louis-marathon"
+  ],
+  "checked": "2026-10"
+}

@@ -1,0 +1,74 @@
+{
+  "slug": "st-george-marathon",
+  "name": "St. George Marathon",
+  "city": "St. George",
+  "country": "Utah, USA",
+  "distanceKm": 42.195,
+  "month": "October",
+  "courseType": "point-to-point",
+  "terrain": "net downhill",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Mornings about 3–7 °C; finish about 18–29 °C",
+  "website": "https://www.sgcityutah.gov/activity/special_events/st._george_marathon/index.php",
+  "summary": "The St. George Marathon is held in early October. It runs point to point from the Pine Valley Mountains, at about 5,240 ft, down to Vernon Worthen Park in St. George, at about 2,680 ft. The course drops nearly 2,600 ft (about 790 m). It passes through Snow Canyon State Park.",
+  "courseHighlights": [
+    "Start in the Pine Valley Mountains",
+    "The Veyo Wall climb at mile 8",
+    "Snow Canyon State Park",
+    "Steepest mile on the course in Snow Canyon, mile 16",
+    "Finish at Vernon Worthen Park in St. George"
+  ],
+  "paceStrategy": {
+    "summary": "The course drops about 2,600 ft, which tempts runners to start too fast. Hold back in miles 1 to 7. A guide warns that runners who descend too fast then struggle on the Veyo Wall at mile 8. Save your legs for the long descent through Snow Canyon.",
+    "segments": [
+      {
+        "section": "mile 1–7",
+        "terrain": "Steep early descent from the Pine Valley Mountains",
+        "advice": "Run slower than goal pace and protect your quads."
+      },
+      {
+        "section": "mile 8–9",
+        "terrain": "Veyo Wall climb at mile 8, gaining about 100 ft",
+        "advice": "Run by effort and keep your stride short."
+      },
+      {
+        "section": "mile 10–21",
+        "terrain": "Rolling and downhill miles, then the Snow Canyon descent (miles 15–21)",
+        "advice": "Control your pace on the steep downhill; mile 16 is the steepest."
+      },
+      {
+        "section": "mile 22–26.2",
+        "terrain": "Still descending to a flat last mile into the park",
+        "advice": "Hold form and push in the last mile."
+      }
+    ]
+  },
+  "fuelingNotes": "Aid stations are about every 2 miles according to a pacing guide. Take a gel before the Veyo Wall at mile 8, and again around mile 18 so your legs have fuel for the long downhill.",
+  "tips": [
+    "Buses to the start leave from Vernon Worthen Park in the early morning",
+    "Mornings are cold at altitude and finishes are warm, so use a throwaway layer",
+    "Practise downhill running in training; the long descent is hard on quads",
+    "The last mile into the park is essentially flat"
+  ],
+  "faq": [
+    {
+      "question": "Is the St. George Marathon downhill?",
+      "answer": "Yes. It is net downhill: the course drops nearly 2,600 ft (about 790 m) from the Pine Valley Mountains to St. George."
+    },
+    {
+      "question": "Is the St. George Marathon easy because it is downhill?",
+      "answer": "Not always. A guide warns that fast early miles lead to trouble on the Veyo Wall at mile 8 and on the steep Snow Canyon descent."
+    },
+    {
+      "question": "When is the St. George Marathon held?",
+      "answer": "It is held in early October, usually on the first Saturday."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/St._George_Marathon",
+    "https://runnersconnect.net/race-guides/st-george-marathon-pace-calculator/",
+    "https://www.sgcityutah.gov/activity/special_events/st._george_marathon/index.php"
+  ],
+  "checked": "2026-10"
+}

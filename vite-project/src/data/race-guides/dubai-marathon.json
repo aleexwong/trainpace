@@ -1,0 +1,68 @@
+{
+  "slug": "dubai-marathon",
+  "name": "Dubai Marathon",
+  "city": "Dubai",
+  "country": "United Arab Emirates",
+  "distanceKm": 42.195,
+  "month": "January",
+  "courseType": "out-and-back",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.dubaimarathon.org/",
+  "summary": "The Dubai Marathon is held in January on the coastal roads of Dubai. The start and finish are both on Umm Suqeim Street. The course includes out-and-back legs on King Salman bin Abdulaziz al Saud Street and Jumeirah Beach Road.",
+  "courseHighlights": [
+    "Start on Umm Suqeim Street near the Dubai Police Academy",
+    "Out-and-back of about 6 km each way past the Palm Jumeirah entrance",
+    "Out-and-back legs along Jumeirah Beach Road past Burj Al Arab",
+    "Finish on Umm Suqeim Street"
+  ],
+  "paceStrategy": {
+    "summary": "Reports describe the course as fast and benign, so most of the challenge is pacing and heat. Because the route has out-and-back legs, you can see runners ahead and behind. Stay on plan in the first half.",
+    "segments": [
+      {
+        "section": "km 0–12",
+        "terrain": "Out-and-back on King Salman bin Abdulaziz al Saud Street (about 6 km each way)",
+        "advice": "Start at goal pace and do not chase the leaders."
+      },
+      {
+        "section": "km 12–30",
+        "terrain": "Jumeirah Beach Road with out-and-back legs of about 7.5 km each way",
+        "advice": "Hold a steady rhythm past the Burj Al Arab."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Return along the coast to Umm Suqeim Street",
+        "advice": "Stay patient and push in the final 5 km."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list aid-station positions. The event moved to January because of better weather, but warm conditions are possible, so drink early and often.",
+  "tips": [
+    "The race has been very warm in some years (nearly 30 °C in 2006), so plan to drink at stations",
+    "Fog was reported in 2013, so allow for low visibility at the start",
+    "Check the official routes and maps page for the current course"
+  ],
+  "faq": [
+    {
+      "question": "Is the Dubai Marathon flat?",
+      "answer": "Reports describe it as fast and benign. Wikipedia lists several course records."
+    },
+    {
+      "question": "Where does the Dubai Marathon start and finish?",
+      "answer": "Both are on Umm Suqeim Street, a few blocks from Madinat Jumeirah."
+    },
+    {
+      "question": "When is the Dubai Marathon held?",
+      "answer": "It is usually held in January. The event moved to January for better weather."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Dubai_Marathon",
+    "https://mediaoffice.ae/en/news/2023/august/23-08/dubai-marathon-route-confirmed-for-january",
+    "https://www.dubaimarathon.org/",
+    "https://athletics.africa/news/world/asia/dubai-marathon-route-confirmed-for-2024-race-17669"
+  ],
+  "checked": "2026-10"
+}

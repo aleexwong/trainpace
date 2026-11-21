@@ -1,0 +1,69 @@
+{
+  "slug": "copenhagen-half",
+  "name": "Copenhagen Half Marathon (CPH Half)",
+  "city": "Copenhagen",
+  "country": "Denmark",
+  "distanceKm": 21.0975,
+  "month": "September",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://cphhalf.dk/en/",
+  "summary": "The Copenhagen Half Marathon, known as CPH Half, is a big city race that the organisers say is super flat and fast. It starts on Jagtvej and finishes in Fælledparken. The route crosses Østerbro, the Inner City, Vesterbro, Frederiksberg and Nørrebro.",
+  "courseHighlights": [
+    "Start on Jagtvej",
+    "Kongens Nytorv and the Old Stock Exchange",
+    "The Black Diamond library",
+    "Frederiksberg Allé",
+    "Finish in the park Fælledparken"
+  ],
+  "paceStrategy": {
+    "summary": "The course is described as super flat and fast, so an even pace suits it well. The route has Power Zones with loud music, which can pull you into a faster pace than planned.",
+    "segments": [
+      {
+        "section": "km 0–5",
+        "terrain": "Flat city streets from Jagtvej",
+        "advice": "Run at goal pace or a little slower while the field of about 45,000 spreads out."
+      },
+      {
+        "section": "km 5–15",
+        "terrain": "Flat; Inner City, Vesterbro and Frederiksberg",
+        "advice": "Hold an even pace and take a drink at the refreshment zones."
+      },
+      {
+        "section": "km 15–21.1",
+        "terrain": "Flat; Nørrebro and back toward Østerbro",
+        "advice": "Keep steady, then speed up over the last 2 km into Fælledparken."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site lists 5 official refreshment zones with water and High5 energy drink, on both sides of the road. Take your own gels at planned points between the zones.",
+  "tips": [
+    "Check the start time on the race site; it was 9:30 for the most recent edition shown",
+    "The race fills by lottery, so apply early",
+    "Drink a little at every refreshment zone, as the organisers advise",
+    "Use the Power Zones for energy but keep to your planned pace"
+  ],
+  "faq": [
+    {
+      "question": "Is the Copenhagen Half Marathon flat?",
+      "answer": "Yes. The organisers describe the course as super flat and fast. They give no climbing figure."
+    },
+    {
+      "question": "Where does the Copenhagen Half Marathon start and finish?",
+      "answer": "It starts on Jagtvej and finishes in Fælledparken, in Østerbro."
+    },
+    {
+      "question": "When is the Copenhagen Half Marathon held?",
+      "answer": "It is held on a Sunday in September."
+    }
+  ],
+  "sources": [
+    "https://cphhalf.dk/en/alt-om-ruten/",
+    "https://cphhalf.dk/en/",
+    "https://en.wikipedia.org/wiki/Copenhagen_Half_Marathon"
+  ],
+  "checked": "2026-10"
+}

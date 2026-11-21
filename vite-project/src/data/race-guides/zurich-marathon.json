@@ -1,0 +1,74 @@
+{
+  "slug": "zurich-marathon",
+  "name": "OCHSNER SPORT Zürich Marathon",
+  "city": "Zurich",
+  "country": "Switzerland",
+  "distanceKm": 42.195,
+  "month": "April",
+  "courseType": "out-and-back",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.zuerichmarathon.ch/",
+  "summary": "The Zürich Marathon has been held in April since 2003. It starts at the Quaibrücke, runs through the city and along the shore of Lake Zurich to a turnaround in Meilen, then returns to the city. Since 2025 the finish has been on the Sechseläutenplatz.",
+  "courseHighlights": [
+    "Start at the Quaibrücke",
+    "City centre including Bahnhofstrasse",
+    "Run along the shore of Lake Zurich",
+    "Turnaround in Meilen",
+    "Finish on the Sechseläutenplatz"
+  ],
+  "paceStrategy": {
+    "summary": "The courses mostly follow the lake shore, so pacing can be even. The turnaround at Meilen splits the race, and runners must reach it by a cut-off time.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "City centre and the start of the lake shore",
+        "advice": "Settle into goal pace; the start is a mass start with rolling blocks."
+      },
+      {
+        "section": "km 10–21",
+        "terrain": "Lake shore out to Meilen",
+        "advice": "Keep an even pace and reach the Meilen turnaround before its cut-off time."
+      },
+      {
+        "section": "km 21–40",
+        "terrain": "Lake shore back towards the city",
+        "advice": "Hold your pace; split times are recorded at km 30 and 40."
+      },
+      {
+        "section": "km 40–42.2",
+        "terrain": "City centre to the Sechseläutenplatz",
+        "advice": "Use the last kilometres to finish strongly."
+      }
+    ]
+  },
+  "fuelingNotes": "The official site has a separate page on food and drink; read it for aid-station details. On a flat lakeside course, a gel every 30 to 40 minutes is a simple plan.",
+  "tips": [
+    "Be at the start at least one hour before your start time to allow time for bag drop and warm-up",
+    "Your start block may be several hundred metres to nearly 2 km from the start line",
+    "Timing mats record split times at km 10, 20, 21.1, 30 and 40",
+    "The turnaround in Meilen has a cut-off time, so do not start too slowly if you are near the time limit"
+  ],
+  "faq": [
+    {
+      "question": "Is the Zurich Marathon flat?",
+      "answer": "The courses mostly follow the shore of Lake Zurich. The official site has an elevation profile in its route plan, but does not state a single elevation figure in the text."
+    },
+    {
+      "question": "When is the Zurich Marathon held?",
+      "answer": "It is held on a Sunday in April."
+    },
+    {
+      "question": "Where does the Zurich Marathon turn around?",
+      "answer": "The turnaround point is in Meilen, on Lake Zurich."
+    }
+  ],
+  "sources": [
+    "https://www.zuerichmarathon.ch/marathon-2/marathon",
+    "https://de.wikipedia.org/wiki/Z%C3%BCrich-Marathon",
+    "https://www.20min.ch/story/42195-kilometer-zuerich-marathon-hier-wird-gelaufen-zugeschaut-und-gesperrt-103544022"
+  ],
+  "checked": "2026-10"
+}

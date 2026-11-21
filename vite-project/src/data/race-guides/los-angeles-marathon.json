@@ -1,0 +1,73 @@
+{
+  "slug": "los-angeles-marathon",
+  "name": "ASICS Los Angeles Marathon",
+  "city": "Los Angeles",
+  "country": "California, USA",
+  "distanceKm": 42.195,
+  "month": "March",
+  "courseType": "point-to-point",
+  "terrain": "rolling",
+  "elevationGainM": 278,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.lamarathon.com/",
+  "summary": "The ASICS Los Angeles Marathon is held in March. The 2026 course started at Dodger Stadium and finished in Century City on Santa Monica Blvd. at Avenue of the Stars. It passes Chinatown, Hollywood, Beverly Hills and Westwood. It has about 912 feet (278 m) of climbing, with rolling hills mostly in the second half.",
+  "courseHighlights": [
+    "Start at Dodger Stadium",
+    "Chinatown and Little Tokyo, miles 1–5",
+    "Hollywood Boulevard and Sunset Boulevard, miles 11–15",
+    "Beverly Hills and Rodeo Drive, miles 16–18",
+    "Finish in Century City on Santa Monica Blvd. at Avenue of the Stars"
+  ],
+  "paceStrategy": {
+    "summary": "The course has rolling hills, with more in the second half. Run the first 10 miles under control and be ready for rises through West Hollywood and Wilshire. There is a U-turn on San Vicente and a double-back in the final miles.",
+    "segments": [
+      {
+        "section": "mile 1–5",
+        "terrain": "Downtown LA: Chinatown, Little Tokyo, City Hall",
+        "advice": "Start at goal pace or slightly slower."
+      },
+      {
+        "section": "mile 6–15",
+        "terrain": "Echo Park, Silver Lake, Hollywood",
+        "advice": "Hold steady effort on the rolling streets."
+      },
+      {
+        "section": "mile 16–22",
+        "terrain": "West Hollywood, Beverly Hills, Wilshire Boulevard through Westwood",
+        "advice": "Run the rises by effort."
+      },
+      {
+        "section": "mile 23–26.2",
+        "terrain": "U-turn on San Vicente and a double-back east to Century City",
+        "advice": "Keep form and push in the final mile."
+      }
+    ]
+  },
+  "fuelingNotes": "Take a gel before mile 16, where the second-half rolling hills begin. The sources I used do not list aid-station positions, so check the official guide.",
+  "tips": [
+    "Start is at Dodger Stadium, so plan transport from your hotel",
+    "The finish is in Century City, not Santa Monica; Wikipedia says the finish moved from Santa Monica to Century City",
+    "Expect rolling hills in the second half",
+    "The course includes a double-back in the final miles"
+  ],
+  "faq": [
+    {
+      "question": "Is the Los Angeles Marathon hilly?",
+      "answer": "It has rolling hills, with about 912 feet (278 m) of climbing, especially in the second half."
+    },
+    {
+      "question": "Where does the Los Angeles Marathon finish?",
+      "answer": "The 2026 course finished on Santa Monica Blvd. at Avenue of the Stars in Century City. Older courses finished in Santa Monica."
+    },
+    {
+      "question": "When is the Los Angeles Marathon held?",
+      "answer": "It is usually held in March."
+    }
+  ],
+  "sources": [
+    "https://www.foxla.com/news/la-marathon-2026-guide-map-schedule-closures",
+    "https://en.wikipedia.org/wiki/Los_Angeles_Marathon"
+  ],
+  "checked": "2026-10"
+}

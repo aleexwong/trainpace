@@ -1,0 +1,68 @@
+{
+  "slug": "lisbon-half",
+  "name": "EDP Meia Maratona de Lisboa",
+  "city": "Lisbon",
+  "country": "Portugal",
+  "distanceKm": 21.0975,
+  "month": "March",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://maratonaclubedeportugal.com/corrida-marco/edp-meia-maratona-de-lisboa/",
+  "summary": "The EDP Meia Maratona de Lisboa (Lisbon Half Marathon) is a World Athletics Elite Label race that the organisers call one of the fastest half marathons in the world. The main race starts on the Ponte 25 de Abril bridge and finishes at the Jerónimos Monastery. After the bridge the course is wide and flat along the Tagus.",
+  "courseHighlights": [
+    "Start on the Ponte 25 de Abril suspension bridge",
+    "Run east along the Tagus toward the city centre",
+    "Docks and historic buildings along the river",
+    "Belém Tower and the Jerónimos Monastery",
+    "Finish at the Jerónimos Monastery"
+  ],
+  "paceStrategy": {
+    "summary": "After the opening bridge, Wikipedia describes the course as wide and flat. Start without rushing the bridge, then hold an even pace along the river. Check the current map, since the course has changed over the years.",
+    "segments": [
+      {
+        "section": "km 0–3",
+        "terrain": "Ponte 25 de Abril bridge, then onto the riverside road",
+        "advice": "Run at goal pace or slightly slower, and use the crowd rather than surging."
+      },
+      {
+        "section": "km 3–17",
+        "terrain": "Wide, flat roads by the river and docks",
+        "advice": "Hold an even pace and keep the effort steady."
+      },
+      {
+        "section": "km 17–21.1",
+        "terrain": "Flat road past Belém Tower to the Jerónimos Monastery",
+        "advice": "Speed up over the last 2 km if you have energy."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found on the pages we checked. Check the current race guide and carry your own gels.",
+  "tips": [
+    "Pick up your bib on the Thursday, Friday or Saturday; there is no bib pick-up on race day",
+    "Arrive early for the 9:30 start on the bridge",
+    "Check the race map, as the course has changed over the years",
+    "Dress for a cool March start by the river"
+  ],
+  "faq": [
+    {
+      "question": "Is the Lisbon Half Marathon flat?",
+      "answer": "Mostly yes. Wikipedia describes the course as wide and flat after the start on the Ponte 25 de Abril bridge. We found no official climb figure."
+    },
+    {
+      "question": "Where does the Lisbon Half Marathon start and finish?",
+      "answer": "The main race starts on the Ponte 25 de Abril bridge and finishes at the Jerónimos Monastery in Belém."
+    },
+    {
+      "question": "When is the Lisbon Half Marathon held?",
+      "answer": "It is held on a Sunday in March, with a 9:30 start."
+    }
+  ],
+  "sources": [
+    "https://maratonaclubedeportugal.com/corrida-marco/edp-meia-maratona-de-lisboa/",
+    "https://en.wikipedia.org/wiki/Lisbon_Half_Marathon"
+  ],
+  "checked": "2026-10"
+}

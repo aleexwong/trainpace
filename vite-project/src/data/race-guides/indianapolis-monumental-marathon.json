@@ -1,0 +1,65 @@
+{
+  "slug": "indianapolis-monumental-marathon",
+  "name": "CNO Financial Indianapolis Monumental Marathon",
+  "city": "Indianapolis",
+  "country": "Indiana, USA",
+  "distanceKm": 42.195,
+  "month": "November",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://monumentalmarathon.com/",
+  "summary": "The CNO Financial Indianapolis Monumental Marathon is held in early November. It starts and finishes in downtown Indianapolis, near the Indiana Statehouse. The official site describes the USATF-certified course as fast and flat.",
+  "courseHighlights": [
+    "Start in downtown Indianapolis near the Indiana Statehouse",
+    "Monuments and historic neighbourhoods",
+    "Finish near the Statehouse"
+  ],
+  "paceStrategy": {
+    "summary": "The course is described as fast and flat, so even pacing is the plan. The marathon and half marathon share the first six miles, then the routes split. Hold goal pace and save energy for the end.",
+    "segments": [
+      {
+        "section": "mile 1–6",
+        "terrain": "Downtown streets, shared with the half marathon",
+        "advice": "Start at or just under goal pace and do not weave."
+      },
+      {
+        "section": "mile 7–23",
+        "terrain": "Marathon route through city neighbourhoods",
+        "advice": "Keep even splits; the course is flat."
+      },
+      {
+        "section": "mile 24–26.2",
+        "terrain": "Final 3 miles where the routes rejoin, finish near the Statehouse",
+        "advice": "Keep form and push in the last mile."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list aid-station positions, so check the official guide. In cool November weather, take a gel about every 40 minutes with water.",
+  "tips": [
+    "November mornings can be cold; dress warm and bring a throwaway layer",
+    "Both races share the first six miles, so it can be crowded",
+    "Check the official course map for the exact route"
+  ],
+  "faq": [
+    {
+      "question": "Is the Indianapolis Monumental Marathon flat?",
+      "answer": "Yes. The official site calls it fast and flat, and Wikipedia calls it relatively flat."
+    },
+    {
+      "question": "Where does the Indianapolis Monumental Marathon start and finish?",
+      "answer": "Both start and finish are in downtown Indianapolis, near the Indiana Statehouse."
+    },
+    {
+      "question": "When is the Indianapolis Monumental Marathon held?",
+      "answer": "It is held in early November."
+    }
+  ],
+  "sources": [
+    "https://monumentalmarathon.com/",
+    "https://en.wikipedia.org/wiki/Indianapolis_Monumental_Marathon"
+  ],
+  "checked": "2026-10"
+}

@@ -1,0 +1,70 @@
+{
+  "slug": "osaka-marathon",
+  "name": "Osaka Marathon",
+  "city": "Osaka",
+  "country": "Japan",
+  "distanceKm": 42.195,
+  "month": "February",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.osaka-marathon.com/",
+  "summary": "The Osaka Marathon is held in late February. It starts in front of the Osaka Prefectural Office next to Osaka Castle Park and finishes in the park with views of the castle. It runs through central Osaka, including Midosuji, Nakanoshima and Dotonbori.",
+  "courseHighlights": [
+    "Start in front of the Osaka Prefectural Office, next to Osaka Castle Park",
+    "Midosuji, Osaka's main avenue",
+    "Nakanoshima and the Tenjinbashisuji shopping street",
+    "Dotonbori",
+    "Finish in Osaka Castle Park"
+  ],
+  "paceStrategy": {
+    "summary": "AIMS describes the course as having only one significant rise and fall and three turning points. That makes it a good course for a personal best. Run steady, and plan to slow slightly on the rise and on the turns.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "City streets from the castle onto Midosuji",
+        "advice": "Stay relaxed; the first kilometres are crowded."
+      },
+      {
+        "section": "km 10–30",
+        "terrain": "Central Osaka streets with turnaround points",
+        "advice": "Run goal pace and keep tight on the turns."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Streets back toward Osaka Castle Park",
+        "advice": "Hold form and push over the last 3 km."
+      }
+    ]
+  },
+  "fuelingNotes": "A 2024 report says water and sports drink were offered from 5.6 km and every 2.5 km after that, with five energy and food stations from 18 km. Take a gel before 18 km and plan the next one around the food stations.",
+  "tips": [
+    "Late February can be cold; dress for the start and have a plan for rain",
+    "The start and finish are on opposite sides of the castle grounds, so plan bag drop",
+    "Plan your pace for three turnarounds, where the field slows",
+    "Check the official site for the current course, as it changes"
+  ],
+  "faq": [
+    {
+      "question": "Is the Osaka Marathon flat?",
+      "answer": "AIMS says the course has only one significant rise and fall, so it is considered easy to run."
+    },
+    {
+      "question": "Where does the Osaka Marathon start and finish?",
+      "answer": "Both are at Osaka Castle Park. The start is in front of the Osaka Prefectural Office and the finish is inside the park."
+    },
+    {
+      "question": "When is the Osaka Marathon held?",
+      "answer": "It is held in late February."
+    }
+  ],
+  "sources": [
+    "https://aims-worldrunning.org/articles/2535-just-one-more-step.html",
+    "https://www.aims-worldrunning.org/articles/2823-motivated-and-energized.html",
+    "https://marathonguide.com/races/run/osaka-marathon-9/2024/details/",
+    "https://www.osaka-marathon.com/"
+  ],
+  "checked": "2026-10"
+}

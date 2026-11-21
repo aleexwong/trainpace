@@ -1,0 +1,75 @@
+{
+  "slug": "prague-marathon",
+  "name": "Prague International Marathon",
+  "city": "Prague",
+  "country": "Czechia",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "loop",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.runczech.com/en/events/prague-international-marathon",
+  "summary": "The Prague International Marathon is a single loop through the centre of Prague in May. It starts in the Old Town Square area and crosses the Vltava river on several bridges, including Charles Bridge. Race guides describe it as mostly flat with a few gentle climbs and some cobblestones.",
+  "courseHighlights": [
+    "Start at Old Town Square",
+    "Čechův Bridge and Charles Bridge between about km 2 and 3",
+    "Malá Strana, Wenceslas Square, the National Theatre and the Dancing House",
+    "Prague Castle and St. Vitus Cathedral views",
+    "Finish back at Old Town Square"
+  ],
+  "paceStrategy": {
+    "summary": "Plan an even effort. Early on there are cobbles and a gentle rise to Charles Bridge, so do not push the first 3 km. Expect small ups and downs, not one big hill.",
+    "segments": [
+      {
+        "section": "km 0–5",
+        "terrain": "Old Town streets, cobbles, Čechův Bridge and Charles Bridge",
+        "advice": "Run 5–10 seconds per km slower than goal pace on the cobbles and the crowded bridge."
+      },
+      {
+        "section": "km 5–19",
+        "terrain": "City-centre roads with several bridge crossings, turning point around km 19",
+        "advice": "Settle in at goal pace and keep your steps light on the bridges."
+      },
+      {
+        "section": "km 19–35",
+        "terrain": "City-centre roads and the river bridges on the way back",
+        "advice": "Hold steady effort; small rises will cost energy if you chase pace."
+      },
+      {
+        "section": "km 35–42.2",
+        "terrain": "Return to the centre",
+        "advice": "Use what you saved and run the last 5 km by feel."
+      }
+    ]
+  },
+  "fuelingNotes": "A guide approved by the organiser says water and food are given about every 2.5 to 3 km. Take a gel before the cobbled sections in the old town if you can, because they are harder to run while eating.",
+  "tips": [
+    "About 1.5 km of the course is on medieval cobblestones, so choose shoes you have tested",
+    "The route crosses six bridges ten times, so expect short rises on bridge approaches",
+    "The race starts early in the morning, so plan how to reach the start",
+    "Crowds can be tight on Charles Bridge, so avoid big pace changes there"
+  ],
+  "faq": [
+    {
+      "question": "Is the Prague Marathon course flat?",
+      "answer": "It is mostly flat with gentle climbs and some cobbled sections. Published figures for the total climb vary between sources, so expect small ups and downs rather than one big hill."
+    },
+    {
+      "question": "Does the Prague Marathon have cobblestones?",
+      "answer": "Yes. The guide says about 1.5 km are on the cobblestones of the medieval centre."
+    },
+    {
+      "question": "When is the Prague Marathon held?",
+      "answer": "It is held in May. Recent races were on a Sunday at the start of the month."
+    }
+  ],
+  "sources": [
+    "https://aims-worldrunning.org/articles/2901-the-magic-of-prague.html",
+    "https://www.finishers.com/en/course/marathon-de-prague",
+    "https://www.runczech.com/en/events/prague-international-marathon",
+    "https://en.wikipedia.org/wiki/Prague_Marathon"
+  ],
+  "checked": "2026-10"
+}

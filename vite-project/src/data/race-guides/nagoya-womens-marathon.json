@@ -1,0 +1,72 @@
+{
+  "slug": "nagoya-womens-marathon",
+  "name": "Nagoya Women's Marathon",
+  "city": "Nagoya",
+  "country": "Japan",
+  "distanceKm": 42.195,
+  "month": "March",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": 40,
+  "elevationLossM": null,
+  "typicalWeather": "About 5–12 °C on race day (guide estimate)",
+  "website": "https://womens-marathon.nagoya/en/",
+  "summary": "The Nagoya Women's Marathon is a women-only race held in March. It is a 42.195 km urban loop through central Nagoya that starts and finishes at Vantelin Dome Nagoya. The course is certified by WA/AIMS.",
+  "courseHighlights": [
+    "Start and finish at Vantelin Dome Nagoya",
+    "Urban loop through central Nagoya",
+    "Gentle rise near Nagoya Castle at about 30 km"
+  ],
+  "paceStrategy": {
+    "summary": "The course is one of the flattest major marathons, with about 40 m of total climbing and a 16 m range. Be patient in the crowded start, then settle into an even pace. Cool weather and wind are the main variables.",
+    "segments": [
+      {
+        "section": "km 0–5",
+        "terrain": "Narrow roads around the dome (the first 2–3 km are congested)",
+        "advice": "Be patient and do not weave; accept a slower first few kilometres."
+      },
+      {
+        "section": "km 5–28",
+        "terrain": "Flat city roads",
+        "advice": "Settle at goal pace and share the work in a group."
+      },
+      {
+        "section": "km 28–33",
+        "terrain": "Gentle rise near Nagoya Castle at about 30 km",
+        "advice": "Run the rise by effort and keep your stride short."
+      },
+      {
+        "section": "km 33–42.2",
+        "terrain": "Flat city roads back to Vantelin Dome",
+        "advice": "Hold form and push over the last 3 km."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list aid-station positions, so check the official runner guide. March is cool, so take gels about every 40 minutes with water.",
+  "tips": [
+    "This race is for women only",
+    "The first 2–3 km use narrow roads, and runners in the back blocks can lose a lot of time",
+    "Dress for cool weather, with a throwaway layer for the start",
+    "Wind can be the main factor, so run in a group when you can"
+  ],
+  "faq": [
+    {
+      "question": "Is the Nagoya Women's Marathon flat?",
+      "answer": "Yes. A guide lists about 40 m of cumulative climbing and a total range of 16 m. The one notable rise is a gentle climb near Nagoya Castle around 30 km."
+    },
+    {
+      "question": "Can men run the Nagoya Women's Marathon?",
+      "answer": "No. It is a women-only marathon."
+    },
+    {
+      "question": "When is the Nagoya Women's Marathon held?",
+      "answer": "It is held in March, on a Sunday. Recent editions started at 9:10 am."
+    }
+  ],
+  "sources": [
+    "https://www.aichinow.pref.aichi.jp/en/spots/detail/57",
+    "https://rundida.com/marathon/nagoya/",
+    "https://womens-marathon.nagoya/en/"
+  ],
+  "checked": "2026-10"
+}

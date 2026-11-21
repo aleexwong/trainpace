@@ -1,0 +1,69 @@
+{
+  "slug": "stockholm-marathon",
+  "name": "adidas Stockholm Marathon",
+  "city": "Stockholm",
+  "country": "Sweden",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "multi-lap",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://stockholmmarathon.se/",
+  "summary": "The adidas Stockholm Marathon is run on two laps around central Stockholm. It starts just outside the 1912 Olympic Stadium and finishes inside it. It is usually held at the end of May or start of June, on a Saturday afternoon.",
+  "courseHighlights": [
+    "Start outside Stockholm Olympic Stadium in Östermalm",
+    "Strandvägen, the Royal Palace and Gamla Stan",
+    "Djurgården, past Skansen and the Vasa Museum",
+    "Västerbron bridge",
+    "Finish inside the Olympic Stadium"
+  ],
+  "paceStrategy": {
+    "summary": "There are two laps: about 16.6 km first and about 25.6 km second. The main climb is the approach to Västerbron, which gains about 30 m. Run by effort on that rise and keep a steady pace elsewhere. Afternoon heat can matter.",
+    "segments": [
+      {
+        "section": "km 0–16.6",
+        "terrain": "First lap through central Stockholm",
+        "advice": "Start at goal pace or slightly slower and keep the effort easy."
+      },
+      {
+        "section": "km 16.6–35",
+        "terrain": "Second lap, which includes the climb to Västerbron",
+        "advice": "Run the Västerbron rise by effort, not pace."
+      },
+      {
+        "section": "km 35–42.2",
+        "terrain": "Second lap, which also goes out to Gärdet, then back to the stadium",
+        "advice": "Hold steady and keep a little for the finish inside the stadium."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list gel or aid-station positions, so check the official guide. Because the race starts in the afternoon and can be hot, drink at every station you can.",
+  "tips": [
+    "The race is on a Saturday afternoon and has been very hot in some years (about 30 °C in 2018)",
+    "Practise drinking while running, as heat raises fluid need",
+    "The Västerbron climb is described as the hardest part of the course",
+    "The first lap is about 9 km shorter than the second, so plan your effort for the longer second lap"
+  ],
+  "faq": [
+    {
+      "question": "Is the Stockholm Marathon hilly?",
+      "answer": "The approach to Västerbron gains about 30 m, and an AIMS article calls it the hardest part of the course."
+    },
+    {
+      "question": "How many laps is the Stockholm Marathon?",
+      "answer": "Two. The first lap is about 16.6 km and the second about 25.6 km."
+    },
+    {
+      "question": "When is the Stockholm Marathon held?",
+      "answer": "Usually at the end of May or the start of June, on a Saturday afternoon."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Stockholm_Marathon",
+    "https://www.aims-worldrunning.org/articles/217-a-run-through-stockholm.html",
+    "https://stockholmmarathon.se/"
+  ],
+  "checked": "2026-10"
+}

@@ -15,7 +15,7 @@ interface ShareLinkBoxProps {
 export function ShareLinkBox({ path, docId, className }: ShareLinkBoxProps) {
   const { toast } = useToast();
   const segment = path || docId || "";
-  const shareUrl = `https://www.trainpace.com/elevationfinder/${segment}`;
+  const shareUrl = `https://trainpace.com/elevationfinder/${segment}`;
 
   const handleCopy = async () => {
     try {

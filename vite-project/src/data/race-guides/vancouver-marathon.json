@@ -1,0 +1,81 @@
+{
+  "slug": "vancouver-marathon",
+  "name": "BMO Vancouver Marathon",
+  "city": "Vancouver",
+  "country": "British Columbia, Canada",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "point-to-point",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://bmovanmarathon.ca/",
+  "summary": "The BMO Vancouver Marathon is held on the first Sunday of May. It runs point to point from Queen Elizabeth Park to downtown, through UBC, Pacific Spirit Park, Spanish Banks, Kitsilano and the Stanley Park Seawall. It is a Boston Marathon qualifying event.",
+  "courseHighlights": [
+    "Start at Queen Elizabeth Park on Midlothian Avenue",
+    "Pacific Spirit Park and the UBC area",
+    "Halfway point at Spanish Banks West beach",
+    "Burrard Bridge and the Stanley Park Seawall",
+    "Finish on West Pender Street between Bute and Thurlow Streets"
+  ],
+  "paceStrategy": {
+    "summary": "The race starts at one of the high points of the city and ends near sea level, but it is not an easy course. A third-party guide places the main climb around the UBC area at km 8 to 12. Run the early kilometres calmly and keep energy for the seawall.",
+    "segments": [
+      {
+        "section": "km 0–8",
+        "terrain": "South Vancouver streets, gently downhill from the start",
+        "advice": "Run slightly slower than goal pace; the downhill feels easy but the climb comes next."
+      },
+      {
+        "section": "km 8–13",
+        "terrain": "Climb through the UBC and Pacific Spirit Park area (per a third-party guide)",
+        "advice": "Run by effort and accept a slower pace on the climb."
+      },
+      {
+        "section": "km 13–21",
+        "terrain": "Marine Drive to Spanish Banks, halfway at Spanish Banks West",
+        "advice": "Settle back to goal pace and take in the sea views."
+      },
+      {
+        "section": "km 21–32",
+        "terrain": "Point Grey Road, Kitsilano and Burrard Bridge",
+        "advice": "Keep an even pace across Point Grey Road and the Burrard Bridge."
+      },
+      {
+        "section": "km 32–42.2",
+        "terrain": "Stanley Park Seawall and the finish downtown",
+        "advice": "The seawall is flat and runs beside the water; push if you saved energy."
+      }
+    ]
+  },
+  "fuelingNotes": "Take a gel before the UBC climb, around km 6 to 7, and another around the halfway point at Spanish Banks. Check the official race guide for the aid-station list.",
+  "tips": [
+    "Plan transport to Queen Elizabeth Park; the Canada Line (Oakridge-41st station) is a third-party guide's suggestion for the start",
+    "Check the road closure page: many streets in Riley Park, Kerrisdale, Dunbar, Kitsilano and downtown are closed on race morning",
+    "Dress in layers for a 8:30 start; spring weather in Vancouver can change",
+    "The race has a time limit for the first 30 km as well as the full course; read the rules on the official site"
+  ],
+  "faq": [
+    {
+      "question": "Is the Vancouver Marathon flat?",
+      "answer": "No. It starts at Queen Elizabeth Park, climbs through the UBC area and finishes on a flat seawall section. Sources give different elevation totals, so the official site has no single figure."
+    },
+    {
+      "question": "When is the BMO Vancouver Marathon held?",
+      "answer": "It is held on the first Sunday of May."
+    },
+    {
+      "question": "Where does the Vancouver Marathon start and finish?",
+      "answer": "It starts at Queen Elizabeth Park on Midlothian Avenue and finishes on West Pender Street between Bute and Thurlow Streets, downtown."
+    }
+  ],
+  "sources": [
+    "https://bmovanmarathon.ca/marathon/",
+    "https://bmovanmarathon.ca/info",
+    "https://bmovanmarathon.ca/detours",
+    "https://en.wikipedia.org/wiki/Vancouver_Marathon",
+    "https://fatmarathoner.com/bmo-vancouver-marathon-guide/"
+  ],
+  "checked": "2026-10"
+}

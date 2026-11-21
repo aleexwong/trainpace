@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { Card, CardContent } from "@/components/ui/card";
 import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -272,7 +273,7 @@ export function FuelPlannerV2({
     <>
       {seoMode !== "none" && (
         <Helmet>
-          <title>Fuel Planner by TrainPace</title>
+          <title>{STATIC_PAGE_TITLES["/fuel"]}</title>
           <meta
             name="description"
             content="Optimize your running fuel strategy with AI-powered personalized recommendations."

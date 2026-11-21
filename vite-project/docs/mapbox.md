@@ -63,12 +63,14 @@ applies two windows per kind:
 
 | Kind | Burst | Sustained |
 |---|---|---|
-| `static-image` | 12 / 30s | 120 / hour |
+| `static-image` | 24 / 30s | 120 / hour |
 | `gl-session` | 4 / 30s | 40 / hour |
 | `geocoding` | 6 / 30s | 60 / hour |
 
 Both windows must pass. A denied caller is told why and when a slot frees up,
 and is **not** logged — being denied never pushes your own retry further away.
+`StaticRouteMap` retries by itself when that slot frees up, so a card blocked
+by the burst window fills in on its own instead of staying an outline.
 
 A *failed write* latches the fallback permanently. It has to: if reads kept
 coming from Web Storage while writes went to memory, every recorded request

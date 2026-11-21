@@ -1,0 +1,73 @@
+{
+  "slug": "shanghai-marathon",
+  "name": "Shanghai International Marathon",
+  "city": "Shanghai",
+  "country": "China",
+  "distanceKm": 42.195,
+  "month": "December",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "About 8–14 °C on race day (guide estimate)",
+  "website": "https://www.shang-ma.com/",
+  "summary": "The Shanghai International Marathon runs point to point from the Bund to Xujiahui Sports Park. It passes Nanjing Road, Jing'an Temple, Huaihai Road and Xintiandi. A race listing describes the profile as flat. It has been held from late November to early December in recent years.",
+  "courseHighlights": [
+    "Start at the Bund Bull Plaza on the Huangpu River",
+    "Nanjing Road Pedestrian Street",
+    "Jing'an Temple and Huaihai Road",
+    "West Bund riverfront on Longteng Avenue",
+    "Finish at Xujiahui Sports Park"
+  ],
+  "paceStrategy": {
+    "summary": "Sources describe a flat course, so even pacing works. Cool weather helps. Keep your effort steady through the city streets and save energy for the last stretch on Longhua Road.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Bund area and Nanjing Road",
+        "advice": "Start at goal pace or a touch slower; the opening streets are crowded."
+      },
+      {
+        "section": "km 10–30",
+        "terrain": "City streets: Jing'an Temple, Huaihai Road, Xintiandi",
+        "advice": "Hold goal pace through the city centre."
+      },
+      {
+        "section": "km 30–40",
+        "terrain": "Later stretch along the West Bund riverfront (Longteng Avenue)",
+        "advice": "Stay steady on the open riverside road, where wind can matter."
+      },
+      {
+        "section": "km 40–42.2",
+        "terrain": "Inland on Longhua Road to the finish",
+        "advice": "Keep your form and push to the line."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list aid-station positions, so check the official runner guide. In cool weather, take gels about every 40 minutes and sip fluids at each station.",
+  "tips": [
+    "The route can change before race day, so check the official final course",
+    "Dress warmly for the early start, as race-morning temperatures are low",
+    "Plan transport to the Bund start, as roads close early"
+  ],
+  "faq": [
+    {
+      "question": "Is the Shanghai Marathon flat?",
+      "answer": "A race listing describes the profile as flat. A guide gives about 25–30 m of total climbing."
+    },
+    {
+      "question": "Where does the Shanghai Marathon start and finish?",
+      "answer": "It starts at Bund Bull Plaza and finishes at Xujiahui Sports Park, according to recent listings. Earlier years finished at Shanghai Stadium and the West Bund Art Center."
+    },
+    {
+      "question": "When is the Shanghai Marathon held?",
+      "answer": "Recent editions were held in late November or early December."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Shanghai_Marathon",
+    "https://worldsmarathons.com/zh/marathon/shanghai-international-marathon",
+    "https://fatmarathoner.com/shanghai-marathon-guide/"
+  ],
+  "checked": "2026-10"
+}

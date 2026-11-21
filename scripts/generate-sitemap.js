@@ -6,7 +6,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const baseUrl = "https://www.trainpace.com";
+const baseUrl = "https://trainpace.com";
 
 // All pages that should be in the sitemap
 const pages = [

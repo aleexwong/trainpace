@@ -9,6 +9,7 @@ import {
   type BudgetDenialReason,
   type RoutePoint,
 } from "@/lib/mapbox";
+import type { MapboxMap, MapboxMarker } from "@/lib/mapbox/gl-types";
 import { cn } from "@/lib/utils";
 import RouteSketch from "./RouteSketch";
 
@@ -73,10 +74,8 @@ export function MapboxRoutePreview({
   highlightPoint = null,
 }: MapboxRoutePreviewProps) {
   const mapContainer = useRef<HTMLDivElement>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const map = useRef<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const highlightMarker = useRef<any>(null);
+  const map = useRef<MapboxMap | null>(null);
+  const highlightMarker = useRef<MapboxMarker | null>(null);
 
   const [status, setStatus] = useState<PreviewStatus>("loading");
   const [blockedReason, setBlockedReason] = useState<BudgetDenialReason>();
@@ -150,8 +149,7 @@ export function MapboxRoutePreview({
         // first load is fatal, and that one has to tear the map down: a map
         // left behind on a hidden node holds a WebGL context and keeps
         // fetching tiles we are still paying for.
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        map.current.on("error", (event: any) => {
+        map.current.on("error", (event) => {
           if (loaded) {
             console.error("Mapbox GL error:", event?.error ?? event);
             return;
@@ -284,7 +282,7 @@ export function MapboxRoutePreview({
       return;
     }
 
-    const lngLat = [highlightPoint.lng, highlightPoint.lat];
+    const lngLat: [number, number] = [highlightPoint.lng, highlightPoint.lat];
     if (highlightMarker.current) {
       highlightMarker.current.setLngLat(lngLat);
     } else {

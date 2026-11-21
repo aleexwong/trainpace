@@ -1,0 +1,67 @@
+{
+  "slug": "san-jose-half",
+  "name": "Rock 'n' Roll San Jose Half Marathon",
+  "city": "San Jose",
+  "country": "California, USA",
+  "distanceKm": 21.0975,
+  "month": "October",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Average air temperature about 24 °C (75 °F), per the race site",
+  "website": "https://www.runrocknroll.com/events/san-jose",
+  "summary": "The Rock 'n' Roll San Jose Half Marathon is part of the Rock 'n' Roll Running Series and runs through downtown San Jose, which the series calls Speed City. The race site describes the course as flat and welcoming. It starts at South Market and East William Street and finishes in Plaza Park.",
+  "courseHighlights": [
+    "Start at South Market Street and East William Street",
+    "Downtown San Jose with murals",
+    "Live bands, DJs and cheer squads along the route",
+    "Finish in Plaza Park"
+  ],
+  "paceStrategy": {
+    "summary": "The race site calls the course flat, so an even pace is the plan. HalfRuns shows warm conditions for this race, so start conservatively and drink early.",
+    "segments": [
+      {
+        "section": "mile 1–4",
+        "terrain": "Flat downtown streets",
+        "advice": "Start at goal pace or slightly slower while the field spreads."
+      },
+      {
+        "section": "mile 5–10",
+        "terrain": "Flat city streets",
+        "advice": "Hold an even pace and drink at every station."
+      },
+      {
+        "section": "mile 11–13.1",
+        "terrain": "Flat, finishing in Plaza Park",
+        "advice": "Keep steady, then lift the effort over the final mile."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found on the pages we checked. HalfRuns warns of hot conditions, so plan to drink at every stop and carry your own gels.",
+  "tips": [
+    "Plan for warm weather; HalfRuns shows highs around 30 °C (86 °F) on average",
+    "Start a little conservatively and keep drinking",
+    "Check the current course map, as the race says courses are subject to change",
+    "Look out for the live bands and DJs, and use them for energy rather than speeding up"
+  ],
+  "faq": [
+    {
+      "question": "Is the Rock 'n' Roll San Jose Half Marathon flat?",
+      "answer": "Yes. The race site calls it a flat and welcoming course. We found no official climb figure."
+    },
+    {
+      "question": "Where does the Rock 'n' Roll San Jose Half Marathon start and finish?",
+      "answer": "It starts at South Market Street and East William Street and finishes in Plaza Park, downtown."
+    },
+    {
+      "question": "When is the Rock 'n' Roll San Jose Half Marathon held?",
+      "answer": "It is held on a Sunday in early October."
+    }
+  ],
+  "sources": [
+    "https://www.runrocknroll.com/events/san-jose/course-overview",
+    "https://halfruns.com/races/california/rock-n-roll-san-jose-san-jose-ca"
+  ],
+  "checked": "2026-10"
+}

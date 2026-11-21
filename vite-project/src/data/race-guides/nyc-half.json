@@ -1,0 +1,69 @@
+{
+  "slug": "nyc-half",
+  "name": "United Airlines NYC Half",
+  "city": "New York City",
+  "country": "New York, USA",
+  "distanceKm": 21.0975,
+  "month": "March",
+  "courseType": "point-to-point",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.nyrr.org/",
+  "summary": "The United Airlines NYC Half is run by New York Road Runners. It goes from Prospect Park in Brooklyn over the Brooklyn Bridge to Central Park in Manhattan. The race passes through Times Square and finishes inside Central Park.",
+  "courseHighlights": [
+    "Start on Washington Avenue next to Prospect Park, Brooklyn",
+    "Loop around Grand Army Plaza and cross the Brooklyn Bridge",
+    "FDR Drive north, then 42nd Street to Times Square",
+    "Seventh Avenue and Central Park South",
+    "Finish on West Drive in Central Park near 68th Street"
+  ],
+  "paceStrategy": {
+    "summary": "The course crosses a big bridge early, then runs on a wide highway and city avenues. It ends with several hundred metres in Central Park, which has rolling hills. Run the first miles a little easy and keep something for the park.",
+    "segments": [
+      {
+        "section": "mile 1–3",
+        "terrain": "Prospect Park edge, Flatbush Avenue and the Brooklyn Bridge",
+        "advice": "Keep the pace calm in the crowd and do not race the bridge climb."
+      },
+      {
+        "section": "mile 4–9",
+        "terrain": "Manhattan streets and FDR Drive",
+        "advice": "Settle into goal pace on the wide, open road."
+      },
+      {
+        "section": "mile 10–13.1",
+        "terrain": "Times Square, Seventh Avenue and Central Park",
+        "advice": "Run by effort in Central Park and keep your stride short on the small hills."
+      }
+    ]
+  },
+  "fuelingNotes": "No aid-station positions were found in the sources we checked. Check the current race guide and carry a gel for the middle miles if you use them.",
+  "tips": [
+    "Leave time to reach the start in Brooklyn, because the start area is on streets next to Prospect Park",
+    "Expect big crowds in the first mile; the field is over 25,000 runners",
+    "Wear throwaway layers, as March mornings in New York can be cold",
+    "Check the NYRR race page each year, because the route has changed before (the Brooklyn Bridge replaced the Manhattan Bridge in 2025)"
+  ],
+  "faq": [
+    {
+      "question": "Is the NYC Half course flat?",
+      "answer": "Not completely. It crosses a bridge early and ends in Central Park, which has rolling hills. We found no official elevation figures, so we do not give a number."
+    },
+    {
+      "question": "Where does the NYC Half start and finish?",
+      "answer": "It starts on Washington Avenue next to Prospect Park in Brooklyn and finishes on West Drive in Central Park near 68th Street."
+    },
+    {
+      "question": "When is the NYC Half held?",
+      "answer": "It is usually held on a Sunday in March."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/New_York_City_Half_Marathon",
+    "https://abc7ny.com/post/2025-united-airlines-nyc-half-now-feature-brooklyn-bridge-part-race-course/15902715/",
+    "https://www.fox5ny.com/news/nyc-half-marathon-2026-start-time-street-closures-map-sunday"
+  ],
+  "checked": "2026-10"
+}

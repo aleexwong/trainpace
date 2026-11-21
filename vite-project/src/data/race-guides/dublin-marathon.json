@@ -1,0 +1,74 @@
+{
+  "slug": "dublin-marathon",
+  "name": "Irish Life Dublin Marathon",
+  "city": "Dublin",
+  "country": "Ireland",
+  "distanceKm": 42.195,
+  "month": "October",
+  "courseType": "loop",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "12–14 °C on average in October",
+  "website": "https://irishlifedublinmarathon.ie/",
+  "summary": "The Irish Life Dublin Marathon is a single lap through Dublin city centre and Phoenix Park, held on the last Sunday of October. It starts near Fitzwilliam Street Upper and finishes on Merrion Square North. Guides describe it as a fast, largely flat course.",
+  "courseHighlights": [
+    "Start near Fitzwilliam Street Upper",
+    "Phoenix Park and Dublin Zoo around miles 4–6",
+    "Leaving the park around miles 7–10",
+    "Bushy Park around miles 17–20 and University College Dublin around miles 21–23",
+    "Finish on Merrion Square North"
+  ],
+  "paceStrategy": {
+    "summary": "The course is described as largely flat, so even pacing is the plan. Use the early miles in the city and Phoenix Park to settle in. Wind and weather can matter more than hills, so run by effort if the conditions are poor.",
+    "segments": [
+      {
+        "section": "mile 1–6",
+        "terrain": "Flat city streets, then Phoenix Park",
+        "advice": "Start at goal pace or a touch slower; the crowds are dense."
+      },
+      {
+        "section": "mile 7–13",
+        "terrain": "Out of Phoenix Park, then flat suburban roads to halfway",
+        "advice": "Keep a steady rhythm and use the half-way point as a checkpoint."
+      },
+      {
+        "section": "mile 14–20",
+        "terrain": "Flat roads including Bushy Park (miles 17–20)",
+        "advice": "Stay patient; save energy for the last 10 km."
+      },
+      {
+        "section": "mile 21–26.2",
+        "terrain": "Roads past University College Dublin and Elm Park to the finish",
+        "advice": "Pick up the effort slowly and finish strong at Merrion Square."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list gel or aid-station positions, so check the official guide. On a flat course, take a gel about every 40 minutes and one before the last 10 km.",
+  "tips": [
+    "The race is held in late October, so bring a layer for the start and a plan for wind or rain",
+    "The start and finish are both in the city centre, so you can walk or take public transport",
+    "Phoenix Park is open and can be windy, so run in a group if you can"
+  ],
+  "faq": [
+    {
+      "question": "Is the Dublin Marathon flat?",
+      "answer": "Yes. Race guides describe the course as largely flat or reasonably flat."
+    },
+    {
+      "question": "When is the Dublin Marathon held?",
+      "answer": "It is held on the last Sunday in October. Before 2016 it was held on the October bank holiday Monday."
+    },
+    {
+      "question": "Where does the Dublin Marathon start and finish?",
+      "answer": "Guides say the race starts on Fitzwilliam Street Upper and finishes on Merrion Square North."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Dublin_Marathon",
+    "https://athleticsweekly.com/news/meetings/marathon-guide-2018-sse-airtricity-dublin-marathon-70203/",
+    "https://www.gofundme.com/en-ie/c/blog/dublin-marathon-guide",
+    "https://irishlifedublinmarathon.ie/"
+  ],
+  "checked": "2026-10"
+}

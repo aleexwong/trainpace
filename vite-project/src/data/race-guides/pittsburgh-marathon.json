@@ -1,0 +1,74 @@
+{
+  "slug": "pittsburgh-marathon",
+  "name": "DICK'S Sporting Goods Pittsburgh Marathon",
+  "city": "Pittsburgh",
+  "country": "Pennsylvania, USA",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "loop",
+  "terrain": "hilly",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Early-May starts of about 44–61 °F in recent years (third-party guide)",
+  "website": "https://www.thepittsburghmarathon.com/",
+  "summary": "The Pittsburgh Marathon has been held since 1985, usually on the first Sunday in May. The hilly course crosses Pittsburgh's three rivers and passes through many neighbourhoods. A city notice says the marathon course forms a loop around the city.",
+  "courseHighlights": [
+    "Crosses all three rivers of Pittsburgh",
+    "Runs through the city centre and many neighbourhoods",
+    "A main climb around mile 12 over the Birmingham Bridge and up Forbes Avenue (third-party guide)",
+    "Downtown start and finish in the city centre or North Shore area"
+  ],
+  "paceStrategy": {
+    "summary": "The early miles by the rivers are easy, and the biggest climb comes around mile 12, with more rises after that. Start slowly and run the hills by effort.",
+    "segments": [
+      {
+        "section": "mile 1–11",
+        "terrain": "Near river level on the North Shore, West End and South Side (third-party guide)",
+        "advice": "Hold goal pace or a little slower; save energy for later."
+      },
+      {
+        "section": "mile 11–15",
+        "terrain": "Birmingham Bridge and the climb up Forbes Avenue into Oakland and Shadyside",
+        "advice": "Run by effort and take the climb in short, steady steps."
+      },
+      {
+        "section": "mile 15–22",
+        "terrain": "Rolling roads through the east side of the city, with some descents",
+        "advice": "Stay steady and use the downhills without braking too hard."
+      },
+      {
+        "section": "mile 22–26.2",
+        "terrain": "Descent towards Lawrenceville and back downtown",
+        "advice": "Hold form and push over the final miles."
+      }
+    ]
+  },
+  "fuelingNotes": "The official site is hard to read without JavaScript, so check the race guide for aid-station positions. Take a gel before the Birmingham Bridge climb, around mile 11.",
+  "tips": [
+    "Check the current course map: Wikipedia notes the start and finish have moved many times",
+    "Include hill repeats in training; the route uses the city's hilly terrain",
+    "The marathon crosses the rivers over several bridges, so expect wind on the bridges",
+    "Many downtown roads close from early morning until the afternoon, so plan transport ahead"
+  ],
+  "faq": [
+    {
+      "question": "Is the Pittsburgh Marathon hilly?",
+      "answer": "Yes. Wikipedia calls the course hilly, and a third-party guide describes a main climb around mile 12. No official elevation figure was found, so no number is given here."
+    },
+    {
+      "question": "When is the Pittsburgh Marathon held?",
+      "answer": "It is usually held on the first Sunday in May."
+    },
+    {
+      "question": "Which rivers does the Pittsburgh Marathon cross?",
+      "answer": "The course crosses all three of Pittsburgh's main rivers."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Pittsburgh_Marathon",
+    "https://www.pittsburghpa.gov/News-articles/Homepage/Road-Closures-Announced-for-2026-DICK’S-Sporting-Goods-Pittsburgh-Marathon-Weekend-of-Events",
+    "https://www.otmapgh.org/news/traffic/dicks-sporting-goods-pittsburgh-marathon",
+    "https://fatmarathoner.com/pittsburgh-marathon-guide/"
+  ],
+  "checked": "2026-10"
+}

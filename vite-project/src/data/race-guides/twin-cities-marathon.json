@@ -1,0 +1,75 @@
+{
+  "slug": "twin-cities-marathon",
+  "name": "Medtronic Twin Cities Marathon",
+  "city": "Minneapolis and St. Paul",
+  "country": "Minnesota, USA",
+  "distanceKm": 42.195,
+  "month": "October",
+  "courseType": "point-to-point",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Starts are typically 7–12 °C",
+  "website": "https://www.tcmevents.org/",
+  "summary": "The Medtronic Twin Cities Marathon runs point to point from near U.S. Bank Stadium in Minneapolis to the Minnesota State Capitol in St. Paul. It passes the Minneapolis lakes, follows the Mississippi River and climbs Summit Avenue. The start and finish are at about the same height.",
+  "courseHighlights": [
+    "Start near U.S. Bank Stadium in Minneapolis",
+    "Lake of the Isles, Bde Maka Ska, Lake Harriet and Lake Nokomis",
+    "Mississippi River crossing on Franklin Avenue",
+    "Summit Avenue climb, miles 19–23",
+    "Finish at the Minnesota State Capitol"
+  ],
+  "paceStrategy": {
+    "summary": "The early miles are downhill or flat and feel easy, so do not go out too fast. The hardest part is the climb on Summit Avenue around miles 19 to 23. The final half-mile is downhill to the Capitol.",
+    "segments": [
+      {
+        "section": "mile 1–9",
+        "terrain": "Minneapolis lakes with a climb near mile 3 and a downhill near mile 9",
+        "advice": "Run slightly slower than goal pace; do not bank time on the downhills."
+      },
+      {
+        "section": "mile 10–18",
+        "terrain": "Minnehaha Parkway, the river parkway and the Mississippi crossing",
+        "advice": "Hold steady effort."
+      },
+      {
+        "section": "mile 19–23",
+        "terrain": "Summit Avenue, steady climb",
+        "advice": "Run by effort and expect to slow slightly."
+      },
+      {
+        "section": "mile 24–26.2",
+        "terrain": "Toward the Capitol, with a drop near mile 26",
+        "advice": "Let the downhill carry you to the finish."
+      }
+    ]
+  },
+  "fuelingNotes": "RunnersConnect says aid stations are about every 2 miles. Take a gel before Summit Avenue, around mile 18, so you have energy for the climb.",
+  "tips": [
+    "Do not get greedy on the early downhill miles, a coach warns",
+    "Start temperatures are typically in the mid-40s to low 50s °F",
+    "The 2023 race was cancelled because of heat, so watch the forecast",
+    "Check the official site for the race date, as it can change"
+  ],
+  "faq": [
+    {
+      "question": "Is the Twin Cities Marathon hilly?",
+      "answer": "It is rolling. The biggest test is the long climb on Summit Avenue around miles 19 to 23, late in the race. Published figures for the total climb vary a lot between sources, so train for a long, steady hill in the last 10 km rather than for a single number."
+    },
+    {
+      "question": "Is the Twin Cities Marathon net downhill?",
+      "answer": "No. The start and finish are at about the same height, so the net change is close to zero. The last half-mile into the finish is downhill."
+    },
+    {
+      "question": "When is the Twin Cities Marathon held?",
+      "answer": "It is held in October."
+    }
+  ],
+  "sources": [
+    "https://runnersconnect.net/race-guides/twin-cities-marathon-hill-calculator/",
+    "https://en.wikipedia.org/wiki/Twin_Cities_Marathon",
+    "https://www.mprnews.org/story/2015/10/03/twin-cities-marathon-overview",
+    "https://www.tcmevents.org/"
+  ],
+  "checked": "2026-10"
+}

@@ -1,0 +1,75 @@
+{
+  "slug": "grandmas-marathon",
+  "name": "Grandma's Marathon",
+  "city": "Duluth",
+  "country": "Minnesota, USA",
+  "distanceKm": 42.195,
+  "month": "June",
+  "courseType": "point-to-point",
+  "terrain": "net downhill",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "Starts about 10–16 °C; finishes about 20–22 °C",
+  "website": "https://www.grandmasmarathon.com/",
+  "summary": "Grandma's Marathon is held in June, on the third Saturday. It runs point to point from Two Harbors along Scenic Highway 61 and Lake Superior into Canal Park in Duluth. A pacing guide gives a net drop of about 130 ft (about 40 m), with rolling hills in the middle and a short climb at Lemon Drop Hill.",
+  "courseHighlights": [
+    "Start on Lemon Drop Road in Two Harbors",
+    "Scenic Highway 61 along Lake Superior",
+    "Rolling hills in the middle miles",
+    "Lemon Drop Hill around mile 22",
+    "Finish in Canal Park, near the Aerial Lift Bridge"
+  ],
+  "paceStrategy": {
+    "summary": "The early miles drop gently, which tempts runners to go out fast. Do not bank time there. Run the rolling middle by effort and save your legs for Lemon Drop Hill around mile 22. The last miles ease downhill to the finish.",
+    "segments": [
+      {
+        "section": "mile 1–6",
+        "terrain": "Gentle descent, about 100 ft, with some flat sections",
+        "advice": "Run at or slightly slower than goal pace; do not bank time."
+      },
+      {
+        "section": "mile 7–19",
+        "terrain": "Flat with rolling hills",
+        "advice": "Hold even effort and use the lake breeze."
+      },
+      {
+        "section": "mile 20–23",
+        "terrain": "Climb to the top of Lemon Drop Hill around mile 22",
+        "advice": "Shorten your stride and run the hill by effort."
+      },
+      {
+        "section": "mile 24–26.2",
+        "terrain": "Mostly flat with downhill stretches into Canal Park",
+        "advice": "Let the downhill help and push to the finish."
+      }
+    ]
+  },
+  "fuelingNotes": "Aid stations are about every 2 miles with Gatorade Endurance, and gels are at miles 13 and 20 according to a pacing guide. Take your own gel before Lemon Drop Hill, around mile 19–20.",
+  "tips": [
+    "Buses from the DECC in Duluth are the way to reach the start, so plan early",
+    "Wind can matter, as the course runs south-west along the lake",
+    "Do not run the early downhill too fast; it can damage your quads",
+    "Expect cool starts and warmer finishes, so use a throwaway layer"
+  ],
+  "faq": [
+    {
+      "question": "Is Grandma's Marathon net downhill?",
+      "answer": "Yes. A pacing guide gives a net drop of about 130 ft (about 40 m), though it includes rolling hills and a climb at Lemon Drop Hill."
+    },
+    {
+      "question": "Where is Lemon Drop Hill?",
+      "answer": "Around mile 22, according to Wikipedia and a pacing guide. It is a short climb late in the race."
+    },
+    {
+      "question": "When is Grandma's Marathon held?",
+      "answer": "It is held on the third Saturday in June."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Grandma%27s_Marathon",
+    "https://findmymarathon.com/articles/grandmas-marathon-pacing-guide-and-course-analysis.php",
+    "https://runnersconnect.net/race-guides/grandmas-marathon-pace-calculator/",
+    "https://www.grandmasmarathon.com/"
+  ],
+  "checked": "2026-10"
+}

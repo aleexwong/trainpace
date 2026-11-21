@@ -1,0 +1,74 @@
+{
+  "slug": "barcelona-marathon",
+  "name": "Zurich Marató de Barcelona",
+  "city": "Barcelona",
+  "country": "Spain",
+  "distanceKm": 42.195,
+  "month": "March",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": 134,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.zurichmaratobarcelona.es/",
+  "summary": "The Zurich Marató de Barcelona runs through the streets of Barcelona in March. The 2025 course goes from Passeig de Gràcia to the Arc de Triomf and has about 134 m of climbing. Long straight roads and a few gentle rises make it a fast course.",
+  "courseHighlights": [
+    "Start on Passeig de Gràcia",
+    "Sagrada Família around km 14, the highest point of the course",
+    "Coastal stretch past the Hotel Arts and the Fòrum, km 27–31",
+    "Avinguda Diagonal, km 31–36",
+    "Finish at the Arc de Triomf"
+  ],
+  "paceStrategy": {
+    "summary": "Run the first half evenly, because the climbing is spread across both halves (76 m in the first, 58 m in the second). Keep some energy for the last 10 km, which pass through Poblenou and the Vila Olímpica before the finish.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Eixample streets, including a 4.72 km straight on Carrer de València",
+        "advice": "Stay relaxed and do not chase the crowd in the first kilometres."
+      },
+      {
+        "section": "km 10–21",
+        "terrain": "Avinguda Meridiana, the Sagrada Família (highest point at km 14), then Rambla de Catalunya",
+        "advice": "Run by effort on the gentle rise, then settle back to goal pace."
+      },
+      {
+        "section": "km 21–31",
+        "terrain": "Avinguda Paral·lel, Ciutadella park, then the flat coastal road",
+        "advice": "Hold steady pace on the flat road along the sea."
+      },
+      {
+        "section": "km 31–42",
+        "terrain": "Avinguda Diagonal, Poblenou, Carrer Marina and the finish at the Arc de Triomf",
+        "advice": "Keep your form and push only in the last 3 km."
+      }
+    ]
+  },
+  "fuelingNotes": "Refreshment points start at km 5 and come every 2.5 km, with water, isotonic drink and fruit. Take a gel before each one so you can wash it down, and plan your last gel before km 37.5 on Carrer Pallars.",
+  "tips": [
+    "The course has 43 curves, so run the corners tight and keep an eye on the racing line",
+    "Use the refreshment points every 2.5 km from km 5 to plan when to drink",
+    "The start is on Passeig de Gràcia in the city centre, so allow time to reach your start corral",
+    "The long straight on Carrer de València (km 5–10) can feel dull, so pace by watch and effort"
+  ],
+  "faq": [
+    {
+      "question": "Is the Barcelona Marathon course flat?",
+      "answer": "It is mostly flat. The 2025 course has about 134 m of total climbing, 76 m in the first half and 58 m in the second. The highest point is at the Sagrada Família around km 14."
+    },
+    {
+      "question": "When is the Barcelona Marathon held?",
+      "answer": "It is held in March."
+    },
+    {
+      "question": "Where does the Barcelona Marathon start and finish?",
+      "answer": "The 2025 course started on Passeig de Gràcia and finished at the Arc de Triomf. Check the official site for any change to the route."
+    }
+  ],
+  "sources": [
+    "https://zurichmaratobarcelona.es/en?p=13302",
+    "https://www.zurichmaratobarcelona.es/en",
+    "https://en.wikipedia.org/wiki/Barcelona_Marathon"
+  ],
+  "checked": "2026-10"
+}

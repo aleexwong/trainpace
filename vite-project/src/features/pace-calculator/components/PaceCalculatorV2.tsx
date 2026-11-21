@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
+import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import { Card, CardContent } from "@/components/ui/card";
 import { Info, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
@@ -328,11 +329,13 @@ export function PaceCalculatorV2({
 
   // ── Render ──────────────────────────────────────────────────────────────────
 
+  const Heading = seoMode === "none" ? "h2" : "h1";
+
   return (
     <>
       {seoMode !== "none" && (
         <Helmet>
-          <title>Running Pace Calculator – VDOT Training Zones | TrainPace</title>
+          <title>{STATIC_PAGE_TITLES["/calculator"]}</title>
           <meta
             name="description"
             content="Free VDOT running pace calculator. Enter any race time to get Easy, Tempo, Threshold, and Interval training zones. Includes Yasso 800s and race predictor."
@@ -382,7 +385,7 @@ export function PaceCalculatorV2({
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-4xl font-bold text-gray-900">⏱️ Pace Calculator</h1>
+            <Heading className="text-4xl font-bold text-gray-900">⏱️ Pace Calculator</Heading>
             <button
               onClick={() => setShowInfo(!showInfo)}
               className="p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all"

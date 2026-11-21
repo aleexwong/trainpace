@@ -1,0 +1,71 @@
+{
+  "slug": "reykjavik-marathon",
+  "name": "Íslandsbanki Reykjavik Marathon",
+  "city": "Reykjavik",
+  "country": "Iceland",
+  "distanceKm": 42.195,
+  "month": "August",
+  "courseType": "loop",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "About 8–15 °C, usually with a sea breeze",
+  "website": "https://rmi.is/en/",
+  "summary": "The Íslandsbanki Reykjavik Marathon is held in August, on the same day as Reykjavik Culture Night. It is a single loop that starts at the University of Iceland on Sæmundargata and finishes by the harbor on Geirsgata. The course passes the sea, the Seltjarnarnes peninsula and the Elliðaárdalur valley.",
+  "courseHighlights": [
+    "Start at the University of Iceland on Sæmundargata",
+    "Ægisíða and Seltjarnarnes by the sea",
+    "City centre and Sæbraut along the shore",
+    "Elliðaárdalur valley with a small waterfall and salmon river",
+    "Finish on Geirsgata by the harbor"
+  ],
+  "paceStrategy": {
+    "summary": "The route mixes flat and rolling sections. A listing says the organiser describes it as 60% flat and 40% rolling, with hills mostly after 15 km. Run the first part evenly and be ready for small rises later. Weather is usually mild with a sea breeze.",
+    "segments": [
+      {
+        "section": "km 0–15",
+        "terrain": "Seaside and city streets west to Seltjarnarnes and the centre, mostly flat",
+        "advice": "Run at goal pace and use the easier section well."
+      },
+      {
+        "section": "km 15–30",
+        "terrain": "Sæbraut, Laugardalur and the inland sections, where hills mostly start",
+        "advice": "Run the rises by effort."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Elliðaárdalur and the return along Sæbraut to the harbor",
+        "advice": "Hold steady and push over the last 3 km."
+      }
+    ]
+  },
+  "fuelingNotes": "The official page lists 10 aid stations about every 4–5 km, subject to change. Plan a gel between stations and take one before the hills after 15 km.",
+  "tips": [
+    "The organisers do not recommend the race for inexperienced runners",
+    "The route is exposed to the sea breeze, so wear a cap or sunglasses on sunny days",
+    "A new route is being prepared, so check the official map for the current course",
+    "The marathon is on Culture Night, so the city centre is busy"
+  ],
+  "faq": [
+    {
+      "question": "Is the Reykjavik Marathon flat?",
+      "answer": "It is a mix. One listing says about 60% flat and 40% rolling, with hills mostly after 15 km. Sources do not give a reliable climb figure."
+    },
+    {
+      "question": "Where does the Reykjavik Marathon start and finish?",
+      "answer": "It starts on Sæmundargata by the University of Iceland and finishes on Geirsgata by the harbor."
+    },
+    {
+      "question": "When is the Reykjavik Marathon held?",
+      "answer": "It is held in August, on the same day as Reykjavik Culture Night."
+    }
+  ],
+  "sources": [
+    "https://www.rmi.is/en/marathon",
+    "https://en.wikipedia.org/wiki/Reykjav%C3%ADk_Marathon",
+    "https://worldsmarathons.com/de/marathon/islandsbanki-reykjavik-marathon",
+    "https://teamrunrun.com/?p=17851",
+    "https://rmi.is/en/"
+  ],
+  "checked": "2026-10"
+}

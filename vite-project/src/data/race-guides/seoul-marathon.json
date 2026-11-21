@@ -1,0 +1,72 @@
+{
+  "slug": "seoul-marathon",
+  "name": "Seoul International Marathon",
+  "city": "Seoul",
+  "country": "South Korea",
+  "distanceKm": 42.195,
+  "month": "March",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://seoul-marathon.com/",
+  "summary": "The Seoul International Marathon, also called the Dong-A Ilbo Seoul Marathon, is held in March. It runs point to point through the city centre from Gwanghwamun Plaza to the Jamsil Sports Complex. A race listing describes the course as flat, fast and certified by World Athletics.",
+  "courseHighlights": [
+    "Start at Gwanghwamun Plaza with Gyeongbokgung Palace behind you",
+    "Namdaemun gate",
+    "Cheonggyecheon park",
+    "Han River crossing near Jamsil",
+    "Finish at the Jamsil Sports Complex, used in the 1988 Olympics"
+  ],
+  "paceStrategy": {
+    "summary": "Because the course is described as flat, an even pace is the plan. The start is in the dense city centre, so settle in before the Han River crossing. Keep some energy for the last part near Jamsil.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "City-centre streets from Gwanghwamun, past Namdaemun",
+        "advice": "Start at goal pace or slightly slower in the crowd."
+      },
+      {
+        "section": "km 10–21",
+        "terrain": "Streets in the city centre, including the Cheonggyecheon area",
+        "advice": "Settle into a steady rhythm."
+      },
+      {
+        "section": "km 21–35",
+        "terrain": "Roads heading south-east through the city",
+        "advice": "Hold goal pace and take drinks on time."
+      },
+      {
+        "section": "km 35–42.2",
+        "terrain": "Roads towards the Han River and the Jamsil Sports Complex",
+        "advice": "Stay relaxed, then push over the final 3 km."
+      }
+    ]
+  },
+  "fuelingNotes": "The sources I used do not list aid-station positions, so check the official runner guide. March is cool, so drink at regular intervals and take gels about every 40 minutes.",
+  "tips": [
+    "The start is early in the morning, so plan transport to Gwanghwamun",
+    "Check the official site for the current route, as details can change",
+    "Dress for cool March weather at the start, then plan to remove layers"
+  ],
+  "faq": [
+    {
+      "question": "Is the Seoul Marathon flat?",
+      "answer": "A race listing describes it as a flat, fast course certified by World Athletics. No elevation figures are given."
+    },
+    {
+      "question": "Where does the Seoul Marathon start and finish?",
+      "answer": "It starts at Gwanghwamun Plaza and finishes at the Jamsil Sports Complex, which hosted the 1988 Olympics."
+    },
+    {
+      "question": "When is the Seoul Marathon held?",
+      "answer": "It is held in mid-March."
+    }
+  ],
+  "sources": [
+    "https://en.wikipedia.org/wiki/Seoul_International_Marathon",
+    "https://worldsmarathons.com/it/marathon/seoul-marathon"
+  ],
+  "checked": "2026-10"
+}

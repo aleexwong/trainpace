@@ -1,0 +1,76 @@
+{
+  "slug": "montreal-marathon",
+  "name": "Marathon Beneva de Montréal",
+  "city": "Montreal",
+  "country": "Quebec, Canada",
+  "distanceKm": 42.195,
+  "month": "September",
+  "courseType": "out-and-back",
+  "terrain": "rolling",
+  "elevationGainM": 172,
+  "elevationLossM": 140,
+  "typicalWeather": null,
+  "website": "https://mtlmarathon.com/en/",
+  "summary": "The Marathon Beneva de Montréal has been held since 1979 and was formerly the Marathon Oasis de Montréal. It starts at Parc Jean-Drapeau and finishes at Parc Maisonneuve. The official site gives 172 m of climbing and 140 m of descent.",
+  "courseHighlights": [
+    "Start at Parc Jean-Drapeau",
+    "Boulevard Saint-Laurent northbound to the Rivière des Prairies (2025 route)",
+    "U-turn at the river, then back along Boulevard Saint-Joseph (2025 route)",
+    "Finish at Parc Maisonneuve",
+    "Course certified by Athletics Canada"
+  ],
+  "paceStrategy": {
+    "summary": "The course is mostly on long city boulevards with modest climbs. Start steadily, hold goal pace on the long Saint-Laurent stretch and save energy for the return.",
+    "segments": [
+      {
+        "section": "km 0–10",
+        "terrain": "Start in Parc Jean-Drapeau, then into the city",
+        "advice": "Run relaxed; the marathon starts at 7:45."
+      },
+      {
+        "section": "km 10–21",
+        "terrain": "Boulevard Saint-Laurent northbound",
+        "advice": "Settle into goal pace on the long straight road."
+      },
+      {
+        "section": "km 21–30",
+        "terrain": "Approach to the Rivière des Prairies and U-turn",
+        "advice": "Keep the effort steady through the turn."
+      },
+      {
+        "section": "km 30–42.2",
+        "terrain": "Return via Boulevard Saint-Joseph to Parc Maisonneuve",
+        "advice": "Fatigue builds here; fuel on schedule and hold form."
+      }
+    ]
+  },
+  "fuelingNotes": "The official site lists refreshments on the course and pace bunnies for the marathon. Check the runner's guide for the aid-station locations.",
+  "tips": [
+    "The course may change from year to year, so check the current map in the runner's guide",
+    "Plan your journey to Parc Jean-Drapeau early; the official runner's guide has the practical details",
+    "Bib pick-up is only at the Expo-Marathon, not on race day",
+    "Pace bunnies are available if you want help with even pacing"
+  ],
+  "faq": [
+    {
+      "question": "How hilly is the Montreal Marathon?",
+      "answer": "The official site lists 172 m of climbing and 140 m of descent, which is a gently rolling profile."
+    },
+    {
+      "question": "When is the Montreal Marathon held?",
+      "answer": "It is usually held in September. The official site shows mid-September for the next edition."
+    },
+    {
+      "question": "Where does the Montreal Marathon start and finish?",
+      "answer": "It starts at Parc Jean-Drapeau and finishes at Parc Maisonneuve."
+    }
+  ],
+  "sources": [
+    "https://couronsmtl.com/en/courses/marathon/42km-2/",
+    "https://mtlmarathon.com/en/",
+    "https://www.mtl.org/en/what-to-do/festivals-and-events/marathon-beneva-montreal",
+    "https://www.cbc.ca/1.7638694",
+    "https://en.wikipedia.org/wiki/Marathon_Beneva_de_Montr%C3%A9al"
+  ],
+  "checked": "2026-10"
+}

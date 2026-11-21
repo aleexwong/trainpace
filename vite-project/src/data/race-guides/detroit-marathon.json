@@ -1,0 +1,70 @@
+{
+  "slug": "detroit-marathon",
+  "name": "Detroit Free Press Marathon",
+  "city": "Detroit",
+  "country": "Michigan, USA",
+  "distanceKm": 42.195,
+  "month": "October",
+  "courseType": "point-to-point",
+  "terrain": "flat",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": "About -1 to 13 °C at the start and 7–17 °C at the finish",
+  "website": "https://www.freepmarathon.com/",
+  "summary": "The Detroit Free Press Marathon is held in October. It starts on Fort Street in downtown Detroit, crosses the Ambassador Bridge into Windsor, Canada, and returns through the Detroit-Windsor Tunnel. It finishes at Campus Martius.",
+  "courseHighlights": [
+    "Start on Fort Street near the Ambassador Bridge",
+    "Ambassador Bridge into Windsor, Canada",
+    "Detroit-Windsor Tunnel back to Detroit, around mile 8",
+    "Eastern Market, Midtown and the Dequindre Cut",
+    "Finish at Campus Martius"
+  ],
+  "paceStrategy": {
+    "summary": "The course is flat for long stretches, but the climb onto the Ambassador Bridge in the first miles is the biggest hill. Run it by effort and do not chase pace there. Cold starts are common, so keep warm and settle into an even pace after the bridge.",
+    "segments": [
+      {
+        "section": "mile 1–8",
+        "terrain": "Fort Street, Ambassador Bridge at mile 2, Windsor, then the tunnel at mile 8",
+        "advice": "Start easy; the tunnel has no aid station."
+      },
+      {
+        "section": "mile 9–18",
+        "terrain": "Downtown Detroit and city neighbourhoods",
+        "advice": "Settle at goal pace."
+      },
+      {
+        "section": "mile 18–26.2",
+        "terrain": "Dequindre Cut, Rivertown and the run to Campus Martius",
+        "advice": "Hold form and push in the final miles."
+      }
+    ]
+  },
+  "fuelingNotes": "RunnersConnect notes the tunnel at mile 8 has no aid station, so plan to drink before it. Take a gel before you enter the tunnel.",
+  "tips": [
+    "Bring a passport or enhanced driver's license for the border crossing",
+    "Arrive at least 60 minutes before the 7:00 am start",
+    "Cold starts are common, so bring a throwaway layer",
+    "Belle Isle is no longer part of the course"
+  ],
+  "faq": [
+    {
+      "question": "Is the Detroit Free Press Marathon flat?",
+      "answer": "Mostly, yes. The course is flat for long stretches, but it has a few real climbs: the Ambassador Bridge to Canada in the first miles, the way out of the Detroit-Windsor Tunnel, and the bridge to Belle Isle. Published figures for the total climb do not agree, so plan for the bridges rather than a single number."
+    },
+    {
+      "question": "Does the Detroit Marathon go to Canada?",
+      "answer": "Yes. The marathon crosses the Ambassador Bridge into Windsor and returns through the Detroit-Windsor Tunnel."
+    },
+    {
+      "question": "When is the Detroit Free Press Marathon held?",
+      "answer": "It is held in October, on a Sunday."
+    }
+  ],
+  "sources": [
+    "https://runnersconnect.net/race-guides/detroit-marathon-pace-calculator/",
+    "https://en.wikipedia.org/wiki/Detroit_Free_Press_Marathon",
+    "https://www.runningusa.org/industry-news/events-industry-news/detroit-free-press-marathon-reveals-dramatic-course-updates-and-a-return-to-international-racing/",
+    "https://www.freepmarathon.com/"
+  ],
+  "checked": "2026-10"
+}

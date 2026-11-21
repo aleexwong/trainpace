@@ -1,0 +1,79 @@
+{
+  "slug": "denver-colfax-marathon",
+  "name": "Colfax Marathon",
+  "city": "Denver",
+  "country": "Colorado, USA",
+  "distanceKm": 42.195,
+  "month": "May",
+  "courseType": "loop",
+  "terrain": "rolling",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://www.runcolfax.org/",
+  "summary": "The Colfax Marathon is a city marathon in Denver. It starts and finishes in City Park and is a Boston Marathon qualifier. The route follows Colfax Avenue, Sloan's Lake and the Cherry Creek Trail, and runs through the Empower Field at Mile High stadium twice.",
+  "courseHighlights": [
+    "Start and finish in City Park, beside Ferril Lake",
+    "Run through Denver Fire Station #1 near mile 6",
+    "Run through Empower Field at Mile High twice, near miles 6 and 20",
+    "Sloan's Lake and the Colfax Avenue stretch west toward Lakewood",
+    "Cherry Creek Trail and Confluence Park"
+  ],
+  "paceStrategy": {
+    "summary": "The official course guide describes flat and fast middle miles, a downhill section around miles 16–20, and an uphill road out of downtown near the end. Start at an even effort and keep energy for the last 6 miles.",
+    "segments": [
+      {
+        "section": "mile 1–6.5",
+        "terrain": "Colfax Avenue, downtown and the Cherry Creek Trail",
+        "advice": "Hold goal pace or slightly slower while the crowds are thick."
+      },
+      {
+        "section": "mile 6.5–10",
+        "terrain": "Short climb out of the stadium, then flat Colfax and Sloan's Lake",
+        "advice": "Ease up the short climb and settle back into goal pace on the flat road."
+      },
+      {
+        "section": "mile 10–16",
+        "terrain": "West on Colfax, then Lakewood and The Glens",
+        "advice": "Stay relaxed and keep a steady effort."
+      },
+      {
+        "section": "mile 16–20",
+        "terrain": "Downhill on Colfax from Lakewood back to Denver",
+        "advice": "Let the pace come down a little, but keep your stride short to protect your legs."
+      },
+      {
+        "section": "mile 20–26.2",
+        "terrain": "Stadium, river path, 16th Street Mall, uphill on 17th Avenue, then City Park",
+        "advice": "Run by effort on the uphill part of 17th Avenue and save a push for City Park."
+      }
+    ]
+  },
+  "fuelingNotes": "The race site lists water and Gatorade every 2 miles and Honey Stinger gels at miles 6 and 20. Plan your own gels around those points.",
+  "tips": [
+    "Train for a start at about 5,280 feet (1,609 m) above sea level; the Capitol's 13th step is exactly one mile high",
+    "Practise steady downhill running for the Colfax section between miles 16 and 20",
+    "The course runs on the warning track inside Empower Field at Mile High at about miles 6 and 20, so expect a change of surface",
+    "Check the current course map each year, because the marathon and half marathon routes have changed before"
+  ],
+  "faq": [
+    {
+      "question": "Is the Colfax Marathon course flat?",
+      "answer": "The official guide calls the Sloan's Lake section flat and fast, but it also lists a short climb out of the stadium, a downhill section from Lakewood and an uphill stretch on 17th Avenue. No elevation figures are published on the page we checked."
+    },
+    {
+      "question": "Where do the Colfax Marathon start and finish?",
+      "answer": "Both are in Denver's City Park. The start is on the east side of Ferril Lake and the finish is between Ferril Lake and the Museum of Nature and Science."
+    },
+    {
+      "question": "When is the Colfax Marathon held?",
+      "answer": "It is usually held in May, on a Sunday."
+    }
+  ],
+  "sources": [
+    "https://www.runcolfax.org/?p=9296",
+    "https://www.runcolfax.org/marathon/",
+    "https://en.wikipedia.org/wiki/Colfax_Marathon"
+  ],
+  "checked": "2026-10"
+}

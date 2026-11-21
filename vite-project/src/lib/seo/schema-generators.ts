@@ -35,7 +35,7 @@ export function generateOrganizationSchema(): SchemaOrganization {
     '@type': 'Organization',
     name: 'TrainPace',
     url: BASE_URL,
-    logo: `${BASE_URL}/trainpace-logo.png`,
+    logo: `${BASE_URL}/android-chrome-512x512.png`,
     description:
       'Free running tools for pace calculation, race fueling, and elevation analysis.',
     sameAs: [
@@ -231,7 +231,7 @@ export function generateArticleSchema(
       url: BASE_URL,
       logo: {
         '@type': 'ImageObject',
-        url: `${BASE_URL}/trainpace-logo.png`,
+        url: `${BASE_URL}/android-chrome-512x512.png`,
       },
     },
     ...(article.image && { image: article.image }),
@@ -269,7 +269,7 @@ export function generateSoftwareApplicationSchema(
       name: 'TrainPace GPX Elevation Analyzer',
       description:
         'Upload GPX files to analyze elevation gain, grades, and route difficulty.',
-      url: `${BASE_URL}/elevationfinder`,
+      url: `${BASE_URL}/elevation-finder`,
     },
     race: {
       name: 'TrainPace Race Prep Tools',
@@ -320,7 +320,7 @@ const TOOL_BREADCRUMB_CONFIG: Record<
 > = {
   pace: { name: 'Pace Calculator', path: '/calculator' },
   fuel: { name: 'Fuel Planner', path: '/fuel' },
-  elevation: { name: 'Elevation Finder', path: '/elevationfinder' },
+  elevation: { name: 'Elevation Finder', path: '/elevation-finder' },
   race: { name: 'Race Prep', path: '/race' },
   blog: { name: 'Blog', path: '/blog' },
   plan: { name: 'Training Plan', path: '/plan' },
@@ -338,14 +338,6 @@ export function generateBreadcrumbsForPage(
     breadcrumbs.push({
       name: toolConfig.name,
       url: toolConfig.path,
-    });
-  }
-
-  // Add intermediate breadcrumb for guides
-  if (page.path.includes('/guides/')) {
-    breadcrumbs.push({
-      name: 'Guides',
-      url: `${toolConfig.path}/guides`,
     });
   }
 

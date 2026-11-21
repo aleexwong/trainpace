@@ -1,0 +1,77 @@
+{
+  "slug": "kansas-city-marathon",
+  "name": "Garmin Kansas City Marathon",
+  "city": "Kansas City",
+  "country": "Missouri, USA",
+  "distanceKm": 42.195,
+  "month": "October",
+  "courseType": "loop",
+  "terrain": "hilly",
+  "elevationGainM": null,
+  "elevationLossM": null,
+  "typicalWeather": null,
+  "website": "https://sportkc.org/marathon",
+  "summary": "The Garmin Kansas City Marathon is held on the third Saturday of October. The recent course starts at Frank A. Theis Park, across from the Nelson-Atkins Museum of Art, and tours the city. Runner reviews call the hills tough, and race listings give different climb totals.",
+  "courseHighlights": [
+    "Start at Frank A. Theis Park by the Nelson-Atkins Museum of Art",
+    "National WWI Museum and Memorial",
+    "Kauffman Center for the Performing Arts and Union Station",
+    "Country Club Plaza and Westport",
+    "18th & Vine, with the Finish Line Festival back at Theis Park"
+  ],
+  "paceStrategy": {
+    "summary": "Runners describe the hills as inconsistent, with long climbs in the second half, including a long one on Ward Parkway. Start slower than goal pace and run the hills by effort.",
+    "segments": [
+      {
+        "section": "mile 1–8",
+        "terrain": "Start area, downtown and the WWI Memorial area",
+        "advice": "Run slower than goal pace; the first miles include early climbs."
+      },
+      {
+        "section": "mile 8–16",
+        "terrain": "Midtown, Westport and the Plaza",
+        "advice": "Hold effort, not pace, over the rolling hills."
+      },
+      {
+        "section": "mile 16–23",
+        "terrain": "Ward Parkway area, with a long climb (runner reports)",
+        "advice": "Expect to slow down; keep your effort steady."
+      },
+      {
+        "section": "mile 23–26.2",
+        "terrain": "Return towards the finish",
+        "advice": "Use the downhill sections and push when you can."
+      }
+    ]
+  },
+  "fuelingNotes": "The official site lists the course map and Garmin courses but not aid-station details in the pages I read. Take a gel before the hills in the second half, around mile 14 to 15.",
+  "tips": [
+    "The route changes from year to year; use the Garmin course on the official course maps page",
+    "The marathon starts early in the morning, so plan your travel to the start",
+    "Include hill repeats in training",
+    "Reviews report a short climb right before the finish line"
+  ],
+  "faq": [
+    {
+      "question": "Is the Kansas City Marathon hilly?",
+      "answer": "Yes. Race listings and runner reviews describe a hilly course with long climbs, and the totals vary between sources, so no number is given here."
+    },
+    {
+      "question": "When is the Kansas City Marathon held?",
+      "answer": "It is held on the third Saturday of October."
+    },
+    {
+      "question": "Where does the Kansas City Marathon start?",
+      "answer": "The recent course starts at Frank A. Theis Park, across from the Nelson-Atkins Museum of Art."
+    }
+  ],
+  "sources": [
+    "https://sportkc.org/marathon",
+    "https://sportkc.org/marathon/course-maps",
+    "https://sportkc.org/marathon/finish-line-festival",
+    "https://en.wikipedia.org/wiki/Kansas_City_Marathon",
+    "https://sunriserunco.com/race/kansas-city-marathon/",
+    "https://raceraves.com/races/kansas-city-marathon/"
+  ],
+  "checked": "2026-10"
+}
