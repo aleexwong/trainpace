@@ -325,6 +325,8 @@ export function PaceCalculatorV2({
 
   // ── Render ──────────────────────────────────────────────────────────────────
 
+  const Heading = seoMode === "none" ? "h2" : "h1";
+
   return (
     <>
       {seoMode !== "none" && (
@@ -379,7 +381,7 @@ export function PaceCalculatorV2({
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-4xl font-bold text-gray-900">⏱️ Pace Calculator</h1>
+            <Heading className="text-4xl font-bold text-gray-900">⏱️ Pace Calculator</Heading>
             <button
               onClick={() => setShowInfo(!showInfo)}
               className="p-3 rounded-full bg-white shadow-md hover:shadow-lg transition-all"
