@@ -27,6 +27,7 @@ export const STATIC_PAGE_TITLES = {
   "/": "TrainPace – Free Running Pace Calculator & Race Tools",
   "/calculator": "Running Pace Calculator – VDOT Training Zones | TrainPace",
   "/vdot": "VDOT Calculator – Fitness Score & Race Times | TrainPace",
+  "/conditions": "Heat & Altitude Pace Calculator | TrainPace",
   "/plan": "Training Plan Builder – Free 5K to Marathon | TrainPace",
   "/fuel": "Marathon Fuel Calculator – How Many Gels? | TrainPace",
   "/elevation-finder": "GPX Elevation Profile Viewer & Analyzer | TrainPace",

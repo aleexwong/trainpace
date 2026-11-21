@@ -34,6 +34,8 @@ import faqData from "../../data/faq-data.json";
 import marathonData from "../../data/marathon-data.json";
 import { stripLeadingH1 } from "../../features/blog/utils";
 import {
+  conditionsAltitudeTable,
+  conditionsHeatTable,
   equivalentRaceTimeTable,
   fuelReferenceTable,
   fuelTimelineTable,
@@ -41,6 +43,7 @@ import {
   trainingPaceTable,
 } from "./reference-tables";
 import type { DocBlock, PageDoc } from "./types";
+import { CONDITIONS_DESCRIPTION } from "../../features/conditions/seo";
 import {
   STATIC_PAGE_TITLES,
   blogPostTitle,
@@ -346,6 +349,8 @@ export function getPageDescription(url: string): string {
       return "Free running pace calculator. Enter a race time to get Easy, Tempo, Threshold, and Interval paces, plus race predictions from 5K to marathon.";
     case "/vdot":
       return "Free VDOT calculator (Daniels & Gilbert formula). Turn a race result into a VDOT score, training zones, and equivalent times from 5K to marathon.";
+    case "/conditions":
+      return CONDITIONS_DESCRIPTION;
     case "/plan":
       return "Free periodized running plans for 5K to marathon: week-by-week base, development, sharpening, and taper phases sized to your fitness.";
     case "/fuel":
@@ -417,6 +422,11 @@ function toolNav(currentPath: string): DocBlock[] {
       href: "/vdot",
       label: "VDOT Calculator",
       note: "fitness score and equivalent race times",
+    },
+    {
+      href: "/conditions",
+      label: "Race Day Conditions",
+      note: "heat, humidity and altitude adjustments",
     },
     {
       href: "/plan",
@@ -778,6 +788,32 @@ function vdotBlocks(): DocBlock[] {
     {
       type: "paragraph",
       text: "Predictions assume training appropriate to the distance. A marathon prediction from a 5K result is an upper bound on what fitness allows, not a guarantee of endurance on the day.",
+    },
+  ];
+}
+
+function conditionsBlocks(): DocBlock[] {
+  return [
+    {
+      type: "heading",
+      level: 1,
+      text: "Race Day Conditions – Heat, Humidity & Altitude Pace Calculator",
+    },
+    {
+      type: "paragraph",
+      text: "Heat, humidity and altitude make the same effort slower. Enter a goal time and the race-day forecast to get an adjusted finish time, a realistic race pace, and training paces re-targeted for the conditions.",
+    },
+    {
+      type: "paragraph",
+      text: "Heat cost comes from temperature plus dew point, and it grows with time on your feet, so a marathon loses far more than a 5K in the same weather. Altitude lowers VO2max, which the calculator applies as a lower VDOT. The tables below are computed with the same functions the calculator uses.",
+    },
+    { type: "heading", level: 2, text: "How heat changes finish time" },
+    conditionsHeatTable(),
+    { type: "heading", level: 2, text: "How altitude changes finish time" },
+    conditionsAltitudeTable(),
+    {
+      type: "paragraph",
+      text: "These are typical values for a healthy runner who lives at sea level. Heat tolerance varies a lot between people, and living at altitude for two weeks or more recovers part of the altitude cost.",
     },
   ];
 }
@@ -1156,6 +1192,8 @@ function getContentBlocks(url: string): DocBlock[] {
       return calculatorBlocks();
     case "/vdot":
       return vdotBlocks();
+    case "/conditions":
+      return conditionsBlocks();
     case "/plan":
       return planBlocks();
     case "/fuel":
@@ -1221,6 +1259,7 @@ export function getAllDocPaths(): string[] {
     "/",
     "/calculator",
     "/vdot",
+    "/conditions",
     "/fuel",
     "/plan",
     "/elevationfinder",
