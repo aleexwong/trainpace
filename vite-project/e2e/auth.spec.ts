@@ -55,7 +55,7 @@ test.describe("Sign Up", () => {
     await registerPage.register("Test User", "test@example.com", "short");
 
     await expect(
-      page.getByText("Password must be at least 8 characters")
+      page.getByText("Password must be at least 12 characters")
     ).toBeVisible();
     await expect(page).toHaveURL(/\/register/);
   });

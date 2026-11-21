@@ -35,6 +35,187 @@ function withBaseUrl(path: string): string {
 
 export const calculatorSeoPages: SeoPageConfig[] = [
   {
+    id: generatePageId('pace', 'recovery-run-pace'),
+    slug: 'recovery-run-pace',
+    tool: 'pace',
+    path: '/calculator/recovery-run-pace',
+    title: 'Recovery Run Pace Guide - Run Easy | TrainPace',
+    description:
+      'Find a sensible recovery-run pace from your current race fitness. Learn the talk test, when to slow down, and how recovery runs differ from easy runs.',
+    h1: 'Recovery Run Pace Guide',
+    intro:
+      'A recovery run is a short, low-stress run between demanding sessions, not another fitness test. Use your current race result to estimate an easy training range, then let comfortable breathing and tired legs decide whether to go slower or rest.',
+    bullets: [
+      'Start at the slower end of your easy range; recovery pace is not a separate zone calculated by this tool.',
+      'You should be able to speak in full sentences without straining. Slow down or walk if you cannot.',
+      'Heat, hills, poor sleep, and accumulated fatigue can make your usual easy pace too demanding.',
+      'Rest instead if running worsens pain or changes your stride. A recovery run is optional, not a mileage obligation.',
+    ],
+    cta: { href: '/calculator', label: 'Find Your Easy Training Range' },
+    faq: [
+      {
+        question: 'How slow should a recovery run be?',
+        answer:
+          'Slow enough to feel relaxed throughout, often at the slower end of your easy range or below it. There is no universal number of seconds to add to race pace; current fatigue and conditions matter more than hitting a target.',
+      },
+      {
+        question: 'What is the difference between an easy run and a recovery run?',
+        answer:
+          'Both use comfortable aerobic effort. An easy run builds general endurance; a recovery run prioritizes keeping stress low after a harder day, so it is usually shorter and may be slower.',
+      },
+      {
+        question: 'Should I run or rest after intervals?',
+        answer:
+          'Either can fit a training plan. Choose rest if you are unusually tired, ill, or sore enough to alter your stride. If you run, keep it short and conversational rather than trying to make up distance.',
+      },
+    ],
+    howTo: {
+      name: 'How to choose a recovery-run pace',
+      description: 'Use the calculator as a starting point, then adjust by effort.',
+      steps: [
+        { name: 'Use current fitness', text: 'Enter a recent race distance and finish time, not a future goal time.' },
+        { name: 'Check the easy range', text: 'Start near its slower end and keep your breathing comfortable.' },
+        { name: 'Adjust or rest', text: 'Slow down for fatigue, hills, or heat, and stop if pain changes your stride.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', '400m-interval-pace'),
+    slug: '400m-interval-pace',
+    tool: 'pace',
+    path: '/calculator/400m-interval-pace',
+    title: '400m Interval Pace - Track Split Guide | TrainPace',
+    description:
+      'Convert running pace into 400m track splits with worked examples. Choose controlled interval effort from current fitness, not an all-out sprint.',
+    h1: '400m Interval Pace and Track Splits',
+    intro:
+      'A 400m repetition is one lap in lane one of a standard outdoor track. Its target time depends on the workout: 400m at 5K effort is different from a fast repetition with full recovery. Use training zones as context, not as a reason to sprint every lap.',
+    bullets: [
+      'To convert min/km to a 400m split, first convert the pace to seconds and multiply by 0.4.',
+      'At 4:00/km, 400m takes 96 seconds (1:36); at 5:00/km, it takes 120 seconds (2:00).',
+      'For mile pace, multiply seconds per mile by 400 / 1609.344. At 8:00/mile, a 400m lap is about 1:59.',
+      'Keep repetitions repeatable and follow the recovery specified by your workout. Short rests and full recoveries create different sessions.',
+    ],
+    cta: { href: '/calculator', label: 'Calculate Your Interval Training Pace' },
+    faq: [
+      {
+        question: 'How do I calculate my 400m split from pace per km?',
+        answer:
+          'Convert minutes and seconds to total seconds, then multiply by 0.4. For 4:30/km: 270 seconds × 0.4 = 108 seconds, or 1:48 per 400m.',
+      },
+      {
+        question: 'Is a 400m lap the same as a quarter mile?',
+        answer:
+          'No. A quarter mile is 402.336m, slightly longer than 400m. Use the actual repetition distance for your splits, especially when comparing track times with mile-pace targets.',
+      },
+      {
+        question: 'Should I run every 400m repetition at maximum speed?',
+        answer:
+          'No. For aerobic intervals, the aim is controlled, repeatable work. Sprint sessions are a different workout. Warm up first and choose effort, repetitions, and recovery appropriate to your experience and plan.',
+      },
+    ],
+    howTo: {
+      name: 'How to work out 400m interval splits',
+      description: 'Choose the effort before converting it to a lap time.',
+      steps: [
+        { name: 'Estimate training zones', text: 'Enter a recent race result to see training paces based on current fitness.' },
+        { name: 'Match the workout', text: 'Use the pace prescribed by your session rather than automatically choosing the fastest zone.' },
+        { name: 'Convert the split', text: 'Multiply seconds per kilometre by 0.4, then convert the result back to minutes and seconds.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', '800m-interval-pace'),
+    slug: '800m-interval-pace',
+    tool: 'pace',
+    path: '/calculator/800m-interval-pace',
+    title: '800m Interval Pace - Two-Lap Split Guide | TrainPace',
+    description:
+      'Work out 800m interval times from pace per km or mile. See two-lap examples, pacing advice, and why Yasso 800s do not guarantee a marathon time.',
+    h1: '800m Interval Pace and Two-Lap Splits',
+    intro:
+      'An 800m repetition covers two laps in lane one of a standard outdoor track. These longer repetitions make a rushed first lap costly: choose a workout-appropriate pace you can hold evenly, rather than treating the first 400m as a sprint.',
+    bullets: [
+      'Convert seconds per kilometre to an 800m time by multiplying by 0.8.',
+      'At 4:30/km, run 800m in 3:36 with 1:48 laps. At 5:00/km, the split is 4:00 with 2:00 laps.',
+      'For mile pace, multiply seconds per mile by 800 / 1609.344. At 8:00/mile, 800m takes about 3:59.',
+      'The appropriate pace depends on the session and recovery. An 800m race effort is not a sustainable target for repeated aerobic intervals.',
+    ],
+    cta: { href: '/calculator', label: 'Find Training Paces for Your 800m Repeats' },
+    faq: [
+      {
+        question: 'How do I convert min/km to an 800m interval time?',
+        answer:
+          'Convert the pace to seconds and multiply by 0.8. For 4:15/km, 255 × 0.8 = 204 seconds, or 3:24 per 800m. Even laps would be 1:42 each.',
+      },
+      {
+        question: 'Do Yasso 800s predict my marathon time?',
+        answer:
+          'They are a workout, not a reliable standalone prediction. Running 800m repeats in 3:30 does not guarantee a 3:30 marathon. Long-run endurance, weekly training, fueling, weather, and the course all affect marathon performance.',
+      },
+      {
+        question: 'How much recovery should I take between 800m repeats?',
+        answer:
+          'Follow the purpose of the session and your plan. Short jog recoveries make the work more continuous; longer recoveries allow faster repetitions. If you cannot hold controlled, consistent splits, reduce the pace or number of repeats rather than forcing the workout.',
+      },
+    ],
+    howTo: {
+      name: 'How to pace 800m repetitions',
+      description: 'Turn a training pace into a controlled two-lap effort.',
+      steps: [
+        { name: 'Choose the effort', text: 'Use a recent race result and your workout instructions to select an appropriate training pace.' },
+        { name: 'Calculate the target', text: 'Multiply seconds per kilometre by 0.8 for the full repetition and by 0.4 for each lap.' },
+        { name: 'Run evenly', text: 'Check the first lap, avoid banking time, and keep the prescribed recovery between repetitions.' },
+      ],
+    },
+  },
+  {
+    id: generatePageId('pace', 'negative-split-marathon'),
+    slug: 'negative-split-marathon',
+    tool: 'pace',
+    path: '/calculator/negative-split-marathon',
+    title: 'Negative Split Marathon Pacing Guide | TrainPace',
+    description:
+      'Plan a negative-split marathon with a worked 4-hour example. Learn first-half targets, second-half pacing, and when hills or heat make even effort better.',
+    h1: 'Negative Split Marathon Pacing Guide',
+    intro:
+      'A negative split means running the second half faster than the first. For a marathon, aim for a small, realistic difference rather than a slow first half followed by a desperate catch-up. The calculator below estimates training paces; use the worked example here to plan race splits.',
+    bullets: [
+      'For a 4:00 marathon with a two-minute difference between halves, run the first half in 2:01 and the second in 1:59.',
+      'Those half-marathon splits average about 5:44/km then 5:38/km (9:14/mile then 9:05/mile), rounded to the nearest second.',
+      'Calculate the first half as (goal time + split difference) / 2 and the second as (goal time - split difference) / 2.',
+      'On a hilly course or in rising heat, even effort can be more sensible than forcing a faster second half. Keep fueling consistent from early in the race.',
+    ],
+    cta: { href: '/calculator', label: 'Check Your Marathon Training Paces' },
+    initialInputs: { distance: '42.195' },
+    faq: [
+      {
+        question: 'What is a negative split in a marathon?',
+        answer:
+          'It means your second 21.0975km is faster than your first. For example, 2:01 followed by 1:59 gives a 4:00 finish and a two-minute negative split.',
+      },
+      {
+        question: 'Does a two-minute negative split mean starting two minutes slower than halfway?',
+        answer:
+          'No. The difference is between the two halves. For a 4:00 goal, shift one minute from the second half to the first: 2:01 plus 1:59, not 2:02 plus 1:58.',
+      },
+      {
+        question: 'Is a negative split always the best marathon strategy?',
+        answer:
+          'No. Even pacing can also work well, and course elevation, wind, heat, fitness, and fueling change the best approach. Avoid chasing a planned split when the effort is clearly too high.',
+      },
+    ],
+    howTo: {
+      name: 'How to plan a small negative split',
+      description: 'Set realistic half-marathon checkpoints without banking time early.',
+      steps: [
+        { name: 'Choose a realistic finish time', text: 'Base it on recent races and marathon-specific training, not only an aspirational goal.' },
+        { name: 'Divide the halves', text: 'Add the desired difference to the goal time and divide by two for the first half; subtract it and divide by two for the second.' },
+        { name: 'Adjust for the course', text: 'Check the elevation profile and conditions, then prioritize sustainable effort and early fueling.' },
+      ],
+    },
+  },
+  {
     id: generatePageId('pace', '5k-pace-calculator'),
     slug: '5k-pace-calculator',
     tool: 'pace',
@@ -2450,6 +2631,17 @@ export const elevationGuideSeoPages: SeoPageConfig[] = [
 export const calculatorSeoPageMap = new Map(
   calculatorSeoPages.map((p) => [p.slug, p])
 );
+
+/** Practical guides linked from every calculator landing page. */
+export const paceGuideLinks = [
+  'recovery-run-pace',
+  '400m-interval-pace',
+  '800m-interval-pace',
+  'negative-split-marathon',
+].map((slug) => {
+  const page = calculatorSeoPageMap.get(slug)!;
+  return { href: page.path, label: page.h1 };
+});
 export const fuelSeoPageMap = new Map(fuelSeoPages.map((p) => [p.slug, p]));
 export const elevationGuideSeoPageMap = new Map(
   elevationGuideSeoPages.map((p) => [p.slug, p])
