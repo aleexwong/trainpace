@@ -1,27 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { STATIC_PAGE_TITLES } from "@/lib/seo/titles";
 import posthog from "posthog-js";
 import "./mcp-docs.css";
-import { Button } from "@/components/ui/button";
-import { useInView } from "@/components/feature-shots/shared";
-import {
-  ArrowRight,
-  Bot,
-  Check,
-  Copy,
-  Gauge,
-  MessageSquareText,
-  Mountain,
-  CalendarRange,
-  Fuel,
-  Activity,
-  Terminal,
-  MonitorSmartphone,
-  Blocks,
-  Zap,
-} from "lucide-react";
+import { Check, Copy } from "lucide-react";
 
 const MCP_URL = "https://api.trainpace.com/api/mcp";
 
@@ -92,7 +75,7 @@ const STARTER_PROMPTS = [
   {
     label: "Training plan",
     prompt:
-      "Use the trainpace MCP tools: build me a marathon training plan. Race date 2026-10-11, intermediate fitness, I can run Tue, Thu, Sat, and Sun. Goal time 3:45:00. Then summarize the key weeks for me.",
+      "Use the trainpace MCP tools: build me a marathon training plan. Race date 2027-10-10, intermediate fitness, I can run Tue, Thu, Sat, and Sun. Goal time 3:45:00. Then summarize the key weeks for me.",
   },
   {
     label: "Fueling strategy",
@@ -108,42 +91,32 @@ const STARTER_PROMPTS = [
 
 const TOOLS = [
   {
-    icon: Gauge,
     name: "calculate_training_paces",
-    hue: 165,
     summary:
       "Training paces (easy, tempo, interval, speed, long run, Yasso 800s) from a recent race result — plus heart-rate zones and hot-weather adjustments.",
     example: "What should my easy pace be if I ran a 48:30 10K?",
   },
   {
-    icon: Activity,
     name: "calculate_vdot",
-    hue: 220,
     summary:
       "VDOT fitness score (Daniels & Gilbert formula) with training zones and equivalent race-time predictions for 5K through marathon.",
     example: "I ran a 1:45 half marathon — what marathon time does that predict?",
   },
   {
-    icon: CalendarRange,
     name: "generate_training_plan",
-    hue: 265,
     summary:
       "A periodized week-by-week plan (base, development, sharpening, taper) for 5K to marathon, sized to your fitness level and available run days.",
     example:
       "Build me a 16-week marathon plan. I'm a beginner and can run Tue/Thu/Sat/Sun.",
   },
   {
-    icon: Fuel,
     name: "calculate_fuel_plan",
-    hue: 65,
     summary:
       "Carbs per hour, total gels, and a front-loaded fuel-stop timeline for a 10K, half, or full marathon.",
     example: "How should I fuel a 3:45 marathon? I weigh 70kg.",
   },
   {
-    icon: Mountain,
     name: "analyze_route",
-    hue: 150,
     summary:
       "GPX route analysis: distance, elevation gain, climb categorization, split-by-split grade-adjusted pacing, and race-day weather impact.",
     example: "Here's my race GPX — where are the hard climbs and how should I pace them?",
@@ -153,11 +126,9 @@ const TOOLS = [
 function CopyButton({
   text,
   label,
-  className = "",
 }: {
   text: string;
   label: string;
-  className?: string;
 }) {
   const [status, setStatus] = useState<"idle" | "copied" | "failed">("idle");
   const resetTimer = useRef<number>();
@@ -181,7 +152,7 @@ function CopyButton({
     <button
       type="button"
       onClick={copy}
-      className={`mcp-copy ${className}`}
+      className="mcp-copy"
       aria-label={`Copy ${label}`}
       data-copied={copied}
     >
@@ -197,181 +168,23 @@ function CopyButton({
   );
 }
 
-// ── Animated terminal ──────────────────────────────────────────────────
-// Types the setup commands out like a real shell session, then idles on a
-// blinking prompt. Reduced-motion users see the finished session instantly.
-
-const TERMINAL_SCRIPT: { kind: "cmd" | "out"; text: string; ok?: boolean }[] = [
-  { kind: "cmd", text: CLAUDE_CODE_COMMAND },
-  { kind: "out", text: 'Added HTTP MCP server "trainpace"' },
-  { kind: "cmd", text: "claude mcp list" },
-  {
-    kind: "out",
-    text: "trainpace: https://api.trainpace.com/api/mcp (HTTP) - ✓ Connected",
-    ok: true,
-  },
-];
-
-function AnimatedTerminal() {
-  const { ref, inView } = useInView<HTMLDivElement>(0.4);
-  const [line, setLine] = useState(-1); // -1 = not started
-  const [chars, setChars] = useState(0);
-  const timer = useRef<number>();
-
-  const finished = line >= TERMINAL_SCRIPT.length;
-
-  const play = useCallback(() => {
-    window.clearTimeout(timer.current);
-    const reduce = window.matchMedia?.(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (reduce) {
-      setLine(TERMINAL_SCRIPT.length);
-      return;
-    }
-    setLine(0);
-    setChars(0);
-  }, []);
-
-  useEffect(() => {
-    if (inView && line === -1) play();
-  }, [inView, line, play]);
-
-  useEffect(() => {
-    if (line < 0 || finished) return;
-    const cur = TERMINAL_SCRIPT[line];
-    if (cur.kind === "cmd" && chars < cur.text.length) {
-      // Type command characters with a little human jitter
-      timer.current = window.setTimeout(() => {
-        setChars((c) => c + 2);
-      }, 24 + Math.random() * 30);
-    } else {
-      // Command fully typed (or output line): pause, then advance
-      timer.current = window.setTimeout(
-        () => {
-          setLine((l) => l + 1);
-          setChars(0);
-        },
-        cur.kind === "cmd" ? 420 : 650
-      );
-    }
-    return () => window.clearTimeout(timer.current);
-  }, [line, chars, finished]);
-
-  return (
-    <div ref={ref} className="mb-4">
-      <div className="mcp-terminal">
-        <div className="flex items-center gap-2 px-4 py-2.5 bg-white/5 border-b border-white/10">
-          <span className="w-3 h-3 rounded-full bg-red-400/80" />
-          <span className="w-3 h-3 rounded-full bg-amber-400/80" />
-          <span className="w-3 h-3 rounded-full bg-emerald-400/80" />
-          <span className="ml-2 text-xs text-slate-400 font-mono">
-            zsh — your terminal
-          </span>
-          <div className="ml-auto flex items-center gap-3">
-            {finished && (
-              <button
-                onClick={play}
-                className="text-xs font-mono text-slate-400 hover:text-emerald-400 transition-colors"
-                aria-label="Replay terminal session"
-              >
-                ↺ replay
-              </button>
-            )}
-            <CopyButton
-              text={CLAUDE_CODE_COMMAND}
-              label="setup command"
-              className="text-slate-400 hover:text-emerald-400"
-            />
-          </div>
-        </div>
-        <div className="p-4 font-mono text-[13px] leading-relaxed min-h-[150px]">
-          {TERMINAL_SCRIPT.map((entry, i) => {
-            if (i > line) return null;
-            const isCurrent = i === line;
-            if (entry.kind === "cmd") {
-              const text = isCurrent
-                ? entry.text.slice(0, chars)
-                : entry.text;
-              // Pending output lines render nothing until "executed"
-              return (
-                <div key={i} className="text-slate-100 break-all">
-                  <span className="text-emerald-400 select-none">$ </span>
-                  {text}
-                  {isCurrent && (
-                    <span className="inline-block w-2 h-3.5 ml-0.5 align-middle bg-emerald-400 animate-pulse" />
-                  )}
-                </div>
-              );
-            }
-            if (isCurrent) return null; // output appears once executed
-            return (
-              <div
-                key={i}
-                className={`break-all ${entry.ok ? "text-emerald-400" : "text-slate-400"}`}
-              >
-                {entry.text}
-              </div>
-            );
-          })}
-          {finished && (
-            <div className="text-slate-100">
-              <span className="text-emerald-400 select-none">$ </span>
-              <span className="inline-block w-2 h-3.5 ml-0.5 align-middle bg-emerald-400 animate-pulse" />
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function CopyBlock({ label, code }: { label: string; code: string }) {
   return (
     <div className="mcp-code-block">
-      <div className="flex items-center justify-between mb-2">
-        <p className="text-sm font-medium text-slate-700">{label}</p>
+      <div className="mcp-code-heading">
+        <span>{label}</span>
         <CopyButton text={code} label={label} />
       </div>
-      <pre className="mcp-terminal text-slate-100 p-4 overflow-auto max-h-96 text-left text-sm leading-relaxed">
+      <pre tabIndex={0} aria-label={label}>
         <code>{code}</code>
       </pre>
     </div>
   );
 }
 
-function SetupCard({
-  icon: Icon,
-  title,
-  badge,
-  children,
-}: {
-  icon: typeof Terminal;
-  title: string;
-  badge?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="mcp-setup-card">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="bg-emerald-100 rounded-lg p-2.5 shrink-0">
-          <Icon className="w-5 h-5 text-emerald-700" strokeWidth={2.25} aria-hidden="true" />
-        </div>
-        <h3 className="text-xl font-bold text-slate-900">{title}</h3>
-        {badge && (
-          <span className="text-xs font-medium bg-slate-100 text-slate-600 rounded-full px-2.5 py-1">
-            {badge}
-          </span>
-        )}
-      </div>
-      {children}
-    </div>
-  );
-}
-
 export default function McpDocs() {
   return (
-    <div className="mcp-docs text-left">
+    <div className="mcp-docs">
       <Helmet>
         <title>{STATIC_PAGE_TITLES["/mcp"]}</title>
         <meta
@@ -381,243 +194,121 @@ export default function McpDocs() {
         <link rel="canonical" href="https://trainpace.com/mcp" />
       </Helmet>
 
-      <section className="mcp-hero">
-        <div className="mcp-hero-art" aria-hidden="true" />
-        <div className="mcp-container mcp-hero-grid">
-          <div>
-            <p className="mcp-eyebrow"><Bot size={16} aria-hidden="true" /> TrainPace MCP</p>
-            <h1>TrainPace for your <span>AI assistant.</span></h1>
-            <p className="mcp-hero-description">
-              Connect Claude, ChatGPT, or another{" "}
-              <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener noreferrer">MCP client</a>
-              {" "}to the calculators that power TrainPace. Ask about paces,
-              plans, fueling, or your next race course.
-            </p>
-            <div className="mcp-hero-actions">
-              <a className="mcp-primary-link" href="#connect">
-                Connect your assistant <ArrowRight size={17} strokeWidth={2.25} aria-hidden="true" />
-              </a>
-              <a className="mcp-secondary-link" href="#tools">Explore the tools</a>
-            </div>
-          </div>
-          <div className="mcp-endpoint">
-            <div className="mcp-endpoint-heading">
-              <Terminal size={19} strokeWidth={2.25} aria-hidden="true" />
-              <h2>Server endpoint</h2>
-            </div>
-            <div className="mcp-endpoint-code">
-              <code>{MCP_URL}</code>
-              <CopyButton text={MCP_URL} label="server URL" />
-            </div>
-            <p>Streamable HTTP · No account or API key needed</p>
-          </div>
-        </div>
-      </section>
-
-      <nav aria-label="On this page" className="mcp-jump-nav">
-        <div className="mcp-container">
-          <a href="#connect">Setup</a>
-          <a href="#prompts">Starter prompts</a>
-          <a href="#tools">Tools</a>
-          <a href="#about-mcp">About the server</a>
-        </div>
+      <nav aria-label="On this page" className="mcp-contents">
+        <p>On this page</p>
+        <a href="#endpoint">Server endpoint</a>
+        <a href="#connect">Client setup</a>
+        <a href="#tools">Tool reference</a>
+        <a href="#prompts">Starter prompts</a>
+        <a href="#about-mcp">Server behavior</a>
       </nav>
 
-      {/* Setup, step by step */}
-      <section id="connect" className="mcp-section mcp-section-tint">
-        <div className="mcp-container">
-          <h2 className="text-3xl font-bold mb-4 flex items-center gap-3">
-            <Zap className="w-8 h-8 text-emerald-600" />
-            Connect Your Assistant
-          </h2>
-          <p className="text-lg text-slate-600 mb-10">
-            Pick your client below — each takes about a minute. Once connected,
-            just ask training questions; the assistant discovers the tools on
-            its own.
+      <article className="mcp-article">
+        <header>
+          <h1>TrainPace MCP</h1>
+          <p>
+            The TrainPace{" "}
+            <a href="https://modelcontextprotocol.io">Model Context Protocol</a>{" "}
+            server provides five tools for training paces, VDOT, training plans,
+            race fueling, and GPX route analysis.
           </p>
+        </header>
 
-          <div className="mcp-setup-grid">
-            <SetupCard
-              icon={MonitorSmartphone}
-              title="Claude.ai & Claude Desktop"
-              badge="no code"
-            >
-              <ol className="list-decimal pl-6 space-y-3 text-slate-700 mb-5">
-                <li>
-                  Open <strong>Settings → Connectors</strong> (on claude.ai it's
-                  under your profile menu; custom connectors require a paid
-                  plan).
-                </li>
-                <li>
-                  Click <strong>Add custom connector</strong>.
-                </li>
-                <li>
-                  Name it <strong>trainpace</strong> and paste the server URL
-                  below, then click <strong>Add</strong>. There's no login step —
-                  it connects instantly.
-                </li>
-                <li>
-                  In a new chat, open the <strong>search &amp; tools</strong>{" "}
-                  menu (sliders icon) and make sure <strong>trainpace</strong> is
-                  enabled.
-                </li>
-                <li>Ask a training question — try a starter prompt below.</li>
-              </ol>
-              <CopyBlock label="Server URL" code={MCP_URL} />
-            </SetupCard>
-
-            <SetupCard icon={Terminal} title="Claude Code" badge="terminal">
-              <p className="text-slate-700 mb-4">
-                One command and you're connected — this is the whole setup:
-              </p>
-              <AnimatedTerminal />
-              <p className="text-slate-700 text-sm">
-                Then start a session and ask away.
-              </p>
-            </SetupCard>
-
-            <SetupCard
-              icon={Blocks}
-              title="Cursor, Windsurf & other MCP clients"
-              badge="config file"
-            >
-              <p className="text-slate-700 mb-4">
-                Add this to your client's MCP config —{" "}
-                <code className="font-mono">.cursor/mcp.json</code> in Cursor,{" "}
-                <code className="font-mono">mcp_config.json</code> in Windsurf,
-                or the equivalent for your tool — then reload:
-              </p>
-              <CopyBlock label="MCP config JSON" code={JSON_CONFIG} />
-            </SetupCard>
-
-            <SetupCard
-              icon={MessageSquareText}
-              title="Any other agent — just paste this"
-              badge="zero setup"
-            >
-              <p className="text-slate-700 mb-4">
-                Can't edit settings, or using an agent that manages its own
-                tools? Paste this whole block as your first message. Agents that
-                can register MCP servers will connect themselves; the rest still
-                learn exactly which tools exist and when to use them.
-              </p>
-              <CopyBlock label="Agent briefing (paste as your first message)" code={AGENT_PROMPT} />
-            </SetupCard>
+        <section id="endpoint" className="mcp-endpoint">
+          <h2>Server endpoint</h2>
+          <div className="mcp-endpoint-value">
+            <code>{MCP_URL}</code>
+            <CopyButton text={MCP_URL} label="server URL" />
           </div>
-        </div>
-      </section>
+          <dl>
+            <div><dt>Transport</dt><dd>Streamable HTTP</dd></div>
+            <div><dt>Authentication</dt><dd>None</dd></div>
+          </dl>
+        </section>
 
-      {/* Starter prompts */}
-      <section id="prompts" className="mcp-section mcp-container">
-        <h2 className="text-3xl font-bold mb-4">Starter prompts</h2>
-        <p className="text-lg text-slate-600 mb-8">
-          Copy one of these into your connected assistant to see the tools in
-          action.
-        </p>
-        <div className="mcp-prompt-grid">
-          {STARTER_PROMPTS.map((item) => (
-            <div
-              key={item.label}
-              className="mcp-prompt"
-            >
-              <div className="flex items-center justify-between gap-4 mb-2">
-                <p className="font-semibold text-slate-900">{item.label}</p>
-                <CopyButton text={item.prompt} label={`${item.label} prompt`} />
-              </div>
-              <p className="text-slate-600 text-sm whitespace-pre-line">
-                {item.prompt}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+        <section id="connect">
+          <h2>Client setup</h2>
 
-      {/* Tools */}
-      <section id="tools" className="mcp-section mcp-section-tint">
-        <div className="mcp-container">
-          <h2 className="text-3xl font-bold mb-4 text-center">
-            What Your Agent Can Do
-          </h2>
-          <p className="text-lg text-slate-600 text-center mb-12 max-w-2xl mx-auto">
-            Five tools, discovered automatically when a client connects. Every
-            one runs the exact same math as the calculators on trainpace.com.
-          </p>
+          <div className="mcp-entry">
+            <h3>Claude Code</h3>
+            <CopyBlock label="Setup command" code={CLAUDE_CODE_COMMAND} />
+            <p>Run <code>claude mcp list</code> to verify that TrainPace is connected.</p>
+          </div>
 
-          <div className="mcp-tool-grid">
+          <div className="mcp-entry">
+            <h3>Claude.ai and Claude Desktop</h3>
+            <ol>
+              <li>Open <strong>Settings → Connectors</strong>. Custom connectors on Claude.ai require a paid plan.</li>
+              <li>Choose <strong>Add custom connector</strong>, name it <code>trainpace</code>, and paste the server URL above.</li>
+              <li>In a new chat, open <strong>Search &amp; tools</strong> and enable <strong>trainpace</strong>.</li>
+            </ol>
+          </div>
+
+          <div className="mcp-entry">
+            <h3>Cursor, Windsurf, and other MCP clients</h3>
+            <p>
+              Add this entry to <code>.cursor/mcp.json</code> in Cursor,
+              {" "}<code>mcp_config.json</code> in Windsurf, or the equivalent
+              config file for your client. Then reload the client.
+            </p>
+            <CopyBlock label="MCP config JSON" code={JSON_CONFIG} />
+          </div>
+
+          <details className="mcp-entry">
+            <summary>Agent briefing</summary>
+            <p>
+              Paste this into a new chat for a summary of the available tools and
+              their parameters. The assistant needs MCP support to call them.
+            </p>
+            <CopyBlock label="Agent briefing" code={AGENT_PROMPT} />
+          </details>
+        </section>
+
+        <section id="tools">
+          <h2>Tool reference</h2>
+          <p>Clients discover these tools when they connect.</p>
+          <dl className="mcp-reference">
             {TOOLS.map((tool) => (
-              <div
-                key={tool.name}
-                className="mcp-tool"
-              >
-                <div className="flex items-start gap-4">
-                  <div
-                    className="mcp-tool-icon"
-                    style={{ color: `oklch(0.42 0.085 ${tool.hue})`, backgroundColor: `oklch(0.94 0.035 ${tool.hue})` }}
-                  >
-                    <tool.icon className="w-5 h-5" strokeWidth={2.25} aria-hidden="true" />
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="font-mono font-semibold text-slate-900 mb-2 break-words">
-                      {tool.name}
-                    </h3>
-                    <p className="text-slate-700 mb-3">{tool.summary}</p>
-                    <p className="text-sm text-slate-500 italic">
-                      “{tool.example}”
-                    </p>
-                  </div>
-                </div>
+              <div key={tool.name}>
+                <dt><code>{tool.name}</code></dt>
+                <dd>{tool.summary}</dd>
+                <dd className="mcp-example">“{tool.example}”</dd>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
+          </dl>
+        </section>
 
-      {/* Why */}
-      <section id="about-mcp" className="mcp-section mcp-container">
-        <h2 className="text-3xl font-bold mb-6">Why an MCP Server?</h2>
-        <div className="prose prose-lg max-w-none text-left">
-          <p className="text-slate-700 leading-relaxed mb-4">
-            Runners increasingly plan training by talking to an AI assistant.
-            Generic models are good at conversation but improvise the numbers —
-            paces, fueling, and plan structure deserve real formulas, not
-            plausible-sounding guesses.
-          </p>
-          <p className="text-slate-700 leading-relaxed mb-4">
-            The TrainPace MCP server gives your assistant the deterministic
-            math: Daniels &amp; Gilbert VDOT, grade-adjusted pacing from real
-            elevation data, and sports-science fueling targets. Your agent does
-            the conversation; TrainPace does the calculation.
-          </p>
-          <p className="text-slate-600 text-sm">
-            The server is stateless and anonymous — nothing you send is tied to
-            an account, and route files are analyzed in memory, not stored.
-            Requests are rate-limited per IP to keep the service free for
-            everyone.
-          </p>
-        </div>
-      </section>
+        <section id="prompts">
+          <h2>Starter prompts</h2>
+          <ul className="mcp-reference">
+            {STARTER_PROMPTS.map(({ label, prompt }) => (
+              <li key={label}>
+                <div className="mcp-prompt-heading">
+                  <h3>{label}</h3>
+                  <CopyButton text={prompt} label={`${label} prompt`} />
+                </div>
+                <p className="whitespace-pre-line">{prompt}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-      {/* CTA */}
-      <section className="mcp-section mcp-container">
-        <div className="mcp-cta text-center text-white">
-          <h2 className="text-3xl font-bold mb-4">Prefer to Click Around?</h2>
-          <p className="text-lg mb-8 text-emerald-100">
-            Every tool the MCP server exposes is also a free calculator on this
-            site — no AI required.
+        <section id="about-mcp">
+          <h2>Server behavior</h2>
+          <p>
+            The server is stateless. Requests are rate limited by IP and GPX
+            files are analyzed in memory without being stored.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="bg-white text-emerald-800 hover:bg-slate-100">
-              <Link to="/calculator">Pace Calculator</Link>
-            </Button>
-            <Button asChild size="lg" className="bg-white text-emerald-800 hover:bg-slate-100">
-              <Link to="/plan">Training Plan Builder</Link>
-            </Button>
-            <Button asChild size="lg" className="bg-white text-emerald-800 hover:bg-slate-100">
-              <Link to="/elevation-finder">Elevation Finder</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+          <p>
+            The same calculations are available in the{" "}
+            <Link to="/calculator">pace calculator</Link>,{" "}
+            <Link to="/vdot">VDOT calculator</Link>,{" "}
+            <Link to="/plan">training plan builder</Link>,{" "}
+            <Link to="/fuel">fuel planner</Link>, and{" "}
+            <Link to="/elevation-finder">elevation finder</Link>.
+          </p>
+        </section>
+      </article>
     </div>
   );
 }
