@@ -10,6 +10,8 @@ The most valuable extraction candidates are the guest-save continuations, traini
 
 ## Transition gaps found during the audit
 
+[#117](https://github.com/aleexwong/trainpace/pull/117) changed plan generation to fit the available time and end on the race date. The saved-plan identity gap below concerns replacing a generated plan after saving it.
+
 These findings follow from source control flow; they are not claims of browser-tested failures.
 
 1. **Pace guest saves return to an unregistered route.** [features/pace-calculator/hooks/usePacePlanPersistence.ts](https://github.com/aleexwong/trainpace/blob/cffee3b9a9ffe02e4183118f5256be5be77e43e0/vite-project/src/features/pace-calculator/hooks/usePacePlanPersistence.ts#L56) stores the pending plan and returns to `/pace-calculator`; [App.tsx](https://github.com/aleexwong/trainpace/blob/cffee3b9a9ffe02e4183118f5256be5be77e43e0/vite-project/src/App.tsx#L59) registers `/calculator`. The wildcard renders Landing, so the pace calculator’s pending-save consumer is not reached by that continuation.
