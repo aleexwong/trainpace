@@ -1,0 +1,277 @@
+.mcp-docs {
+  --mcp-ink: #172820;
+  --mcp-muted: #52665c;
+  --mcp-accent: #047857;
+  --mcp-line: rgb(18 56 41 / 15%);
+  display: grid;
+  gap: 2rem;
+  width: min(70rem, 100% - 2.5rem);
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin-inline: auto;
+  padding-block: clamp(1.75rem, 5vw, 4rem) 4rem;
+  color: var(--mcp-ink);
+  text-align: left;
+}
+
+.mcp-contents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--mcp-line);
+  font-size: 0.875rem;
+}
+
+.mcp-contents p {
+  flex-basis: 100%;
+  font-weight: 700;
+}
+
+.mcp-contents a {
+  color: var(--mcp-muted);
+}
+
+.mcp-contents a:hover {
+  color: var(--mcp-accent);
+  text-decoration: underline;
+}
+
+.mcp-article {
+  min-width: 0;
+  max-width: 48rem;
+  line-height: 1.65;
+}
+
+.mcp-article :is(h1, h2, h3) {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  line-height: 1.25;
+}
+
+.mcp-article h1 {
+  margin-bottom: 0.625rem;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.mcp-article h2 {
+  margin-bottom: 0.65rem;
+  font-size: 1.55rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.mcp-article :is(h3, summary) {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.mcp-article summary {
+  cursor: pointer;
+}
+
+.mcp-article p,
+.mcp-article ol,
+.mcp-article dd {
+  color: var(--mcp-muted);
+}
+
+.mcp-article p + p {
+  margin-top: 0.75rem;
+}
+
+.mcp-article a {
+  color: var(--mcp-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.mcp-article section {
+  margin-top: 2rem;
+  scroll-margin-top: 5.5rem;
+}
+
+.mcp-endpoint {
+  --mcp-endpoint-radius: 0.875rem;
+  --mcp-endpoint-inset: 0.5rem;
+  padding: var(--mcp-endpoint-inset);
+  border-radius: var(--mcp-endpoint-radius);
+  background: oklch(0.98 0.012 160);
+  box-shadow: inset 0 0 0 1px var(--mcp-line);
+}
+
+.mcp-endpoint h2 {
+  margin: 0.25rem 0.5rem 0.4rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  letter-spacing: normal;
+}
+
+.mcp-endpoint-value,
+.mcp-prompt-heading,
+.mcp-code-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.mcp-endpoint-value {
+  flex-wrap: wrap;
+  padding: 0.35rem 0.5rem 0.35rem 0.75rem;
+  border-radius: calc(var(--mcp-endpoint-radius) - var(--mcp-endpoint-inset));
+  background: #fff;
+}
+
+.mcp-endpoint code,
+.mcp-reference code {
+  overflow-wrap: anywhere;
+  color: var(--mcp-accent);
+}
+
+.mcp-endpoint dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  padding: 0.4rem 0.5rem 0.2rem;
+  font-size: 0.8125rem;
+}
+
+.mcp-endpoint dl div {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.mcp-endpoint dt {
+  font-weight: 600;
+}
+
+.mcp-entry {
+  padding-block: 1rem;
+}
+
+.mcp-entry + .mcp-entry,
+.mcp-reference > * {
+  border-top: 1px solid var(--mcp-line);
+}
+
+.mcp-entry h3,
+.mcp-entry summary {
+  margin-bottom: 0.4rem;
+}
+
+.mcp-entry ol {
+  list-style: decimal;
+  padding-inline-start: 1.4rem;
+}
+
+.mcp-entry li + li {
+  margin-top: 0.35rem;
+}
+
+.mcp-code-block {
+  margin-block: 0.65rem;
+  overflow: hidden;
+  border-radius: 0.6rem;
+  background: #13261e;
+  color: #e4f4eb;
+  font-size: 0.875rem;
+}
+
+.mcp-code-heading {
+  padding: 0.35rem 0.65rem 0.35rem 0.9rem;
+  background: #1e352a;
+}
+
+.mcp-code-block pre {
+  max-height: 22rem;
+  overflow: auto;
+  padding: 0.75rem 0.9rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.mcp-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  padding: 0.3rem 0.55rem;
+  border-radius: 0.35rem;
+  background: transparent;
+  color: var(--mcp-accent);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.mcp-code-heading .mcp-copy {
+  color: #b7efcf;
+}
+
+.mcp-copy:hover {
+  background: rgb(5 150 105 / 9%);
+}
+
+.mcp-copy-icons {
+  display: grid;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.mcp-copy-icons svg {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+}
+
+.mcp-copy-icons svg:last-child,
+.mcp-copy[data-copied="true"] svg:first-child {
+  opacity: 0;
+  filter: blur(3px);
+}
+
+.mcp-copy[data-copied="true"] svg:last-child {
+  opacity: 1;
+  filter: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mcp-copy-icons svg { transition: opacity 160ms, filter 160ms; }
+}
+
+.mcp-reference {
+  margin-top: 0.75rem;
+}
+
+.mcp-reference > * {
+  padding-block: 0.8rem;
+}
+
+.mcp-reference dt {
+  margin-bottom: 0.2rem;
+  font-weight: 600;
+}
+
+.mcp-reference .mcp-example {
+  margin-top: 0.2rem;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 850px) {
+  .mcp-docs {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 3.5rem;
+  }
+
+  .mcp-contents {
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+    display: grid;
+    gap: 0.55rem;
+    padding: 0.25rem 1rem 0.25rem 0;
+    border-bottom: 0;
+    border-inline-end: 1px solid var(--mcp-line);
+  }
+}
