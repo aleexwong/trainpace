@@ -61,6 +61,7 @@ jobs:
         # The existing dev-server browser tests still run unchanged.
         run: |
           npm run build
+          npm run budget
           npx playwright test
 
       - name: Upload Playwright report
